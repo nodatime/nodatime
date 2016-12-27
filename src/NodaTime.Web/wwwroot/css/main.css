@@ -1,0 +1,364 @@
+@font-face {
+  font-family: "Calluna Sans Regular";
+  src: url("../fonts/CallunaSansRegular.otf");
+}
+
+html {
+  font-family: "Calluna Sans Regular", 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+/* Override the font defined in foundation.css to pick up the above. */
+body, h1, h2, h3, h4, h5, h6 {
+  font-family: inherit
+}
+
+nav.top-bar .top-bar-section ul.dropdown li.hover a {
+  background: black;
+}
+
+code {
+  color: #B17250;
+}
+
+a, a code {
+  color: #5C72DB;
+}
+
+a:hover, a:hover code {
+  color: #AAB9FF;
+}
+
+a:visited, a:visited code {
+  font-style: italic;
+}
+
+strong {
+  color: #000;
+  text-decoration: underline;
+}
+
+section.body {
+  min-height: 300px;
+}
+
+.top-bar-section ul li a.active {
+  color: #B17250;
+}
+
+.top-bar {
+  margin-bottom: 0px;
+}
+
+.section {
+  max-width: inherit;
+  height: 400px;
+  margin: auto;
+  padding-top: 50px;
+}
+
+.section h1,
+.section h2 {
+  color: #fff;
+  text-align: center;
+}
+
+.introduction {
+  background-color: #5C72DB;
+}
+
+.introduction h1 {
+  font-size: 6.225em;
+  margin-bottom: 1px;
+}
+
+.introduction i {
+  color: #fff;
+  font-size: .9em;
+}
+
+.points {
+  background-color: #FFFFFF;
+  height: 300px;
+  max-height: 300px;
+}
+
+.points h1,
+.points h2 {
+  color: #000;
+}
+
+.usage {
+  background-color: #FFFFFF;
+}
+
+.usage .columns {
+  margin: 0 auto;
+}
+
+.usage .quote {
+  display: table;
+}
+
+.usage h1 {
+  color: #000;
+  font-style: italic;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.section.usage {
+  padding-top: inherit;
+}
+
+.installation {
+  background-color: #FFE76B;
+  height: inherit;
+  min-height: 400px;
+}
+
+.installation h1,
+.installation h2 {
+  color: #000;
+}
+
+.installation i {
+  font-size: 20px;
+}
+
+.installation .install {
+  margin-top: 50px;
+}
+
+.installation .install h4 {
+  padding-bottom: 0px;
+}
+
+.installation .nuget-button-commandWrapper {
+  margin-top: 10px;
+}
+
+.example {
+  margin: -47px 0;
+  display: block;
+  padding: 0;
+  text-align: left;
+}
+
+.example p.title {
+  display: block;
+  text-align: center;
+  margin: 0 20px;
+  padding: 5px 0;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,.5);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  color: #444;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+  background: #f7f7f7;
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y3ZjdmNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjclIiBzdG9wLWNvbG9yPSIjY2ZjZmNmIiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2FhYWFhYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+  background: -moz-linear-gradient(top,  #f7f7f7 0%, #cfcfcf 7%, #aaaaaa 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(7%,#cfcfcf), color-stop(100%,#aaaaaa));
+  background: -webkit-linear-gradient(top,  #f7f7f7 0%,#cfcfcf 7%,#aaaaaa 100%);
+  background: -o-linear-gradient(top,  #f7f7f7 0%,#cfcfcf 7%,#aaaaaa 100%);
+  background: -ms-linear-gradient(top,  #f7f7f7 0%,#cfcfcf 7%,#aaaaaa 100%);
+  background: linear-gradient(top,  #f7f7f7 0%,#cfcfcf 7%,#aaaaaa 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#aaaaaa',GradientType=0 );
+  border-bottom: 1px solid #111;
+}
+
+.highlight {
+  font-family: monospace; /* just so that margin-bottom uses the right font. */
+  margin: 0 20px 1.25em 0;
+  border: 1px solid #888;
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(0,0,0,.3);
+}
+
+.example > .highlight {
+  height: 350px;
+  border: none;
+  border-radius: 0 0 5px 5px;
+  margin: 0 20px;
+}
+
+.highlight > pre {
+  padding: 20px;
+  overflow: hidden;
+}
+
+.highlight > pre > code {
+  /* Override parts of foundation.css that we're using elsewhere. */
+  font-family: monospace;
+  font-weight: normal;
+
+  /* Override the default color for code. */
+  color: white;
+}
+
+.example > .highlight > pre > code {
+  font-size: 15px;
+}
+
+/* Adapted from Vim 7.4's desert scheme. */
+.highlight  { background: #3d3d3d; color: white; }
+.highlight .k { color: khaki; font-weight: bold; } /* Keyword */
+.highlight .c1 { color: skyblue } /* Comment.Single */
+.highlight .kt { color: khaki; font-weight: bold; } /* Keyword.Type */
+.highlight .m { color: #ffa0a0 } /* Literal.Number */
+.highlight .s { color: #ffa0a0 } /* Literal.String */
+.highlight .s1 { color: #ffa0a0 } /* Literal.String.Single */
+.highlight .nf { color: palegreen } /* Name.Function */
+.highlight .nn { color: palegreen } /* Name.Namespace */
+
+footer {
+  background-color: #3d3d3d;
+  color: #888;
+  padding: 20px;
+}
+
+footer .row {
+  padding: 10px 0;
+}
+
+footer .copy {
+  text-align: right;
+}
+
+footer .design {
+  font-style: italic;
+}
+
+.section-container footer {
+  background-color: #fff;
+  padding: 10px 16px;
+  font-size: 12px;
+  border: 0px none;
+}
+
+.section-container > section > .title
+{
+  background-color: #FFE76B;
+  padding: 10px;
+}
+
+.section-container > section .content
+{
+  display: inherit;
+  background-color: #B17250;
+}
+
+.section-container > section .content a,
+.section-container > section .content a:visited
+{
+  color: #FFF;
+}
+
+/* Responsive layout for smaller screens. */
+@media only screen and (min-width : 320px) and (max-width : 480px) {
+  .section {
+    height: inherit;
+    padding: 20px 0;
+  }
+
+  .introduction h1 {
+    font-size: 2.825em;
+  }
+
+  .introduction i {
+    font-size: .7em;
+  }
+
+  .introduction h2 {
+    font-size: 1em
+  }
+
+  .usage h1 {
+    font-size: 1.20em;
+    height: 200px;
+  }
+
+  .usage {
+    height: 200px;
+    max-height: inherit;
+  }
+
+  .example .code {
+    margin: 0 -15px 1.25em -15px;
+    border-radius: 0;
+    box-shadow: 0;
+    border: 0;
+    overflow: auto;
+  }
+
+  footer {
+    padding: 10px;
+    font-size: 11px;
+    line-height: 11px;
+  }
+}
+
+@media only screen and (min-width: 481px) {
+  .section {
+    height: 300px;
+    padding-top: 30px;
+  }
+
+  .section.installation {
+    height: inherit;
+    min-height: 300px;
+  }
+
+  .usage {
+    height: 200px;
+    max-height: 200px;
+  }
+
+  .usage h1 {
+    height: 200px;
+    font-size: 1.5em;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .section {
+    height: 400px;
+    padding-top: 50px;
+  }
+
+  .section.installation {
+    height: inherit;
+    min-height: 400px;
+  }
+
+  .usage {
+    height: 300px;
+    max-height: 300px;
+  }
+
+  .usage h1 {
+    height: 300px;
+    font-size: 1.7em;
+  }
+
+  .installation h3 {
+    font-size: 1.2em;
+  }
+
+  .installation h3 i {
+    font-size: 0.7em;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .usage h1 {
+    font-size: 2.20em;
+  }
+
+  .installation h3 {
+    font-size: 1.375em;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+}

@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NodaTime.Web.Models;
+using NodaTime.Web.Providers;
 
 namespace NodaTime.Web
 {
@@ -23,12 +25,15 @@ namespace NodaTime.Web
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public static IConfigurationRoot Configuration { get; private set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddSingleton(provider => GoogleCredentialProvider.FetchCredential(Configuration));
+            services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -50,7 +55,7 @@ namespace NodaTime.Web
             var contentTypeProvider = new FileExtensionContentTypeProvider();
             contentTypeProvider.Mappings[".nzd"] = "application/octet-stream";
             app.UseStaticFiles(new StaticFileOptions
-            {
+            {                
                 ContentTypeProvider = contentTypeProvider
             });
 
