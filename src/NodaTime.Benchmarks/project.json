@@ -15,7 +15,7 @@
   },
 
   "dependencies": {
-    "BenchmarkDotNet": "0.9.9",
+    "BenchmarkDotNet": "0.10.1",
     "NodaTime": { "target": "project" },
     "NodaTime.Serialization.JsonNet": { "target": "project" },
     "NodaTime.Testing": { "target": "project" },
@@ -32,14 +32,14 @@
         "System.Xml.Linq": ""
       }
     },
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "buildOptions": {
         "define": ["PCL"]
       },
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.0"
+          "version": "1.1.0"
         }
       }
     }
