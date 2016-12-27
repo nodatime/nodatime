@@ -34,6 +34,8 @@ goto :end
 
 
 :build_mvc
+IF EXIST ..\src\NodaTime.Web\bin\Release rmdir /s /q ..\src\NodaTime.Web\bin\Release
+dotnet restore ..\src\NodaTime.Web
 dotnet publish -c Release ..\src\NodaTime.Web
 IF ERRORLEVEL 1 EXIT /B 1
 goto :end
