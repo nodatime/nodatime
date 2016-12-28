@@ -197,32 +197,28 @@ namespace NodaTime.TimeZones
         public IEnumerable<string> GetIds() => CanonicalIdMap.Keys;
 
         /// <inheritdoc />
-        /// <param name="timeZone">The BCL time zone, which must be a known system time zone.</param>
-        public string MapTimeZoneId([NotNull] TimeZoneInfo timeZone)
+        public string GetSystemDefaultId() => MapTimeZoneInfoId(TimeZoneInfo.Local);
+
+        [VisibleForTesting]
+        internal string MapTimeZoneInfoId(TimeZoneInfo timeZone)
         {
-            Preconditions.CheckNotNull(timeZone, nameof(timeZone));
-#if PCL
-            // Our in-memory mapping is effectively from standard name to TZDB ID.
-            string id = timeZone.StandardName;
-#else
             string id = timeZone.Id;
-#endif
             string result;
-            source.WindowsMapping.PrimaryMapping.TryGetValue(id, out result);
-#if PCL
-            if (result == null)
+            // First see if it's a Windows time zone ID.
+            if (source.WindowsMapping.PrimaryMapping.TryGetValue(id, out result))
             {
-                source.WindowsAdditionalStandardNameToIdMapping.TryGetValue(id, out result);
+                return result;
             }
-            if (result == null)
+            // Next see if it's already a TZDB ID (e.g. .NET Core running on Linux or Mac).
+            if (CanonicalIdMap.Keys.Contains(id))
             {
-                result = GuessZoneIdByTransitions(timeZone);
+                return id;
             }
-#endif
-            return result;
+            // Maybe it's a Windows zone we don't have a mapping for, or we're on a Mono system
+            // where TimeZoneInfo.Local.Id returns "Local" but can actually do the mappings.
+            return GuessZoneIdByTransitions(timeZone);
         }
 
-#if PCL
         private readonly Dictionary<string, string> guesses = new Dictionary<string, string>();
 
         // Cache around GuessZoneIdByTransitionsUncached
@@ -240,20 +236,18 @@ namespace NodaTime.TimeZones
                 return guess;
             }
         }
-#endif
 
         /// <summary>
-        /// In cases where we can't get a zone mapping, either because we haven't kept
-        /// up to date with the standard names or because the system language isn't English,
-        /// try to work out the TZDB mapping by the transitions within the next few years.
-        /// We only do this for the PCL, where we can't ask a TimeZoneInfo for its ID. Unfortunately
-        /// this means we may sometimes return a mapping for zones which shouldn't be mapped at all, but that's
-        /// probably okay and we return null if we don't get a 70% hit rate anyway. We look at all
-        /// transitions in all primary mappings for the next year.
+        /// In cases where we can't get a zone mapping directly, we try to work out a good fit
+        /// by checking the transitions within the next few years.
+        /// This can happen if the Windows data isn't up-to-date, or if we're on a system where
+        /// TimeZoneInfo.Local.Id just returns "local", or if TimeZoneInfo.Local is a custom time
+        /// zone for some reason. We return null if we don't get a 70% hit rate.
+        /// We look at all transitions in all canonical IDs for the next 5 years.
         /// Heuristically, this seems to be good enough to get the right results in most cases.
+        /// This method used to only be called in the PCL build, but it seems reasonable enough to
+        /// call it if we can't get an exact match anyway.
         /// </summary>
-        /// <remarks>This method is not PCL-only as we would like to test it frequently. It will
-        /// never actually be called in the non-PCL release though.</remarks>
         /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
         internal string GuessZoneIdByTransitionsUncached(TimeZoneInfo zone)
         {
@@ -261,8 +255,8 @@ namespace NodaTime.TimeZones
             // accuracy for future accuracy, so let's use the current year's transitions.
             int thisYear = SystemClock.Instance.GetCurrentInstant().InUtc().Year;
             Instant startOfThisYear = Instant.FromUtc(thisYear, 1, 1, 0, 0);
-            Instant startOfNextYear = Instant.FromUtc(thisYear + 1, 1, 1, 0, 0);
-            var candidates = WindowsMapping.PrimaryMapping.Values.Select(ForId).ToList();
+            Instant startOfNextYear = Instant.FromUtc(thisYear + 5, 1, 1, 0, 0);
+            var candidates = CanonicalIdMap.Values.Select(ForId).ToList();
             // Would create a HashSet directly, but it appears not to be present on all versions of the PCL...
             var instants = candidates.SelectMany(z => z.GetZoneIntervals(startOfThisYear, startOfNextYear))
                                      .Select(zi => Instant.Max(zi.RawStart, startOfThisYear)) // Clamp to start of interval
@@ -348,20 +342,6 @@ namespace NodaTime.TimeZones
                     {
                         throw new InvalidNodaDataException(
                             $"Windows mapping uses canonical ID {id} which is missing");
-                    }
-                }
-            }
-
-            // Check that each additional Windows standard name mapping has a known canonical ID.
-            var additionalMappings = source.WindowsAdditionalStandardNameToIdMapping;
-            if (additionalMappings != null)
-            {
-                foreach (var id in additionalMappings.Values)
-                {
-                    if (!CanonicalIdMap.ContainsKey(id))
-                    {
-                        throw new InvalidNodaDataException(
-                            $"Windows additional standard name mapping uses canonical ID {id} which is missing");
                     }
                 }
             }

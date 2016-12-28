@@ -24,7 +24,6 @@ namespace NodaTime.TimeZones.IO
             [TzdbStreamFieldId.TzdbIdMap] = (builder, field) => builder.HandleTzdbIdMapField(field),
             [TzdbStreamFieldId.TzdbVersion] = (builder, field) => builder.HandleTzdbVersionField(field),
             [TzdbStreamFieldId.CldrSupplementalWindowsZones] = (builder, field) => builder.HandleSupplementalWindowsZonesField(field),
-            [TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping] = (builder, field) => builder.HandleWindowsAdditionalStandardNameToIdMappingField(field),
             [TzdbStreamFieldId.ZoneLocations] = (builder, field) => builder.HandleZoneLocationsField(field),
             [TzdbStreamFieldId.Zone1970Locations] = (builder, field) => builder.HandleZone1970LocationsField(field)
         };
@@ -63,12 +62,6 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         public IList<TzdbZone1970Location> Zone1970Locations { get; }
 
-        /// <summary>
-        /// Additional mappings from Windows standard name to TZDB ID. Primarily used in
-        /// the PCL build, where we can't get at the system ID. This never returns null.
-        /// </summary>
-        public IDictionary<string, string> WindowsAdditionalStandardNameToIdMapping { get; }
-
         private TzdbStreamData(Builder builder)
         {
             stringPool = CheckNotNull(builder.stringPool, "string pool");
@@ -84,9 +77,6 @@ namespace NodaTime.TimeZones.IO
             {
                 TzdbIdMap[id] = id;
             }
-
-            WindowsAdditionalStandardNameToIdMapping = CheckNotNull(builder.windowsAdditionalStandardNameToIdMapping,
-                "Windows additional standard name to ID mapping");
         }
 
         /// <summary>
@@ -160,7 +150,6 @@ namespace NodaTime.TimeZones.IO
             internal IList<TzdbZone1970Location> zone1970Locations = null;
             internal WindowsZones windowsMapping;
             internal readonly IDictionary<string, TzdbStreamField> zoneFields = new Dictionary<string, TzdbStreamField>();
-            internal IDictionary<string, string> windowsAdditionalStandardNameToIdMapping;
 
             internal void HandleStringPoolField(TzdbStreamField field)
             {
@@ -210,17 +199,6 @@ namespace NodaTime.TimeZones.IO
             {
                 CheckSingleField(field, windowsMapping);
                 windowsMapping = field.ExtractSingleValue(WindowsZones.Read, stringPool);
-            }
-
-            internal void HandleWindowsAdditionalStandardNameToIdMappingField(TzdbStreamField field)
-            {
-                // Even on the non-portable build, we still read the data: the cost is minimal, and it makes
-                // it much simpler to validate.
-                if (windowsMapping == null)
-                {
-                    throw new InvalidNodaDataException("Field " + field.Id + " without earlier Windows mapping field");
-                }
-                windowsAdditionalStandardNameToIdMapping = field.ExtractSingleValue(reader => reader.ReadDictionary(), stringPool);
             }
 
             internal void HandleZoneLocationsField(TzdbStreamField field)

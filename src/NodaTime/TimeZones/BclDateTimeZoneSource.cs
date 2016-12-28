@@ -111,19 +111,8 @@ namespace NodaTime.TimeZones
             }
         }
 
-        /// <summary>
-        /// Maps the BCL ID to "our" ID as an identity projection.
-        /// </summary>
-        /// <param name="timeZone">The BCL time zone, which must be a known system time zone.</param>
-        /// <returns>
-        /// The ID for the given BCL time zone for this source; that is, the value of the <c>Id</c> property of the
-        /// passed-in <see cref="TimeZoneInfo"/>.
-        /// </returns>
-        public string MapTimeZoneId([NotNull] TimeZoneInfo timeZone)
-        {
-            Preconditions.CheckNotNull(timeZone, nameof(timeZone));
-            return timeZone.Id;
-        }
+        /// <inheritdoc />
+        public string GetSystemDefaultId() => TimeZoneInfo.Local.Id;
     }
 }
 #endif

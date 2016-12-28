@@ -14,16 +14,6 @@ namespace NodaTime.Test.TimeZones
     public class BclDateTimeZoneSourceTest
     {
         [Test]
-        public void AllZonesMapToTheirId()
-        {
-            BclDateTimeZoneSource source = new BclDateTimeZoneSource();
-            foreach (var zone in TimeZoneInfo.GetSystemTimeZones())
-            {
-                Assert.AreEqual(zone.Id, source.MapTimeZoneId(zone));
-            }
-        }
-
-        [Test]
         public void UtcDoesNotEqualBuiltIn()
         {
             var zone = new BclDateTimeZoneSource().ForId("UTC");
@@ -76,7 +66,8 @@ namespace NodaTime.Test.TimeZones
             // Now that we have our BCL local time zone, we should be able to look it up in the source.
 
             var source = new BclDateTimeZoneSource();
-            string id = source.MapTimeZoneId(local);  // in this case, just returns the Id, but required in general.
+            string id = source.GetSystemDefaultId();
+            Assert.IsNotNull(id);
 
             // These lines replicate how DateTimeZoneCache implements GetSystemDefault().
             Assert.Contains(id, source.GetIds().ToList(), "BCL local time zone ID should be included in the source ID list");

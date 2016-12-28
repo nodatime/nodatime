@@ -257,11 +257,7 @@ namespace NodaTime.Test.TimeZones
 
             public string VersionId { get; set; }
 
-
-            public string MapTimeZoneId(TimeZoneInfo timeZone)
-            {
-                return "map";
-            }
+            public string GetSystemDefaultId() => "map";
         }
     }
 }
