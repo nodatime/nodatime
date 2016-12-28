@@ -28,7 +28,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1364, ldt.Year);
             Assert.AreEqual(12, ldt.Month);
             Assert.AreEqual(6, ldt.Day);
-            Assert.AreEqual(IsoDayOfWeek.Monday, ldt.IsoDayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Monday, ldt.DayOfWeek);
             Assert.AreEqual(6 * 30 + 5 * 29 + 6, ldt.DayOfYear);
 
             Assert.AreEqual(0, ldt.Hour);
@@ -48,7 +48,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1426, ldt.Year);
             Assert.AreEqual(10, ldt.Month);
             Assert.AreEqual(24, ldt.Day);
-            Assert.AreEqual(IsoDayOfWeek.Saturday, ldt.IsoDayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Saturday, ldt.DayOfWeek);
             Assert.AreEqual(5 * 30 + 4 * 29 + 24, ldt.DayOfYear);
             Assert.AreEqual(0, ldt.Hour);
             Assert.AreEqual(0, ldt.Minute);
@@ -65,7 +65,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1426, ldt.Year);
             Assert.AreEqual(12, ldt.Month);
             Assert.AreEqual(24, ldt.Day);
-            Assert.AreEqual(IsoDayOfWeek.Tuesday, ldt.IsoDayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Tuesday, ldt.DayOfWeek);
             Assert.AreEqual(6 * 30 + 5 * 29 + 24, ldt.DayOfYear);
             Assert.AreEqual(0, ldt.Hour);
             Assert.AreEqual(0, ldt.Minute);

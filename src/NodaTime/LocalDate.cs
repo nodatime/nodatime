@@ -158,7 +158,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <value>The week day of this local date expressed as an <c>IsoDayOfWeek</c>.</value>
-        public IsoDayOfWeek IsoDayOfWeek => Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
+        public IsoDayOfWeek DayOfWeek => Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
 
         /// <summary>Gets the year of this local date within the era.</summary>
         /// <value>The year of this local date within the era.</value>
@@ -265,7 +265,7 @@ namespace NodaTime
             Preconditions.CheckArgumentRange(nameof(dayOfWeek), (int) dayOfWeek, 1, 7);
 
             // Correct day of week, 1st week of month.
-            int week1Day = dayOfWeek - startOfMonth.IsoDayOfWeek + 1;
+            int week1Day = dayOfWeek - startOfMonth.DayOfWeek + 1;
             if (week1Day <= 0)
             {
                 week1Day += 7;
@@ -628,7 +628,7 @@ namespace NodaTime
         public LocalDate PlusWeeks(int weeks) => DatePeriodFields.WeeksField.Add(this, weeks);
 
         /// <summary>
-        /// Returns the next <see cref="LocalDate" /> falling on the specified <see cref="IsoDayOfWeek"/>.
+        /// Returns the next <see cref="LocalDate" /> falling on the specified <see cref="DayOfWeek"/>.
         /// This is a strict "next" - if this date on already falls on the target
         /// day of the week, the returned value will be a week later.
         /// </summary>
@@ -646,7 +646,7 @@ namespace NodaTime
                 throw new ArgumentOutOfRangeException(nameof(targetDayOfWeek));
             }
             // This will throw the desired exception for calendars with different week systems.
-            IsoDayOfWeek thisDay = IsoDayOfWeek;
+            IsoDayOfWeek thisDay = DayOfWeek;
             int difference = targetDayOfWeek - thisDay;
             if (difference <= 0)
             {
@@ -656,7 +656,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the previous <see cref="LocalDate" /> falling on the specified <see cref="IsoDayOfWeek"/>.
+        /// Returns the previous <see cref="LocalDate" /> falling on the specified <see cref="DayOfWeek"/>.
         /// This is a strict "previous" - if this date on already falls on the target
         /// day of the week, the returned value will be a week earlier.
         /// </summary>
@@ -674,7 +674,7 @@ namespace NodaTime
                 throw new ArgumentOutOfRangeException(nameof(targetDayOfWeek));
             }
             // This will throw the desired exception for calendars with different week systems.
-            IsoDayOfWeek thisDay = IsoDayOfWeek;
+            IsoDayOfWeek thisDay = DayOfWeek;
             int difference = targetDayOfWeek - thisDay;
             if (difference >= 0)
             {

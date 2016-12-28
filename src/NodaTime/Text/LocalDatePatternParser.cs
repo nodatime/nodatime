@@ -39,7 +39,7 @@ namespace NodaTime.Text
             { 'M', DatePatternHelper.CreateMonthOfYearHandler<LocalDate, LocalDateParseBucket>
                         (value => value.Month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>
-                        (value => value.Day, value => (int) value.IsoDayOfWeek, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value) },
+                        (value => value.Day, value => (int) value.DayOfWeek, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value) },
             { 'c', DatePatternHelper.CreateCalendarHandler<LocalDate, LocalDateParseBucket>(value => value.Calendar, (bucket, value) => bucket.Calendar = value) },
             { 'g', DatePatternHelper.CreateEraHandler<LocalDate, LocalDateParseBucket>(date => date.Era, bucket => bucket) },
         };
@@ -158,7 +158,7 @@ namespace NodaTime.Text
 
                 LocalDate value = new LocalDate(Year, MonthOfYearNumeric, day, Calendar);
 
-                if (usedFields.HasAny(PatternFields.DayOfWeek) && DayOfWeek != (int) value.IsoDayOfWeek)
+                if (usedFields.HasAny(PatternFields.DayOfWeek) && DayOfWeek != (int) value.DayOfWeek)
                 {
                     return ParseResult<LocalDate>.InconsistentDayOfWeekTextValue(text);
                 }

@@ -205,7 +205,7 @@ namespace NodaTime.TimeZones
                 {
                     // Optimized "go to next or previous occurrence of day or week". Try to do as few comparisons
                     // as possible, and only fetch DayOfWeek once. (If we call Next or Previous, it will work it out again.)
-                    int currentDayOfWeek = (int) date.IsoDayOfWeek;
+                    int currentDayOfWeek = (int) date.DayOfWeek;
                     if (currentDayOfWeek != dayOfWeek)
                     {
                         int diff = dayOfWeek - currentDayOfWeek;
