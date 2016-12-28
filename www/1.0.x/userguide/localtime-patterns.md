@@ -45,18 +45,22 @@ for general notes on custom patterns, including characters used for escaping and
       </td>
       <td>
         7.30am: <code>H:mm</code> => <code>7:30</code> <br />
-        7.30am: <code>HH:mm</code> => <code>07:30</code>
+        7.30pm: <code>H:mm</code> => <code>19:30</code> <br />
+        7.30am: <code>HH:mm</code> => <code>07:30</code> <br />
+        7.30pm: <code>HH:mm</code> => <code>19:30</code>
       </td>
     </tr>
     <tr>
       <td><code>h</code> or <code>hh</code></td>
       <td>
         The hour of day in the 12-hour clock; a value 1-12. When parsing, if no
-		am/pm designator is specified, the parsed value is in the morning.
+        am/pm designator is specified, the parsed value is in the morning.
       </td>
       <td>
-        8.30pm: <code>H:mm</code> => <code>7:30</code> <br />
-        8.30pm: <code>HH:mm</code> => <code>07:30</code>
+        7.30am: <code>h:mm</code> => <code>7:30</code> <br />
+        7.30pm: <code>h:mm</code> => <code>7:30</code> <br />
+        7.30am: <code>hh:mm</code> => <code>07:30</code> <br />
+        7.30pm: <code>hh:mm</code> => <code>07:30</code>
       </td>
     </tr>
     <tr>
