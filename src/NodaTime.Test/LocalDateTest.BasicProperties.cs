@@ -39,7 +39,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void IsoDayOfWeek_AroundEpoch()
+        public void DayOfWeek_AroundEpoch()
         {
             // Test about couple of months around the Unix epoch. If that works, I'm confident the rest will.
             LocalDate date = new LocalDate(1969, 12, 1);

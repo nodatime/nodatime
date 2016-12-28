@@ -156,7 +156,7 @@ namespace NodaTime
         /// Gets the week day of this local date expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value.
         /// </summary>
         /// <value>The week day of this local date expressed as an <c>IsoDayOfWeek</c>.</value>
-        public IsoDayOfWeek DayOfWeek => Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
+        public IsoDayOfWeek DayOfWeek => Calendar.GetDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
 
         /// <summary>Gets the year of this local date within the era.</summary>
         /// <value>The year of this local date within the era.</value>
@@ -626,7 +626,7 @@ namespace NodaTime
         public LocalDate PlusWeeks(int weeks) => DatePeriodFields.WeeksField.Add(this, weeks);
 
         /// <summary>
-        /// Returns the next <see cref="LocalDate" /> falling on the specified <see cref="DayOfWeek"/>.
+        /// Returns the next <see cref="LocalDate" /> falling on the specified <see cref="IsoDayOfWeek"/>.
         /// This is a strict "next" - if this date on already falls on the target
         /// day of the week, the returned value will be a week later.
         /// </summary>
@@ -654,7 +654,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the previous <see cref="LocalDate" /> falling on the specified <see cref="DayOfWeek"/>.
+        /// Returns the previous <see cref="LocalDate" /> falling on the specified <see cref="IsoDayOfWeek"/>.
         /// This is a strict "previous" - if this date on already falls on the target
         /// day of the week, the returned value will be a week earlier.
         /// </summary>
