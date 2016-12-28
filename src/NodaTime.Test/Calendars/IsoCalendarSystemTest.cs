@@ -32,7 +32,6 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(1, epoch.Day);
             Assert.AreEqual(1, epoch.DayOfYear);
             Assert.AreEqual(IsoDayOfWeek.Thursday, epoch.IsoDayOfWeek);
-            Assert.AreEqual(4, epoch.DayOfWeek);
             Assert.AreEqual(Era.Common, epoch.Era);
             Assert.AreEqual(0, epoch.Hour);
             Assert.AreEqual(0, epoch.Minute);
@@ -55,7 +54,6 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(27, now.Day);
             Assert.AreEqual(TimeOfGreatAchievement.DayOfYear, now.DayOfYear);
             Assert.AreEqual(IsoDayOfWeek.Friday, now.IsoDayOfWeek);
-            Assert.AreEqual(5, now.DayOfWeek);
             Assert.AreEqual(Era.Common, now.Era);
             Assert.AreEqual(18, now.Hour);
             Assert.AreEqual(38, now.Minute);

@@ -157,19 +157,8 @@ namespace NodaTime
         /// for calendars which use ISO days of the week.
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
-        /// <seealso cref="DayOfWeek"/>
         /// <value>The week day of this local date expressed as an <c>IsoDayOfWeek</c>.</value>
         public IsoDayOfWeek IsoDayOfWeek => Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
-
-        /// <summary>
-        /// Gets the week day of this local date as a number.
-        /// </summary>
-        /// <remarks>
-        /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
-        /// </remarks>
-        /// <seealso cref="IsoDayOfWeek"/>
-        /// <value>The week day of this local date as a number.</value>
-        public int DayOfWeek => Calendar.GetDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
 
         /// <summary>Gets the year of this local date within the era.</summary>
         /// <value>The year of this local date within the era.</value>
@@ -276,7 +265,7 @@ namespace NodaTime
             Preconditions.CheckArgumentRange(nameof(dayOfWeek), (int) dayOfWeek, 1, 7);
 
             // Correct day of week, 1st week of month.
-            int week1Day = (int) dayOfWeek - startOfMonth.DayOfWeek + 1;
+            int week1Day = dayOfWeek - startOfMonth.IsoDayOfWeek + 1;
             if (week1Day <= 0)
             {
                 week1Day += 7;
