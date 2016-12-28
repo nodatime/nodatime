@@ -498,19 +498,17 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the IsoDayOfWeek corresponding to the day of week for the given local instant
-        /// if this calendar uses ISO days of the week, or throws an InvalidOperationException otherwise.
+        /// Returns the IsoDayOfWeek corresponding to the day of week for the given year, month and day.
         /// </summary>
         /// <param name="yearMonthDay">The year, month and day to use to find the day of the week</param>
         /// <returns>The day of the week as an IsoDayOfWeek</returns>
         internal IsoDayOfWeek GetIsoDayOfWeek([Trusted] YearMonthDay yearMonthDay)
         {
             DebugValidateYearMonthDay(yearMonthDay);
-            if (!UsesIsoDayOfWeek)
-            {
-                throw new InvalidOperationException("Calendar " + Id + " does not use ISO days of the week");
-            }
-            return (IsoDayOfWeek) GetDayOfWeek(yearMonthDay);
+            int daysSinceEpoch = YearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
+            int numericDayOfWeek = unchecked(daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
+                                           : 7 + ((daysSinceEpoch + 4) % 7));
+            return (IsoDayOfWeek) numericDayOfWeek;
         }
 
         /// <summary>
@@ -587,14 +585,6 @@ namespace NodaTime
         }
 
         #region "Getter" methods which used to be DateTimeField
-
-        internal int GetDayOfWeek([Trusted] YearMonthDay yearMonthDay)
-        {
-            DebugValidateYearMonthDay(yearMonthDay);
-            int daysSinceEpoch = YearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
-            return unchecked(daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
-                                           : 7 + ((daysSinceEpoch + 4) % 7));
-        }
 
         internal int GetDayOfYear([Trusted] YearMonthDay yearMonthDay)
         {
