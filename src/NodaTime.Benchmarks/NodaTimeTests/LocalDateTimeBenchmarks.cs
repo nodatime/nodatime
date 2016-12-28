@@ -43,7 +43,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public int DayOfMonth() => Sample.Day;
 
         [Benchmark]
-        public IsoDayOfWeek IsoDayOfWeek() => Sample.DayOfWeek;
+        public IsoDayOfWeek DayOfWeek() => Sample.DayOfWeek;
 
         [Benchmark]
         public int DayOfYear() => Sample.DayOfYear;

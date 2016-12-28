@@ -483,7 +483,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="yearMonthDay">The year, month and day to use to find the day of the week</param>
         /// <returns>The day of the week as an IsoDayOfWeek</returns>
-        internal IsoDayOfWeek GetIsoDayOfWeek([Trusted] YearMonthDay yearMonthDay)
+        internal IsoDayOfWeek GetDayOfWeek([Trusted] YearMonthDay yearMonthDay)
         {
             DebugValidateYearMonthDay(yearMonthDay);
             int daysSinceEpoch = YearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);

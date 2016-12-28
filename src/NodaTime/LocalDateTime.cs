@@ -788,7 +788,7 @@ namespace NodaTime
         public LocalDateTime PlusNanoseconds(long nanoseconds) => TimePeriodField.Nanoseconds.Add(this, nanoseconds);
 
         /// <summary>
-        /// Returns the next <see cref="LocalDateTime" /> falling on the specified <see cref="DayOfWeek"/>,
+        /// Returns the next <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,
         /// at the same time of day as this value.
         /// This is a strict "next" - if this value on already falls on the target
         /// day of the week, the returned value will be a week later.
@@ -802,7 +802,7 @@ namespace NodaTime
         public LocalDateTime Next(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.Next(targetDayOfWeek), time);
 
         /// <summary>
-        /// Returns the previous <see cref="LocalDateTime" /> falling on the specified <see cref="DayOfWeek"/>,
+        /// Returns the previous <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,
         /// at the same time of day as this value.
         /// This is a strict "previous" - if this value on already falls on the target
         /// day of the week, the returned value will be a week earlier.
