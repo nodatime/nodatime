@@ -153,10 +153,8 @@ namespace NodaTime
         internal int DaysSinceEpoch => Calendar.GetDaysSinceEpoch(yearMonthDayCalendar.ToYearMonthDay());
 
         /// <summary>
-        /// Gets the week day of this local date expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
-        /// for calendars which use ISO days of the week.
+        /// Gets the week day of this local date expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value.
         /// </summary>
-        /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <value>The week day of this local date expressed as an <c>IsoDayOfWeek</c>.</value>
         public IsoDayOfWeek DayOfWeek => Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
 
