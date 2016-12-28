@@ -190,7 +190,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <value>The week day of this zoned date and time expressed as an <c>IsoDayOfWeek</c> value.</value>
-        public IsoDayOfWeek IsoDayOfWeek => offsetDateTime.IsoDayOfWeek;
+        public IsoDayOfWeek DayOfWeek => offsetDateTime.DayOfWeek;
 
         /// <summary>
         /// Gets the hour of day of this zoned date and time, in the range 0 to 23 inclusive.

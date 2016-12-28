@@ -50,7 +50,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(10, coptic.Month);
             Assert.AreEqual(2, coptic.Day);
             
-            Assert.AreEqual(IsoDayOfWeek.Wednesday, coptic.IsoDayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Wednesday, coptic.DayOfWeek);
 
             Assert.AreEqual(9 * 30 + 2, coptic.DayOfYear);
 

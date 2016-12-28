@@ -159,9 +159,9 @@ namespace NodaTime
         /// for calendars which use ISO days of the week.
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
-        /// <seealso cref="DayOfWeek"/>
+        /// <seealso cref="System.DayOfWeek"/>
         /// <value>The week day of this offset date and time expressed as an <c>IsoDayOfWeek</c>.</value>
-        public IsoDayOfWeek IsoDayOfWeek => Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
+        public IsoDayOfWeek DayOfWeek => Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
 
         /// <summary>Gets the year of this offset date and time within the era.</summary>
         /// <value>The year of this offset date and time within the era.</value>

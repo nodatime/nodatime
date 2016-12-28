@@ -78,12 +78,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public int DayOfMonth() => Sample.Day;
 
         [Benchmark]
-        public IsoDayOfWeek IsoDayOfWeek() => Sample.IsoDayOfWeek;
+        public IsoDayOfWeek IsoDayOfWeek() => Sample.DayOfWeek;
 
         [Benchmark]
         public IsoDayOfWeek IsoDayOfWeek_BeforeEpoch()
         {
-            return SampleBeforeEpoch.IsoDayOfWeek;
+            return SampleBeforeEpoch.DayOfWeek;
         }
 
         [Benchmark]

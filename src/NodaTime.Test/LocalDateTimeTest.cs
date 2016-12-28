@@ -162,7 +162,7 @@ namespace NodaTime.Test
                 for (int hour = 0; hour < 24; hour++)
                 {
                     Assert.AreEqual(BclConversions.ToIsoDayOfWeek(dateTime.ToDateTimeUnspecified().DayOfWeek),
-                        dateTime.IsoDayOfWeek);
+                        dateTime.DayOfWeek);
                     dateTime = dateTime.PlusHours(1);
                 }
             }

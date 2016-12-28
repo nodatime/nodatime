@@ -25,7 +25,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public int DayOfMonth() => SampleZoned.Day;
 
         [Benchmark]
-        public IsoDayOfWeek IsoDayOfWeek() => SampleZoned.IsoDayOfWeek;
+        public IsoDayOfWeek IsoDayOfWeek() => SampleZoned.DayOfWeek;
 
         [Benchmark]
         public int DayOfYear() => SampleZoned.DayOfYear;

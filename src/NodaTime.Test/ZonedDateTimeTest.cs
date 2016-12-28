@@ -38,7 +38,7 @@ namespace NodaTime.Test
             Assert.AreEqual(2012, value.YearOfEra);
             Assert.AreEqual(2, value.Month);
             Assert.AreEqual(10, value.Day);
-            Assert.AreEqual(IsoDayOfWeek.Friday, value.IsoDayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Friday, value.DayOfWeek);
             Assert.AreEqual(41, value.DayOfYear);
             Assert.AreEqual(8, value.ClockHourOfHalfDay);
             Assert.AreEqual(8, value.Hour);

@@ -68,7 +68,7 @@ namespace NodaTime
             {
                 throw new ArgumentOutOfRangeException(nameof(dayOfWeek));
             }
-            return date => date.IsoDayOfWeek == dayOfWeek ? date : date.Next(dayOfWeek);
+            return date => date.DayOfWeek == dayOfWeek ? date : date.Next(dayOfWeek);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace NodaTime
             {
                 throw new ArgumentOutOfRangeException(nameof(dayOfWeek));
             }
-            return date => date.IsoDayOfWeek == dayOfWeek ? date : date.Previous(dayOfWeek);
+            return date => date.DayOfWeek == dayOfWeek ? date : date.Previous(dayOfWeek);
         }
 
         /// <summary>

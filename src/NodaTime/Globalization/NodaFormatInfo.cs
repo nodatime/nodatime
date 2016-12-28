@@ -239,14 +239,14 @@ namespace NodaTime.Globalization
         /// Returns a read-only list of the names of the days of the week for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, and the other elements correspond with the index values returned from
-        /// <see cref="LocalDateTime.IsoDayOfWeek"/> and similar properties.
+        /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
         /// </summary>
         public IList<string> LongDayNames { get { EnsureDaysInitialized(); return longDayNames; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the days of the week for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, and the other elements correspond with the index values returned from
-        /// <see cref="LocalDateTime.IsoDayOfWeek"/> and similar properties.
+        /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
         /// </summary>
         public IList<string> ShortDayNames { get { EnsureDaysInitialized(); return shortDayNames; } }
 

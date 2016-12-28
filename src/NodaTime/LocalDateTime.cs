@@ -261,7 +261,7 @@ namespace NodaTime
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <value>The week day of this local date and time expressed as an <c>IsoDayOfWeek</c>.</value>
-        public IsoDayOfWeek IsoDayOfWeek => date.IsoDayOfWeek;
+        public IsoDayOfWeek DayOfWeek => date.DayOfWeek;
 
         /// <summary>
         /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
@@ -790,7 +790,7 @@ namespace NodaTime
         public LocalDateTime PlusNanoseconds(long nanoseconds) => TimePeriodField.Nanoseconds.Add(this, nanoseconds);
 
         /// <summary>
-        /// Returns the next <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,
+        /// Returns the next <see cref="LocalDateTime" /> falling on the specified <see cref="DayOfWeek"/>,
         /// at the same time of day as this value.
         /// This is a strict "next" - if this value on already falls on the target
         /// day of the week, the returned value will be a week later.
@@ -804,7 +804,7 @@ namespace NodaTime
         public LocalDateTime Next(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.Next(targetDayOfWeek), time);
 
         /// <summary>
-        /// Returns the previous <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,
+        /// Returns the previous <see cref="LocalDateTime" /> falling on the specified <see cref="DayOfWeek"/>,
         /// at the same time of day as this value.
         /// This is a strict "previous" - if this value on already falls on the target
         /// day of the week, the returned value will be a week earlier.
