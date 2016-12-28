@@ -79,12 +79,6 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void IsoCalendarUsesIsoDayOfWeek()
-        {
-            Assert.IsTrue(CalendarSystem.Iso.UsesIsoDayOfWeek);
-        }
-
-        [Test]
         public void IsLeapYear()
         {
             Assert.IsTrue(CalendarSystem.Iso.IsLeapYear(2012)); // 4 year rule

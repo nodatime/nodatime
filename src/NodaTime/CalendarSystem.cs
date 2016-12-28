@@ -374,25 +374,6 @@ namespace NodaTime
         public string Name { get; }
 
         /// <summary>
-        /// Returns whether the day-of-week field refers to ISO days.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// If true, types such as <see cref="LocalDateTime" />
-        /// can use the <see cref="IsoDayOfWeek" /> property to avoid using magic numbers.
-        /// This defaults to true, but can be overridden by specific calendars.
-        /// </para>
-        /// <para>
-        /// Currently all calendar systems supported by Noda Time are deemed to use ISO
-        /// days, so every week is seven days long, and this property always returns true.
-        /// In the future, however, calendar systems with different - possibly even variable
-        /// - week lengths may be supported.
-        /// </para>
-        /// </remarks>
-        /// <value>true if the calendar system refers to ISO days; false otherwise.</value>
-        public bool UsesIsoDayOfWeek => true;
-
-        /// <summary>
         /// Gets the minimum valid year (inclusive) within this calendar.
         /// </summary>
         /// <value>The minimum valid year (inclusive) within this calendar.</value>
