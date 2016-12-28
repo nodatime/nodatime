@@ -185,10 +185,8 @@ namespace NodaTime
         public int Day => offsetDateTime.Day;
 
         /// <summary>
-        /// Gets the week day of this zoned date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
-        /// for calendars which use ISO days of the week.
+        /// Gets the week day of this zoned date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value.
         /// </summary>
-        /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
         /// <value>The week day of this zoned date and time expressed as an <c>IsoDayOfWeek</c> value.</value>
         public IsoDayOfWeek DayOfWeek => offsetDateTime.DayOfWeek;
 

@@ -155,11 +155,8 @@ namespace NodaTime
         internal YearMonthDay YearMonthDay=> yearMonthDayCalendar.ToYearMonthDay();
 
         /// <summary>
-        /// Gets the week day of this offset date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value,
-        /// for calendars which use ISO days of the week.
+        /// Gets the week day of this offset date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value.
         /// </summary>
-        /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
-        /// <seealso cref="System.DayOfWeek"/>
         /// <value>The week day of this offset date and time expressed as an <c>IsoDayOfWeek</c>.</value>
         public IsoDayOfWeek DayOfWeek => Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
 
