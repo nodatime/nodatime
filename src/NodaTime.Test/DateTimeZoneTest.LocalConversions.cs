@@ -280,7 +280,7 @@ namespace NodaTime.Test
             Assert.AreEqual(2009, when.Year);
             Assert.AreEqual(12, when.Month);
             Assert.AreEqual(22, when.Day);
-            Assert.AreEqual(2, when.DayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Tuesday, when.IsoDayOfWeek);
             Assert.AreEqual(21, when.Hour);
             Assert.AreEqual(39, when.Minute);
             Assert.AreEqual(30, when.Second);

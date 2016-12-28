@@ -260,19 +260,8 @@ namespace NodaTime
         /// for calendars which use ISO days of the week.
         /// </summary>
         /// <exception cref="InvalidOperationException">The underlying calendar doesn't use ISO days of the week.</exception>
-        /// <seealso cref="DayOfWeek"/>
         /// <value>The week day of this local date and time expressed as an <c>IsoDayOfWeek</c>.</value>
         public IsoDayOfWeek IsoDayOfWeek => date.IsoDayOfWeek;
-
-        /// <summary>
-        /// Gets the week day of this local date and time as a number.
-        /// </summary>
-        /// <remarks>
-        /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
-        /// </remarks>
-        /// <seealso cref="IsoDayOfWeek"/>
-        /// <value>The week day of this local date and time as a number.</value>
-        public int DayOfWeek => date.DayOfWeek;
 
         /// <summary>
         /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.

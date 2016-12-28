@@ -163,16 +163,6 @@ namespace NodaTime
         /// <value>The week day of this offset date and time expressed as an <c>IsoDayOfWeek</c>.</value>
         public IsoDayOfWeek IsoDayOfWeek => Calendar.GetIsoDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
 
-        /// <summary>
-        /// Gets the week day of this offset date and time as a number.
-        /// </summary>
-        /// <remarks>
-        /// For calendars using ISO week days, this gives 1 for Monday to 7 for Sunday.
-        /// </remarks>
-        /// <seealso cref="IsoDayOfWeek"/>
-        /// <value>The week day of this offset date and time as a number.</value>
-        public int DayOfWeek => Calendar.GetDayOfWeek(yearMonthDayCalendar.ToYearMonthDay());
-
         /// <summary>Gets the year of this offset date and time within the era.</summary>
         /// <value>The year of this offset date and time within the era.</value>
         public int YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.Year);
