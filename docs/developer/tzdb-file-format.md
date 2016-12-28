@@ -239,7 +239,7 @@ This field contains the data from the windowsZones.xml file in [CLDR](http://cld
 
 This field must occur exactly once, and it uses the string pool.
 
-## Field 5: Additional information for Windows mapping
+## Field 5: Additional information for Windows mapping (obsolete)
 
 This field is only present for the sake of the PCL version, but is loaded in both builds anyway.
 It contains a mapping from Windows `TimeZoneInfo` standard name (in the en-US
@@ -248,6 +248,8 @@ where the two differ. (There are only a few.) This is required as the PCL doesn'
 `TimeZoneInfo.Id` property.
 
 The field data is a single `dictionary`. It must occur exactly once, and it uses the string pool.
+
+This field is not read in Noda Time 2.x, which uses `TimeZoneInfo.Id` (present in netstandard1.3).
 
 ## Field 6: Zone location information
 
@@ -262,6 +264,23 @@ The field data consists of a `count` of elements, then the elements themselves. 
 - A `signed count` for the longitude of the sample location, as an integer number of seconds.
 - A `string` for the name of the country.
 - A `string` for the ISO-3166 two-letter country code.
+- A `string` for the zone ID.
+- A (possibly empty) `string` for the comment associated with the location (usually used to disambiguate between
+  locations in the same country).
+
+## Field 7: "Zone1970" locations
+
+This field provides the information in the `iso3166.tab` and `zone1970.tab` files within TZDB.
+
+The field data consists of a `count` of elements, then the elements themselves. Each element consists of:
+
+- A `signed count` for the latitude of the sample location, as an integer number of seconds.
+- A `signed count` for the longitude of the sample location, as an integer number of seconds.
+- A `signed count` for the number of countries.
+- For each country:
+  - A `string` for the name of the country.
+  - A `string` for the ISO-3166 two-letter country code.
+- A `string` for the zone ID.
 - A (possibly empty) `string` for the comment associated with the location (usually used to disambiguate between
   locations in the same country).
 

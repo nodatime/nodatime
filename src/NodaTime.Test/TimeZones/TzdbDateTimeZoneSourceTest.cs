@@ -16,31 +16,6 @@ namespace NodaTime.Test.TimeZones
     {
         private static readonly List<TimeZoneInfo> SystemTimeZones = TimeZoneInfo.GetSystemTimeZones().ToList();
 
-        [Test]
-        [TestCase("UTC", "Etc/GMT")]
-        [TestCase("GMT Standard Time", "Europe/London")]
-        // Standard name differs from ID under Windows
-        [TestCase("Israel Standard Time", "Asia/Jerusalem")]
-        public void ZoneMapping(string bclId, string tzdbId)
-        {
-            try
-            {
-                var source = TzdbDateTimeZoneSource.Default;
-                var bclZone = TimeZoneInfo.FindSystemTimeZoneById(bclId);
-                Assert.AreEqual(tzdbId, source.MapTimeZoneId(bclZone));
-            }
-#if PCL
-            // See https://github.com/dotnet/corefx/issues/7552
-            catch (Exception)
-#else
-            catch (TimeZoneNotFoundException)
-#endif
-            {
-                // This may occur on Mono, for example.
-                Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
-            }
-        }
-
         /// <summary>
         /// Tests that we can load (and exercise) the binary Tzdb resource file distributed with Noda Time 1.1.0.
         /// This is effectively a black-box regression test that ensures that the stream format has not changed in a
@@ -296,5 +271,19 @@ namespace NodaTime.Test.TimeZones
                 id,
                 lastIncorrectDate, lastIncorrectBclOffset, lastIncorrectTzdbOffset);
         }
+
+#if !PCL // CreateCustomTimeZone isn't available :(
+        [Test]
+        [TestCase("Pacific Standard Time", 0, "America/Los_Angeles", Description = "Windows ID")]
+        [TestCase("America/Los_Angeles", 0, "America/Los_Angeles", Description = "TZDB ID")]
+        [TestCase("Lilo and Stitch", -10, "Pacific/Honolulu", Description = "Guess by transitions")]
+        public void MapTimeZoneInfoId(string timeZoneInfoId, int standardUtc, string expectedId)
+        {
+            var zoneInfo = TimeZoneInfo.CreateCustomTimeZone(timeZoneInfoId, TimeSpan.FromHours(standardUtc),
+                "Ignored display name", "Ignored standard display name");
+            var mappedId = TzdbDateTimeZoneSource.Default.MapTimeZoneInfoId(zoneInfo);
+            Assert.AreEqual(expectedId, mappedId);
+        }
+#endif
     }
 }

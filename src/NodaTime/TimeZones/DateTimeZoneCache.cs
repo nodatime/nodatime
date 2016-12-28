@@ -80,15 +80,10 @@ namespace NodaTime.TimeZones
         /// <inheritdoc />
         public DateTimeZone GetSystemDefault()
         {
-            TimeZoneInfo bcl = TimeZoneInfo.Local;
-            string id = source.MapTimeZoneId(bcl);
+            string id = source.GetSystemDefaultId();
             if (id == null)
             {
-#if PCL
-                throw new DateTimeZoneNotFoundException("TimeZoneInfo name " + bcl.StandardName + " is unknown to source " + VersionId);
-#else
-                throw new DateTimeZoneNotFoundException("TimeZoneInfo ID " + bcl.Id + " is unknown to source " + VersionId);
-#endif
+                throw new DateTimeZoneNotFoundException($"System default time zone is unknown to source {VersionId}");
             }
             return this[id];
         }
@@ -114,7 +109,8 @@ namespace NodaTime.TimeZones
                     zone = source.ForId(id);
                     if (zone == null)
                     {
-                        throw new InvalidDateTimeZoneSourceException("Time zone " + id + " is supported by source " + VersionId + " but not returned");
+                        throw new InvalidDateTimeZoneSourceException(
+                            $"Time zone {id} is supported by source {VersionId} but not returned");
                     }
                     timeZoneMap[id] = zone;
                 }
@@ -130,7 +126,7 @@ namespace NodaTime.TimeZones
                 var zone = GetZoneOrNull(id);
                 if (zone == null)
                 {
-                    throw new DateTimeZoneNotFoundException("Time zone " + id + " is unknown to source " + VersionId);
+                    throw new DateTimeZoneNotFoundException($"Time zone {id} is unknown to source {VersionId}");
                 }
                 return zone;
             }

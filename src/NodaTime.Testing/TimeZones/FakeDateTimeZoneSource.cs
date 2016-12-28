@@ -59,21 +59,15 @@ namespace NodaTime.Testing.TimeZones
         // TODO: Work out why inheritdoc doesn't work here. What's special about this method?
 
         /// <summary>
-        /// Returns this source's corresponding ID for the given BCL time zone.
+        /// Returns this source's ID for the system default time zone.
         /// </summary>
-        /// <param name="timeZone">The BCL time zone, which must be a known system time zone.</param>
         /// <returns>
-        /// The ID for the given system time zone for this source, or null if the system time
-        /// zone has no mapping in this source.
+        /// The ID for the system default time zone for this source,
+        /// or null if the system default time zone has no mapping in this source.
         /// </returns>
-        public string MapTimeZoneId(TimeZoneInfo timeZone)
+        public string GetSystemDefaultId()
         {
-            Preconditions.CheckNotNull(timeZone, nameof(timeZone));
-#if PCL
-            string id = timeZone.StandardName;
-#else
-            string id = timeZone.Id;
-#endif
+            string id = TimeZoneInfo.Local.Id;
             string canonicalId;
             // We don't care about the return value of TryGetValue - if it's false,
             // canonicalId will be null, which is what we want.

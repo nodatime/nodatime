@@ -34,6 +34,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 { "Russia TZ 8 Standard Time", "Yakutsk Standard Time" },
                 { "Russia TZ 9 Standard Time", "Vladivostok Standard Time" },
                 { "Cabo Verde Standard Time", "Cape Verde Standard Time" },
+                { "West Bank Gaza Standard Time", "West Bank Standard Time" },
+                { "Novosibirsk Standard Time", "N. Central Asia Standard Time" },
+                // Difference here is just the case of "and"!
+                { "Turks and Caicos Standard Time", "Turks And Caicos Standard Time" },
                 // The following name/ID mappings give an ID which then isn't present in CLDR
                 // (at least in v26 data); these zones will have to be mapped by transitions
                 // in the PCL.
