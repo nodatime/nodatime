@@ -9,6 +9,8 @@ Breaking changes:
 See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.md) for full details.
 
 - Renamed all static pattern properties to remove the `Pattern` suffix
+- Renamed the `IsoDayOfWeek` properties in `LocalDate`, `LocalDateTime`, `OffsetDateTime`
+  and `ZonedDateTime` to just `DayOfWeek`, and removed the previous numeric `DayOfWeek` properties.
 - Removed members which had already been made obsolete in the 1.x release line, including
   support for the legacy resource-based time zone data format.
 - Removed `Instant(long)` constructor from the public API.

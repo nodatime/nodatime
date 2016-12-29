@@ -84,6 +84,11 @@ methods introduced in `DateTimeOffset` in .NET 4.6:
 Static properties on the pattern classes have been renamed to remove the `Pattern` suffix. For example,
 `LocalDateTimePattern.ExtendedIsoPattern` is now just `LocalDateTimePattern.ExtendedIso`.
 
+The `IsoDayOfWeek` properties in `LocalDate`, `LocalDateTime`, `OffsetDateTime`
+and `ZonedDateTime` are now just called `DayOfWeek`. The previous numeric `DayOfWeek` properties
+have been removed, but in all cases if you were actually calling them, you can just cast the `IsoDayOfWeek`
+to `int` and always get the same result, as all calendar systems use ISO days of the week.
+
 Period
 ====
 
