@@ -75,6 +75,18 @@ namespace NodaTime.Test.TimeZones
 
             Assert.IsNotNull(zone);  // though really we only need to test that the call above didn't throw.
         }
+
+        // This is effectively a test for DateTimeZoneCache, but is particularly
+        // important for the BclDateTimeZoneSource. See
+        // https://github.com/nodatime/nodatime/issues/332
+        [Test]
+        public void ProviderReturnsBclDateTimeZoneForAllAdvertisedIds()
+        {
+            var source = new BclDateTimeZoneSource();
+            var provider = new DateTimeZoneCache(source);
+            var nonBclZones = provider.Ids.Select(id => provider[id]).Where(zone => !(zone is BclDateTimeZone));
+            Assert.IsEmpty(nonBclZones);
+        }
     }
 }
 #endif

@@ -76,13 +76,13 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void SourceIsNotAskedForUtcIfAdvertised()
+        public void SourceIsAskedForUtcIfAdvertised()
         {
             var source = new TestDateTimeZoneSource("Test1", "Test2", "UTC");
             var provider = new DateTimeZoneCache(source);
             var zone = provider[DateTimeZone.UtcId];
             Assert.IsNotNull(zone);
-            Assert.IsNull(source.LastRequestedId);
+            Assert.AreEqual("UTC", source.LastRequestedId);
         }
 
         [Test]
@@ -123,15 +123,14 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void FixedOffsetSucceedsWithoutConsultingSourceWhenAdvertised()
+        public void FixedOffsetConsultsSourceWhenAdvertised()
         {
             string id = "UTC+05:30";
             var source = new TestDateTimeZoneSource("Test1", "Test2", id);
             var provider = new DateTimeZoneCache(source);
             DateTimeZone zone = provider[id];
-            Assert.AreEqual(DateTimeZone.ForOffset(Offset.FromHoursAndMinutes(5, 30)), zone);
             Assert.AreEqual(id, zone.Id);
-            Assert.IsNull(source.LastRequestedId);
+            Assert.AreEqual(id, source.LastRequestedId);
         }
 
         [Test]
@@ -150,7 +149,7 @@ namespace NodaTime.Test.TimeZones
         public void FixedOffsetZeroReturnsUtc()
         {
             string id = "UTC+00:00";
-            var source = new TestDateTimeZoneSource("Test1", "Test2", id);
+            var source = new TestDateTimeZoneSource("Test1", "Test2");
             var provider = new DateTimeZoneCache(source);
             DateTimeZone zone = provider[id];
             Assert.AreEqual(DateTimeZone.Utc, zone);
@@ -252,7 +251,7 @@ namespace NodaTime.Test.TimeZones
             public DateTimeZone ForId(string id)
             {
                 LastRequestedId = id;
-                return new SingleTransitionDateTimeZone(NodaConstants.UnixEpoch, 0, id.GetHashCode() % 18);
+                return new SingleTransitionDateTimeZone(NodaConstants.UnixEpoch, Offset.Zero, Offset.FromHours(id.GetHashCode() % 18), id);
             }
 
             public string VersionId { get; set; }
