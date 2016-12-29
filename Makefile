@@ -4,10 +4,9 @@
 
 # Assumes that following point to appropriate versions of the respective tools.
 # If this is not true, override the assignments, either by editing the below,
-# or by running 'make JEKYLL=...'
+# or by running 'make DOTNET=...'
 
 DOTNET := dotnet
-JEKYLL := jekyll
 
 # Targets:
 #   debug (default)
@@ -74,9 +73,6 @@ $(CHECK_ALL): check_%:
 restore:
 	$(DOTNET) restore
 
-docs:
-	cd www; $(JEKYLL) build
-
 # 'dotnet clean' doesn't exist, so we'll remove the bin/ and obj/ directories
 # by hand, but leave other generated files.
 #
@@ -86,5 +82,4 @@ clean:
 		$(addsuffix bin,$(ALL_PROJECTS)) $(addsuffix obj,$(ALL_PROJECTS))
 
 .SUFFIXES:
-.PHONY: debug debug-all release release-all check $(CHECK_ALL) restore docs \
-	clean
+.PHONY: debug debug-all release release-all check $(CHECK_ALL) restore clean
