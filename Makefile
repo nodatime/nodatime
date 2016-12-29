@@ -1,115 +1,90 @@
-# Makefile for compiling Noda Time under mono.
+# Makefile for building Noda Time on Linux.
 # See www/developer/building.md for requirements.
+# This is entirely optional: using the dotnet CLI directly works fine too.
 
 # Assumes that following point to appropriate versions of the respective tools.
-# If this is not true, override the two assignments, either by editing the
-# below, or by running 'make XBUILD=...'
+# If this is not true, override the assignments, either by editing the below,
+# or by running 'make JEKYLL=...'
 
-NUGET := NuGet.exe
-MONO := mono
-XBUILD := xbuild
-NUNIT := nunit-console
+DOTNET := dotnet
 JEKYLL := jekyll
-# For example, to use a version of NUnit that has been unzipped somewhere else,
-# use something like the following instead.
-# NUNIT := mono ../NUnit-2.6.1/bin/nunit-console.exe
 
 # Targets:
 #   debug (default)
-#     builds everything (including tests, benchmarks, demo code, the zoneinfo
-#     compiler, etc) in debug configuration
+#     builds the core projects (the NodaTime assembly, serialization support,
+#     TZDB compiler, and respective tests) in debug configuration.
 #   release
-#     builds everything in release configuration, including the XML
-#     documentation (which is not built by default)
+#     builds the core projects in release configuration.
+#   debug-all, release-all
+#     builds all projects in debug or release configuration, respectively.
 #   check
-#     runs the tests under NUnit.
+#     runs all the tests under NUnit.
+#   check_src/NodaTime.Test (etc)
+#     runs a single test project. The $(TEST_FILTER) variable can be set to
+#     pass a --test=NAME argument to NUnit.
 #   clean
-#     runs the Clean target for all projects, removing the immediate output
-#     from each.  Note that this does not remove _all_ generated files.
+#     removes the immediate output for all projects.  Note that this does not
+#     remove _all_ generated files.
 #
-#   fetch-packages
+#   restore
 #     fetches third-party packages using NuGet.
-#   docs
-#     builds the contents www/ directory using Jekyll.
-#     To install Jekyll on a Debian-like system, do something like the
-#     following:
-#       $ sudo apt-get install ruby-dev nodejs
-#       $ sudo gem install jekyll
-#     (or 'gem install --user-install jekyll', to install it locally.)
 
-# Override the profile: Mono only supports the 'full' .NET framework profile,
-# not the Client profile selected in the project files for the desktop build
-# configurations.
-#
-# Note that while xbuild from Mono 3.0 'supports' Portable Library projects, it
-# actually builds them against the desktop .NET framework, so the fact that
-# we're overriding the profile here for those configurations is unimportant
-# (and the main reason there are no PCL targets defined here).
-#
-# Also override the target framework version: Mono 4.0 does not support
-# targeting .NET framework 3.5, which the desktop build currently declares.
-# We could target v4.0, except that some of our projects (NodaTime.Test, for
-# example) already target v4.5, and so won't build with v4.0.
-XBUILDFLAGS := /p:TargetFrameworkProfile='' /p:TargetFrameworkVersion='v4.5'
-XBUILDFLAGS_DEBUG := $(XBUILDFLAGS) /p:Configuration=Debug
-XBUILDFLAGS_RELEASE := $(XBUILDFLAGS) /p:Configuration=Release
 
-DEBUG_OUTPUTPATH := bin/Debug
-FAKEPCL_OUTPUTPATH := bin/DebugFakePCL
+# Everything is under src/$(project) or build/$(project), so we can get a list
+# of all the projects by looking for project.json files.
+ALL_PROJECTS := $(dir $(wildcard src/*/project.json build/*/project.json))
+# It would be bad if this were to be empty (q.v. clean, e.g), so let's just
+# verify that first.
+ifndef ALL_PROJECTS
+$(error ALL_PROJECTS is empty)
+endif
 
-XBUILDFLAGS_FAKEPCL := $(XBUILDFLAGS_DEBUG) \
-	/property:DefineConstants=PCL \
-	/property:OutputPath=${FAKEPCL_OUTPUTPATH}
+CORE_TEST_PROJECTS := \
+	src/NodaTime.Test/ \
+	src/NodaTime.Serialization.Test/ \
+	src/NodaTime.TzdbCompiler.Test/
 
-SOLUTION := src/NodaTime-All.sln
-DEBUG_TEST_DLL := \
-	src/NodaTime.Test/${DEBUG_OUTPUTPATH}/NodaTime.Test.dll
-DEBUG_SERIALIZATION_TEST_DLL := \
-	src/NodaTime.Serialization.Test/${DEBUG_OUTPUTPATH}/NodaTime.Serialization.Test.dll
-DEBUG_TZDBCOMPILER_TEST_DLL := \
-	src/NodaTime.TzdbCompiler.Test/${DEBUG_OUTPUTPATH}/NodaTime.TzdbCompiler.Test.dll
-FAKEPCL_TEST_DLL := \
-	src/NodaTime.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Test.dll
-FAKEPCL_SERIALIZATION_TEST_DLL := \
-	src/NodaTime.Serialization.Test/${FAKEPCL_OUTPUTPATH}/NodaTime.Serialization.Test.dll
-
+# Building the tests also builds the dependent projects.
 debug:
-	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION)
+	$(DOTNET) build --configuration Debug $(CORE_TEST_PROJECTS)
+debug-all:
+	$(DOTNET) build --configuration Debug $(ALL_PROJECTS)
 
+# (Note that while the dotnet-test documentation says that Release is the
+# default, this does not actually appear to be true.)
 release:
-	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(SOLUTION)
+	$(DOTNET) build --configuration Release $(CORE_TEST_PROJECTS)
+release-all:
+	$(DOTNET) build --configuration Release $(ALL_PROJECTS)
 
-# Mono cannot build a Portable Class Library assembly at all (see above), but
-# it is useful to be able to build and test the PCL subset (#if PCL) of Noda
-# Time against the desktop .NET framework; this target (and checkfakepcl)
-# allow that to be done. Note that we do not build the whole solution: for
-# example, we do not expect TzdbCompiler to build against the PCL version.
-fakepcl:
-	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) src/NodaTime/NodaTime.csproj
-	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) src/NodaTime.Test/NodaTime.Test.csproj
-	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) \
-		src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.csproj
-	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) \
-		src/NodaTime.Serialization.Test/NodaTime.Serialization.Test.csproj
+# check is a phony rule that delegates to check_$(project), for all test
+# projects.
+CHECK_ALL := $(addprefix check_,$(CORE_TEST_PROJECTS))
+check: $(CHECK_ALL)
 
-check: debug
-	$(NUNIT) $(DEBUG_TEST_DLL) $(DEBUG_SERIALIZATION_TEST_DLL) \
-		$(DEBUG_TZDBCOMPILER_TEST_DLL)
+# Test an individual project.
+# Invoking the net45 test runner fails on Linux due to
+# https://github.com/dotnet/cli/issues/3073, so we limit the tests to the
+# netcoreapp1.0 versions.
+TEST_FILTER :=
+$(CHECK_ALL): check_%:
+	$(DOTNET) test --configuration Debug --framework netcoreapp1.0 \
+		$* $(if $(TEST_FILTER),--test=$(TEST_FILTER),) \
 
-checkfakepcl: fakepcl
-	$(NUNIT) $(FAKEPCL_TEST_DLL) $(FAKEPCL_SERIALIZATION_TEST_DLL)
-	# Note: no TzdbCompiler tests, since we can't build them #if PCL.
-
-fetch-packages:
-	$(MONO) $(NUGET) restore $(SOLUTION)
+restore:
+	$(DOTNET) restore
 
 docs:
 	cd www; $(JEKYLL) build
 
+# 'dotnet clean' doesn't exist, so we'll remove the bin/ and obj/ directories
+# by hand, but leave other generated files.
+#
+# In a git clone, running 'git clean -xd' will clean everything.
 clean:
-	$(XBUILD) $(XBUILDFLAGS_DEBUG) $(SOLUTION) /t:Clean
-	$(XBUILD) $(XBUILDFLAGS_RELEASE) $(SOLUTION) /t:Clean
-	$(XBUILD) $(XBUILDFLAGS_FAKEPCL) $(SOLUTION) /t:Clean
+	@/bin/rm -rf \
+		$(addsuffix bin,$(ALL_PROJECTS)) $(addsuffix obj,$(ALL_PROJECTS))
 
 .SUFFIXES:
-.PHONY: debug release fakepcl check checkfakepcl docs clean
+.PHONY: debug debug-all release release-all check $(CHECK_ALL) restore docs \
+	clean
