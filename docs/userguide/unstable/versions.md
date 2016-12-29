@@ -60,6 +60,8 @@ Other:
 - Added a `ReturnForwardShifted` resolver, which shifts values in the daylight saving time "gap" forward by the duration of the gap,
   effectively returning the instant that would have occurred had the gap not existed.  This was added to support the new behavior of
   the "lenient" resolver (see above), but can also be used separately.
+- When an `IDateTimeZoneSource` advertises a zone with an ID corresponding to a fixed-offset
+  zone, `DateTimeZoneCache` now consults the source first. This fixes ([issue 332][]).
 
 ## 1.3.2, released 2016-04-14 with tzdb 2016c
 

@@ -110,8 +110,7 @@ namespace NodaTime
         /// as equal.
         /// </para>
         /// <para>
-        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available. These must
-        /// return instances that are equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
+        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available.
         /// </para>
         /// </remarks>
         /// <param name="id">The time zone ID to find.</param>
@@ -137,8 +136,7 @@ namespace NodaTime
         /// as equal.
         /// </para>
         /// <para>
-        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available. These must
-        /// return instances that are equal to those returned by <see cref="DateTimeZone.ForOffset"/>.
+        /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available.
         /// </para>
         /// </remarks>
         /// <param name="id">The time zone id to find.</param>

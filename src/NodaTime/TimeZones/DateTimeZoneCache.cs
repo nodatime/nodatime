@@ -92,11 +92,11 @@ namespace NodaTime.TimeZones
         public DateTimeZone GetZoneOrNull([NotNull] string id)
         {
             Preconditions.CheckNotNull(id, nameof(id));
-            DateTimeZone fixedZone = FixedDateTimeZone.GetFixedZoneOrNull(id);
-            if (fixedZone != null)
-            {
-                return fixedZone;
-            }
+            return GetZoneFromSourceOrNull(id) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
+        }
+
+        private DateTimeZone GetZoneFromSourceOrNull(string id)
+        {
             lock (accessLock)
             {
                 DateTimeZone zone;
