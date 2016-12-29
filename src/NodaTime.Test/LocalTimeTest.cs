@@ -11,6 +11,18 @@ namespace NodaTime.Test
     public partial class LocalTimeTest
     {
         [Test]
+        public void MinValueEqualToMidnight()
+        {
+            Assert.AreEqual(LocalTime.Midnight, LocalTime.MinValue);
+        }
+
+        [Test]
+        public void MaxValue()
+        {
+            Assert.AreEqual(NodaConstants.NanosecondsPerDay - 1, LocalTime.MaxValue.NanosecondOfDay);
+        }
+
+        [Test]
         public void ClockHourOfHalfDay()
         {
             Assert.AreEqual(12, new LocalTime(0, 0).ClockHourOfHalfDay);

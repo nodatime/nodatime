@@ -40,9 +40,22 @@ namespace NodaTime
         public static LocalTime Midnight { get; } = new LocalTime(0, 0, 0);
 
         /// <summary>
+        /// The minimum value of this type; equivalent to <see cref="Midnight"/>.
+        /// </summary>
+        public static LocalTime MinValue => Midnight;
+
+        /// <summary>
         /// Local time at noon, i.e. 12 hours, 0 minutes, 0 seconds.
         /// </summary>
         public static LocalTime Noon { get; } = new LocalTime(12, 0, 0);
+
+        /// <summary>
+        /// The maximum value of this type, one nanosecond before midnight.
+        /// </summary>
+        /// <remarks>This is useful if you have to use an inclusive upper bound for some reason.
+        /// In general, it's better to use an exclusive upper bound, in which case use midnight of
+        /// the following day.</remarks>
+        public static LocalTime MaxValue { get; } = new LocalTime(NanosecondsPerDay - 1);
 
         /// <summary>
         /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000).
