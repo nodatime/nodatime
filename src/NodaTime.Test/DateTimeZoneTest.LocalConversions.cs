@@ -266,7 +266,7 @@ namespace NodaTime.Test
         [TestCase("Pacific/Kwajalein", "1993-08-20")]
         public void AtStartOfDay_DayDoesntExist(string zoneId, string localDate)
         {
-            LocalDate badDate = LocalDatePattern.IsoPattern.Parse(localDate).Value;
+            LocalDate badDate = LocalDatePattern.Iso.Parse(localDate).Value;
             DateTimeZone zone = DateTimeZoneProviders.Tzdb[zoneId];
             var exception = Assert.Throws<SkippedTimeException>(() => zone.AtStartOfDay(badDate));
             Assert.AreEqual(badDate + LocalTime.Midnight, exception.LocalDateTime);

@@ -34,7 +34,7 @@ namespace NodaTime.Text
         /// standard pattern (even though it is invariant).
         /// </remarks>
         /// <value>An invariant offset date/time pattern based on ISO-8601 (down to the second), including offset from UTC.</value>
-        public static OffsetDateTimePattern GeneralIsoPattern => Patterns.GeneralIsoPatternImpl;
+        public static OffsetDateTimePattern GeneralIso => Patterns.GeneralIsoPatternImpl;
 
         /// <summary>
         /// Gets an invariant offset date/time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.
@@ -45,7 +45,7 @@ namespace NodaTime.Text
         /// in the ISO calendar, and is available as the "o" standard pattern.
         /// </remarks>
         /// <value>An invariant offset date/time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.</value>
-        public static OffsetDateTimePattern ExtendedIsoPattern => Patterns.ExtendedIsoPatternImpl;
+        public static OffsetDateTimePattern ExtendedIso => Patterns.ExtendedIsoPatternImpl;
 
         /// <summary>
         /// Gets an invariant offset date/time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
@@ -61,7 +61,7 @@ namespace NodaTime.Text
         /// </remarks>
         /// <value>An invariant offset date/time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
         /// as hours and minutes only.</value>
-        public static OffsetDateTimePattern Rfc3339Pattern => Patterns.Rfc3339PatternImpl;
+        public static OffsetDateTimePattern Rfc3339 => Patterns.Rfc3339PatternImpl;
 
         /// <summary>
         /// Gets an invariant offset date/time pattern based on ISO-8601 (down to the nanosecond)
@@ -74,7 +74,7 @@ namespace NodaTime.Text
         /// </remarks>
         /// <value>An invariant offset date/time pattern based on ISO-8601 (down to the nanosecond)
         /// including offset from UTC and calendar ID.</value>
-        public static OffsetDateTimePattern FullRoundtripPattern => Patterns.FullRoundtripPatternImpl;
+        public static OffsetDateTimePattern FullRoundtrip => Patterns.FullRoundtripPatternImpl;
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem

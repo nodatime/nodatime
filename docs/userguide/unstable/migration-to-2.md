@@ -88,6 +88,9 @@ setting date-based units.
 Normalization of a period which has time units which add up to a "days" range outside the range
 of `int` will similarly fail.
 
+Static properties on the pattern classes have been renamed to remove the `Pattern` suffix. For example,
+`LocalDateTimePattern.ExtendedIsoPattern` is now just `LocalDateTimePattern.ExtendedIso`.
+
 Offset
 ====
 

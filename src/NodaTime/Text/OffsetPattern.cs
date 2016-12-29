@@ -26,13 +26,13 @@ namespace NodaTime.Text
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
         /// </summary>
-        public static OffsetPattern GeneralInvariantPattern { get; } = CreateWithInvariantCulture("g");
+        public static OffsetPattern GeneralInvariant { get; } = CreateWithInvariantCulture("g");
 
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture,
         /// but producing (and allowing) Z as a value for a zero offset.
         /// </summary>
-        public static OffsetPattern GeneralInvariantPatternWithZ { get; } = CreateWithInvariantCulture("G");
+        public static OffsetPattern GeneralInvariantWithZ { get; } = CreateWithInvariantCulture("G");
 
         private const string DefaultFormatPattern = "g";
 

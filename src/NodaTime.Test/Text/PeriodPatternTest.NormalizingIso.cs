@@ -95,7 +95,7 @@ namespace NodaTime.Test.Text
                 {
                     foreach (var item in sequence)
                     {
-                        item.StandardPattern = PeriodPattern.NormalizingIsoPattern;
+                        item.StandardPattern = PeriodPattern.NormalizingIso;
                     }
                 }
             }

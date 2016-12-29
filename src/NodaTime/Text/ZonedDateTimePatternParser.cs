@@ -178,7 +178,7 @@ namespace NodaTime.Text
                     return null;
                 }
                 value.Move(value.Index + 3);
-                var pattern = OffsetPattern.GeneralInvariantPattern.UnderlyingPattern;
+                var pattern = OffsetPattern.GeneralInvariant.UnderlyingPattern;
                 var parseResult = pattern.ParsePartial(value);
                 return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : DateTimeZone.Utc;
             }

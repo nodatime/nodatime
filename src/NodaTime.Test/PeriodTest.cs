@@ -802,8 +802,8 @@ namespace NodaTime.Test
         [TestCase("2014-01-01T16:00:00", "2014-01-03T08:00:00", PeriodUnits.Hours, 40, -40)]
         public void Between_LocalDateTime_AwkwardTimeOfDayWithSingleUnit(string startText, string endText, PeriodUnits units, int expectedForward, int expectedBackward)
         {
-            LocalDateTime start = LocalDateTimePattern.ExtendedIsoPattern.Parse(startText).Value;
-            LocalDateTime end = LocalDateTimePattern.ExtendedIsoPattern.Parse(endText).Value;
+            LocalDateTime start = LocalDateTimePattern.ExtendedIso.Parse(startText).Value;
+            LocalDateTime end = LocalDateTimePattern.ExtendedIso.Parse(endText).Value;
             Period forward = Period.Between(start, end, units);
             Assert.AreEqual(expectedForward, forward.ToBuilder()[units]);
             Period backward = Period.Between(end, start, units);
@@ -837,7 +837,7 @@ namespace NodaTime.Test
         /// </summary>
         private static Period Parse(string text)
         {
-            return PeriodPattern.RoundtripPattern.Parse(text).Value;
+            return PeriodPattern.Roundtrip.Parse(text).Value;
         }
     }
 }

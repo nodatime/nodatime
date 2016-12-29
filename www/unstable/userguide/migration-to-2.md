@@ -81,6 +81,9 @@ methods introduced in `DateTimeOffset` in .NET 4.6:
 - The `Ticks` property is now `ToUnixTimeTicks()`
 - There are two new methods, `ToUnixTimeSeconds()` and `ToUnixTimeMilliseconds()`
 
+Static properties on the pattern classes have been renamed to remove the `Pattern` suffix. For example,
+`LocalDateTimePattern.ExtendedIsoPattern` is now just `LocalDateTimePattern.ExtendedIso`.
+
 Period
 ====
 

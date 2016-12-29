@@ -15,31 +15,31 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
             Years = 100, Months = 1, Days = 10, Hours = 12, Minutes = 35, Seconds = 12, Milliseconds = 123, Ticks = 4567
         }.Build();
 
-        private static readonly string NormalizedText = PeriodPattern.NormalizingIsoPattern.Format(SamplePeriod);
-        private static readonly string RoundtripText = PeriodPattern.RoundtripPattern.Format(SamplePeriod);
+        private static readonly string NormalizedText = PeriodPattern.NormalizingIso.Format(SamplePeriod);
+        private static readonly string RoundtripText = PeriodPattern.Roundtrip.Format(SamplePeriod);
 
         [Benchmark]
         public void ParseNormalized()
         {
-            PeriodPattern.NormalizingIsoPattern.Parse(NormalizedText).GetValueOrThrow();
+            PeriodPattern.NormalizingIso.Parse(NormalizedText).GetValueOrThrow();
         }
 
         [Benchmark]
         public void ParseRoundtrip()
         {
-            PeriodPattern.RoundtripPattern.Parse(RoundtripText).GetValueOrThrow();
+            PeriodPattern.Roundtrip.Parse(RoundtripText).GetValueOrThrow();
         }
 
         [Benchmark]
         public void FormatNormalized()
         {
-            PeriodPattern.NormalizingIsoPattern.Format(SamplePeriod);
+            PeriodPattern.NormalizingIso.Format(SamplePeriod);
         }
 
         [Benchmark]
         public void FormatRoundtrip()
         {
-            PeriodPattern.RoundtripPattern.Format(SamplePeriod);
+            PeriodPattern.Roundtrip.Format(SamplePeriod);
         }
     }
 }

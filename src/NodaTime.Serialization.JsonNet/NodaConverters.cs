@@ -19,14 +19,14 @@ namespace NodaTime.Serialization.JsonNet
         /// specifying 'Z' at the end to show it's effectively in UTC.
         /// </summary>
         public static JsonConverter InstantConverter { get; }
-            = new NodaPatternConverter<Instant>(InstantPattern.ExtendedIsoPattern);
+            = new NodaPatternConverter<Instant>(InstantPattern.ExtendedIso);
 
         /// <summary>
         /// Converter for local dates, using the ISO-8601 date pattern.
         /// </summary>
         public static JsonConverter LocalDateConverter { get; }
             = new NodaPatternConverter<LocalDate>(
-                LocalDatePattern.IsoPattern, CreateIsoValidator<LocalDate>(x => x.Calendar));
+                LocalDatePattern.Iso, CreateIsoValidator<LocalDate>(x => x.Calendar));
 
         /// <summary>
         /// Converter for local dates and times, using the ISO-8601 date/time pattern, extended as required to accommodate milliseconds and ticks.
@@ -34,13 +34,13 @@ namespace NodaTime.Serialization.JsonNet
         /// </summary>
         public static JsonConverter LocalDateTimeConverter { get; }
             = new NodaPatternConverter<LocalDateTime>(
-                LocalDateTimePattern.ExtendedIsoPattern, CreateIsoValidator<LocalDateTime>(x => x.Calendar));
+                LocalDateTimePattern.ExtendedIso, CreateIsoValidator<LocalDateTime>(x => x.Calendar));
 
         /// <summary>
         /// Converter for local times, using the ISO-8601 time pattern, extended as required to accommodate milliseconds and ticks.
         /// </summary>
         public static JsonConverter LocalTimeConverter { get; }
-            = new NodaPatternConverter<LocalTime>(LocalTimePattern.ExtendedIsoPattern);
+            = new NodaPatternConverter<LocalTime>(LocalTimePattern.ExtendedIso);
 
         /// <summary>
         /// Converter for intervals. This must be used in a serializer which also has an instant converter.
@@ -57,14 +57,14 @@ namespace NodaTime.Serialization.JsonNet
         /// Converter for offsets.
         /// </summary>
         public static JsonConverter OffsetConverter { get; }
-            = new NodaPatternConverter<Offset>(OffsetPattern.GeneralInvariantPattern);
+            = new NodaPatternConverter<Offset>(OffsetPattern.GeneralInvariant);
 
         /// <summary>
         /// Converter for offset date/times.
         /// </summary>
         public static JsonConverter OffsetDateTimeConverter { get; } =
             new NodaPatternConverter<OffsetDateTime>(
-                OffsetDateTimePattern.Rfc3339Pattern, CreateIsoValidator<OffsetDateTime>(x => x.Calendar));
+                OffsetDateTimePattern.Rfc3339, CreateIsoValidator<OffsetDateTime>(x => x.Calendar));
 
         /// <summary>
         /// Creates a converter for zoned date/times, using the given time zone provider.
@@ -95,7 +95,7 @@ namespace NodaTime.Serialization.JsonNet
         /// and don't need interoperability with systems expecting ISO.
         /// </summary>
         public static JsonConverter RoundtripPeriodConverter { get; }
-            = new NodaPatternConverter<Period>(PeriodPattern.RoundtripPattern);
+            = new NodaPatternConverter<Period>(PeriodPattern.Roundtrip);
 
         /// <summary>
         /// Normalizing ISO converter for periods. Use this when you want compatibility with systems expecting
@@ -103,7 +103,7 @@ namespace NodaTime.Serialization.JsonNet
         /// this converter losees information - after serialization and deserialization, "90 minutes" will become "an hour and 30 minutes".
         /// </summary>
         public static JsonConverter NormalizingIsoPeriodConverter { get; }
-            = new NodaPatternConverter<Period>(PeriodPattern.NormalizingIsoPattern);
+            = new NodaPatternConverter<Period>(PeriodPattern.NormalizingIso);
 
         private static Action<T> CreateIsoValidator<T>(Func<T, CalendarSystem> calendarProjection) => value =>
         {

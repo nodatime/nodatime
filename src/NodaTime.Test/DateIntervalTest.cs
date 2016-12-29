@@ -214,7 +214,7 @@ namespace NodaTime.Test
         {
             var start = new LocalDate(2000, 1, 1);
             var end = new LocalDate(2014, 06, 30);
-            var candidate = LocalDatePattern.IsoPattern.Parse(candidateText).Value;
+            var candidate = LocalDatePattern.Iso.Parse(candidateText).Value;
             var interval = new DateInterval(start, end, true);
             Assert.AreEqual(expectedInclusive, interval.Contains(candidate));
             interval = new DateInterval(start, end, false);

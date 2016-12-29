@@ -37,7 +37,7 @@ namespace NodaTime.Text
         /// standard pattern.
         /// </summary>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, down to the second.</value>
-        public static LocalDateTimePattern GeneralIsoPattern => Patterns.GeneralIsoPatternImpl;
+        public static LocalDateTimePattern GeneralIso => Patterns.GeneralIsoPatternImpl;
 
         /// <summary>
         /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
@@ -46,7 +46,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
         /// of sub-second accuracy.</value>
-        public static LocalDateTimePattern ExtendedIsoPattern => Patterns.ExtendedIsoPatternImpl;
+        public static LocalDateTimePattern ExtendedIso => Patterns.ExtendedIsoPatternImpl;
 
         /// <summary>
         /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
@@ -57,14 +57,14 @@ namespace NodaTime.Text
         /// </summary>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy which are always present (including trailing zeroes).</value>
-        public static LocalDateTimePattern BclRoundtripPattern => Patterns.BclRoundtripPatternImpl;
+        public static LocalDateTimePattern BclRoundtrip => Patterns.BclRoundtripPatternImpl;
 
         /// <summary>
         /// Gets an invariant local date/time pattern which round trips values including the calendar system.
         /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'".
         /// </summary>
         /// <value>An invariant local date/time pattern which round trips values including the calendar system.</value>
-        public static LocalDateTimePattern FullRoundtripPattern => Patterns.FullRoundtripPatternImpl;
+        public static LocalDateTimePattern FullRoundtrip => Patterns.FullRoundtripPatternImpl;
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem

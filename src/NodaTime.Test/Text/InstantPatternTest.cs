@@ -39,7 +39,7 @@ namespace NodaTime.Test.Text
         public void IsoHandlesCommas()
         {
             Instant expected = Instant.FromUtc(2012, 1, 1, 0, 0) + Duration.Epsilon;
-            Instant actual = InstantPattern.ExtendedIsoPattern.Parse("2012-01-01T00:00:00,000000001Z").Value;
+            Instant actual = InstantPattern.ExtendedIso.Parse("2012-01-01T00:00:00,000000001Z").Value;
             Assert.AreEqual(actual, expected);
         }
 

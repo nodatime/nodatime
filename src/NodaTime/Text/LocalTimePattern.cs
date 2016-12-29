@@ -29,7 +29,7 @@ namespace NodaTime.Text
         /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFF".
         /// </summary>
         /// <value>An invariant local time pattern which is ISO-8601 compatible, providing up to 7 decimal places.</value>
-        public static LocalTimePattern ExtendedIsoPattern => Patterns.ExtendedIsoPatternImpl;
+        public static LocalTimePattern ExtendedIso => Patterns.ExtendedIsoPatternImpl;
 
         private const string DefaultFormatPattern = "T"; // Long
 

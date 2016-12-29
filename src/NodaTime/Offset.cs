@@ -504,7 +504,7 @@ namespace NodaTime
         void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
-            var pattern = OffsetPattern.GeneralInvariantPattern;
+            var pattern = OffsetPattern.GeneralInvariant;
             string text = reader.ReadElementContentAsString();
             this = pattern.Parse(text).Value;
         }
@@ -513,7 +513,7 @@ namespace NodaTime
         void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
-            writer.WriteString(OffsetPattern.GeneralInvariantPattern.Format(this));
+            writer.WriteString(OffsetPattern.GeneralInvariant.Format(this));
         }
         #endregion
 

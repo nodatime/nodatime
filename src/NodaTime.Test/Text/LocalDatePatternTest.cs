@@ -218,7 +218,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void WithCalendar()
         {
-            var pattern = LocalDatePattern.IsoPattern.WithCalendar(CalendarSystem.Coptic);
+            var pattern = LocalDatePattern.Iso.WithCalendar(CalendarSystem.Coptic);
             var value = pattern.Parse("0284-08-29").Value;
             Assert.AreEqual(new LocalDate(284, 8, 29, CalendarSystem.Coptic), value);
         }

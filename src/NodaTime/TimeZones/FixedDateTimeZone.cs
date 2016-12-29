@@ -64,7 +64,7 @@ namespace NodaTime.TimeZones
             {
                 return UtcId;
             }
-            return UtcId + OffsetPattern.GeneralInvariantPattern.Format(offset);
+            return UtcId + OffsetPattern.GeneralInvariant.Format(offset);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace NodaTime.TimeZones
             {
                 return Utc;
             }
-            var parseResult = OffsetPattern.GeneralInvariantPattern.Parse(id.Substring(UtcId.Length));
+            var parseResult = OffsetPattern.GeneralInvariant.Parse(id.Substring(UtcId.Length));
             return parseResult.Success ? ForOffset(parseResult.Value) : null;
         }
 

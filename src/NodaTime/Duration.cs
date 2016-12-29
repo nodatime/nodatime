@@ -1122,7 +1122,7 @@ namespace NodaTime
         void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
-            var pattern = DurationPattern.RoundtripPattern;
+            var pattern = DurationPattern.Roundtrip;
             string text = reader.ReadElementContentAsString();
             this = pattern.Parse(text).Value;
         }
@@ -1131,7 +1131,7 @@ namespace NodaTime
         void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
-            writer.WriteString(DurationPattern.RoundtripPattern.Format(this));
+            writer.WriteString(DurationPattern.Roundtrip.Format(this));
         }
         #endregion
 
