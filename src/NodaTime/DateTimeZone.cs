@@ -97,10 +97,13 @@ namespace NodaTime
         internal const string UtcId = "UTC";
 
         /// <summary>
-        /// Gets the UTC (Coordinated Universal Time) time zone. This is a single instance which is not
-        /// provider-specific; it is guaranteed to have the ID "UTC", but may or may not be the instance returned by
-        /// e.g. <c>DateTimeZoneProviders.Tzdb["UTC"]</c>.
+        /// Gets the UTC (Coordinated Universal Time) time zone.
         /// </summary>
+        /// <remarks>
+        /// This is a single instance which is not provider-specific; it is guaranteed to have the ID "UTC", and to
+        /// compare equal to an instance returned by calling <see cref="ForOffset"/> with an offset of zero, but it may
+        /// or may not compare equal to an instance returned by e.g. <c>DateTimeZoneProviders.Tzdb["UTC"]</c>.
+        /// </remarks>
         /// <value>A UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get; } = new FixedDateTimeZone(Offset.Zero);
         private const int FixedZoneCacheGranularitySeconds = NodaConstants.SecondsPerMinute * 30;
