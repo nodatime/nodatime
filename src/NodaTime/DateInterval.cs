@@ -199,8 +199,8 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            string start = LocalDatePattern.IsoPattern.Format(Start);
-            string end = LocalDatePattern.IsoPattern.Format(End);
+            string start = LocalDatePattern.Iso.Format(Start);
+            string end = LocalDatePattern.Iso.Format(End);
             string endType = Inclusive ? "]" : ")";
             return $"[{start}, {end}{endType}";
         }

@@ -710,7 +710,7 @@ namespace NodaTime
         void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
-            var pattern = LocalTimePattern.ExtendedIsoPattern;
+            var pattern = LocalTimePattern.ExtendedIso;
             string text = reader.ReadElementContentAsString();
             this = pattern.Parse(text).Value;
         }
@@ -719,7 +719,7 @@ namespace NodaTime
         void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
-            writer.WriteString(LocalTimePattern.ExtendedIsoPattern.Format(this));
+            writer.WriteString(LocalTimePattern.ExtendedIso.Format(this));
         }
         #endregion
 

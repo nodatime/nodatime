@@ -37,7 +37,7 @@ namespace NodaTime.Text
         /// pattern which can be used for parsing.
         /// </remarks>
         /// <value>An zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.</value>
-        public static ZonedDateTimePattern GeneralFormatOnlyIsoPattern => Patterns.GeneralFormatOnlyPatternImpl;
+        public static ZonedDateTimePattern GeneralFormatOnlyIso => Patterns.GeneralFormatOnlyPatternImpl;
 
         // TODO(2.0): Add tests for this and other patterns from properties.
         /// <summary>
@@ -51,7 +51,7 @@ namespace NodaTime.Text
         /// pattern which can be used for parsing.
         /// </remarks>
         /// <value>An invariant zoned date/time pattern based on ISO-8601 (down to the nanosecond) including offset from UTC and zone ID.</value>
-        public static ZonedDateTimePattern ExtendedFormatOnlyIsoPattern => Patterns.ExtendedFormatOnlyPatternImpl;
+        public static ZonedDateTimePattern ExtendedFormatOnlyIso => Patterns.ExtendedFormatOnlyPatternImpl;
 
         private readonly IPattern<ZonedDateTime> pattern;
 

@@ -847,7 +847,7 @@ namespace NodaTime
         void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
-            var pattern = OffsetDateTimePattern.Rfc3339Pattern;
+            var pattern = OffsetDateTimePattern.Rfc3339;
             if (reader.MoveToAttribute("calendar"))
             {
                 string newCalendarId = reader.Value;
@@ -868,7 +868,7 @@ namespace NodaTime
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);
             }
-            writer.WriteString(OffsetDateTimePattern.Rfc3339Pattern.Format(this));
+            writer.WriteString(OffsetDateTimePattern.Rfc3339.Format(this));
         }
         #endregion
 

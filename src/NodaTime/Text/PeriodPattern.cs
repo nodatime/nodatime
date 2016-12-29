@@ -26,7 +26,7 @@ namespace NodaTime.Text
         /// Each element may also be negative, independently of other elements. This pattern round-trips its
         /// values: a parse/format cycle will produce an identical period, including units.
         /// </summary>
-        public static PeriodPattern RoundtripPattern { get; } = new PeriodPattern(new RoundtripPatternImpl());
+        public static PeriodPattern Roundtrip { get; } = new PeriodPattern(new RoundtripPatternImpl());
 
         /// <summary>
         /// A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.
@@ -40,7 +40,7 @@ namespace NodaTime.Text
         /// combined weeks/days/time portions are considered. Such a period could never
         /// be useful anyway, however.
         /// </remarks>
-        public static PeriodPattern NormalizingIsoPattern { get; } = new PeriodPattern(new NormalizingIsoPatternImpl());
+        public static PeriodPattern NormalizingIso { get; } = new PeriodPattern(new NormalizingIsoPatternImpl());
 
         private readonly IPattern<Period> pattern;
 

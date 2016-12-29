@@ -753,7 +753,7 @@ namespace NodaTime
         void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
-            var pattern = LocalDatePattern.IsoPattern;
+            var pattern = LocalDatePattern.Iso;
             if (reader.MoveToAttribute("calendar"))
             {
                 string newCalendarId = reader.Value;
@@ -774,7 +774,7 @@ namespace NodaTime
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);
             }
-            writer.WriteString(LocalDatePattern.IsoPattern.Format(this));
+            writer.WriteString(LocalDatePattern.Iso.Format(this));
         }
         #endregion
 

@@ -769,10 +769,10 @@ namespace NodaTime
         #region Object overrides
 
         /// <summary>
-        /// Returns this string formatted according to the <see cref="PeriodPattern.RoundtripPattern"/>.
+        /// Returns this string formatted according to the <see cref="PeriodPattern.Roundtrip"/>.
         /// </summary>
         /// <returns>A formatted representation of this period.</returns>
-        public override string ToString() => PeriodPattern.RoundtripPattern.Format(this);
+        public override string ToString() => PeriodPattern.Roundtrip.Format(this);
 
         /// <summary>
         /// Compares the given object for equality with this one, as per <see cref="Equals(Period)"/>.

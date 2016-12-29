@@ -28,7 +28,7 @@ namespace NodaTime.Text
         /// This pattern round-trips.
         /// </summary>
         /// <value>The general pattern for durations using the invariant culture.</value>
-        public static DurationPattern RoundtripPattern => Patterns.RoundtripPatternImpl;
+        public static DurationPattern Roundtrip => Patterns.RoundtripPatternImpl;
 
         internal static readonly PatternBclSupport<Duration> BclSupport = new PatternBclSupport<Duration>("o", fi => fi.DurationPatternParser);
 

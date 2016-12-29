@@ -760,7 +760,7 @@ namespace NodaTime
         void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
-            var pattern = OffsetDateTimePattern.ExtendedIsoPattern;
+            var pattern = OffsetDateTimePattern.ExtendedIso;
             if (!reader.MoveToAttribute("zone"))
             {
                 throw new ArgumentException("No zone specified in XML for ZonedDateTime");
@@ -794,7 +794,7 @@ namespace NodaTime
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);
             }
-            writer.WriteString(OffsetDateTimePattern.ExtendedIsoPattern.Format(ToOffsetDateTime()));
+            writer.WriteString(OffsetDateTimePattern.ExtendedIso.Format(ToOffsetDateTime()));
         }
         #endregion
 

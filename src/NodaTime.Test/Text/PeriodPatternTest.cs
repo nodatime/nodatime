@@ -25,7 +25,7 @@ namespace NodaTime.Test.Text
 
             public Data(Period value) : base(value)
             {
-                this.StandardPattern = PeriodPattern.RoundtripPattern;
+                this.StandardPattern = PeriodPattern.Roundtrip;
             }
 
             public Data(PeriodBuilder builder) : this(builder.Build())

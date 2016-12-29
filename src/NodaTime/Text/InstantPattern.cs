@@ -28,7 +28,7 @@ namespace NodaTime.Text
         /// an instant as a UTC date/time in ISO-8601 style "uuuu-MM-ddTHH:mm:ss'Z'".
         /// </summary>
         /// <value>The general pattern, which always uses an invariant culture.</value>
-        public static InstantPattern GeneralPattern => Patterns.GeneralPatternImpl;
+        public static InstantPattern General => Patterns.GeneralPatternImpl;
 
         /// <summary>
         /// Gets an invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
@@ -37,7 +37,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <value>An invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
         /// of sub-second accuracy.</value>
-        public static InstantPattern ExtendedIsoPattern => Patterns.ExtendedIsoPatternImpl;
+        public static InstantPattern ExtendedIso => Patterns.ExtendedIsoPatternImpl;
 
         private const string DefaultFormatPattern = "g";
 

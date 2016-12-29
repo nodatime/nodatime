@@ -197,7 +197,7 @@ namespace NodaTime
         /// <returns>A string representation of this interval.</returns>
         public override string ToString()
         {
-            var pattern = InstantPattern.ExtendedIsoPattern;
+            var pattern = InstantPattern.ExtendedIso;
             return pattern.Format(start) + "/" + pattern.Format(end);
         }
         #endregion
@@ -228,7 +228,7 @@ namespace NodaTime
         void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
-            var pattern = InstantPattern.ExtendedIsoPattern;
+            var pattern = InstantPattern.ExtendedIso;
             Instant newStart = reader.MoveToAttribute("start") ? pattern.Parse(reader.Value).Value : Instant.BeforeMinValue;
             Instant newEnd = reader.MoveToAttribute("end") ? pattern.Parse(reader.Value).Value : Instant.AfterMaxValue;
             this = new Interval(newStart, newEnd);
@@ -240,7 +240,7 @@ namespace NodaTime
         void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
-            var pattern = InstantPattern.ExtendedIsoPattern;
+            var pattern = InstantPattern.ExtendedIso;
             if (HasStart)
             {
                 writer.WriteAttributeString("start", pattern.Format(start));

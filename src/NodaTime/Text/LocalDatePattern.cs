@@ -35,7 +35,7 @@ namespace NodaTime.Text
         /// This corresponds to the text pattern "uuuu'-'MM'-'dd".
         /// </summary>
         /// <value>An invariant local date pattern which is ISO-8601 compatible.</value>
-        public static LocalDatePattern IsoPattern => Patterns.IsoPatternImpl;
+        public static LocalDatePattern Iso => Patterns.IsoPatternImpl;
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem

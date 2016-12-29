@@ -24,7 +24,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         [Benchmark]
         public void FormatIso()
         {
-            ZonedDateTimePattern.ExtendedFormatOnlyIsoPattern.Format(SampleZonedDateTime);
+            ZonedDateTimePattern.ExtendedFormatOnlyIso.Format(SampleZonedDateTime);
         }
     }
 }

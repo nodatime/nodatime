@@ -189,7 +189,7 @@ namespace NodaTime.Test
             var start = Instant.FromUtc(2000, 1, 1, 0, 0);
             var end = Instant.FromUtc(2020, 1, 1, 0, 0);
             var interval = new Interval(start, end);
-            var candidate = InstantPattern.ExtendedIsoPattern.Parse(candidateText).Value;
+            var candidate = InstantPattern.ExtendedIso.Parse(candidateText).Value;
             Assert.AreEqual(expectedResult, interval.Contains(candidate));
         }
 
