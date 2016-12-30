@@ -285,7 +285,7 @@ namespace NodaTime
             /// </para>
             /// <para>
             /// For example, consider the interval [..., 9999-12-31] (in the ISO calendar).  This is equivalent to [...,
-            /// 10000-12-31), which cannot be represented as a DateInterval.  Instead, this method maps all non-empty
+            /// 10000-01-01), which cannot be represented as a DateInterval.  Instead, this method maps all non-empty
             /// intervals to inclusive intervals, and retains all empty intervals as empty (and exclusive by definition)
             /// intervals.
             /// </para>
