@@ -299,7 +299,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Equality comparer that considers the dates containing within intervals.
+        /// Equality comparer that considers the dates contained within intervals.
         /// </summary>
         private sealed class ContainedDatesDateIntervalEqualityComparer : EqualityComparer<DateInterval>
         {
