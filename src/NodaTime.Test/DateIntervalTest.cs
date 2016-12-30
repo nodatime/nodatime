@@ -13,6 +13,8 @@ namespace NodaTime.Test
     {
         private static readonly CalendarSystem JulianCalendar = CalendarSystem.Julian;
         private static readonly List<CalendarSystem> SupportedCalendars = CalendarSystem.Ids.ToList().Select(CalendarSystem.ForId).ToList();
+        private static readonly LocalDate MinIsoDate = new LocalDate(-9998, 1, 1);
+        private static readonly LocalDate MaxIsoDate = new LocalDate(9999, 12, 31);
 
         [Test]
         public void Construction_DifferentCalendars()
@@ -265,11 +267,8 @@ namespace NodaTime.Test
         [Test]
         public void NormalizingEqualityComparer_Extremes_Equal()
         {
-            LocalDate start = new LocalDate(-9998, 1, 1);
-            LocalDate end1 = new LocalDate(9999, 12, 30);
-            LocalDate end2 = new LocalDate(9999, 12, 31);
-            var interval1 = new DateInterval(start, end1, true);
-            var interval2 = new DateInterval(start, end2, false);
+            var interval1 = new DateInterval(MinIsoDate, MaxIsoDate.PlusDays(-1), true);
+            var interval2 = new DateInterval(MinIsoDate, MaxIsoDate, false);
             Assert.AreEqual(interval1.Length, interval2.Length);
             Assert.AreNotEqual(interval1, interval2);
 
@@ -281,11 +280,8 @@ namespace NodaTime.Test
         [Test]
         public void NormalizingEqualityComparer_Extremes_Equal_BothInclusive()
         {
-            LocalDate start = new LocalDate(-9998, 1, 1);
-            LocalDate end1 = new LocalDate(9999, 12, 31);
-            LocalDate end2 = new LocalDate(9999, 12, 31);
-            var interval1 = new DateInterval(start, end1, true);
-            var interval2 = new DateInterval(start, end2, true);
+            var interval1 = new DateInterval(MinIsoDate, MaxIsoDate, true);
+            var interval2 = new DateInterval(MinIsoDate, MaxIsoDate, true);
             Assert.AreEqual(interval1, interval2);
 
             // These are equal under the regular equality operation; they should still be equal under this comparer,
@@ -299,11 +295,8 @@ namespace NodaTime.Test
         [Test]
         public void NormalizingEqualityComparer_Extremes_Unequal()
         {
-            LocalDate start = new LocalDate(-9998, 1, 1);
-            LocalDate end1 = new LocalDate(9999, 12, 31);
-            LocalDate end2 = new LocalDate(9999, 12, 31);
-            var interval1 = new DateInterval(start, end1, true);
-            var interval2 = new DateInterval(start, end2, false);
+            var interval1 = new DateInterval(MinIsoDate, MaxIsoDate, true);
+            var interval2 = new DateInterval(MinIsoDate, MaxIsoDate, false);
             Assert.AreNotEqual(interval1, interval2);
 
             IEqualityComparer<DateInterval> comparer = DateInterval.NormalizingEqualityComparer;
@@ -314,8 +307,8 @@ namespace NodaTime.Test
         [Test]
         public void NormalizingEqualityComparer_Extremes_Unequal_DifferentCalendars()
         {
-            LocalDate start1 = new LocalDate(-9998, 1, 1);
-            LocalDate end1 = new LocalDate(9999, 12, 31);
+            LocalDate start1 = MinIsoDate;
+            LocalDate end1 = MaxIsoDate;
             LocalDate start2 = start1.WithCalendar(CalendarSystem.Gregorian);
             LocalDate end2 = end1.WithCalendar(CalendarSystem.Gregorian);
             var interval1 = new DateInterval(start1, end1, true);
@@ -464,11 +457,8 @@ namespace NodaTime.Test
         [Test]
         public void ContainedDatesEqualityComparer_Extremes_Equal()
         {
-            LocalDate start = new LocalDate(-9998, 1, 1);
-            LocalDate end1 = new LocalDate(9999, 12, 30);
-            LocalDate end2 = new LocalDate(9999, 12, 31);
-            var interval1 = new DateInterval(start, end1, true);
-            var interval2 = new DateInterval(start, end2, false);
+            var interval1 = new DateInterval(MinIsoDate, MaxIsoDate.PlusDays(-1), true);
+            var interval2 = new DateInterval(MinIsoDate, MaxIsoDate, false);
             Assert.AreEqual(interval1.Length, interval2.Length);
             Assert.AreNotEqual(interval1, interval2);
 
@@ -480,11 +470,8 @@ namespace NodaTime.Test
         [Test]
         public void ContainedDatesEqualityComparer_Extremes_Equal_BothInclusive()
         {
-            LocalDate start = new LocalDate(-9998, 1, 1);
-            LocalDate end1 = new LocalDate(9999, 12, 31);
-            LocalDate end2 = new LocalDate(9999, 12, 31);
-            var interval1 = new DateInterval(start, end1, true);
-            var interval2 = new DateInterval(start, end2, true);
+            var interval1 = new DateInterval(MinIsoDate, MaxIsoDate, true);
+            var interval2 = new DateInterval(MinIsoDate, MaxIsoDate, true);
             Assert.AreEqual(interval1, interval2);
 
             // These are equal under the regular equality operation; they should still be equal under this comparer,
@@ -497,11 +484,8 @@ namespace NodaTime.Test
         [Test]
         public void ContainedDatesEqualityComparer_Extremes_Unequal()
         {
-            LocalDate start = new LocalDate(-9998, 1, 1);
-            LocalDate end1 = new LocalDate(9999, 12, 31);
-            LocalDate end2 = new LocalDate(9999, 12, 31);
-            var interval1 = new DateInterval(start, end1, true);
-            var interval2 = new DateInterval(start, end2, false);
+            var interval1 = new DateInterval(MinIsoDate, MaxIsoDate, true);
+            var interval2 = new DateInterval(MinIsoDate, MaxIsoDate, false);
             Assert.AreNotEqual(interval1, interval2);
 
             IEqualityComparer<DateInterval> comparer = DateInterval.ContainedDatesEqualityComparer;
