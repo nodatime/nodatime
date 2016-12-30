@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -32,6 +34,46 @@ namespace NodaTime
     [Immutable]
     public sealed class DateInterval : IEquatable<DateInterval>
     {
+        /// <summary>
+        /// Returns an equality comparer which compares intervals by first normalizing them to exclusive intervals.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This comparer considers date intervals to be equal if they have the same start and end dates when considered
+        /// as exclusive intervals.  Alternatively: this comparer is identical to the built-in equality for
+        /// <c>DateInterval</c>, except that it also considers an exclusive date interval of [2001-01-01, 2001-02-01) as
+        /// equal to an inclusive date interval of [2001-01-01, 2001-01-31].
+        /// </para>
+        /// <para>
+        /// Note that intervals with different start dates are still considered unequal by this comparer (even empty
+        /// intervals that contain no dates), as are intervals containing dates from different calendars.
+        /// </para>
+        /// </remarks>
+        /// <value>An equality comparer which compares intervals by first normalizing them to exclusive
+        /// intervals.</value>
+        /// <seealso cref="ContainedDatesEqualityComparer"/>
+        public static IEqualityComparer<DateInterval> NormalizingEqualityComparer => NormalizingDateIntervalEqualityComparer.Instance;
+
+        /// <summary>
+        /// Returns an equality comparer which compares intervals by comparing the set of dates contained within them.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This comparer considers date intervals to be equal if they would contain the same dates.  Alternatively:
+        /// this comparer is identical to the built-in equality for <c>DateInterval</c>, except that it also considers
+        /// an exclusive date interval of [2001-01-01, 2001-02-01) as equal to an inclusive date interval of
+        /// [2001-01-01, 2001-01-31] and considers all empty intervals — e.g. [2001-01-01, 2001-01-01) or [1900-01-01,
+        /// 1900-01-01) — to be equal to each other (as every empty interval contains the same set of dates).
+        /// </para>
+        /// <para>
+        /// Note that intervals containing dates from different calendars are still considered unequal by this comparer.
+        /// </para>
+        /// </remarks>
+        /// <value>An equality comparer which compares intervals by comparing the set of dates contained within
+        /// them.</value>
+        /// <seealso cref="NormalizingEqualityComparer"/>
+        public static IEqualityComparer<DateInterval> ContainedDatesEqualityComparer => ContainedDatesDateIntervalEqualityComparer.Instance;
+
         /// <summary>
         /// Gets the start date of the interval, which is always included in the interval.
         /// </summary>
@@ -203,6 +245,110 @@ namespace NodaTime
             string end = LocalDatePattern.Iso.Format(End);
             string endType = Inclusive ? "]" : ")";
             return $"[{start}, {end}{endType}";
+        }
+
+        /// <summary>
+        /// Equality comparer that normalizes intervals before comparing them.
+        /// </summary>
+        private sealed class NormalizingDateIntervalEqualityComparer : EqualityComparer<DateInterval>
+        {
+            internal static readonly NormalizingDateIntervalEqualityComparer Instance = new NormalizingDateIntervalEqualityComparer();
+
+            private NormalizingDateIntervalEqualityComparer()
+            {
+            }
+
+            public override bool Equals(DateInterval x, DateInterval y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+                return Normalize(x) == Normalize(y);
+            }
+
+            public override int GetHashCode([NotNull] DateInterval obj) =>
+                Normalize(Preconditions.CheckNotNull(obj, nameof(obj))).GetHashCode();
+
+            /// <summary>
+            /// Returns a normalized version of this interval such that intervals that have the same start date and
+            /// length are mapped to values that compare equal (while remaining unequal to intervals with a different
+            /// start date or length).  This is conceptually equivalent to converting each passed-in interval to an
+            /// equivalent exclusive interval.
+            /// </summary>
+            /// <remarks>
+            /// <para>
+            /// This method does not convert the passed-in interval to an exclusive interval.  That would be too easy.
+            /// For example, consider the interval [..., 9999-12-31] (in the ISO calendar).  This is equivalent to [...,
+            /// 10000-01-01), which cannot be represented as a DateInterval.
+            /// </para>
+            /// <para>
+            /// Instead, this method maps all non-empty intervals to inclusive intervals, and retains all empty
+            /// intervals as empty intervals (which are exclusive by definition, and unequal to any non-empty interval).
+            /// </para>
+            /// </remarks>
+            /// <returns>The normalized interval.</returns>
+            [NotNull]
+            internal static DateInterval Normalize([NotNull] DateInterval obj)
+            {
+                return obj.Inclusive || obj.Length == 0 ? obj : new DateInterval(obj.Start, obj.End.PlusDays(-1), true);
+            }
+        }
+
+        /// <summary>
+        /// Equality comparer that considers the dates contained within intervals.
+        /// </summary>
+        private sealed class ContainedDatesDateIntervalEqualityComparer : EqualityComparer<DateInterval>
+        {
+            internal static readonly ContainedDatesDateIntervalEqualityComparer Instance = new ContainedDatesDateIntervalEqualityComparer();
+            private static readonly DateInterval CanonicalIsoEmptyInterval = CreateCanonicalEmptyInterval(CalendarSystem.Iso);
+
+            private ContainedDatesDateIntervalEqualityComparer()
+            {
+            }
+
+            public override bool Equals(DateInterval x, DateInterval y)
+            {
+                if (ReferenceEquals(x, y))
+                {
+                    return true;
+                }
+                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                {
+                    return false;
+                }
+                return Normalize(x) == Normalize(y);
+            }
+
+            public override int GetHashCode([NotNull] DateInterval obj) =>
+                Normalize(Preconditions.CheckNotNull(obj, nameof(obj))).GetHashCode();
+
+            /// <summary>
+            /// Returns a normalized version of this interval, by converting non-empty exclusive intervals to inclusive
+            /// ones, and canonicalizing empty intervals to the same start date.
+            /// </summary>
+            /// <returns>The normalized interval.</returns>
+            [NotNull]
+            private static DateInterval Normalize([NotNull] DateInterval obj)
+            {
+                if (obj.Length > 0)
+                {
+                    return NormalizingDateIntervalEqualityComparer.Normalize(obj);
+                }
+                var calendar = obj.Start.Calendar;
+                return calendar == CalendarSystem.Iso ? CanonicalIsoEmptyInterval : CreateCanonicalEmptyInterval(calendar);
+            }
+
+            private static DateInterval CreateCanonicalEmptyInterval(CalendarSystem calendar)
+            {
+                // This can use any arbitrary date for the given calendar, so long as it's a valid date.
+                var date = new LocalDate(calendar.MinYear, 1, 1, calendar);
+                return new DateInterval(date, date, false);
+            }
         }
     }
 }
