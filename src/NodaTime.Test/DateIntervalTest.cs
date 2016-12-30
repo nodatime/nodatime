@@ -314,8 +314,8 @@ namespace NodaTime.Test
         [Test]
         public void NormalizingEqualityComparer_Extremes_Unequal_DifferentCalendars()
         {
-            LocalDate start1 = new LocalDate(2000, 1, 1);
-            LocalDate end1 = new LocalDate(2001, 6, 19);
+            LocalDate start1 = new LocalDate(-9998, 1, 1);
+            LocalDate end1 = new LocalDate(9999, 12, 31);
             LocalDate start2 = start1.WithCalendar(CalendarSystem.Gregorian);
             LocalDate end2 = end1.WithCalendar(CalendarSystem.Gregorian);
             var interval1 = new DateInterval(start1, end1, true);
