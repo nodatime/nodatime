@@ -276,18 +276,19 @@ namespace NodaTime
 
             /// <summary>
             /// Returns a normalized version of this interval such that intervals that have the same start date and
-            /// length are mapped to values that compare equal, while other intervals are left alone.  This is
-            /// conceptually equivalent to converting the passed-in interval to an equivalent exclusive interval.
+            /// length are mapped to values that compare equal (while remaining unequal to intervals with a different
+            /// start date or length).  This is conceptually equivalent to converting each passed-in interval to an
+            /// equivalent exclusive interval.
             /// </summary>
             /// <remarks>
             /// <para>
             /// This method does not convert the passed-in interval to an exclusive interval.  That would be too easy.
+            /// For example, consider the interval [..., 9999-12-31] (in the ISO calendar).  This is equivalent to [...,
+            /// 10000-01-01), which cannot be represented as a DateInterval.
             /// </para>
             /// <para>
-            /// For example, consider the interval [..., 9999-12-31] (in the ISO calendar).  This is equivalent to [...,
-            /// 10000-01-01), which cannot be represented as a DateInterval.  Instead, this method maps all non-empty
-            /// intervals to inclusive intervals, and retains all empty intervals as empty (and exclusive by definition)
-            /// intervals.
+            /// Instead, this method maps all non-empty intervals to inclusive intervals, and retains all empty
+            /// intervals as empty intervals (which are exclusive by definition, and unequal to any non-empty interval).
             /// </para>
             /// </remarks>
             /// <returns>The normalized interval.</returns>
