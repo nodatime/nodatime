@@ -166,50 +166,8 @@ namespace NodaTime
         /// <returns>The resulting date/time.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, [NotNull] CalendarSystem calendar)
-            : this(year, month, day, hour, minute, second, millisecond, 0, calendar)
-        {
-        }
-
-        // TODO(2.0): Remove this constructor? It's a pretty odd one at this point.
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
-        /// </summary>
-        /// <param name="year">The year. This is the "absolute year",
-        /// so a value of 0 means 1 BC, for example.</param>
-        /// <param name="month">The month of year.</param>
-        /// <param name="day">The day of month.</param>
-        /// <param name="hour">The hour.</param>
-        /// <param name="minute">The minute.</param>
-        /// <param name="second">The second.</param>
-        /// <param name="millisecond">The millisecond.</param>
-        /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
-        /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
-            : this(new LocalDate(year, month, day),
-                   LocalTime.FromHourMinuteSecondMillisecondTick(hour, minute, second, millisecond, tickWithinMillisecond))
-        {
-        }
-
-        // TODO(2.0): Remove this constructor? It's a pretty odd one at this point.
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocalDateTime"/> struct.
-        /// </summary>
-        /// <param name="year">The year. This is the "absolute year", so, for
-        /// the ISO calendar, a value of 0 means 1 BC, for example.</param>
-        /// <param name="month">The month of year.</param>
-        /// <param name="day">The day of month.</param>
-        /// <param name="hour">The hour.</param>
-        /// <param name="minute">The minute.</param>
-        /// <param name="second">The second.</param>
-        /// <param name="millisecond">The millisecond.</param>
-        /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
-        /// <param name="calendar">The calendar.</param>
-        /// <returns>The resulting date/time.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
-        public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond, [NotNull] CalendarSystem calendar)
             : this(new LocalDate(year, month, day, calendar),
-                   LocalTime.FromHourMinuteSecondMillisecondTick(hour, minute, second, millisecond, tickWithinMillisecond))
+                   new LocalTime(hour, minute, second, millisecond))
         {
         }
 

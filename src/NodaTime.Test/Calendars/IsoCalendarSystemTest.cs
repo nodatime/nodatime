@@ -70,7 +70,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void ConstructLocalInstant_WithAllFields()
         {
-            LocalInstant localAchievement = new LocalDateTime(2009, 11, 27, 18, 38, 25, 345, 8765).ToLocalInstant();
+            LocalInstant localAchievement = new LocalDateTime(2009, 11, 27, 18, 38, 25, 345).PlusTicks(8765).ToLocalInstant();
             long bclTicks = (TimeOfGreatAchievement - UnixEpochDateTime).Ticks;
             int bclDays = (int) (bclTicks / NodaConstants.TicksPerDay);
             long bclTickOfDay = bclTicks % NodaConstants.TicksPerDay;

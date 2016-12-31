@@ -30,9 +30,9 @@ namespace NodaTime.Test
         [Test]
         public void SimpleProperties()
         {
-            var value = SampleZone.AtStrictly(new LocalDateTime(2012, 2, 10, 8, 9, 10, 11, 12));
+            var value = SampleZone.AtStrictly(new LocalDateTime(2012, 2, 10, 8, 9, 10).PlusNanoseconds(123456789));
             Assert.AreEqual(new LocalDate(2012, 2, 10), value.Date);
-            Assert.AreEqual(LocalTime.FromHourMinuteSecondMillisecondTick(8, 9, 10, 11, 12), value.TimeOfDay);
+            Assert.AreEqual(LocalTime.FromHourMinuteSecondNanosecond(8, 9, 10, 123456789), value.TimeOfDay);
             Assert.AreEqual(Era.Common, value.Era);
             Assert.AreEqual(2012, value.Year);
             Assert.AreEqual(2012, value.YearOfEra);
@@ -44,14 +44,18 @@ namespace NodaTime.Test
             Assert.AreEqual(8, value.Hour);
             Assert.AreEqual(9, value.Minute);
             Assert.AreEqual(10, value.Second);
-            Assert.AreEqual(11, value.Millisecond);
-            Assert.AreEqual(11 * 10000 + 12, value.TickOfSecond);
+            Assert.AreEqual(123, value.Millisecond);
+            Assert.AreEqual(1234567, value.TickOfSecond);
             Assert.AreEqual(8 * NodaConstants.TicksPerHour +
                             9 * NodaConstants.TicksPerMinute +
                             10 * NodaConstants.TicksPerSecond +
-                            11 * NodaConstants.TicksPerMillisecond +
-                            12,
+                            1234567,
                             value.TickOfDay);
+            Assert.AreEqual(8 * NodaConstants.NanosecondsPerHour +
+                            9 * NodaConstants.NanosecondsPerMinute +
+                            10 * NodaConstants.NanosecondsPerSecond +
+                            123456789,
+                            value.NanosecondOfDay);
         }
 
         [Test]

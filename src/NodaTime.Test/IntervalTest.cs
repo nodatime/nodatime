@@ -95,10 +95,10 @@ namespace NodaTime.Test
         [Test]
         public void ToStringUsesExtendedIsoFormat()
         {
-            var start = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();
+            var start = new LocalDateTime(2013, 4, 12, 17, 53, 23).PlusNanoseconds(123456789).InUtc().ToInstant();
             var end = new LocalDateTime(2013, 10, 12, 17, 1, 2, 120).InUtc().ToInstant();
             var value = new Interval(start, end);
-            Assert.AreEqual("2013-04-12T17:53:23.1234567Z/2013-10-12T17:01:02.12Z", value.ToString());
+            Assert.AreEqual("2013-04-12T17:53:23.123456789Z/2013-10-12T17:01:02.12Z", value.ToString());
         }
 
         [Test]
@@ -111,10 +111,10 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization()
         {
-            var start = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();
+            var start = new LocalDateTime(2013, 4, 12, 17, 53, 23).PlusNanoseconds(123456789).InUtc().ToInstant();
             var end = new LocalDateTime(2013, 10, 12, 17, 1, 2).InUtc().ToInstant();
             var value = new Interval(start, end);
-            TestHelper.AssertXmlRoundtrip(value, "<value start=\"2013-04-12T17:53:23.1234567Z\" end=\"2013-10-12T17:01:02Z\" />");
+            TestHelper.AssertXmlRoundtrip(value, "<value start=\"2013-04-12T17:53:23.123456789Z\" end=\"2013-10-12T17:01:02Z\" />");
         }
 
         [Test]
@@ -127,20 +127,20 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization_ExtraContent()
         {
-            var start = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();
+            var start = new LocalDateTime(2013, 4, 12, 17, 53, 23).PlusNanoseconds(123456789).InUtc().ToInstant();
             var end = new LocalDateTime(2013, 10, 12, 17, 1, 2).InUtc().ToInstant();
             var value = new Interval(start, end);
             TestHelper.AssertParsableXml(value,
-                "<value start=\"2013-04-12T17:53:23.1234567Z\" end=\"2013-10-12T17:01:02Z\">Text<child attr=\"value\"/>Text 2</value>");
+                "<value start=\"2013-04-12T17:53:23.123456789Z\" end=\"2013-10-12T17:01:02Z\">Text<child attr=\"value\"/>Text 2</value>");
         }
 
         [Test]
         public void XmlSerialization_SwapAttributeOrder()
         {
-            var start = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();
+            var start = new LocalDateTime(2013, 4, 12, 17, 53, 23).PlusNanoseconds(123456789).InUtc().ToInstant();
             var end = new LocalDateTime(2013, 10, 12, 17, 1, 2).InUtc().ToInstant();
             var value = new Interval(start, end);
-            TestHelper.AssertParsableXml(value, "<value end=\"2013-10-12T17:01:02Z\" start=\"2013-04-12T17:53:23.1234567Z\" />");
+            TestHelper.AssertParsableXml(value, "<value end=\"2013-10-12T17:01:02Z\" start=\"2013-04-12T17:53:23.123456789Z\" />");
         }
 
         [Test]

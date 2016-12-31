@@ -25,9 +25,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public LocalDateTime ConstructionToSecond() => new LocalDateTime(2009, 12, 26, 10, 8, 30);
 
         [Benchmark]
-        public LocalDateTime ConstructionToTick() => new LocalDateTime(2009, 12, 26, 10, 8, 30, 0, 0);
-
-        [Benchmark]
         public LocalDateTime FromDateTime() => LocalDateTime.FromDateTime(SampleDateTime);
 
         [Benchmark]

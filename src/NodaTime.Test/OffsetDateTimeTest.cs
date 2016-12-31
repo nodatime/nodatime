@@ -20,7 +20,7 @@ namespace NodaTime.Test
         [Test]
         public void LocalDateTimeProperties()
         {
-            LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, 4, 5, CalendarSystem.Julian);
+            LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, CalendarSystem.Julian).PlusNanoseconds(123456789);
             Offset offset = Offset.FromHours(5);
 
             OffsetDateTime odt = new OffsetDateTime(local, offset);
@@ -51,7 +51,7 @@ namespace NodaTime.Test
         [Test]
         public void LocalDateTimeProperty()
         {
-            LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, 4, 5, CalendarSystem.Julian);
+            LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, CalendarSystem.Julian).PlusNanoseconds(123456789);
             Offset offset = Offset.FromHours(5);
 
             OffsetDateTime odt = new OffsetDateTime(local, offset);
@@ -369,7 +369,7 @@ namespace NodaTime.Test
         public void With_TimeAdjuster()
         {
             Offset offset = Offset.FromHoursAndMinutes(2, 30);
-            OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 15, 8, 100, 1234).WithOffset(offset);
+            OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 15, 8).PlusNanoseconds(123456789).WithOffset(offset);
             OffsetDateTime expected = new LocalDateTime(2014, 6, 27, 12, 15, 8).WithOffset(offset);
             Assert.AreEqual(expected, start.With(TimeAdjusters.TruncateToSecond));
         }
@@ -378,8 +378,8 @@ namespace NodaTime.Test
         public void With_DateAdjuster()
         {
             Offset offset = Offset.FromHoursAndMinutes(2, 30);
-            OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 5, 8, 100, 1234).WithOffset(offset);
-            OffsetDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8, 100, 1234).WithOffset(offset);
+            OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 5, 8).PlusNanoseconds(123456789).WithOffset(offset);
+            OffsetDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8).PlusNanoseconds(123456789).WithOffset(offset);
             Assert.AreEqual(expected, start.With(DateAdjusters.EndOfMonth));
         }
     }
