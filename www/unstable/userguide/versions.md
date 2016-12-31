@@ -15,6 +15,9 @@ Breaking changes:
 
 See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full details.
 
+- When passing an `IFormatProvider`, only `CultureInfo` and `DateTimeFormatInfo` values can be used;
+  any other non-null reference will now throw an exception. When a `DateTimeFormatInfo` is provided,
+  the invariant culture is used for resource lookups and text comparisons.
 - Removed `LocalDateTime` constructors accepting tick values
 - Changed `LocalTime` constructors accepting tick values (tick-of-second and tick-of-millisecond)
   to be static factory methods.

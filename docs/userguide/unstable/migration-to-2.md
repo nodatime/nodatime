@@ -211,6 +211,13 @@ expected (e.g. a date pattern of "yyyy-mm-dd"). One exception here is 'T', which
 patterns only - so a date/time pattern of "yyyy-MM-ddTHH:mm:ss" is still acceptable for ISO-8601, for example.
 If this change breaks your code, simply escape or quote the literals within the pattern.
 
+When specifying a BCL `IFormatProvider`, only `CultureInfo` and `DateTimeFormatInfo` values can be used;
+any other non-null reference will now throw an exception. When a `DateTimeFormatInfo` is provided,
+the invariant culture is used for resource lookups and text comparisons. The previous behavior was to
+use the current culture for anything other than a `CultureInfo` value. To obtain the equivalent behavior, simply
+pass `provider as CultureInfo` to end up with a null argument for non-CultureInfo values, which will still
+use the current culture.
+
 Lenient resolver changes
 ===
 In 2.0, the `LenientResolver`, which is used by `DateTimeZone.AtLeniently` and `LocalDateTime.InZoneLeniently`,

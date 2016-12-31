@@ -13,16 +13,19 @@ using NodaTime.Text;
 using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using NodaTime.Annotations;
 
 namespace NodaTime.Globalization
 {
     /// <summary>
-    /// A <see cref="IFormatProvider"/> for Noda Time types, initialised from a <see cref="CultureInfo"/>.
+    /// A <see cref="IFormatProvider"/> for Noda Time types, usually initialised from a <see cref="System.Globalization.CultureInfo"/>.
     /// This provides a single place defining how NodaTime values are formatted and displayed, depending on the culture.
     /// </summary>
     /// <remarks>
     /// Currently this is "shallow-immutable" - although none of these properties can be changed, the
-    /// CultureInfo itself may be mutable. In the future we will make this fully immutable.
+    /// CultureInfo itself may be mutable. If the CultureInfo is mutated after initialization, results are not
+    /// guaranteed: some aspects of the CultureInfo may be extracted at initialization time, others may be
+    /// extracted on first demand but cached, and others may be extracted on-demand each time.
     /// </remarks>
     /// <threadsafety>Instances which use read-only CultureInfo instances are immutable,
     /// and may be used freely between threads. Instances with mutable cultures should not be shared between threads
@@ -55,7 +58,9 @@ namespace NodaTime.Globalization
         public static readonly NodaFormatInfo InvariantInfo = new NodaFormatInfo(CultureInfo.InvariantCulture);
 
         // Justification for max size: CultureInfo.GetCultures(CultureTypes.AllCultures) returns 378 cultures
-        // on Windows 8 in mid-2013. 500 should be ample, without being enormous.
+        // on Windows 8 in mid-2013. In late 2016 on Windows 10 it's 832, but it's unlikely that they'll all be
+        // used by any particular application.
+        // 500 should be ample for almost all cases, without being enormous.
         private static readonly Cache<CultureInfo, NodaFormatInfo> Cache = new Cache<CultureInfo, NodaFormatInfo>
             (500, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
 
@@ -73,13 +78,30 @@ namespace NodaTime.Globalization
         private readonly Dictionary<Era, EraDescription> eraDescriptions;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class.
+        /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class based solely
+        /// on a <see cref="System.Globalization.CultureInfo"/>.
         /// </summary>
-        /// <param name="cultureInfo">The culture info to base this on.</param>
+        /// <param name="cultureInfo">The culture info to use.</param>
+        [VisibleForTesting]
         internal NodaFormatInfo([NotNull] CultureInfo cultureInfo)
+            : this(cultureInfo, cultureInfo?.DateTimeFormat)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class based on
+        /// potentially disparate <see cref="System.Globalization.CultureInfo"/> and
+        /// <see cref="DateTimeFormatInfo"/> instances.
+        /// </summary>
+        /// <param name="cultureInfo">The culture info to use for text comparisons and resource lookups.</param>
+        /// <param name="dateTimeFormat">The date/time format to use for format strings etc.</param>
+        [VisibleForTesting]
+        internal NodaFormatInfo([NotNull] CultureInfo cultureInfo, [NotNull] DateTimeFormatInfo dateTimeFormat)
         {
             Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
-            this.CultureInfo = cultureInfo;
+            Preconditions.CheckNotNull(dateTimeFormat, nameof(dateTimeFormat));
+            CultureInfo = cultureInfo;
+            DateTimeFormat = dateTimeFormat;
             eraDescriptions = new Dictionary<Era, EraDescription>();
 #if PCL
             // Horrible, but it does the job...
@@ -97,10 +119,10 @@ namespace NodaTime.Globalization
                     return;
                 }
                 // Turn month names into 1-based read-only lists
-                longMonthNames = ConvertMonthArray(CultureInfo.DateTimeFormat.MonthNames);
-                shortMonthNames = ConvertMonthArray(CultureInfo.DateTimeFormat.AbbreviatedMonthNames);
-                longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, CultureInfo.DateTimeFormat.MonthGenitiveNames, LongInvariantMonthNames);
-                shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, CultureInfo.DateTimeFormat.AbbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
+                longMonthNames = ConvertMonthArray(DateTimeFormat.MonthNames);
+                shortMonthNames = ConvertMonthArray(DateTimeFormat.AbbreviatedMonthNames);
+                longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, DateTimeFormat.MonthGenitiveNames, LongInvariantMonthNames);
+                shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, DateTimeFormat.AbbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
             }
         }
 
@@ -122,8 +144,8 @@ namespace NodaTime.Globalization
                 {
                     return;
                 }
-                longDayNames = ConvertDayArray(CultureInfo.DateTimeFormat.DayNames);
-                shortDayNames = ConvertDayArray(CultureInfo.DateTimeFormat.AbbreviatedDayNames);
+                longDayNames = ConvertDayArray(DateTimeFormat.DayNames);
+                shortDayNames = ConvertDayArray(DateTimeFormat.AbbreviatedDayNames);
             }
         }
 
@@ -174,7 +196,8 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        /// Gets the culture info associated with this format provider.
+        /// Gets the culture info associated with this format provider. This is used
+        /// for resource lookups and text comparisons.
         /// </summary>
         public CultureInfo CultureInfo { get; }
 
@@ -253,7 +276,13 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the BCL date time format associated with this formatting information.
         /// </summary>
-        public DateTimeFormatInfo DateTimeFormat => CultureInfo.DateTimeFormat;
+        /// <remarks>
+        /// This is usually the <see cref="DateTimeFormatInfo"/> from <see cref="CultureInfo"/>,
+        /// but in some cases they're different: if a DateTimeFormatInfo is provided with no
+        /// CultureInfo, that's used for format strings but the invariant culture is used for
+        /// text comparisons and culture lookups for non-BCL formats (such as Offset) and for error messages.
+        /// </remarks>
+        public DateTimeFormatInfo DateTimeFormat { get; }
         
 #if PCL
         /// <summary>
@@ -388,22 +417,34 @@ namespace NodaTime.Globalization
 
         /// <summary>
         /// Gets the <see cref="NodaFormatInfo" /> for the given <see cref="IFormatProvider" />. If the
-        /// format provider is null or if it does not provide a <see cref="NodaFormatInfo" />
-        /// object then the format object for the current thread is returned.
+        /// format provider is null then the format object for the current thread is returned. If it's
+        /// a CultureInfo, that's used for everything. If it's a DateTimeFormatInfo, that's used for
+        /// format strings, day names etc but the invariant culture is used for text comparisons and
+        /// resource lookups. Otherwise, <see cref="ArgumentException"/> is thrown.
         /// </summary>
         /// <param name="provider">The <see cref="IFormatProvider" />.</param>
+        /// <exception cref="ArgumentException">The format provider cannot be used for Noda Time.</exception>
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
         public static NodaFormatInfo GetInstance(IFormatProvider provider)
         {
-            if (provider != null)
+            // TODO: Use C# 7 pattern matching for this...
+            if (provider == null)
             {
-                var cultureInfo = provider as CultureInfo;
-                if (cultureInfo != null)
-                {
-                    return GetFormatInfo(cultureInfo);
-                }
+                provider = CultureInfo.CurrentCulture;
             }
-            return GetInstance(CultureInfo.CurrentCulture);
+            var cultureInfo = provider as CultureInfo;
+            if (cultureInfo != null)
+            {
+                return GetFormatInfo(cultureInfo);
+            }
+            // Note: no caching for this case. It's a corner case anyway... we could add a cache later
+            // if users notice a problem.
+            var dateTimeFormatInfo = provider as DateTimeFormatInfo;
+            if (dateTimeFormatInfo != null)
+            {
+                return new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo);
+            }
+            throw new ArgumentException($"Cannot use provider of type {provider.GetType().FullName} in Noda Time", nameof(provider));
         }
 
         /// <summary>
