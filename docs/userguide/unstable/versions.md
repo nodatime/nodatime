@@ -8,6 +8,8 @@ Breaking changes:
 
 See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.md) for full details.
 
+- Changed `LocalTime` constructors accepting tick values (tick-of-second and tick-of-millisecond)
+  to be static factory methods.
 - Renamed all static pattern properties to remove the `Pattern` suffix
 - Renamed the `IsoDayOfWeek` properties in `LocalDate`, `LocalDateTime`, `OffsetDateTime`
   and `ZonedDateTime` to just `DayOfWeek`, and removed the previous numeric `DayOfWeek` properties.

@@ -187,7 +187,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
             : this(new LocalDate(year, month, day),
-                   new LocalTime(hour, minute, second, millisecond, tickWithinMillisecond))
+                   LocalTime.FromHourMinuteSecondMillisecondTick(hour, minute, second, millisecond, tickWithinMillisecond))
         {
         }
 
@@ -209,7 +209,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond, [NotNull] CalendarSystem calendar)
             : this(new LocalDate(year, month, day, calendar),
-                   new LocalTime(hour, minute, second, millisecond, tickWithinMillisecond))
+                   LocalTime.FromHourMinuteSecondMillisecondTick(hour, minute, second, millisecond, tickWithinMillisecond))
         {
         }
 

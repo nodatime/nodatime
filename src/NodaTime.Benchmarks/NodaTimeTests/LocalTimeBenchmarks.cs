@@ -8,7 +8,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 {
     public class LocalTimeBenchmarks
     {
-        private static readonly LocalTime Sample = new LocalTime(10, 8, 30, 300, 1234);
+        private static readonly LocalTime Sample = LocalTime.FromHourMinuteSecondMillisecondTick(10, 8, 30, 300, 1234);
         private static readonly Period SamplePeriod = new PeriodBuilder { Hours = 10, Minutes = 4, Seconds = 5, Milliseconds = 20, Ticks = 30 }.Build();
         private static readonly LocalDateTime LocalDateTime = new LocalDateTime(2011, 9, 14, 15, 10, 25);
 
@@ -22,7 +22,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public LocalTime ConstructionToMillisecond() => new LocalTime(15, 10, 25, 500);
 
         [Benchmark]
-        public LocalTime ConstructionToTick() => new LocalTime(15, 10, 25, 500, 1234);
+        public LocalTime ConstructionToTick() => LocalTime.FromHourMinuteSecondMillisecondTick(15, 10, 25, 500, 1234);
 
         [Benchmark]
         public LocalTime ConversionFromLocalDateTime() => LocalDateTime.TimeOfDay;

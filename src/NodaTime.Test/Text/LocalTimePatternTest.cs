@@ -16,7 +16,7 @@ namespace NodaTime.Test.Text
     public partial class LocalTimePatternTest : PatternTestBase<LocalTime>
     {
         private static readonly DateTime SampleDateTime = new DateTime(2000, 1, 1, 21, 13, 34, 123, DateTimeKind.Unspecified).AddTicks(4567);
-        private static readonly LocalTime SampleLocalTime = new LocalTime(21, 13, 34, 123, 4567);
+        private static readonly LocalTime SampleLocalTime = LocalTime.FromHourMinuteSecondMillisecondTick(21, 13, 34, 123, 4567);
 
         // Characters we expect to work the same in Noda Time as in the BCL.
         private const string ExpectedCharacters = "hHms.:fFtT ";
@@ -159,12 +159,12 @@ namespace NodaTime.Test.Text
 
         internal static readonly Data[] TemplateValueData = {
             // Pattern specifies nothing - template value is passed through
-            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "X", Pattern = "'X'", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "X", Pattern = "'X'", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
             // Tests for each individual field being propagated
-            new Data(new LocalTime(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 7, 8, 4, 5)) { Culture = Cultures.EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5)) { Culture = Cultures.EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
 
             // Hours are tricky because of the ways they can be specified
             new Data(new LocalTime(6, 2, 3)) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(1, 2, 3) },
@@ -256,13 +256,13 @@ namespace NodaTime.Test.Text
             new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt" },
 
             // Pattern specifies nothing - template value is passed through
-            new Data(new LocalTime(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "*", Pattern = "%*", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "*", Pattern = "%*", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
             // Tests for each individual field being propagated
-            new Data(new LocalTime(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = new LocalTime(1, 2, 3, 4, 5) },
-            new Data(new LocalTime(6, 7, 8, 4, 5)) { Culture = Cultures.EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = new LocalTime(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
+            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5)) { Culture = Cultures.EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
 
             // Hours are tricky because of the ways they can be specified
             new Data(new LocalTime(6, 2, 3)) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(1, 2, 3) },
@@ -433,7 +433,7 @@ namespace NodaTime.Test.Text
             }
 
             public Data(int hours, int minutes, int seconds, int milliseconds, int ticksWithinMillisecond)
-                : this(new LocalTime(hours, minutes, seconds, milliseconds, ticksWithinMillisecond))
+                : this(LocalTime.FromHourMinuteSecondMillisecondTick(hours, minutes, seconds, milliseconds, ticksWithinMillisecond))
             {
             }
 

@@ -72,9 +72,9 @@ namespace NodaTime.Test
         [Test]
         public void PlusTicks_Simple()
         {
-            LocalTime start = new LocalTime(12, 15, 8, 300, 7500);
-            LocalTime expectedForward = new LocalTime(12, 15, 8, 301, 1500);
-            LocalTime expectedBackward = new LocalTime(12, 15, 8, 300, 3500);
+            LocalTime start = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
+            LocalTime expectedForward = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 301, 1500);
+            LocalTime expectedBackward = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 3500);
             Assert.AreEqual(expectedForward, start.PlusTicks(4000));
             Assert.AreEqual(expectedBackward, start.PlusTicks(-4000));
         }
@@ -93,7 +93,7 @@ namespace NodaTime.Test
         [Test]
         public void With()
         {
-            LocalTime start = new LocalTime(12, 15, 8, 100, 1234);
+            LocalTime start = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 100, 1234);
             LocalTime expected = new LocalTime(12, 15, 8);
             Assert.AreEqual(expected, start.With(TimeAdjusters.TruncateToSecond));
         }

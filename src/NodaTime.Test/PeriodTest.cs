@@ -215,7 +215,7 @@ namespace NodaTime.Test
         public void BetweenLocalTimes_InvalidUnits()
         {
             LocalTime t1 = new LocalTime(10, 0);
-            LocalTime t2 = new LocalTime(15, 30, 45, 20, 5);
+            LocalTime t2 = LocalTime.FromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
             Assert.Throws<ArgumentException>(() => Period.Between(t1, t2, 0));
             Assert.Throws<ArgumentException>(() => Period.Between(t1, t2, (PeriodUnits)(-1)));
             Assert.Throws<ArgumentException>(() => Period.Between(t1, t2, PeriodUnits.YearMonthDay));
@@ -226,7 +226,7 @@ namespace NodaTime.Test
         public void BetweenLocalTimes_MovingForwards()
         {
             LocalTime t1 = new LocalTime(10, 0);
-            LocalTime t2 = new LocalTime(15, 30, 45, 20, 5);
+            LocalTime t2 = LocalTime.FromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
             Assert.AreEqual(Period.FromHours(5) + Period.FromMinutes(30) + Period.FromSeconds(45) +
                                Period.FromMilliseconds(20) + Period.FromTicks(5),
                                Period.Between(t1, t2));
@@ -235,7 +235,7 @@ namespace NodaTime.Test
         [Test]
         public void BetweenLocalTimes_MovingBackwards()
         {
-            LocalTime t1 = new LocalTime(15, 30, 45, 20, 5);
+            LocalTime t1 = LocalTime.FromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
             LocalTime t2 = new LocalTime(10, 0);
             Assert.AreEqual(Period.FromHours(-5) + Period.FromMinutes(-30) + Period.FromSeconds(-45) +
                                Period.FromMilliseconds(-20) + Period.FromTicks(-5),

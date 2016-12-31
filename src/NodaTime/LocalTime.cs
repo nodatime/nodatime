@@ -138,7 +138,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Creates a local time at the given hour, minute, second, millisecond and tick within millisecond.
+        /// Factory method to create a local time at the given hour, minute, second, millisecond and tick within millisecond.
         /// </summary>
         /// <param name="hour">The hour of day.</param>
         /// <param name="minute">The minute of the hour.</param>
@@ -147,7 +147,7 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within the millisecond.</param>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid time.</exception>
         /// <returns>The resulting time.</returns>
-        public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
+        public static LocalTime FromHourMinuteSecondMillisecondTick(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
             if (hour < 0 || hour > HoursPerDay - 1 ||
@@ -162,12 +162,13 @@ namespace NodaTime
                 Preconditions.CheckArgumentRange(nameof(millisecond), millisecond, 0, MillisecondsPerSecond - 1);
                 Preconditions.CheckArgumentRange(nameof(tickWithinMillisecond), tickWithinMillisecond, 0, TicksPerMillisecond - 1);
             }
-            nanoseconds = unchecked(
+            long nanoseconds = unchecked(
                 hour * NanosecondsPerHour +
                 minute * NanosecondsPerMinute +
                 second * NanosecondsPerSecond +
                 millisecond * NanosecondsPerMillisecond +
                 tickWithinMillisecond * NanosecondsPerTick);
+            return new LocalTime(nanoseconds);
         }
 
         /// <summary>
