@@ -43,6 +43,13 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void PlusNanoseconds()
+        {
+            Instant instant = Instant.FromUnixTimeTicks(5);
+            Assert.AreEqual(Instant.FromUnixTimeTicks(8), instant.PlusNanoseconds(300));
+        }
+
+        [Test]
         public void OperatorPlusDuration_Zero_IsNeutralElement()
         {
             Assert.AreEqual(NodaConstants.UnixEpoch, NodaConstants.UnixEpoch + Duration.Zero, "UnixEpoch + Duration.Zero");

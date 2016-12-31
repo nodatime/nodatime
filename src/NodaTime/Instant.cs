@@ -224,10 +224,19 @@ namespace NodaTime
         /// <summary>
         /// Returns a new value of this instant with the given number of ticks added to it.
         /// </summary>
-        /// <param name="ticksToAdd">The ticks to add to this instant to create the return value.</param>
+        /// <param name="ticks">The ticks to add to this instant to create the return value.</param>
         /// <returns>The result of adding the given number of ticks to this instant.</returns>
         [Pure]
-        public Instant PlusTicks(long ticksToAdd) => FromUntrustedDuration(duration + Duration.FromTicks(ticksToAdd));
+        public Instant PlusTicks(long ticks) => FromUntrustedDuration(duration + Duration.FromTicks(ticks));
+
+        /// <summary>
+        /// Returns a new value of this instant with the given number of nanoseconds added to it.
+        /// </summary>
+        /// <param name="nanoseconds">The nanoseconds to add to this instant to create the return value.</param>
+        /// <returns>The result of adding the given number of ticks to this instant.</returns>
+        [Pure]
+        public Instant PlusNanoseconds(long nanoseconds) => FromUntrustedDuration(duration + Duration.FromNanoseconds(nanoseconds));
+
         #region Operators
         /// <summary>
         /// Implements the operator + (addition) for <see cref="Instant" /> + <see cref="Duration" />.
