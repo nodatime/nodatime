@@ -16,7 +16,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.JsonNet
 
         private static readonly Instant sampleInstant = Instant.FromUtc(2012, 1, 2, 3, 4, 5);
         private static readonly DateTimeZone sampleDateTimeZone = DateTimeZoneProviders.Tzdb["Europe/London"];
-        private static readonly LocalDateTime sampleLocalDateTime = new LocalDateTime(2013, 12, 11, 8, 31, 20, 123, 4567);
+        private static readonly LocalDateTime sampleLocalDateTime = new LocalDateTime(2013, 12, 11, 8, 31, 20).PlusNanoseconds(123456789);
         private static readonly LocalDate sampleLocalDate = sampleLocalDateTime.Date;
         private static readonly LocalTime sampleLocalTime = sampleLocalDateTime.TimeOfDay;
         private static readonly Offset sampleOffset = Offset.FromHoursAndMinutes(5, 30);

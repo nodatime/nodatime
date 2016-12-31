@@ -283,8 +283,8 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization()
         {
-            var value = new LocalDateTime(2013, 4, 12, 17, 53, 23, 123, 4567).InUtc().ToInstant();
-            TestHelper.AssertXmlRoundtrip(value, "<value>2013-04-12T17:53:23.1234567Z</value>");
+            var value = new LocalDateTime(2013, 4, 12, 17, 53, 23).PlusNanoseconds(123456789).InUtc().ToInstant();
+            TestHelper.AssertXmlRoundtrip(value, "<value>2013-04-12T17:53:23.123456789Z</value>");
         }
 
         [Test]

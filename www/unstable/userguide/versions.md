@@ -15,6 +15,7 @@ Breaking changes:
 
 See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full details.
 
+- Removed `LocalDateTime` constructors accepting tick values
 - Changed `LocalTime` constructors accepting tick values (tick-of-second and tick-of-millisecond)
   to be static factory methods.
 - Renamed all static pattern properties to remove the `Pattern` suffix

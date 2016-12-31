@@ -92,6 +92,11 @@ to `int` and always get the same result, as all calendar systems use ISO days of
 The `LocalTime` constructors accepting tick values (tick-of-second and tick-of-millisecond)
 have been converted to static factory methods (`FromHourMinuteSecondTick` and `FromHourMinuteSecondMillisecondTick`).
 
+The `LocalDateTime` constructors accepting tick values have been removed. To construct a `LocalDateTime`
+value with a value more fine-grained than milliseconds, either construct separate `LocalDate` and `LocalTime`
+values and add them together, or construct a `LocalDateTime` to the nearest second (or millisecond) and use
+`PlusTicks` or `PlusNanoseconds` to construct the final one.
+
 Period
 ====
 

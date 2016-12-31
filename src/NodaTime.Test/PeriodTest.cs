@@ -785,13 +785,13 @@ namespace NodaTime.Test
         public void Between_ExtremeValues(PeriodUnits units)
         {
             // We can't use None, and Ticks/Nanoseconds will *correctly* overflow.
-            if (units == PeriodUnits.None || units == PeriodUnits.Ticks || units== PeriodUnits.Nanoseconds)
+            if (units == PeriodUnits.None || units == PeriodUnits.Ticks || units == PeriodUnits.Nanoseconds)
             {
                 return;
             }
             var iso = CalendarSystem.Iso;
             var minValue = new LocalDateTime(iso.MinYear, 1, 1, 0, 0);
-            var maxValue = new LocalDateTime(iso.MaxYear, 12, 31, 23, 59, 59, 999, (int) (NodaConstants.TicksPerMillisecond - 1));
+            var maxValue = new LocalDateTime(iso.MaxYear, 12, 31, 23, 59, 59).PlusNanoseconds(999999999);
             Period.Between(minValue, maxValue, units);
         }
 
