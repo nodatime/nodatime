@@ -89,6 +89,9 @@ and `ZonedDateTime` are now just called `DayOfWeek`. The previous numeric `DayOf
 have been removed, but in all cases if you were actually calling them, you can just cast the `IsoDayOfWeek`
 to `int` and always get the same result, as all calendar systems use ISO days of the week.
 
+The `LocalTime` constructors accepting tick values (tick-of-second and tick-of-millisecond)
+have been converted to static factory methods (`FromHourMinuteSecondTick` and `FromHourMinuteSecondMillisecondTick`).
+
 Period
 ====
 

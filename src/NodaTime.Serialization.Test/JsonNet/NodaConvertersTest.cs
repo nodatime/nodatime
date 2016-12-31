@@ -90,7 +90,7 @@ namespace NodaTime.Serialization.Test.JsonNet
         [Test]
         public void LocalTimeConverter()
         {
-            var value = new LocalTime(1, 2, 3, 4, 5).PlusNanoseconds(67);
+            var value = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5).PlusNanoseconds(67);
             var json = "\"01:02:03.004000567\"";
             AssertConversions(value, json, NodaConverters.LocalTimeConverter);
         }

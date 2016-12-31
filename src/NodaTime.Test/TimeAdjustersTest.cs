@@ -10,7 +10,7 @@ namespace NodaTime.Test
         [Test]
         public void TruncateToSecond()
         {
-            var start = new LocalTime(7, 4, 30, 123, 4567);
+            var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
             var end = new LocalTime(7, 4, 30);
             Assert.AreEqual(end, TimeAdjusters.TruncateToSecond(start));
         }
@@ -18,7 +18,7 @@ namespace NodaTime.Test
         [Test]
         public void TruncateToMinute()
         {
-            var start = new LocalTime(7, 4, 30, 123, 4567);
+            var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
             var end = new LocalTime(7, 4, 0);
             Assert.AreEqual(end, TimeAdjusters.TruncateToMinute(start));
         }
@@ -26,7 +26,7 @@ namespace NodaTime.Test
         [Test]
         public void TruncateToHour()
         {
-            var start = new LocalTime(7, 4, 30, 123, 4567);
+            var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
             var end = new LocalTime(7, 0, 0);
             Assert.AreEqual(end, TimeAdjusters.TruncateToHour(start));
         }
