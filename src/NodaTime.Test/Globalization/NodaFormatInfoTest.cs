@@ -18,16 +18,6 @@ namespace NodaTime.Test.Globalization
         private static readonly CultureInfo enUs = Cultures.GetCultureInfo("en-US");
         private static readonly CultureInfo enGb = Cultures.GetCultureInfo("en-GB");
 
-        private sealed class EmptyFormatProvider : IFormatProvider
-        {
-            #region IFormatProvider Members
-            public object GetFormat(Type formatType)
-            {
-                return null;
-            }
-            #endregion
-        }
-
         // Just check we can actually build a NodaFormatInfo for every culture, outside
         // text-specific tests.
         [Test]
@@ -132,14 +122,21 @@ namespace NodaTime.Test.Globalization
         }
 
         [Test]
-        public void TestGetInstance_IFormatProvider()
+        public void TestGetInstance_UnusableType()
+        {
+            NodaFormatInfo.ClearCache();
+            Assert.Throws<ArgumentException>(() => NodaFormatInfo.GetInstance(CultureInfo.InvariantCulture.NumberFormat));
+        }
+
+        [Test]
+        public void TestGetInstance_DateTimeFormatInfo()
         {
             NodaFormatInfo.ClearCache();
             using (CultureSaver.SetCultures(enUs, FailingCultureInfo.Instance))
             {
-                var provider = new EmptyFormatProvider();
-                var actual = NodaFormatInfo.GetInstance(provider);
-                Assert.AreSame(enUs, actual.CultureInfo);
+                var info = NodaFormatInfo.GetInstance(enGb.DateTimeFormat);
+                Assert.AreEqual(enGb.DateTimeFormat, info.DateTimeFormat);
+                Assert.AreEqual(CultureInfo.InvariantCulture, info.CultureInfo);
             }
         }
 
