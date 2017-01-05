@@ -33,6 +33,26 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [TestCase(100)]
+        [TestCase(1900)]
+        [TestCase(2900)]
+        public void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
+        {
+            var ldt = new LocalDateTime(year, 1, 1, 13, 15, 55).PlusNanoseconds(NodaConstants.NanosecondsPerSecond - 1);
+            var expected = new DateTime(year, 1, 1, 13, 15, 55, DateTimeKind.Unspecified).AddTicks(NodaConstants.TicksPerSecond - 1);
+            var actual = ldt.ToDateTimeUnspecified();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ToDateTimeUnspecified_OutOfRange()
+        {
+            // One day before 1st January, 1AD (which is DateTime.MinValue)
+            var ldt = new LocalDate(1, 1, 1).PlusDays(-1).AtMidnight();
+            Assert.Throws<InvalidOperationException>(() => ldt.ToDateTimeUnspecified());
+        }
+
+        [Test]
         public void FromDateTime()
         {
             LocalDateTime expected = new LocalDateTime(2011, 08, 18, 20, 53);

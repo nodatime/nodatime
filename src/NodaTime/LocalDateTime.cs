@@ -290,18 +290,29 @@ namespace NodaTime
         /// of <see cref="DateTimeKind.Unspecified"/>.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
         /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
         /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
         /// the Noda Time non-system-specific "local" concept as exists in .NET.
+        /// </para>
+        /// <para>
+        /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+        /// towards the start of time.
+        /// </para>
         /// </remarks>
+        /// <exception cref="InvalidOperationException">The date/time is outside the range of <c>DateTime</c>.</exception>
         /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
         [Pure]
-        public DateTime ToDateTimeUnspecified() =>
-            new DateTime(
-                TickArithmetic.DaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch,
-                DateTimeKind.Unspecified);
-            
+        public DateTime ToDateTimeUnspecified()
+        {
+            long ticks = TickArithmetic.DaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
+            if (ticks < 0)
+            {
+                throw new InvalidOperationException("LocalDateTime out of range of DateTime");
+            }
+            return new DateTime(ticks, DateTimeKind.Unspecified);
+        }
 
         [Pure]
         internal LocalInstant ToLocalInstant() => new LocalInstant(date.DaysSinceEpoch, time.NanosecondOfDay);

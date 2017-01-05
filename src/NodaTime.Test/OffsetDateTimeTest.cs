@@ -103,6 +103,67 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [TestCase(0, 30, 20)]
+        [TestCase(-1, -30, -20)]
+        [TestCase(0, 30, 55)]
+        [TestCase(-1, -30, -55)]
+        public void ToDateTimeOffset_TruncatedOffset(int hours, int minutes, int seconds)
+        {
+            var ldt = new LocalDateTime(2017, 1, 9, 21, 45, 20);
+            var offset = Offset.FromHoursAndMinutes(hours, minutes).Plus(Offset.FromSeconds(seconds));
+            var odt = ldt.WithOffset(offset);
+            var dto = odt.ToDateTimeOffset();
+            // We preserve the local date/time, so the instant will move forward as the offset
+            // is truncated.
+            Assert.AreEqual(new DateTime(2017, 1, 9, 21, 45, 20, DateTimeKind.Unspecified), dto.DateTime);
+            Assert.AreEqual(TimeSpan.FromHours(hours) + TimeSpan.FromMinutes(minutes), dto.Offset);
+        }
+
+        [Test]
+        [TestCase(-15)]
+        [TestCase(15)]
+        public void ToDateTimeOffset_OffsetOutOfRange(int hours)
+        {
+            var ldt = new LocalDateTime(2017, 1, 9, 21, 45, 20);
+            var offset = Offset.FromHours(hours);
+            var odt = ldt.WithOffset(offset);
+            Assert.Throws<InvalidOperationException>(() => odt.ToDateTimeOffset());
+        }
+
+        [Test]
+        [TestCase(-14)]
+        [TestCase(14)]
+        public void ToDateTimeOffset_OffsetEdgeOfRange(int hours)
+        {
+            var ldt = new LocalDateTime(2017, 1, 9, 21, 45, 20);
+            var offset = Offset.FromHours(hours);
+            var odt = ldt.WithOffset(offset);
+            Assert.AreEqual(hours, odt.ToDateTimeOffset().Offset.TotalHours);
+        }
+
+        [Test]
+        public void ToDateTimeOffset_DateOutOfRange()
+        {
+            // One day before 1st January, 1AD (which is DateTime.MinValue)
+            var odt = new LocalDate(1, 1, 1).PlusDays(-1).AtMidnight().WithOffset(Offset.FromHours(1));
+            Assert.Throws<InvalidOperationException>(() => odt.ToDateTimeOffset());
+        }
+
+        [Test]
+        [TestCase(100)]
+        [TestCase(1900)]
+        [TestCase(2900)]
+        public void ToDateTimeOffset_TruncateNanosTowardStartOfTime(int year)
+        {
+            var odt = new LocalDateTime(year, 1, 1, 13, 15, 55).PlusNanoseconds(NodaConstants.NanosecondsPerSecond - 1)
+                .WithOffset(Offset.FromHours(1));
+            var expected = new DateTimeOffset(year, 1, 1, 13, 15, 55, TimeSpan.FromHours(1))
+                .AddTicks(NodaConstants.TicksPerSecond - 1);
+            var actual = odt.ToDateTimeOffset();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void FromDateTimeOffset()
         {
             LocalDateTime local = new LocalDateTime(2012, 10, 6, 1, 2, 3);
