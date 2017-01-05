@@ -43,6 +43,8 @@ namespace NodaTime
         private const int NanosecondsBits = 47;
         private const long NanosecondsMask = (1L << NanosecondsBits) - 1;
         private const long OffsetMask = ~NanosecondsMask;
+        private const int MinBclOffsetMinutes = -14 * MinutesPerHour;
+        private const int MaxBclOffsetMinutes = 14 * MinutesPerHour;
 
         // These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
         // we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
@@ -351,10 +353,30 @@ namespace NodaTime
         /// <summary>
         /// Returns the BCL <see cref="DateTimeOffset"/> corresponding to this offset date and time.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+        /// towards the start of time.
+        /// </para>
+        /// <para>
+        /// If the offset has a non-zero second component, this is truncated as <c>DateTimeOffset</c> has an offset
+        /// granularity of minutes.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The date/time is outside the range of <c>DateTimeOffset</c>,
+        /// or the offset is outside the range of +/-14 hours (the range supported by <c>DateTimeOffset</c>).</exception>
         /// <returns>A DateTimeOffset with the same local date/time and offset as this. The <see cref="DateTime"/> part of
         /// the result always has a "kind" of Unspecified.</returns>
         [Pure]
-        public DateTimeOffset ToDateTimeOffset() => new DateTimeOffset(LocalDateTime.ToDateTimeUnspecified(), Offset.ToTimeSpan());
+        public DateTimeOffset ToDateTimeOffset()
+        {
+            int offsetMinutes  = Offset.Seconds / 60;
+            if (offsetMinutes < MinBclOffsetMinutes || offsetMinutes > MaxBclOffsetMinutes)
+            {
+                throw new InvalidOperationException("Offset out of range for DateTimeOffset");
+            }
+            return new DateTimeOffset(LocalDateTime.ToDateTimeUnspecified(), TimeSpan.FromMinutes(offsetMinutes));
+        }
 
         /// <summary>
         /// Builds an <see cref="OffsetDateTime"/> from a BCL <see cref="DateTimeOffset"/> by converting

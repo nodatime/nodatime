@@ -188,6 +188,79 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [TestCase(0, 30, 20)]
+        [TestCase(-1, -30, -20)]
+        [TestCase(0, 30, 55)]
+        [TestCase(-1, -30, -55)]
+        public void ToDateTimeOffset_TruncatedOffset(int hours, int minutes, int seconds)
+        {
+            var ldt = new LocalDateTime(2017, 1, 9, 21, 45, 20);
+            var offset = Offset.FromHoursAndMinutes(hours, minutes).Plus(Offset.FromSeconds(seconds));
+            var zone = DateTimeZone.ForOffset(offset);
+            var zdt = ldt.InZoneStrictly(zone);
+            var dto = zdt.ToDateTimeOffset();
+            // We preserve the local date/time, so the instant will move forward as the offset
+            // is truncated.
+            Assert.AreEqual(new DateTime(2017, 1, 9, 21, 45, 20, DateTimeKind.Unspecified), dto.DateTime);
+            Assert.AreEqual(TimeSpan.FromHours(hours) + TimeSpan.FromMinutes(minutes), dto.Offset);
+        }
+
+        [Test]
+        [TestCase(-15)]
+        [TestCase(15)]
+        public void ToDateTimeOffset_OffsetOutOfRange(int hours)
+        {
+            var ldt = new LocalDateTime(2017, 1, 9, 21, 45, 20);
+            var offset = Offset.FromHours(hours);
+            var zone = DateTimeZone.ForOffset(offset);
+            var zdt = ldt.InZoneStrictly(zone);
+            Assert.Throws<InvalidOperationException>(() => zdt.ToDateTimeOffset());
+        }
+
+        [Test]
+        [TestCase(-14)]
+        [TestCase(14)]
+        public void ToDateTimeOffset_OffsetEdgeOfRange(int hours)
+        {
+            var ldt = new LocalDateTime(2017, 1, 9, 21, 45, 20);
+            var offset = Offset.FromHours(hours);
+            var zone = DateTimeZone.ForOffset(offset);
+            var zdt = ldt.InZoneStrictly(zone);
+            Assert.AreEqual(hours, zdt.ToDateTimeOffset().Offset.TotalHours);
+        }
+
+        [Test]
+        public void ToBclTypes_DateOutOfRange()
+        {
+            // One day before 1st January, 1AD (which is DateTime.MinValue)
+            var offset = Offset.FromHours(1);
+            var zone = DateTimeZone.ForOffset(offset);
+            var odt = new LocalDate(1, 1, 1).PlusDays(-1).AtMidnight().InZoneStrictly(zone);
+            Assert.Throws<InvalidOperationException>(() => odt.ToDateTimeOffset());
+            Assert.Throws<InvalidOperationException>(() => odt.ToDateTimeUnspecified());
+            Assert.Throws<InvalidOperationException>(() => odt.ToDateTimeUtc());
+        }
+
+        [Test]
+        [TestCase(100)]
+        [TestCase(1900)]
+        [TestCase(2900)]
+        public void ToBclTypes_TruncateNanosTowardStartOfTime(int year)
+        {
+            var zone = DateTimeZone.ForOffset(Offset.FromHours(1));
+            var zdt = new LocalDateTime(year, 1, 1, 13, 15, 55).PlusNanoseconds(NodaConstants.NanosecondsPerSecond - 1)
+                .InZoneStrictly(zone);
+            var expectedDateTimeUtc = new DateTime(year, 1, 1, 12, 15, 55, DateTimeKind.Utc)
+                .AddTicks(NodaConstants.TicksPerSecond - 1);
+            var actualDateTimeUtc = zdt.ToDateTimeUtc();
+            Assert.AreEqual(expectedDateTimeUtc, actualDateTimeUtc);
+            var expectedDateTimeOffset = new DateTimeOffset(year, 1, 1, 13, 15, 55, TimeSpan.FromHours(1))
+                .AddTicks(NodaConstants.TicksPerSecond - 1);
+            var actualDateTimeOffset = zdt.ToDateTimeOffset();
+            Assert.AreEqual(expectedDateTimeOffset, actualDateTimeOffset);
+        }
+
+        [Test]
         public void ToDateTimeUtc()
         {
             ZonedDateTime zoned = SampleZone.AtStrictly(new LocalDateTime(2011, 3, 5, 1, 0, 0));
@@ -197,8 +270,20 @@ namespace NodaTime.Test
             Assert.AreEqual(expected, actual);
             // Kind isn't checked by Equals...
             Assert.AreEqual(DateTimeKind.Utc, actual.Kind);
-
         }
+
+        [Test]
+        public void ToDateTimeUtc_InRangeAfterUtcAdjustment()
+        {
+            var zone = DateTimeZone.ForOffset(Offset.FromHours(-1));
+            var zdt = new LocalDateTime(0, 12, 31, 23, 30).InZoneStrictly(zone);
+            // Sanity check: without reversing the offset, we're out of range
+            Assert.Throws<InvalidOperationException>(() => zdt.ToDateTimeUnspecified());
+            Assert.Throws<InvalidOperationException>(() => zdt.ToDateTimeOffset());
+            var expected = new DateTime(1, 1, 1, 0, 30, 0, DateTimeKind.Utc);
+            var actual = zdt.ToDateTimeUtc();
+            Assert.AreEqual(expected, actual);
+        }        
 
         [Test]
         public void ToDateTimeUnspecified()

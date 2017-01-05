@@ -548,11 +548,24 @@ namespace NodaTime
         /// UTC as this value.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// An offset does not convey as much information as a time zone; a <see cref="DateTimeOffset"/>
         /// represents an instant in time along with an associated local time, but it doesn't allow you
         /// to find out what the local time would be for another instant.
+        /// </para>
+        /// <para>
+        /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+        /// towards the start of time.
+        /// </para>
+        /// <para>
+        /// If the offset has a non-zero second component, this is truncated as <c>DateTimeOffset</c> has an offset
+        /// granularity of minutes.
+        /// </para>
         /// </remarks>
-        /// <returns>A <see cref="DateTimeOffset"/> representation of this value.</returns>
+        /// <exception cref="InvalidOperationException">The date/time is outside the range of <c>DateTimeOffset</c>,
+        /// or the offset is outside the range of +/-14 hours (the range supported by <c>DateTimeOffset</c>).</exception>
+        /// <returns>A <c>DateTimeOffset</c> with the same local date/time and offset as this. The <see cref="DateTime"/> part of
+        /// the result always has a "kind" of Unspecified.</returns>
         [Pure]
         public DateTimeOffset ToDateTimeOffset() => offsetDateTime.ToDateTimeOffset();
 
@@ -572,6 +585,13 @@ namespace NodaTime
         /// <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as
         /// this value rather than the same local time.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+        /// towards the start of time.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The final date/time is outside the range of <c>DateTime</c>.</exception>
         /// <returns>A <see cref="DateTime"/> representation of this value with a "universal" kind, with the same
         /// instant of time as this value.</returns>
         [Pure]
@@ -583,10 +603,17 @@ namespace NodaTime
         /// this value rather than the same instant in time.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
         /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
         /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset.
+        /// </para>
+        /// <para>
+        /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+        /// towards the start of time.
+        /// </para>
         /// </remarks>
+        /// <exception cref="InvalidOperationException">The date/time is outside the range of <c>DateTime</c>.</exception>
         /// <returns>A <see cref="DateTime"/> representation of this value with an "unspecified" kind, with the same
         /// local date and time as this value.</returns>
         [Pure]

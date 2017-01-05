@@ -394,6 +394,9 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
+        /// <remarks>
+        /// If the value does not fall on a tick boundary, it will be truncated towards zero.
+        /// </remarks>
         /// <value>The tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.</value>
         public long TickOfDay => nanoseconds / NanosecondsPerTick;
 

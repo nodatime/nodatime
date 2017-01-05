@@ -522,16 +522,44 @@ namespace NodaTime
         /// Constructs a <see cref="DateTime"/> from this Instant which has a <see cref="DateTime.Kind" />
         /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+        /// towards the start of time.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The final date/time is outside the range of <c>DateTime</c>.</exception>
         /// <returns>A <see cref="DateTime"/> representing the same instant in time as this value, with a kind of "universal".</returns>
         [Pure]
-        public DateTime ToDateTimeUtc() => new DateTime(BclTicksAtUnixEpoch + ToUnixTimeTicks(), DateTimeKind.Utc);
+        public DateTime ToDateTimeUtc()
+        {
+            if (this < BclEpoch)
+            {
+                throw new InvalidOperationException("Instant out of range for DateTime");
+            }
+            return new DateTime(BclTicksAtUnixEpoch + ToUnixTimeTicks(), DateTimeKind.Utc);
+        }
 
         /// <summary>
         /// Constructs a <see cref="DateTimeOffset"/> from this Instant which has an offset of zero.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+        /// towards the start of time.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The final date/time is outside the range of <c>DateTimeOffset</c>.</exception>
         /// <returns>A <see cref="DateTimeOffset"/> representing the same instant in time as this value.</returns>
         [Pure]
-        public DateTimeOffset ToDateTimeOffset() => new DateTimeOffset(BclTicksAtUnixEpoch + ToUnixTimeTicks(), TimeSpan.Zero);
+        public DateTimeOffset ToDateTimeOffset()
+        {
+            if (this < BclEpoch)
+            {
+                throw new InvalidOperationException("Instant out of range for DateTimeOffset");
+            }
+            return new DateTimeOffset(BclTicksAtUnixEpoch + ToUnixTimeTicks(), TimeSpan.Zero);
+        }
 
         /// <summary>
         /// Converts a <see cref="DateTimeOffset"/> into a new Instant representing the same instant in time. Note that
