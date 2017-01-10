@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime", "NodaTime\NodaTime.xproj", "{29F470FA-C1CB-408B-A0B6-C1A9216C4B7B}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.TzdbCompiler.Test", "NodaTime.TzdbCompiler.Test\NodaTime.TzdbCompiler.Test.xproj", "{56D9408D-8647-4F53-A1D9-25D00CF1BE32}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.TzValidate.NodaDump", "NodaTime.TzValidate.NodaDump\NodaTime.TzValidate.NodaDump.xproj", "{F546EDA0-6B44-4B32-A8BE-18B1FE664BFF}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.TzValidate.NzdCompatibility", "NodaTime.TzValidate.NzdCompatibility\NodaTime.TzValidate.NzdCompatibility.xproj", "{B64228A2-15CC-4308-8804-D2979D725CE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{F546EDA0-6B44-4B32-A8BE-18B1FE664BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F546EDA0-6B44-4B32-A8BE-18B1FE664BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F546EDA0-6B44-4B32-A8BE-18B1FE664BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B64228A2-15CC-4308-8804-D2979D725CE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B64228A2-15CC-4308-8804-D2979D725CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B64228A2-15CC-4308-8804-D2979D725CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B64228A2-15CC-4308-8804-D2979D725CE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
