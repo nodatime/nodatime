@@ -13,7 +13,7 @@ set WWWDIR=..\www
 call dotnet restore -v Error %SRCDIR%
 IF ERRORLEVEL 1 EXIT /B 1
 
-call dotnet build %SRCDIR%\NodaTime.TzdbCompiler %SRCDIR%\NodaTime.TzValidate.NodaDump
+call dotnet build %SRCDIR%\NodaTime.TzdbCompiler %SRCDIR%\NodaTime.TzValidate.NodaDump %SRCDIR%\NodaTime.TzValidate.NzdCompatibility
 IF ERRORLEVEL 1 EXIT /B 1
 
 dotnet run -p %SRCDIR%\NodaTime.TzdbCompiler -- -o %SRCDIR%\NodaTime\TimeZones\Tzdb.nzd -s http://www.iana.org/time-zones/repository/releases/tzdata%1.tar.gz -w %DATADIR%\cldr
@@ -28,5 +28,9 @@ echo Hash on github pages:
 wget -q -O - http://nodatime.github.io/tzvalidate/tzdata%1%-sha256.txt 2> NUL
 echo Hash from new file:
 dotnet run -p %SRCDIR%\NodaTime.TzValidate.NodaDump -- -s %WWWDIR%\tzdb\tzdb%1.nzd --hash
+echo Hash from new file without abbreviations:
+dotnet run -p %SRCDIR%\NodaTime.TzValidate.NodaDump -- -s %WWWDIR%\tzdb\tzdb%1.nzd --hash --noabbr
+echo Hash from new file without abbreviations, using Noda Time 1.1:
+dotnet run -p %SRCDIR%\NodaTime.TzValidate.NzdCompatibility -- -s %WWWDIR%\tzdb\tzdb%1.nzd --hash --noabbr
 
 :end
