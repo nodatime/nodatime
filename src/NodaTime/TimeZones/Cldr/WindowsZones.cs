@@ -91,6 +91,14 @@ namespace NodaTime.TimeZones.Cldr
         /// to TZDB zone ID. This corresponds to the "001" territory which is present for every zone
         /// within the mapping file.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Each value in the dictionary is a canonical ID in CLDR, but it may not be canonical
+        /// in TZDB. For example, the ID corresponding to "India Standard Time" is "Asia/Calcutta", which
+        /// is canonical in CLDR but is an alias in TZDB for "Asia/Kolkata". To obtain a canonical TZDB
+        /// ID, use <see cref="TzdbDateTimeZoneSource.CanonicalIdMap"/>.
+        /// </para>
+        /// </remarks>
         /// <value>An immutable dictionary of primary mappings, from Windows system time zone ID
         /// to TZDB zone ID.</value>
         [NotNull] public IDictionary<string, string> PrimaryMapping { get; }
