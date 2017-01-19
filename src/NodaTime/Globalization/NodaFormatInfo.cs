@@ -427,24 +427,19 @@ namespace NodaTime.Globalization
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
         public static NodaFormatInfo GetInstance(IFormatProvider provider)
         {
-            // TODO(misc): Use C# 7 pattern matching for this...
-            if (provider == null)
+            switch (provider)
             {
-                provider = CultureInfo.CurrentCulture;
+                case null:
+                    return GetFormatInfo(CurrentInfo.CultureInfo);
+                case CultureInfo cultureInfo:
+                    return GetFormatInfo(cultureInfo);
+                // Note: no caching for this case. It's a corner case anyway... we could add a cache later
+                // if users notice a problem.
+                case DateTimeFormatInfo dateTimeFormatInfo:
+                    return new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo);
+                default:
+                    throw new ArgumentException($"Cannot use provider of type {provider.GetType().FullName} in Noda Time", nameof(provider));
             }
-            var cultureInfo = provider as CultureInfo;
-            if (cultureInfo != null)
-            {
-                return GetFormatInfo(cultureInfo);
-            }
-            // Note: no caching for this case. It's a corner case anyway... we could add a cache later
-            // if users notice a problem.
-            var dateTimeFormatInfo = provider as DateTimeFormatInfo;
-            if (dateTimeFormatInfo != null)
-            {
-                return new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo);
-            }
-            throw new ArgumentException($"Cannot use provider of type {provider.GetType().FullName} in Noda Time", nameof(provider));
         }
 
         /// <summary>
