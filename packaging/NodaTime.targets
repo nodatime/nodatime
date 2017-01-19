@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- for C++/CLI projects only -->
-  <ItemGroup Condition="'$(Language)' == 'C++'">
-    <Reference Include="NodaTime">
-      <!--
-        this .targets file is installed next to the assembly,
-        so we do not have to figure out any versions or paths here ourselves
-      -->
-      <HintPath>$(MSBuildThisFileDirectory)..\lib\net45\NodaTime.dll</HintPath>
-    </Reference>
-	<Reference Include="System.Xml" />
-	<Reference Include="System.Numerics" />
-  </ItemGroup>
+  <Choose>
+    <When Condition="'$(Language)' == 'C++'">
+      <ItemGroup>
+        <Reference Include="NodaTime">
+          <!--
+            this .targets file is installed next to the assembly,
+            so we do not have to figure out any versions or paths here ourselves
+          -->
+          <HintPath>$(MSBuildThisFileDirectory)..\lib\net45\NodaTime.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Numerics" />
+      </ItemGroup>
+    </When>
+  </Choose>
 </Project>
