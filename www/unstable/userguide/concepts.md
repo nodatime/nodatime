@@ -138,7 +138,8 @@ by the [`Offset`][Offset] struct.
 
 An offset is positive if local time is later than (ahead of) UTC,
 and negative if local time is earlier than (behind) UTC. For
-example, the offset in France is +1 hour in the winter and +2 hours in
+example, the offset in France is +1 hour during winter in the
+Northern Hemisphere and +2 hours in
 the summer; the offset in California is -8 hours in the winter and
 -7 hours in the summer. So at noon UTC in winter, it's 4am in
 California and 1pm in France.
