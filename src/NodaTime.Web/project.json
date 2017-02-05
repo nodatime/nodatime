@@ -10,6 +10,7 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
+    "Microsoft.AspNetCore.Rewrite": "1.0.0",
     "Microsoft.AspNetCore.Routing": "1.0.1",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
@@ -26,7 +27,8 @@
     "Microsoft.IdentityModel.Clients.ActiveDirectory": "3.13.8",
     "Microsoft.Azure.KeyVault": "2.0.6",
     "NodaTime": { "target": "project" },
-    "NodaTime.TzValidate.NodaDump": { "target": "project" }
+    "NodaTime.TzValidate.NodaDump": { "target": "project" },
+    "CommonMark.NET": "0.15.0"
   },
 
   "tools": {
