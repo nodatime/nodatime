@@ -29,14 +29,9 @@ REM Temporary docfx output directory
 if exist obj rmdir /s /q obj
 mkdir obj
 
-echo Copying user guides
-for %%V in (%PREVIOUS_VERSIONS% unstable) do (
-  mkdir obj\%%V
-  xcopy /I /S /Q userguide\%%V obj\%%V\userguide
-)
-
 REM Final docfx output directory
 if exist _site rmdir /s /q _site
+if exist api rmdir /s /q api
 
 for %%V in (%PREVIOUS_VERSIONS%) do (
   echo Building metadata for %%V

@@ -4,12 +4,16 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using NodaTime.Web.Controllers;
 using NodaTime.Web.Models;
 using NodaTime.Web.Providers;
+using System.IO;
 
 namespace NodaTime.Web
 {
@@ -31,9 +35,13 @@ namespace NodaTime.Web
         {
             // Add framework services.
             services.AddMvc();
-
+            
             services.AddSingleton(provider => GoogleCredentialProvider.FetchCredential(Configuration));
             services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
+            // TODO: We'll take a hit of loading all the Markdown the first time this is used.
+            // It would be better to load eagerly at startup, assuming we don't just want to do everything
+            // lazily...
+            services.AddSingleton<MarkdownLoader>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -54,18 +62,45 @@ namespace NodaTime.Web
             app.UseDefaultFiles();
             var contentTypeProvider = new FileExtensionContentTypeProvider();
             contentTypeProvider.Mappings[".nzd"] = "application/octet-stream";
+
+            // TODO: Remove nzd serving, and serve via GCS instead.
+            // TODO: Add each API directory separately.
             app.UseStaticFiles(new StaticFileOptions
             {                
                 ContentTypeProvider = contentTypeProvider
             });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "docfx"))
+            });
+            // Captures "unstable" or a specific version - used several times below.
+            string anyVersion = @"((?:1\.[0-3]\.x)|(?:unstable))";
+            var rewriteOptions = new RewriteOptions()
+                // We don't have an index.html or equivalent for the APIs, so let's go to NodaTime.html
+                .AddRedirect($@"^{anyVersion}/api/?$", "$1/api/NodaTime.html")
+                // Compatibility with old links
+                .AddRedirect($@"^{anyVersion}/userguide/([^.]+)\.html$", "$1/userguide/$2")
+                // Avoid links from userguide/unstable from going to userguide/core-concepts etc
+                // (There are no doubt better ways of doing this...)
+                .AddRedirect($@"^{anyVersion}/userguide$", "$1/userguide/")
+                .AddRedirect($@"^developer$", "developer/")
+                // Make /api and /userguide links to the latest stable release.
+                .AddRedirect("^(api|userguide)((?:/.*))$", "1.3.x/$1$2");
+            app.UseRewriter(rewriteOptions);
 
             // At some stage we may want an MVC view for the home page, but at the moment
             // we're just serving static files, so we don't need much.
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                // TODO: Find a better way of routing. This is pretty nasty.
+                routes.MapRoute("Developer docs", "developer/{*url}", new { controller = "Documentation", bundle = "developer", action = nameof(DocumentationController.ViewDocumentation) });
+                routes.MapRoute("1.0.x user guide", "1.0.x/userguide/{*url}", new { controller = "Documentation", bundle = "1.0.x", action = nameof(DocumentationController.ViewDocumentation) });
+                routes.MapRoute("1.1.x user guide", "1.1.x/userguide/{*url}", new { controller = "Documentation", bundle = "1.1.x", action = nameof(DocumentationController.ViewDocumentation) });
+                routes.MapRoute("1.2.x user guide", "1.2.x/userguide/{*url}", new { controller = "Documentation", bundle = "1.2.x", action = nameof(DocumentationController.ViewDocumentation) });
+                routes.MapRoute("1.3.x user guide", "1.3.x/userguide/{*url}", new { controller = "Documentation", bundle = "1.3.x", action = nameof(DocumentationController.ViewDocumentation) });
+                routes.MapRoute("Unstable user guide", "unstable/userguide/{*url}", new { controller = "Documentation", bundle = "unstable", action = nameof(DocumentationController.ViewDocumentation) });
+                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

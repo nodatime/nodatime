@@ -1,0 +1,11 @@
+﻿{
+  "name": "developer",
+  "categories":
+  [
+    {
+      "title": "Guide",
+      "pageIds": [ "index", "building", "coding-conventions", "release-process",
+                   "roadmap", "tzdb-file-format", "size" ]
+    }
+  ]
+}
