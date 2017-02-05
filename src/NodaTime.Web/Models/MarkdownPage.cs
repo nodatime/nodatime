@@ -54,7 +54,8 @@ namespace NodaTime.Web.Models
                 throw new Exception("Blank line required after directives");
             }
 
-            // TODO: Process bugs and type links here.
+            // TODO: Just use CommonMarkConverter.Convert? (We don't do anything between
+            // stages.)
             Block block = CommonMarkConverter.ProcessStage1(reader, commonMarkSettings);
             CommonMarkConverter.ProcessStage2(block, commonMarkSettings);
             var writer = new StringWriter();

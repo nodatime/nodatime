@@ -64,7 +64,7 @@ used as "tree-ish" values, so it is important that they do not collide.
 
 The only change that needs to be made to the branch after creation is to
 remove the `<Preliminary/>` tag from the Sandcastle project file; see e.g.
-[issue 102][].
+[issue 102].
 
 ### Post-branch updates on the master branch
 
