@@ -20,6 +20,7 @@ namespace NodaTime.Web.Providers
     public class MarkdownLoader
     {
         private const string NodaTypePrefix = "noda-type://";
+        private const string NodaPropertyPrefix = "noda-property://";
         private static readonly Regex IssuePlaceholderPattern = new Regex(@"^issue \d+$");
 
         private readonly IFileProvider fileProvider;
@@ -87,6 +88,13 @@ namespace NodaTime.Web.Providers
                 string type = hashIndex < 0 ? url : url.Substring(0, hashIndex);
                 string anchor = hashIndex < 0 ? "" : url.Substring(hashIndex);
                 return $"../api/{type}.html{anchor}";
+            }
+            else if (url.StartsWith(NodaPropertyPrefix))
+            {
+                url = url.Substring(NodaPropertyPrefix.Length);
+                int nameIndex = url.LastIndexOf('.');
+                string type = url.Substring(0, nameIndex);
+                return $"../api/{type}.html#{url.Replace(".", "_")}";
             }
             return url;
         }

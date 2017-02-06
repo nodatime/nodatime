@@ -50,7 +50,6 @@ First supported in v1.0.0
 API access:
 
 - [`CalendarSystem.Gregorian`](noda-property://NodaTime.CalendarSystem.Gregorian)
-- [`CalendarSystem.GetGregorianCalendar`](noda-property://NodaTime.CalendarSystem.GetGregorianCalendar)
 
 The [Gregorian calendar](http://en.wikipedia.org/wiki/Gregorian_calendar) was a refinement to the Julian calendar,
 changing the formula for which years are leap years from "whenever the year is divisible by 4" to
@@ -67,7 +66,7 @@ Julian
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.Julian`](noda-method://NodaTime.CalendarSystem.Julian)
+API access: [`CalendarSystem.Julian`](noda-property://NodaTime.CalendarSystem.Julian)
 
 The [Julian calendar](http://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46BC, and took
 effect in 45BC. It was like the Gregorian calendar, but with a simpler leap year rule - every year number divisible by
@@ -96,7 +95,7 @@ Islamic (Hijri)
 First supported in v1.0.0  
 API access:
 
-- [`CalendarSystem.GetIslamicCalendar()`](noda-method://NodaTime.CalendarSystem.GetIslamicCalendar)
+- [`CalendarSystem.GetIslamicCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetIslamicCalendar_NodaTime_Calendars_IslamicLeapYearPattern_NodaTime_Calendars_IslamicEpoch_)
 - [`CalendarSystem.IslamicBcl`](noda-property://NodaTime.CalendarSystem.IslamicBcl)
 
 The [Islamic (or Hijri) calendar](http://en.wikipedia.org/wiki/Islamic_calendar) is a lunar calendar with years of 12
@@ -167,7 +166,7 @@ Hebrew
 First supported in v1.3.0  
 API access:
 
-- [`CalendarSystem.GetHebrewCalendar()`](noda-method://NodaTime.CalendarSystem.GetHebrewCalendar)
+- [`CalendarSystem.GetHebrewCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetHebrewCalendar_NodaTime_Calendars_HebrewMonthNumbering_)
 - [`CalendarSystem.HebrewCivil`](noda-property://NodaTime.CalendarSystem.HebrewCivil)
 - [`CalendarSystem.HebrewScriptural`](noda-property://NodaTime.CalendarSystem.HebrewScriptural)
 

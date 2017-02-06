@@ -30,4 +30,9 @@ Custom Patterns
 The pattern allows the culture to be specified, but *always* uses the ISO-8601 calendar, and *always* uses the UTC
 time zone. The "template value" is always the unix epoch.
 
-All instant patterns (other than the standard *numeric* ones) handle [`Instant.MinValue`](noda-field://NodaTime.Instant.MinValue) and [`Instant.MaxValue`](noda-field://NodaTime.Instant.MaxValue) separately. The default formatting of the values are simply "MinInstant" and "MaxInstant" respectively, but a new [`InstantPattern`](noda-type://NodaTime.Text.InstantPattern) with different min/max labels can be created using the [`WithMinMaxLabels`](noda-method://NodaTime.Text.InstantPattern.WithMinMaxLabels) method. The labels must be non-empty strings which differ from each other.
+All instant patterns (other than the standard *numeric* ones) handle [`Instant.MinValue`](noda-property://NodaTime.Instant.MinValue)
+and [`Instant.MaxValue`](noda-property://NodaTime.Instant.MaxValue) separately. The default formatting of the values
+are simply "MinInstant" and "MaxInstant" respectively, but a new
+[`InstantPattern`](noda-type://NodaTime.Text.InstantPattern) with different min/max labels 
+can be created using the [`WithMinMaxLabels`](noda-type://NodaTime.Text.InstantPattern.WithMinMaxLabels#NodaTime_Text_InstantPattern_WithMinMaxLabels_System_String_System_String_) method.
+The labels must be non-empty strings which differ from each other.

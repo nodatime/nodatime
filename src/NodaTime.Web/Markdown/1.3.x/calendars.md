@@ -37,7 +37,7 @@ Gregorian
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.GetGregorianCalendar()`](noda-method://NodaTime.CalendarSystem.GetGregorianCalendar)
+API access: [`CalendarSystem.GetGregorianCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetGregorianCalendar_System_Int32_)
 
 The [Gregorian calendar](http://en.wikipedia.org/wiki/Gregorian_calendar) was a refinement to the Julian calendar,
 changing the formula for which years are leap years from "whenever the year is divisible by 4" to
@@ -56,7 +56,7 @@ Julian
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.GetJulianCalendar()`](noda-method://NodaTime.CalendarSystem.GetJulianCalendar)
+API access: [`CalendarSystem.GetJulianCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetJulianCalendar_System_Int32_)
 
 The [Julian calendar](http://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46BC, and took
 effect in 45BC. It was like the Gregorian calendar, but with a simpler leap year rule - every year number divisible by
@@ -72,7 +72,7 @@ Coptic (Alexandrian)
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.GetCopticCalendar()`](noda-method://NodaTime.CalendarSystem.GetCopticCalendar)
+API access: [`CalendarSystem.GetCopticCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetCopticCalendar_System_Int32_)
 
 The Coptic calendar system is used by the Coptic Orthodox Church. Each year has 12 months of exactly 30 days, followed by
 one month with either 5 or 6 days depending on whether or not the year is a leap year. Like the Julian calendar,
@@ -87,7 +87,7 @@ Islamic (Hijri)
 ===
 
 First supported in v1.0.0  
-API access: [`CalendarSystem.GetIslamicCalendar()`](noda-method://NodaTime.CalendarSystem.GetIslamicCalendar)
+API access: [`CalendarSystem.GetIslamicCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetIslamicCalendar_NodaTime_Calendars_IslamicLeapYearPattern_NodaTime_Calendars_IslamicEpoch_)
 
 The [Islamic (or Hijri) calendar](http://en.wikipedia.org/wiki/Islamic_calendar) is a lunar calendar with years of 12
 months, totalling either 355 or 354 days depending on whether or not it's a leap year. There are various schemes
@@ -112,7 +112,7 @@ Persian (or Solar Hijri)
 ===
 
 First supported in v1.3.0  
-API access: [`CalendarSystem.GetPersianCalendar()`](noda-method://NodaTime.CalendarSystem.GetPersianCalendar)
+API access: [`CalendarSystem.GetPersianCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetPersianCalendar)
 
 The [Persian (or Solar Hijri) calendar](http://en.wikipedia.org/wiki/Solar_Hijri_calendar) is the official calendar of
 Iran and Pakistan. The first day of the Persian calendar is March 18th 622CE (Julian).
@@ -126,7 +126,7 @@ Hebrew
 ===
 
 First supported in v1.3.0  
-API access: [`CalendarSystem.GetHebrewCalendar()`](noda-method://NodaTime.CalendarSystem.GetHebrewCalendar)
+API access: [`CalendarSystem.GetHebrewCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetHebrewCalendar_NodaTime_Calendars_HebrewMonthNumbering_)
 
 The [Hebrew calendar](http://en.wikipedia.org/wiki/Hebrew_calendar) is a lunisolar calendar used primarily for determination
 of religious holidays within Judaism. It was originally observational, but a computed version is now commonly used. Even
