@@ -20,6 +20,7 @@
 /// <reference path="js/foundation/foundation.section.js" />
 /// <reference path="js/foundation/foundation.tooltips.js" />
 /// <reference path="js/foundation/foundation.topbar.js" />
+/// <reference path="js/highlight.pack.js" />
 /// <reference path="js/site.min.js" />
 /// <reference path="js/vendor/custom.modernizr.js" />
 /// <reference path="js/vendor/jquery.js" />
