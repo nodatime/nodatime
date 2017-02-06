@@ -136,6 +136,48 @@ section.body {
   margin-top: 10px;
 }
 
+.highlight {
+  font-family: monospace; /* just so that margin-bottom uses the right font. */
+  margin: 0 20px 1.25em 0;
+  border: 1px solid #888;
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(0,0,0,.3);
+}
+
+.example > .highlight {
+  background: white;
+  border: none;
+  border-radius: 0 0 5px 5px;
+  margin: 0 20px;
+}
+
+.highlight > pre {
+  padding: 20px;
+  overflow: hidden;
+  border: none;
+  box-shadow: none;
+  font-size: 15px;
+}
+
+pre {
+  font-family: monospace; /* just so that margin-bottom uses the right font. */
+  margin: 0 20px 1.25em 0;
+  border: 1px solid #888;
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(0,0,0,.3);
+  padding: 5px;
+  overflow: hidden;
+}
+
+pre > code {
+  /* Override parts of foundation.css that we're using elsewhere. */
+  font-family: monospace;
+  font-weight: normal;
+
+  /* Override the default color for code. */
+  color: white;
+}
+
 .example {
   margin: -47px 0;
   display: block;
@@ -167,49 +209,9 @@ section.body {
   border-bottom: 1px solid #111;
 }
 
-.highlight {
-  font-family: monospace; /* just so that margin-bottom uses the right font. */
-  margin: 0 20px 1.25em 0;
-  border: 1px solid #888;
-  border-radius: 5px;
-  box-shadow: 0 5px 30px rgba(0,0,0,.3);
-}
-
-.example > .highlight {
-  height: 350px;
-  border: none;
-  border-radius: 0 0 5px 5px;
-  margin: 0 20px;
-}
-
-.highlight > pre {
-  padding: 20px;
-  overflow: hidden;
-}
-
-.highlight > pre > code {
-  /* Override parts of foundation.css that we're using elsewhere. */
-  font-family: monospace;
-  font-weight: normal;
-
-  /* Override the default color for code. */
-  color: white;
-}
-
-.example > .highlight > pre > code {
+.example > pre > code {
   font-size: 15px;
 }
-
-/* Adapted from Vim 7.4's desert scheme. */
-.highlight  { background: #3d3d3d; color: white; }
-.highlight .k { color: khaki; font-weight: bold; } /* Keyword */
-.highlight .c1 { color: skyblue } /* Comment.Single */
-.highlight .kt { color: khaki; font-weight: bold; } /* Keyword.Type */
-.highlight .m { color: #ffa0a0 } /* Literal.Number */
-.highlight .s { color: #ffa0a0 } /* Literal.String */
-.highlight .s1 { color: #ffa0a0 } /* Literal.String.Single */
-.highlight .nf { color: palegreen } /* Name.Function */
-.highlight .nn { color: palegreen } /* Name.Namespace */
 
 footer {
   background-color: #3d3d3d;
