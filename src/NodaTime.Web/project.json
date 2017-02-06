@@ -60,6 +60,8 @@
   "publishOptions": {
     "include": [
       "wwwroot",
+      "docfx",
+      "Markdown",
       "Views",
       "Areas/**/Views",
       "appsettings.json",
