@@ -10,13 +10,9 @@ if "%1" == "" (
 
 set WEB_DIR=%1
 
-call buildapidocs
-IF ERRORLEVEL 1 EXIT /B 1
-call :build_www
+call :build_apidocs
 IF ERRORLEVEL 1 EXIT /B 1
 call :build_mvc
-IF ERRORLEVEL 1 EXIT /B 1
-call :fetch-fixed-content
 IF ERRORLEVEL 1 EXIT /B 1
 call :clean
 IF ERRORLEVEL 1 EXIT /B 1
@@ -24,26 +20,19 @@ call :assemble
 IF ERRORLEVEL 1 EXIT /B 1
 goto :end
 
-
-:build_www
-pushd ..\www
-call jekyll build
+:build_apidocs
+IF EXIST ..\src\NodaTime.Web\docfx rmdir /s /q ..\src\NodaTime.Web\docfx
+pushd ..\docs
+call builddocs.bat
 IF ERRORLEVEL 1 EXIT /B 1
 popd
+xcopy /Q /E /Y /I ..\docs\_site ..\src\NodaTime.Web\docfx
 goto :end
-
 
 :build_mvc
 IF EXIST ..\src\NodaTime.Web\bin\Release rmdir /s /q ..\src\NodaTime.Web\bin\Release
 dotnet restore ..\src\NodaTime.Web
 dotnet publish -c Release ..\src\NodaTime.Web
-IF ERRORLEVEL 1 EXIT /B 1
-goto :end
-
-:fetch-fixed-content
-IF EXIST tmp\fixed-content rmdir /s /q tmp\fixed-content
-git clone --depth 1 -b fixed-content https://github.com/nodatime/nodatime.org.git tmp\fixed-content
-rmdir /s /q tmp\fixed-content\.git
 IF ERRORLEVEL 1 EXIT /B 1
 goto :end
 
@@ -57,11 +46,7 @@ move tmp\old_nodatime.org\.git %WEB_DIR%
 attrib +h %WEB_DIR%\.git
 goto :end
 
-
 :assemble
-xcopy /Q /E /Y /I ..\www\_site %WEB_DIR%\wwwroot
-xcopy /Q /E /Y /I tmp\fixed-content %WEB_DIR%
-xcopy /Q /E /Y /I tmp\apidocs %WEB_DIR%\wwwroot\unstable\api
 xcopy /Q /E /Y /I ..\src\NodaTime.Web\bin\Release\netcoreapp1.0\publish %WEB_DIR%
 goto :end
 

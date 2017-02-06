@@ -32,8 +32,7 @@ IF EXIST %STAGING% rmdir /s /q %STAGING%
 mkdir %STAGING%
 mkdir %STAGING%\docs
 
-call buildofflineguide.bat %1
-
+REM FIXME: This doesn't exist now!
 call buildnuget
 IF ERRORLEVEL 1 EXIT /B 1
 
