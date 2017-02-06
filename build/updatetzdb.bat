@@ -8,7 +8,7 @@ if "%1" == "" (
 
 set SRCDIR=..\src
 set DATADIR=..\data
-set WWWDIR=..\www
+set WWWDIR=..\src\NodaTime.Web\wwwroot
 
 call dotnet restore -v Error %SRCDIR%
 IF ERRORLEVEL 1 EXIT /B 1
