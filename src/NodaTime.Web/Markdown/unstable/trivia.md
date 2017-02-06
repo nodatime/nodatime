@@ -182,9 +182,8 @@ The smart approach is to effectively use the second definition: when one day
 becomes the next.
 
 **Noda Time support:** Although `LocalTime` supports the idea of midnight,
-if you want to convert a `LocalDate` into a `ZonedDateTime`, you'd typically
-use
-[`DateTimeZone.AtStartOfDay`](noda-method://NodaTime.DateTimeZone.AtStartOfDay)
+if you want to convert a `LocalDate` into a `ZonedDateTime`, you'd typically use
+[`DateTimeZone.AtStartOfDay`](noda-type://NodaTime.DateTimeZone##NodaTime_DateTimeZone_AtStartOfDay_NodaTime_LocalDate_)
 which avoids the problem - so long as the date hasn't been skipped as we saw
 earlier...
 
