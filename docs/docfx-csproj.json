@@ -12,7 +12,8 @@
           "exclude": [ "**/bin/**", "**/obj/**" ]
         }
       ],
-      "dest": "api"
+      "dest": "api",
+      "shouldSkipMarkup": true
     }
   ]
 }

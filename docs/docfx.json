@@ -12,7 +12,8 @@
           "cwd": "../src"
         }
       ],
-      "dest": "obj/unstable/api"
+      "dest": "obj/unstable/api",
+      "shouldSkipMarkup": true
     }
   ],
   "build": {
