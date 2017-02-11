@@ -50,6 +50,7 @@ REM TODO: Add extra information (versions etc)
 
 echo Running main docfx build
 call docfx build
+copy /y logo.svg _site
 
 goto end
 
