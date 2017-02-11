@@ -11,8 +11,8 @@ namespace NodaTime.Web.Models
 {
     public class GoogleStorageReleaseRepository : IReleaseRepository
     {
-        private static readonly Regex ReleasePattern = new Regex(@"NodaTime-(\d+\.\d+\.\d+)(?:-src)?.zip");
-        private const string Bucket = "nodatime-releases";
+        private static readonly Regex ReleasePattern = new Regex(@"releases/NodaTime-(\d+\.\d+\.\d+)(?:-src)?.zip");
+        private const string Bucket = "nodatime";
         private const string Sha256Key = "SHA-256";
 
         private readonly StorageClient client;
@@ -28,7 +28,7 @@ namespace NodaTime.Web.Models
             // TODO: Be more elegant than this, invalidating every 10 minutes. IMemoryCache perhaps?
             if (releases == null)
             {
-                releases = client.ListObjects(Bucket).Select(ConvertObject).ToList();
+                releases = client.ListObjects(Bucket, "releases/").Select(ConvertObject).ToList();
             }
             return releases;
         }
