@@ -77,6 +77,8 @@ namespace NodaTime.Web
             // Captures "unstable" or a specific version - used several times below.
             string anyVersion = @"((?:1\.[0-3]\.x)|(?:unstable))";
             var rewriteOptions = new RewriteOptions()
+                // Docfx wants index.html to exist, which is annoying... just redirect.
+                .AddRedirect($@"^index.html$", "/")
                 // We don't have an index.html or equivalent for the APIs, so let's go to NodaTime.html
                 .AddRedirect($@"^{anyVersion}/api/?$", "$1/api/NodaTime.html")
                 // Compatibility with old links
