@@ -29,15 +29,18 @@ namespace NodaTime.Web
             Configuration = builder.Build();
         }
 
-        public static IConfigurationRoot Configuration { get; private set; }
+        private static IConfigurationRoot Configuration { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddMvc();
             
-            services.AddSingleton(provider => GoogleCredentialProvider.FetchCredential(Configuration));
+            // Eagerly fetch the GoogleCredential so that we're not using Task.Result in
+            // request processing.
+            services.AddSingleton(GoogleCredentialProvider.FetchCredential(Configuration));
             services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
+            services.AddSingleton<ITzdbRepository, GoogleStorageTzdbRepository>();
             // TODO: We'll take a hit of loading all the Markdown the first time this is used.
             // It would be better to load eagerly at startup, assuming we don't just want to do everything
             // lazily...

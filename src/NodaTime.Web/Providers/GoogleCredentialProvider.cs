@@ -19,11 +19,11 @@ namespace NodaTime.Web.Providers
             // Use the default credentials if the environment variable is set.
             if (Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS") != null)
             {
-                return null;
+                return GoogleCredential.GetApplicationDefaultAsync().Result;
             }
-            string secretUri = configuration["APPSETTING_SecretUri"] ?? "secret";
-            string clientId = Startup.Configuration["APPSETTING_ClientId"];
-            string clientSecret = Startup.Configuration["APPSETTING_ClientSecret"];
+            string secretUri = configuration["APPSETTING_SecretUri"];
+            string clientId = configuration["APPSETTING_ClientId"];
+            string clientSecret = configuration["APPSETTING_ClientSecret"];
             ClientCredential credential = new ClientCredential(clientId, clientSecret);
             var secret = GetKeyVaultSecret(credential, secretUri);
             return GoogleCredential.FromStream(new MemoryStream(Encoding.UTF8.GetBytes(secret)));
