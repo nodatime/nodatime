@@ -27,7 +27,8 @@
     "globalMetadata": {
       "_appTitle": "Noda Time",
       "_disableContribution": true,
-      "_appFooter": " "
+      "_appFooter": " ",
+      "_navRel": "../toc.html"
     },
     "dest": "_site"
   }

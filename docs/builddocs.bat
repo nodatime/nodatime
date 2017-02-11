@@ -39,10 +39,12 @@ for %%V in (%PREVIOUS_VERSIONS%) do (
   if exist history\%%V\api rmdir /s /q history\%%V\api
   call docfx history\%%V\docfx.json metadata -f || goto error
   xcopy /I /S /Q history\%%V\api obj\%%V\api
+  copy toc.yml obj\%%V
 )
 
 echo Building metadata for current branch
 call docfx metadata -f
+copy toc.yml obj\unstable
 
 REM TODO: Add extra information (versions etc)
 
