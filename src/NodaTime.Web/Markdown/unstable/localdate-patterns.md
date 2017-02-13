@@ -27,9 +27,9 @@ For the meanings of "absolute" years and text handling, see later details.
 <table>
   <thead>
     <tr>
-      <td>Character</td>
-      <td>Meaning</td>
-      <td>Example</td>
+      <td class="pattern-char">Character</td>
+      <td class="pattern-description">Meaning</td>
+      <td class="pattern-example">Example</td>
     </tr>
   </thead>
   <tbody>
@@ -165,7 +165,7 @@ For the meanings of "absolute" years and text handling, see later details.
         The date separator for the format provider; slash in the invariant culture.
       </td>
       <td>en-US: <code>uuuu/MM/dd</code> => <code>2011/10/09</code><br />
-          de-DE: <code>uuuu/MM/dd</code> => <code>2011.10.09</code></td>
+          de-DE: <code>uuuu/MM/dd</code> => <code>2011.10.09</code>
           de-DE: <code>uuuu/MM/dd</code> => <code>2011.10.09</code></td>
     </tr>
   </tbody>
