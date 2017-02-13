@@ -27,9 +27,9 @@ for general notes on custom patterns, including characters used for escaping and
 <table>
   <thead>
     <tr>
-      <td>Character</td>
-      <td>Meaning</td>
-      <td>Example</td>
+      <td class="pattern-char">Character</td>
+      <td class="pattern-description">Meaning</td>
+      <td class="pattern-example">Example</td>
     </tr>
   </thead>
   <tbody>
@@ -37,7 +37,6 @@ for general notes on custom patterns, including characters used for escaping and
       <td><code>H</code> or <code>HH</code></td>
       <td>
         The hour of day in the 24-hour clock; a value 0-23.
-
         <p>Note that when parsing local date/time values, a value of <code>24</code>
         may be exceptionally permitted to allow
         <a href="localdatetime-patterns.md">specification of a following day's

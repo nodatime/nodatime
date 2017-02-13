@@ -364,3 +364,15 @@ footer .design {
 
 @media only screen and (min-width: 1440px) {
 }
+
+td.pattern-char {
+  width: 20%
+}
+
+td.pattern-description {
+  width: 50%
+}
+
+td.pattern-example {
+  width: 30%
+}

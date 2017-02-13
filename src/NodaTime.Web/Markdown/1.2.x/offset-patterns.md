@@ -32,9 +32,9 @@ for general notes on custom patterns, including characters used for escaping and
 <table>
   <thead>
     <tr>
-      <td>Character</td>
-      <td>Meaning</td>
-      <td>Example</td>
+      <td class="pattern-char">Character</td>
+      <td class="pattern-description">Meaning</td>
+      <td class="pattern-example">Example</td>
     </tr>
   </thead>
   <tbody>
