@@ -28,6 +28,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public LocalDateTime FromDateTime() => LocalDateTime.FromDateTime(SampleDateTime);
 
         [Benchmark]
+        public LocalDateTime FromDateTime_WithCalendar() => LocalDateTime.FromDateTime(SampleDateTime, CalendarSystem.Julian);
+
+        [Benchmark]
         public DateTime ToDateTimeUnspecified() => Sample.ToDateTimeUnspecified();
 
         [Benchmark]

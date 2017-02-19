@@ -41,6 +41,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public Instant FromUnixTimeTicks() => Instant.FromUnixTimeTicks(SampleUnixTimeTicks);
 
         [Benchmark]
+        public Instant FromUnixTimeTicks_Negative() => Instant.FromUnixTimeTicks(-NodaConstants.TicksPerDay * 900);
+
+        [Benchmark]
         public long ToUnixTimeSeconds() => Sample.ToUnixTimeSeconds();
 
         [Benchmark]

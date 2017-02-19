@@ -10,6 +10,8 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     public class DurationBenchmarks
     {
         private static readonly TimeSpan SampleTimeSpan = new TimeSpan(1, 2, 3);
+        private static readonly Duration SampleDuration1 = new Duration(1, 500000);
+        private static readonly Duration SampleDuration2 = new Duration(2, 300000);
 
         [Benchmark]
         public Duration FromDays() =>
@@ -45,5 +47,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public Duration FromTimeSpan() => Duration.FromTimeSpan(SampleTimeSpan);
 
+        [Benchmark]
+        public Duration Minus_Simple() => SampleDuration1 - SampleDuration2;
+        
+        // This is more complex because subtracting the nanos gives us a negative nanos value
+        // which we need to correct.
+        [Benchmark]
+        public Duration Minus_Complex() => SampleDuration2 - SampleDuration1;
     }
 }

@@ -5,12 +5,14 @@
 using BenchmarkDotNet.Attributes;
 using NodaTime.Calendars;
 using NodaTime.Text;
+using System;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     public class LocalDateBenchmarks
     {
         private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
+        private static readonly DateTime SampleDateTime = new DateTime(2009, 12, 26, 1, 2, 3, DateTimeKind.Utc);
         private static readonly LocalDate SampleBeforeEpoch = new LocalDate(1909, 12, 26);
 
         private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/yyyy");
@@ -121,5 +123,11 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public LocalDate MinusPeriod() => (Sample - SamplePeriod);
+
+        [Benchmark]
+        public LocalDate FromDateTime() => LocalDate.FromDateTime(SampleDateTime);
+
+        [Benchmark]
+        public LocalDate FromDateTime_WithCalendar() => LocalDate.FromDateTime(SampleDateTime, CalendarSystem.Julian);
     }
 }
