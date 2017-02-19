@@ -74,6 +74,9 @@ namespace NodaTime.Test.Text
 
         internal static Data[] FormatOnlyData = {
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "ddd yyyy", Text = "Wed 2011" },
+            // Note trunction of the "89" nanoseconds; o and O are BCL roundtrip patterns, with tick precision.
+            new Data(SampleLocalDateTime) { Pattern = "o", Text = "1976-06-19T21:13:34.1234567" },
+            new Data(SampleLocalDateTime) { Pattern = "O", Text = "1976-06-19T21:13:34.1234567" }
         };
 
         internal static Data[] FormatAndParseData = {
@@ -103,8 +106,11 @@ namespace NodaTime.Test.Text
             // Culture has no impact on round-trip or sortable formats
             new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { Pattern = "R", Text = "2009-06-15T13:45:30.090000000", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.090000000 (ISO)", Culture = Cultures.FrFr },
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
+            new Data(SampleLocalDateTime) { Pattern = "R", Text = "1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
+            new Data(SampleLocalDateTime) { Pattern = "r", Text = "1976-06-19T21:13:34.123456789 (ISO)", Culture = Cultures.FrFr },
 
             // Calendar patterns are invariant
             new Data(MsdnStandardExample) { Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
