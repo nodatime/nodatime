@@ -306,7 +306,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            long ticks = TickArithmetic.DaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
+            long ticks = TickArithmetic.BoundedDaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
             if (ticks < 0)
             {
                 throw new InvalidOperationException("LocalDateTime out of range of DateTime");
@@ -326,9 +326,8 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDateTime FromDateTime(DateTime dateTime)
         {
-            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
             long tickOfDay;
-            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
+            int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.Ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDateTime(new LocalDate(days), new LocalTime(unchecked(tickOfDay * NodaConstants.NanosecondsPerTick)));
         }
 
@@ -342,9 +341,8 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDateTime FromDateTime(DateTime dateTime, [NotNull] CalendarSystem calendar)
         {
-            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
             long tickOfDay;
-            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
+            int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.Ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDateTime(new LocalDate(days, calendar), new LocalTime(unchecked(tickOfDay * NodaConstants.NanosecondsPerTick)));
         }
 

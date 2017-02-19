@@ -39,8 +39,9 @@ namespace NodaTime
     /// </para>
     /// <para>
     /// The range of valid values of a <c>Duration</c> is greater than the span of time supported by Noda Time - so for
-    /// example, subtracting one <see cref="Instant"/> from another will always give a valid <c>Duration</c>. See the user guide
-    /// for more details of the exact range, but it is not expected that this will ever be exceeded in normal code.
+    /// example, subtracting one <see cref="Instant"/> from another will always give a valid <c>Duration</c>. The range
+    /// is also greater than that of <see cref="TimeSpan"/> (<see cref="long.MinValue" /> ticks to <see cref="long.MaxValue"/> ticks).
+    /// See the user guide for more details of the exact range, but it is not expected that this will ever be exceeded in normal code.
     /// </para>
     /// <para>
     /// Various operations accept or return a <see cref="Double"/>, in-keeping with durations often being natural lengths
@@ -514,12 +515,7 @@ namespace NodaTime
             {
                 int newDays = left.days - right.days;
                 long newNanos = left.nanoOfDay - right.nanoOfDay;
-                if (newNanos >= NanosecondsPerDay)
-                {
-                    newDays++;
-                    newNanos -= NanosecondsPerDay;
-                }
-                else if (newNanos < 0)
+                if (newNanos < 0)
                 {
                     newDays--;
                     newNanos += NanosecondsPerDay;

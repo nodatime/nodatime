@@ -665,7 +665,7 @@ namespace NodaTime
         /// <returns>The number of ticks since the Unix epoch.</returns>
         [Pure]
         public long ToUnixTimeTicks() =>
-            TickArithmetic.DaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NanosecondsPerTick);
+            TickArithmetic.BoundedDaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NanosecondsPerTick);
 
         /// <summary>
         /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the UTC time

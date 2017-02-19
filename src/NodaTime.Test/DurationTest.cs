@@ -265,6 +265,12 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BclCompatibleTicks_MinValue()
+        {
+            Assert.Throws<OverflowException>(() => Duration.MinValue.BclCompatibleTicks.ToString());
+        }
+
+        [Test]
         public void Validation()
         {
             TestHelper.AssertValid(Duration.FromDays, (1 << 24) - 1);
