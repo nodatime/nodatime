@@ -198,6 +198,10 @@ namespace NodaTime
         public DateTime ToDateTimeUnspecified() =>
             new DateTime(DaysSinceEpoch * NodaConstants.TicksPerDay + NodaConstants.BclTicksAtUnixEpoch, DateTimeKind.Unspecified);
 
+        // Helper method used by both FromDateTime overloads.
+        private static int NonNegativeTicksToDays(long ticks) =>
+            unchecked((int) ((ticks >> 14) / 52734375L));
+
         /// <summary>
         /// Converts a <see cref="DateTime" /> of any kind to a LocalDate in the ISO calendar, ignoring the time of day.
         /// This does not perform any time zone conversions, so a DateTime with a <see cref="DateTime.Kind"/> of
@@ -207,8 +211,7 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDate"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDate FromDateTime(DateTime dateTime)
         {
-            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
-            int days = TickArithmetic.TicksToDays(ticks);
+            int days = NonNegativeTicksToDays(dateTime.Ticks) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDate(days);
         }
 
@@ -222,8 +225,7 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDate"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDate FromDateTime(DateTime dateTime, [NotNull] CalendarSystem calendar)
         {
-            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
-            int days = TickArithmetic.TicksToDays(ticks);
+            int days = NonNegativeTicksToDays(dateTime.Ticks) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDate(days, calendar);
         }
 

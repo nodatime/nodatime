@@ -172,9 +172,15 @@ namespace NodaTime
         /// </summary>
         public static Instant JulianEpoch { get; } = Instant.FromUtc(-4713, 11, 24, 12, 0);
 
+        // These are checked in NodaConstantsTest.
         /// <summary>
         /// The number of ticks in a BCL DateTime at the Unix epoch.
         /// </summary>
-        internal static readonly long BclTicksAtUnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks;
+        internal static readonly long BclTicksAtUnixEpoch = 621355968000000000;
+
+        /// <summary>
+        /// The number of days in a BCL DateTime at the Unix epoch.
+        /// </summary>
+        internal static readonly int BclDaysAtUnixEpoch = 719162;
     }
 }
