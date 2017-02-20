@@ -88,7 +88,10 @@ namespace NodaTime.Test.Text
 
             // https://github.com/nodatime/nodatime/issues/414
             new Data { Pattern = "yyyy-MM-dd", Text = "1984-00-15", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 0, 'M', typeof(LocalDate) } },
-            new Data { Pattern = "M/d/yyyy", Text = "00/15/1984", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 0, 'M', typeof(LocalDate) } }
+            new Data { Pattern = "M/d/yyyy", Text = "00/15/1984", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 0, 'M', typeof(LocalDate) } },
+
+            // Calendar ID parsing is now ordinal, case-sensitive
+            new Data(2011, 10, 9) { Pattern = "yyyy MM dd c", Text = "2011 10 09 iso", Message = Messages.Parse_NoMatchingCalendarSystem },
         };
 
         internal static Data[] ParseOnlyData = {
