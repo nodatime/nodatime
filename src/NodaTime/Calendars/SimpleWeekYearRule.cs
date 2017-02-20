@@ -128,9 +128,10 @@ namespace NodaTime.Calendars
 
                 // At the end of the year, we may have some extra days too.
                 // In a non-regular rule, we just round up, so assume we effectively have 6 extra days.
-                // TODO: Explain the reasoning for the regular rule part. I know it works, I just
-                // don't know why.
-                int extraDaysAtEnd = irregularWeeks ? 6: minDaysInFirstWeek - 1;
+                // In a regular rule, there can be at most minDaysInFirstWeek - 1 days "borrowed"
+                // from the following year - because if there were any more, those days would be in the
+                // the following year instead.
+                int extraDaysAtEnd = irregularWeeks ? 6 : minDaysInFirstWeek - 1;
 
                 int daysInThisYear = yearMonthDayCalculator.GetDaysInYear(weekYear);
 
