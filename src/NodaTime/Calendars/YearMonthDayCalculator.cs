@@ -108,9 +108,6 @@ namespace NodaTime.Calendars
         internal virtual int GetStartOfYearInDays([Trusted] int year)
         {
             Preconditions.DebugCheckArgumentRange(nameof(year), year, MinYear - 1, MaxYear + 1);
-            // TODO(2.0): Check that it's valid to cache values outside the advertised
-            // bounds of the calendar (by one year). We used not to cache them, but just
-            // the check was relatively expensive.
             int cacheIndex = YearStartCacheEntry.GetCacheIndex(year);
             YearStartCacheEntry cacheEntry = yearCache[cacheIndex];
             if (!cacheEntry.IsValidForYear(year))
