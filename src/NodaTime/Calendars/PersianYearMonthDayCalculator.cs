@@ -97,18 +97,6 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, month, day);
         }
 
-        internal sealed override YearMonthDay SetYear(YearMonthDay yearMonthDay, int year)
-        {
-            int month = yearMonthDay.Month;
-            int day = yearMonthDay.Day;
-            // The only value which might change day is the last day of a leap year
-            if (month == 12 && day == 30 && !IsLeapYear(year))
-            {
-                day = 29;
-            }
-            return new YearMonthDay(year, month, day);
-        }
-
         internal sealed override int GetDaysInMonth(int year, int month) =>
             month < 7 ? 31
                 : month < 12 ? 30
