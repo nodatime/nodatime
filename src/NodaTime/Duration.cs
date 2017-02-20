@@ -1223,7 +1223,6 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
-            // FIXME(2.0): Determine serialization policy
             Serialize(info);
         }
         #endregion

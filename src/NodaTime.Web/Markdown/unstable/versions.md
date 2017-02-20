@@ -55,7 +55,8 @@ See the [Noda Time 1.x to 2.0 migration guide](migration-to-2.html) for full det
 - The `Instant.Ticks` property has been converted to a method, `Instant.ToUnixTimeTicks()`. (This reflects
   the fact that it would no longer reflect the complete state of the object, and aims to obscure the fact
   that the Unix epoch is the internal epoch in Noda Time.)
-- Text formatting no longer uses the `NumberFormatInfo` from a culture for positive or negative signs
+- Text formatting no longer uses the `NumberFormatInfo` from a culture for positive or negative signs.
+- Binary data serialized with 1.x is not compatible with 2.0.
 
 Bug fixes:
 

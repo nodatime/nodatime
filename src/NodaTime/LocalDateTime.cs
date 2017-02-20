@@ -954,7 +954,6 @@ namespace NodaTime
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
             Preconditions.CheckNotNull(info, nameof(info));
-            // FIXME(2.0): Revisit the serialization format. (Use the calendar ordinal? Don't bother for ISO?)
             info.AddValue(DaysSerializationName, date.DaysSinceEpoch);
             info.AddValue(NanosecondOfDaySerializationName, time.NanosecondOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
