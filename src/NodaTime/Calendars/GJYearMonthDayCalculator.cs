@@ -76,17 +76,5 @@ namespace NodaTime.Calendars
 
         protected override int GetDaysFromStartOfYearToStartOfMonth([Trusted] int year, [Trusted] int month) =>
             IsLeapYear(year) ? MaxTotalDaysByMonth[month - 1] : MinTotalDaysByMonth[month - 1];
-
-        internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, [Trusted] int year)
-        {
-            int month = yearMonthDay.Month;
-            int day = yearMonthDay.Day;
-            // The only value which might change day is Feb 29th.
-            if (month == 2 && day == 29 && !IsLeapYear(year))
-            {
-                day = 28;
-            }
-            return new YearMonthDay(year, month, day);
-        }
     }
 }

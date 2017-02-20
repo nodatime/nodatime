@@ -34,8 +34,8 @@ namespace NodaTime.Calendars
         /// </summary>
         internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, [Trusted] int year)
         {
-            // TODO(2.0): All subclasses have the same logic of "detect leap years,
-            // and otherwise we're fine". Put it here instead.
+            // If this ever becomes a bottleneck due to GetDaysInMonth, it can be overridden
+            // in subclasses.
             int currentMonth = yearMonthDay.Month;
             int currentDay = yearMonthDay.Day;
             int newDay = GetDaysInMonth(year, currentMonth);
