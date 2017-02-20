@@ -843,7 +843,6 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            // FIXME(2.0): Revisit serialization
             info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
             info.AddValue(NanosecondOfDaySerializationName, TimeOfDay.NanosecondOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);

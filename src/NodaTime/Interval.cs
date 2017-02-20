@@ -288,7 +288,6 @@ namespace NodaTime
             // so we add one extra value to say which other values to include. We may wish to generalize this
             // at some point...
             info.AddValue(PresenceName, (byte) ((HasStart ? 1 : 0) | (HasEnd ? 2 : 0)));
-            // FIXME:SERIALIZATION
             if (HasStart)
             {
                 start.TimeSinceEpoch.Serialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName);

@@ -148,6 +148,11 @@ As noted above (when talking about removed members), the ISO calendar is now equ
 Serialization
 ====
 
+Binary serialization: there is no compatibility between 1.x and 2.0. If binary data has been persisted,
+it will need to be converted to the 2.0 format. We don't currently provide any tools to simplify this,
+but if it turns out to be a significant problem, please post on the mailing list and we'll see what we can
+do.
+
 TBD (this will be awkward). To note so far:
 
 - Periods with year/month/week/day values outside the range of `int`
