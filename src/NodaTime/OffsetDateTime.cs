@@ -884,7 +884,7 @@ namespace NodaTime
 #if !PCL
         #region Binary serialization
         private const string DaysSerializationName = "days";
-        private const string TickOfDaySerializationName = "tickOfDay";
+        private const string NanosecondOfDaySerializationName = "nanoOfDay";
         private const string CalendarIdSerializationName = "calendar";
         private const string OffsetMillisecondsSerializationName = "offsetMilliseconds";
 
@@ -896,7 +896,7 @@ namespace NodaTime
         private OffsetDateTime([NotNull] SerializationInfo info, StreamingContext context)
             : this(new LocalDateTime(new LocalDate(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(DaysSerializationName),
                                                    CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
-                                     LocalTime.FromTicksSinceMidnight(info.GetInt64(TickOfDaySerializationName))),
+                                     LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName))),
                    Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
         {
         }
@@ -910,9 +910,8 @@ namespace NodaTime
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
             Preconditions.CheckNotNull(info, nameof(info));
-            // TODO(2.0): Consider serialization compatibility. (And just serialize the fields?)
             info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
-            info.AddValue(TickOfDaySerializationName, TimeOfDay.TickOfDay);
+            info.AddValue(NanosecondOfDaySerializationName, TimeOfDay.NanosecondOfDay);
             info.AddValue(CalendarIdSerializationName, Calendar.Id);
             info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
         }
