@@ -322,7 +322,7 @@ namespace NodaTime.Test
         [Test]
         public void BinarySerialization()
         {
-            TestHelper.AssertBinaryRoundtrip(Instant.FromUnixTimeTicks(12345L));
+            TestHelper.AssertBinaryRoundtrip(NodaConstants.UnixEpoch.PlusNanoseconds(123456789L));
             TestHelper.AssertBinaryRoundtrip(Instant.MinValue);
             TestHelper.AssertBinaryRoundtrip(Instant.MaxValue);
         }
