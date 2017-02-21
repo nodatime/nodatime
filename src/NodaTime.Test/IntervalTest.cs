@@ -10,8 +10,8 @@ namespace NodaTime.Test
 {
     public class IntervalTest
     {
-        private static readonly Instant SampleStart = Instant.FromUnixTimeTicks(-300);
-        private static readonly Instant SampleEnd = Instant.FromUnixTimeTicks(400);
+        private static readonly Instant SampleStart = NodaConstants.UnixEpoch.PlusNanoseconds(-30001);
+        private static readonly Instant SampleEnd = NodaConstants.UnixEpoch.PlusNanoseconds(40001);
 
         [Test]
         public void Construction_Success()
@@ -70,7 +70,7 @@ namespace NodaTime.Test
         public void Duration()
         {
             var interval = new Interval(SampleStart, SampleEnd);
-            Assert.AreEqual(NodaTime.Duration.FromTicks(700), interval.Duration);
+            Assert.AreEqual(NodaTime.Duration.FromNanoseconds(70002), interval.Duration);
         }
 
         /// <summary>

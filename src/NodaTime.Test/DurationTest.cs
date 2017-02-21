@@ -24,7 +24,7 @@ namespace NodaTime.Test
         [Test]
         public void BinarySerialization()
         {
-            TestHelper.AssertBinaryRoundtrip(Duration.FromTicks(12345L));
+            TestHelper.AssertBinaryRoundtrip(Duration.FromNanoseconds(123456789L));
         }
 
         [Test]
