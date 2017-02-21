@@ -815,7 +815,7 @@ namespace NodaTime
 #if !PCL
         #region Binary serialization
         private const string DaysSerializationName = "days";
-        private const string NanosecondOfDaySerializationName = "nanosecondOfDay";
+        private const string NanosecondOfDaySerializationName = "nanoOfDay";
         private const string CalendarIdSerializationName = "calendar";
         private const string OffsetMillisecondsSerializationName = "offsetMilliseconds";
         private const string ZoneIdSerializationName = "zone";
