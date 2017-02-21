@@ -543,7 +543,7 @@ namespace NodaTime.Test
         {
             var original = new PeriodBuilder { Milliseconds = 1, Ticks = 15000 }.Build();
             var normalized = original.Normalize();
-            var expected = new PeriodBuilder { Milliseconds = 2, Ticks = 5000 }.Build();
+            var expected = new PeriodBuilder { Milliseconds = 2, Ticks = 0, Nanoseconds = 500000 }.Build();
             Assert.AreEqual(expected, normalized);
         }
 
@@ -552,7 +552,7 @@ namespace NodaTime.Test
         {
             var original = new PeriodBuilder { Ticks = 1, Nanoseconds = 150 }.Build();
             var normalized = original.Normalize();
-            var expected = new PeriodBuilder { Ticks = 2, Nanoseconds = 50}.Build();
+            var expected = new PeriodBuilder { Nanoseconds = 250}.Build();
             Assert.AreEqual(expected, normalized);
         }
 
