@@ -163,7 +163,6 @@ namespace NodaTime.Text
                     return ParseResult<LocalDate>.InconsistentDayOfWeekTextValue(text);
                 }
 
-                // FIXME: If we got an era, check that the resulting date really lies within that era.
                 return ParseResult<LocalDate>.ForValue(value);
             }
 
