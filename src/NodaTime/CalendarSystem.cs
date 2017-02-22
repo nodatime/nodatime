@@ -52,6 +52,9 @@ namespace NodaTime
         private const string CopticName = "Coptic";
         private const string CopticId = CopticName;
 
+        private const string WondrousName = "Wondrous";
+        private const string WondrousId = WondrousName;
+
         private const string JulianName = "Julian";
         private const string JulianId = JulianName;
 
@@ -114,7 +117,8 @@ namespace NodaTime
         /// initialized beforehand (as construction populates the array). In other words, this should not be called with an arbitrary ordinal;
         /// this is fine as it's usually called for an existing local date, which must have been initialized using a known calendar system.
         /// </summary>
-        [NotNull] internal static CalendarSystem ForOrdinal([Trusted] CalendarOrdinal ordinal)
+        [NotNull]
+        internal static CalendarSystem ForOrdinal([Trusted] CalendarOrdinal ordinal)
         {
             Preconditions.DebugCheckArgument(ordinal >= 0 && ordinal < CalendarOrdinal.Size, nameof(ordinal),
                 "Unknown ordinal value {0}", ordinal);
@@ -170,7 +174,7 @@ namespace NodaTime
                 default:
                     throw new InvalidOperationException($"Bug in Noda Time: calendar ordinal {ordinal} missing from switch in CalendarSystem.ForOrdinal.");
             }
-    }
+        }
 
         /// <summary>
         /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.
@@ -232,10 +236,31 @@ namespace NodaTime
         /// <returns>A Hebrew calendar system for the given month numbering.</returns>
         public static CalendarSystem GetHebrewCalendar(HebrewMonthNumbering monthNumbering)
         {
-            Preconditions.CheckArgumentRange(nameof(monthNumbering), (int) monthNumbering, 1, 2);
-            return HebrewCalendars.ByMonthNumbering[((int) monthNumbering) - 1];
+            Preconditions.CheckArgumentRange(nameof(monthNumbering), (int)monthNumbering, 1, 2);
+            return HebrewCalendars.ByMonthNumbering[((int)monthNumbering) - 1];
         }
-        
+
+        /// <summary>
+        /// Returns the Wondrous (Badí') calendar, as described at https://en.wikipedia.org/wiki/Badi_calendar. 
+        /// This is a purely solar calendar with years starting at the vernal equinox.
+        /// </summary>
+        /// <remarks>
+        /// <para>The Wondrous calendar was developed and defined by the founders of the Bahá'í Faith in the mid to late
+        /// 1800's A.D. The first year in the calendar coincides with 1844 A.D. Years are labeled "B.E." for Bahá'í Era.</para>
+        /// <para>A year consists of 19 months, each with 19 days. Each day starts at sunset. Years are grouped into sets
+        /// of 19 "Unities" (Váḥid) and 19 Unities make up 1 "All Things" (Kull-i-Shay’).</para>
+        /// <para>A period of days (usually 4 or 5, called Ayyám-i-Há) occurs between the 18th and 19th months. The length of this 
+        /// period of intercalary days is solely determined by the pre-calculated time of the following vernal equinox. 
+        /// The vernal equinox is a momentary point in time, so the "date" of the equinox is determined by the day (beginning 
+        /// at sunset) in effect in Tehran, Iran at the moment of the equinox. These times can be calculated, but published
+        /// tables are used in this implementation keep it simple!</para>
+        /// </remarks>
+        /// <returns>The Wondrous calendar system.</returns>
+        public static CalendarSystem GetWondrousCalendar()
+        {
+            return MiscellaneousCalendars.Wondrous;
+        }
+
         /// <summary>
         /// Returns an Islamic, or Hijri, calendar system.
         /// </summary>
@@ -295,9 +320,9 @@ namespace NodaTime
         /// calls as the object is immutable and thread-safe.</returns>
         public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
         {
-            Preconditions.CheckArgumentRange(nameof(leapYearPattern), (int) leapYearPattern, 1, 4);
-            Preconditions.CheckArgumentRange(nameof(epoch), (int) epoch, 1, 2);
-            return IslamicCalendars.ByLeapYearPatterAndEpoch[(int) leapYearPattern - 1, (int) epoch - 1];
+            Preconditions.CheckArgumentRange(nameof(leapYearPattern), (int)leapYearPattern, 1, 4);
+            Preconditions.CheckArgumentRange(nameof(epoch), (int)epoch, 1, 2);
+            return IslamicCalendars.ByLeapYearPatterAndEpoch[(int)leapYearPattern - 1, (int)epoch - 1];
         }
 
         #endregion
@@ -322,7 +347,7 @@ namespace NodaTime
             this.MaxDays = yearMonthDayCalculator.GetStartOfYearInDays(MaxYear + 1) - 1;
             // We trust the construction code not to mutate the array...
             this.eraCalculator = eraCalculator;
-            CalendarByOrdinal[(int) ordinal] = this;
+            CalendarByOrdinal[(int)ordinal] = this;
         }
 
         /// <summary>
@@ -452,7 +477,7 @@ namespace NodaTime
         #endregion
 
         internal YearMonthDayCalculator YearMonthDayCalculator { get; }
-        
+
         internal YearMonthDayCalendar GetYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch)
         {
             Preconditions.CheckArgumentRange(nameof(daysSinceEpoch), daysSinceEpoch, MinDays, MaxDays);
@@ -489,7 +514,7 @@ namespace NodaTime
             int daysSinceEpoch = YearMonthDayCalculator.GetDaysSinceEpoch(yearMonthDay);
             int numericDayOfWeek = unchecked(daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
                                            : 7 + ((daysSinceEpoch + 4) % 7));
-            return (IsoDayOfWeek) numericDayOfWeek;
+            return (IsoDayOfWeek)numericDayOfWeek;
         }
 
         /// <summary>
@@ -572,7 +597,7 @@ namespace NodaTime
             DebugValidateYearMonthDay(yearMonthDay);
             return YearMonthDayCalculator.GetDayOfYear(yearMonthDay);
         }
-       
+
         internal int GetYearOfEra([Trusted] int absoluteYear)
         {
             Preconditions.DebugCheckArgumentRange(nameof(absoluteYear), absoluteYear, MinYear, MaxYear);
@@ -745,7 +770,7 @@ namespace NodaTime
                 new CalendarSystem(CalendarOrdinal.PersianAstronomical, PersianAstronomicalId, PersianName, new PersianYearMonthDayCalculator.Astronomical(), Era.AnnoPersico);
 
             // Static constructor to enforce laziness.
-            static PersianCalendars() {}
+            static PersianCalendars() { }
         }
 
         /// <summary>
@@ -763,9 +788,9 @@ namespace NodaTime
                 {
                     for (int j = 1; j <= 2; j++)
                     {
-                        var leapYearPattern = (IslamicLeapYearPattern) i;
-                        var epoch = (IslamicEpoch) j;
-                        var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern) i, (IslamicEpoch) j);
+                        var leapYearPattern = (IslamicLeapYearPattern)i;
+                        var epoch = (IslamicEpoch)j;
+                        var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern)i, (IslamicEpoch)j);
                         CalendarOrdinal ordinal = CalendarOrdinal.IslamicAstronomicalBase15 + (i - 1) + (j - 1) * 4;
                         ByLeapYearPatterAndEpoch[i - 1, j - 1] = new CalendarSystem(ordinal, GetIslamicId(leapYearPattern, epoch), IslamicName, calculator, Era.AnnoHegirae);
                     }
@@ -783,6 +808,8 @@ namespace NodaTime
                 new CalendarSystem(CalendarOrdinal.Coptic, CopticId, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
             internal static readonly CalendarSystem UmAlQura =
                 new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraId, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae);
+            internal static readonly CalendarSystem Wondrous =
+                new CalendarSystem(CalendarOrdinal.Wondrous, WondrousId, WondrousName, new WondrousYearMonthDayCalculator(), Era.BahaiEra);
 
             // Static constructor to enforce laziness. This used to be important to avoid a Heisenbug.
             // I don't believe it's strictly required now, but it does no harm and I don't want to go
