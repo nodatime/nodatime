@@ -67,3 +67,4 @@ packages
 coverage.xml
 coverage
 src/NodaTime.Web/docfx
+build/history
