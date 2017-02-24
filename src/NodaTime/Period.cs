@@ -736,7 +736,8 @@ namespace NodaTime
         /// Days property, and all time properties are normalized to their natural range.
         /// Subsecond values are normalized to millisecond and "nanosecond within millisecond" values.
         /// So for example, a period of 25 hours becomes a period of 1 day
-        /// and 1 hour. Aside from months and years, either all the properties
+        /// and 1 hour. A period of 1,500,750,000 nanoseconds becomes 1 second, 500 milliseconds and
+        /// 750,000 nanoseconds. Aside from months and years, either all the properties
         /// end up positive, or they all end up negative. "Week" and "tick" units in the returned period are always 0.
         /// </remarks>
         /// <exception cref="OverflowException">The period doesn't have years or months, but it contains more than
