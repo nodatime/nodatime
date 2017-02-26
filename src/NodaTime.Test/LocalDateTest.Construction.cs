@@ -11,6 +11,13 @@ namespace NodaTime.Test
     public partial class LocalDateTest
     {
         [Test]
+        public void BinarySerialization()
+        {
+            TestHelper.AssertBinaryRoundtrip(new LocalDate(2013, 4, 12, CalendarSystem.Julian));
+            TestHelper.AssertBinaryRoundtrip(new LocalDate(2013, 4, 12));
+        }
+
+        [Test]
         [TestCase(1620)] // Leap year in non-optimized period
         [TestCase(1621)] // Non-leap year in non-optimized period
         [TestCase(1980)] // Leap year in optimized period
