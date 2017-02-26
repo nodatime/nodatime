@@ -930,9 +930,6 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string DaysSerializationName = "days";
-        private const string NanosecondOfDaySerializationName = "nanoOfDay";
-        private const string CalendarIdSerializationName = "calendar";
 
         /// <summary>
         /// Private constructor only present for serialization.
@@ -940,9 +937,16 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalDateTime([NotNull] SerializationInfo info, StreamingContext context)
-            : this(new LocalDate(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(DaysSerializationName),
-                                 CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
-                   LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName)))
+            : this(info)
+        {
+        }
+
+        /// <summary>
+        /// Internal constructor used for deserialization, for cases where this is part of
+        /// a larger value.
+        /// </summary>
+        internal LocalDateTime([NotNull] SerializationInfo info)
+            : this(new LocalDate(info), new LocalTime(info))
         {
         }
 
@@ -954,10 +958,14 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Serialize(info);
+        }
+
+        internal void Serialize([NotNull] SerializationInfo info)
+        {
             Preconditions.CheckNotNull(info, nameof(info));
-            info.AddValue(DaysSerializationName, date.DaysSinceEpoch);
-            info.AddValue(NanosecondOfDaySerializationName, time.NanosecondOfDay);
-            info.AddValue(CalendarIdSerializationName, Calendar.Id);
+            date.Serialize(info);
+            time.Serialize(info);
         }
         #endregion
 #endif

@@ -883,21 +883,13 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string DaysSerializationName = "days";
-        private const string NanosecondOfDaySerializationName = "nanoOfDay";
-        private const string CalendarIdSerializationName = "calendar";
-        private const string OffsetMillisecondsSerializationName = "offsetMilliseconds";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private OffsetDateTime([NotNull] SerializationInfo info, StreamingContext context)
-            : this(new LocalDateTime(new LocalDate(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(DaysSerializationName),
-                                                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
-                                     LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName))),
-                   Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
+            : this(new LocalDateTime(info), new Offset(info))
         {
         }
 
@@ -910,10 +902,8 @@ namespace NodaTime
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
             Preconditions.CheckNotNull(info, nameof(info));
-            info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
-            info.AddValue(NanosecondOfDaySerializationName, TimeOfDay.NanosecondOfDay);
-            info.AddValue(CalendarIdSerializationName, Calendar.Id);
-            info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
+            LocalDateTime.Serialize(info);
+            Offset.Serialize(info);
         }
         #endregion
 #endif

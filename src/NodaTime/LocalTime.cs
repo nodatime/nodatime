@@ -742,17 +742,25 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string NanoOfDaySerializationName = "nanoOfDay";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalTime([NotNull] SerializationInfo info, StreamingContext context)
+            : this(info)
+        {
+        }
+
+        /// <summary>
+        /// Constructor only present for serialization; internal to allow
+        /// construction as part of deserialization of larger types such as LocalDateTime.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        internal LocalTime([NotNull] SerializationInfo info)
         {
             Preconditions.CheckNotNull(info, nameof(info));
-            long nanoOfDay = info.GetInt64(NanoOfDaySerializationName);
+            long nanoOfDay = info.GetInt64(BinaryFormattingConstants.NanoOfDaySerializationName);
             Preconditions.CheckArgument(nanoOfDay >= 0 && nanoOfDay < NanosecondsPerDay, nameof(info),
                 "Serialized offset value is outside the range of +/- 18 hours");
             this.nanoseconds = nanoOfDay;
@@ -766,8 +774,13 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Serialize(info);
+        }
+
+        internal void Serialize([NotNull] SerializationInfo info)
+        {
             Preconditions.CheckNotNull(info, nameof(info));
-            info.AddValue(NanoOfDaySerializationName, nanoseconds);
+            info.AddValue(BinaryFormattingConstants.NanoOfDaySerializationName, nanoseconds);
         }
         #endregion
 #endif

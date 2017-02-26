@@ -17,6 +17,8 @@ using NodaTime.Utility;
 
 namespace NodaTime
 {
+    // TODO(feature): Calendar-neutral comparer.
+
     /// <summary>
     /// LocalDate is an immutable struct representing a date within the calendar,
     /// with no reference to a particular time zone or time of day.
@@ -27,7 +29,6 @@ namespace NodaTime
     /// a value in a different calendar system. However, ordering comparisons (either via the <see cref="CompareTo"/> method
     /// or via operators) fail with <see cref="ArgumentException"/>; attempting to compare values in different calendars
     /// almost always indicates a bug in the calling code.
-    /// TODO(2.0): Calendar-neutral comparer.
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
@@ -769,17 +770,26 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string YearMonthDayCalendarSerializationName = "yearMonthDayCalendar";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalDate([NotNull] SerializationInfo info, StreamingContext context)
-            : this(new YearMonthDayCalendar(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(YearMonthDayCalendarSerializationName)))
+            : this(info)
         {
-            // TODO(2.0): Validation!
+        }
+
+        /// <summary>
+        /// Constructor only present for serialization; internal to allow construction from LocalDateTime
+        /// as part of deserialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        internal LocalDate([NotNull] SerializationInfo info)
+        {
+            Preconditions.CheckNotNull(info, nameof(info));
+            yearMonthDayCalendar = new YearMonthDayCalendar(info.GetInt32(BinaryFormattingConstants.YearMonthDayCalendarSerializationName));
+            // FIXME: Validation
         }
 
         /// <summary>
@@ -790,9 +800,13 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Serialize(info);
+        }
+
+        internal void Serialize([NotNull] SerializationInfo info)
+        {
             Preconditions.CheckNotNull(info, nameof(info));
-            // TODO(2.0): Consider deserialization of 1.x, and consider serializing year, month, day and calendar separately.
-            info.AddValue(YearMonthDayCalendarSerializationName, yearMonthDayCalendar.RawValue);
+            info.AddValue(BinaryFormattingConstants.YearMonthDayCalendarSerializationName, yearMonthDayCalendar.RawValue);
         }
         #endregion
 #endif

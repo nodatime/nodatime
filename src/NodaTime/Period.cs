@@ -822,33 +822,22 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string YearsSerializationName = "years";
-        private const string MonthsSerializationName = "months";
-        private const string WeeksSerializationName = "weeks";
-        private const string DaysSerializationName = "days";
-        private const string HoursSerializationName = "hours";
-        private const string MinutesSerializationName = "minutes";
-        private const string SecondsSerializationName = "seconds";
-        private const string MillisecondsSerializationName = "milliseconds";
-        private const string TicksSerializationName = "ticks";
-        private const string NanosecondsSerializationName = "nanosDays";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Period(SerializationInfo info, StreamingContext context)
-            : this((int) info.GetInt64(YearsSerializationName),
-                   (int) info.GetInt64(MonthsSerializationName),
-                   (int) info.GetInt64(WeeksSerializationName),
-                   (int) info.GetInt64(DaysSerializationName),
-                   info.GetInt64(HoursSerializationName),
-                   info.GetInt64(MinutesSerializationName),
-                   info.GetInt64(SecondsSerializationName),
-                   info.GetInt64(MillisecondsSerializationName),
-                   info.GetInt64(TicksSerializationName),
-                   info.GetInt64(NanosecondsSerializationName))
+            : this((int) info.GetInt64(BinaryFormattingConstants.YearsSerializationName),
+                   (int) info.GetInt64(BinaryFormattingConstants.MonthsSerializationName),
+                   (int) info.GetInt64(BinaryFormattingConstants.WeeksSerializationName),
+                   (int) info.GetInt64(BinaryFormattingConstants.DaysSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.HoursSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.MinutesSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.SecondsSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.MillisecondsSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.TicksSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.NanosecondsSerializationName))
         {
         }
 
@@ -860,16 +849,16 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(YearsSerializationName, (long) Years);
-            info.AddValue(MonthsSerializationName, (long) Months);
-            info.AddValue(WeeksSerializationName, (long) Weeks);
-            info.AddValue(DaysSerializationName, (long) Days);
-            info.AddValue(HoursSerializationName, Hours);
-            info.AddValue(MinutesSerializationName, Minutes);
-            info.AddValue(SecondsSerializationName, Seconds);
-            info.AddValue(MillisecondsSerializationName, Milliseconds);
-            info.AddValue(TicksSerializationName, Ticks);
-            info.AddValue(NanosecondsSerializationName, Nanoseconds);
+            info.AddValue(BinaryFormattingConstants.YearsSerializationName, (long) Years);
+            info.AddValue(BinaryFormattingConstants.MonthsSerializationName, (long) Months);
+            info.AddValue(BinaryFormattingConstants.WeeksSerializationName, (long) Weeks);
+            info.AddValue(BinaryFormattingConstants.DaysSerializationName, (long) Days);
+            info.AddValue(BinaryFormattingConstants.HoursSerializationName, Hours);
+            info.AddValue(BinaryFormattingConstants.MinutesSerializationName, Minutes);
+            info.AddValue(BinaryFormattingConstants.SecondsSerializationName, Seconds);
+            info.AddValue(BinaryFormattingConstants.MillisecondsSerializationName, Milliseconds);
+            info.AddValue(BinaryFormattingConstants.TicksSerializationName, Ticks);
+            info.AddValue(BinaryFormattingConstants.NanosecondsSerializationName, Nanoseconds);
         }
         #endregion
 #endif
