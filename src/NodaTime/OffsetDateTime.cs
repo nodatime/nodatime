@@ -198,7 +198,7 @@ namespace NodaTime
             }
         }
 
-        // TODO(2.0): Consider exposing this.
+        // TODO(feature): Consider exposing this.
         /// <summary>
         /// Gets the hour of the half-day of this offset date and time, in the range 0 to 11 inclusive.
         /// </summary>
@@ -254,7 +254,7 @@ namespace NodaTime
             }
         }
 
-        // TODO(2.0): Rewrite for performance?
+        // TODO(optimization): Rewrite for performance?
         /// <summary>
         /// Gets the tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
@@ -712,7 +712,7 @@ namespace NodaTime
         [Immutable]
         public abstract class Comparer : IComparer<OffsetDateTime>, IEqualityComparer<OffsetDateTime>
         {
-            // TODO(2.0): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
+            // TODO(feature): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
             // but still uses the offset?
 
             /// <summary>
@@ -836,7 +836,7 @@ namespace NodaTime
 
             /// <inheritdoc />
             public override int Compare(OffsetDateTime x, OffsetDateTime y) =>
-                // TODO(2.0): Optimize cases which are more than 2 days apart, by avoiding the arithmetic?
+                // TODO(optimization): Optimize cases which are more than 2 days apart, by avoiding the arithmetic?
                 x.ToElapsedTimeSinceEpoch().CompareTo(y.ToElapsedTimeSinceEpoch());
 
             /// <inheritdoc />

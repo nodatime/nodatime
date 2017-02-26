@@ -18,6 +18,8 @@ using NodaTime.Utility;
 
 namespace NodaTime
 {
+    // TODO(feature): Calendar-neutral comparer.
+
     /// <summary>
     /// A date and time in a particular calendar system. A LocalDateTime value does not represent an
     /// instant on the global time line, because it has no associated time zone: "November 12th 2009 7pm, ISO calendar"
@@ -33,7 +35,6 @@ namespace NodaTime
     /// a value in a different calendar system. However, ordering comparisons (either via the <see cref="CompareTo"/> method
     /// or via operators) fail with <see cref="ArgumentException"/>; attempting to compare values in different calendars
     /// almost always indicates a bug in the calling code.
-    /// TODO(2.0): Calendar-neutral comparer.
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>

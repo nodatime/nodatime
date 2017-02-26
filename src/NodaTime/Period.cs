@@ -489,7 +489,7 @@ namespace NodaTime
             return units + days * periodField.UnitsPerDay;
         }
 
-        // TODO: These three methods are only ever used with scalar values of 1 or -1. Unlikely that
+        // TODO(optimization): These three methods are only ever used with scalar values of 1 or -1. Unlikely that
         // the multiplications are going to be relevant, but may be worth testing. (Easy enough to break out
         // code for the two values separately.)
 
@@ -528,7 +528,7 @@ namespace NodaTime
             time = TimePeriodField.Milliseconds.Add(time, Milliseconds * scalar, ref extraDays);
             time = TimePeriodField.Ticks.Add(time, Ticks * scalar, ref extraDays);
             time = TimePeriodField.Nanoseconds.Add(time, Nanoseconds * scalar, ref extraDays);
-            // TODO(2.0): Investigate the performance impact of us calling PlusDays twice.
+            // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
             // Could optimize by including that in a single call...
             return new LocalDateTime(date.PlusDays(extraDays), time);
         }

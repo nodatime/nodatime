@@ -638,7 +638,7 @@ namespace NodaTime
         [Immutable]
         public abstract class Comparer : IComparer<ZonedDateTime>, IEqualityComparer<ZonedDateTime>
         {
-            // TODO(2.0): A comparer which compares instants, but in a calendar-sensitive manner?
+            // TODO(feature): A comparer which compares instants, but in a calendar-sensitive manner?
 
             /// <summary>
             /// Gets a comparer which compares <see cref="ZonedDateTime"/> values by their local date/time, without reference to
