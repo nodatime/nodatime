@@ -519,23 +519,29 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        // Note that serialization is done via milliseconds, for compatibility with Noda Time 1.x.
-
-        private const string MillisecondsSerializationName = "milliseconds";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Offset([NotNull] SerializationInfo info, StreamingContext context)
+            : this(info)
+        {
+        }
+
+        /// <summary>
+        /// Constructor for serialization, internal to allow deserialization as part of
+        /// a larger value (e.g. OffsetDateTime).
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        internal Offset([NotNull] SerializationInfo info)
         {
             Preconditions.CheckNotNull(info, nameof(info));
-            int millis = info.GetInt32(MillisecondsSerializationName);
+            int seconds = info.GetInt32(BinaryFormattingConstants.OffsetSecondsSerializationName);
 
-            Preconditions.CheckArgument(millis >= MinMilliseconds && millis <= MaxMilliseconds, nameof(info),
+            Preconditions.CheckArgument(seconds >= MinSeconds && seconds <= MaxSeconds, nameof(info),
                 "Serialized offset value is outside the range of +/- 18 hours");
-            this.seconds = millis / MillisecondsPerSecond;
+            this.seconds = seconds;
         }
 
         /// <summary>
@@ -546,8 +552,13 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Serialize(info);
+        }
+
+        internal void Serialize([NotNull] SerializationInfo info)
+        {
             Preconditions.CheckNotNull(info, nameof(info));
-            info.AddValue(MillisecondsSerializationName, Milliseconds);
+            info.AddValue(BinaryFormattingConstants.OffsetSecondsSerializationName, Seconds);
         }
         #endregion
 #endif

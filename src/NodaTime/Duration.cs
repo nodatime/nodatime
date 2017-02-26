@@ -1171,16 +1171,13 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string DefaultDaysSerializationName = "days";
-        private const string DefaultNanosecondOfDaySerializationName = "nanoOfDay";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Duration([NotNull] SerializationInfo info, StreamingContext context)
-            : this(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName)
+            : this(info)
         {
         }
 
@@ -1189,7 +1186,9 @@ namespace NodaTime
         /// a larger value, but the duration part has been serialized with the default keys.
         /// </summary>
         internal Duration([NotNull] SerializationInfo info)
-            : this(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName)
+            : this(info,
+                  BinaryFormattingConstants.DurationDefaultDaysSerializationName,
+                  BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName)
         {
         }
 
@@ -1229,7 +1228,9 @@ namespace NodaTime
 
         internal void Serialize([NotNull] SerializationInfo info)
         {
-            Serialize(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName);
+            Serialize(info,
+                BinaryFormattingConstants.DurationDefaultDaysSerializationName, 
+                BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName);
         }
 
         internal void Serialize([NotNull] SerializationInfo info,
