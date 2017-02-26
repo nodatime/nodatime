@@ -110,9 +110,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Fetches a calendar system by its ordinal value. This currently assumes that the relevant <see cref="CalendarSystem" /> will have been
-        /// initialized beforehand (as construction populates the array). In other words, this should not be called with an arbitrary ordinal;
-        /// this is fine as it's usually called for an existing local date, which must have been initialized using a known calendar system.
+        /// Fetches a calendar system by its ordinal value, constructing it if necessary.
         /// </summary>
         [NotNull] internal static CalendarSystem ForOrdinal([Trusted] CalendarOrdinal ordinal)
         {

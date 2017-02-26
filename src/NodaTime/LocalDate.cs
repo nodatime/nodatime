@@ -789,7 +789,17 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(info, nameof(info));
             yearMonthDayCalendar = new YearMonthDayCalendar(info.GetInt32(BinaryFormattingConstants.YearMonthDayCalendarSerializationName));
-            // FIXME: Validation
+            try
+            {
+                var ordinal = yearMonthDayCalendar.CalendarOrdinal;
+                Preconditions.CheckArgument(ordinal >= 0 && ordinal < CalendarOrdinal.Size, nameof(ordinal), "Calendar ordinal out of range");
+                var calendar = CalendarSystem.ForOrdinal(ordinal);
+                calendar.ValidateYearMonthDay(yearMonthDayCalendar.Year, yearMonthDayCalendar.Month, yearMonthDayCalendar.Day);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("Invalid serialized data, details in InnerException", nameof(info), e);
+            }
         }
 
         /// <summary>
