@@ -204,7 +204,7 @@ namespace NodaTime.Text
 
         private sealed class NormalizingIsoPatternImpl : IPattern<Period>
         {
-            // TODO: Tidy this up a *lot*.
+            // TODO(misc): Tidy this up a *lot*.
             public ParseResult<Period> Parse(string text)
             {
                 if (text == null)

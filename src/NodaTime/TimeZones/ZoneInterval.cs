@@ -91,7 +91,7 @@ namespace NodaTime.TimeZones
         /// extends to the end of time.</value>
         public bool HasEnd => RawEnd.IsValid;
 
-        // TODO(2.0): Consider whether we need some way of checking whether IsoLocalStart/End will throw.
+        // TODO(feature): Consider whether we need some way of checking whether IsoLocalStart/End will throw.
         // Clients can check HasStart/HasEnd for infinity, but what about unrepresentable local values?
 
         /// <summary>
@@ -158,9 +158,6 @@ namespace NodaTime.TimeZones
                 return RawStart;
             }
         }
-
-        // TODO(2.0): Consider changing the fourth parameter of the constructors to accept standard time rather than the wall offset. It's very
-        // inconsistent with everything else...
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneInterval" /> class.

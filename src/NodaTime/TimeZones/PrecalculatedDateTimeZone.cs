@@ -110,17 +110,16 @@ namespace NodaTime.TimeZones
             throw new InvalidOperationException($"Instant {instant} did not exist in time zone {Id}");
         }
 
-        // TODO(2.0): Revisit this, given that it's useless at the moment.
+        // TODO(optimization): Revisit this, given that it's useless at the moment. Work out some decent rules for this.
+        // Previously we would only cache if the tail zone was non-null... which was *always* the case due
+        // to the use of NullDateTimeZone.
+        // We could potentially go back to returning tailZone != null - benchmarking required.
         /// <summary>
         /// Returns true if this time zone is worth caching. Small time zones or time zones with
         /// lots of quick changes do not work well with <see cref="CachedDateTimeZone"/>.
         /// </summary>
         /// <returns><c>true</c> if this instance is cachable; otherwise, <c>false</c>.</returns>
-        public bool IsCachable() =>
-            // TODO: Work out some decent rules for this. Previously we would only cache if the
-            // tail zone was non-null... which was *always* the case due to the use of NullDateTimeZone.
-            // We could potentially go back to returning tailZone != null - benchmarking required.
-            true;
+        public bool IsCachable() => true;
 
         public DateTimeZone MaybeCreateCachedZone()
         {

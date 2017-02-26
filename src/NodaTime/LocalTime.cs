@@ -328,7 +328,7 @@ namespace NodaTime
             }
         }
 
-        // TODO(2.0): Consider exposing this.
+        // TODO(feature): Consider exposing this.
         /// <summary>
         /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
         /// </summary>
@@ -384,7 +384,7 @@ namespace NodaTime
             }
         }
 
-        // TODO(2.0): Rewrite for performance?
+        // TODO(optimization): Rewrite for performance?
         /// <summary>
         /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>

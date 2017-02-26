@@ -75,7 +75,7 @@ namespace NodaTime
 
         #region Readonly static properties
 
-        // TODO: Evaluate performance of this implementation vs readonly automatically implemented properties.
+        // TODO(optimization): Evaluate performance of this implementation vs readonly automatically implemented properties.
         // Consider adding a private constructor which performs no validation at all.
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace NodaTime
             }
         }
 
-        // TODO: Reimplement all of these using TotalNanoseconds?
+        // TODO(optimization): Reimplement all of these using TotalNanoseconds?
 
         /// <summary>
         /// Gets the total number of days in this duration, as a <see cref="Double"/>.
@@ -639,7 +639,7 @@ namespace NodaTime
         {
             // Exclude infinity and NaN
             Preconditions.CheckArgumentRange(nameof(right), right, double.MinValue, double.MaxValue);
-            // TODO: Optimize
+            // TODO(optimization): Optimize
             double originalNanos = (double) left.ToBigIntegerNanoseconds();
             double resultNanos = originalNanos * right;
             return FromNanoseconds(resultNanos);
@@ -1042,7 +1042,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of nanoseconds.</returns>
         public static Duration FromNanoseconds(long nanoseconds)
         {
-            // TODO: Try DivRem
+            // TODO(optimization): Try DivRem
             int days = nanoseconds >= 0
                 ? (int) (nanoseconds / NanosecondsPerDay)
                 : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;

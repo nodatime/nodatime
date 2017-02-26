@@ -36,7 +36,7 @@ namespace NodaTime.Utility
                 }
                 else
                 {
-                    // TODO: Optimize with shifting at some point. Note that this must *not* subtract from ticks,
+                    // TODO(optimization): Optimize with shifting at some point. Note that this must *not* subtract from ticks,
                     // as it could already be long.MinValue.
                     int days = (int)((ticks + 1) / TicksPerDay) - 1;
                     // We need to be careful as ticks might be close to long.MinValue, at which point

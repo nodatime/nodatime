@@ -427,7 +427,7 @@ namespace NodaTime.Globalization
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
         public static NodaFormatInfo GetInstance(IFormatProvider provider)
         {
-            // TODO: Use C# 7 pattern matching for this...
+            // TODO(misc): Use C# 7 pattern matching for this...
             if (provider == null)
             {
                 provider = CultureInfo.CurrentCulture;
