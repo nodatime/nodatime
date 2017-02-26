@@ -40,7 +40,7 @@ namespace NodaTime.TimeZones
         /// contributions.
         /// </summary>
         /// <remarks>
-        /// This is effectively <c>Offset - Savings</c>.
+        /// This is effectively <c>WallOffset - Savings</c>.
         /// </remarks>
         /// <value>The base Offset.</value>
         public Offset StandardOffset
