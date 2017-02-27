@@ -86,6 +86,7 @@ namespace NodaTime.Web
                 .AddRedirect($@"^{anyVersion}/api/?$", "$1/api/NodaTime.html")
                 // Compatibility with old links
                 .AddRedirect($@"^{anyVersion}/userguide/([^.]+)\.html$", "$1/userguide/$2")
+                .AddRedirect($@"^developer/([^.]+)\.html$", "developer/$1")
                 // Avoid links from userguide/unstable from going to userguide/core-concepts etc
                 // (There are no doubt better ways of doing this...)
                 .AddRedirect($@"^{anyVersion}/userguide$", "$1/userguide/")
