@@ -33,6 +33,11 @@ namespace NodaTime.Calendars
         public static Era AnnoMartyrum { get; } = new Era("AM", "Eras_AnnoMartyrum");
 
         /// <summary>
+        /// The "Bahá'í Era". This is the sole era used in the Wondrous calendar.
+        /// </summary>
+        public static Era BahaiEra { get; } = new Era("BE", "Eras_BahaiEra");
+
+        /// <summary>
         /// The "Anno Hegira" era. This is the sole era used in the Hijri (Islamic) calendar.
         /// </summary>
         public static Era AnnoHegirae { get; } = new Era("EH", "Eras_AnnoHegirae");
