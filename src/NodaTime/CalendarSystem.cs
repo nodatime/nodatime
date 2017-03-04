@@ -52,6 +52,9 @@ namespace NodaTime
         private const string CopticName = "Coptic";
         private const string CopticId = CopticName;
 
+        private const string WondrousName = "Wondrous";
+        private const string WondrousId = WondrousName;
+
         private const string JulianName = "Julian";
         private const string JulianId = JulianName;
 
@@ -235,7 +238,28 @@ namespace NodaTime
             Preconditions.CheckArgumentRange(nameof(monthNumbering), (int) monthNumbering, 1, 2);
             return HebrewCalendars.ByMonthNumbering[((int) monthNumbering) - 1];
         }
-        
+
+        /// <summary>
+        /// Returns the Wondrous (Badí') calendar, as described at https://en.wikipedia.org/wiki/Badi_calendar. 
+        /// This is a purely solar calendar with years starting at the vernal equinox.
+        /// </summary>
+        /// <remarks>
+        /// <para>The Wondrous calendar was developed and defined by the founders of the Bahá'í Faith in the mid to late
+        /// 1800's A.D. The first year in the calendar coincides with 1844 A.D. Years are labeled "B.E." for Bahá'í Era.</para>
+        /// <para>A year consists of 19 months, each with 19 days. Each day starts at sunset. Years are grouped into sets
+        /// of 19 "Unities" (Váḥid) and 19 Unities make up 1 "All Things" (Kull-i-Shay’).</para>
+        /// <para>A period of days (usually 4 or 5, called Ayyám-i-Há) occurs between the 18th and 19th months. The length of this 
+        /// period of intercalary days is solely determined by the pre-calculated time of the following vernal equinox. 
+        /// The vernal equinox is a momentary point in time, so the "date" of the equinox is determined by the day (beginning 
+        /// at sunset) in effect in Tehran, Iran at the moment of the equinox. These times can be calculated, but published
+        /// tables are used in this implementation keep it simple!</para>
+        /// </remarks>
+        /// <returns>The Wondrous calendar system.</returns>
+        public static CalendarSystem GetWondrousCalendar()
+        {
+            return MiscellaneousCalendars.Wondrous;
+        }
+
         /// <summary>
         /// Returns an Islamic, or Hijri, calendar system.
         /// </summary>
@@ -783,6 +807,8 @@ namespace NodaTime
                 new CalendarSystem(CalendarOrdinal.Coptic, CopticId, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
             internal static readonly CalendarSystem UmAlQura =
                 new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraId, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae);
+            internal static readonly CalendarSystem Wondrous =
+                new CalendarSystem(CalendarOrdinal.Wondrous, WondrousId, WondrousName, new WondrousYearMonthDayCalculator(), Era.BahaiEra);
 
             // Static constructor to enforce laziness. This used to be important to avoid a Heisenbug.
             // I don't believe it's strictly required now, but it does no harm and I don't want to go

@@ -28,7 +28,8 @@ namespace NodaTime
         IslamicCivilIndian = 15,
         IslamicCivilHabashAlHasib = 16,
         UmAlQura = 17,
+        Wondrous = 18,
         // Not a real ordinal; just present to keep a count. Increase this as the number increases...
-        Size = 18
+        Size = 19
     }
 }
