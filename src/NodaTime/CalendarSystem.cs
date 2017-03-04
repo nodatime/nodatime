@@ -142,6 +142,8 @@ namespace NodaTime
                     return Julian;
                 case CalendarOrdinal.Coptic:
                     return Coptic;
+                case CalendarOrdinal.Wondrous:
+                    return Wondrous;
                 case CalendarOrdinal.HebrewCivil:
                     return HebrewCivil;
                 case CalendarOrdinal.HebrewScriptural:
@@ -191,6 +193,7 @@ namespace NodaTime
             {HebrewScripturalId, () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural)},
             {GregorianId, () => Gregorian},
             {CopticId, () => Coptic},
+            {WondrousId, () => Wondrous},
             {JulianId, () => Julian},
             {UmAlQuraId, () => UmAlQura},
             {GetIslamicId(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil), () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)},
@@ -368,6 +371,7 @@ namespace NodaTime
         ///   <item><term>ISO</term><description><see cref="CalendarSystem.Iso"/></description></item>
         ///   <item><term>Gregorian</term><description><see cref="CalendarSystem.Gregorian"/></description></item>
         ///   <item><term>Coptic</term><description><see cref="CalendarSystem.Coptic"/></description></item>
+        ///   <item><term>Wondrous</term><description><see cref="CalendarSystem.Wondrous"/></description></item>
         ///   <item><term>Julian</term><description><see cref="CalendarSystem.Julian"/></description></item>
         ///   <item><term>Hijri Civil-Indian</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)</description></item>
         ///   <item><term>Hijri Civil-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)</description></item>
@@ -684,6 +688,11 @@ namespace NodaTime
         /// <value>A suitable Coptic calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</value>
         public static CalendarSystem Coptic => MiscellaneousCalendars.Coptic;
+
+        /// <summary>
+        /// Returns a Wondrous calendar system.
+        /// </summary>
+        public static CalendarSystem Wondrous => MiscellaneousCalendars.Wondrous;
 
         /// <summary>
         /// Returns an Islamic calendar system equivalent to the one used by the BCL HijriCalendar.
