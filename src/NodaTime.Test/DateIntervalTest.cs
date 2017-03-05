@@ -43,12 +43,12 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Construction_DefaultToInclusive()
+        public void Construction_DefaultToEndInclusive()
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
             var interval = new DateInterval(start, end);
-            Assert.IsTrue(interval.Inclusive);
+            Assert.IsTrue(interval.EndInclusive);
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace NodaTime.Test
             var interval = new DateInterval(start, end, false);
             Assert.AreEqual(start, interval.Start);
             Assert.AreEqual(end, interval.End);
-            Assert.IsFalse(interval.Inclusive);
+            Assert.IsFalse(interval.EndInclusive);
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Equals_DifferentInclusivity()
+        public void Equals_DifferentEndInclusivity()
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
@@ -254,7 +254,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Equals_Extremes_Equal_BothInclusive()
+        public void Equals_Extremes_Equal_BothEndInclusive()
         {
             // An extreme range where both intervals are inclusive.
             var interval1 = new DateInterval(MinIsoDate, MaxIsoDate, true);
@@ -411,7 +411,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ToString_Inclusive()
+        public void ToString_EndInclusive()
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
@@ -420,7 +420,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ToString_Exclusive()
+        public void ToString_EndExclusive()
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
@@ -429,7 +429,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Length_Inclusive()
+        public void Length_EndInclusive()
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2000, 2, 10);
@@ -438,7 +438,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Length_Exclusive()
+        public void Length_EndExclusive()
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2000, 2, 10);
