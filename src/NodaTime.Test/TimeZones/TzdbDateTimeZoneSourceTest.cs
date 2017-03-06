@@ -216,10 +216,9 @@ namespace NodaTime.Test.TimeZones
         [TestCaseSource(nameof(SystemTimeZones))]
         public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
         {
-            // As of April 21st 2016, the Windows time zone database hasn't caught up to
-            // 2016d which includes: "America/Caracas switches from -0430 to -04 on 2016-05-01 at 02:30"
-            // Still need to investigate Morocco...
-            if (bclZone.Id == "Venezuela Standard Time" || bclZone.Id == "Morocco Standard Time")
+            // As of March 6th 2017, the Windows time zone database hasn't caught up to
+            // 2017a which reflected the change that Mongolia no longer observes DST.
+            if (bclZone.Id == "Ulaanbaatar Standard Time" || bclZone.Id == "W. Mongolia Standard Time")
             {
                 return;
             }
