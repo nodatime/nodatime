@@ -14,4 +14,13 @@ Custom Patterns
 
 The custom format patterns for the local date and time parts of the value are the same as the [custom patterns for `LocalDateTime`](localdatetime-patterns.html). There is an additional specifier for the offset.
 
-The "o" specifier must always be followed by a [pattern for `Offset`](offset-patterns.html) within angle brackets. The pattern may be a standard pattern or a custom pattern. For example, a pattern of "uuuu-MM-dd HH:mm:ss o&lt;G&gt;" might produce output of "2013-07-17 06:20:35 Z" or "2013-07-17 07:20:35 +01:00".
+The "o" specifier must always be followed by a [pattern for `Offset`](offset-patterns.html) within angle brackets. The pattern may be a standard pattern or a custom pattern. For example, a pattern of `uuuu-MM-dd HH:mm:ss o<G>` might produce output of "2013-07-17 06:20:35 Z" or "2013-07-17 07:20:35 +01:00".
+
+To use culture-specific standard date or time patterns in a custom `OffsetDateTime` pattern, use some combination of the following specifiers:
+
+- `ld<...>`: The `LocalDate` pattern within angle brackets
+- `lt<...>`: The `LocalTime` pattern within angle brackets
+- `ldt<...>`: The `LocalDateTime` pattern within angle brackets
+
+For example, to use a culture-specific short date format, but a fixed time format,
+followed by the offset in general form, you might use a pattern of `ld<d> HH:mm:ss o<G>`
