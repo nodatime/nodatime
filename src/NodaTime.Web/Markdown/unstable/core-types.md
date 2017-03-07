@@ -96,6 +96,13 @@ IClock
 An [`IClock`][IClock] implementation provides information about the current instant. It knows nothing about time zones or calendar systems. For [testability](testing.html), this is defined
 as an interface; in a production deployment you're likely to use the [`SystemClock`][SystemClock] singleton implementation.
 
+Often you may want to repeatedly access the current time or date in a specific time zone.
+The [`ZonedClock`](noda-type://NodaTime.ZonedClock) class helps with this. It wraps an `IClock`, and is constructed
+for a specific time zone and calendar system, providing convenience methods to access the current value from
+as various different types (`Instant`, `LocalDate` and so on).
+The extension methods in [`NodaTime.Extensions.ClockExtensions`](noda-type://NodaTime.Extensions.ClockExtensions) can be
+used to construct a `ZonedClock` easily.
+
 Interval
 --------
 
