@@ -16,7 +16,8 @@ specified in conjunction with a time zone provider. It corresponds to the custom
 Custom Patterns
 ---------------
 
-The custom format patterns for a zoned date and time are provided by combining the [custom patterns for `OffsetDateTime`](offsetdatetime-patterns.html) with
+The custom format patterns for a zoned date and time are provided by combining
+the [custom patterns for `OffsetDateTime`](offsetdatetime-patterns.html) with
 the addition of two extra custom format specifiers: `z` and `x`.
 
 `z` is used to parse or format that time zone identifier. When parsing, an [`IDateTimeZoneProvider`](noda-type://NodaTime.IDateTimeZoneProvider) is used to extract candidate identifiers and fetch time zones for them. The UTC+/-xx:xx format for fixed offset time zones is always valid, regardless of provider. The provider is part of the `ZonedDateTimePattern`, and a new pattern with a different provider can be created using the `WithZoneProvider` method. The provider is not used when formatting: the time zone identifier is simply used directly. Note that if you format a `ZonedDateTime` which uses a time zone from a different provider than the one in the pattern, you may not be able to parse it again with the same pattern. A null provider can be specified, in which case
@@ -30,3 +31,4 @@ If the pattern does not contain an offset specifier ("o&lt;...&gt;") the local d
 
 If the pattern *does* contain an offset specifier, then when parsing, the offset present in the text is validated against the time zone. By specifying both a time zone identifier and an offset, the ambiguity around time zone transitions is eliminated. Again, if the offset is invalid for the time zone at the given local date and time, an `UnparsableValueException` result is produced.
 
+The `ld<...>`, `lt<...>` and `ldt<...>` specifiers from `OffsetDateTime` patterns are also supported for `ZonedDateTime`, to allow for standard date/time patterns to be used as part of the `ZonedDateTime` pattern.
