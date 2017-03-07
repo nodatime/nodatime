@@ -129,6 +129,9 @@
   <data name="Eras_AnnoPersico" xml:space="preserve">
     <value>A.P.|AP</value>
   </data>
+  <data name="Eras_BahaiEra" xml:space="preserve">
+    <value>B.E.|BE</value>
+  </data>
   <data name="Eras_BeforeCommon" xml:space="preserve">
     <value>B.C.|B.C.E.|BC|BCE</value>
   </data>
