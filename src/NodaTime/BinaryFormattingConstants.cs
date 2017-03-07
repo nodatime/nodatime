@@ -16,7 +16,10 @@ namespace NodaTime
     {
         // LocalDate
         // Used as part of LocalDateTime, OffsetDateTime, ZonedDateTime
-        internal const string YearMonthDayCalendarSerializationName = "yearMonthDayCalendar";
+        internal const string YearSerializationName = "year";
+        internal const string MonthSerializationName = "month";
+        internal const string DaySerializationName = "day";
+        internal const string CalendarSerializationName = "calendar";
 
         // LocalTime
         // Used as part of LocalDateTime, OffsetDateTime, ZonedDateTime
