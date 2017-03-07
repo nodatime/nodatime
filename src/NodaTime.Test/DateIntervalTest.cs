@@ -22,7 +22,6 @@ namespace NodaTime.Test
             LocalDate start = new LocalDate(1600, 1, 1);
             LocalDate end = new LocalDate(1800, 1, 1, JulianCalendar);
             Assert.Throws<ArgumentException>(() => new DateInterval(start, end));
-            Assert.Throws<ArgumentException>(() => new DateInterval(start, end, true));
         }
 
         [Test]
@@ -31,7 +30,6 @@ namespace NodaTime.Test
             LocalDate start = new LocalDate(1600, 1, 1);
             LocalDate end = new LocalDate(1500, 1, 1);
             Assert.Throws<ArgumentException>(() => new DateInterval(start, end));
-            Assert.Throws<ArgumentException>(() => new DateInterval(start, end, true));
         }
 
         [Test]
@@ -39,16 +37,6 @@ namespace NodaTime.Test
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             Assert.DoesNotThrow(() => new DateInterval(start, start));
-            Assert.DoesNotThrow(() => new DateInterval(start, start, true));
-        }
-
-        [Test]
-        public void Construction_DefaultToEndInclusive()
-        {
-            LocalDate start = new LocalDate(2000, 1, 1);
-            LocalDate end = new LocalDate(2001, 6, 19);
-            var interval = new DateInterval(start, end);
-            Assert.IsTrue(interval.EndInclusive);
         }
 
         [Test]
@@ -56,10 +44,9 @@ namespace NodaTime.Test
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
-            var interval = new DateInterval(start, end, false);
+            var interval = new DateInterval(start, end);
             Assert.AreEqual(start, interval.Start);
             Assert.AreEqual(end, interval.End);
-            Assert.IsFalse(interval.EndInclusive);
         }
 
         [Test]
@@ -67,7 +54,7 @@ namespace NodaTime.Test
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
-            var interval = new DateInterval(start, end, false);
+            var interval = new DateInterval(start, end);
 
             Assert.AreEqual(interval, interval);
             Assert.AreEqual(interval.GetHashCode(), interval.GetHashCode());
@@ -77,14 +64,6 @@ namespace NodaTime.Test
             Assert.IsFalse(interval != interval);
 #pragma warning restore 1718
             Assert.IsTrue(interval.Equals(interval)); // IEquatable implementation
-
-            IEqualityComparer<DateInterval> comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval, interval));
-            Assert.AreEqual(comparer.GetHashCode(interval), comparer.GetHashCode(interval));
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval, interval));
-            Assert.AreEqual(comparer.GetHashCode(interval), comparer.GetHashCode(interval));
         }
 
         [Test]
@@ -92,22 +71,14 @@ namespace NodaTime.Test
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
-            var interval1 = new DateInterval(start, end, false);
-            var interval2 = new DateInterval(start, end, false);
+            var interval1 = new DateInterval(start, end);
+            var interval2 = new DateInterval(start, end);
 
             Assert.AreEqual(interval1, interval2);
             Assert.AreEqual(interval1.GetHashCode(), interval2.GetHashCode());
             Assert.IsTrue(interval1 == interval2);
             Assert.IsFalse(interval1 != interval2);
             Assert.IsTrue(interval1.Equals(interval2)); // IEquatable implementation
-
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
         }
 
         [Test]
@@ -118,22 +89,14 @@ namespace NodaTime.Test
             // This is a really, really similar calendar to ISO, but we do distinguish.
             LocalDate start2 = start1.WithCalendar(CalendarSystem.Gregorian);
             LocalDate end2 = end1.WithCalendar(CalendarSystem.Gregorian);
-            var interval1 = new DateInterval(start1, end1, false);
-            var interval2 = new DateInterval(start2, end2, false);
+            var interval1 = new DateInterval(start1, end1);
+            var interval2 = new DateInterval(start2, end2);
 
             Assert.AreNotEqual(interval1, interval2);
             Assert.AreNotEqual(interval1.GetHashCode(), interval2.GetHashCode());
             Assert.IsFalse(interval1 == interval2);
             Assert.IsTrue(interval1 != interval2);
             Assert.IsFalse(interval1.Equals(interval2)); // IEquatable implementation
-
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
         }
 
         [Test]
@@ -142,22 +105,14 @@ namespace NodaTime.Test
             LocalDate start1 = new LocalDate(2000, 1, 1);
             LocalDate start2 = new LocalDate(2000, 1, 2);
             LocalDate end = new LocalDate(2001, 6, 19);
-            var interval1 = new DateInterval(start1, end, false);
-            var interval2 = new DateInterval(start2, end, false);
+            var interval1 = new DateInterval(start1, end);
+            var interval2 = new DateInterval(start2, end);
 
             Assert.AreNotEqual(interval1, interval2);
             Assert.AreNotEqual(interval1.GetHashCode(), interval2.GetHashCode());
             Assert.IsFalse(interval1 == interval2);
             Assert.IsTrue(interval1 != interval2);
             Assert.IsFalse(interval1.Equals(interval2)); // IEquatable implementation
-
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
         }
 
         [Test]
@@ -166,216 +121,14 @@ namespace NodaTime.Test
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end1 = new LocalDate(2001, 6, 19);
             LocalDate end2 = new LocalDate(2001, 6, 20);
-            var interval1 = new DateInterval(start, end1, false);
-            var interval2 = new DateInterval(start, end2, false);
+            var interval1 = new DateInterval(start, end1);
+            var interval2 = new DateInterval(start, end2);
 
             Assert.AreNotEqual(interval1, interval2);
             Assert.AreNotEqual(interval1.GetHashCode(), interval2.GetHashCode());
             Assert.IsFalse(interval1 == interval2);
             Assert.IsTrue(interval1 != interval2);
             Assert.IsFalse(interval1.Equals(interval2)); // IEquatable implementation
-
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-        }
-
-        [Test]
-        public void Equals_DifferentEndInclusivity()
-        {
-            LocalDate start = new LocalDate(2000, 1, 1);
-            LocalDate end = new LocalDate(2001, 6, 19);
-            var interval1 = new DateInterval(start, end, false);
-            var interval2 = new DateInterval(start, end, true);
-
-            Assert.AreNotEqual(interval1, interval2);
-            Assert.AreNotEqual(interval1.GetHashCode(), interval2.GetHashCode());
-            Assert.IsFalse(interval1 == interval2);
-            Assert.IsTrue(interval1 != interval2);
-            Assert.IsFalse(interval1.Equals(interval2)); // IEquatable implementation
-
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-        }
-
-        [Test]
-        public void Equals_SameRangeButNotEquivalent()
-        {
-            LocalDate start = new LocalDate(2000, 1, 1);
-            LocalDate end1 = new LocalDate(2001, 6, 19);
-            LocalDate end2 = new LocalDate(2001, 6, 20);
-            var interval1 = new DateInterval(start, end1, true);
-            var interval2 = new DateInterval(start, end2, false);
-            Assert.AreEqual(interval1.Length, interval2.Length);
-
-            Assert.AreNotEqual(interval1, interval2);
-            Assert.AreNotEqual(interval1.GetHashCode(), interval2.GetHashCode());
-            Assert.IsFalse(interval1 == interval2);
-            Assert.IsTrue(interval1 != interval2);
-            Assert.IsFalse(interval1.Equals(interval2)); // IEquatable implementation
-
-            // This is the key difference between this comparer and standard equality.
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
-
-            // The same range with different inclusivity is equal, like NormalizingEqualityComparer.
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
-        }
-
-        [Test]
-        public void Equals_SameRangeButNotEquivalent_Extremes_Equal()
-        {
-            // As above, but for an extreme range.
-            var interval1 = new DateInterval(MinIsoDate, MaxIsoDate.PlusDays(-1), true);
-            var interval2 = new DateInterval(MinIsoDate, MaxIsoDate, false);
-
-            Assert.AreEqual(interval1.Length, interval2.Length);
-            Assert.AreNotEqual(interval1, interval2);
-
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
-        }
-
-        [Test]
-        public void Equals_Extremes_Equal_BothEndInclusive()
-        {
-            // An extreme range where both intervals are inclusive.
-            var interval1 = new DateInterval(MinIsoDate, MaxIsoDate, true);
-            var interval2 = new DateInterval(MinIsoDate, MaxIsoDate, true);
-
-            Assert.AreEqual(interval1, interval2);
-
-            // These are equal under the regular equality operation; they should still be equal under this comparer,
-            // even though neither interval can be represented as an exclusive interval.
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
-        }
-
-        [Test]
-        public void Equals_Extremes_Unequal()
-        {
-            // Two extreme ranges, where one interval is inclusive.
-            var interval1 = new DateInterval(MinIsoDate, MaxIsoDate, true);
-            var interval2 = new DateInterval(MinIsoDate, MaxIsoDate, false);
-
-            Assert.AreNotEqual(interval1, interval2);
-
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-        }
-
-        [Test]
-        public void Equals_Extremes_Unequal_DifferentCalendars()
-        {
-            // Two extreme ranges with different calendars but the 'same' dates are still unequal.
-            LocalDate start1 = MinIsoDate;
-            LocalDate end1 = MaxIsoDate;
-            LocalDate start2 = start1.WithCalendar(CalendarSystem.Gregorian);
-            LocalDate end2 = end1.WithCalendar(CalendarSystem.Gregorian);
-            var interval1 = new DateInterval(start1, end1, true);
-            var interval2 = new DateInterval(start2, end2, true);
-
-            Assert.AreNotEqual(interval1, interval2);
-
-            // Neither interval above can be represented as an exclusive interval, but they must still compare unequal.
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-        }
-
-        [Test]
-        public void Equals_EmptyRange()
-        {
-            LocalDate date1 = new LocalDate(2000, 1, 1);
-            LocalDate date2 = new LocalDate(2000, 1, 2);
-            var interval1 = new DateInterval(date1, date1, false);
-            var interval2 = new DateInterval(date2, date2, false);
-            Assert.AreEqual(0, interval1.Length);
-            Assert.AreEqual(0, interval2.Length);
-
-            Assert.AreNotEqual(interval1, interval2);
-
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-
-            // This is the key difference between this comparer and the normalizing comparer.
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SupportedCalendars))]
-        public void ContainedDatesEqualityComparer_EmptyRange(CalendarSystem calendar)
-        {
-            // Similar to Equals_EmptyRange, but specifically for ContainedDatesEqualityComparer, which must be able to
-            // construct a canonical empty range for every possible calendar.
-            int year = (calendar.MaxYear + calendar.MinYear) / 2;
-            LocalDate date1 = new LocalDate(year, 2, 1, calendar);
-            LocalDate date2 = new LocalDate(year, 2, 2, calendar);
-            var interval1 = new DateInterval(date1, date1, false);
-            var interval2 = new DateInterval(date2, date2, false);
-            Assert.AreEqual(0, interval1.Length);
-            Assert.AreEqual(0, interval2.Length);
-            Assert.AreNotEqual(interval1, interval2);
-
-            var comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsTrue(comparer.Equals(interval1, interval2));
-            Assert.AreEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));
-        }
-
-        [Test]
-        public void Equals_EmptyRange_DifferentCalendars()
-        {
-            LocalDate date1 = new LocalDate(2000, 2, 1);
-            LocalDate date2 = new LocalDate(2000, 2, 2, CalendarSystem.Gregorian);
-            var interval1 = new DateInterval(date1, date1, false);
-            var interval2 = new DateInterval(date2, date2, false);
-            Assert.AreEqual(0, interval1.Length);
-            Assert.AreEqual(0, interval2.Length);
-
-            Assert.AreNotEqual(interval1, interval2);
-
-            // Different calendar systems are still unequal, even if they're both empty.
-            var comparer = DateInterval.NormalizingEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
-
-            comparer = DateInterval.ContainedDatesEqualityComparer;
-            Assert.IsFalse(comparer.Equals(interval1, interval2));
-            Assert.AreNotEqual(comparer.GetHashCode(interval1), comparer.GetHashCode(interval2));  // probably
         }
 
         [Test]
@@ -383,15 +136,9 @@ namespace NodaTime.Test
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
-            var interval = new DateInterval(start, end, false);
+            var interval = new DateInterval(start, end);
 
             Assert.IsFalse(interval.Equals(null));
-
-            Assert.IsFalse(DateInterval.NormalizingEqualityComparer.Equals(interval, null));
-            Assert.IsFalse(DateInterval.NormalizingEqualityComparer.Equals(null, interval));
-
-            Assert.IsFalse(DateInterval.ContainedDatesEqualityComparer.Equals(interval, null));
-            Assert.IsFalse(DateInterval.ContainedDatesEqualityComparer.Equals(null, interval));
         }
 
         [Test]
@@ -399,68 +146,41 @@ namespace NodaTime.Test
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
-            var interval = new DateInterval(start, end, false);
+            var interval = new DateInterval(start, end);
             Assert.IsFalse(interval.Equals(Instant.FromUnixTimeTicks(0)));
         }
 
         [Test]
-        public void Equals_NullToNull()
-        {
-            Assert.IsTrue(DateInterval.NormalizingEqualityComparer.Equals(null, null));
-            Assert.IsTrue(DateInterval.ContainedDatesEqualityComparer.Equals(null, null));
-        }
-
-        [Test]
-        public void ToString_EndInclusive()
+        public void StringRepresentation()
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2001, 6, 19);
-            var interval = new DateInterval(start, end, true);
+            var interval = new DateInterval(start, end);
             Assert.AreEqual("[2000-01-01, 2001-06-19]", interval.ToString());
         }
 
         [Test]
-        public void ToString_EndExclusive()
-        {
-            LocalDate start = new LocalDate(2000, 1, 1);
-            LocalDate end = new LocalDate(2001, 6, 19);
-            var interval = new DateInterval(start, end, false);
-            Assert.AreEqual("[2000-01-01, 2001-06-19)", interval.ToString());
-        }
-
-        [Test]
-        public void Length_EndInclusive()
+        public void Length()
         {
             LocalDate start = new LocalDate(2000, 1, 1);
             LocalDate end = new LocalDate(2000, 2, 10);
-            var interval = new DateInterval(start, end, true);
+            var interval = new DateInterval(start, end);
             Assert.AreEqual(41, interval.Length);
         }
 
         [Test]
-        public void Length_EndExclusive()
-        {
-            LocalDate start = new LocalDate(2000, 1, 1);
-            LocalDate end = new LocalDate(2000, 2, 10);
-            var interval = new DateInterval(start, end, false);
-            Assert.AreEqual(40, interval.Length);
-        }
-
-        [Test]
-        [TestCase("1999-12-31", false, false, TestName = "Before start")]
-        [TestCase("2000-01-01", true, true, TestName = "On start")]
-        [TestCase("2005-06-06", true, true, TestName = "In middle")]
-        [TestCase("2014-06-30", true, false, TestName = "On end")]
-        [TestCase("2014-07-01", false, false, TestName = "After end")]
-        public void Contains(string candidateText, bool expectedInclusive, bool expectedExclusive)
+        [TestCase("1999-12-31", false, TestName = "Before start")]
+        [TestCase("2000-01-01", true, TestName = "On start")]
+        [TestCase("2005-06-06", true, TestName = "In middle")]
+        [TestCase("2014-06-30", true, TestName = "On end")]
+        [TestCase("2014-07-01", false, TestName = "After end")]
+        public void Contains(string candidateText, bool expected)
         {
             var start = new LocalDate(2000, 1, 1);
             var end = new LocalDate(2014, 06, 30);
             var candidate = LocalDatePattern.Iso.Parse(candidateText).Value;
-            var interval = new DateInterval(start, end, true);
-            Assert.AreEqual(expectedInclusive, interval.Contains(candidate));
-            interval = new DateInterval(start, end, false);
-            Assert.AreEqual(expectedExclusive, interval.Contains(candidate));
+            var interval = new DateInterval(start, end);
+            Assert.AreEqual(expected, interval.Contains(candidate));
         }
 
         [Test]
