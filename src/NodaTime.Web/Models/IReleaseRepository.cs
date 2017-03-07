@@ -8,5 +8,7 @@ namespace NodaTime.Web.Models
     public interface IReleaseRepository
     {
         IList<ReleaseDownload> GetReleases();
+
+        ReleaseDownload LatestRelease { get; }
     }
 }

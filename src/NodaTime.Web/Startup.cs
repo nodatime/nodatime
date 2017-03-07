@@ -41,9 +41,6 @@ namespace NodaTime.Web
             services.AddSingleton(GoogleCredentialProvider.FetchCredential(Configuration));
             services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
             services.AddSingleton<ITzdbRepository, GoogleStorageTzdbRepository>();
-            // TODO: We'll take a hit of loading all the Markdown the first time this is used.
-            // It would be better to load eagerly at startup, assuming we don't just want to do everything
-            // lazily...
             services.AddSingleton<MarkdownLoader>();
         }
 
@@ -63,19 +60,13 @@ namespace NodaTime.Web
             }
 
             app.UseDefaultFiles();
-            var contentTypeProvider = new FileExtensionContentTypeProvider();
-            contentTypeProvider.Mappings[".nzd"] = "application/octet-stream";
-
-            // TODO: Remove nzd serving, and serve via GCS instead.
-            // TODO: Add each API directory separately.
-            app.UseStaticFiles(new StaticFileOptions
-            {                
-                ContentTypeProvider = contentTypeProvider
-            });
+            // Default content, e.g. CSS
+            app.UseStaticFiles();
+            // API documentation
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "docfx"))
+                    Path.Combine(env.ContentRootPath, "docfx"))
             });
             // Captures "unstable" or a specific version - used several times below.
             string anyVersion = @"((?:1\.[0-3]\.x)|(?:unstable))";
@@ -108,6 +99,11 @@ namespace NodaTime.Web
                 routes.MapRoute("Unstable user guide", "unstable/userguide/{*url}", new { controller = "Documentation", bundle = "unstable", action = nameof(DocumentationController.ViewDocumentation) });
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
+
+            // Force all the Markdown to be loaded on startup.
+            app.ApplicationServices.GetRequiredService<MarkdownLoader>();
+            // Force the set of releases to be first loaded on startup.
+            app.ApplicationServices.GetRequiredService<IReleaseRepository>().GetReleases();
         }
     }
 }
