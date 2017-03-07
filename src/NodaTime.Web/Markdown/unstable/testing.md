@@ -24,6 +24,11 @@ be set to any given instant, advanced manually, or set to advance a given amount
 environment should normally inject the singleton [`SystemClock`](noda-type://NodaTime.SystemClock) instance which simply
 uses `DateTime.UtcNow` behind the scenes.
 
+Often you may want to repeatedly access the current time or date in a specific time zone.
+The [`ZonedClock`](noda-type://NodaTime.ZonedClock) class helps with this, but doesn't need to be faked out: the
+expectation is that you'll only need to fake out the `IClock`, then wrap that in a `ZonedClock` for the appropriate
+zone, possibly with one of the extension methods in [`NodaTime.Extensions.ClockExtensions`](noda-type://NodaTime.Extensions.ClockExtensions).
+
 Time zone providers and sources
 ===============================
 
