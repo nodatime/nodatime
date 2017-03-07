@@ -102,10 +102,7 @@ namespace NodaTime
         /// Returns a hash code for this annual date.
         /// </summary>
         /// <returns>A hash code for this annual date.</returns>
-        public override int GetHashCode()
-        {
-            return value.RawValue;
-        }
+        public override int GetHashCode() => value.GetHashCode();
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

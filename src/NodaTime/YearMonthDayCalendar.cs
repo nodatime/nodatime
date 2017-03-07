@@ -78,12 +78,6 @@ namespace NodaTime
         internal int Month => unchecked(((value & MonthMask) >> CalendarDayBits) + 1);
         internal int Day => unchecked(((value & DayMask) >> CalendarBits) + 1);
 
-        /// <summary>
-        /// The underlying value, which can be used for serialization and hash codes,
-        /// but should not otherwise be exposed publicly.
-        /// </summary>
-        public int RawValue => value;
-
         // Just for testing purposes...
         [VisibleForTesting]
         internal static YearMonthDayCalendar Parse(string text)

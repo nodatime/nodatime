@@ -788,18 +788,21 @@ namespace NodaTime
         internal LocalDate([NotNull] SerializationInfo info)
         {
             Preconditions.CheckNotNull(info, nameof(info));
-            yearMonthDayCalendar = new YearMonthDayCalendar(info.GetInt32(BinaryFormattingConstants.YearMonthDayCalendarSerializationName));
+            int year = info.GetInt32(BinaryFormattingConstants.YearSerializationName);
+            int month = info.GetInt32(BinaryFormattingConstants.MonthSerializationName);
+            int day = info.GetInt32(BinaryFormattingConstants.DaySerializationName);
+            CalendarOrdinal ordinal = (CalendarOrdinal) info.GetInt32(BinaryFormattingConstants.CalendarSerializationName);
             try
             {
-                var ordinal = yearMonthDayCalendar.CalendarOrdinal;
                 Preconditions.CheckArgument(ordinal >= 0 && ordinal < CalendarOrdinal.Size, nameof(ordinal), "Calendar ordinal out of range");
                 var calendar = CalendarSystem.ForOrdinal(ordinal);
-                calendar.ValidateYearMonthDay(yearMonthDayCalendar.Year, yearMonthDayCalendar.Month, yearMonthDayCalendar.Day);
+                calendar.ValidateYearMonthDay(year, month, day);
             }
             catch (Exception e)
             {
                 throw new ArgumentException("Invalid serialized data, details in InnerException", nameof(info), e);
             }
+            yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, ordinal);
         }
 
         /// <summary>
@@ -816,7 +819,10 @@ namespace NodaTime
         internal void Serialize([NotNull] SerializationInfo info)
         {
             Preconditions.CheckNotNull(info, nameof(info));
-            info.AddValue(BinaryFormattingConstants.YearMonthDayCalendarSerializationName, yearMonthDayCalendar.RawValue);
+            info.AddValue(BinaryFormattingConstants.YearSerializationName, Year);
+            info.AddValue(BinaryFormattingConstants.MonthSerializationName, Month);
+            info.AddValue(BinaryFormattingConstants.DaySerializationName, Day);
+            info.AddValue(BinaryFormattingConstants.CalendarSerializationName, yearMonthDayCalendar.CalendarOrdinal);
         }
         #endregion
 #endif
