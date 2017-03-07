@@ -188,6 +188,8 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 9, CalendarSystem.Coptic) { Pattern = "c uuuu MM dd", Text = "Coptic 2011 10 09" },
             new Data(2011, 10, 9, CalendarSystem.Coptic) { Pattern = "uuuu MM dd c", Text = "2011 10 09 Coptic" },
 
+            new Data(180, 15, 19, CalendarSystem.Wondrous) { Pattern = "uuuu MM dd c", Text = "0180 15 19 Wondrous" },
+
             // Awkward day-of-week handling
             // December 14th 2012 was a Friday. Friday is "Foo" or "FooBar" in AwkwardDayOfWeekCulture.
             new Data(2012, 12, 14) { Pattern = "ddd yyyy MM dd", Text = "Foo 2012 12 14", Culture = Cultures.AwkwardDayOfWeekCulture },

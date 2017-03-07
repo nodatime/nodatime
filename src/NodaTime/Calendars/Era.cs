@@ -54,6 +54,11 @@ namespace NodaTime.Calendars
         /// <value>The "Anno Persico" era.</value>
         [NotNull] public static Era AnnoPersico { get; } = new Era("AP", "Eras_AnnoPersico");
 
+        /// <summary>
+        /// The "Bahá'í Era". This is the sole era used in the Wondrous calendar.
+        /// </summary>
+        [NotNull] public static Era BahaiEra { get; } = new Era("BE", "Eras_BahaiEra");
+
         internal string ResourceIdentifier { get; }
 
         /// <summary>
