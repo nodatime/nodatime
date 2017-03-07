@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Globalization
+@inject IReleaseRepository releases
+<!DOCTYPE html>
 <!--[if IE 8]> 				 <html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js" lang="en">
@@ -94,7 +96,10 @@
     <footer>
         <div class="row">
             <div class="small-6 columns">
-                <span>The latest version is @SiteConstants.CurrentRelease, released @SiteConstants.ReleaseDate.</span>
+            @{
+                var latest = @releases.LatestRelease;
+                <span>The latest version is @latest.Release, released @latest.ReleaseDate.ToString("dd MMMM yyyy", CultureInfo.InvariantCulture).</span>
+            }
             </div>
             <div class="small-6 columns copy">
                 &copy; <a href="https://github.com/nodatime/nodatime/blob/master/AUTHORS.txt">The Noda Time Authors</a>,

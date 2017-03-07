@@ -9,6 +9,7 @@ using System.Linq;
 
 namespace NodaTime.Web.Models
 {
+    // TODO: See if ASP.NET Core already has a good cache strategy. This isn't ideal.
     public class GoogleStorageTzdbRepository : ITzdbRepository
     {
         private const string Bucket = "nodatime";
