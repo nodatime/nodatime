@@ -208,7 +208,6 @@ namespace NodaTime.Text
                 }
                 if (currentNanos < Duration.MinNanoseconds || currentNanos > Duration.MaxNanoseconds)
                 {
-                    // TODO(misc): Work out whether this is really the best message. (Created a new one...)
                     return ParseResult<Duration>.ForInvalidValuePostParse(text, Messages.Parse_OverallValueOutOfRange,
                         typeof(Duration));
                 }
