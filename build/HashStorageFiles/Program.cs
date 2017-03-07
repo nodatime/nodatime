@@ -16,13 +16,14 @@ namespace HashStorageFiles
     /// </summary>
     public class Program
     {
-        private const string Bucket = "nodatime-releases";
+        private const string Bucket = "nodatime";
+        private const string Prefix = "releases/";
         private const string Sha256Key = "SHA-256";
 
         public static void Main(string[] args)
         {
             var client = StorageClient.Create();
-            var files = client.ListObjects(Bucket).ToList();
+            var files = client.ListObjects(Bucket, Prefix).Where(x => !x.Name.EndsWith("/")).ToList();
 
             using (SHA256 sha = SHA256.Create())
             {
