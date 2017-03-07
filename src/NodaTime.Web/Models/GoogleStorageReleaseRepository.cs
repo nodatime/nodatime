@@ -64,7 +64,7 @@ namespace NodaTime.Web.Models
             nextCacheRefresh = Clock.GetCurrentInstant() + CacheRefreshTime;
             releases = client
                 .ListObjects(Bucket, ObjectPrefix)
-                .Where(obj => !obj.Name.EndsWith("/") && !obj.Name.EndsWith("-src.zip"))
+                .Where(obj => !obj.Name.EndsWith("/"))
                 .Select(ConvertObject)
                 .OrderByDescending(r => r.Release)
                 .ToList();
