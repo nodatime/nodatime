@@ -1,31 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime", "NodaTime\NodaTime.xproj", "{29F470FA-C1CB-408B-A0B6-C1A9216C4B7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime", "NodaTime\NodaTime.csproj", "{29F470FA-C1CB-408B-A0B6-C1A9216C4B7B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.Benchmarks", "NodaTime.Benchmarks\NodaTime.Benchmarks.xproj", "{FAE54A01-C3B8-4775-BD7E-281FF168360A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Benchmarks", "NodaTime.Benchmarks\NodaTime.Benchmarks.csproj", "{FAE54A01-C3B8-4775-BD7E-281FF168360A}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.Demo", "NodaTime.Demo\NodaTime.Demo.xproj", "{5D02C9AD-285A-4C07-A553-C767735250A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Demo", "NodaTime.Demo\NodaTime.Demo.csproj", "{5D02C9AD-285A-4C07-A553-C767735250A0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.Serialization.JsonNet", "NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.xproj", "{7EA90223-7E57-4225-9DFD-CA2757EC8AE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Serialization.JsonNet", "NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.csproj", "{7EA90223-7E57-4225-9DFD-CA2757EC8AE9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.Serialization.Test", "NodaTime.Serialization.Test\NodaTime.Serialization.Test.xproj", "{692C902D-0FE4-4655-AAC9-84DE621E64FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Serialization.Test", "NodaTime.Serialization.Test\NodaTime.Serialization.Test.csproj", "{692C902D-0FE4-4655-AAC9-84DE621E64FD}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.Test", "NodaTime.Test\NodaTime.Test.xproj", "{6CC50995-3BCD-4FFE-95C7-320C4033B1B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Test", "NodaTime.Test\NodaTime.Test.csproj", "{6CC50995-3BCD-4FFE-95C7-320C4033B1B4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.Testing", "NodaTime.Testing\NodaTime.Testing.xproj", "{ACF7179D-AE79-4DD5-B57F-4F9E39C222A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Testing", "NodaTime.Testing\NodaTime.Testing.csproj", "{ACF7179D-AE79-4DD5-B57F-4F9E39C222A9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.TzdbCompiler", "NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.xproj", "{30E9D024-1A36-415B-96A8-B7A3A393FBB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.TzdbCompiler", "NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj", "{30E9D024-1A36-415B-96A8-B7A3A393FBB0}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.TzdbCompiler.Test", "NodaTime.TzdbCompiler.Test\NodaTime.TzdbCompiler.Test.xproj", "{56D9408D-8647-4F53-A1D9-25D00CF1BE32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.TzdbCompiler.Test", "NodaTime.TzdbCompiler.Test\NodaTime.TzdbCompiler.Test.csproj", "{56D9408D-8647-4F53-A1D9-25D00CF1BE32}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.TzValidate.NodaDump", "NodaTime.TzValidate.NodaDump\NodaTime.TzValidate.NodaDump.xproj", "{F546EDA0-6B44-4B32-A8BE-18B1FE664BFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.TzValidate.NodaDump", "NodaTime.TzValidate.NodaDump\NodaTime.TzValidate.NodaDump.csproj", "{F546EDA0-6B44-4B32-A8BE-18B1FE664BFF}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.TzValidate.NzdCompatibility", "NodaTime.TzValidate.NzdCompatibility\NodaTime.TzValidate.NzdCompatibility.xproj", "{B64228A2-15CC-4308-8804-D2979D725CE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.TzValidate.NzdCompatibility", "NodaTime.TzValidate.NzdCompatibility\NodaTime.TzValidate.NzdCompatibility.csproj", "{B64228A2-15CC-4308-8804-D2979D725CE9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NodaTime.NzdPrinter", "NodaTime.NzdPrinter\NodaTime.NzdPrinter.xproj", "{F8A1E119-C559-45F0-98CB-7EC88E84D8EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.NzdPrinter", "NodaTime.NzdPrinter\NodaTime.NzdPrinter.csproj", "{F8A1E119-C559-45F0-98CB-7EC88E84D8EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

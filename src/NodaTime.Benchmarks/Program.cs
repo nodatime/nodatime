@@ -10,10 +10,10 @@ namespace NodaTime.Benchmarks
     /// <summary>
     /// Entry point for benchmarking.
     /// </summary>
-    internal class Program
+    public class Program
     {
         // Run it with args = { "*" } for choosing all of target benchmarks
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
             new BenchmarkSwitcher(typeof(Program).GetTypeInfo().Assembly).Run(args);
         }

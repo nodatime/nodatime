@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <AssemblyName>NodaTime.TzValidate.NodaDump</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>NodaTime.TzValidate.NodaDump</PackageId>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50;netcore45</PackageTargetFallback>
+    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
+    <ProjectReference Include="..\NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http" Version="4.1.1" />
+  </ItemGroup>
+
+</Project>
