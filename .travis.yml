@@ -1,44 +1,17 @@
 # See http://docs.travis-ci.com/user/languages/csharp/ for details
 
+# TODO: Test against Mono as well, using matrix.include
 language: csharp
-
-sudo: required
+mono: none
+dotnet: 1.0.1
 dist: trusty
 
-addons:
-  apt:
-    packages:
-    - gettext
-    - libcurl4-openssl-dev
-    - libicu-dev
-    - libssl-dev
-    - libunwind8
-
-mono:
-  - latest
-
-# TODO: See whether we could use apt sources above instead.
-# But by the time I've investigated that, there'll hopefully
-# be a better solution on Travis anyway.
-
-install:
-  - sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
-  - sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
-  - sudo apt-get update
-  - sudo apt-get -qq install dotnet-dev-1.0.0-preview2-003121
-
-# Although TzdbCompiler is portable, the tests aren't, as they
-# check against Windows standard time zone IDs.
-# We don't currently run net451 tests on Linux, due to
-# https://github.com/dotnet/cli/issues/3073 (which I believe
-# is the reason NUnit fails as well as xUnit).
-# If we *did* run the tests, we'd need to run a Release configuration
-# until Travis uses Mono 4.3.1, due to
-# https://bugzilla.xamarin.com/show_bug.cgi?id=36257
 script:
-  - dotnet restore
-  - dotnet build src/NodaTime
-  - dotnet build src/NodaTime.Test
-  - dotnet build src/NodaTime.Serialization.Test
-  - dotnet test src/NodaTime.Test -f netcoreapp1.0 --where=cat!=Slow
-  - dotnet test src/NodaTime.Serialization.Test -f netcoreapp1.0
+  - dotnet restore src/NodaTime
+  - dotnet restore src/NodaTime.Test
+  - dotnet restore src/NodaTime.Serialization.Test
+  - dotnet build src/NodaTime -f netstandard1.3
+  - dotnet build src/NodaTime.Test -f netcoreapp1.0
+  - dotnet build src/NodaTime.Serialization.Test -f netcoreapp1.0
+  - dotnet run -p src/NodaTime.Test/*.csproj -f netcoreapp1.0 -- --where=cat!=Slow
+  - dotnet run -p src/NodaTime.Serialization.Test/*.csproj -f netcoreapp1.0

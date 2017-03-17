@@ -42,7 +42,7 @@
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
     <DefineConstants>$(DefineConstants);PCL</DefineConstants>
   </PropertyGroup>
-
+  
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
     <PackageReference Include="System.Diagnostics.Debug" Version="4.0.11" />
     <PackageReference Include="System.Globalization" Version="4.0.11" />
