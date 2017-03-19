@@ -41,6 +41,14 @@ for version in $PREVIOUS_VERSIONS; do
 done
 
 echo "Building metadata for current branch"
+# Docfx doesn't support VS2017 csproj files yet. Sigh.
+cp docfx/global.json .
+cp docfx/NodaTime.json ../src/NodaTime/project.json
+cp docfx/NodaTime.Serialization.JsonNet.json ../src/NodaTime.Serialization.JsonNet/project.json
+cp docfx/NodaTime.Testing.json ../src/NodaTime.Testing/project.json
+dotnet restore ../src/NodaTime
+dotnet restore ../src/NodaTime.Testing
+dotnet restore ../src/NodaTime.Serialization.JsonNet
 sed 's/..\/src/..\/..\/..\/src/g' < docfx/docfx.json > tmp/docfx/docfx.json
 docfx metadata -f tmp/docfx/docfx.json
 cp docfx/toc.yml tmp/docfx/obj/unstable
@@ -50,3 +58,7 @@ cp docfx/toc.yml tmp/docfx/obj/unstable
 echo "Running main docfx build"
 docfx build tmp/docfx/docfx.json
 cp docfx/logo.svg tmp/docfx/_site
+
+echo "Cleaning up legacy files for docfx"
+rm global.json
+rm  ../src/NodaTime{,.Testing,.Serialization.JsonNet}/project.json
