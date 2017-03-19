@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0-*",
+  "title":  "Noda Time",
+
+  "buildOptions": {
+    "keyFile": "../../NodaTime Release.snk",
+    "embed": {
+      "include": [
+        "*.resx",
+        "TimeZones/Tzdb.nzd"
+      ]
+    },
+    "xmlDoc": true,
+  },
+  
+  "configurations": {
+    "Debug": { },
+    "Release": { }
+  },
+
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Xml": "",
+        "System.Numerics": ""
+      }
+    }
+  }
+}
