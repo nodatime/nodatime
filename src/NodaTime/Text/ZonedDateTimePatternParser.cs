@@ -13,10 +13,7 @@ namespace NodaTime.Text
 {
     internal sealed class ZonedDateTimePatternParser : IPatternParser<ZonedDateTime>
     {
-        // Split the template value once, to avoid doing it every time we parse.
-        private readonly LocalDate templateValueDate;
-        private readonly LocalTime templateValueTime;
-        private readonly DateTimeZone templateValueZone;
+        private readonly ZonedDateTime templateValue;
         private readonly IDateTimeZoneProvider zoneProvider;
         private readonly ZoneLocalMappingResolver resolver;
 
@@ -60,9 +57,7 @@ namespace NodaTime.Text
 
         internal ZonedDateTimePatternParser(ZonedDateTime templateValue, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
         {
-            templateValueDate = templateValue.Date;
-            templateValueTime = templateValue.TimeOfDay;
-            templateValueZone = templateValue.Zone;
+            this.templateValue = templateValue;
             this.resolver = resolver;
             this.zoneProvider = zoneProvider;
         }
@@ -96,14 +91,14 @@ namespace NodaTime.Text
             }
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,
-                () => new ZonedDateTimeParseBucket(templateValueDate, templateValueTime, templateValueZone, resolver, zoneProvider));
+                () => new ZonedDateTimeParseBucket(templateValue, resolver, zoneProvider));
             if (zoneProvider == null)
             {
                 patternBuilder.SetFormatOnly();
             }
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
             patternBuilder.ValidateUsedFields();
-            return patternBuilder.Build(templateValueDate.At(templateValueTime).InZoneLeniently(templateValueZone));
+            return patternBuilder.Build(templateValue);
         }
 
         private static void HandleZone(PatternCursor pattern,
@@ -142,12 +137,11 @@ namespace NodaTime.Text
             private readonly ZoneLocalMappingResolver resolver;
             private readonly IDateTimeZoneProvider zoneProvider;
 
-            internal ZonedDateTimeParseBucket(LocalDate templateDate, LocalTime templateTime,
-                DateTimeZone templateZone, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
+            internal ZonedDateTimeParseBucket(ZonedDateTime templateValue, ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider)
             {
-                Date = new LocalDatePatternParser.LocalDateParseBucket(templateDate);
-                Time = new LocalTimePatternParser.LocalTimeParseBucket(templateTime);
-                Zone = templateZone;
+                Date = new LocalDatePatternParser.LocalDateParseBucket(templateValue.Date);
+                Time = new LocalTimePatternParser.LocalTimeParseBucket(templateValue.TimeOfDay);
+                Zone = templateValue.Zone;
                 this.resolver = resolver;
                 this.zoneProvider = zoneProvider;
             }
