@@ -65,8 +65,11 @@ namespace NodaTime.Web
             // API documentation
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "docfx"))
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "docfx")),
+                ContentTypeProvider = new FileExtensionContentTypeProvider
+                {
+                    Mappings = { [".yml"] = "text/x-yaml" }
+                }
             });
             // Captures "unstable" or a specific version - used several times below.
             string anyVersion = @"((?:1\.[0-3]\.x)|(?:unstable))";
