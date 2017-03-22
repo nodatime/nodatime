@@ -28,10 +28,7 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Threading.Tasks" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.0.11" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
@@ -40,11 +37,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <PackageReference Include="System.Console" Version="4.0.0" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
-    <PackageReference Include="System.Dynamic.Runtime" Version="4.0.11" />
-    <PackageReference Include="System.Reflection.Extensions" Version="4.0.1" />
-    <PackageReference Include="System.Xml.XDocument" Version="4.0.11" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.0.11" />
   </ItemGroup>
 
 </Project>
