@@ -9,6 +9,10 @@ namespace NodaTime.Web.Models
     {
         IList<ReleaseDownload> GetReleases();
 
+        /// <summary>
+        /// The download file for the latest release. This is always the
+        /// binary download, e.g. NodaTime-1.3.4.zip, not the source download.
+        /// </summary>
         ReleaseDownload LatestRelease { get; }
     }
 }
