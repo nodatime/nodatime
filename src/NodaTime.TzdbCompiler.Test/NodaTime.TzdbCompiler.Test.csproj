@@ -16,12 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
     <ProjectReference Include="..\NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NUnit" Version="3.6.1" />
     <PackageReference Include="NUnitLite" Version="3.6.1" />
-    <PackageReference Include="System.Xml.XDocument" Version="4.0.11" />
   </ItemGroup>
 
 </Project>

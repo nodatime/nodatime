@@ -14,8 +14,4 @@
     <ProjectReference Include="..\NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Net.Http" Version="4.1.1" />
-  </ItemGroup>
-
 </Project>
