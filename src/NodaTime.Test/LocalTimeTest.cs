@@ -45,14 +45,14 @@ namespace NodaTime.Test
         [Test]
         public void BinarySerialization()
         {
-            TestHelper.AssertBinaryRoundtrip(LocalTime.FromHourMinuteSecondMillisecondTick(12, 34, 56, 123, 4567));
+            TestHelper.AssertBinaryRoundtrip(LocalTime.FromHourMinuteSecondNanosecond(12, 34, 56, 123456789));
         }
 
         [Test]
         public void XmlSerialization()
         {
-            var value = LocalTime.FromHourMinuteSecondMillisecondTick(17, 53, 23, 123, 4567);
-            TestHelper.AssertXmlRoundtrip(value, "<value>17:53:23.1234567</value>");
+            var value = LocalTime.FromHourMinuteSecondNanosecond(17, 53, 23, 123456789);
+            TestHelper.AssertXmlRoundtrip(value, "<value>17:53:23.123456789</value>");
         }
 
         [Test]

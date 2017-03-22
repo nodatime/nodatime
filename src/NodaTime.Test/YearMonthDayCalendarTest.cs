@@ -25,8 +25,8 @@ namespace NodaTime.Test
         [Test]
         public void AllMonths()
         {
-            // We'll never actually need 16 months, but we support that many...
-            for (int month = 1; month <= 16; month++)
+            // We'll never actually need 32 months, but we support that many...
+            for (int month = 1; month <= 32; month++)
             {
                 var ymdc = new YearMonthDayCalendar(-123, month, 20, CalendarOrdinal.HebrewCivil);
                 Assert.AreEqual(-123, ymdc.Year);
@@ -53,12 +53,12 @@ namespace NodaTime.Test
         [Test]
         public void AllCalendars()
         {
-            for (int ordinal = 0; ordinal < 128; ordinal++)
+            for (int ordinal = 0; ordinal < 64; ordinal++)
             {
                 CalendarOrdinal calendar = (CalendarOrdinal) ordinal;
-                var ymdc = new YearMonthDayCalendar(-123, 12, 64, calendar);
+                var ymdc = new YearMonthDayCalendar(-123, 30, 64, calendar);
                 Assert.AreEqual(-123, ymdc.Year);
-                Assert.AreEqual(12, ymdc.Month);
+                Assert.AreEqual(30, ymdc.Month);
                 Assert.AreEqual(64, ymdc.Day);
                 Assert.AreEqual(calendar, ymdc.CalendarOrdinal);
             }

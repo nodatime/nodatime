@@ -112,11 +112,13 @@ namespace NodaTime.Utility
         [Conditional("DEBUG")]
         internal static void DebugCheckArgument(bool expression, [InvokerParameterName] string parameter, string messageFormat, params object[] messageArgs)
         {
+#if DEBUG
             if (!expression)
             {
                 string message = string.Format(messageFormat, messageArgs);
-                throw new ArgumentException(message, parameter);
+                throw new DebugPreconditionException($"{message} (parameter name: {parameter})");
             }
+#endif
         }
 
         [ContractAnnotation("expression:false => halt")]
@@ -167,6 +169,18 @@ namespace NodaTime.Utility
             {
                 throw new InvalidOperationException(message);
             }
+        }
+
+        [ContractAnnotation("expression:false => halt")]
+        [Conditional("DEBUG")]
+        internal static void DebugCheckState(bool expression, string message)
+        {
+#if DEBUG
+            if (!expression)
+            {
+                throw new DebugPreconditionException(message);
+            }
+#endif
         }
     }
 

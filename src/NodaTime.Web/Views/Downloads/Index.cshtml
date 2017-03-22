@@ -1,11 +1,12 @@
-﻿@model IList<ReleaseDownload>
+﻿@using NodaTime.Text
+@model IList<ReleaseDownload>
 
 @{
     ViewBag.Title = "Downloads";
 }
 
 <div class="row">
-    <div class="large-9 columns">
+    <div>
         <h1>Downloads</h1>
         <p>
             Most developers will use <a href="http://www.nuget.org">NuGet</a> to
@@ -23,6 +24,7 @@
         <table>
             <tr>
                 <th>Release</th>
+                <th>Date</th>
                 <th>Downloads</th>
                 <th>SHA-256</th>
             </tr>
@@ -36,6 +38,7 @@
                         @if (first)
                         {
                             <td rowspan="@release.Count()">@release.Key</td>
+                            <td rowspan="@release.Count()">@LocalDatePattern.Iso.Format(file.ReleaseDate)</td>
                             first = false;
                         }
                         <td><a href="@file.DownloadUrl">@file.File</a></td>

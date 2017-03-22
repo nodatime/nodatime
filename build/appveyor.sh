@@ -11,7 +11,12 @@ then
   packages/coveralls.net.0.7.0/tools/csmacnz.Coveralls.exe --opencover -i coverage.xml --useRelativePaths
 else
   # Just do the build and test instead...
-  dotnet restore src
+  dotnet restore src/NodaTime
+  dotnet restore src/NodaTime.Test
+  dotnet restore src/NodaTime.Serialization.Test
+  dotnet build -c Release src/NodaTime
   dotnet build -c Release src/NodaTime.Test
-  dotnet test -c Release -f net451 src/NodaTime.Test --where=cat!=Slow
+  dotnet build -c Release src/NodaTime.Serialization.Test
+  dotnet run -c Release -f net451 -p src/NodaTime.Test/*.csproj -- --where=cat!=Slow
+  dotnet run -c Release -f net451 -p src/NodaTime.Serialization.Test/*.csproj -- --where=cat!=Slow
 fi

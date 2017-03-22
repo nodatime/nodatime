@@ -251,31 +251,46 @@ namespace NodaTime.TimeZones
         /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
         internal string GuessZoneIdByTransitionsUncached(TimeZoneInfo zone)
         {
+            // See https://github.com/nodatime/nodatime/issues/686 for performance observations.
+            // If this were going to be called a lot, we could optimize further - but as it is,
+            // there's not much point.
             // Very rare use of the system clock! Windows time zone updates sometimes sacrifice past
             // accuracy for future accuracy, so let's use the current year's transitions.
             int thisYear = SystemClock.Instance.GetCurrentInstant().InUtc().Year;
             Instant startOfThisYear = Instant.FromUtc(thisYear, 1, 1, 0, 0);
             Instant startOfNextYear = Instant.FromUtc(thisYear + 5, 1, 1, 0, 0);
             var candidates = CanonicalIdMap.Values.Select(ForId).ToList();
-            // Would create a HashSet directly, but it appears not to be present on all versions of the PCL...
             var instants = candidates.SelectMany(z => z.GetZoneIntervals(startOfThisYear, startOfNextYear))
                                      .Select(zi => Instant.Max(zi.RawStart, startOfThisYear)) // Clamp to start of interval
                                      .Distinct()
                                      .ToList();
-
-            int bestScore = -1;
+            var bclOffsets = instants.Select(instant => Offset.FromTimeSpan(zone.GetUtcOffset(instant.ToDateTimeUtc()))).ToList();
+            // For a zone to be mappable, at most 30% of the checks must fail
+            // - so if we get to that number (or whatever our "best" so far is)
+            // we know we can stop for any particular zone.
+            int lowestFailureScore = (instants.Count * 30) / 100;
             DateTimeZone bestZone = null;
             foreach (var candidate in candidates)
             {
-                int score = instants.Count(instant => Offset.FromTimeSpan(zone.GetUtcOffset(instant.ToDateTimeUtc())) == candidate.GetUtcOffset(instant));
-                if (score > bestScore)
+                int failureScore = 0;
+                for (int i = 0; i < instants.Count; i++)
                 {
-                    bestScore = score;
+                    if (candidate.GetUtcOffset(instants[i]) != bclOffsets[i])
+                    {
+                        failureScore++;
+                        if (failureScore == lowestFailureScore)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (failureScore < lowestFailureScore)
+                {
+                    lowestFailureScore = failureScore;
                     bestZone = candidate;
                 }
-            }
-            // If we haven't hit at least 70%, it's effectively unmappable
-            return bestScore * 100 / instants.Count > 70 ? bestZone.Id : null;
+            }            
+            return bestZone?.Id;
         }
 
         /// <summary>

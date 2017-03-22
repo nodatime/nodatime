@@ -1,0 +1,25 @@
+﻿{
+  "name": "1.2.x",
+  "categories": [
+    {
+      "title": "Introduction",
+      "pageIds": [ "index", "rationale", "installation" ]
+    },
+    {
+      "title": "Core",
+      "pageIds": [ "concepts", "type-choices", "core-types", "design" ]
+    },
+    {
+      "title": "Text",
+      "pageIds": [ "text", "duration-patterns", "offset-patterns", "instant-patterns", "localtime-patterns", "localdate-patterns", "localdatetime-patterns", "offsetdatetime-patterns", "zoneddatetime-patterns", "period-patterns" ]
+    },
+    {
+      "title": "Advanced",
+      "pageIds": [ "arithmetic", "bcl-conversions", "serialization", "threading" ]
+    },
+    {
+      "title": "Library",
+      "pageIds": [ "testing", "tzdb", "mono", "limitations", "roadmap", "versions" ]
+    }
+  ]
+}

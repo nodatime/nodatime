@@ -52,7 +52,6 @@ namespace NodaTime.Text
                 if (value < 0)
                 {
                     value = -value;
-                    // TODO: Should we use a culture-specific negative sign?
                     outputBuffer.Append('-');
                 }
                 outputBuffer.Append((char)('0' + (value / 1000)));

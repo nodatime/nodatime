@@ -24,7 +24,7 @@ namespace NodaTime.Test
         [Test]
         public void BinarySerialization()
         {
-            TestHelper.AssertBinaryRoundtrip(Duration.FromTicks(12345L));
+            TestHelper.AssertBinaryRoundtrip(Duration.FromNanoseconds(123456789L));
         }
 
         [Test]
@@ -262,6 +262,12 @@ namespace NodaTime.Test
             // have no effect, and adding 1 should increase the number of ticks
             Assert.AreEqual(ticks, start.MinusSmallNanoseconds(99L).BclCompatibleTicks);
             Assert.AreEqual(ticks + 1, start.PlusSmallNanoseconds(1L).BclCompatibleTicks);
+        }
+
+        [Test]
+        public void BclCompatibleTicks_MinValue()
+        {
+            Assert.Throws<OverflowException>(() => Duration.MinValue.BclCompatibleTicks.ToString());
         }
 
         [Test]

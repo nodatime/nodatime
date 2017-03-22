@@ -17,6 +17,8 @@ using NodaTime.Utility;
 
 namespace NodaTime
 {
+    // TODO(feature): Calendar-neutral comparer.
+
     /// <summary>
     /// LocalDate is an immutable struct representing a date within the calendar,
     /// with no reference to a particular time zone or time of day.
@@ -27,7 +29,6 @@ namespace NodaTime
     /// a value in a different calendar system. However, ordering comparisons (either via the <see cref="CompareTo"/> method
     /// or via operators) fail with <see cref="ArgumentException"/>; attempting to compare values in different calendars
     /// almost always indicates a bug in the calling code.
-    /// TODO(2.0): Calendar-neutral comparer.
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
@@ -198,6 +199,10 @@ namespace NodaTime
         public DateTime ToDateTimeUnspecified() =>
             new DateTime(DaysSinceEpoch * NodaConstants.TicksPerDay + NodaConstants.BclTicksAtUnixEpoch, DateTimeKind.Unspecified);
 
+        // Helper method used by both FromDateTime overloads.
+        private static int NonNegativeTicksToDays(long ticks) =>
+            unchecked((int) ((ticks >> 14) / 52734375L));
+
         /// <summary>
         /// Converts a <see cref="DateTime" /> of any kind to a LocalDate in the ISO calendar, ignoring the time of day.
         /// This does not perform any time zone conversions, so a DateTime with a <see cref="DateTime.Kind"/> of
@@ -207,8 +212,7 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDate"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDate FromDateTime(DateTime dateTime)
         {
-            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
-            int days = TickArithmetic.TicksToDays(ticks);
+            int days = NonNegativeTicksToDays(dateTime.Ticks) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDate(days);
         }
 
@@ -222,8 +226,7 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDate"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDate FromDateTime(DateTime dateTime, [NotNull] CalendarSystem calendar)
         {
-            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
-            int days = TickArithmetic.TicksToDays(ticks);
+            int days = NonNegativeTicksToDays(dateTime.Ticks) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDate(days, calendar);
         }
 
@@ -767,17 +770,39 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string YearMonthDayCalendarSerializationName = "yearMonthDayCalendar";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalDate([NotNull] SerializationInfo info, StreamingContext context)
-            : this(new YearMonthDayCalendar(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(YearMonthDayCalendarSerializationName)))
+            : this(info)
         {
-            // TODO(2.0): Validation!
+        }
+
+        /// <summary>
+        /// Constructor only present for serialization; internal to allow construction from LocalDateTime
+        /// as part of deserialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        internal LocalDate([NotNull] SerializationInfo info)
+        {
+            Preconditions.CheckNotNull(info, nameof(info));
+            int year = info.GetInt32(BinaryFormattingConstants.YearSerializationName);
+            int month = info.GetInt32(BinaryFormattingConstants.MonthSerializationName);
+            int day = info.GetInt32(BinaryFormattingConstants.DaySerializationName);
+            CalendarOrdinal ordinal = (CalendarOrdinal) info.GetInt32(BinaryFormattingConstants.CalendarSerializationName);
+            try
+            {
+                Preconditions.CheckArgument(ordinal >= 0 && ordinal < CalendarOrdinal.Size, nameof(ordinal), "Calendar ordinal out of range");
+                var calendar = CalendarSystem.ForOrdinal(ordinal);
+                calendar.ValidateYearMonthDay(year, month, day);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("Invalid serialized data, details in InnerException", nameof(info), e);
+            }
+            yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, ordinal);
         }
 
         /// <summary>
@@ -788,9 +813,16 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Serialize(info);
+        }
+
+        internal void Serialize([NotNull] SerializationInfo info)
+        {
             Preconditions.CheckNotNull(info, nameof(info));
-            // TODO(2.0): Consider deserialization of 1.x, and consider serializing year, month, day and calendar separately.
-            info.AddValue(YearMonthDayCalendarSerializationName, yearMonthDayCalendar.RawValue);
+            info.AddValue(BinaryFormattingConstants.YearSerializationName, Year);
+            info.AddValue(BinaryFormattingConstants.MonthSerializationName, Month);
+            info.AddValue(BinaryFormattingConstants.DaySerializationName, Day);
+            info.AddValue(BinaryFormattingConstants.CalendarSerializationName, yearMonthDayCalendar.CalendarOrdinal);
         }
         #endregion
 #endif

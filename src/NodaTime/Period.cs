@@ -52,6 +52,11 @@ namespace NodaTime
         , ISerializable
 #endif
     {
+        // General implementation note: operations such as normalization work out the total number of nanoseconds as an Int64
+        // value. This can handle +/- 106,751 days, or 292 years. We could move to using BigInteger if we feel that's required,
+        // but it's unlikely to be an issue. Ideally, we'd switch to use BigInteger after detecting that it could be a problem,
+        // but without the hit of having to catch the exception...
+
         /// <summary>
         /// A period containing only zero-valued properties.
         /// </summary>
@@ -444,10 +449,6 @@ namespace NodaTime
             return new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
         }
 
-        private static Duration GetNanosecondsBetween(LocalDateTime start, LocalDateTime end) =>
-            // TODO(2.0): Optimize this for the common case of the dates being the same.
-            end.ToLocalInstant().TimeSinceLocalEpoch - start.ToLocalInstant().TimeSinceLocalEpoch;
-
         private static int FieldBetween(PeriodUnits units, LocalDate end, ref LocalDate remaining, IDatePeriodField dateField)
         {
             if (units == 0)
@@ -488,6 +489,10 @@ namespace NodaTime
             return units + days * periodField.UnitsPerDay;
         }
 
+        // TODO(optimization): These three methods are only ever used with scalar values of 1 or -1. Unlikely that
+        // the multiplications are going to be relevant, but may be worth testing. (Easy enough to break out
+        // code for the two values separately.)
+
         /// <summary>
         /// Adds the time components of this period to the given time, scaled accordingly.
         /// </summary>
@@ -498,7 +503,6 @@ namespace NodaTime
                 .PlusSeconds(Seconds * scalar)
                 .PlusMilliseconds(Milliseconds * scalar)
                 .PlusTicks(Ticks * scalar)
-                // FIXME(2.0): Cope with larger nanosecond values
                 .PlusNanoseconds(Nanoseconds * scalar);
 
         /// <summary>
@@ -523,9 +527,8 @@ namespace NodaTime
             time = TimePeriodField.Seconds.Add(time, Seconds * scalar, ref extraDays);
             time = TimePeriodField.Milliseconds.Add(time, Milliseconds * scalar, ref extraDays);
             time = TimePeriodField.Ticks.Add(time, Ticks * scalar, ref extraDays);
-            // FIXME(2.0): Cope with larger nanosecond values
             time = TimePeriodField.Nanoseconds.Add(time, Nanoseconds * scalar, ref extraDays);
-            // TODO(2.0): Investigate the performance impact of us calling PlusDays twice.
+            // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
             // Could optimize by including that in a single call...
             return new LocalDateTime(date.PlusDays(extraDays), time);
         }
@@ -704,8 +707,6 @@ namespace NodaTime
         /// </summary>
         /// <value>The total number of nanoseconds duration for the 'standard' properties (all bar years and months).</value>
         private long TotalNanoseconds =>
-            // This can overflow even when it wouldn't necessarily need to. See comments elsewhere.
-            // TODO(2.0): Handle big nanosecond values. (Return Nanoseconds instead...)
             Nanoseconds +
                 Ticks * NanosecondsPerTick +
                 Milliseconds * NanosecondsPerMillisecond +
@@ -725,7 +726,6 @@ namespace NodaTime
         [NotNull]
         public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
 
-        // FIXME(2.0): Normalize to a particular fraction-of-second type?
         /// <summary>
         /// Returns a normalized version of this period, such that equivalent (but potentially non-equal) periods are
         /// changed to the same representation.
@@ -733,25 +733,24 @@ namespace NodaTime
         /// <remarks>
         /// Months and years are unchanged
         /// (as they can vary in length), but weeks are multiplied by 7 and added to the
-        /// Days property, and all time properties are normalized to their natural range
-        /// (where ticks are "within a millisecond"), adding to the larger property where
-        /// necessary. So for example, a period of 25 hours becomes a period of 1 day
-        /// and 1 hour. Aside from months and years, either all the properties
-        /// end up positive, or they all end up negative.
+        /// Days property, and all time properties are normalized to their natural range.
+        /// Subsecond values are normalized to millisecond and "nanosecond within millisecond" values.
+        /// So for example, a period of 25 hours becomes a period of 1 day
+        /// and 1 hour. A period of 1,500,750,000 nanoseconds becomes 1 second, 500 milliseconds and
+        /// 750,000 nanoseconds. Aside from months and years, either all the properties
+        /// end up positive, or they all end up negative. "Week" and "tick" units in the returned period are always 0.
         /// </remarks>
         /// <exception cref="OverflowException">The period doesn't have years or months, but it contains more than
-        /// <see cref="Int64.MaxValue"/> ticks when the combined weeks/days/time portions are considered. Such a period
-        /// could never be useful anyway, however.
+        /// <see cref="Int64.MaxValue"/> nanoseconds when the combined weeks/days/time portions are considered. This is
+        /// over 292 years, so unlikely to be a problem in normal usage.
         /// In some cases this may occur even though the theoretical result would be valid due to balancing positive and
-        /// negative values, but for simplicity there is no attempt to work around this - in realistic periods, it
-        /// shouldn't be a problem.</exception>
+        /// negative values, but for simplicity there is no attempt to work around this.</exception>
         /// <returns>The normalized period.</returns>
         /// <seealso cref="NormalizingEqualityComparer"/>
         [Pure]
         [NotNull]
         public Period Normalize()
         {
-            // FIXME: Normalize to a Nanoseconds value instead, then go from there.
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
             long totalNanoseconds = TotalNanoseconds;
@@ -760,10 +759,9 @@ namespace NodaTime
             long minutes = (totalNanoseconds / NanosecondsPerMinute) % MinutesPerHour;
             long seconds = (totalNanoseconds / NanosecondsPerSecond) % SecondsPerMinute;
             long milliseconds = (totalNanoseconds / NanosecondsPerMillisecond) % MillisecondsPerSecond;
-            long ticks = (totalNanoseconds / NanosecondsPerTick) % TicksPerMillisecond;
-            long nanoseconds = totalNanoseconds % NanosecondsPerTick;
+            long nanoseconds = totalNanoseconds % NanosecondsPerMillisecond;
 
-            return new Period(this.Years, this.Months, 0 /* weeks */, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
+            return new Period(this.Years, this.Months, 0 /* weeks */, days, hours, minutes, seconds, milliseconds, 0 /* ticks */, nanoseconds);
         }
 
         #region Object overrides
@@ -824,56 +822,43 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string YearsSerializationName = "years";
-        private const string MonthsSerializationName = "months";
-        private const string WeeksSerializationName = "weeks";
-        private const string DaysSerializationName = "days";
-        private const string HoursSerializationName = "hours";
-        private const string MinutesSerializationName = "minutes";
-        private const string SecondsSerializationName = "seconds";
-        private const string MillisecondsSerializationName = "milliseconds";
-        private const string TicksSerializationName = "ticks";
-        private const string NanosecondsSerializationName = "nanosDays";
-
         /// <summary>
         /// Private constructor only present for serialization.
-        /// TODO(2.0): Revisit this for 2.0.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Period(SerializationInfo info, StreamingContext context)
-            : this((int) info.GetInt64(YearsSerializationName),
-                   (int) info.GetInt64(MonthsSerializationName),
-                   (int) info.GetInt64(WeeksSerializationName),
-                   (int) info.GetInt64(DaysSerializationName),
-                   info.GetInt64(HoursSerializationName),
-                   info.GetInt64(MinutesSerializationName),
-                   info.GetInt64(SecondsSerializationName),
-                   info.GetInt64(MillisecondsSerializationName),
-                   info.GetInt64(TicksSerializationName),
-                   info.GetInt64(NanosecondsSerializationName))
+            : this((int) info.GetInt64(BinaryFormattingConstants.YearsSerializationName),
+                   (int) info.GetInt64(BinaryFormattingConstants.MonthsSerializationName),
+                   (int) info.GetInt64(BinaryFormattingConstants.WeeksSerializationName),
+                   (int) info.GetInt64(BinaryFormattingConstants.DaysSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.HoursSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.MinutesSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.SecondsSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.MillisecondsSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.TicksSerializationName),
+                   info.GetInt64(BinaryFormattingConstants.NanosecondsSerializationName))
         {
         }
 
         /// <summary>
         /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// TODO(2.0): Revisit this for 2.0.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
         /// <param name="context">The destination for this serialization.</param>
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(YearsSerializationName, (long) Years);
-            info.AddValue(MonthsSerializationName, (long) Months);
-            info.AddValue(WeeksSerializationName, (long) Weeks);
-            info.AddValue(DaysSerializationName, (long) Days);
-            info.AddValue(HoursSerializationName, Hours);
-            info.AddValue(MinutesSerializationName, Minutes);
-            info.AddValue(SecondsSerializationName, Seconds);
-            info.AddValue(MillisecondsSerializationName, Milliseconds);
-            info.AddValue(TicksSerializationName, Ticks);
-            info.AddValue(NanosecondsSerializationName, Nanoseconds);
+            info.AddValue(BinaryFormattingConstants.YearsSerializationName, (long) Years);
+            info.AddValue(BinaryFormattingConstants.MonthsSerializationName, (long) Months);
+            info.AddValue(BinaryFormattingConstants.WeeksSerializationName, (long) Weeks);
+            info.AddValue(BinaryFormattingConstants.DaysSerializationName, (long) Days);
+            info.AddValue(BinaryFormattingConstants.HoursSerializationName, Hours);
+            info.AddValue(BinaryFormattingConstants.MinutesSerializationName, Minutes);
+            info.AddValue(BinaryFormattingConstants.SecondsSerializationName, Seconds);
+            info.AddValue(BinaryFormattingConstants.MillisecondsSerializationName, Milliseconds);
+            info.AddValue(BinaryFormattingConstants.TicksSerializationName, Ticks);
+            info.AddValue(BinaryFormattingConstants.NanosecondsSerializationName, Nanoseconds);
         }
         #endregion
 #endif

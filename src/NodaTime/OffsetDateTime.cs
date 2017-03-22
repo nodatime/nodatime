@@ -198,7 +198,7 @@ namespace NodaTime
             }
         }
 
-        // TODO(2.0): Consider exposing this.
+        // TODO(feature): Consider exposing this.
         /// <summary>
         /// Gets the hour of the half-day of this offset date and time, in the range 0 to 11 inclusive.
         /// </summary>
@@ -254,7 +254,7 @@ namespace NodaTime
             }
         }
 
-        // TODO(2.0): Rewrite for performance?
+        // TODO(optimization): Rewrite for performance?
         /// <summary>
         /// Gets the tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
@@ -712,7 +712,7 @@ namespace NodaTime
         [Immutable]
         public abstract class Comparer : IComparer<OffsetDateTime>, IEqualityComparer<OffsetDateTime>
         {
-            // TODO(2.0): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
+            // TODO(feature): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
             // but still uses the offset?
 
             /// <summary>
@@ -836,7 +836,7 @@ namespace NodaTime
 
             /// <inheritdoc />
             public override int Compare(OffsetDateTime x, OffsetDateTime y) =>
-                // TODO(2.0): Optimize cases which are more than 2 days apart, by avoiding the arithmetic?
+                // TODO(optimization): Optimize cases which are more than 2 days apart, by avoiding the arithmetic?
                 x.ToElapsedTimeSinceEpoch().CompareTo(y.ToElapsedTimeSinceEpoch());
 
             /// <inheritdoc />
@@ -883,21 +883,13 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string DaysSerializationName = "days";
-        private const string TickOfDaySerializationName = "tickOfDay";
-        private const string CalendarIdSerializationName = "calendar";
-        private const string OffsetMillisecondsSerializationName = "offsetMilliseconds";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private OffsetDateTime([NotNull] SerializationInfo info, StreamingContext context)
-            : this(new LocalDateTime(new LocalDate(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(DaysSerializationName),
-                                                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
-                                     LocalTime.FromTicksSinceMidnight(info.GetInt64(TickOfDaySerializationName))),
-                   Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
+            : this(new LocalDateTime(info), new Offset(info))
         {
         }
 
@@ -910,11 +902,8 @@ namespace NodaTime
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
             Preconditions.CheckNotNull(info, nameof(info));
-            // TODO(2.0): Consider serialization compatibility. (And just serialize the fields?)
-            info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
-            info.AddValue(TickOfDaySerializationName, TimeOfDay.TickOfDay);
-            info.AddValue(CalendarIdSerializationName, Calendar.Id);
-            info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
+            LocalDateTime.Serialize(info);
+            Offset.Serialize(info);
         }
         #endregion
 #endif

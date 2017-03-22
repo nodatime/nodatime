@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0-*",
+
+  "buildOptions": {
+    "keyFile": "../../NodaTime Release.snk",
+    "xmlDoc": true
+  },
+
+  "configurations": {
+    "Debug": { },
+    "Release": { }
+  },
+
+  "dependencies": {
+    "NodaTime": { "target": "project" }
+  },
+
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+      }
+    }
+  }
+}

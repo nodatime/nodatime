@@ -665,7 +665,7 @@ namespace NodaTime
         /// <returns>The number of ticks since the Unix epoch.</returns>
         [Pure]
         public long ToUnixTimeTicks() =>
-            TickArithmetic.DaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NanosecondsPerTick);
+            TickArithmetic.BoundedDaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NanosecondsPerTick);
 
         /// <summary>
         /// Returns the <see cref="ZonedDateTime"/> representing the same point in time as this instant, in the UTC time
@@ -765,7 +765,6 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Instant([NotNull] SerializationInfo info, StreamingContext context)
-            // FIXME:SERIALIZATION COMPATIBILITY
         {
             duration = new Duration(info);
             // Duplication of code in Instant.FromUntrustedDuration,

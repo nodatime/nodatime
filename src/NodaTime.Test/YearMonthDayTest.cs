@@ -24,8 +24,8 @@ namespace NodaTime.Test
         [Test]
         public void AllMonths()
         {
-            // We'll never actually need 16 months, but we support that many...
-            for (int month = 1; month < 16; month++)
+            // We'll never actually need 32 months, but we support that many...
+            for (int month = 1; month < 32; month++)
             {
                 var ymd = new YearMonthDay(-123, month, 20);
                 Assert.AreEqual(-123, ymd.Year);
@@ -40,9 +40,9 @@ namespace NodaTime.Test
             // We'll never actually need 64 days, but we support that many...
             for (int day = 1; day < 64; day++)
             {
-                var ymd = new YearMonthDay(-123, 12, day);
+                var ymd = new YearMonthDay(-123, 30, day);
                 Assert.AreEqual(-123, ymd.Year);
-                Assert.AreEqual(12, ymd.Month);
+                Assert.AreEqual(30, ymd.Month);
                 Assert.AreEqual(day, ymd.Day);
             }
         }

@@ -177,7 +177,7 @@ namespace NodaTime.Text
         {
             private static readonly BigInteger BigIntegerNanosecondsPerDay = NanosecondsPerDay;
 
-            // TODO: We might want to try to optimize this, but it's *much* simpler to get working reliably this way
+            // TODO(optimization): We might want to try to optimize this, but it's *much* simpler to get working reliably this way
             // than to manipulate a real Duration.
             internal bool IsNegative { get; set; }
             private BigInteger currentNanos;
@@ -208,7 +208,6 @@ namespace NodaTime.Text
                 }
                 if (currentNanos < Duration.MinNanoseconds || currentNanos > Duration.MaxNanoseconds)
                 {
-                    // TODO: Work out whether this is really the best message. (Created a new one...)
                     return ParseResult<Duration>.ForInvalidValuePostParse(text, Messages.Parse_OverallValueOutOfRange,
                         typeof(Duration));
                 }

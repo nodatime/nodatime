@@ -12,9 +12,9 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The calendar is represented in bits 0-6.
-    /// The day is represented in bits 7-12.
-    /// The month is represented in bits 13-16.
+    /// The calendar is represented in bits 0-5.
+    /// The day is represented in bits 6-11.
+    /// The month is represented in bits 12-16.
     /// The year is represented in bits 17-31. (It's convenient to put this at the top as it can be negative.)
     /// 
     /// This type does not implement IComparable[YearMonthDayCalendar] as it turns out it doesn't need to:
@@ -32,10 +32,11 @@ namespace NodaTime
     /// </remarks>
     internal struct YearMonthDayCalendar : IEquatable<YearMonthDayCalendar>
     {
-        private const int CalendarBits = 7; // Up to 128 calendars.
-        private const int DayBits = 6;   // Up to 64 days in a month.
-        private const int MonthBits = 4; // Up to 16 months per year.
-        private const int YearBits = 15; // 32K range; only need -10K to +10K.
+        // These constants are internal so they can be used in YearMonthDay
+        internal const int CalendarBits = 6; // Up to 64 calendars.
+        internal const int DayBits = 6;   // Up to 64 days in a month.
+        internal const int MonthBits = 5; // Up to 32 months per year.
+        internal const int YearBits = 15; // 32K range; only need -10K to +10K.
 
         // Just handy constants to use for shifting and masking.
         private const int CalendarDayBits = CalendarBits + DayBits;
@@ -76,8 +77,6 @@ namespace NodaTime
         internal int Year => unchecked(((value & YearMask) >> CalendarDayMonthBits) + 1);
         internal int Month => unchecked(((value & MonthMask) >> CalendarDayBits) + 1);
         internal int Day => unchecked(((value & DayMask) >> CalendarBits) + 1);
-
-        public int RawValue => value;
 
         // Just for testing purposes...
         [VisibleForTesting]

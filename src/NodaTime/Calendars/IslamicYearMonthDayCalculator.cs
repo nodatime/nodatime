@@ -65,18 +65,6 @@ namespace NodaTime.Calendars
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);
         }
 
-        internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, int year)
-        {
-            int month = yearMonthDay.Month;
-            int day = yearMonthDay.Day;
-            // The only value which might change day is the last day of a leap year
-            if (month == 12 && day == 30 && !IsLeapYear(year))
-            {
-                day = 29;
-            }
-            return new YearMonthDay(year, month, day);
-        }
-
         protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
         {
             // The number of days at the *start* of a month isn't affected by

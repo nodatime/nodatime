@@ -52,12 +52,24 @@ namespace NodaTime.Text
         /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy which are always present (including trailing zeroes). This is compatible with the
         /// BCL round-trip formatting of <see cref="DateTime"/> values with a kind of "unspecified".
-        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff".
-        /// FIXME(2.0): What should we do with this? Maintain BCL compatibility, or go to nanos?
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff". It does not necessarily
+        /// round-trip all <c>LocalDateTime</c> values as it will lose sub-tick information. Use
+        /// <see cref="FullRoundtripWithoutCalendar"/>
         /// </summary>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy which are always present (including trailing zeroes).</value>
         public static LocalDateTimePattern BclRoundtrip => Patterns.BclRoundtripPatternImpl;
+
+        /// <summary>
+        /// Gets an invariant local date/time pattern which round trips values, but doesn't include the calendar system.
+        /// It provides up to 9 decimal places of sub-second accuracy which are always present (including trailing zeroes).
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff". It will
+        /// round-trip all <see cref="LocalDateTime"/> values if the calendar system of the template value is the same
+        /// as the calendar system of the original value.
+        /// </summary>
+        /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
+        /// of sub-second accuracy which are always present (including trailing zeroes).</value>
+        public static LocalDateTimePattern FullRoundtripWithoutCalendar => Patterns.FullRoundtripWithoutCalendarImpl;
 
         /// <summary>
         /// Gets an invariant local date/time pattern which round trips values including the calendar system.
@@ -75,6 +87,7 @@ namespace NodaTime.Text
             internal static readonly LocalDateTimePattern GeneralIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss");
             internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF");
             internal static readonly LocalDateTimePattern BclRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
+            internal static readonly LocalDateTimePattern FullRoundtripWithoutCalendarImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
             internal static readonly LocalDateTimePattern FullRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
         }
 

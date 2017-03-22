@@ -638,7 +638,7 @@ namespace NodaTime
         [Immutable]
         public abstract class Comparer : IComparer<ZonedDateTime>, IEqualityComparer<ZonedDateTime>
         {
-            // TODO(2.0): A comparer which compares instants, but in a calendar-sensitive manner?
+            // TODO(feature): A comparer which compares instants, but in a calendar-sensitive manner?
 
             /// <summary>
             /// Gets a comparer which compares <see cref="ZonedDateTime"/> values by their local date/time, without reference to
@@ -814,11 +814,6 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string DaysSerializationName = "days";
-        private const string NanosecondOfDaySerializationName = "nanosecondOfDay";
-        private const string CalendarIdSerializationName = "calendar";
-        private const string OffsetMillisecondsSerializationName = "offsetMilliseconds";
-        private const string ZoneIdSerializationName = "zone";
 
         /// <summary>
         /// Private constructor only present for serialization.
@@ -827,11 +822,9 @@ namespace NodaTime
         /// <param name="context">The source for this deserialization.</param>
         private ZonedDateTime(SerializationInfo info, StreamingContext context)
             // Note: this uses the constructor which explicitly validates that the offset is reasonable.
-            : this(new LocalDateTime(new LocalDate(info.GetInt32(DaysSerializationName),
-                                                   CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
-                                     LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName))),
-                   DateTimeZoneProviders.Serialization[info.GetString(ZoneIdSerializationName)],
-                   Offset.FromMilliseconds(info.GetInt32(OffsetMillisecondsSerializationName)))
+            : this(new LocalDateTime(info),
+                   DateTimeZoneProviders.Serialization[info.GetString(BinaryFormattingConstants.ZoneIdSerializationName)],
+                   new Offset(info))
         {
         }
 
@@ -843,12 +836,9 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            // FIXME(2.0): Revisit serialization
-            info.AddValue(DaysSerializationName, Date.DaysSinceEpoch);
-            info.AddValue(NanosecondOfDaySerializationName, TimeOfDay.NanosecondOfDay);
-            info.AddValue(CalendarIdSerializationName, Calendar.Id);
-            info.AddValue(OffsetMillisecondsSerializationName, Offset.Milliseconds);
-            info.AddValue(ZoneIdSerializationName, Zone.Id);
+            LocalDateTime.Serialize(info);
+            Offset.Serialize(info);            
+            info.AddValue(BinaryFormattingConstants.ZoneIdSerializationName, Zone.Id);
         }
         #endregion
 #endif

@@ -1,7 +1,0 @@
-name: Noda Time
-markdown: NodaTimeMarkdownParser
-highlighter: pygments
-
-# The latest released version number and date of release.
-latest: 1.3.2
-latest_released_on: April 14th 2016

@@ -18,6 +18,8 @@ using NodaTime.Utility;
 
 namespace NodaTime
 {
+    // TODO(feature): Calendar-neutral comparer.
+
     /// <summary>
     /// A date and time in a particular calendar system. A LocalDateTime value does not represent an
     /// instant on the global time line, because it has no associated time zone: "November 12th 2009 7pm, ISO calendar"
@@ -33,7 +35,6 @@ namespace NodaTime
     /// a value in a different calendar system. However, ordering comparisons (either via the <see cref="CompareTo"/> method
     /// or via operators) fail with <see cref="ArgumentException"/>; attempting to compare values in different calendars
     /// almost always indicates a bug in the calling code.
-    /// TODO(2.0): Calendar-neutral comparer.
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
@@ -306,7 +307,7 @@ namespace NodaTime
         [Pure]
         public DateTime ToDateTimeUnspecified()
         {
-            long ticks = TickArithmetic.DaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
+            long ticks = TickArithmetic.BoundedDaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
             if (ticks < 0)
             {
                 throw new InvalidOperationException("LocalDateTime out of range of DateTime");
@@ -326,9 +327,8 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDateTime FromDateTime(DateTime dateTime)
         {
-            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
             long tickOfDay;
-            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
+            int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.Ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDateTime(new LocalDate(days), new LocalTime(unchecked(tickOfDay * NodaConstants.NanosecondsPerTick)));
         }
 
@@ -342,9 +342,8 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDateTime FromDateTime(DateTime dateTime, [NotNull] CalendarSystem calendar)
         {
-            long ticks = dateTime.Ticks - NodaConstants.BclTicksAtUnixEpoch;
             long tickOfDay;
-            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
+            int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.Ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDateTime(new LocalDate(days, calendar), new LocalTime(unchecked(tickOfDay * NodaConstants.NanosecondsPerTick)));
         }
 
@@ -931,9 +930,6 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string DaysSerializationName = "days";
-        private const string NanosecondOfDaySerializationName = "nanoOfDay";
-        private const string CalendarIdSerializationName = "calendar";
 
         /// <summary>
         /// Private constructor only present for serialization.
@@ -941,9 +937,16 @@ namespace NodaTime
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private LocalDateTime([NotNull] SerializationInfo info, StreamingContext context)
-            : this(new LocalDate(Preconditions.CheckNotNull(info, nameof(info)).GetInt32(DaysSerializationName),
-                                 CalendarSystem.ForId(info.GetString(CalendarIdSerializationName))),
-                   LocalTime.FromNanosecondsSinceMidnight(info.GetInt64(NanosecondOfDaySerializationName)))
+            : this(info)
+        {
+        }
+
+        /// <summary>
+        /// Internal constructor used for deserialization, for cases where this is part of
+        /// a larger value.
+        /// </summary>
+        internal LocalDateTime([NotNull] SerializationInfo info)
+            : this(new LocalDate(info), new LocalTime(info))
         {
         }
 
@@ -955,11 +958,14 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
+            Serialize(info);
+        }
+
+        internal void Serialize([NotNull] SerializationInfo info)
+        {
             Preconditions.CheckNotNull(info, nameof(info));
-            // FIXME(2.0): Revisit the serialization format. (Use the calendar ordinal? Don't bother for ISO?)
-            info.AddValue(DaysSerializationName, date.DaysSinceEpoch);
-            info.AddValue(NanosecondOfDaySerializationName, time.NanosecondOfDay);
-            info.AddValue(CalendarIdSerializationName, Calendar.Id);
+            date.Serialize(info);
+            time.Serialize(info);
         }
         #endregion
 #endif

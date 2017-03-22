@@ -254,12 +254,6 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string StartDaysSerializationName = "startDays";
-        private const string EndDaysSerializationName = "endDays";
-        private const string StartNanosecondOfDaySerializationName = "startNanoOfDay";
-        private const string EndNanosecondOfDaySerializationName = "endNanoOfDay";
-        private const string PresenceName = "presence";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
@@ -267,13 +261,19 @@ namespace NodaTime
         /// <param name="context">The source for this deserialization.</param>
         private Interval([NotNull] SerializationInfo info, StreamingContext context)
         {
-            var presence = info.GetByte(PresenceName);
+            var presence = info.GetByte(BinaryFormattingConstants.PresenceName);
             start = (presence & 1) == 0 ?
                 Instant.BeforeMinValue
-                : Instant.FromUntrustedDuration(new Duration(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName));
+                : Instant.FromUntrustedDuration(
+                    new Duration(info,
+                        BinaryFormattingConstants.StartDaysSerializationName,
+                        BinaryFormattingConstants.StartNanosecondOfDaySerializationName));
             end = (presence & 2) == 0 ?
                 Instant.AfterMaxValue
-                : Instant.FromUntrustedDuration(new Duration(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName));
+                : Instant.FromUntrustedDuration(
+                    new Duration(info,
+                        BinaryFormattingConstants.EndDaysSerializationName,
+                        BinaryFormattingConstants.EndNanosecondOfDaySerializationName));
         }
 
         /// <summary>
@@ -287,15 +287,18 @@ namespace NodaTime
             // We can't easily tell which fields are present based on SerializationInfo (other than by iterating),
             // so we add one extra value to say which other values to include. We may wish to generalize this
             // at some point...
-            info.AddValue(PresenceName, (byte) ((HasStart ? 1 : 0) | (HasEnd ? 2 : 0)));
-            // FIXME:SERIALIZATION
+            info.AddValue(BinaryFormattingConstants.PresenceName, (byte) ((HasStart ? 1 : 0) | (HasEnd ? 2 : 0)));
             if (HasStart)
             {
-                start.TimeSinceEpoch.Serialize(info, StartDaysSerializationName, StartNanosecondOfDaySerializationName);
+                start.TimeSinceEpoch.Serialize(info,
+                    BinaryFormattingConstants.StartDaysSerializationName,
+                    BinaryFormattingConstants.StartNanosecondOfDaySerializationName);
             }
             if (HasEnd)
             {
-                end.TimeSinceEpoch.Serialize(info, EndDaysSerializationName, EndNanosecondOfDaySerializationName);
+                end.TimeSinceEpoch.Serialize(info,
+                    BinaryFormattingConstants.EndDaysSerializationName,
+                    BinaryFormattingConstants.EndNanosecondOfDaySerializationName);
             }
         }
         #endregion

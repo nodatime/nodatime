@@ -57,7 +57,7 @@ namespace NodaTime.Calendars
         /// so calendars which override that method and don't call the original implementation may leave
         /// this unimplemented (e.g. by throwing an exception if it's ever called).
         /// </summary>
-        // TODO(jonskeet): Either hard-code a check that this *is* only called by GetStartOfYearInDays
+        // TODO(misc): Either hard-code a check that this *is* only called by GetStartOfYearInDays
         // via a Roslyn test, or work out an attribute to indicate that, and write a more general test.
         protected abstract int CalculateStartOfYearDays([Trusted] int year);
         internal abstract int GetMonthsInYear([Trusted] int year);
@@ -108,9 +108,6 @@ namespace NodaTime.Calendars
         internal virtual int GetStartOfYearInDays([Trusted] int year)
         {
             Preconditions.DebugCheckArgumentRange(nameof(year), year, MinYear - 1, MaxYear + 1);
-            // TODO(2.0): Check that it's valid to cache values outside the advertised
-            // bounds of the calendar (by one year). We used not to cache them, but just
-            // the check was relatively expensive.
             int cacheIndex = YearStartCacheEntry.GetCacheIndex(year);
             YearStartCacheEntry cacheEntry = yearCache[cacheIndex];
             if (!cacheEntry.IsValidForYear(year))

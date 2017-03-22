@@ -200,11 +200,9 @@ namespace NodaTime.Text.Patterns
 
                 builder.AddParseAction((cursor, bucket) =>
                 {
-                    // TODO(V2.0): (Breaking change, although undocumented.) Potentially make this case-sensitive
-                    // as we're parsing IDs.
                     foreach (var id in CalendarSystem.Ids)
                     {
-                        if (cursor.MatchCaseInsensitive(id, NodaFormatInfo.InvariantInfo.CompareInfo, true))
+                        if (cursor.Match(id))
                         {
                             setter(bucket, CalendarSystem.ForId(id));
                             return null;

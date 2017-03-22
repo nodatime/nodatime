@@ -1,0 +1,35 @@
+﻿@model MarkdownPage
+
+@{ ViewBag.Title = Model.Title; }
+
+<section class="body">
+    <div class="row">
+        <div class="large-9 columns">
+            <h1>@Model.Title</h1>
+            @Model.Content
+        </div>
+
+        <div class="large-3 columns">
+            <div class="section-container accordian">
+                @foreach (var category in Model.Bundle.Categories)
+                {                
+                    <section>
+                    <p class="title" data-section-title>@category.Title</p>
+                    <div class="content" data-section-content>
+                    <ul class="side-nav">
+                    @foreach (var page in category.Pages)
+                    {
+                        <li><a href="@page.Id">@page.Title</a></li>
+                    }
+                    </ul>
+                    </div>
+                    </section>
+                }
+                @if (Model.Bundle.Name != "developer")
+                {
+                  <footer>Version @Model.Bundle.Name</footer>
+                }
+            </div>
+        </div>
+    </div>
+</section>

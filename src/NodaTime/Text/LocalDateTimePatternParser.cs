@@ -81,6 +81,10 @@ namespace NodaTime.Text
                 {
                     return LocalDateTimePattern.Patterns.FullRoundtripPatternImpl;
                 }
+                if (patternCharacter == 'R')
+                {
+                    return LocalDateTimePattern.Patterns.FullRoundtripWithoutCalendarImpl;
+                }
                 if (patternCharacter == 's')
                 {
                     return LocalDateTimePattern.Patterns.GeneralIsoPatternImpl;

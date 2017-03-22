@@ -439,7 +439,6 @@ namespace NodaTime.Globalization
                     return new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo);
                 default:
                     throw new ArgumentException($"Cannot use provider of type {provider.GetType().FullName} in Noda Time", nameof(provider));
-
             }
         }
 

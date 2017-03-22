@@ -39,8 +39,9 @@ namespace NodaTime
     /// </para>
     /// <para>
     /// The range of valid values of a <c>Duration</c> is greater than the span of time supported by Noda Time - so for
-    /// example, subtracting one <see cref="Instant"/> from another will always give a valid <c>Duration</c>. See the user guide
-    /// for more details of the exact range, but it is not expected that this will ever be exceeded in normal code.
+    /// example, subtracting one <see cref="Instant"/> from another will always give a valid <c>Duration</c>. The range
+    /// is also greater than that of <see cref="TimeSpan"/> (<see cref="long.MinValue" /> ticks to <see cref="long.MaxValue"/> ticks).
+    /// See the user guide for more details of the exact range, but it is not expected that this will ever be exceeded in normal code.
     /// </para>
     /// <para>
     /// Various operations accept or return a <see cref="Double"/>, in-keeping with durations often being natural lengths
@@ -74,7 +75,7 @@ namespace NodaTime
 
         #region Readonly static properties
 
-        // TODO: Evaluate performance of this implementation vs readonly automatically implemented properties.
+        // TODO(optimization): Evaluate performance of this implementation vs readonly automatically implemented properties.
         // Consider adding a private constructor which performs no validation at all.
 
         /// <summary>
@@ -272,7 +273,7 @@ namespace NodaTime
             }
         }
 
-        // TODO: Reimplement all of these using TotalNanoseconds?
+        // TODO(optimization): Reimplement all of these using TotalNanoseconds?
 
         /// <summary>
         /// Gets the total number of days in this duration, as a <see cref="Double"/>.
@@ -514,12 +515,7 @@ namespace NodaTime
             {
                 int newDays = left.days - right.days;
                 long newNanos = left.nanoOfDay - right.nanoOfDay;
-                if (newNanos >= NanosecondsPerDay)
-                {
-                    newDays++;
-                    newNanos -= NanosecondsPerDay;
-                }
-                else if (newNanos < 0)
+                if (newNanos < 0)
                 {
                     newDays--;
                     newNanos += NanosecondsPerDay;
@@ -643,7 +639,7 @@ namespace NodaTime
         {
             // Exclude infinity and NaN
             Preconditions.CheckArgumentRange(nameof(right), right, double.MinValue, double.MaxValue);
-            // TODO: Optimize
+            // TODO(optimization): Optimize
             double originalNanos = (double) left.ToBigIntegerNanoseconds();
             double resultNanos = originalNanos * right;
             return FromNanoseconds(resultNanos);
@@ -1046,7 +1042,7 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of nanoseconds.</returns>
         public static Duration FromNanoseconds(long nanoseconds)
         {
-            // TODO: Try DivRem
+            // TODO(optimization): Try DivRem
             int days = nanoseconds >= 0
                 ? (int) (nanoseconds / NanosecondsPerDay)
                 : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
@@ -1175,16 +1171,13 @@ namespace NodaTime
 
 #if !PCL
         #region Binary serialization
-        private const string DefaultDaysSerializationName = "days";
-        private const string DefaultNanosecondOfDaySerializationName = "nanoOfDay";
-
         /// <summary>
         /// Private constructor only present for serialization.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
         /// <param name="context">The source for this deserialization.</param>
         private Duration([NotNull] SerializationInfo info, StreamingContext context)
-            : this(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName)
+            : this(info)
         {
         }
 
@@ -1193,7 +1186,9 @@ namespace NodaTime
         /// a larger value, but the duration part has been serialized with the default keys.
         /// </summary>
         internal Duration([NotNull] SerializationInfo info)
-            : this(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName)
+            : this(info,
+                  BinaryFormattingConstants.DurationDefaultDaysSerializationName,
+                  BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName)
         {
         }
 
@@ -1227,14 +1222,15 @@ namespace NodaTime
         [System.Security.SecurityCritical]
         void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
         {
-            // FIXME(2.0): Determine serialization policy
             Serialize(info);
         }
         #endregion
 
         internal void Serialize([NotNull] SerializationInfo info)
         {
-            Serialize(info, DefaultDaysSerializationName, DefaultNanosecondOfDaySerializationName);
+            Serialize(info,
+                BinaryFormattingConstants.DurationDefaultDaysSerializationName, 
+                BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName);
         }
 
         internal void Serialize([NotNull] SerializationInfo info,
