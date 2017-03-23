@@ -10,6 +10,7 @@
     <PackageId>NodaTime.Benchmarks</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <RuntimeFrameworkVersion Condition=" '$(TargetFramework)' == 'netcoreapp1.1' ">1.1.1</RuntimeFrameworkVersion>
+    <Deterministic>True</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

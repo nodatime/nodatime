@@ -14,6 +14,7 @@
     <PackageTags>nodatime;testing</PackageTags>
     <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <Deterministic>True</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>
