@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Utility;
 using System;
 using System.Collections;
@@ -25,6 +26,12 @@ namespace NodaTime.Text
     /// (and therefore usually shorter) pattern can be used first.
     /// </remarks>
     /// <typeparam name="T">The type of value to be parsed or formatted by the resulting pattern.</typeparam>
+    /// <threadsafety>
+    /// This type is mutable, and should not be used between multiple threads. The patterns created
+    /// by the <see cref="Build"/> method are immutable and can be used between multiple threads, assuming
+    /// that each component (both pattern and predicate) is also immutable.
+    /// </threadsafety>
+    [Mutable]
     public sealed class CompositePatternBuilder<T> : IEnumerable<IPattern<T>>
     {
         private readonly List<IPattern<T>> patterns = new List<IPattern<T>>();
