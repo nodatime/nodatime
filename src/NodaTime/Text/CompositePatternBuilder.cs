@@ -25,7 +25,7 @@ namespace NodaTime.Text
     /// (and therefore usually shorter) pattern can be used first.
     /// </remarks>
     /// <typeparam name="T">The type of value to be parsed or formatted by the resulting pattern.</typeparam>
-    internal sealed class CompositePatternBuilder<T> : IEnumerable<IPattern<T>>
+    public sealed class CompositePatternBuilder<T> : IEnumerable<IPattern<T>>
     {
         private readonly List<IPattern<T>> patterns = new List<IPattern<T>>();
         private readonly List<Func<T, bool>> formatPredicates = new List<Func<T, bool>>();
