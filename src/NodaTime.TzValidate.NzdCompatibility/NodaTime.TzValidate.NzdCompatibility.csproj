@@ -5,6 +5,7 @@
     <AssemblyName>NodaTime.TzValidate.NzdCompatibility</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>NodaTime.TzValidate.NzdCompatibility</PackageId>
+    <Deterministic>True</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

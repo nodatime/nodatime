@@ -17,6 +17,7 @@
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/nodatime/nodatime.git</RepositoryUrl>
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+    <Deterministic>True</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

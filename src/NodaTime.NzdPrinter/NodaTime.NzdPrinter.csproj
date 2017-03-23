@@ -8,6 +8,7 @@
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>NodaTime.NzdPrinter</PackageId>
+    <Deterministic>True</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>

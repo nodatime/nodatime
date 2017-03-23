@@ -18,6 +18,7 @@
     <RepositoryUrl>https://github.com/nodatime/nodatime.git</RepositoryUrl>
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <Deterministic>True</Deterministic>
   </PropertyGroup>
 
   <ItemGroup>
