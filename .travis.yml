@@ -9,9 +9,6 @@ dist: trusty
 script:
   - dotnet restore src/NodaTime
   - dotnet restore src/NodaTime.Test
-  - dotnet restore src/NodaTime.Serialization.Test
   - dotnet build src/NodaTime -f netstandard1.3
   - dotnet build src/NodaTime.Test -f netcoreapp1.0
-  - dotnet build src/NodaTime.Serialization.Test -f netcoreapp1.0
   - dotnet run -p src/NodaTime.Test/*.csproj -f netcoreapp1.0 -- --where=cat!=Slow
-  - dotnet run -p src/NodaTime.Serialization.Test/*.csproj -f netcoreapp1.0
