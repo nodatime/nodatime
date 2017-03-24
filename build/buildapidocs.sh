@@ -42,14 +42,27 @@ done
 
 echo "Building metadata for current branch"
 # Docfx doesn't support VS2017 csproj files yet. Sigh.
-cp docfx/global.json .
-cp docfx/NodaTime.json ../src/NodaTime/project.json
-cp docfx/NodaTime.Serialization.JsonNet.json ../src/NodaTime.Serialization.JsonNet/project.json
-cp docfx/NodaTime.Testing.json ../src/NodaTime.Testing/project.json
-dotnet restore ../src/NodaTime
-dotnet restore ../src/NodaTime.Testing
-dotnet restore ../src/NodaTime.Serialization.JsonNet
-sed 's/..\/src/..\/..\/..\/src/g' < docfx/docfx.json > tmp/docfx/docfx.json
+# Also, we want to include the serialization docs (sometimes? unclear)
+
+git clone https://github.com/nodatime/nodatime.git -q --depth 1 tmp/docfx/serialization
+
+mkdir -p tmp/docfx/build/src
+cp -r ../src/NodaTime{,.Testing} tmp/docfx/build/src
+cp -r ../*.snk tmp/docfx/build
+cp -r tmp/docfx/serialization/src/NodaTime.Serialization.JsonNet tmp/docfx/build/src
+
+cp docfx/global.json tmp/docfx
+cp docfx/NodaTime.json tmp/docfx/build/src/NodaTime/project.json
+cp docfx/NodaTime.Serialization.JsonNet.json tmp/docfx/build/src/NodaTime.Serialization.JsonNet/project.json
+cp docfx/NodaTime.Testing.json tmp/docfx/build/src/NodaTime.Testing/project.json
+
+cd tmp/docfx
+dotnet restore build/src/NodaTime
+dotnet restore build/src/NodaTime.Testing
+dotnet restore build/src/NodaTime.Serialization.JsonNet
+cd ../..
+
+sed 's/..\/src/build\/src/g' < docfx/docfx.json > tmp/docfx/docfx.json
 docfx metadata -f tmp/docfx/docfx.json
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
@@ -58,7 +71,3 @@ cp docfx/toc.yml tmp/docfx/obj/unstable
 echo "Running main docfx build"
 docfx build tmp/docfx/docfx.json
 cp docfx/logo.svg tmp/docfx/_site
-
-echo "Cleaning up legacy files for docfx"
-rm global.json
-rm  ../src/NodaTime{,.Testing,.Serialization.JsonNet}/project.json
