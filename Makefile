@@ -10,8 +10,8 @@ DOTNET := dotnet
 
 # Targets:
 #   debug (default)
-#     builds the core projects (the NodaTime assembly, serialization support,
-#     TZDB compiler, and respective tests) in debug configuration.
+#     builds the core projects (the NodaTime assembly, TZDB compiler,
+#     and respective tests) in debug configuration.
 #   release
 #     builds the core projects in release configuration.
 #   debug-all, release-all
@@ -40,7 +40,6 @@ endif
 
 CORE_TEST_PROJECTS := \
 	src/NodaTime.Test/ \
-	src/NodaTime.Serialization.Test/ \
 	src/NodaTime.TzdbCompiler.Test/
 
 # Building the tests also builds the dependent projects.
