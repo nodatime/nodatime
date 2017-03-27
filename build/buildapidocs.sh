@@ -2,16 +2,28 @@
 
 set -e
 
-PREVIOUS_VERSIONS="1.0.x 1.1.x 1.2.x 1.3.x"
+
+declare -r PREVIOUS_VERSIONS="1.0.x 1.1.x 1.2.x 1.3.x 2.0.x"
 echo "Fetching previous versions from source control if necessary"
+
 if [[ ! -d history ]]
 then
   mkdir history
-  for version in $PREVIOUS_VERSIONS
+  # 1.x...
+  for version in 1.0.x 1.1.x 1.2.x 1.3.x
   do
     echo "Cloning $version"
     git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b $version history/$version
   done
+
+  # 2.0...
+  echo "Cloning 2.0"
+  git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b $version history/2.0.x
+  echo "Cloning serialization"
+  git clone https://github.com/nodatime/nodatime.serialization.git -q --depth 1 history/serialization
+  git -C history/serialization checkout 2.0.0-rc1
+  cp -r history/serialization/src/NodaTime.Serialization.JsonNet history/2.0.x
+  
 else
   echo Directory for previous versions already exists.
   echo Checking we have all the versions we need...
@@ -63,7 +75,7 @@ dotnet restore build/src/NodaTime.Serialization.JsonNet
 cd ../..
 
 sed 's/..\/src/build\/src/g' < docfx/docfx.json > tmp/docfx/docfx.json
-docfx tmp/docfx/docfx.json metadata -f 
+docfx metadata tmp/docfx/docfx.json -f 
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
 # TODO: Add extra information (versions etc)

@@ -12,6 +12,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\2.0.x\userguide\conversions.dia">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\2.0.x\userguide\conversions.png">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="wwwroot\**\*;docfx\**\*;Markdown\**\*;Views\**\*;Areas\**\Views">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
