@@ -92,6 +92,10 @@ value with a value more fine-grained than milliseconds, either construct separat
 values and add them together, or construct a `LocalDateTime` to the nearest second (or millisecond) and use
 `PlusTicks` or `PlusNanoseconds` to construct the final one.
 
+Properties related to week-years (e.g. `WeekOfWeekYear`) have been removed, in favour of a more
+flexible system. See the [week-years guide](weekyears) for more information. In most cases,
+the fix is to use `WeekYearRules.Iso.GetWeekOfWeekYear(date)` etc..
+
 Period
 ====
 
