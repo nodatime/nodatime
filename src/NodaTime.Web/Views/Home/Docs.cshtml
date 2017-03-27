@@ -1,0 +1,12 @@
+﻿@model MarkdownPage
+
+@{ ViewBag.Title = Model.Title; }
+
+<section class="body">
+    <div class="row">
+        <div class="large-9 columns">
+            <h1>@Model.Title</h1>
+            @Model.Content
+        </div>
+    </div>
+</section>
