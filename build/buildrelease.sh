@@ -15,6 +15,7 @@ fi
 declare -r VERSION=$1
 declare -r SUFFIX=$(echo $VERSION | cut -s -d- -f2)
 declare -r BUILD_FLAG=${SUFFIX:+--version-suffix ${SUFFIX}}
+declare -r RESTORE_FLAG=${SUFFIX:+/p:VersionSuffix=${SUFFIX}}
 declare -r OUTPUT=artifacts
 
 rm -rf releasebuild
@@ -22,9 +23,11 @@ git clone https://github.com/nodatime/nodatime.git releasebuild
 cd releasebuild
 git checkout "$VERSION"
 
-dotnet restore src/NodaTime
-dotnet restore src/NodaTime.Testing
-dotnet restore src/NodaTime.Test
+# See https://github.com/nodatime/nodatime/issues/713
+# and https://github.com/NuGet/Home/issues/3953
+dotnet restore $RESTORE_FLAG src/NodaTime
+dotnet restore $RESTORE_FLAG src/NodaTime.Testing
+dotnet restore $RESTORE_FLAG src/NodaTime.Test
 
 dotnet build -c Release $BUILD_FLAG src/NodaTime
 dotnet build -c Release $BUILD_FLAG src/NodaTime.Testing
