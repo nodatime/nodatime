@@ -27,10 +27,10 @@ namespace NodaTime.Web.Models
             pagesById = Categories.SelectMany(c => c.Pages).ToDictionary(p => p.Id);
         }
 
-        public MarkdownPage TryGetPage(string url)
+        public MarkdownPage TryGetPage(string id)
         {
             MarkdownPage ret;
-            pagesById.TryGetValue(url, out ret);
+            pagesById.TryGetValue(id, out ret);
             return ret;
         }
     }

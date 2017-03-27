@@ -5,6 +5,7 @@ using CommonMark;
 using CommonMark.Syntax;
 using Microsoft.AspNetCore.Html;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 

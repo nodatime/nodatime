@@ -1,0 +1,10 @@
+﻿{
+  "name": "root",
+  "categories":
+  [
+    {
+      "title": "All (categories in root bundle are ignored)",
+      "pageIds": [ "versions" ]
+    }
+  ]
+}

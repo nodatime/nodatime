@@ -12,6 +12,7 @@ namespace NodaTime.Web.Controllers
     public class TzValidateController : Controller
     {
         // This will do something soon :)
+        [Route("/tzvalidate/generate")]
         public IActionResult Generate(int startYear = 1, int endYear = 2035)
         {
             var source = TzdbDateTimeZoneSource.Default;
