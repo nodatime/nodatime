@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
-    <ProjectReference Include="..\NodaTime.Serialization.JsonNet\NodaTime.Serialization.JsonNet.csproj" />
     <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj" />
   </ItemGroup>
 
