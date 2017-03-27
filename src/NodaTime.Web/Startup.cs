@@ -72,7 +72,7 @@ namespace NodaTime.Web
                 }
             });
             // Captures "unstable" or a specific version - used several times below.
-            string anyVersion = @"((?:1\.[0-3]\.x)|(?:unstable))";
+            string anyVersion = @"((?:1\.[0-3]\.x)|(?:unstable)|(?:2\.0\.x))";
             var rewriteOptions = new RewriteOptions()
                 // Docfx wants index.html to exist, which is annoying... just redirect.
                 .AddRedirect($@"^index.html$", "/")
@@ -99,6 +99,7 @@ namespace NodaTime.Web
                 routes.MapRoute("1.1.x user guide", "1.1.x/userguide/{*url}", new { controller = "Documentation", bundle = "1.1.x", action = nameof(DocumentationController.ViewDocumentation) });
                 routes.MapRoute("1.2.x user guide", "1.2.x/userguide/{*url}", new { controller = "Documentation", bundle = "1.2.x", action = nameof(DocumentationController.ViewDocumentation) });
                 routes.MapRoute("1.3.x user guide", "1.3.x/userguide/{*url}", new { controller = "Documentation", bundle = "1.3.x", action = nameof(DocumentationController.ViewDocumentation) });
+                routes.MapRoute("2.0.x user guide", "2.0.x/userguide/{*url}", new { controller = "Documentation", bundle = "2.0.x", action = nameof(DocumentationController.ViewDocumentation) });
                 routes.MapRoute("Unstable user guide", "unstable/userguide/{*url}", new { controller = "Documentation", bundle = "unstable", action = nameof(DocumentationController.ViewDocumentation) });
                 routes.MapRoute("default", "{action=Index}/{id?}", new { controller = "Home" });
             });
