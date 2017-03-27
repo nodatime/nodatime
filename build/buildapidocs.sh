@@ -35,7 +35,7 @@ for version in $PREVIOUS_VERSIONS; do
   rm -rf history/$version/api
   mkdir -p tmp/docfx/obj/$version
   cp docfx/docfx-csproj.json history/$version/docfx.json
-  docfx history/$version/docfx.json metadata -f
+  docfx metadata history/$version/docfx.json -f
   cp -r history/$version/api tmp/docfx/obj/$version
   cp docfx/toc.yml tmp/docfx/obj/$version
 done
@@ -44,7 +44,7 @@ echo "Building metadata for current branch"
 # Docfx doesn't support VS2017 csproj files yet. Sigh.
 # Also, we want to include the serialization docs (sometimes? unclear)
 
-git clone https://github.com/nodatime/nodatime.git -q --depth 1 tmp/docfx/serialization
+git clone https://github.com/nodatime/nodatime.serialization.git -q --depth 1 tmp/docfx/serialization
 
 mkdir -p tmp/docfx/build/src
 cp -r ../src/NodaTime{,.Testing} tmp/docfx/build/src
@@ -63,7 +63,7 @@ dotnet restore build/src/NodaTime.Serialization.JsonNet
 cd ../..
 
 sed 's/..\/src/build\/src/g' < docfx/docfx.json > tmp/docfx/docfx.json
-docfx metadata -f tmp/docfx/docfx.json
+docfx tmp/docfx/docfx.json metadata -f 
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
 # TODO: Add extra information (versions etc)
