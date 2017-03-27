@@ -15,7 +15,7 @@ fi
 declare -r VERSION=$1
 declare -r SUFFIX=$(echo $VERSION | cut -s -d- -f2)
 declare -r BUILD_FLAG=${SUFFIX:+--version-suffix ${SUFFIX}}
-declare -r RESTORE_FLAG=${SUFFIX:+/p:VersionSuffix=${SUFFIX}}
+declare -r RESTORE_FLAG=${SUFFIX:+-p:VersionSuffix=${SUFFIX}}
 declare -r OUTPUT=artifacts
 
 rm -rf releasebuild
@@ -25,6 +25,7 @@ git checkout "$VERSION"
 
 # See https://github.com/nodatime/nodatime/issues/713
 # and https://github.com/NuGet/Home/issues/3953
+# ... but note that from bash, /p has to be -p
 dotnet restore $RESTORE_FLAG src/NodaTime
 dotnet restore $RESTORE_FLAG src/NodaTime.Testing
 dotnet restore $RESTORE_FLAG src/NodaTime.Test
