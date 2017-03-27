@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
     <PackageReference Include="SharpCompress" Version="0.14.1" />
-    <PackageReference Include="System.Net.Http" Version="4.1.1" />
   </ItemGroup>
 
 </Project>
