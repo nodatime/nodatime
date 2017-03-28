@@ -1,0 +1,56 @@
+@import "settings";
+
+/* general icons for IE7 */
+[class*="#{$classPrefix}"] {
+  font-family: $fontName;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@include ie-class(settings,"000");
+@include ie-class(heart,"001");
+@include ie-class(star,"002");
+@include ie-class(plus,"003");
+@include ie-class(minus,"004");
+@include ie-class(checkmark,"005");
+@include ie-class(remove,"006");
+@include ie-class(mail,"007");
+@include ie-class(calendar,"008");
+@include ie-class(page,"009");
+@include ie-class(tools,"00a");
+@include ie-class(globe,"00b");
+@include ie-class(home,"00c");
+@include ie-class(quote,"00d");
+@include ie-class(people,"00e");
+@include ie-class(monitor,"00f");
+@include ie-class(laptop,"010");
+@include ie-class(phone,"011");
+@include ie-class(cloud,"012");
+@include ie-class(error,"013");
+@include ie-class(right-arrow,"014");
+@include ie-class(left-arrow,"015");
+@include ie-class(up-arrow,"016");
+@include ie-class(down-arrow,"017");
+@include ie-class(trash,"018");
+@include ie-class(add-doc,"019");
+@include ie-class(edit,"01a");
+@include ie-class(lock,"01b");
+@include ie-class(unlock,"01c");
+@include ie-class(refresh,"01d");
+@include ie-class(paper-clip,"01e");
+@include ie-class(video,"01f");
+@include ie-class(photo,"020");
+@include ie-class(graph,"021");
+@include ie-class(idea,"022");
+@include ie-class(mic,"023");
+@include ie-class(cart,"024");
+@include ie-class(address-book,"025");
+@include ie-class(compass,"026");
+@include ie-class(flag,"027");
+@include ie-class(location,"028");
+@include ie-class(clock,"029");
+@include ie-class(folder,"02a");
+@include ie-class(inbox,"02b");
+@include ie-class(website,"02c");
+@include ie-class(smiley,"02d");
+@include ie-class(search,"02e");

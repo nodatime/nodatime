@@ -1,0 +1,11 @@
+{% if posts|length %}
+  {% for article in articles %}
+  &lt;div&gt;
+  {{ article.title|upper() }}
+
+  {# outputs 'WELCOME' #}
+  &lt;/div&gt;
+  {% endfor %}
+{% endif %}
+
+{% set user = json_encode(user) %}

@@ -1,0 +1,35 @@
+@import "settings";
+
+/* general icons for IE7 */
+[class*="#{$classPrefix}"] {
+  font-family: $fontName;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@include ie-class(wheelchair,"000");
+@include ie-class(speaker,"001");
+@include ie-class(fontsize,"002");
+@include ie-class(eject,"003");
+@include ie-class(view-mode,"004");
+@include ie-class(eyeball,"005");
+@include ie-class(asl,"006");
+@include ie-class(person,"007");
+@include ie-class(question,"008");
+@include ie-class(adult,"009");
+@include ie-class(child,"00a");
+@include ie-class(glasses,"00b");
+@include ie-class(cc,"00c");
+@include ie-class(blind,"00d");
+@include ie-class(braille,"00e");
+@include ie-class(iphone-home,"00f");
+@include ie-class(w3c,"010");
+@include ie-class(css,"011");
+@include ie-class(key,"012");
+@include ie-class(hearing-impaired,"013");
+@include ie-class(male,"014");
+@include ie-class(female,"015");
+@include ie-class(network,"016");
+@include ie-class(guidedog,"017");
+@include ie-class(universal-access,"018");
+@include ie-class(elevator,"019");

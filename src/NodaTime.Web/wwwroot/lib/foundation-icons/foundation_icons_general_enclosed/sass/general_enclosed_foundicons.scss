@@ -1,0 +1,71 @@
+@import "settings";
+
+/* font-face */
+@include face;
+
+/* global foundicon styles */
+[class*="#{$classPrefix}"] {
+  display: inline;
+  width: auto;
+  height: auto;
+  line-height: inherit;
+  vertical-align: baseline;
+  background-image: none;
+  background-position: 0 0;
+  background-repeat: repeat;
+}
+[class*="#{$classPrefix}"]:before {
+  font-family: $fontName;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+}
+
+/* icons */
+@include i-class(settings,"000");
+@include i-class(heart,"001");
+@include i-class(star,"002");
+@include i-class(plus,"003");
+@include i-class(minus,"004");
+@include i-class(checkmark,"005");
+@include i-class(remove,"006");
+@include i-class(mail,"007");
+@include i-class(calendar,"008");
+@include i-class(page,"009");
+@include i-class(tools,"00a");
+@include i-class(globe,"00b");
+@include i-class(home,"00c");
+@include i-class(quote,"00d");
+@include i-class(people,"00e");
+@include i-class(monitor,"00f");
+@include i-class(laptop,"010");
+@include i-class(phone,"011");
+@include i-class(cloud,"012");
+@include i-class(error,"013");
+@include i-class(right-arrow,"014");
+@include i-class(left-arrow,"015");
+@include i-class(up-arrow,"016");
+@include i-class(down-arrow,"017");
+@include i-class(trash,"018");
+@include i-class(add-doc,"019");
+@include i-class(edit,"01a");
+@include i-class(lock,"01b");
+@include i-class(unlock,"01c");
+@include i-class(refresh,"01d");
+@include i-class(paper-clip,"01e");
+@include i-class(video,"01f");
+@include i-class(photo,"020");
+@include i-class(graph,"021");
+@include i-class(idea,"022");
+@include i-class(mic,"023");
+@include i-class(cart,"024");
+@include i-class(address-book,"025");
+@include i-class(compass,"026");
+@include i-class(flag,"027");
+@include i-class(location,"028");
+@include i-class(clock,"029");
+@include i-class(folder,"02a");
+@include i-class(inbox,"02b");
+@include i-class(website,"02c");
+@include i-class(smiley,"02d");
+@include i-class(search,"02e");

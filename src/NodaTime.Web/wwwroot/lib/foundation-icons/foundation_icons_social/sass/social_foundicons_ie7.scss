@@ -1,0 +1,39 @@
+@import "settings";
+
+/* general icons for IE7 */
+[class*="#{$classPrefix}"] {
+  font-family: $fontName;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@include ie-class(thumb-up,"000");
+@include ie-class(thumb-down,"001");
+@include ie-class(rss,"002");
+@include ie-class(facebook,"003");
+@include ie-class(twitter,"004");
+@include ie-class(pinterest,"005");
+@include ie-class(github,"006");
+@include ie-class(path,"007");
+@include ie-class(linkedin,"008");
+@include ie-class(dribbble,"009");
+@include ie-class(stumble-upon,"00a");
+@include ie-class(behance,"00b");
+@include ie-class(reddit,"00c");
+@include ie-class(google-plus,"00d");
+@include ie-class(youtube,"00e");
+@include ie-class(vimeo,"00f");
+@include ie-class(flickr,"010");
+@include ie-class(slideshare,"011");
+@include ie-class(picassa,"012");
+@include ie-class(skype,"013");
+@include ie-class(steam,"014");
+@include ie-class(instagram,"015");
+@include ie-class(foursquare,"016");
+@include ie-class(delicious,"017");
+@include ie-class(chat,"018");
+@include ie-class(torso,"019");
+@include ie-class(tumblr,"01a");
+@include ie-class(video-chat,"01b");
+@include ie-class(digg,"01c");
+@include ie-class(wordpress,"01d");

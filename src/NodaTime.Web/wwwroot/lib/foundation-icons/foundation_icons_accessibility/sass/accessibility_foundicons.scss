@@ -1,0 +1,50 @@
+@import "settings";
+
+/* font-face */
+@include face;
+
+/* global foundicon styles */
+[class*="#{$classPrefix}"] {
+  display: inline;
+  width: auto;
+  height: auto;
+  line-height: inherit;
+  vertical-align: baseline;
+  background-image: none;
+  background-position: 0 0;
+  background-repeat: repeat;
+}
+[class*="#{$classPrefix}"]:before {
+  font-family: $fontName;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+}
+
+/* icons */
+@include i-class(wheelchair,"000");
+@include i-class(speaker,"001");
+@include i-class(fontsize,"002");
+@include i-class(eject,"003");
+@include i-class(view-mode,"004");
+@include i-class(eyeball,"005");
+@include i-class(asl,"006");
+@include i-class(person,"007");
+@include i-class(question,"008");
+@include i-class(adult,"009");
+@include i-class(child,"00a");
+@include i-class(glasses,"00b");
+@include i-class(cc,"00c");
+@include i-class(blind,"00d");
+@include i-class(braille,"00e");
+@include i-class(iphone-home,"00f");
+@include i-class(w3c,"010");
+@include i-class(css,"011");
+@include i-class(key,"012");
+@include i-class(hearing-impaired,"013");
+@include i-class(male,"014");
+@include i-class(female,"015");
+@include i-class(network,"016");
+@include i-class(guidedog,"017");
+@include i-class(universal-access,"018");
+@include i-class(elevator,"019");

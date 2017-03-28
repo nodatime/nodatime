@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <title>Foundation Icons - Accessibility</title>
+  <link rel="stylesheet" href="stylesheets/accessibility_foundicons.css">
+  <style>
+
+    * { margin: 0; padding: 0; }
+    body { background: #ddd; font-family: "HelveticaNeue", "Helvetica Neue", "Helvetica", Arial, sans-serif; }
+
+    .row { width: 100%; max-width: 980px; min-width: 727px; margin: 0 auto; }
+    .row .row { min-width: 0; }
+    .column, .columns { margin-left: 4.4%; float: left; min-height: 1px; position: relative; }
+    .column:first-child, .columns:first-child { margin-left: 0; }
+    .row .three { width: 21.67957%; }
+    .row .four { width: 25%; }
+    .row .twelve { width: 100%; }
+    /* Nicolas Gallagher's micro clearfix */
+    .row:before, .row:after, .clearfix:before, .clearfix:after { content:""; display:table; }
+    .row:after, .clearfix:after { clear: both; }
+    .row, .clearfix { zoom: 1; }
+
+    .container { padding: 40px; margin: 0 auto; width: 980px; background: #fff; }
+    h1 { margin-bottom: 10px; font-size: 40px; }
+    h4 { margin-bottom: 4px; }
+    hr { border: solid 1px; border-color: #bbb transparent transparent transparent; }
+    ul { list-style: none; overflow: hidden; margin-top: 20px; margin-bottom: 30px; }
+    ul li { font-size: 28px; margin-bottom: 16px; vertical-align: center; }
+
+    div.code { border: solid 1px #000; background: #444; border-radius: 3px; box-shadow: 0px 2px 10px rgba(0,0,0,1) inset; }
+    div.code pre { color: #fff; padding: 5px 5px 5px 8px; }
+    .class { color: #4DB9EE; }
+    em { color: #aaa; }
+
+    [class*="foundicon-"]:after { position: relative; top: -8px; left: 10px; color: #888; font-size: 60%; font-style: normal; }
+
+    .foundicon-wheelchair:after         { content: "wheelchair"; }
+    .foundicon-speaker:after            { content: "speaker"; }
+    .foundicon-fontsize:after           { content: "fontsize"; }
+    .foundicon-eject:after              { content: "eject"; }
+    .foundicon-view-mode:after          { content: "view-mode"; }
+    .foundicon-eyeball:after            { content: "eyeball"; }
+    .foundicon-asl:after                { content: "asl"; }
+    .foundicon-person:after             { content: "person"; }
+    .foundicon-question:after           { content: "question"; }
+    .foundicon-adult:after              { content: "adult"; }
+    .foundicon-child:after              { content: "child"; }
+    .foundicon-glasses:after            { content: "glasses"; }
+    .foundicon-cc:after                 { content: "cc"; }
+    .foundicon-blind:after              { content: "blind"; }
+    .foundicon-braille:after            { content: "Braille"; }
+    .foundicon-iphone-home:after        { content: "iphone-home"; }
+    .foundicon-w3c:after                { content: "w3c"; }
+    .foundicon-css:after                { content: "css"; }
+    .foundicon-key:after                { content: "key"; }
+    .foundicon-hearing-impaired:after   { content: "hearing-impaired"; }
+    .foundicon-male:after               { content: "male"; }
+    .foundicon-female:after             { content: "female"; }
+    .foundicon-network:after            { content: "network"; }
+    .foundicon-guidedog:after           { content: "guidedog"; }
+    .foundicon-universal-access:after   { content: "universal-access"; }
+    .foundicon-elevator:after           { content: "elevator"; }
+
+  </style>
+
+  <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/accessibility_foundicons_ie7.css">
+  <![endif]-->
+
+  </style>
+</head>
+<body>
+
+  <!-- Original Implementation -->
+  <div class="container">
+    <div class="row">
+      <div class="twelve columns">
+        <h1>Foundation Icons - Accessibility</h1>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <ul class="four columns">
+        <li><i class="foundicon-wheelchair"></i></li>
+        <li><i class="foundicon-speaker"></i></li>
+        <li><i class="foundicon-fontsize"></i></li>
+        <li><i class="foundicon-eject"></i></li>
+        <li><i class="foundicon-view-mode"></i></li>
+        <li><i class="foundicon-eyeball"></i></li>
+
+        <li><i class="foundicon-asl"></i></li>
+        <li><i class="foundicon-person"></i></li>
+        <li><i class="foundicon-question"></i></li>
+        
+      </ul>
+
+      <ul class="four columns">
+        <li><i class="foundicon-adult"></i></li>
+        <li><i class="foundicon-child"></i></li>
+        <li><i class="foundicon-glasses"></i></li>
+        <li><i class="foundicon-cc"></i></li>
+        <li><i class="foundicon-blind"></i></li>
+        <li><i class="foundicon-braille"></i></li>
+        <li><i class="foundicon-iphone-home"></i></li>
+        <li><i class="foundicon-w3c"></i></li>
+        <li><i class="foundicon-css"></i></li>
+
+        
+        
+        
+      </ul>
+
+      <ul class="four columns">
+        <li><i class="foundicon-key"></i></li>
+        <li><i class="foundicon-hearing-impaired"></i></li>
+        <li><i class="foundicon-male"></i></li>
+        <li><i class="foundicon-female"></i></li>
+        <li><i class="foundicon-network"></i></li>
+        <li><i class="foundicon-guidedog"></i></li>
+        <li><i class="foundicon-universal-access"></i></li>
+        <li><i class="foundicon-elevator"></i></li>
+      </ul>
+
+    </div>
+
+    <div class="row">
+      <div class="twelve columns">
+        <h4>Here's the code:</h4>
+        <div class="code">
+<pre>
+&lt;i class="<span class="class">foundicon-[icon]</span>"&gt;&lt;/i&gt;
+</pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
