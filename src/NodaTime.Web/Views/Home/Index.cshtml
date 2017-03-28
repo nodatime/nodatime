@@ -26,7 +26,7 @@
             <p class="title">Examples (see <a href="http://nodatime.org/userguide">User Guide</a>)</p>
             <div class="highlight">
 <pre><code class="csharp">// Instant represents time from epoch
-Instant now = SystemClock.Instance.Now;
+Instant now = SystemClock.Instance.GetCurrentInstant();
 
 // Convert an instant to a ZonedDateTime
 ZonedDateTime nowInIsoUtc = now.InUtc();
