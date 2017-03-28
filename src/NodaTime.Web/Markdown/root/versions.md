@@ -74,6 +74,14 @@ Other:
 - When an `IDateTimeZoneSource` advertises a zone with an ID corresponding to a fixed-offset
   zone, `DateTimeZoneCache` now consults the source first. This fixes [issue 332].
 
+## 1.3.4, released 2017-03-21 with tzdb 2017b
+
+(No code changes.)
+
+## 1.3.3, released 2017-03-07 with tzdb 2017a
+
+(No code changes.)
+
 ## 1.3.2, released 2016-04-14 with tzdb 2016c
 
 Only one code change, primarily an update to TZDB 2016c.
