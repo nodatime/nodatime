@@ -20,8 +20,12 @@
     <!-- Foundicons -->
     <link rel="stylesheet" href="~/lib/foundation-icons/foundation_icons_general_enclosed/stylesheets/general_enclosed_foundicons.css">
 
-
-    <link rel="stylesheet" href="~/css/main.css">
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/main.css">
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/css/main.min.css">
+    </environment>
 
     <!-- highlight.js -->
     <link rel="stylesheet" href="~/lib/highlight-js/src/styles/vs.css">
@@ -48,7 +52,7 @@
             <div id="responsive-menu">
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
-                        <li class="has-dropdown">
+                        <li>
                             <a href="#">User Guide</a>
                             <ul class="menu vertical">
                                 <li><label>Versions</label></li>
@@ -61,7 +65,7 @@
                                 <li><a href="/unstable/userguide">Unstable</a></li>
                             </ul>
                         </li>
-                        <li class="has-dropdown">
+                        <li>
                             <a href="#">API</a>
                             <ul class="menu vertical">
                                 <li><label>Versions</label></li>
@@ -96,6 +100,7 @@
     </section>
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/what-input/dist/what-input.js"></script>
         <script src="~/lib/foundation-sites/dist/js/foundation.js"></script>
     </environment>
     <environment names="Staging,Production">
@@ -103,10 +108,9 @@
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery">
         </script>
+        <script src="~/lib/what-input/dist/what-input.min.js"></script>
         <script src="~/lib/foundation-sites/dist/js/foundation.min.js"></script>
     </environment>
-
-    <script src="~/lib/zepto/zepto.js"></script>
 
     <footer>
         <div class="row">

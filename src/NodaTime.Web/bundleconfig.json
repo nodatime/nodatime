@@ -2,9 +2,9 @@
 // More info at https://go.microsoft.com/fwlink/?LinkId=808241
 [
   {
-    "outputFileName": "wwwroot/css/site.min.css",
+    "outputFileName": "wwwroot/css/main.min.css",
     "inputFiles": [
-      "wwwroot/css/site.css"
+      "wwwroot/css/main.css"
     ]
   }
 ]
