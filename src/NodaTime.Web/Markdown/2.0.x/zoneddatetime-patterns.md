@@ -23,7 +23,8 @@ the addition of two extra custom format specifiers: `z` and `x`.
 `z` is used to parse or format that time zone identifier. When parsing, an [`IDateTimeZoneProvider`](noda-type://NodaTime.IDateTimeZoneProvider) is used to extract candidate identifiers and fetch time zones for them. The UTC+/-xx:xx format for fixed offset time zones is always valid, regardless of provider. The provider is part of the `ZonedDateTimePattern`, and a new pattern with a different provider can be created using the `WithZoneProvider` method. The provider is not used when formatting: the time zone identifier is simply used directly. Note that if you format a `ZonedDateTime` which uses a time zone from a different provider than the one in the pattern, you may not be able to parse it again with the same pattern. A null provider can be specified, in which case
 the pattern can only be used for formatting. (This is used in the `ToString` override, for example.)
 
-`x` is used *only* for formatting; it includes the abbreviation associated with the time zone at the given time, such as "PST" or "PDT". This is format-only as abbreviations are often ambiguous; they are not a substitute for full time zone identifiers.
+`x` is used *only* for formatting; it includes the abbreviation or name associated with the time zone at the given time, such as "PST" or "PDT". This is format-only as abbreviations are often ambiguous; they are not a substitute for full time zone identifiers.
+Note that time zones from the TZDB provider only have abbreviations; time zones from the BCL provider have the standard/daylight names provided by `TimeZoneInfo`. For example, in the London time zone in summer, this will format as "BST" when using the TZDB-based zone, and "GMT Summer Time" when using the BCL-based zone.
 
 When parsing, if the pattern does not contain the `z` specifier, the time zone from the default value is used. The standard patterns all use a default value with the UTC time zone.
 

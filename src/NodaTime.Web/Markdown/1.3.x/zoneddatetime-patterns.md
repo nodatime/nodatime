@@ -23,6 +23,7 @@ the addition of two extra custom format specifiers: `z` and `x`.
 the pattern can only be used for formatting. (This is used in the `ToString` override, for example.)
 
 `x` is used *only* for formatting; it includes the abbreviation associated with the time zone at the given time, such as "PST" or "PDT". This is format-only as abbreviations are often ambiguous; they are not a substitute for full time zone identifiers.
+Note that time zones from the TZDB provider only have abbreviations; time zones from the BCL provider have the standard/daylight names provided by `TimeZoneInfo`. For example, in the London time zone in summer, this will format as "BST" when using the TZDB-based zone, and "GMT Summer Time" when using the BCL-based zone.
 
 When parsing, if the pattern does not contain the `z` specifier, the time zone from the default value is used. The standard patterns all use a default value with the UTC time zone.
 
