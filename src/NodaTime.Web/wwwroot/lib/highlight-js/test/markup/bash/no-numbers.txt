@@ -1,3 +1,0 @@
-# numbers aren't highlighted in bash as their semantics is
-# not strictly defined for command line parameters
-$ tail -10 access.log

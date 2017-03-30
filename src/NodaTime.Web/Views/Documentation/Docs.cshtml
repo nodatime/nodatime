@@ -9,27 +9,22 @@
             @Model.Content
         </div>
 
-        <div class="large-3 columns">
-            <div class="section-container accordian">
+        <div class="align-right">
+            <ul class="menu vertical align-right">
                 @foreach (var category in Model.Bundle.Categories)
-                {                
-                    <section>
-                    <p class="title" data-section-title>@category.Title</p>
-                    <div class="content" data-section-content>
-                    <ul class="side-nav">
+                {
+                    @* This class doesn't really exist; I've made it up for now... *@
+                    <li class="menu-heading"><p>@category.Title</p></li>
                     @foreach (var page in category.Pages)
                     {
-                        <li><a href="@page.Id">@page.Title</a></li>
+                       <li><a href="@page.Id">@page.Title</a></li>
                     }
-                    </ul>
-                    </div>
-                    </section>
                 }
-                @if (Model.Bundle.Name != "developer")
-                {
-                  <footer>Version @Model.Bundle.Name</footer>
-                }
-            </div>
-        </div>
+            </ul>
+            @if (Model.Bundle.Name != "developer")
+            {
+                <footer>Version @Model.Bundle.Name</footer>
+            }
+         </div>
     </div>
 </section>

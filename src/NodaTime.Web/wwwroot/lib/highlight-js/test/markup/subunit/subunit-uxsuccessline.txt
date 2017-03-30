@@ -1,3 +1,0 @@
-uxsuccess test simplename
-uxsuccess: test simple name
-uxsuccess test simple name

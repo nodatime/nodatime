@@ -1,5 +1,0 @@
-/*
- * Multiline comment
- */
-&sql(SELECT * FROM Cinema.Film WHERE Length > 2)
-&js<for (var i = 0; i < String("test").split("").length); ++i) { console.log(i); }>

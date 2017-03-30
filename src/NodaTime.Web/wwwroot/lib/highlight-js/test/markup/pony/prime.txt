@@ -1,2 +1,0 @@
-new create(name': String) =>
-  name = name' + 'a'

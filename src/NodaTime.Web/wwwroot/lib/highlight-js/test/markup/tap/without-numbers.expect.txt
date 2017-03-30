@@ -1,6 +1,0 @@
-<span class="hljs-meta">1..6</span>
-<span class="hljs-symbol">not ok</span>
-<span class="hljs-symbol">ok</span>
-<span class="hljs-symbol">not ok</span>
-<span class="hljs-symbol">ok</span>
-<span class="hljs-symbol">ok</span>

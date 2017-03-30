@@ -1,3 +1,0 @@
-skip test simplename
-skip: test simple name
-skip test simple name

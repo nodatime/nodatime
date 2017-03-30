@@ -1,4 +1,0 @@
-<span class="hljs-keyword">failure: test</span> simplename1
-<span class="hljs-keyword">failure test</span> simplename1
-<span class="hljs-keyword">failure: test</span> simple name1
-<span class="hljs-keyword">failure test</span> simple name1

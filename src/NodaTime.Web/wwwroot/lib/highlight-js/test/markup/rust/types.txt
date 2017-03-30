@@ -1,4 +1,0 @@
-type A: Trait;
-type A;
-type A = B;
-type R<T> = m::R<T, ConcreteError>

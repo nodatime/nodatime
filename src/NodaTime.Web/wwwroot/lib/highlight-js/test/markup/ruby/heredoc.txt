@@ -1,8 +1,0 @@
-def foo()
-  msg = <<-HTML
-  <div>
-    <h4>#{bar}</h4>
-  </div>
-  HTML
-
-def baz()

@@ -1,1 +1,0 @@
-x.get(<span class="hljs-number">0</span>);

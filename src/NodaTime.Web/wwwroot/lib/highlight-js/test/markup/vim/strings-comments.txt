@@ -1,4 +1,0 @@
-" comment
-let one = "string" " comment
-let two = "crazy
-\ string with a \" quote"

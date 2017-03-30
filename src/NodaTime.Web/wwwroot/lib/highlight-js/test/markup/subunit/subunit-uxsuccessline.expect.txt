@@ -1,3 +1,0 @@
-<span class="hljs-keyword">uxsuccess test</span> simplename
-<span class="hljs-keyword">uxsuccess: test</span> simple name
-<span class="hljs-keyword">uxsuccess test</span> simple name

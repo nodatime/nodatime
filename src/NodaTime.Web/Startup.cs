@@ -86,7 +86,7 @@ namespace NodaTime.Web
                 .AddRedirect($@"^{anyVersion}/userguide$", "$1/userguide/")
                 .AddRedirect($@"^developer$", "developer/")
                 // Make /api and /userguide links to the latest stable release.
-                .AddRedirect("^(api|userguide)((?:/.*))$", "1.3.x/$1$2");
+                .AddRedirect("^(api|userguide)((?:/.*))$", "2.0.x/$1$2");
             app.UseRewriter(rewriteOptions);
 
             // At some stage we may want an MVC view for the home page, but at the moment

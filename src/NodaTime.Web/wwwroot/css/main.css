@@ -6,12 +6,15 @@
 html {
   font-family: "Calluna Sans Regular", 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-/* Override the font defined in foundation.css to pick up the above. */
+/* Override the font defined in foundation.css to pick up the above,
+ * and the arbitrary line height change between Foundation 4 and Foundation 6...
+*/
 body, h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
   font-family: inherit
 }
 
-nav.top-bar .top-bar-section ul.dropdown li.hover a {
+div.top-bar ul.submenu a:hover {
   background: black;
 }
 
@@ -40,12 +43,35 @@ section.body {
   min-height: 300px;
 }
 
-.top-bar-section ul li a.active {
+.top-bar-right ul li a.active {
   color: #B17250;
 }
 
+.top-bar ul li > a {
+  background: #111;
+  color: white;
+}
+
+.top-bar ul li a.button {
+  background: #2ba6cb;
+  color: white;
+}
+
+.top-bar li a {
+  line-height: 45px;
+}
+
 .top-bar {
-  margin-bottom: 0px;
+  margin-bottom: 0;
+  background: #111;
+  padding: 0;
+}
+
+.menu > li > a {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .section {

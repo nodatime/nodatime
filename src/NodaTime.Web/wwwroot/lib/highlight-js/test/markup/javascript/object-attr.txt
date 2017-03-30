@@ -1,6 +1,0 @@
-{
-  key: value,
-  key2: value,
-  'key-3': value,
-  key4: false ? undefined : true
-}

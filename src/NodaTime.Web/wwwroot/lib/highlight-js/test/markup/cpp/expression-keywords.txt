@@ -1,2 +1,0 @@
-double x = exp(log(2)); // recognize built-ins
-return 0;  // recognize keyword that started the expression
