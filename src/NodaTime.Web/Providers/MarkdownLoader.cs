@@ -66,6 +66,19 @@ namespace NodaTime.Web.Providers
             {
                 category.Pages = category.PageIds.Select(id => LoadPage(directory, id, bundle)).ToList();
             }
+            foreach (var resource in bundle.Resources ?? Enumerable.Empty<string>())
+            {
+                using (var stream = fileProvider.GetFileInfo($"{directory}/{resource}").CreateReadStream())
+                {
+                    var memoryStream = new MemoryStream();
+                    stream.CopyTo(memoryStream);
+                    if (!resource.EndsWith(".png"))
+                    {
+                        throw new InvalidOperationException("We only know how to deal with .png at the moment!");
+                    }
+                    bundle.AddResource(resource, new MarkdownResource(resource, memoryStream.ToArray(), "image/png"));
+                }
+            }
             bundle.BuildIndex();
             bundles.Add(bundle.Name, bundle);
         }

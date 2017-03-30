@@ -23,11 +23,16 @@ namespace NodaTime.Web.Controllers
             }
 
             var page = loader.TryGetBundle(bundle)?.TryGetPage(url);
-            if (page == null)
+            if (page != null)
             {
-                return NotFound();
+                return View("Docs", page);
             }
-            return View("Docs", page);
+            var resource = loader.TryGetBundle(bundle)?.TryGetResource(url);
+            if (resource != null)
+            {
+                return File(resource.GetContent(), resource.ContentType);
+            }
+            return NotFound();
         }
     }
 }
