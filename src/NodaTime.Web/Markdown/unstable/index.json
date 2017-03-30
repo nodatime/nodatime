@@ -21,5 +21,6 @@
       "title": "Library",
       "pageIds": [ "testing", "tzdb", "mono", "limitations", "roadmap" ]
     }
-  ]
+  ],
+  "resources": [ "conversions.png" ]
 }
