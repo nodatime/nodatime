@@ -4,11 +4,31 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
-## 2.0 (current default branch)
+## 2.1 (current master branch)
+
+## 2.0, release 2017-03-31 with tzdb 2017b
+
+Major release: do *not* expect to be able to upgrade from 1.x without making adjustments to your code; please
+read the list of breaking changes and see the [Noda Time 1.x to 2.0 migration guide](/unstable/userguide/migration-to-2)
+for full details.
+
+New features include:
+
+- Nanosecond precision
+- .NET Core support: 2.0 targets `netstandard1.3` and `net45` TFMs
+- Improved performance on many `LocalDate`-related operations due to new internal representation
+- Time zone reimplementation
+- Many extension methods, including on BCL types, in the `NodaTime.Extensions` namespace
+- Date and time adjusters, e.g. `var monthEnd = date.With(DateAdjusters.EndOfMonth)`
+- Extension methods for testing (to allow things like `19.June(1976)`) in the `NodaTime.Testing.Extensions` namespace
+- `AnnualDate` to represent events like birthdays and anniversaries
+- `DateInterval` - a `LocalDate`-based interval type
+- `ZonedClock` - a wrapper around `IClock` with a time zone, making it easier to get the current day/time in a time zone repeatedly
+- `WeekYearRules` - a calendar-neutral way of extracting week-year information
+- Simpler calendar access using properties in `CalendarSystem`
+- Embedded date/time patterns in LocalDateTime, `ZonedDateTime` and `OffsetDateTime` patterns
 
 Breaking changes:
-
-See the [Noda Time 1.x to 2.0 migration guide](/unstable/userguide/migration-to-2) for full details.
 
 - When passing an `IFormatProvider`, only `CultureInfo` and `DateTimeFormatInfo` values can be used;
   any other non-null reference will now throw an exception. When a `DateTimeFormatInfo` is provided,
