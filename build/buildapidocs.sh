@@ -2,7 +2,9 @@
 
 set -e
 
-
+# This is currently ugly as the 1.x versions build in different ways to
+# 2.0.x and master. Once docfx understands csproj files, we should be able
+# to simplify this.
 declare -r PREVIOUS_VERSIONS="1.0.x 1.1.x 1.2.x 1.3.x 2.0.x"
 echo "Fetching previous versions from source control if necessary"
 
@@ -18,12 +20,21 @@ then
 
   # 2.0...
   echo "Cloning 2.0"
-  git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b $version history/2.0.x
+  git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.0.x history/2.0.x
   echo "Cloning serialization"
   git clone https://github.com/nodatime/nodatime.serialization.git -q --depth 1 history/serialization
-  git -C history/serialization checkout 2.0.0-rc1
-  cp -r history/serialization/src/NodaTime.Serialization.JsonNet history/2.0.x
-  
+  git -C history/serialization checkout NodaTime.Serialization.JsonNet-2.0.0
+  cp -r history/serialization/src/NodaTime.Serialization.JsonNet history/2.0.x/src
+  echo "Preparing for docfx of 2.0"
+  cp docfx/global.json history/2.0.x
+  cp docfx/NodaTime.json history/2.0.x/src/NodaTime/project.json
+  cp docfx/NodaTime.Serialization.JsonNet.json history/2.0.x/src/NodaTime.Serialization.JsonNet/project.json
+  cp docfx/NodaTime.Testing.json history/2.0.x/src/NodaTime.Testing/project.json
+  cd history/2.0.x
+  dotnet restore src/NodaTime
+  dotnet restore src/NodaTime.Testing
+  dotnet restore src/NodaTime.Serialization.JsonNet
+  cd ../..  
 else
   echo Directory for previous versions already exists.
   echo Checking we have all the versions we need...
@@ -42,7 +53,7 @@ fi
 rm -rf tmp/docfx
 mkdir -p tmp/docfx
 
-for version in $PREVIOUS_VERSIONS; do
+for version in 1.0.x 1.1.x 1.2.x 1.3.x; do
   echo "Building metadata for $version"
   rm -rf history/$version/api
   mkdir -p tmp/docfx/obj/$version
@@ -51,6 +62,14 @@ for version in $PREVIOUS_VERSIONS; do
   cp -r history/$version/api tmp/docfx/obj/$version
   cp docfx/toc.yml tmp/docfx/obj/$version
 done
+
+echo "Building metadata for 2.0.x"
+rm -rf history/2.0.x/api
+mkdir -p tmp/docfx/obj/2.0.x
+sed 's/..\/src/src/g' < docfx/docfx.json | sed 's/obj\/unstable\///g' > history/2.0.x/docfx.json
+docfx metadata history/2.0.x/docfx.json -f
+cp -r history/2.0.x/api tmp/docfx/obj/2.0.x
+cp docfx/toc.yml tmp/docfx/obj/2.0.x
 
 echo "Building metadata for current branch"
 # Docfx doesn't support VS2017 csproj files yet. Sigh.
