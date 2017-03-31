@@ -97,6 +97,16 @@ sed 's/..\/src/build\/src/g' < docfx/docfx.json > tmp/docfx/docfx.json
 docfx metadata tmp/docfx/docfx.json -f 
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
+# Create diffs between versions
+dotnet restore DocfxYamlLoader
+dotnet restore ReleaseDiffGenerator
+
+dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.0.x tmp/docfx/obj/1.1.x
+dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.1.x tmp/docfx/obj/1.2.x
+dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.2.x tmp/docfx/obj/1.3.x
+dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.3.x tmp/docfx/obj/2.0.x
+dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/2.0.x tmp/docfx/obj/unstable
+
 # TODO: Add extra information (versions etc)
 
 echo "Running main docfx build"

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentAnnotations", "DocumentAnnotations\DocumentAnnotations.csproj", "{7B88CCA2-E26B-4ECD-8CA4-C0DDB082E9F5}"
 EndProject
@@ -12,6 +12,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SummarizeBenchmarks", "SummarizeBenchmarks\SummarizeBenchmarks.csproj", "{884C7548-8D0F-4F91-87D0-E4BDB90EBD9F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashStorageFiles", "HashStorageFiles\HashStorageFiles.csproj", "{0BAA7098-DFEE-4021-95D8-258F9BA1F016}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocfxYamlLoader", "DocfxYamlLoader\DocfxYamlLoader.csproj", "{093336D7-DC55-421F-B6BE-9B22E9A47FF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReleaseDiffGenerator", "ReleaseDiffGenerator\ReleaseDiffGenerator.csproj", "{1DD531D8-1C0D-4C0C-B916-17CAC2D7EA14}"
+	ProjectSection(ProjectDependencies) = postProject
+		{093336D7-DC55-421F-B6BE-9B22E9A47FF5} = {093336D7-DC55-421F-B6BE-9B22E9A47FF5}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +46,14 @@ Global
 		{0BAA7098-DFEE-4021-95D8-258F9BA1F016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BAA7098-DFEE-4021-95D8-258F9BA1F016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BAA7098-DFEE-4021-95D8-258F9BA1F016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{093336D7-DC55-421F-B6BE-9B22E9A47FF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{093336D7-DC55-421F-B6BE-9B22E9A47FF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{093336D7-DC55-421F-B6BE-9B22E9A47FF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{093336D7-DC55-421F-B6BE-9B22E9A47FF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DD531D8-1C0D-4C0C-B916-17CAC2D7EA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DD531D8-1C0D-4C0C-B916-17CAC2D7EA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DD531D8-1C0D-4C0C-B916-17CAC2D7EA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DD531D8-1C0D-4C0C-B916-17CAC2D7EA14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
