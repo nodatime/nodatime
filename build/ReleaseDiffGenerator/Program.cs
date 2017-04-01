@@ -86,7 +86,10 @@ namespace ReleaseDiffGenerator
                 foreach (var group in membersByType)
                 {
                     writer.WriteLine();
-                    writer.WriteLine($"### {newOrRemoved} members in `{group.Key.DisplayName}`");
+                    var type = group.Key;
+                    string typeMd = added ? $"[`{type.DisplayName}`](xref:{WebUtility.UrlEncode(type.Uid)})"
+                        : $"`{type.DisplayName}`";
+                    writer.WriteLine($"### {newOrRemoved} members in {typeMd}");
                     writer.WriteLine();
                     foreach (var member in group)
                     {
