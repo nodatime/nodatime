@@ -3,6 +3,7 @@ using System.IO;
 using DocfxYamlLoader;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace ReleaseDiffGenerator
 {
@@ -52,7 +53,7 @@ namespace ReleaseDiffGenerator
                 writer.WriteLine();
                 foreach (var member in addedMembers)
                 {
-                    writer.WriteLine($"- [{member.Uid}](xref:{member.Uid}) ({member.Type})");
+                    writer.WriteLine($"- [{member.Uid}](xref:{WebUtility.UrlEncode(member.Uid)}) ({member.Type})");
                 }
                 writer.WriteLine();
 
