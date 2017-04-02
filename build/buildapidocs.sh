@@ -93,19 +93,20 @@ dotnet restore build/src/NodaTime.Testing
 dotnet restore build/src/NodaTime.Serialization.JsonNet
 cd ../..
 
+cp -r docfx/template tmp/docfx
 sed 's/..\/src/build\/src/g' < docfx/docfx.json > tmp/docfx/docfx.json
 docfx metadata tmp/docfx/docfx.json -f 
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
-# Create diffs between versions
-dotnet restore DocfxYamlLoader
-dotnet restore ReleaseDiffGenerator
+# Create diffs between versions and other annotations
 
+dotnet restore Tools.sln
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.0.x tmp/docfx/obj/1.1.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.1.x tmp/docfx/obj/1.2.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.2.x tmp/docfx/obj/1.3.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.3.x tmp/docfx/obj/2.0.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/2.0.x tmp/docfx/obj/unstable
+dotnet run -p DocfxAnnotationGenerator/DocfxAnnotationGenerator.csproj -- tmp/docfx 1.0.x 1.1.x 1.2.x 1.3.x 2.0.x unstable
 
 # TODO: Add extra information (versions etc)
 
