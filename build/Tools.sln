@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReleaseDiffGenerator", "Rel
 		{093336D7-DC55-421F-B6BE-9B22E9A47FF5} = {093336D7-DC55-421F-B6BE-9B22E9A47FF5}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocfxAnnotationGenerator", "DocfxAnnotationGenerator\DocfxAnnotationGenerator.csproj", "{201C875B-DB02-41FC-A7D2-C0C93E14EB3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{1DD531D8-1C0D-4C0C-B916-17CAC2D7EA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DD531D8-1C0D-4C0C-B916-17CAC2D7EA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DD531D8-1C0D-4C0C-B916-17CAC2D7EA14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{201C875B-DB02-41FC-A7D2-C0C93E14EB3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{201C875B-DB02-41FC-A7D2-C0C93E14EB3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{201C875B-DB02-41FC-A7D2-C0C93E14EB3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{201C875B-DB02-41FC-A7D2-C0C93E14EB3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
