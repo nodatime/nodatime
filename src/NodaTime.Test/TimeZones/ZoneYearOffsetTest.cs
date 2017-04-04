@@ -166,7 +166,9 @@ namespace NodaTime.Test.TimeZones
         public void GetOccurrenceForYear_ExactlyFeb29th_NotLeapYear()
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, 0, false, LocalTime.Midnight);
-            Assert.Throws<InvalidOperationException>(() => offset.GetOccurrenceForYear(2013));
+            var actual = offset.GetOccurrenceForYear(2013);
+            var expected = new LocalDateTime(2013, 2, 28, 0, 0).ToLocalInstant(); // For "exact", go to Feb 28th
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -182,7 +184,9 @@ namespace NodaTime.Test.TimeZones
         public void GetOccurrenceForYear_AtLeastFeb29th_NotLeapYear()
         {
             ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.Utc, 2, 29, (int) IsoDayOfWeek.Sunday, true, LocalTime.Midnight);
-            Assert.Throws<InvalidOperationException>(() => offset.GetOccurrenceForYear(2013));
+            var actual = offset.GetOccurrenceForYear(2013);
+            var expected = new LocalDateTime(2013, 3, 3, 0, 0).ToLocalInstant(); // March 3rd is the first Sunday after the non-existent 2013-02-29
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
