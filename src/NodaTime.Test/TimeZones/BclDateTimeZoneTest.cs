@@ -142,6 +142,55 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(Offset.Zero, nodaZone.GetUtcOffset(Instant.FromUtc(-100, 10, 1, 0, 0)));
         }
 
+        [Test]
+        public void AwkwardLeapYears()
+        {
+            // This mimics the data on Mono on Linux for Europe/Malta, where there's a BCL adjustment rule for
+            // each rule for quite a long time. One of those years is 1948, and the daylight transition is Feburary
+            // 29th. That then fails when we try to build a ZoneInterval at the end of that year.
+            // See https://github.com/nodatime/nodatime/issues/743 for more details. We've simplified this to just
+            // a single rule here...
+
+            // Amusingly, trying to reproduce the test on Mono with a custom time zone causes Mono to throw -
+            // quite possibly due to the same root cause that we're testing we've fixed in Noda Time.
+            // See https://bugzilla.xamarin.com/attachment.cgi?id=21192&action=edit
+            if (TestHelper.IsRunningOnMono)
+            {
+                Assert.Ignore("Test skipped on Mono");
+            }
+
+            var rules = new[]
+            {
+                TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(
+                    dateStart: new DateTime(1948, 1, 1),
+                    dateEnd: new DateTime(1949, 1, 1).AddDays(-1),
+                    daylightDelta: TimeSpan.FromHours(1),
+                    daylightTransitionStart: TimeZoneInfo.TransitionTime.CreateFixedDateRule(timeOfDay: new DateTime(1, 1, 1, 2, 0, 0), month: 2, day: 29),
+                    daylightTransitionEnd: TimeZoneInfo.TransitionTime.CreateFixedDateRule(timeOfDay: new DateTime(1, 1, 1, 3, 0, 0), month: 10, day: 3))
+            };
+
+            var bclZone = TimeZoneInfo.CreateCustomTimeZone("Europe/Malta", TimeSpan.Zero, "Malta", "Standard", "Daylight", rules);
+            var nodaZone = BclDateTimeZone.FromTimeZoneInfo(bclZone);
+
+            var expectedTransition1 = Instant.FromUtc(1948, 2, 29, 2, 0, 0);
+            var expectedTransition2 = Instant.FromUtc(1948, 10, 3, 2, 0, 0); // 3am local time
+
+            var zoneIntervalBefore = nodaZone.GetZoneInterval(Instant.FromUtc(1947, 1, 1, 0, 0));
+            Assert.AreEqual(
+                new ZoneInterval("Standard", Instant.BeforeMinValue, expectedTransition1, Offset.Zero, Offset.Zero),
+                zoneIntervalBefore);
+
+            var daylightZoneInterval = nodaZone.GetZoneInterval(Instant.FromUtc(1948, 6, 1, 0, 0));
+            Assert.AreEqual(
+                new ZoneInterval("Daylight", expectedTransition1, expectedTransition2, Offset.FromHours(1), Offset.FromHours(1)),
+                daylightZoneInterval);
+
+            var zoneIntervalAfter = nodaZone.GetZoneInterval(Instant.FromUtc(1949, 1, 1, 0, 0));
+            Assert.AreEqual(
+                new ZoneInterval("Standard", expectedTransition2, Instant.AfterMaxValue, Offset.Zero, Offset.Zero),
+                zoneIntervalAfter);
+        }
+
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
             // The BCL is basically broken (up to and including .NET 4.5.1 at least) around its interpretation
