@@ -193,8 +193,44 @@ namespace NodaTime.TimeZones
                 {
                     var daylightRecurrence = new ZoneRecurrence(zone.DaylightName, Savings, ConvertTransition(rule.DaylightTransitionStart), int.MinValue, int.MaxValue);
                     var standardRecurrence = new ZoneRecurrence(zone.StandardName, Offset.Zero, ConvertTransition(rule.DaylightTransitionEnd), int.MinValue, int.MaxValue);
-                    var recurringMap = new StandardDaylightAlternatingMap(StandardOffset, standardRecurrence, daylightRecurrence);
+                    IZoneIntervalMap recurringMap = new StandardDaylightAlternatingMap(StandardOffset, standardRecurrence, daylightRecurrence);
+                    // Fake 1 hour savings if the adjustment rule claims to be 0 savings. See DaylightFakingZoneIntervalMap documentation below for more details.
+                    if (Savings == Offset.Zero)
+                    {
+                        recurringMap = new DaylightFakingZoneIntervalMap(recurringMap, zone.DaylightName);
+                    }
                     PartialMap = new PartialZoneIntervalMap(Start, End, recurringMap);
+                }
+            }
+
+            /// <summary>
+            /// An implementation of IZoneIntervalMap that delegates to an original map, except for where the result of a
+            /// ZoneInterval lookup has the given daylight name. In that case, a new ZoneInterval is built with the same
+            /// wall offset (and start/end instants etc), but with a savings of 1 hour. This is only used to work around TimeZoneInfo
+            /// adjustment rules with a daylight saving of 0 which are really trying to fake a more comprehensive solution.
+            /// (This is currently only seen on Mono on Linux...)
+            /// This addresses https://github.com/nodatime/nodatime/issues/746.
+            /// If TimeZoneInfo had sufficient flexibility to use different names for different periods of time, we'd have
+            /// another problem, as some "daylight names" don't always mean daylight - e.g. "BST" = British Summer Time and British Standard Time.
+            /// In this case, the limited nature of TimeZoneInfo works in our favour.
+            /// </summary>
+            private sealed class DaylightFakingZoneIntervalMap : IZoneIntervalMap
+            {
+                private readonly IZoneIntervalMap originalMap;
+                private readonly string daylightName;
+
+                internal DaylightFakingZoneIntervalMap(IZoneIntervalMap originalMap, string daylightName)
+                {
+                    this.originalMap = originalMap;
+                    this.daylightName = daylightName;
+                }
+
+                public ZoneInterval GetZoneInterval(Instant instant)
+                {
+                    var interval = originalMap.GetZoneInterval(instant);
+                    return interval.Name == daylightName
+                        ? new ZoneInterval(daylightName, interval.RawStart, interval.RawEnd, interval.WallOffset, Offset.FromHours(1))
+                        : interval;
                 }
             }
 
