@@ -223,15 +223,7 @@ namespace NodaTime.Test.Text
             // Formatting a DateTime with an always-invariant pattern (round-trip, sortable) converts to the ISO
             // calendar in .NET (which is reasonable, as there's no associated calendar).
             // We should use the Gregorian calendar for those tests.
-            // However, on Mono (at least some versions) the round-trip format (o and O) is broken - it uses
-            // the calendar of the culture instead of the ISO-8601 calendar. So for those cultures,
-            // we'll skip round-trip format tests.
-            // See https://bugzilla.xamarin.com/show_bug.cgi?id=11364
             bool alwaysInvariantPattern = "Oos".Contains(patternText);
-            if (alwaysInvariantPattern && TestHelper.IsRunningOnMono && !(culture.Calendar.GetType().Name == "GregorianCalendar"))
-            {
-                return;
-            }
             Calendar calendar = alwaysInvariantPattern ? CultureInfo.InvariantCulture.Calendar : culture.Calendar;
 
             var calendarSystem = BclCalendars.CalendarSystemForCalendar(calendar);
