@@ -8,6 +8,7 @@
 *.user
 *.sln.cache
 .vs
+.vscode
 
 # IDE add-ins
 *.dotCover
