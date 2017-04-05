@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using NUnit.Framework;
 using NodaTime.TimeZones;
 
@@ -14,19 +15,36 @@ namespace NodaTime.Test.TimeZones
 {
     public class BclDateTimeZoneTest
     {
-        // This test is effectively disabled on Mono as its time zone support is broken in the current
-        // stable release - see https://github.com/nodatime/nodatime/issues/97
-        private static readonly ReadOnlyCollection<TimeZoneInfo> BclZonesOrJustNullOnMono = TestHelper.IsRunningOnMono
-            ? new List<TimeZoneInfo> { null }.AsReadOnly() : TimeZoneInfo.GetSystemTimeZones();
+        private static readonly ReadOnlyCollection<TimeZoneInfo> BclZones =
+            TestHelper.IsRunningOnMono ? GetSafeSystemTimeZones() : TimeZoneInfo.GetSystemTimeZones();
+
+        private static ReadOnlyCollection<TimeZoneInfo> GetSafeSystemTimeZones() =>
+             TimeZoneInfo.GetSystemTimeZones()
+                // Filter time zones that have a rule involving Feb 29th, to avoid https://bugzilla.xamarin.com/show_bug.cgi?id=54468
+                .Where(ZoneRulesDontReferToLeapDays)
+                // Recreate all time zones from their rules, to avoid https://bugzilla.xamarin.com/show_bug.cgi?id=54480
+                // Arguably this is invalid, but it means we're testing that Noda Time can do as well as it can feasibly
+                // do based on the rules.
+                .Select(RecreateZone)
+                .ToList()
+                .AsReadOnly();
+
+        private static bool ZoneRulesDontReferToLeapDays(TimeZoneInfo zone) =>
+            !zone.GetAdjustmentRules().Any(rule => TransitionRefersToLeapDay(rule.DaylightTransitionStart) ||
+                                                   TransitionRefersToLeapDay(rule.DaylightTransitionEnd));
+
+        private static bool TransitionRefersToLeapDay(TimeZoneInfo.TransitionTime transition) =>
+            transition.IsFixedDateRule && transition.Month == 2 && transition.Day == 29;
+
+        private static TimeZoneInfo RecreateZone(TimeZoneInfo zone) =>
+            TimeZoneInfo.CreateCustomTimeZone(zone.Id, zone.BaseUtcOffset, zone.DisplayName, zone.StandardName,
+                zone.DisplayName, zone.GetAdjustmentRules());
 
         [Test]
-        [TestCaseSource(nameof(BclZonesOrJustNullOnMono))]
+        [TestCaseSource(nameof(BclZones))]
+        [Category("BrokenOnMonoLinux")]
         public void AllZoneTransitions(TimeZoneInfo windowsZone)
         {
-            if (windowsZone == null)
-            {
-                Assert.Ignore("Test skipped on Mono");
-            }
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
 
             Instant instant = Instant.FromUtc(1800, 1, 1, 0, 0);
@@ -49,13 +67,10 @@ namespace NodaTime.Test.TimeZones
         /// slow test, mostly because TimeZoneInfo is slow.
         /// </summary>
         [Test]
-        [TestCaseSource(nameof(BclZonesOrJustNullOnMono))]
+        [TestCaseSource(nameof(BclZones))]
+        [Category("BrokenOnMonoLinux")]
         public void AllZonesEveryWeek(TimeZoneInfo windowsZone)
         {
-            if (windowsZone == null)
-            {
-                Assert.Ignore("Test skipped on Mono");
-            }
             ValidateZoneEveryWeek(windowsZone);
         }
 
@@ -76,13 +91,9 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        [TestCaseSource(nameof(BclZonesOrJustNullOnMono))]
+        [TestCaseSource(nameof(BclZones))]
         public void AllZonesStartAndEndOfTime(TimeZoneInfo windowsZone)
         {
-            if (windowsZone == null)
-            {
-                Assert.Ignore("Test skipped on Mono");
-            }
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
             var firstInterval = nodaZone.GetZoneInterval(Instant.MinValue);
             Assert.IsFalse(firstInterval.HasStart);
