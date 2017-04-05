@@ -9,6 +9,17 @@ using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
+    // Reader notes, 2017-04-05:
+    // - It's not clear that this really needs to be standard/daylight - it could just be two arbitrary recurrences
+    //   with the same standard offset. Knowing which one is standard avoids one memory access (for the offset) in
+    //   many occurrences, but we could potentially optimize this in other ways anyway.
+    //
+    // - The comment around America/Resolute was added on July 20th 2011. The TZDB release at the time was 2011h.
+    //   From https://github.com/eggert/tz/blob/338ff27740c38fcef26920c9dbd776c09768eb3b/northamerica
+    //     Rule    Resolute 2006	max	-	Nov	Sun>=1	2:00	0	ES
+    //     Rule    Resolute 2007	max	-	Mar Sun>=8	2:00	0	CD
+    //   We probably still want to be able to consume 2011h later, so let's not remove that functionality.
+
     /// <summary>
     /// Provides a zone interval map representing an infinite sequence of standard/daylight
     /// transitions from a pair of rules.
@@ -133,7 +144,7 @@ namespace NodaTime.TimeZones
                 }
                 else
                 {
-                    // The previous transition is from standard to DST. Therefore the next one is from DST to standard.
+                    // The previous transition is from DST to standard. Therefore the next one is from standard to DST.
                     recurrence = standardRecurrence;
                     return dstTransition;
                 }
