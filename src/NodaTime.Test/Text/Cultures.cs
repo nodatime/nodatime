@@ -95,11 +95,6 @@ namespace NodaTime.Test.Text
             .Where(culture => !MonthNamesCompareEqual(culture))
             .Select(CultureInfo.ReadOnly)
             .ToList();
-        // Some tests don't run nicely on Mono, e.g. as they have characters we don't expect in their long/short patterns.
-        // Pretend we have no real cultures, for the sake of these tests. Having no entries in this test source causes
-        // some test runners to panic though, so we have a single null value, which should cause tests to just pass. Sigh.
-        // TODO: Make the tests pass instead?
-        internal static readonly IEnumerable<CultureInfo> AllCulturesOrOneNullOnMono = TestHelper.IsRunningOnMono ? new CultureInfo[1] : Cultures.AllCultures;
 
         internal static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
         // Specify en-US patterns explicitly, as .NET Core on Linux gives a different answer. We

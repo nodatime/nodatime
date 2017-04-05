@@ -311,9 +311,8 @@ namespace NodaTime.Test.Text
             return CultureInfo.ReadOnly(clone);
         }
 
-        // Fails on Mono: https://github.com/nodatime/nodatime/issues/98
         [Test]
-        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCulturesOrOneNullOnMono))]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclLongTimePatternIsValidNodaPattern(CultureInfo culture)
         {
             if (culture == null)
