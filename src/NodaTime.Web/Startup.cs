@@ -39,8 +39,10 @@ namespace NodaTime.Web
             // Eagerly fetch the GoogleCredential so that we're not using Task.Result in
             // request processing.
             services.AddSingleton(GoogleCredentialProvider.FetchCredential(Configuration));
-            services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
-            services.AddSingleton<ITzdbRepository, GoogleStorageTzdbRepository>();
+            //services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
+            //services.AddSingleton<ITzdbRepository, GoogleStorageTzdbRepository>();
+            services.AddSingleton<IReleaseRepository, FakeReleaseRepository>();
+            services.AddSingleton<ITzdbRepository, FakeTzdbRepository>();
             services.AddSingleton<MarkdownLoader>();
         }
 
@@ -60,8 +62,16 @@ namespace NodaTime.Web
             }
 
             app.UseDefaultFiles();
-            // Default content, e.g. CSS
-            app.UseStaticFiles();
+            // Default content, e.g. CSS.
+            // Even though we don't normally host the nzd files locally, it's useful to be able
+            // to in case of emergency.
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = new FileExtensionContentTypeProvider
+                {
+                    Mappings = { [".nzd"] = "application/octet-stream" }
+                }
+            });
             // API documentation
             app.UseStaticFiles(new StaticFileOptions
             {
