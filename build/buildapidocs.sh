@@ -18,6 +18,25 @@ then
     git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b $version history/$version
   done
 
+  # NodaTime
+  wget --quiet -Ohistory/NodaTime-1.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.0.0
+  wget --quiet -Ohistory/NodaTime-1.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.1.0
+  wget --quiet -Ohistory/NodaTime-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.2.0
+  wget --quiet -Ohistory/NodaTime-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.3.2
+  wget --quiet -Ohistory/NodaTime-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/2.0.0
+
+  # NodaTime.Testing
+  wget --quiet -Ohistory/NodaTime.Testing-1.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.0.0
+  wget --quiet -Ohistory/NodaTime.Testing-1.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.1.0
+  wget --quiet -Ohistory/NodaTime.Testing-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.2.0
+  wget --quiet -Ohistory/NodaTime.Testing-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.3.2
+  wget --quiet -Ohistory/NodaTime.Testing-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/2.0.0
+
+  # NodaTime.Serialization.JsonNet
+  wget --quiet -Ohistory/NodaTime.Serialization.JsonNet-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.2.0
+  wget --quiet -Ohistory/NodaTime.Serialization.JsonNet-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.3.2
+  wget --quiet -Ohistory/NodaTime.Serialization.JsonNet-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/2.0.0
+
   # 2.0...
   echo "Cloning 2.0"
   git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.0.x history/2.0.x
@@ -57,7 +76,7 @@ for version in 1.0.x 1.1.x 1.2.x 1.3.x; do
   echo "Building metadata for $version"
   rm -rf history/$version/api
   mkdir -p tmp/docfx/obj/$version
-  cp docfx/docfx-csproj.json history/$version/docfx.json
+  cp docfx/docfx-$version.json history/$version/docfx.json
   docfx metadata history/$version/docfx.json -f
   cp -r history/$version/api tmp/docfx/obj/$version
   cp docfx/toc.yml tmp/docfx/obj/$version
@@ -82,11 +101,22 @@ cp -r ../src/NodaTime{,.Testing} tmp/docfx/build/src
 cp -r ../*.snk tmp/docfx/build
 cp -r tmp/docfx/serialization/src/NodaTime.Serialization.JsonNet tmp/docfx/build/src
 
+# Do the build for unstable so we can get annotations
+cd tmp/docfx
+dotnet restore build/src/NodaTime
+dotnet restore build/src/NodaTime.Testing
+dotnet restore build/src/NodaTime.Serialization.JsonNet
+dotnet build build/src/NodaTime/NodaTime.csproj
+dotnet build build/src/NodaTime.Testing/NodaTime.Testing.csproj
+dotnet build build/src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.csproj
+cd ../..
+
 cp docfx/global.json tmp/docfx
 cp docfx/NodaTime.json tmp/docfx/build/src/NodaTime/project.json
 cp docfx/NodaTime.Serialization.JsonNet.json tmp/docfx/build/src/NodaTime.Serialization.JsonNet/project.json
 cp docfx/NodaTime.Testing.json tmp/docfx/build/src/NodaTime.Testing/project.json
 
+# TODO: Investigate whether this restore is still necessary...
 cd tmp/docfx
 dotnet restore build/src/NodaTime
 dotnet restore build/src/NodaTime.Testing
@@ -106,9 +136,7 @@ dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.2.x tmp/docfx/obj/1.3.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.3.x tmp/docfx/obj/2.0.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/2.0.x tmp/docfx/obj/unstable
-dotnet run -p DocfxAnnotationGenerator/DocfxAnnotationGenerator.csproj -- tmp/docfx 1.0.x 1.1.x 1.2.x 1.3.x 2.0.x unstable
-
-# TODO: Add extra information (versions etc)
+dotnet run -p DocfxAnnotationGenerator/DocfxAnnotationGenerator.csproj -- tmp/docfx history tmp/docfx/build/src 1.0.x 1.1.x 1.2.x 1.3.x 2.0.x unstable
 
 echo "Running main docfx build"
 docfx build tmp/docfx/docfx.json
