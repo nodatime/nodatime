@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using NodaTime.Web.Controllers;
 using NodaTime.Web.Models;
 using NodaTime.Web.Providers;
+using System;
 using System.IO;
 
 namespace NodaTime.Web
@@ -20,7 +21,7 @@ namespace NodaTime.Web
     public class Startup
     {
         // Not const to avoid unreachable code warnings.
-        private static readonly bool UseGoogleCloudStorage = true;
+        private static readonly bool UseGoogleCloudStorage = Environment.GetEnvironmentVariable("DISABLE_GCS") == null;
 
         public Startup(IHostingEnvironment env)
         {
@@ -39,11 +40,11 @@ namespace NodaTime.Web
             // Add framework services.
             services.AddMvc();
             
-            // Eagerly fetch the GoogleCredential so that we're not using Task.Result in
-            // request processing.
-            services.AddSingleton(GoogleCredentialProvider.FetchCredential(Configuration));
             if (UseGoogleCloudStorage)
             {
+                // Eagerly fetch the GoogleCredential so that we're not using Task.Result in
+                // request processing.
+                services.AddSingleton(GoogleCredentialProvider.FetchCredential(Configuration));
                 services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
                 services.AddSingleton<ITzdbRepository, GoogleStorageTzdbRepository>();
             }
