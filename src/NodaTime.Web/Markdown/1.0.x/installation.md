@@ -9,7 +9,7 @@ two packages:
 Alternatively, source and binary downloads are available on the
 [project download page][downloads].
 
-[downloads]: http://nodatime.org/downloads/
+[downloads]: /downloads/
 
 An experimental assembly to support Json.NET is also available (in source form
 only); see the [serialization guide](serialization.html) for more information.
@@ -17,7 +17,7 @@ only); see the [serialization guide](serialization.html) for more information.
 See the ["Building and testing"][building] section in the developer guide for
 instructions on building Noda Time from source.
 
-[building]: http://nodatime.org/developer/building.html
+[building]: /developer/building
 
 System requirements
 -------------------

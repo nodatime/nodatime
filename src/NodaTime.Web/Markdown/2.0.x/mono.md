@@ -18,4 +18,4 @@ things get tricky.
 The prebuilt binary packages can be used on Mono directly. To build from source,
 See the ["Building and testing"][building] section in the developer guide.
 
-[building]: http://nodatime.org/developer/building.html
+[building]: /developer/building

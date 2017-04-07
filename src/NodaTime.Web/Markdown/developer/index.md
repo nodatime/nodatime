@@ -7,13 +7,10 @@ Resources
 ---------
 
 - [Project source and issue site][home]
-- [Project web site][web]
 - [Group mailing list][group]
 - [Current API documentation][api]
 
-[User Guide]: http://nodatime.org/userguide
+[User Guide]: /userguide/
 [home]: https://github.com/nodatime/nodatime
-[web]: http://nodatime.org
 [group]: https://groups.google.com/group/noda-time
-[api]: http://nodatime.org/unstable/api/
-
+[api]: /unstable/api/
