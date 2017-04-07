@@ -19,6 +19,9 @@ namespace NodaTime.Web
 {
     public class Startup
     {
+        // Not const to avoid unreachable code warnings.
+        private static readonly bool UseGoogleCloudStorage = true;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -39,10 +42,16 @@ namespace NodaTime.Web
             // Eagerly fetch the GoogleCredential so that we're not using Task.Result in
             // request processing.
             services.AddSingleton(GoogleCredentialProvider.FetchCredential(Configuration));
-            //services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
-            //services.AddSingleton<ITzdbRepository, GoogleStorageTzdbRepository>();
-            services.AddSingleton<IReleaseRepository, FakeReleaseRepository>();
-            services.AddSingleton<ITzdbRepository, FakeTzdbRepository>();
+            if (UseGoogleCloudStorage)
+            {
+                services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
+                services.AddSingleton<ITzdbRepository, GoogleStorageTzdbRepository>();
+            }
+            else
+            {
+                services.AddSingleton<IReleaseRepository, FakeReleaseRepository>();
+                services.AddSingleton<ITzdbRepository, FakeTzdbRepository>();
+            }
             services.AddSingleton<MarkdownLoader>();
         }
 
