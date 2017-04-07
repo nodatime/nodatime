@@ -26,6 +26,11 @@
 <strong>Since</strong> {{since}}
 </div>
 {{/since}}
+{{#availability}}
+<div>
+<strong>Availability</strong> {{availability}}
+</div>
+{{/availability}}
 <h5 class="decalaration">{{__global.declaration}}</h5>
 {{#syntax}}
 <div class="codewrapper">

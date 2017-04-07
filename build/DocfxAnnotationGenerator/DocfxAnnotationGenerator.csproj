@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mono.Cecil" Version="0.10.0-beta5" />
+    <PackageReference Include="SharpCompress" Version="0.15.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DocfxYamlLoader\DocfxYamlLoader.csproj" />
   </ItemGroup>
 
