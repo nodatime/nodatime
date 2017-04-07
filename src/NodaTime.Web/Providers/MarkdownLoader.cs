@@ -85,10 +85,18 @@ namespace NodaTime.Web.Providers
 
         private MarkdownPage LoadPage(string directory, string id, MarkdownBundle bundle)
         {
-            var file = fileProvider.GetFileInfo($"{directory}/{id}.md");
-            using (var reader = file.CreateReader())
+            var filename = $"{directory}/{id}.md";
+            try
             {
-                return MarkdownPage.Load(id, bundle, reader, commonMarkSettings);
+                var file = fileProvider.GetFileInfo(filename);
+                using (var reader = file.CreateReader())
+                {
+                    return MarkdownPage.Load(id, bundle, reader, commonMarkSettings);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Unable to parse markdown content from {filename}", e);
             }
         }
 
