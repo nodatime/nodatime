@@ -187,7 +187,7 @@ An extension method of `ConfigureForNodaTime` is provided on both `JsonSerialize
 `JsonSerializerSettings`. Alternatively, the [`NodaConverters`](noda-type://NodaTime.Serialization.JsonNet.NodaConverters) type provides public static read-only fields
 for individual converters. (All converters are immutable.)
 
-Custom converters can be created easily from patterns using [`NodaPatternConverter`](noda-type://NodaTime.Serialization.JsonNet.NodaPatternConverter_1).
+Custom converters can be created easily from patterns using [`NodaPatternConverter`](noda-type://NodaTime.Serialization.JsonNet.NodaPatternConverter-1).
 
 Please ensure that *all* relevant JSON handlers are configured appropriately. In some cases there may be more than
 one involved, possibly one for reading and one for writing, depending on your configuration. For ASP.NET using
