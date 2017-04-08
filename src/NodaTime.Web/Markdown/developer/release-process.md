@@ -14,7 +14,7 @@ a checklist by the person doing a release.
 - Access to the (git) repository for the nodatime.org web site
 
 [Jekyll]: https://jekyllrb.com/docs/installation/
-[redcarpet]: http://rubygems.org/gems/redcarpet
+[redcarpet]: https://rubygems.org/gems/redcarpet
 
 Note that we should not build releases on Mono at present, since the resulting
 IL triggers a bug in the .NET 4 64-bit CLR (see the

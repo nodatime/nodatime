@@ -104,5 +104,5 @@ similar - so pop along to the [mailing list][4] and we can collaborate on
 trying to solve your problem within Noda Time itself.
 
 [2]: http://semver.org/
-[3]: http://www.joda.org/joda-time
+[3]: http://www.joda.org/joda-time/
 [4]: https://groups.google.com/group/noda-time
