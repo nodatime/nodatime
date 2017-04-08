@@ -145,7 +145,7 @@ can be most easily obtained via [NuGet](https://www.nuget.org/).
 
 To fetch NuGet.exe locally, download and run (using `mono`) the
 (auto-updating) [NuGet.exe command-line
-tool](http://nuget.codeplex.com/releases/view/58939).
+tool](https://github.com/NuGet/Home/releases).
 
 You can then fetch the NuGet packages locally (into `src/packages/`):
 
