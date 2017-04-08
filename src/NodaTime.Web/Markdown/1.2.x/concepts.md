@@ -205,14 +205,14 @@ See the [arithmetic](arithmetic) page for more information.
 [LocalDateTime]: noda-type://NodaTime.LocalDateTime
 [Instant]: noda-type://NodaTime.Instant
 [CalendarSystem]: noda-type://NodaTime.CalendarSystem
-[UTC]: http://en.wikipedia.org/wiki/Coordinated_Universal_Time
+[UTC]: https://en.wikipedia.org/wiki/Coordinated_Universal_Time
 [DateTimeZone]: noda-type://NodaTime.DateTimeZone
 [Offset]: noda-type://NodaTime.Offset
 [Period]: noda-type://NodaTime.Period
 [Duration]: noda-type://NodaTime.Duration
 [OffsetDateTime]: noda-type://NodaTime.OffsetDateTime
 [ZonedDateTime]: noda-type://NodaTime.ZonedDateTime
-[TZDB]: http://www.iana.org/time-zones
+[TZDB]: https://www.iana.org/time-zones
 [IDateTimeZoneProvider]: noda-type://NodaTime.IDateTimeZoneProvider
 [DateTimeZoneProviders]: noda-type://NodaTime.DateTimeZoneProviders
-[TimeSpan]: http://msdn.microsoft.com/en-us/library/system.timespan.aspx
+[TimeSpan]: https://msdn.microsoft.com/en-us/library/system.timespan.aspx

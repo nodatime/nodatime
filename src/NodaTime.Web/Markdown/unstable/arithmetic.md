@@ -209,7 +209,7 @@ Arithmetic with the Hebrew calendar
 One exception to the rules given above is the Hebrew calendar system. For a start,
 the Hebrew calendar has a *leap month* - in a leap year, the single month of
 Adar becomes Adar I and Adar II ([with Adar I being considered the leap
-month](http://judaism.stackexchange.com/questions/37308)).
+month](https://judaism.stackexchange.com/questions/37308)).
 When an arithmetic operation requires that a date in Adar is mapped to a leap year, we use
 the same day-of-month but within Adar II. When an arithmetic operation requires that a date in
 Adar I or Adar II is mapped to a non-leap year, we use the same day-of-month in Adar. (This can
@@ -225,7 +225,7 @@ not the month *number*. So for example, bearing in mind that 5402 is a leap year
 
 Additionally, the "truncate the day-of-month if necessary" rule does not apply to the Hebrew
 calendar system, in the rules implemented in Noda Time 1.3.0. Instead,
-[following Hebrew scriptural rules](http://judaism.stackexchange.com/questions/39053), if changing
+[following Hebrew scriptural rules](https://judaism.stackexchange.com/questions/39053), if changing
 year makes a day-of-month invalid (which can happen if the original month is Adar I, Kislev or Heshvan),
 the result is instead the first day of the subsequent month. So for example, adding one year to the 30th of Kislev
 will result in the 1st of Tevet, if Kislev only has 29 days in the "target" year.

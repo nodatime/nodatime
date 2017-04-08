@@ -118,7 +118,7 @@ which is just shy of 7,304,119 days. Internally, durations are stored in terms o
 implementation detail to be sure, but one which sometimes affects other decisions).
 
 Additionally, it seems useful to be able to cover the full range of
-[`TimeSpan`](http://msdn.microsoft.com/en-us/library/system.timespan), given that `Duration` is meant to be the roughly-equivalent
+[`TimeSpan`](https://msdn.microsoft.com/en-us/library/system.timespan), given that `Duration` is meant to be the roughly-equivalent
 type.
 
 The result is that we have a range of days from -2<sup>24</sup> to +2<sup>24</sup>-1 - and the nanosecond part means that the

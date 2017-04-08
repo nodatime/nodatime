@@ -2,7 +2,7 @@
 
 This document describes the Noda Time-specific binary file format that is
 produced by Noda Time's `NodaTime.TzdbCompiler` tool. This tool reads the
-text files from the [tz database](http://www.iana.org/time-zones) along with
+text files from the [tz database](https://www.iana.org/time-zones) along with
 some additional input from CLDR; it produces output in one of two different
 formats:
 

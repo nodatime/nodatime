@@ -34,7 +34,7 @@ First supported in v1.0.0
 API access: [`CalendarSystem.Iso`](noda-property://NodaTime.CalendarSystem.Iso)
 
 This is the default calendar system when constructing values without explicitly specifying a calendar.
-It is designed to correspond to the calendar described in [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601),
+It is designed to correspond to the calendar described in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601),
 and is equivalent to the Gregorian calendar in all respects other than the century and year-of-century values.
 
 As of Noda Time 2.0, century and year-of-century properties have
@@ -51,7 +51,7 @@ API access:
 
 - [`CalendarSystem.Gregorian`](noda-property://NodaTime.CalendarSystem.Gregorian)
 
-The [Gregorian calendar](http://en.wikipedia.org/wiki/Gregorian_calendar) was a refinement to the Julian calendar,
+The [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) was a refinement to the Julian calendar,
 changing the formula for which years are leap years from "whenever the year is divisible by 4" to
 "whenever the year is divisible by 4, except when it's also divisible by 100 and *not* divisible by 400". This keeps
 the calendar in closer sync with the observed rotation of the earth around the sun.
@@ -68,7 +68,7 @@ Julian
 First supported in v1.0.0  
 API access: [`CalendarSystem.Julian`](noda-property://NodaTime.CalendarSystem.Julian)
 
-The [Julian calendar](http://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46BC, and took
+The [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46BC, and took
 effect in 45BC. It was like the Gregorian calendar, but with a simpler leap year rule - every year number divisible by
 4 was a leap year.
 
@@ -98,7 +98,7 @@ API access:
 - [`CalendarSystem.GetIslamicCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetIslamicCalendar_NodaTime_Calendars_IslamicLeapYearPattern_NodaTime_Calendars_IslamicEpoch_)
 - [`CalendarSystem.IslamicBcl`](noda-property://NodaTime.CalendarSystem.IslamicBcl)
 
-The [Islamic (or Hijri) calendar](http://en.wikipedia.org/wiki/Islamic_calendar) is a lunar calendar with years of 12
+The [Islamic (or Hijri) calendar](https://en.wikipedia.org/wiki/Islamic_calendar) is a lunar calendar with years of 12
 months, totalling either 355 or 354 days depending on whether or not it's a leap year. There are various schemes
 for determining which years are leap years, all based on a 30 year cycle. Noda Time supports four options here,
 specified in the [`IslamicLeapYearPattern`](noda-type://NodaTime.Calendars.IslamicLeapYearPattern) enumeration.
@@ -129,7 +129,7 @@ API access:
 - [`CalendarSystem.PersianAstronomical`](noda-property://NodaTime.CalendarSystem.PersianAstronomical)
 - [`CalendarSystem.PersianArithmetic`](noda-property://NodaTime.CalendarSystem.PersianArithmetic)
 
-The [Persian (or Solar Hijri) calendar](http://en.wikipedia.org/wiki/Solar_Hijri_calendar) is the official calendar of
+The [Persian (or Solar Hijri) calendar](https://en.wikipedia.org/wiki/Solar_Hijri_calendar) is the official calendar of
 Iran and Pakistan. Three variants of this are supported in Noda Time:
 
 - The "simple" calendar, which was the only one supported in Noda Time 1.3, and matches the behaviour of the BCL
@@ -150,13 +150,13 @@ Um Al Qura
 First supported in v2.0.0  
 API access: [`CalendarSystem.UmAlQura`](noda-property://NodaTime.CalendarSystem.UmAlQura)
 
-The [Um Al Qura (or Umm al-Qura) calendar](http://en.wikipedia.org/wiki/Islamic_calendar#Saudi_Arabia.27s_Umm_al-Qura_calendar),
+The [Um Al Qura (or Umm al-Qura) calendar](https://en.wikipedia.org/wiki/Islamic_calendar#Saudi_Arabia.27s_Umm_al-Qura_calendar),
 primarily used in Saudi Arabia, is similar to the Islamic Hijri calendar, except that instead of being algorithmic it relies on
 tabular data. Each month has 29 or 30 days, and each year has 354 or 355 days, but the month lengths cannot be determined
 algorithmically.
 
 The Noda Time implementation uses data from the BCL
-[`UmAlQuraCalendar`](http://msdn.microsoft.com/en-us/library/system.globalization.umalquracalendar.aspx) to obtain the required
+[`UmAlQuraCalendar`](https://msdn.microsoft.com/en-us/library/system.globalization.umalquracalendar.aspx) to obtain the required
 information, but the data is baked into Noda Time so it is available
 on all platforms.
 
@@ -170,7 +170,7 @@ API access:
 - [`CalendarSystem.HebrewCivil`](noda-property://NodaTime.CalendarSystem.HebrewCivil)
 - [`CalendarSystem.HebrewScriptural`](noda-property://NodaTime.CalendarSystem.HebrewScriptural)
 
-The [Hebrew calendar](http://en.wikipedia.org/wiki/Hebrew_calendar) is a lunisolar calendar used primarily for determination
+The [Hebrew calendar](https://en.wikipedia.org/wiki/Hebrew_calendar) is a lunisolar calendar used primarily for determination
 of religious holidays within Judaism. It was originally observational, but a computed version is now commonly used. Even
 this is very complicated, however: most years have 12 months, but 7 in every 19 years are leap years, with 13 months. Two
 of the months in the regular calendar have variable numbers of days depending on other aspects of the calendar, in order

@@ -1,10 +1,10 @@
 @Title="Installation"
 
-Our primary distribution channel is [NuGet](http://nuget.org/) with
+Our primary distribution channel is [NuGet](https://www.nuget.org/) with
 two packages:
 
-- [NodaTime](http://nuget.org/packages/NodaTime)
-- [NodaTime.Testing](http://nuget.org/packages/NodaTime.Testing)
+- [NodaTime](https://www.nuget.org/packages/NodaTime)
+- [NodaTime.Testing](https://www.nuget.org/packages/NodaTime.Testing)
 
 Alternatively, source and binary downloads are available on the
 [project download page][downloads].
@@ -52,9 +52,9 @@ be able to start using Noda Time immediately, with no further effort.
 Debugging
 ---------
 
-As of version 1.1, the source code of Noda Time is published to [SymbolSource](http://www.symbolsource.org/). You can configure
+As of version 1.1, the source code of Noda Time is published to [SymbolSource](https://www.symbolsource.org/). You can configure
 Visual Studio to automatically fetch the source code if you need to step into it when debugging your application. It takes a little
-bit of setup, but there are [full instructions](http://www.symbolsource.org/Public/Home/VisualStudio) on the SymbolSource web site.
+bit of setup, but there are [full instructions](https://www.symbolsource.org/Public/Home/VisualStudio) on the SymbolSource web site.
 (The instructions aren't specific to Noda Time, so if you're
 already using SymbolSource as one of your symbol servers, you just need to make sure you're not excluding Noda Time from the list of
 modules to fetch.)
