@@ -204,7 +204,7 @@ periods. [`Period`][Period] is used for arithmetic on locally-based values (`Loc
 
 See the [arithmetic](arithmetic.html) page for more information.
 
-[api]: ../api/Index.html
+[api]: ../api/
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx
 [LocalTime]: noda-type://NodaTime.LocalTime
 [LocalDate]: noda-type://NodaTime.LocalDate
