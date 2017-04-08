@@ -1,7 +1,7 @@
 @Title="Choosing (and convering) between types"
 
 This is a companion page to the
-["core concepts quick reference"](concepts.html), and ["core types"](core-types.html)
+["core concepts quick reference"](concepts), and ["core types"](core-types)
 pages, describing when it's appropriate to use which type, and how to convert between them.
 
 Ultimately, you should be thinking about what data you really have,
@@ -155,5 +155,5 @@ as they're generally very straightforward.)
 Most of these are pretty simple, but a few are worth calling out
 specifically. The biggest "gotcha" is converting `LocalDateTime` to
 `ZonedDateTime` - it has some corner cases you need to consider. See the ["times zones" section of
-the core concepts guide](concepts.html#time-zones) and the [`DateTimeZone`](noda-type://NodaTime.DateTimeZone) documentation
+the core concepts guide](concepts#time-zones) and the [`DateTimeZone`](noda-type://NodaTime.DateTimeZone) documentation
 for more information.

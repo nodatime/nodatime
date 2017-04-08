@@ -1,7 +1,7 @@
 @Title="Core types quick reference"
 
 This is a companion page to the
-["core concepts"](concepts.html), and ["choosing between types"](type-choices.html)
+["core concepts"](concepts), and ["choosing between types"](type-choices)
 pages, describing the fundamental types in Noda Time very briefly, primarily for reference.
 If you're not familiar with the core concepts, read that page first.
 
@@ -93,7 +93,7 @@ January.
 IClock
 ------
 
-An [`IClock`][IClock] implementation provides information about the current instant. It knows nothing about time zones or calendar systems. For [testability](testing.html), this is defined
+An [`IClock`][IClock] implementation provides information about the current instant. It knows nothing about time zones or calendar systems. For [testability](testing), this is defined
 as an interface; in a production deployment you're likely to use the [`SystemClock`][SystemClock] singleton implementation.
 
 Often you may want to repeatedly access the current time or date in a specific time zone.

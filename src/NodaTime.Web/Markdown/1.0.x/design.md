@@ -58,7 +58,7 @@ developers want. However, we do *not* default to using the system
 time zone, or using "now" as a default date/time value, or using
 the current thread's current format provider for parsing and
 formatting (except for the BCL-compatible method calls; see [text
-handling][5] for more information on this).
+handling](text) for more information on this).
   We make it easy to do all of these things, but they're just not
 appropriate as implicit defaults. It's too easy to *accidentally*
 depend on the time zone your system happens to be running in (etc)
@@ -67,7 +67,7 @@ without anything obvious in your code.
 What this means in practice
 ---------------------------
 
-- There are rather more types and [concepts][1] to learn about in
+- There are rather more types and [concepts](concepts) to learn about in
 Noda Time than in .NET. One of the *problems* with .NET's date and
 time API is that `DateTime` doesn't have a single well-defined
 meaning.
@@ -80,7 +80,7 @@ LocalDateTime()` or `default(LocalDateTime)`) is *not* a useful
 value. This is unfortunate, but hard to avoid.
 
 - All the value types and almost all the reference types are
-immutable and [thread-safe](threading.html). We expect objects like calendars, time
+immutable and [thread-safe](threading). We expect objects like calendars, time
 zones, and patterns for formatting and parsing text to be reused
 freely between many threads. Occasionally there's hidden mutability
 in terms of caches, but this should not affect you, the user. We make sure it
@@ -103,8 +103,6 @@ requirements, chances are someone else will want to do something
 similar - so pop along to the [mailing list][4] and we can collaborate on
 trying to solve your problem within Noda Time itself.
 
-[1]: concepts.html
 [2]: http://semver.org/
 [3]: http://www.joda.org/joda-time
 [4]: https://groups.google.com/group/noda-time
-[5]: text.html

@@ -196,7 +196,7 @@ but they're still available within periods. [`Period`][Period] is used for arith
 
 See the [arithmetic](arithmetic) page for more information.
 
-[api]: ../api/NodaTime.html
+[api]: ../api/
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx
 [LocalTime]: noda-type://NodaTime.LocalTime
 [LocalDate]: noda-type://NodaTime.LocalDate

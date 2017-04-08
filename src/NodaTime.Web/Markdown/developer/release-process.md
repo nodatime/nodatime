@@ -18,7 +18,7 @@ a checklist by the person doing a release.
 
 Note that we should not build releases on Mono at present, since the resulting
 IL triggers a bug in the .NET 4 64-bit CLR (see the
-[building and testing](building.html) section in the developer guide).
+[building and testing](building) section in the developer guide).
 
 ## When to release
 
@@ -29,7 +29,7 @@ Search the issue tracker for open issues with the right milestone (e.g.
 `is:open is:issue milestone:1.4.0`).
 
 Update to the candidate revision (probably HEAD) of the correct branch (e.g.
-`1.0.x`) and [build and run all the tests](building.html) as normal. The build
+`1.0.x`) and [build and run all the tests](building) as normal. The build
 and test steps should pass on Visual Studio 2015 and at least one supported
 OS/version combination for Mono (i.e. 'Mono 2.10.9 on Linux').
 
@@ -39,7 +39,7 @@ If necessary, update the version of tzdb on the branch to the latest current
 version, following the instructions in the
 ["Updating the time zone database"][tzdb] section in the user guide.
 
-[tzdb]: ../userguide/tzdb.html
+[tzdb]: /userguide/tzdb
 
 ## Pre-release branching
 

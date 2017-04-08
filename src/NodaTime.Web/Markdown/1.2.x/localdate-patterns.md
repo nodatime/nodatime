@@ -18,7 +18,7 @@ The following standard patterns are supported:
 Custom Patterns
 ---------------
 
-The following custom format pattern characters are supported for local dates. See [custom pattern notes](text.html#custom-patterns)
+The following custom format pattern characters are supported for local dates. See [custom pattern notes](text#custom-patterns)
 for general notes on custom patterns, including characters used for escaping and text literals.
 
 For the meanings of "absolute" years and text handling, see later details.
