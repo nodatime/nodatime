@@ -39,7 +39,7 @@ for general notes on custom patterns, including characters used for escaping and
         The hour of day in the 24-hour clock; a value 0-23.
         <p>Note that when parsing local date/time values, a value of <code>24</code>
         may be exceptionally permitted to allow
-        <a href="localdatetime-patterns.md">specification of a following day's
+        <a href="localdatetime-patterns">specification of a following day's
         midnight</a>.
       </td>
       <td>
