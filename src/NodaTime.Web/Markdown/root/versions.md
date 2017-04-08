@@ -6,7 +6,7 @@ details.
 
 ## 2.1 (current master branch)
 
-## 2.0, release 2017-03-31 with tzdb 2017b
+## 2.0, released 2017-03-31 with tzdb 2017b
 
 Major release: do *not* expect to be able to upgrade from 1.x without making adjustments to your code; please
 read the list of breaking changes and see the [Noda Time 1.x to 2.0 migration guide](/unstable/userguide/migration-to-2)
