@@ -88,12 +88,12 @@ year), they'd be somewhere in between for about 40 years.
 While this almost sounds like a reasonable plan (almost like the way that
 [Google "smears" a leap second across a whole minute rather than simply
 adding a
-second](http://googleblog.blogspot.com/2011/09/time-technology-and-leaping-seconds.html)),
+second](https://googleblog.blogspot.com/2011/09/time-technology-and-leaping-seconds.html)),
 it went horribly wrong. In February 1700, Sweden skipped the leap year,
 according to plan. That meant that they were one day ahead of the countries
 still following the Julian calendar. Unfortunately, in the  same year -
 although ironically *before* February 28th - the [Great Northern
-War](http://en.wikipedia.org/wiki/Great_Northern_War) broke out. This
+War](https://en.wikipedia.org/wiki/Great_Northern_War) broke out. This
 distracted Sweden from their calendrical machinations, and they *did* have a
 leap year in 1704 and 1708.
 
@@ -115,7 +115,7 @@ alone in such an odd way.
 
 **Read more:**
 
-- [Wikipedia](http://en.wikipedia.org/wiki/February_30)
+- [Wikipedia](https://en.wikipedia.org/wiki/February_30)
 
 The time in Greenwich at the Unix epoch
 ---
@@ -154,7 +154,7 @@ offset. The transition from summer time to standard time on October 27th
 
 - [BBC News](http://www.bbc.co.uk/news/uk-scotland-11643098)
 - [History of Legal Time in
-  Britain](http://www.polyomino.org.uk/british-time/)
+  Britain](https://www.polyomino.org.uk/british-time/)
 
 <sup>1</sup> I'm studiously avoiding the differentiation between, UTC, UT,
 UT0, TAI and the like. They make my head hurt, and in common usage time zone
@@ -223,7 +223,7 @@ careful before you compare it with another date. To avoid *too* much
 confusion, many historical dates are given using the Julian calendar, which
 was being observed at the time (depending on the place, of course), while
 using the "New Style" of year numbering. For example, [Henry
-VIII](http://en.wikipedia.org/wiki/Henry_VIII_of_England) died on January
+VIII](https://en.wikipedia.org/wiki/Henry_VIII_of_England) died on January
 28th 1547 (New Style) or January 28th 1546 (Old Style). In my experience,
 some web pages explicitly call out which numbering style they're using,
 others record it as "January 28th 1546/1547" and hope that readers
@@ -241,11 +241,11 @@ anyway.
 
 - [Wikipedia: Calender (New Style) act][wikipedia-newstyle-act]
 - [Wikipedia: Old and New Style
-  dates](http://en.wikipedia.org/wiki/Old_Style_and_New_Style_dates)
+  dates](https://en.wikipedia.org/wiki/Old_Style_and_New_Style_dates)
 - [Malcolm Rowe's write-up in
   Google+](https://plus.google.com/+MalcolmRowe/posts/Bf5swesMPUV)
 
-[wikipedia-newstyle-act]: http://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750
+[wikipedia-newstyle-act]: https://en.wikipedia.org/wiki/Calendar_(New_Style)_Act_1750
 
 <sup>1</sup> When I say "we" here, I really mean "Malcolm" who did most of
 the work on understanding this issue based on Wikipedia and primary
@@ -304,9 +304,9 @@ typically deploys changes to the *Windows* time zone database...
 **Read more:**
 
 - [Argentina (announcement on 7th October 2009, due 18th
-  October)](http://www.timeanddate.com/news/time/argentina-dst-2009-2010.html)
+  October)](https://www.timeanddate.com/news/time/argentina-dst-2009-2010.html)
 - [Morocco (September
-  2013)](http://www.timeanddate.com/news/time/morocco-ends-dst-2013.html)
+  2013)](https://www.timeanddate.com/news/time/morocco-ends-dst-2013.html)
 - [Libya (October
-  2013)](http://www.timeanddate.com/news/time/libya-cancels-dst-switch-2013.html)
-- [Turkey (March 2011)](http://www.timeanddate.com/news/time/turkey-starts-dst-2011.html)
+  2013)](https://www.timeanddate.com/news/time/libya-cancels-dst-switch-2013.html)
+- [Turkey (March 2011)](https://www.timeanddate.com/news/time/turkey-starts-dst-2011.html)

@@ -129,7 +129,7 @@ recommend** that you quote any text literals, to avoid nasty
 surprises if extra characters take on special meanings in later
 versions.
 
-  [2]: http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
+  [2]: https://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
   [3]: noda-ns://NodaTime.Text
   [4]: noda-type://NodaTime.LocalDateTime
   [5]: noda-type://NodaTime.Instant

@@ -165,7 +165,7 @@ Often you don't have much choice about how to parse or format text: if you're in
   - Try to use a pattern which is ISO-friendly where possible; it'll make it easier to interoperate with other systems in the future.
   - Quote all non-field values other than spaces.
 
-  [2]: http://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
+  [2]: https://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo.aspx
   [3]: noda-ns://NodaTime.Text
   [4]: noda-type://NodaTime.LocalDateTime
   [5]: noda-type://NodaTime.Instant

@@ -1,10 +1,10 @@
 @Title="Installation"
 
-Our primary distribution channel is [NuGet](http://nuget.org/) with
+Our primary distribution channel is [NuGet](https://www.nuget.org/) with
 two packages:
 
-- [NodaTime](http://nuget.org/packages/NodaTime)
-- [NodaTime.Testing](http://nuget.org/packages/NodaTime.Testing)
+- [NodaTime](https://www.nuget.org/packages/NodaTime)
+- [NodaTime.Testing](https://www.nuget.org/packages/NodaTime.Testing)
 
 Alternatively, source and binary downloads are available on the
 [project download page][downloads].

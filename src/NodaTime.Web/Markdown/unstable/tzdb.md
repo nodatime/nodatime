@@ -1,7 +1,7 @@
 @Title="Updating the time zone database"
 
 Noda Time comes with a version of the
-[tz database](http://www.iana.org/time-zones) (also known as the IANA Time Zone
+[tz database](https://www.iana.org/time-zones) (also known as the IANA Time Zone
 database, or zoneinfo or Olson database), which is now hosted by IANA. This
 database changes over time, as countries decide to change their time zone
 rules.  As new versions of Noda Time are released, the version of tzdb will be
@@ -43,8 +43,8 @@ This may be used for automation.
 Building a NodaZoneData file
 ----------------------------
 
-1. Find the link to the [latest tzdb release](http://www.iana.org/time-zones), e.g.
-   http://www.iana.org/time-zones/repository/releases/tzdata2015e.tar.gz
+1. Find the link to the [latest tzdb release](https://www.iana.org/time-zones), e.g.
+   https://www.iana.org/time-zones/repository/releases/tzdata2015e.tar.gz
 2. Determine the Windows mapping file you want to use, or let NodaTime.TzdbCompiler do it for you
    with the versions supplied with the Noda Time source in the `data\cldr` directory. If these are
    out of date, you can download a new file from [CLDR](http://cldr.unicode.org/).

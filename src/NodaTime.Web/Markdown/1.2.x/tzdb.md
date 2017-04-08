@@ -1,7 +1,7 @@
 @Title="Updating the time zone database"
 
 Noda Time comes with a version of the
-[tz database](http://www.iana.org/time-zones) (also known as the IANA Time Zone
+[tz database](https://www.iana.org/time-zones) (also known as the IANA Time Zone
 database, or zoneinfo or Olson database), which is now hosted by IANA. This
 database changes over time, as countries decide to change their time zone
 rules.  As new versions of Noda Time are released, the version of tzdb will be
@@ -40,7 +40,7 @@ latest version. This may be used for automation.
 Building a NodaZoneData file
 ----------------------------
 
-1. Download the [latest tzdb release](http://www.iana.org/time-zones)
+1. Download the [latest tzdb release](https://www.iana.org/time-zones)
 2. Unpack the tar.gz file - you may need to download extra tools for this; [7-Zip](http://www.7-zip.org/) can cope with .tar.gz
    files for example, and I'd expect other zip tools to do so too. You should end up with a directory containing files such
    as "america", "africa", "etcetera".
@@ -110,7 +110,7 @@ Creating and using a resource file (legacy format)
 Building the resource file
 --------------------------
 
-1. Download the [latest tzdb release](http://www.iana.org/time-zones)
+1. Download the [latest tzdb release](https://www.iana.org/time-zones)
 2. Unpack the tar.gz file - you may need to download extra tools for this; [7-Zip](http://www.7-zip.org/) can cope with .tar.gz
    files for example, and I'd expect other zip tools to do so too. You should end up with a directory containing files such
    as "america", "africa", "etcetera".
@@ -140,7 +140,7 @@ Typically you'll want to use the newly-created resource file as the default time
 While it's possible to have multiple time zone providers in play at a time, that's a very rare scenario. Using a resource
 file is relatively straightforward:
 
-- Create a [`ResourceSet`](http://msdn.microsoft.com/en-us/library/t15hy0dt.aspx) from the file
+- Create a [`ResourceSet`](https://msdn.microsoft.com/en-us/library/t15hy0dt.aspx) from the file
 - Create a [`TzdbDateTimeZoneSource`][TzdbDateTimeZoneSource] with the `ResourceSet`
 - Create [`DateTimeZoneCache`][DateTimeZoneCache] with the source 
 - Use that cache (usually by way of dependency injection as an `IDateTimeZoneProvider`) wherever you need time zone information

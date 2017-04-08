@@ -23,7 +23,7 @@ First supported in v1.0.0
 API access: [`CalendarSystem.Iso`](noda-property://NodaTime.CalendarSystem.Iso)
 
 This is the default calendar system when constructing values without explicitly specifying a calendar.
-It is designed to correspond to the calendar described in [ISO-8601](http://en.wikipedia.org/wiki/ISO_8601),
+It is designed to correspond to the calendar described in [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601),
 and is equivalent to the Gregorian calendar in all respects other than the century and year-of-century values.
 (In the ISO calendar, 1985 is year number 85 in century 19, and 1900 is year number 0 in century 19. In the
 Gregorian calendar, the same years would be year 85 in century 20 and year 100 in century 19 respectively.)
@@ -39,7 +39,7 @@ Gregorian
 First supported in v1.0.0  
 API access: [`CalendarSystem.GetGregorianCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetGregorianCalendar_System_Int32_)
 
-The [Gregorian calendar](http://en.wikipedia.org/wiki/Gregorian_calendar) was a refinement to the Julian calendar,
+The [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) was a refinement to the Julian calendar,
 changing the formula for which years are leap years from "whenever the year is divisible by 4" to
 "whenever the year is divisible by 4, except when it's also divisible by 100 and *not* divisible by 400". This keeps
 the calendar in closer sync with the observed rotation of the earth around the sun.
@@ -58,7 +58,7 @@ Julian
 First supported in v1.0.0  
 API access: [`CalendarSystem.GetJulianCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetJulianCalendar_System_Int32_)
 
-The [Julian calendar](http://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46BC, and took
+The [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46BC, and took
 effect in 45BC. It was like the Gregorian calendar, but with a simpler leap year rule - every year number divisible by
 4 was a leap year.
 
@@ -89,7 +89,7 @@ Islamic (Hijri)
 First supported in v1.0.0  
 API access: [`CalendarSystem.GetIslamicCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetIslamicCalendar_NodaTime_Calendars_IslamicLeapYearPattern_NodaTime_Calendars_IslamicEpoch_)
 
-The [Islamic (or Hijri) calendar](http://en.wikipedia.org/wiki/Islamic_calendar) is a lunar calendar with years of 12
+The [Islamic (or Hijri) calendar](https://en.wikipedia.org/wiki/Islamic_calendar) is a lunar calendar with years of 12
 months, totalling either 355 or 354 days depending on whether or not it's a leap year. There are various schemes
 for determining which years are leap years, all based on a 30 year cycle. Noda Time supports four options here,
 specified in the [`IslamicLeapYearPattern`](noda-type://NodaTime.Calendars.IslamicLeapYearPattern) enumeration.
@@ -114,11 +114,11 @@ Persian (or Solar Hijri)
 First supported in v1.3.0  
 API access: [`CalendarSystem.GetPersianCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetPersianCalendar)
 
-The [Persian (or Solar Hijri) calendar](http://en.wikipedia.org/wiki/Solar_Hijri_calendar) is the official calendar of
+The [Persian (or Solar Hijri) calendar](https://en.wikipedia.org/wiki/Solar_Hijri_calendar) is the official calendar of
 Iran and Pakistan. The first day of the Persian calendar is March 18th 622CE (Julian).
 
 This is properly an observational calendar, but the implementation in Noda Time is equivalent to that of
-the BCL [`PersianCalendar`](http://msdn.microsoft.com/en-us/library/system.globalization.persiancalendar.aspx) class,
+the BCL [`PersianCalendar`](https://msdn.microsoft.com/en-us/library/system.globalization.persiancalendar.aspx) class,
 which has a simple leap cycle of 33 years, where years 1, 5, 9, 13, 17, 22, 26, and 30 in each cycle are leap years.
 There is a more complicated algorithmic version proposed by Ahmad Birashk, but this has not been implemented in Noda Time.
 
@@ -128,7 +128,7 @@ Hebrew
 First supported in v1.3.0  
 API access: [`CalendarSystem.GetHebrewCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetHebrewCalendar_NodaTime_Calendars_HebrewMonthNumbering_)
 
-The [Hebrew calendar](http://en.wikipedia.org/wiki/Hebrew_calendar) is a lunisolar calendar used primarily for determination
+The [Hebrew calendar](https://en.wikipedia.org/wiki/Hebrew_calendar) is a lunisolar calendar used primarily for determination
 of religious holidays within Judaism. It was originally observational, but a computed version is now commonly used. Even
 this is very complicated, however: most years have 12 months, but 7 in every 19 years are leap years, with 13 months. Two
 of the months in the regular calendar have variable numbers of days depending on other aspects of the calendar, in order

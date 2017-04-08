@@ -13,7 +13,7 @@ a checklist by the person doing a release.
   assembly) and the nuget.org API key
 - Access to the (git) repository for the nodatime.org web site
 
-[Jekyll]: http://jekyllrb.com/docs/installation/
+[Jekyll]: https://jekyllrb.com/docs/installation/
 [redcarpet]: http://rubygems.org/gems/redcarpet
 
 Note that we should not build releases on Mono at present, since the resulting
@@ -87,7 +87,7 @@ Suppose we were building version 1.2.3-beta4, then:
   Overflow post][assemblyversion] for more information about how these are
   used.)
 
-[assemblyversion]: http://stackoverflow.com/a/65062
+[assemblyversion]: https://stackoverflow.com/a/65062
 
 Update the version number by building the tools solution and then running the `SetVersion` tool:
 

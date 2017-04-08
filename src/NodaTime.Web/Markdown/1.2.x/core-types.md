@@ -100,7 +100,7 @@ Interval
 An [`Interval`][Interval] is simply two instants - a start and an end. The interval includes the start, and excludes the end, which means that if you have abutting intervals any instant will be in
 exactly one of those intervals.
 
-[DST]: http://en.wikipedia.org/wiki/Daylight_saving_time
+[DST]: https://en.wikipedia.org/wiki/Daylight_saving_time
 [Interval]: noda-type://NodaTime.Interval
 [LocalTime]: noda-type://NodaTime.LocalTime
 [LocalDate]: noda-type://NodaTime.LocalDate

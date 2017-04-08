@@ -203,7 +203,7 @@ Other:
   match the given part of the pattern ([issue 288])
 - API documentation now indicates which versions of Noda Time support the given
   member ([issue 261])
-- Annotations added to support [ReSharper](http://jetbrains.com/resharper) users,
+- Annotations added to support [ReSharper](https://www.jetbrains.com/resharper/) users,
   by indicating pure members, parameters which must be non-null etc
   ([issue 207])
 

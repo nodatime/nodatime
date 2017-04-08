@@ -6,7 +6,7 @@ which *uses* Noda Time.
 NodaTime.Testing
 ----------------
 
-Firstly, get hold of the [NodaTime.Testing](http://nuget.org/packages/NodaTime.Testing) assembly. It's currently fairly
+Firstly, get hold of the [NodaTime.Testing](https://www.nuget.org/packages/NodaTime.Testing) assembly. It's currently fairly
 small, but it will no doubt grow - and it will make your life much easier. The purpose of the assembly is to provide
 easy-to-use test doubles which can be used instead of the real implementations.
 

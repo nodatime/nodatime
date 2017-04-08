@@ -9,8 +9,8 @@ platform packs, however.
 To fetch the source code from the main GitHub repository, you'll need a
 [git][] client. You may also want a Git GUI, such as [SourceTree][].
 
-[git]: http://git-scm.com/
-[SourceTree]: http://www.sourcetreeapp.com/
+[git]: https://git-scm.com/
+[SourceTree]: https://www.sourcetreeapp.com/
 
 To run the tests, you'll need [NUnit][] version 2.5.10 or higher.
 
@@ -197,7 +197,7 @@ All the main source code is under the `src` directory. There are multiple projec
 
 - NodaTime: The main library to be distributed
 - NodaTime.Benchmarks: Benchmarks run regularly to check the performance
-- NodaTime.Demo: Demonstration code written as unit tests. Interesting [Stack Overflow](http://stackoverflow.com/) questions can lead to code in this project, for example.
+- NodaTime.Demo: Demonstration code written as unit tests. Interesting [Stack Overflow](https://stackoverflow.com/) questions can lead to code in this project, for example.
 - NodaTime.Serialization.JsonNet: Library to enable [Json.NET](http://json.net/) serialization of NodaTime types.
 - NodaTime.Serialization.Test: Tests for all serialization assemblies, under the assumption that at some point we'll support more than just Json.NET.
 - NodaTime.Test: Tests for the main library

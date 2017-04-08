@@ -25,5 +25,5 @@ Resources
 [home]: https://github.com/nodatime/nodatime
 [api]: ../api/
 [Developer guide]: /developer/
-[so]: http://stackoverflow.com/
-[so-tag]: http://stackoverflow.com/questions/tagged/nodatime
+[so]: https://stackoverflow.com/
+[so-tag]: https://stackoverflow.com/questions/tagged/nodatime
