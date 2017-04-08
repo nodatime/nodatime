@@ -80,7 +80,7 @@ namespace NodaTime.Text.Patterns
                 {
                     char current = patternCursor.Current;
                     if ((current >= 'A' && current <= 'Z') || (current >= 'a' && current <= 'z') ||
-                        current == PatternCursor.EmbeddedPatternStart || current == PatternCursor.EmbeddedPatternStart)
+                        current == PatternCursor.EmbeddedPatternStart || current == PatternCursor.EmbeddedPatternEnd)
                     {
                         throw new InvalidPatternException(Messages.Parse_UnquotedLiteral, current);
                     }
