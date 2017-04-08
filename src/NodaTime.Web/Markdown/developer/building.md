@@ -112,7 +112,7 @@ Note that for Ubuntu specifically, you'll either need Ubuntu 11.10 (Oneiric) or
 later, or work out how to install an unofficial backport; earlier versions of
 Ubuntu [do not include a suitable version of Mono][MonoUbuntu].
 
-[MonoUbuntu]: http://www.mono-project.com/DistroPackages/Ubuntu
+[MonoUbuntu]: http://www.mono-project.com/DistroPackages/Ubuntu/
 
 To build Noda Time under OS X, [download][MonoDownload] the latest stable
 release of Mono. Be sure to choose the developer package, not the smaller
@@ -120,7 +120,7 @@ runtime-only package.  To use the provided `Makefile`, you'll either need to
 install [Xcode][xcode] or obtain `make` separately (for example, using
 [osx-gcc-installer][] to install just the open-source parts of Xcode).
 
-[MonoDownload]: http://www.mono-project.com/Download
+[MonoDownload]: http://www.mono-project.com/Download/
 [xcode]: https://developer.apple.com/xcode/
 [osx-gcc-installer]: https://github.com/kennethreitz/osx-gcc-installer#readme
 
