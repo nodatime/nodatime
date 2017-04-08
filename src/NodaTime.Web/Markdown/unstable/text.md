@@ -61,15 +61,15 @@ available patterns are as consistent as possible within reason, but
 documenting each separately avoids confusion with some field
 specifiers being available for some types but not others.
 
-- [Duration patterns](duration-patterns.html)
-- [Offset patterns](offset-patterns.html)
-- [Instant patterns](instant-patterns.html)
-- [LocalTime patterns](localtime-patterns.html)
-- [LocalDate patterns](localdate-patterns.html)
-- [LocalDateTime patterns](localdatetime-patterns.html)
-- [OffsetDateTime patterns](offsetdatetime-patterns.html)
-- [ZonedDateTime patterns](zoneddatetime-patterns.html)
-- [Period patterns](period-patterns.html)
+- [Duration patterns](duration-patterns)
+- [Offset patterns](offset-patterns)
+- [Instant patterns](instant-patterns)
+- [LocalTime patterns](localtime-patterns)
+- [LocalDate patterns](localdate-patterns)
+- [LocalDateTime patterns](localdatetime-patterns)
+- [OffsetDateTime patterns](offsetdatetime-patterns)
+- [ZonedDateTime patterns](zoneddatetime-patterns)
+- [Period patterns](period-patterns)
 
 <a name="custom-patterns"></a>Custom patterns
 ---------------

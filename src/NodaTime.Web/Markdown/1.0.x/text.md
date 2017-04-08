@@ -61,12 +61,12 @@ available patterns are as consistent as possible within reason, but
 documenting each separately avoids confusion with some field
 specifiers being available for some types but not others.
 
-- [Offset patterns](offset-patterns.html)
-- [Instant patterns](instant-patterns.html)
-- [LocalTime patterns](localtime-patterns.html)
-- [LocalDate patterns](localdate-patterns.html)
-- [LocalDateTime patterns](localdatetime-patterns.html)
-- [Period patterns](period-patterns.html)
+- [Offset patterns](offset-patterns)
+- [Instant patterns](instant-patterns)
+- [LocalTime patterns](localtime-patterns)
+- [LocalDate patterns](localdate-patterns)
+- [LocalDateTime patterns](localdatetime-patterns)
+- [Period patterns](period-patterns)
 
 Note that at present, `ZonedDateTime`, `OffsetDateTime` and `Duration` do not support
 any form of parsing or user-specified formatting.

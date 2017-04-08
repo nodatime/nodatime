@@ -1,7 +1,7 @@
 @Title="Core concepts"
 
 This is a companion page to the
-["core types quick reference"](core-types.html), and ["choosing between types"](type-choices.html)
+["core types quick reference"](core-types), and ["choosing between types"](type-choices)
 pages, describing the fundamental concepts in Noda Time.
 
 One of the benefits of Noda Time over the Base Class Library (BCL)
@@ -20,7 +20,7 @@ date and time data for your whole project.
 This document introduces the core concepts, but in order to avoid it
 being too overwhelming, we won't go into the fine details. See
 individual pages (particularly the ["choosing between
-types"](type-choices.html) page) and the [API documentation][api]
+types"](type-choices) page) and the [API documentation][api]
 for more information.
 
 "Local" and "global" (or "absolute") types
@@ -118,7 +118,7 @@ although a few useful methods are exposed. Most of the time even if you
 an appropriate object, and then pass it to other constructors etc as a
 little bundle of magic which simply does the right thing for you.
 
-See the [calendars documentation](calendars.html) for more details about
+See the [calendars documentation](calendars) for more details about
 which calendar systems are supported.
 
 <a name="time-zones"></a>Time zones
@@ -172,7 +172,7 @@ Noda Time handles two of them: it is able to map BCL `TimeZoneInfo` objects
 using `BclDateTimeZone`, or it can use the [tz database][TZDB] (also known as
 the IANA Time Zone database, or zoneinfo or Olson database). A version of TZDB
 is embedded within the Noda Time distribution, and if you need a more recent
-one, there are [instructions on how to download and use new data](tzdb.html).
+one, there are [instructions on how to download and use new data](tzdb).
 We generally recommend that you isolate yourself from the provider you're using
 by only depending on [`IDateTimeZoneProvider`][IDateTimeZoneProvider], and
 injecting the appropriate provider in the normal way. "Stock" providers are
@@ -202,7 +202,7 @@ so on) will always represent the same length of time, but they're still availabl
 periods. [`Period`][Period] is used for arithmetic on locally-based values (`LocalDateTime`,
 `LocalDate`, `LocalTime`).
 
-See the [arithmetic](arithmetic.html) page for more information.
+See the [arithmetic](arithmetic) page for more information.
 
 [api]: ../api/
 [2]: http://blogs.msdn.com/b/bclteam/archive/2007/06/18/a-brief-history-of-datetime-anthony-moore.aspx

@@ -180,7 +180,7 @@ Json.NET: NodaTime.Serialization.JsonNet
 
 [Json.NET](http://json.net) is supported within the `NodaTime.Serialization.JsonNet` assembly and the namespace
 of the same name. This assembly is built against Json.NET 4.5.11, and is available in both portable and desktop flavours. It can be installed using NuGet, again with a package name of `NodaTime.Serialization.JsonNet`. See the
-[installation guide](installation.html) for more details.
+[installation guide](installation) for more details.
 
 An extension method of `ConfigureForNodaTime` is provided on both `JsonSerializer` and
 `JsonSerializerSettings`. Alternatively, the [`NodaConverters`](noda-type://NodaTime.Serialization.JsonNet.NodaConverters) type provides public static read-only fields

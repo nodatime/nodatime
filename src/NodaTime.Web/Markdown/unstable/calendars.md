@@ -1,6 +1,6 @@
 @Title="Calendars"
 
-As described in the [core concepts documentation](concepts.html), a calendar system is a scheme
+As described in the [core concepts documentation](concepts), a calendar system is a scheme
 for dividing time into eras, years, months and days and so on. As a matter of simplification,
 Noda Time treats every day as starting and ending at midnight, despite some calendars (such as
 the Islamic and Hebrew calendars) traditionally having days stretching from sunset to sunset.
@@ -25,7 +25,7 @@ concepts of eras, years, months and days - not the alternative
 mapping of a date to a "week year, week of week year, day of week".
 That is now represented by
 [`IWeekYearRule`](noda-type://NodaTime.Calendars.IWeekYearRule).
-Details are in the [week year page](weekyears.html).
+Details are in the [week year page](weekyears).
 
 ISO
 ===

@@ -12,7 +12,7 @@ Alternatively, source and binary downloads are available on the
 [downloads]: /downloads/
 
 An experimental assembly to support Json.NET is also available (in source form
-only); see the [serialization guide](serialization.html) for more information.
+only); see the [serialization guide](serialization) for more information.
 
 See the ["Building and testing"][building] section in the developer guide for
 instructions on building Noda Time from source.
@@ -24,7 +24,7 @@ System requirements
 
 As of release 1.1, there are two builds of Noda Time: the desktop version and the Portable Class Library version.
 
-The desktop version requires .NET 3.5 (client profile). This build also supports Mono, [with some caveats](mono.html).
+The desktop version requires .NET 3.5 (client profile). This build also supports Mono, [with some caveats](mono).
 
 The PCL build is configured to support:
 
@@ -35,15 +35,15 @@ The PCL build is configured to support:
 
 Noda Time does *not* support XBox 360 or Silverlight 3, and it's unlikely that we'd ever want to introduce support
 for these. (It's more likely that over time, we'll drop support for Silverlight - but not imminently, of course.)
-See the [limitations](limitations.html) page for differences between the PCL build and the desktop build.
+See the [limitations](limitations) page for differences between the PCL build and the desktop build.
 
 Package contents and getting started
 ------------------------------------
 
 Everything you need to *use* Noda Time is contained in the NodaTime package. The NodaTime.Testing package is designed
-for testing code which uses Noda Time. See the [testing guide](testing.html) for more information. It is expected
+for testing code which uses Noda Time. See the [testing guide](testing) for more information. It is expected
 that production code will only refer to the `NodaTime.dll` assembly, and that's all that's required at execution time.
-This assembly includes the [TZDB database](tzdb.html) as an embedded resource.
+This assembly includes the [TZDB database](tzdb) as an embedded resource.
 
 Everything within the NodaTime assembly is in the NodaTime namespace or a "child" namespace. After adding a reference to
 the main assembly (either directly via the file system or with NuGet) and including an appropriate `using` directive, you should

@@ -12,7 +12,7 @@ The following standard pattern is supported:
 Custom Patterns
 ---------------
 
-The following custom pattern characters are supported for durations. See [custom pattern notes](text.html#custom-patterns)
+The following custom pattern characters are supported for durations. See [custom pattern notes](text#custom-patterns)
 for general notes on custom patterns, including characters used for escaping and text literals.
 
 The pattern letters basically split into two categories:

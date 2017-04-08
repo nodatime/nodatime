@@ -84,7 +84,7 @@ January.
 IClock
 ------
 
-An [`IClock`][IClock] implementation provides information about the current instant. It knows nothing about time zones or calendar systems. For [testability](testing.html), this is defined
+An [`IClock`][IClock] implementation provides information about the current instant. It knows nothing about time zones or calendar systems. For [testability](testing), this is defined
 as an interface; in a production deployment you're likely to use the [`SystemClock`][SystemClock] singleton implementation.
 
 Interval
