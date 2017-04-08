@@ -1,6 +1,6 @@
 @Title="Installation"
 
-Our primary distribution channel is [NuGet](http://nuget.org) with
+Our primary distribution channel is [NuGet](http://nuget.org/) with
 two packages:
 
 - [NodaTime](http://nuget.org/packages/NodaTime)

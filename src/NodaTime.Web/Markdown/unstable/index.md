@@ -20,10 +20,10 @@ Resources
 - [Blog][blog]
 - [Mailing list][group]
 
-[blog]: http://blog.nodatime.org
+[blog]: http://blog.nodatime.org/
 [group]: https://groups.google.com/group/noda-time
 [home]: https://github.com/nodatime/nodatime
 [api]: ../api/
 [Developer guide]: /developer/
-[so]: http://stackoverflow.com
+[so]: http://stackoverflow.com/
 [so-tag]: http://stackoverflow.com/questions/tagged/nodatime

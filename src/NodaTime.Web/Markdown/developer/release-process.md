@@ -46,7 +46,7 @@ version, following the instructions in the
 Before building the first release with a given minor version number (i.e. 1.0.0,
 1.1.0, or more typically, a -beta or -rc version of the same), we'll need to
 branch. New user-visible functionality is introduced with a new minor version
-number (per the [Semantic versioning](http://semver.org) spec).
+number (per the [Semantic versioning](http://semver.org/) spec).
 
 The branching model used by Noda Time is the Subversion-style backport model.
 In brief:

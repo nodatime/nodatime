@@ -1,6 +1,6 @@
 @Title="Mono support"
 
-[Mono](http://mono-project.com) is an open source implementation of
+[Mono](http://mono-project.com/) is an open source implementation of
 the Common Language Infrastructure which runs on various platforms,
 including Windows, Linux and OS X.
 

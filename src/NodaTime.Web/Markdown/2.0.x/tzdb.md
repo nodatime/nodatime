@@ -47,7 +47,7 @@ Building a NodaZoneData file
    http://www.iana.org/time-zones/repository/releases/tzdata2015e.tar.gz
 2. Determine the Windows mapping file you want to use, or let NodaTime.TzdbCompiler do it for you
    with the versions supplied with the Noda Time source in the `data\cldr` directory. If these are
-   out of date, you can download a new file from [CLDR](http://cldr.unicode.org).
+   out of date, you can download a new file from [CLDR](http://cldr.unicode.org/).
 3. Run NodaTime.TzdbCompiler. I'd suggest leaving it in its build directory and running it like this:
 
 ```bat

@@ -173,12 +173,12 @@ The serialized form is not documented here as it is not expected to be consumed 
 Third-party serialization
 -------------------------
 
-The Noda Time project itself has support for [Json.NET](http://json.net). Additionally, there is a separate project for [ServiceStack.Text](https://github.com/ServiceStack/ServiceStack.Text/) support. Details of both are given below.
+The Noda Time project itself has support for [Json.NET](http://json.net/). Additionally, there is a separate project for [ServiceStack.Text](https://github.com/ServiceStack/ServiceStack.Text/) support. Details of both are given below.
 
 Json.NET: NodaTime.Serialization.JsonNet
 ----------------------------------------
 
-[Json.NET](http://json.net) is supported within the `NodaTime.Serialization.JsonNet` assembly and the namespace
+[Json.NET](http://json.net/) is supported within the `NodaTime.Serialization.JsonNet` assembly and the namespace
 of the same name. This assembly is built against Json.NET 4.5.11, and is available in both portable and desktop flavours. It can be installed using NuGet, again with a package name of `NodaTime.Serialization.JsonNet`. See the
 [installation guide](installation) for more details.
 
