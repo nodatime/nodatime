@@ -197,8 +197,8 @@ All the main source code is under the `src` directory. There are multiple projec
 
 - NodaTime: The main library to be distributed
 - NodaTime.Benchmarks: Benchmarks run regularly to check the performance
-- NodaTime.Demo: Demonstration code written as unit tests. Interesting [Stack Overflow](http://stackoverflow.com) questions can lead to code in this project, for example.
-- NodaTime.Serialization.JsonNet: Library to enable [Json.NET](http://json.net) serialization of NodaTime types.
+- NodaTime.Demo: Demonstration code written as unit tests. Interesting [Stack Overflow](http://stackoverflow.com/) questions can lead to code in this project, for example.
+- NodaTime.Serialization.JsonNet: Library to enable [Json.NET](http://json.net/) serialization of NodaTime types.
 - NodaTime.Serialization.Test: Tests for all serialization assemblies, under the assumption that at some point we'll support more than just Json.NET.
 - NodaTime.Test: Tests for the main library
 - NodaTime.Testing: Library to help users test code which depends on Noda Time. Also used within our own tests.

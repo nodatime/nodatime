@@ -50,7 +50,7 @@ Building a NodaZoneData file
 3. Ideally, rename the directory to match the version number, e.g. "2013h". The directory name will be used in the version ID
    reported by the time zone provider later.
 4. Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
-   in the `data\cldr` directory in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org).
+   in the `data\cldr` directory in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org/).
 5. Run NodaTime.TzdbCompiler. I'd suggest leaving it in its build directory and running it like this:
 
 ```bat
@@ -120,7 +120,7 @@ Building the resource file
 3. Ideally, rename the directory to match the version number, e.g. "2013h". The directory name will be used in the version ID
    reported by the time zone provider later.
 4. Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
-   in the `data\cldr` directory, in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org).
+   in the `data\cldr` directory, in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org/).
 5. Run NodaTime.TzdbCompiler. I'd suggest leaving it in its build directory and running it like this:
 
 ```bat

@@ -227,7 +227,7 @@ This field must occur exactly once, and it uses the string pool.
 
 ## Field 4: CLDR mapping between Windows system time zone IDs and TZDB IDs
 
-This field contains the data from the windowsZones.xml file in [CLDR](http://cldr.unicode.org). The format is:
+This field contains the data from the windowsZones.xml file in [CLDR](http://cldr.unicode.org/). The format is:
 
 - A `string` for the mapping version number (currently a string representation of the revision number)
 - A `string` for the TZDB version the mapping was generated against

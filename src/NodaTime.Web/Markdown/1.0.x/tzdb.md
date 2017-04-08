@@ -29,7 +29,7 @@ Steps
 3. Ideally, rename the directory to match the version number, e.g. "2012c". The directory name will be used in the version ID
    reported by the time zone provider later.
 4. Find the Windows mapping file you want to use. Currently, I'd recommend using the version supplied with the Noda Time source
-   in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org).
+   in ZoneInfoCompiler\Data\winmap in a file beginning "windowsZones". This file comes from [CLDR](http://cldr.unicode.org/).
 5. Run ZoneInfoCompiler. I'd suggest leaving it in its build directory and running it like this:
 
 ```bat

@@ -38,7 +38,7 @@ hot-fixes for cultures which we don't support as well as we might.
 More time zone information
 ==========================
 
-[CLDR](http://cldr.unicode.org) provides useful information about
+[CLDR](http://cldr.unicode.org/) provides useful information about
 time zones such as a canonical ID and user-friendly representations
 (countries and sample cities). We'd also like to make it clearer
 when one zoneinfo time zone is an alias for another.

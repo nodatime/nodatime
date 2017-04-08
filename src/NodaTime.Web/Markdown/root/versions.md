@@ -219,7 +219,7 @@ Major features:
 - Noda Time core types now support XML and (on the desktop build) binary
   serialization (issues [issue 24] and [issue 226])
 - New optional `NodaTime.Serialization.JsonNet` NuGet package enabling JSON
-  serialization for Noda Time types using [Json.NET](http://json.net)
+  serialization for Noda Time types using [Json.NET](http://json.net/)
 - New support for parsing and formatting `Duration`, `OffsetDateTime`, and
   `ZonedDateTime`, including new custom format patterns representing an
   embedded offset (`o`), time zone identifier (`z`), (format-only) time zone
