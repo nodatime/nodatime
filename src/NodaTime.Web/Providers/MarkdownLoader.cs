@@ -21,6 +21,7 @@ namespace NodaTime.Web.Providers
     {
         private const string NodaTypePrefix = "noda-type://";
         private const string NodaPropertyPrefix = "noda-property://";
+        private const string NodaNamespacePrefix = "noda-ns://";
         private static readonly Regex IssuePlaceholderPattern = new Regex(@"^issue \d+$");
 
         private readonly IFileProvider fileProvider;
@@ -105,6 +106,14 @@ namespace NodaTime.Web.Providers
             if (url.StartsWith(NodaTypePrefix))
             {
                 url = url.Substring(NodaTypePrefix.Length);
+                int hashIndex = url.IndexOf('#');
+                string type = hashIndex < 0 ? url : url.Substring(0, hashIndex);
+                string anchor = hashIndex < 0 ? "" : url.Substring(hashIndex);
+                return $"../api/{type}.html{anchor}";
+            }
+            else if (url.StartsWith(NodaNamespacePrefix))
+            {
+                url = url.Substring(NodaNamespacePrefix.Length);
                 int hashIndex = url.IndexOf('#');
                 string type = hashIndex < 0 ? url : url.Substring(0, hashIndex);
                 string anchor = hashIndex < 0 ? "" : url.Substring(hashIndex);
