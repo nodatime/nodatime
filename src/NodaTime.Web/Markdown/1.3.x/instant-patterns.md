@@ -34,5 +34,6 @@ All instant patterns (other than the standard *numeric* ones) handle [`Instant.M
 and [`Instant.MaxValue`](noda-property://NodaTime.Instant.MaxValue) separately. The default formatting of the values
 are simply "MinInstant" and "MaxInstant" respectively, but a new
 [`InstantPattern`](noda-type://NodaTime.Text.InstantPattern) with different min/max labels 
-can be created using the [`WithMinMaxLabels`](noda-type://NodaTime.Text.InstantPattern.WithMinMaxLabels#NodaTime_Text_InstantPattern_WithMinMaxLabels_System_String_System_String_) method.
+can be created using the
+[`WithMinMaxLabels`](noda-type://NodaTime.Text.InstantPattern#NodaTime_Text_InstantPattern_WithMinMaxLabels_System_String_System_String_) method.
 The labels must be non-empty strings which differ from each other.
