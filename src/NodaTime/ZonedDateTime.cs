@@ -132,7 +132,7 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this zoned date and time.</summary>
         /// <value>The calendar system associated with this zoned date and time.</value>
-        public CalendarSystem Calendar => offsetDateTime.Calendar;
+        [NotNull] public CalendarSystem Calendar => offsetDateTime.Calendar;
 
         /// <summary>
         /// Gets the local date represented by this zoned date and time.
@@ -158,7 +158,7 @@ namespace NodaTime
 
         /// <summary>Gets the era for this zoned date and time.</summary>
         /// <value>The era for this zoned date and time.</value>
-        public Era Era => offsetDateTime.Era;
+        [NotNull] public Era Era => offsetDateTime.Era;
 
         /// <summary>Gets the year of this zoned date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,

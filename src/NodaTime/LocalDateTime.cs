@@ -180,7 +180,7 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this local date and time.</summary>
         /// <value>The calendar system associated with this local date and time.</value>
-        public CalendarSystem Calendar => date.Calendar;
+        [NotNull] public CalendarSystem Calendar => date.Calendar;
 
         /// <summary>Gets the year of this local date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
@@ -194,7 +194,7 @@ namespace NodaTime
 
         /// <summary>Gets the era of this local date and time.</summary>
         /// <value>The era of this local date and time.</value>
-        public Era Era => date.Era;
+        [NotNull] public Era Era => date.Era;
 
         /// <summary>
         /// Gets the month of this local date and time within the year.

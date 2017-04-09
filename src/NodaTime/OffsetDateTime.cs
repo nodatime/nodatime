@@ -138,7 +138,7 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this offset date and time.</summary>
         /// <value>The calendar system associated with this offset date and time.</value>
-        public CalendarSystem Calendar => CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal);
+        [NotNull] public CalendarSystem Calendar => CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal);
 
         /// <summary>Gets the year of this offset date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
@@ -168,7 +168,7 @@ namespace NodaTime
 
         /// <summary>Gets the era of this offset date and time.</summary>
         /// <value>The era of this offset date and time.</value>
-        public Era Era => Calendar.GetEra(yearMonthDayCalendar.Year);
+        [NotNull] public Era Era => Calendar.GetEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the day of this offset date and time within the year.</summary>
         /// <value>The day of this offset date and time within the year.</value>
