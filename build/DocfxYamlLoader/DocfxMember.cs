@@ -23,6 +23,7 @@ namespace DocfxYamlLoader
             // TODO: Conversions, unary addition, true/false. Anything else?
         };
 
+        public string YamlFile { get; set; }
         public string Uid { get; set; }
         public string Parent { get; set; }
         public string Name { get; set; }

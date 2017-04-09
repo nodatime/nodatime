@@ -29,17 +29,27 @@ namespace DocfxYamlLoader
 
         public static Release Load(string directory, string version)
         {
-            var serializer = new DeserializerBuilder()
+            var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(new CamelCaseNamingConvention())
                 .IgnoreUnmatchedProperties()
                 .Build();
-            var members = Directory.EnumerateFiles(directory, "*.yml", SearchOption.AllDirectories)
-                .Where(f => Path.GetFileName(f) != "toc.yml")
-                .Select(f => File.ReadAllText(f))
-                .Select(yaml => serializer.Deserialize<DocfxYamlFile>(yaml))
-                .SelectMany(f => f.Items)
-                .ToList();
-            return new Release(version, members);
+            var members =
+                from file in Directory.EnumerateFiles(directory, "*.yml", SearchOption.AllDirectories)
+                where Path.GetFileName(file) != "toc.yml"
+                from item in Load(deserializer, file).Items
+                select item;
+            return new Release(version, members.ToList());
+        }
+
+        private static DocfxYamlFile Load(Deserializer deserializer, string file)
+        {
+            string yaml = File.ReadAllText(file);
+            var doc = deserializer.Deserialize<DocfxYamlFile>(yaml);
+            foreach (var member in doc.Items)
+            {
+                member.YamlFile = file;
+            }
+            return doc;
         }
 
         public class DocfxYamlFile
