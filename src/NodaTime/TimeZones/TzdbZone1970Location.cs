@@ -148,6 +148,7 @@ namespace NodaTime.TimeZones
         /// A country represented within an entry in the "zone1970.tab" file, with the English name
         /// mapped from the "iso3166.tab" file.
         /// </summary>
+        [Immutable]
         public sealed class Country : IEquatable<Country>
         {
             /// <summary>

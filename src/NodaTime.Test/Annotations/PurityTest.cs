@@ -22,7 +22,7 @@ namespace NodaTime.Test.Annotations
 
             var impureMethods = typeof(Instant).GetTypeInfo().Assembly
                                                .DefinedTypes
-                                               .Where(t => t.IsValueType && t.IsPublic)
+                                               .Where(t => t.IsValueType && (t.IsPublic || t.IsNestedPublic))
                                                .OrderBy(t => t.Name)
                                                .SelectMany(m => m.DeclaredMethods)
                                                .Where(m => m.IsPublic && !m.IsStatic)
