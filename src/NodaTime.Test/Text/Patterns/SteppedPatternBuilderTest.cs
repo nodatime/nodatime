@@ -2,10 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using System.Text;
 using NodaTime.Globalization;
 using NodaTime.Text;
+using NodaTime.Text.Patterns;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace NodaTime.Test.Text.Patterns
 {
@@ -61,6 +64,38 @@ namespace NodaTime.Test.Text.Patterns
             var offset = Offset.FromHoursAndMinutes(17, 30);
             SimpleOffsetPattern.AppendFormat(offset, builder);
             Assert.AreEqual("x17:30", builder.ToString());
+        }
+
+        [Test]
+        [TestCase("aBaB", true)]
+        [TestCase("aBAB", false)] // Case-sensitive
+        [TestCase("<aBaB", false)] // < is reserved
+        [TestCase("aBaB>", false)] // > is reserved
+        public void UnhandledLiteral(string text, bool valid)
+        {
+            CharacterHandler<LocalDate, SampleBucket> handler = delegate { };
+            var handlers = new Dictionary<char, CharacterHandler<LocalDate, SampleBucket>>
+            {
+                { 'a', handler },
+                { 'B', handler }
+            };
+            var builder = new SteppedPatternBuilder<LocalDate, SampleBucket>(NodaFormatInfo.InvariantInfo, () => new SampleBucket());
+            if (valid)
+            {
+                builder.ParseCustomPattern(text, handlers);
+            }
+            else
+            {
+                Assert.Throws<InvalidPatternException>(() => builder.ParseCustomPattern(text, handlers));
+            }
+        }
+
+        private class SampleBucket : ParseBucket<LocalDate>
+        {
+            internal override ParseResult<LocalDate> CalculateValue(PatternFields usedFields, string value)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
