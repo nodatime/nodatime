@@ -48,9 +48,8 @@ namespace DocfxAnnotationGenerator
                         var assemblyFile = Path.GetFileName(path);
                         using (var stream = entry.OpenEntryStream())
                         {
-                            // Mono.Cecil seems to have a problem with reading from the stream directly.
-                            // It's fine if we give it a MemoryStream.
-                            // TODO: File a bug.
+                            // Mono.Cecil requires the stream to be seekable. It's simplest
+                            // just to copy the whole DLL to a MemoryStream and pass that to Cecil.
                             var ms = new MemoryStream();
                             stream.CopyTo(ms);
                             ms.Position = 0;
