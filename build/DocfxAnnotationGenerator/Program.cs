@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
+using YamlDotNet.RepresentationModel;
 
 namespace DocfxAnnotationGenerator
 {
@@ -33,6 +35,7 @@ namespace DocfxAnnotationGenerator
             instance.CreateDirectories();
             instance.WriteSinceAnnotations();
             instance.WriteAvailabilityAnnotations();
+            instance.ModifyYamlFiles();
             return 0;
         }
 
@@ -118,6 +121,147 @@ namespace DocfxAnnotationGenerator
                     .Select(m => m.Uid)
                     .ToDictionary(uid => uid, uid => uidsToVersions[uid]);
             }
+        }
+
+        private void ModifyYamlFiles()
+        {
+            // We don't want to load and save the YAML files over and over again, so we perform
+            // potentially-multiple mutations, then resave. We only load documents as and when we need to.
+            foreach (var release in releases)
+            {
+                Console.WriteLine($"Modifying YAML files for {release.Version}");
+                var files = new Dictionary<string, YamlStream>();
+
+                AnnotateNotNullParameters(release, files);
+                AnnotateNotNullReturns(release, files);
+
+                foreach (var pair in files)
+                {
+                    using (var writer = File.CreateText(pair.Key))
+                    {
+                        pair.Value.Save(writer, false);
+                    }
+                }
+            }
+        }
+
+        private void AnnotateNotNullParameters(Release release, Dictionary<string, YamlStream> files)
+        {
+            var members = reflectionDataByVersion[release.Version]
+                .SelectMany(asm => asm.Members)
+                .Where(m => m.NotNullParameters.Any());
+
+            foreach (var member in members)
+            {
+                var document = FindDocument(release, files, member.DocfxUid);
+                var node = FindChildByUid(document, "items", member.DocfxUid);
+
+                YamlNode exceptions;
+                if (!node.Children.TryGetValue("exceptions", out exceptions))
+                {
+                    exceptions = new YamlSequenceNode();
+                    node.Add("exceptions", exceptions);
+                }
+                YamlSequenceNode exceptionsSequence = (YamlSequenceNode) exceptions;
+                var currentArgumentNullException = exceptionsSequence.Children
+                    .Cast<YamlMappingNode>()
+                    .SingleOrDefault(e => ((YamlScalarNode)e.Children["type"]).Value == "System.ArgumentNullException");
+                if (currentArgumentNullException != null)
+                {
+                    exceptionsSequence.Children.Remove(currentArgumentNullException);
+                }
+
+                var names = member.NotNullParameters.ToList();
+                string message;
+                
+                if (names.Count == 1)
+                {
+                    message = $"{ParamRef(names[0])} is null.";
+                }
+                else
+                {
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < names.Count - 2; i++)
+                    {
+                        builder.Append($"{ParamRef(names[i])}, ");
+                    }
+                    builder.Append($"{ParamRef(names[names.Count - 2])} or {ParamRef(names.Last())} is null");
+                    message = builder.ToString();
+                }
+                exceptionsSequence.Children.Add(new YamlMappingNode
+                {
+                    { "type", "System.ArgumentNullException" },
+                    { "commentId", "T:System.ArgumentNullException" },
+                    { "description", message }
+                });
+
+                // Make sure the reference to ArgumentNullException is present
+                var reference = FindChildByUid(document, "references", "System.ArgumentNullException");
+                if (reference == null)
+                {
+                    ((YamlSequenceNode)document.Children["references"]).Add(new YamlMappingNode
+                    {
+                        { "uid", "System.ArgumentNullException" },
+                        { "commentId", "T:System.ArgumentNullException" },
+                        { "parent", "System" },
+                        { "isExternal", "true" },
+                        { "name", "ArgumentNullException" },
+                        { "nameWithType", "ArgumentNullException" },
+                        { "fullName", "System.ArgumentNullException" }
+                    });
+                }
+            }
+
+            string ParamRef(string name) => $"<span class=\"paramref\">{name}</span>"; ;
+        }
+
+        private void AnnotateNotNullReturns(Release release, Dictionary<string, YamlStream> files)
+        {
+            var members = reflectionDataByVersion[release.Version]
+                .SelectMany(asm => asm.Members)
+                .Where(m => m.NotNullReturn);
+
+            foreach (var member in members)
+            {
+                var document = FindDocument(release, files, member.DocfxUid);
+                var node = FindChildByUid(document, "items", member.DocfxUid);
+
+                var description = (YamlScalarNode) node["syntax"]["return"]["description"];
+                var suffix = " (The value returned is never null.)";
+                if (!description.Value.EndsWith(suffix))
+                {
+                    description.Value += suffix;
+                }
+            }
+        }
+
+        private YamlMappingNode FindDocument(Release release, Dictionary<string, YamlStream> files, string uid)
+        {
+            var docfxMember = release.MembersByUid[uid];
+            YamlStream document;
+            string file = docfxMember.YamlFile;
+            if (!files.TryGetValue(file, out document))
+            {
+                document = LoadYamlFile(file);
+                files[file] = document;
+            }
+            return (YamlMappingNode)document.Documents[0].RootNode;
+        }
+
+        private YamlMappingNode FindChildByUid(YamlMappingNode parent, string sequenceName, string uid)
+        {
+            var items = (YamlSequenceNode) parent[sequenceName];
+            return items.Cast<YamlMappingNode>().SingleOrDefault(node => ((YamlScalarNode)node["uid"]).Value == uid);
+        }
+        
+        private static YamlStream LoadYamlFile(string file)
+        {
+            var stream = new YamlStream();
+            using (var reader = File.OpenText(file))
+            {
+                stream.Load(reader);
+            }
+            return stream;
         }
 
         private string GetOverwriteDirectory(Release release)
