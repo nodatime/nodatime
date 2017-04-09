@@ -11,9 +11,21 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            using (var stream = File.OpenRead(@"c:\users\jon\test\Projects\nodatime\build\tmp\docfx\build\src\NodaTime.Serialization.JsonNet\bin\Debug\net45\NodaTime.Serialization.JsonNet.dll"))
+            using (var stream = File.OpenRead(@"c:\users\jon\test\NodaTime.dll"))
             {
-                var cecilUids = ReflectionMember.Load(stream).Select(m => m.DocfxUid).ToList();
+                var members = ReflectionMember.Load(stream).ToList();
+                Console.WriteLine("[NotNull] return members:");
+                foreach (var member in members.Where(m => m.NotNullReturn))
+                {
+                    Console.WriteLine($"  {member.DocfxUid}");
+                }
+                Console.WriteLine();
+                Console.WriteLine("[NotNull] parameters:");
+                foreach (var member in members.Where(m => m.NotNullParameters?.Any() ?? false))
+                {
+                    Console.WriteLine($"  {member.DocfxUid}: {string.Join(", ", member.NotNullParameters)}");
+                }
+                /*
                 var release = Release.Load(@"c:\users\jon\test\projects\nodatime\build\tmp\docfx\obj\2.0.x", "2.0.x");
                 var realUids = release.Members
                     .Where(m => m.Type != DocfxMember.TypeKind.Namespace)
@@ -26,7 +38,7 @@ namespace Sandbox
                 Console.WriteLine();
                 PrintUids("UIDs only in Cecil", cecilUids.Except(realUids));
                 Console.WriteLine();
-                PrintUids("UIDs only in Docfx", realUids.Except(cecilUids));
+                PrintUids("UIDs only in Docfx", realUids.Except(cecilUids));*/
             }
         }
 

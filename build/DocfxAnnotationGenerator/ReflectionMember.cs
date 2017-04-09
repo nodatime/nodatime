@@ -1,8 +1,6 @@
 ﻿using Mono.Cecil;
 using Mono.Collections.Generic;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -71,11 +69,14 @@ namespace DocfxAnnotationGenerator
         private ReflectionMember(PropertyDefinition property)
         {
             DocfxUid = $"{GetUid(property.DeclaringType)}.{property.Name}{GetParameterNames(property.Parameters)}";
+            NotNullReturn = HasNotNullAttribute(property);
         }
 
         private ReflectionMember(MethodDefinition method)
         {
             DocfxUid = GetUid(method);
+            NotNullReturn = HasNotNullAttribute(method);
+            NotNullParameters = method.Parameters.Where(p => HasNotNullAttribute(p)).Select(p => p.Name).ToList();
         }
 
         private ReflectionMember(FieldDefinition field)
@@ -135,5 +136,10 @@ namespace DocfxAnnotationGenerator
         {
             DocfxUid = uid;
         }
+
+        private bool HasNotNullAttribute(ICustomAttributeProvider provider) =>
+            provider != null &&
+            provider.HasCustomAttributes &&
+            provider.CustomAttributes.Any(attr => attr.AttributeType.FullName == "JetBrains.Annotations.NotNullAttribute");
     }
 }
