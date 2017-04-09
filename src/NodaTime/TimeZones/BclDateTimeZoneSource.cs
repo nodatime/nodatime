@@ -2,10 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
-using NodaTime.Annotations;
-using NodaTime.Utility;
 #if !PCL
+using NodaTime.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +27,14 @@ namespace NodaTime.TimeZones
     [Immutable]
     public sealed class BclDateTimeZoneSource : IDateTimeZoneSource
     {
+        /// <summary>
+        /// Constructs a new instance. This is rarely useful in application code, as this class has no state of its own.
+        /// Most application code should use <see cref="DateTimeZoneProviders.Bcl"/>.
+        /// </summary>
+        public BclDateTimeZoneSource()
+        {
+        }
+
         /// <summary>
         /// Returns the IDs of all system time zones.
         /// </summary>

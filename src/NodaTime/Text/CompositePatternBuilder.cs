@@ -38,6 +38,14 @@ namespace NodaTime.Text
         private readonly List<Func<T, bool>> formatPredicates = new List<Func<T, bool>>();
 
         /// <summary>
+        /// Constructs a new instance which initially has no component patterns. At least one component
+        /// pattern must be added before <see cref="Build"/> is called.
+        /// </summary>
+        public CompositePatternBuilder()
+        {
+        }
+
+        /// <summary>
         /// Adds a component pattern to this builder.
         /// </summary>
         /// <param name="pattern">The component pattern to use as part of the eventual composite pattern.</param>
