@@ -21,7 +21,7 @@ namespace Sandbox
                 }
                 Console.WriteLine();
                 Console.WriteLine("[NotNull] parameters:");
-                foreach (var member in members.Where(m => m.NotNullParameters?.Any() ?? false))
+                foreach (var member in members.Where(m => m.NotNullParameters.Any()))
                 {
                     Console.WriteLine($"  {member.DocfxUid}: {string.Join(", ", member.NotNullParameters)}");
                 }

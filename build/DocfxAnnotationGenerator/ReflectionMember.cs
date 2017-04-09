@@ -17,8 +17,8 @@ namespace DocfxAnnotationGenerator
         /// </summary>
         public string DocfxUid { get; }
 
-        // Only for methods and indexers...
-        public IEnumerable<string> NotNullParameters { get; }
+        // Never null, but only actually relevant for methods, properties and indexers.
+        public IEnumerable<string> NotNullParameters { get; } = Enumerable.Empty<string>();
 
         // Methods, indexers, properties.
         public bool NotNullReturn { get; }
