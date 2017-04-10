@@ -4,6 +4,7 @@
 
 using System.Text;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 
 namespace NodaTime.Text
 {
@@ -28,7 +29,7 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        [NotNull] ParseResult<T> Parse(string text);
+        [NotNull] ParseResult<T> Parse([SpecialNullHandling] string text);
 
         /// <summary>
         /// Formats the given value as text according to the rules of this pattern.

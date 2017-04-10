@@ -96,7 +96,7 @@ namespace NodaTime.TimeZones
         /// zones returned by this implementation are instances of <see cref="BclDateTimeZone"/> (rather than the built-in
         /// fixed offset zones).
         /// </remarks>        
-        DateTimeZone IDateTimeZoneSource.ForId(string id) => ForId(id);
+        DateTimeZone IDateTimeZoneSource.ForId([NotNull] string id) => ForId(id);
 
         /// <summary>
         /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
@@ -105,7 +105,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The ID of the system time zone to convert</param>
         /// <exception cref="ArgumentException">The given zone doesn't exist.</exception>
         /// <returns>The Noda Time representation of the given BCL time zone</returns>
-        [NotNull] public BclDateTimeZone ForId(string id)
+        [NotNull] public BclDateTimeZone ForId([NotNull] string id)
         {
             try
             {

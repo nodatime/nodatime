@@ -71,7 +71,7 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        [NotNull] public ParseResult<Offset> Parse(string text) => UnderlyingPattern.Parse(text);
+        [NotNull] public ParseResult<Offset> Parse([SpecialNullHandling] string text) => UnderlyingPattern.Parse(text);
 
         /// <summary>
         /// Formats the given offset as text according to the rules of this pattern.
