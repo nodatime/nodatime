@@ -99,8 +99,9 @@ namespace NodaTime
         /// <seealso cref="Id"/>
         /// <exception cref="KeyNotFoundException">No calendar system for the specified ID can be found.</exception>
         /// <exception cref="NotSupportedException">The calendar system with the specified ID is known, but not supported on this platform.</exception>
-        public static CalendarSystem ForId(string id)
+        [NotNull] public static CalendarSystem ForId([NotNull] string id)
         {
+            Preconditions.CheckNotNull(id, nameof(id));
             Func<CalendarSystem> factory;
             if (!IdToFactoryMap.TryGetValue(id, out factory))
             {
@@ -174,7 +175,7 @@ namespace NodaTime
         /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.
         /// </summary>
         /// <value>The IDs of all calendar systems available within Noda Time.</value>
-        public static IEnumerable<string> Ids => IdToFactoryMap.Keys;
+        [NotNull] public static IEnumerable<string> Ids => IdToFactoryMap.Keys;
 
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
@@ -210,7 +211,7 @@ namespace NodaTime
         /// and consistency.
         /// </remarks>
         /// <value>The ISO calendar system.</value>
-        public static CalendarSystem Iso => IsoCalendarSystem;
+        [NotNull] public static CalendarSystem Iso => IsoCalendarSystem;
 
         /// <summary>
         /// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
@@ -228,7 +229,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="monthNumbering">The month numbering system to use</param>
         /// <returns>A Hebrew calendar system for the given month numbering.</returns>
-        public static CalendarSystem GetHebrewCalendar(HebrewMonthNumbering monthNumbering)
+        [NotNull] public static CalendarSystem GetHebrewCalendar(HebrewMonthNumbering monthNumbering)
         {
             Preconditions.CheckArgumentRange(nameof(monthNumbering), (int) monthNumbering, 1, 2);
             return HebrewCalendars.ByMonthNumbering[((int) monthNumbering) - 1];
@@ -291,7 +292,7 @@ namespace NodaTime
         /// <param name="epoch">The kind of epoch to use (astronomical or civil)</param>
         /// <returns>A suitable Islamic calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</returns>
-        public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+        [NotNull] public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
         {
             Preconditions.CheckArgumentRange(nameof(leapYearPattern), (int) leapYearPattern, 1, 4);
             Preconditions.CheckArgumentRange(nameof(epoch), (int) epoch, 1, 2);
@@ -360,7 +361,7 @@ namespace NodaTime
         /// </list>
         /// </remarks>
         /// <value>The unique identifier for this calendar system.</value>
-        public string Id { get; }
+        [NotNull] public string Id { get; }
 
         /// <summary>
         /// Returns the name of this calendar system. Each kind of calendar system has a unique name, but this
@@ -369,7 +370,7 @@ namespace NodaTime
         /// specify the minimum number of days in the first week of a year.)
         /// </summary>
         /// <value>The name of this calendar system.</value>
-        public string Name { get; }
+        [NotNull] public string Name { get; }
 
         /// <summary>
         /// Gets the minimum valid year (inclusive) within this calendar.
@@ -404,7 +405,7 @@ namespace NodaTime
         /// Gets a read-only list of eras used in this calendar system.
         /// </summary>
         /// <value>A read-only list of eras used in this calendar system.</value>
-        public IList<Era> Eras => eraCalculator.Eras;
+        [NotNull] public IList<Era> Eras => eraCalculator.Eras;
 
         /// <summary>
         /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
@@ -613,7 +614,7 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <value>A Gregorian calendar system with at least 4 days in the first week of a week-year.</value>
-        public static CalendarSystem Gregorian => GregorianJulianCalendars.Gregorian;
+        [NotNull] public static CalendarSystem Gregorian => GregorianJulianCalendars.Gregorian;
 
         /// <summary>
         /// Returns a pure proleptic Julian calendar system, which defines every
@@ -631,7 +632,7 @@ namespace NodaTime
         /// </para>
         /// <value>A suitable Julian calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</value>
-        public static CalendarSystem Julian => GregorianJulianCalendars.Julian;
+        [NotNull] public static CalendarSystem Julian => GregorianJulianCalendars.Julian;
 
         /// <summary>
         /// Returns a Coptic calendar system, which defines every fourth year as
@@ -657,7 +658,7 @@ namespace NodaTime
         /// </remarks>
         /// <value>A suitable Coptic calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</value>
-        public static CalendarSystem Coptic => MiscellaneousCalendars.Coptic;
+        [NotNull] public static CalendarSystem Coptic => MiscellaneousCalendars.Coptic;
 
         /// <summary>
         /// Returns an Islamic calendar system equivalent to the one used by the BCL HijriCalendar.
@@ -669,7 +670,7 @@ namespace NodaTime
         /// </remarks>
         /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
         /// <value>An Islamic calendar system equivalent to the one used by the BCL.</value>
-        public static CalendarSystem IslamicBcl => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+        [NotNull] public static CalendarSystem IslamicBcl => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
 
         /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
@@ -680,7 +681,7 @@ namespace NodaTime
         /// in each cycle are leap years.
         /// </remarks>
         /// <value>A Persian calendar system using a simple 33-year leap cycle.</value>
-        public static CalendarSystem PersianSimple => PersianCalendars.Simple;
+        [NotNull] public static CalendarSystem PersianSimple => PersianCalendars.Simple;
 
         /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
@@ -693,7 +694,7 @@ namespace NodaTime
         /// is complex.
         /// </remarks>
         /// <value>A Persian calendar system using astronomical calculations to determine leap years.</value>
-        public static CalendarSystem PersianArithmetic => PersianCalendars.Arithmetic;
+        [NotNull] public static CalendarSystem PersianArithmetic => PersianCalendars.Arithmetic;
 
         /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour
@@ -703,7 +704,7 @@ namespace NodaTime
         /// This calendar is also known as the algorithmic Solar Hijri calendar.
         /// </remarks>
         /// <value>A Persian calendar system using cycles-within-cycles of years to determine leap years.</value>
-        public static CalendarSystem PersianAstronomical => PersianCalendars.Astronomical;
+        [NotNull] public static CalendarSystem PersianAstronomical => PersianCalendars.Astronomical;
 
         /// <summary>
         /// Returns a Hebrew calendar system using the civil month numbering,
@@ -712,14 +713,14 @@ namespace NodaTime
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
         /// <value>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
         /// BCL.</value>
-        public static CalendarSystem HebrewCivil => GetHebrewCalendar(HebrewMonthNumbering.Civil);
+        [NotNull] public static CalendarSystem HebrewCivil => GetHebrewCalendar(HebrewMonthNumbering.Civil);
 
         /// <summary>
         /// Returns a Hebrew calendar system using the scriptural month numbering.
         /// </summary>
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
         /// <value>A Hebrew calendar system using the scriptural month numbering.</value>
-        public static CalendarSystem HebrewScriptural => GetHebrewCalendar(HebrewMonthNumbering.Scriptural);
+        [NotNull] public static CalendarSystem HebrewScriptural => GetHebrewCalendar(HebrewMonthNumbering.Scriptural);
 
         /// <summary>
         /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
@@ -729,7 +730,7 @@ namespace NodaTime
         /// This is a tabular calendar, relying on pregenerated data.
         /// </remarks>
         /// <value>A calendar system for the Um Al Qura calendar.</value>
-        public static CalendarSystem UmAlQura => MiscellaneousCalendars.UmAlQura;
+        [NotNull] public static CalendarSystem UmAlQura => MiscellaneousCalendars.UmAlQura;
 
         // "Holder" classes for lazy initialization of calendar systems
 

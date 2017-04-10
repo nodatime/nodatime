@@ -60,7 +60,7 @@ namespace NodaTime
         /// <summary>
         /// A period containing only zero-valued properties.
         /// </summary>
-        public static Period Zero { get; } = new Period(0, 0, 0, 0);
+        [NotNull] public static Period Zero { get; } = new Period(0, 0, 0, 0);
 
         /// <summary>
         /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
@@ -68,7 +68,7 @@ namespace NodaTime
         /// equal 1 year.
         /// </summary>
         /// <value>An equality comparer which compares periods by first normalizing them.</value>
-        public static IEqualityComparer<Period> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
+        [NotNull] public static IEqualityComparer<Period> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
 
         // The fields that make up this period.
 
@@ -722,9 +722,7 @@ namespace NodaTime
         /// changes made to the builder are not reflected in this period.
         /// </summary>
         /// <returns>A builder with the same values and units as this period.</returns>
-        [Pure]
-        [NotNull]
-        public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
+        [Pure] [NotNull] public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
 
         /// <summary>
         /// Returns a normalized version of this period, such that equivalent (but potentially non-equal) periods are
@@ -747,9 +745,7 @@ namespace NodaTime
         /// negative values, but for simplicity there is no attempt to work around this.</exception>
         /// <returns>The normalized period.</returns>
         /// <seealso cref="NormalizingEqualityComparer"/>
-        [Pure]
-        [NotNull]
-        public Period Normalize()
+        [Pure] [NotNull] public Period Normalize()
         {
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.

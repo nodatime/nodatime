@@ -54,7 +54,7 @@ namespace NodaTime.TimeZones
         /// Gets the <see cref="DateTimeZone" /> in which this mapping was performed.
         /// </summary>
         /// <value>The time zone in which this mapping was performed.</value>
-        public DateTimeZone Zone { get; }
+        [NotNull] public DateTimeZone Zone { get; }
 
         /// <summary>
         /// Gets the <see cref="T:NodaTime.LocalDateTime" /> which was mapped within the time zone.
@@ -71,7 +71,7 @@ namespace NodaTime.TimeZones
         /// mappings, this is the interval before which the mapped local time occurs.
         /// </remarks>
         /// <value>The earlier zone interval within this mapping.</value>
-        public ZoneInterval EarlyInterval { get; }
+        [NotNull] public ZoneInterval EarlyInterval { get; }
 
         /// <summary>
         /// Gets the later <see cref="ZoneInterval" /> within this mapping.
@@ -83,7 +83,7 @@ namespace NodaTime.TimeZones
         /// mappings, this is the interval after which the mapped local time occurs.
         /// </remarks>
         /// <value>The later zone interval within this mapping.</value>
-        public ZoneInterval LateInterval { get; }
+        [NotNull] public ZoneInterval LateInterval { get; }
 
         /// <summary>
         /// Gets the number of results within this mapping: the number of distinct

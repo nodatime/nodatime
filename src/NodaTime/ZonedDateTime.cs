@@ -116,7 +116,7 @@ namespace NodaTime
 
         /// <summary>Gets the time zone associated with this value.</summary>
         /// <value>The time zone associated with this value.</value>
-        public DateTimeZone Zone => zone ?? DateTimeZone.Utc;
+        [NotNull] public DateTimeZone Zone => zone ?? DateTimeZone.Utc;
 
         /// <summary>
         /// Gets the local date and time represented by this zoned date and time.
@@ -502,6 +502,7 @@ namespace NodaTime
         /// </remarks>
         /// <returns>The <c>ZoneInterval</c> containing this value.</returns>
         [Pure]
+        [NotNull]
         public ZoneInterval GetZoneInterval() => Zone.GetZoneInterval(ToInstant());
 
         /// <summary>
@@ -650,7 +651,7 @@ namespace NodaTime
             /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             /// <value>A comparer which compares values by their local date/time.</value>
-            public static Comparer Local => LocalComparer.Instance;
+            [NotNull] public static Comparer Local => LocalComparer.Instance;
 
             /// <summary>
             /// Gets a comparer which compares <see cref="ZonedDateTime"/> values by the instants obtained by applying the offset to
@@ -664,7 +665,7 @@ namespace NodaTime
             /// </remarks>
             /// <value>A comparer which compares values by the instants obtained by applying the offset to
             /// the local date/time, ignoring the calendar system.</value>
-            public static Comparer Instant => InstantComparer.Instance;
+            [NotNull] public static Comparer Instant => InstantComparer.Instance;
 
             /// <summary>
             /// Internal constructor to prevent external classes from deriving from this.

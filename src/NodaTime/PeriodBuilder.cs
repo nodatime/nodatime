@@ -178,7 +178,7 @@ namespace NodaTime
         /// Builds a period from the properties in this builder.
         /// </summary>
         /// <returns>A period containing the values from this builder.</returns>
-        public Period Build() =>
+        [NotNull] public Period Build() =>
             new Period(Years, Months, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Ticks, Nanoseconds);
 
         /// <inheritdoc />

@@ -155,13 +155,13 @@ namespace NodaTime.TimeZones
             /// Gets the English name of the country.
             /// </summary>
             /// <value>The English name of the country.</value>
-            public string Name { get; }
+            [NotNull] public string Name { get; }
 
             /// <summary>
             /// Gets the ISO-3166 2-letter country code for the country.
             /// </summary>
             /// <value>The ISO-3166 2-letter country code for the country.</value>
-            public string Code { get; }
+            [NotNull] public string Code { get; }
 
             /// <summary>
             /// Constructs a new country from its name and ISO-3166 2-letter code.

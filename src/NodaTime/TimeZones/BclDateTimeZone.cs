@@ -47,13 +47,13 @@ namespace NodaTime.TimeZones
         /// Gets the original <see cref="TimeZoneInfo"/> from which this was created.
         /// </summary>
         /// <value>The original <see cref="TimeZoneInfo"/> from which this was created.</value>
-        public TimeZoneInfo OriginalZone { get; }
+        [NotNull] public TimeZoneInfo OriginalZone { get; }
 
         /// <summary>
         /// Gets the display name associated with the time zone, as provided by the Base Class Library.
         /// </summary>
         /// <value>The display name associated with the time zone, as provided by the Base Class Library.</value>
-        public string DisplayName => OriginalZone.DisplayName;
+        [NotNull] public string DisplayName => OriginalZone.DisplayName;
 
         private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, IZoneIntervalMap map)
             : base(bclZone.Id, bclZone.SupportsDaylightSavingTime, minOffset, maxOffset)
@@ -73,7 +73,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="bclZone">The original time zone to take information from.</param>
         /// <returns>A <see cref="BclDateTimeZone"/> wrapping the given <c>TimeZoneInfo</c>.</returns>
-        public static BclDateTimeZone FromTimeZoneInfo([NotNull] TimeZoneInfo bclZone)
+        [NotNull] public static BclDateTimeZone FromTimeZoneInfo([NotNull] TimeZoneInfo bclZone)
         {
             Preconditions.CheckNotNull(bclZone, nameof(bclZone));
             Offset standardOffset = bclZone.BaseUtcOffset.ToOffset();
@@ -302,7 +302,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <returns>A <see cref="BclDateTimeZone"/> wrapping the "local" (system) time zone as returned by
         /// <see cref="TimeZoneInfo.Local"/>.</returns>
-        public static BclDateTimeZone ForSystemDefault()
+        [NotNull] public static BclDateTimeZone ForSystemDefault()
         {
             TimeZoneInfo local = TimeZoneInfo.Local;
             BclDateTimeZone currentSystemDefault = systemDefault;

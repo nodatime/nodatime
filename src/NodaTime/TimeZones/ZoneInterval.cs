@@ -131,7 +131,7 @@ namespace NodaTime.TimeZones
         /// Gets the name of this offset period (e.g. PST or PDT).
         /// </summary>
         /// <value>The name of this offset period (e.g. PST or PDT).</value>
-        public string Name { [DebuggerStepThrough] get; }
+        [NotNull] public string Name { [DebuggerStepThrough] get; }
 
         /// <summary>
         /// Gets the offset from UTC for this period. This includes any daylight savings value.
@@ -303,7 +303,7 @@ namespace NodaTime.TimeZones
                 .Hash(RawEnd)
                 .Hash(WallOffset)
                 .Hash(Savings)
-                .Value;    
+                .Value;
 
         /// <summary>
         ///   Returns a <see cref="System.String" /> that represents this instance.

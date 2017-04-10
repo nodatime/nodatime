@@ -34,7 +34,7 @@ namespace NodaTime.TimeZones
         /// Gets the <see cref="TzdbDateTimeZoneSource"/> initialised from resources within the NodaTime assembly.
         /// </summary>
         /// <value>The source initialised from resources within the NodaTime assembly.</value>
-        public static TzdbDateTimeZoneSource Default => DefaultHolder.builtin;
+        [NotNull] public static TzdbDateTimeZoneSource Default => DefaultHolder.builtin;
 
         // Class to enable lazy initialization of the default instance.
         private static class DefaultHolder
@@ -74,7 +74,7 @@ namespace NodaTime.TimeZones
         /// The aliases within a group are returned in alphabetical (ordinal) order.
         /// </remarks>
         /// <value>A lookup from canonical ID to the aliases of that ID.</value>
-        public ILookup<string, string> Aliases { get; }
+        [NotNull] public ILookup<string, string> Aliases { get; }
 
         /// <summary>
         /// Returns a read-only map from time zone ID to the canonical ID. For example, the key "Europe/Jersey"
@@ -87,8 +87,7 @@ namespace NodaTime.TimeZones
         /// <see cref="NotSupportedException" />.</para>
         /// </remarks>
         /// <value>A map from time zone ID to the canonical ID.</value>
-        [NotNull]
-        public IDictionary<string, string> CanonicalIdMap { get; }
+        [NotNull] public IDictionary<string, string> CanonicalIdMap { get; }
 
         /// <summary>
         /// Gets a read-only list of zone locations known to this source, or null if the original source data
@@ -99,7 +98,7 @@ namespace NodaTime.TimeZones
         /// has been validated).
         /// </remarks>
         /// <value>A read-only list of zone locations known to this source.</value>
-        public IList<TzdbZoneLocation> ZoneLocations { get; }
+        [CanBeNull] public IList<TzdbZoneLocation> ZoneLocations { get; }
 
         /// <summary>
         /// Gets a read-only list of "zone 1970" locations known to this source, or null if the original source data
@@ -125,7 +124,7 @@ namespace NodaTime.TimeZones
         /// </p>
         /// </remarks>
         /// <value>A read-only list of zone locations known to this source.</value>
-        public IList<TzdbZone1970Location> Zone1970Locations { get; }
+        [CanBeNull] public IList<TzdbZone1970Location> Zone1970Locations { get; }
 
         /// <inheritdoc />
         /// <remarks>
@@ -138,7 +137,7 @@ namespace NodaTime.TimeZones
         /// directly from the <see cref="TzdbVersion"/> and <see cref="WindowsZones.Version"/> properties.
         /// </para>
         /// </remarks>
-        public string VersionId => "TZDB: " + version;
+        [NotNull] public string VersionId => "TZDB: " + version;
 
         /// <summary>
         /// Creates an instance from a stream in the custom Noda Time format. The stream must be readable.
@@ -159,7 +158,7 @@ namespace NodaTime.TimeZones
         /// be read by this version of Noda Time.</exception>
         /// <exception cref="IOException">Reading from the stream failed.</exception>
         /// <exception cref="InvalidOperationException">The supplied stream doesn't support reading.</exception>
-        public static TzdbDateTimeZoneSource FromStream([NotNull] Stream stream)
+        [NotNull] public static TzdbDateTimeZoneSource FromStream([NotNull] Stream stream)
         {
             Preconditions.CheckNotNull(stream, nameof(stream));
             return new TzdbDateTimeZoneSource(TzdbStreamData.FromStream(stream));
@@ -182,7 +181,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        public DateTimeZone ForId([NotNull] string id)
+        [NotNull] public DateTimeZone ForId([NotNull] string id)
         {
             string canonicalId;
             if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, nameof(id)), out canonicalId))
@@ -194,10 +193,10 @@ namespace NodaTime.TimeZones
 
         /// <inheritdoc />
         [DebuggerStepThrough]
-        public IEnumerable<string> GetIds() => CanonicalIdMap.Keys;
+        [NotNull] public IEnumerable<string> GetIds() => CanonicalIdMap.Keys;
 
         /// <inheritdoc />
-        public string GetSystemDefaultId() => MapTimeZoneInfoId(TimeZoneInfo.Local);
+        [CanBeNull] public string GetSystemDefaultId() => MapTimeZoneInfoId(TimeZoneInfo.Local);
 
         [VisibleForTesting]
         internal string MapTimeZoneInfoId(TimeZoneInfo timeZone)

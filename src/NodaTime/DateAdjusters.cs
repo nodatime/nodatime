@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 using System;
 
 namespace NodaTime
@@ -18,7 +19,8 @@ namespace NodaTime
         /// <value>
         /// A date adjuster to move to the first day of the current month.
         /// </value>
-        public static Func<LocalDate, LocalDate> StartOfMonth { get; } = date => new LocalDate(date.Year, date.Month, 1, date.Calendar);
+        [NotNull] public static Func<LocalDate, LocalDate> StartOfMonth { get; } =
+            date => new LocalDate(date.Year, date.Month, 1, date.Calendar);
 
         /// <summary>
         /// A date adjuster to move to the last day of the current month.
@@ -26,7 +28,8 @@ namespace NodaTime
         /// <value>
         /// A date adjuster to move to the last day of the current month.
         /// </value>
-        public static Func<LocalDate, LocalDate> EndOfMonth { get; } = date => new LocalDate(date.Year, date.Month, date.Calendar.GetDaysInMonth(date.Year, date.Month), date.Calendar);
+        [NotNull] public static Func<LocalDate, LocalDate> EndOfMonth { get; } = 
+            date => new LocalDate(date.Year, date.Month, date.Calendar.GetDaysInMonth(date.Year, date.Month), date.Calendar);
 
         /// <summary>
         /// A date adjuster to move to the specified day of the current month.
@@ -38,7 +41,7 @@ namespace NodaTime
         /// <param name="day">The day of month to adjust dates to.</param>
         /// <returns>An adjuster which changes the day to <paramref name="day"/>,
         /// retaining the same year and month.</returns>
-        public static Func<LocalDate, LocalDate> DayOfMonth(int day) =>
+        [NotNull] public static Func<LocalDate, LocalDate> DayOfMonth(int day) =>
             date => new LocalDate(date.Year, date.Month, day, date.Calendar);
 
         /// <summary>
@@ -51,7 +54,7 @@ namespace NodaTime
         /// <param name="month">The month to adjust dates to.</param>
         /// <returns>An adjuster which changes the month to <paramref name="month"/>,
         /// retaining the same year and day of month.</returns>
-        public static Func<LocalDate, LocalDate> Month(int month) =>
+        [NotNull] public static Func<LocalDate, LocalDate> Month(int month) =>
             date => new LocalDate(date.Year, month, date.Day, date.Calendar);
 
         /// <summary>
@@ -61,7 +64,7 @@ namespace NodaTime
         /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
         /// <returns>An adjuster which advances a date to the next occurrence of the
         /// specified day-of-week, or the original date if the day is already corret.</returns>
-        public static Func<LocalDate, LocalDate> NextOrSame(IsoDayOfWeek dayOfWeek)
+        [NotNull] public static Func<LocalDate, LocalDate> NextOrSame(IsoDayOfWeek dayOfWeek)
         {
             // Avoids boxing...
             if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
@@ -78,7 +81,7 @@ namespace NodaTime
         /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
         /// <returns>An adjuster which advances a date to the previous occurrence of the
         /// specified day-of-week, or the original date if the day is already corret.</returns>
-        public static Func<LocalDate, LocalDate> PreviousOrSame(IsoDayOfWeek dayOfWeek)
+        [NotNull] public static Func<LocalDate, LocalDate> PreviousOrSame(IsoDayOfWeek dayOfWeek)
         {
             // Avoids boxing...
             if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
@@ -98,7 +101,7 @@ namespace NodaTime
         /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
         /// <returns>An adjuster which advances a date to the next occurrence of the
         /// specified day-of-week.</returns>
-        public static Func<LocalDate, LocalDate> Next(IsoDayOfWeek dayOfWeek)
+        [NotNull] public static Func<LocalDate, LocalDate> Next(IsoDayOfWeek dayOfWeek)
         {
             // Avoids boxing...
             if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)
@@ -118,7 +121,7 @@ namespace NodaTime
         /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
         /// <returns>An adjuster which advances a date to the previous occurrence of the
         /// specified day-of-week.</returns>
-        public static Func<LocalDate, LocalDate> Previous(IsoDayOfWeek dayOfWeek)
+        [NotNull] public static Func<LocalDate, LocalDate> Previous(IsoDayOfWeek dayOfWeek)
         {
             // Avoids boxing...
             if (dayOfWeek < IsoDayOfWeek.Monday || dayOfWeek > IsoDayOfWeek.Sunday)

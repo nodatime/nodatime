@@ -7,6 +7,7 @@ using System.Globalization;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Properties;
+using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
@@ -50,7 +51,7 @@ namespace NodaTime.Text
         /// <remarks>This property is typically used to wrap parse failures in higher level exceptions.</remarks>
         /// <value>The exception indicating the cause of the parse failure.</value>
         /// <exception cref="InvalidOperationException">The parse operation succeeded.</exception>
-        public Exception Exception
+        [NotNull] public Exception Exception
         {
             get
             {

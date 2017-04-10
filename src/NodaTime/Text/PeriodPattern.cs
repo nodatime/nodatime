@@ -26,7 +26,7 @@ namespace NodaTime.Text
         /// Each element may also be negative, independently of other elements. This pattern round-trips its
         /// values: a parse/format cycle will produce an identical period, including units.
         /// </summary>
-        public static PeriodPattern Roundtrip { get; } = new PeriodPattern(new RoundtripPatternImpl());
+        [NotNull] public static PeriodPattern Roundtrip { get; } = new PeriodPattern(new RoundtripPatternImpl());
 
         /// <summary>
         /// A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.
@@ -40,7 +40,7 @@ namespace NodaTime.Text
         /// combined weeks/days/time portions are considered. Such a period could never
         /// be useful anyway, however.
         /// </remarks>
-        public static PeriodPattern NormalizingIso { get; } = new PeriodPattern(new NormalizingIsoPatternImpl());
+        [NotNull] public static PeriodPattern NormalizingIso { get; } = new PeriodPattern(new NormalizingIsoPatternImpl());
 
         private readonly IPattern<Period> pattern;
 
@@ -58,14 +58,14 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        public ParseResult<Period> Parse(string text) => pattern.Parse(text);
+        [NotNull] public ParseResult<Period> Parse(string text) => pattern.Parse(text);
 
         /// <summary>
         /// Formats the given period as text according to the rules of this pattern.
         /// </summary>
         /// <param name="value">The period to format.</param>
         /// <returns>The period formatted according to this pattern.</returns>
-        public string Format(Period value) => pattern.Format(value);
+        [NotNull] public string Format(Period value) => pattern.Format(value);
 
         /// <summary>
         /// Formats the given value as text according to the rules of this pattern,
@@ -74,7 +74,7 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
         /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
-        public StringBuilder AppendFormat(Period value, [NotNull] StringBuilder builder) => pattern.AppendFormat(value, builder);
+        [NotNull] public StringBuilder AppendFormat(Period value, [NotNull] StringBuilder builder) => pattern.AppendFormat(value, builder);
 
         private static void AppendValue(StringBuilder builder, long value, string suffix)
         {

@@ -482,7 +482,7 @@ namespace NodaTime
         /// <param name="lhs">The time to subtract from</param>
         /// <param name="rhs">The time to subtract</param>
         /// <returns>The result of subtracting one time from another.</returns>
-        public static Period operator -(LocalTime lhs, LocalTime rhs) => Period.Between(rhs, lhs);
+        [NotNull] public static Period operator -(LocalTime lhs, LocalTime rhs) => Period.Between(rhs, lhs);
 
         /// <summary>
         /// Subtracts one time from another, returning the result as a <see cref="Period"/> with units of years, months and days.
@@ -493,7 +493,7 @@ namespace NodaTime
         /// <param name="lhs">The time to subtract from</param>
         /// <param name="rhs">The time to subtract</param>
         /// <returns>The result of subtracting one time from another.</returns>
-        public static Period Subtract(LocalTime lhs, LocalTime rhs) => lhs - rhs;
+        [NotNull] public static Period Subtract(LocalTime lhs, LocalTime rhs) => lhs - rhs;
 
         /// <summary>
         /// Subtracts the specified time from this time, returning the result as a <see cref="Period"/>.
@@ -502,6 +502,7 @@ namespace NodaTime
         /// <param name="time">The time to subtract from this</param>
         /// <returns>The difference between the specified time and this one</returns>
         [Pure]
+        [NotNull]
         public Period Minus(LocalTime time) => this - time;
 
         /// <summary>
