@@ -58,14 +58,14 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        [NotNull] public ParseResult<Period> Parse(string text) => pattern.Parse(text);
+        [NotNull] public ParseResult<Period> Parse([SpecialNullHandling] string text) => pattern.Parse(text);
 
         /// <summary>
         /// Formats the given period as text according to the rules of this pattern.
         /// </summary>
         /// <param name="value">The period to format.</param>
         /// <returns>The period formatted according to this pattern.</returns>
-        [NotNull] public string Format(Period value) => pattern.Format(value);
+        [NotNull] public string Format([NotNull] Period value) => pattern.Format(value);
 
         /// <summary>
         /// Formats the given value as text according to the rules of this pattern,
@@ -74,7 +74,7 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
         /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
-        [NotNull] public StringBuilder AppendFormat(Period value, [NotNull] StringBuilder builder) => pattern.AppendFormat(value, builder);
+        [NotNull] public StringBuilder AppendFormat([NotNull] Period value, [NotNull] StringBuilder builder) => pattern.AppendFormat(value, builder);
 
         private static void AppendValue(StringBuilder builder, long value, string suffix)
         {

@@ -67,7 +67,7 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        [NotNull] public ParseResult<Duration> Parse(string text) => pattern.Parse(text);
+        [NotNull] public ParseResult<Duration> Parse([SpecialNullHandling] string text) => pattern.Parse(text);
 
         /// <summary>
         /// Formats the given duration as text according to the rules of this pattern.

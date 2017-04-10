@@ -51,7 +51,7 @@ namespace NodaTime.Text
         /// <param name="pattern">The component pattern to use as part of the eventual composite pattern.</param>
         /// <param name="formatPredicate">A predicate to determine whether or not this pattern is suitable for
         /// formatting the given value.</param>
-        public void Add(IPattern<T> pattern, Func<T, bool> formatPredicate)
+        public void Add([NotNull] IPattern<T> pattern, [NotNull] Func<T, bool> formatPredicate)
         {
             patterns.Add(Preconditions.CheckNotNull(pattern, nameof(pattern)));
             formatPredicates.Add(Preconditions.CheckNotNull(formatPredicate, nameof(formatPredicate)));
@@ -91,7 +91,7 @@ namespace NodaTime.Text
                 this.formatPredicates = formatPredicates.ToArray();
             }
 
-            public ParseResult<T> Parse(string text)
+            public ParseResult<T> Parse([SpecialNullHandling] string text)
             {
                 foreach (IPattern<T> pattern in patterns)
                 {

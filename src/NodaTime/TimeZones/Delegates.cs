@@ -85,5 +85,5 @@ namespace NodaTime.TimeZones
     /// <exception cref="AmbiguousTimeException">The implementation rejects requests to map ambiguous times.</exception>
     /// <exception cref="SkippedTimeException">The implementation rejects requests to map skipped times.</exception>
     /// <returns>A <see cref="ZonedDateTime"/> in the target time zone.</returns>
-    public delegate ZonedDateTime ZoneLocalMappingResolver(ZoneLocalMapping mapping);
+    public delegate ZonedDateTime ZoneLocalMappingResolver([NotNull] ZoneLocalMapping mapping);
 }

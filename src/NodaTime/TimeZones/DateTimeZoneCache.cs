@@ -120,7 +120,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        [NotNull] public DateTimeZone this[string id]
+        [NotNull] public DateTimeZone this[[NotNull] string id]
         {
             get
             {

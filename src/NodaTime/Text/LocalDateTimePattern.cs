@@ -134,7 +134,7 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        [NotNull] public ParseResult<LocalDateTime> Parse(string text) => UnderlyingPattern.Parse(text);
+        [NotNull] public ParseResult<LocalDateTime> Parse([SpecialNullHandling] string text) => UnderlyingPattern.Parse(text);
 
         /// <summary>
         /// Formats the given local date/time as text according to the rules of this pattern.

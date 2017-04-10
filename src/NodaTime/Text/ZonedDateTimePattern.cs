@@ -121,7 +121,7 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        [NotNull] public ParseResult<ZonedDateTime> Parse(string text) => pattern.Parse(text);
+        [NotNull] public ParseResult<ZonedDateTime> Parse([SpecialNullHandling] string text) => pattern.Parse(text);
 
         /// <summary>
         /// Formats the given zoned date/time as text according to the rules of this pattern.
@@ -189,7 +189,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
         /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
-        [NotNull] public static ZonedDateTimePattern CreateWithInvariantCulture([NotNull] string patternText, IDateTimeZoneProvider zoneProvider) =>
+        [NotNull] public static ZonedDateTimePattern CreateWithInvariantCulture([NotNull] string patternText, [CanBeNull] IDateTimeZoneProvider zoneProvider) =>
             Create(patternText, NodaFormatInfo.InvariantInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue);
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
         /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
-        [NotNull] public static ZonedDateTimePattern CreateWithCurrentCulture([NotNull] string patternText, IDateTimeZoneProvider zoneProvider) =>
+        [NotNull] public static ZonedDateTimePattern CreateWithCurrentCulture([NotNull] string patternText, [CanBeNull] IDateTimeZoneProvider zoneProvider) =>
             Create(patternText, NodaFormatInfo.CurrentInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue);
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="resolver">The new local mapping resolver to use.</param>
         /// <returns>A new pattern with the given resolver.</returns>
-        [NotNull] public ZonedDateTimePattern WithResolver(ZoneLocalMappingResolver resolver) =>
+        [NotNull] public ZonedDateTimePattern WithResolver([CanBeNull] ZoneLocalMappingResolver resolver) =>
             Resolver == resolver ? this : Create(PatternText, FormatInfo, resolver, ZoneProvider, TemplateValue);
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="newZoneProvider">The new time zone provider to use.</param>
         /// <returns>A new pattern with the given time zone provider.</returns>
-        [NotNull] public ZonedDateTimePattern WithZoneProvider(IDateTimeZoneProvider newZoneProvider) =>
+        [NotNull] public ZonedDateTimePattern WithZoneProvider([CanBeNull] IDateTimeZoneProvider newZoneProvider) =>
             newZoneProvider == ZoneProvider ? this : Create(PatternText, FormatInfo, Resolver, newZoneProvider, TemplateValue);
 
         /// <summary>
