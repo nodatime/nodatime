@@ -152,7 +152,7 @@ namespace NodaTime.TimeZones
         /// of this method.</remarks>
         /// <param name="interval">The interval over which to compare time zones. This must have both a start and an end.</param>
         /// <returns>A ZoneEqualityComparer for the given interval with the default options.</returns>
-        public static ZoneEqualityComparer ForInterval(Interval interval)
+        [NotNull] public static ZoneEqualityComparer ForInterval(Interval interval)
         {
             Preconditions.CheckArgument(interval.HasStart && interval.HasEnd, nameof(interval),
                 "The interval must have both a start and an end.");
@@ -169,7 +169,7 @@ namespace NodaTime.TimeZones
         /// <param name="options">New set of options, which must consist of flags defined within the <see cref="Options"/> enum.</param>
         /// <exception cref="ArgumentOutOfRangeException">The specified options are invalid.</exception>
         /// <returns>A comparer operating over the same interval as this one, but with the given set of options.</returns>
-        public ZoneEqualityComparer WithOptions(Options options)
+        [NotNull] public ZoneEqualityComparer WithOptions(Options options)
         {
             return this.options == options ? this : new ZoneEqualityComparer(this.interval, options);
         }

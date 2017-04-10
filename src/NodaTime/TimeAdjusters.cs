@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
 using System;
 
 namespace NodaTime
@@ -16,21 +17,21 @@ namespace NodaTime
         /// Gets a time adjuster to truncate the time to the second, discarding fractional seconds.
         /// </summary>
         /// <value>A time adjuster to truncate the time to the second, discarding fractional seconds.</value>
-        public static Func<LocalTime, LocalTime> TruncateToSecond { get; }
+        [NotNull] public static Func<LocalTime, LocalTime> TruncateToSecond { get; }
             = time => new LocalTime(time.Hour, time.Minute, time.Second);
 
         /// <summary>
         /// Gets a time adjuster to truncate the time to the minute, discarding fractional minutes.
         /// </summary>
         /// <value>A time adjuster to truncate the time to the minute, discarding fractional minutes.</value>
-        public static Func<LocalTime, LocalTime> TruncateToMinute { get; }
+        [NotNull] public static Func<LocalTime, LocalTime> TruncateToMinute { get; }
             = time => new LocalTime(time.Hour, time.Minute);
 
         /// <summary>
         /// Get a time adjuster to truncate the time to the hour, discarding fractional hours.
         /// </summary>
         /// <value>A time adjuster to truncate the time to the hour, discarding fractional hours.</value>
-        public static Func<LocalTime, LocalTime> TruncateToHour { get; }
+        [NotNull] public static Func<LocalTime, LocalTime> TruncateToHour { get; }
             = time => new LocalTime(time.Hour, 0);
     }
 }

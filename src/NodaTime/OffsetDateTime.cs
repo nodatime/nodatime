@@ -725,7 +725,7 @@ namespace NodaTime
             /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             /// <value>A comparer which compares values by their local date/time, without reference to the offset.</value>
-            public static Comparer Local => LocalComparer.Instance;
+            [NotNull] public static Comparer Local => LocalComparer.Instance;
 
             /// <summary>
             /// Returns a comparer which compares <see cref="OffsetDateTime"/> values by the instant values obtained by applying the offset to
@@ -738,7 +738,7 @@ namespace NodaTime
             /// </remarks>
             /// <value>A comparer which compares values by the instant values obtained by applying the offset to
             /// the local date/time, ignoring the calendar system.</value>
-            public static Comparer Instant => InstantComparer.Instance;
+            [NotNull] public static Comparer Instant => InstantComparer.Instance;
 
             /// <summary>
             /// Internal constructor to prevent external classes from deriving from this.

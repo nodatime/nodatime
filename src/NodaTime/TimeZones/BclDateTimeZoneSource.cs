@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 #if !PCL
+using JetBrains.Annotations;
 using NodaTime.Annotations;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace NodaTime.TimeZones
         /// Returns the IDs of all system time zones.
         /// </summary>
         /// <returns>The IDs available from this source.</returns>
-        public IEnumerable<string> GetIds()
+        [NotNull] public IEnumerable<string> GetIds()
         {
             // Always include the local time zone, since Mono may not include it in the list of system time zones, even
             // though it allows the Id to be passed to FindSystemTimeZoneById().
@@ -83,7 +84,7 @@ namespace NodaTime.TimeZones
         /// This source returns a string such as "TimeZoneInfo: 3.5.0.0" corresponding to the version of the assembly
         /// containing <see cref="TimeZoneInfo"/>.
         /// </remarks>
-        public string VersionId => "TimeZoneInfo: " + typeof(TimeZoneInfo).Assembly.GetName().Version;
+        [NotNull] public string VersionId => "TimeZoneInfo: " + typeof(TimeZoneInfo).Assembly.GetName().Version;
 
         /// <summary>
         /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
@@ -104,7 +105,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The ID of the system time zone to convert</param>
         /// <exception cref="ArgumentException">The given zone doesn't exist.</exception>
         /// <returns>The Noda Time representation of the given BCL time zone</returns>
-        public BclDateTimeZone ForId(string id)
+        [NotNull] public BclDateTimeZone ForId(string id)
         {
             try
             {
@@ -118,7 +119,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        public string GetSystemDefaultId() => TimeZoneInfo.Local.Id;
+        [NotNull] public string GetSystemDefaultId() => TimeZoneInfo.Local.Id;
     }
 }
 #endif

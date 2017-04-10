@@ -50,7 +50,7 @@ namespace NodaTime
         /// Gets the time zone in which the local date/time is invalid.
         /// </summary>
         /// <value>The time zone in which the local date/time is invalid</value>
-        public DateTimeZone Zone { get; }
+        [NotNull] public DateTimeZone Zone { get; }
 
         /// <summary>
         /// Creates a new instance for the given local date/time and time zone.

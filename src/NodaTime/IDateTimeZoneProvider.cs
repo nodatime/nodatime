@@ -28,7 +28,7 @@ namespace NodaTime
         /// Gets the version ID of this provider.
         /// </summary>
         /// <value>The version ID of this provider.</value>
-        string VersionId { get; }
+        [NotNull] string VersionId { get; }
 
         /// <summary>
         /// Gets the list of valid time zone ids advertised by this provider.
@@ -45,7 +45,7 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
-        ReadOnlyCollection<string> Ids { get; }
+        [NotNull] ReadOnlyCollection<string> Ids { get; }
 
 #if PCL
         /// <summary>
@@ -66,7 +66,7 @@ namespace NodaTime
         /// <returns>
         /// The provider-specific representation of the system default time zone.
         /// </returns>
-        DateTimeZone GetSystemDefault();
+        [NotNull] DateTimeZone GetSystemDefault();
 #else
         /// <summary>
         /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
@@ -93,7 +93,7 @@ namespace NodaTime
         /// <returns>
         /// The provider-specific representation of the system default time zone.
         /// </returns>
-        DateTimeZone GetSystemDefault();
+        [NotNull] DateTimeZone GetSystemDefault();
 #endif
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace NodaTime
         /// <param name="id">The time zone ID to find.</param>
         /// <returns>The <see cref="DateTimeZone" /> for the given ID or null if the provider does not support
         /// the given ID.</returns>
-        DateTimeZone GetZoneOrNull([NotNull] string id);
+        [CanBeNull] DateTimeZone GetZoneOrNull([NotNull] string id);
 
         /// <summary>
         /// Returns the time zone for the given ID.
@@ -142,6 +142,6 @@ namespace NodaTime
         /// <param name="id">The time zone id to find.</param>
         /// <value>The <see cref="DateTimeZone" /> for the given ID.</value>
         /// <exception cref="DateTimeZoneNotFoundException">This provider does not support the given ID.</exception>
-        DateTimeZone this[[NotNull] string id] { get; }
+        [NotNull] DateTimeZone this[[NotNull] string id] { get; }
     }
 }

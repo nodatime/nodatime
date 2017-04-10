@@ -141,6 +141,9 @@ namespace NodaTime.Test.Text
             // Standard patterns without a DateTimeZoneProvider
             new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr, ZoneProvider = null},
             new Data(MsdnStandardExample) { Pattern = "F", Text = "2009-06-15T13:45:30.09 UTC (+00)", Culture = Cultures.FrFr, ZoneProvider = null },
+            // Standard patterns without a resolver
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr, Resolver = null},
+            new Data(MsdnStandardExample) { Pattern = "F", Text = "2009-06-15T13:45:30.09 UTC (+00)", Culture = Cultures.FrFr, Resolver = null },
         };
 
         internal static Data[] FormatAndParseData = {

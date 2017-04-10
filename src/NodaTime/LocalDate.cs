@@ -357,7 +357,7 @@ namespace NodaTime
         /// <param name="lhs">The date to subtract from</param>
         /// <param name="rhs">The date to subtract</param>
         /// <returns>The result of subtracting one date from another.</returns>
-        public static Period operator -(LocalDate lhs, LocalDate rhs) => Period.Between(rhs, lhs);
+        [NotNull] public static Period operator -(LocalDate lhs, LocalDate rhs) => Period.Between(rhs, lhs);
 
         /// <summary>
         /// Subtracts one date from another, returning the result as a <see cref="Period"/> with units of years, months and days.
@@ -369,7 +369,7 @@ namespace NodaTime
         /// <param name="lhs">The date to subtract from</param>
         /// <param name="rhs">The date to subtract</param>
         /// <returns>The result of subtracting one date from another.</returns>
-        public static Period Subtract(LocalDate lhs, LocalDate rhs) => lhs - rhs;
+        [NotNull] public static Period Subtract(LocalDate lhs, LocalDate rhs) => lhs - rhs;
 
         /// <summary>
         /// Subtracts the specified date from this date, returning the result as a <see cref="Period"/> with units of years, months and days.
@@ -378,8 +378,7 @@ namespace NodaTime
         /// <remarks>The specified date must be in the same calendar system as this.</remarks>
         /// <param name="date">The date to subtract from this</param>
         /// <returns>The difference between the specified date and this one</returns>
-        [Pure]
-        public Period Minus(LocalDate date) => this - date;
+        [Pure] [NotNull] public Period Minus(LocalDate date) => this - date;
 
         /// <summary>
         /// Compares two <see cref="LocalDate" /> values for equality. This requires

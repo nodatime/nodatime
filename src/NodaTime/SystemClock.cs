@@ -4,6 +4,7 @@
 
 using System;
 using NodaTime.Annotations;
+using JetBrains.Annotations;
 
 namespace NodaTime
 {
@@ -21,7 +22,7 @@ namespace NodaTime
         /// The singleton instance of <see cref="SystemClock"/>.
         /// </summary>
         /// <value>The singleton instance of <see cref="SystemClock"/>.</value>
-        public static SystemClock Instance { get; } = new SystemClock();
+        [NotNull] public static SystemClock Instance { get; } = new SystemClock();
 
         /// <summary>
         /// Constructor present to prevent external construction.

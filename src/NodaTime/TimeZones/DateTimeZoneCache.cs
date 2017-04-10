@@ -35,10 +35,10 @@ namespace NodaTime.TimeZones
         /// the underlying source.
         /// </summary>
         /// <value>The version ID of this provider.</value>
-        public string VersionId { get; }
+        [NotNull] public string VersionId { get; }
 
         /// <inheritdoc />
-        public ReadOnlyCollection<string> Ids { get; }
+        [NotNull] public ReadOnlyCollection<string> Ids { get; }
 
         /// <summary>
         /// Creates a provider backed by the given <see cref="IDateTimeZoneSource"/>.
@@ -78,6 +78,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
+        [NotNull]
         public DateTimeZone GetSystemDefault()
         {
             string id = source.GetSystemDefaultId();
@@ -89,7 +90,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        public DateTimeZone GetZoneOrNull([NotNull] string id)
+        [CanBeNull] public DateTimeZone GetZoneOrNull([NotNull] string id)
         {
             Preconditions.CheckNotNull(id, nameof(id));
             return GetZoneFromSourceOrNull(id) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
@@ -119,7 +120,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        public DateTimeZone this[string id]
+        [NotNull] public DateTimeZone this[string id]
         {
             get
             {

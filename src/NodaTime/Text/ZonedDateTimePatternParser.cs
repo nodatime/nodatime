@@ -92,7 +92,7 @@ namespace NodaTime.Text
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,
                 () => new ZonedDateTimeParseBucket(templateValue, resolver, zoneProvider));
-            if (zoneProvider == null)
+            if (zoneProvider == null || resolver == null)
             {
                 patternBuilder.SetFormatOnly();
             }

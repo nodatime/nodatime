@@ -63,7 +63,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <exception cref="InvalidOperationException">No component patterns have been added.</exception>
         /// <returns>A pattern using the patterns added to this builder.</returns>
-        public IPattern<T> Build()
+        [NotNull] public IPattern<T> Build()
         {
             Preconditions.CheckState(patterns.Count != 0, "A composite pattern must have at least one component pattern.");
             return new CompositePattern(patterns, formatPredicates);
