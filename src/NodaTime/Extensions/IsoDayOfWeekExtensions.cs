@@ -4,6 +4,7 @@
 
 using System;
 using NodaTime.Utility;
+using NodaTime.Annotations;
 
 namespace NodaTime.Extensions
 {
@@ -19,6 +20,7 @@ namespace NodaTime.Extensions
         /// <param name="isoDayOfWeek">The <c>IsoDayOfWeek</c> to convert.</param>
         /// <returns>The <c>DayOfWeek</c> equivalent to <paramref name="isoDayOfWeek"/></returns>
         [Obsolete("This method was incorrectly named. Use ToDayOfWeek instead")]
+        [TestExemption(TestExemptionCategory.ConversionName, "Released in 2.0 :(")]
         public static DayOfWeek ToIsoDayOfWeek(this IsoDayOfWeek isoDayOfWeek) => ToDayOfWeek(isoDayOfWeek);
 
         /// <summary>
