@@ -38,9 +38,8 @@ namespace NodaTime.Test.Annotations
                 .Where(m => CanBeReferenceType(m.ReturnType) == true)
                 .Where(m => !IsAnnotated(m));
 
-            var unannotatedMembers = properties.Concat<MemberInfo>(methods).ToList();
-                                        
-            Assert.IsEmpty(unannotatedMembers, $"Unannotated members ({unannotatedMembers.Count}): " + string.Join(", ", unannotatedMembers.Select(m => $"{m.DeclaringType.Name}.{m.Name}")));
+            var unannotatedMembers = properties.Concat<MemberInfo>(methods);
+            TestHelper.AssertNoFailures(unannotatedMembers, m => $"{m.DeclaringType.Name}.{m.Name}");
         }
 
         [Test]
@@ -59,9 +58,8 @@ namespace NodaTime.Test.Annotations
                 .Where(IsAnnotated)
                 .Where(m => CanBeReferenceType(m.ReturnType) == false);
 
-            var badMembers = properties.Concat<MemberInfo>(methods).ToList();
-
-            Assert.IsEmpty(badMembers, $"Inappropriately annotated members ({badMembers.Count}): " + string.Join(", ", badMembers.Select(m => $"{m.DeclaringType.Name}.{m.Name}")));
+            var badMembers = properties.Concat<MemberInfo>(methods);
+            TestHelper.AssertNoFailures(badMembers, m => $"{m.DeclaringType.Name}.{m.Name}");
         }
 
         [Test]
@@ -96,11 +94,9 @@ namespace NodaTime.Test.Annotations
             var badParameters = propertyParameters
                 .Concat(methodParameters)
                 .Where(p => CanBeReferenceType(p.ParameterType) == true)
-                .Where(p => !IsAnnotated(p))
-                .ToList();
+                .Where(p => !IsAnnotated(p));
 
-            Assert.IsEmpty(badParameters, $"Unannotated annotated parameters ({badParameters.Count}): " + Environment.NewLine +
-                string.Join(Environment.NewLine, badParameters.Select(p => $"{p.Member.DeclaringType.Name}.{p.Member.Name}({p.Name})")));
+            TestHelper.AssertNoFailures(badParameters, p => $"{p.Member.DeclaringType.Name}.{p.Member.Name}({p.Name})");
         }
 
         [Test]
@@ -120,11 +116,9 @@ namespace NodaTime.Test.Annotations
             var badParameters = propertyParameters
                 .Concat(methodParameters)
                 .Where(IsAnnotated)
-                .Where(p => CanBeReferenceType(p.ParameterType) == false)
-                .ToList();
+                .Where(p => CanBeReferenceType(p.ParameterType) == false);
 
-            Assert.IsEmpty(badParameters, $"Inappropriately annotated parameters ({badParameters.Count}): " + Environment.NewLine +
-                string.Join(Environment.NewLine, badParameters.Select(p => $"{p.Member.DeclaringType.Name}.{p.Member.Name}({p.Name})")));
+            TestHelper.AssertNoFailures(badParameters, p => $"{p.Member.DeclaringType.Name}.{p.Member.Name}({p.Name})");
         }
 
         private static bool IsPropertyGetterOrSetter(MethodInfo method) =>

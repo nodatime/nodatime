@@ -21,10 +21,9 @@ namespace NodaTime.Test.Annotations
                                                     .Where(t => !(t.IsAbstract && t.IsSealed)) // Ignore static classes
                                                     .OrderBy(t => t.Name)
                                                     .Where(t => !t.IsDefined(typeof(ImmutableAttribute)) &&
-                                                                !t.IsDefined(typeof(MutableAttribute)))
-                                                    .ToList();
-            Assert.IsEmpty(unannotatedClasses, "Unannotated classes: " + string.Join(", ", unannotatedClasses.Select(c => c.Name)));
-        }
+                                                                !t.IsDefined(typeof(MutableAttribute)));
 
+            TestHelper.AssertNoFailures(unannotatedClasses, c => c.Name);
+        }
     }
 }

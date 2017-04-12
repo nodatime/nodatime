@@ -17,10 +17,9 @@ namespace NodaTime.Test.Annotations
             var types = typeof(Instant).GetTypeInfo().Assembly.DefinedTypes;
             var invalidMembers = types.SelectMany(t => t.DeclaredMembers)
                                       .Where(m => GetParameters(m).Any(p => p.IsDefined(typeof(TrustedAttribute), false)))
-                                      .Where(InvalidForTrustedParameters)
-                                      .ToList();
+                                      .Where(InvalidForTrustedParameters);
 
-            Assert.IsEmpty(invalidMembers, "Invalid members: " + string.Join(", ", invalidMembers.Select(FormatMemberDebugName)));
+            TestHelper.AssertNoFailures(invalidMembers, FormatMemberDebugName);
         }
 
         private static string FormatMemberDebugName(MemberInfo m) =>
