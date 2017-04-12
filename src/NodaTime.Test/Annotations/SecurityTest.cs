@@ -16,6 +16,7 @@ namespace NodaTime.Test.Annotations
         public void SecurityAttributesOnInterfaceImplementations()
         {
             var violations = new List<string>();
+
             foreach (var type in typeof(Instant).GetTypeInfo().Assembly.DefinedTypes.Where(type => !type.IsInterface))
             {
                 foreach (var iface in type.ImplementedInterfaces)
@@ -33,7 +34,7 @@ namespace NodaTime.Test.Annotations
                     }
                 }
             }
-            Assert.IsEmpty(violations);
+            TestHelper.AssertNoFailures(violations, v => v);
         }
     }
 }

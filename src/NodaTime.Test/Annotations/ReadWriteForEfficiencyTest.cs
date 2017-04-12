@@ -26,25 +26,23 @@ namespace NodaTime.Test.Annotations
             var badFields = GetFieldsWithAttribute()
                 .Where(field => field.IsInitOnly)
                 .ToList();
-            Assert.IsEmpty(badFields);
+            TestHelper.AssertNoFailures(badFields, f => $"{f.DeclaringType}.{f.Name}");
         }
 
         [Test]
         public void AttributeOnlyAppliedToValueTypeFields()
         {
             var badFields = GetFieldsWithAttribute()
-                .Where(field => !field.FieldType.GetTypeInfo().IsValueType)
-                .ToList();
-            Assert.IsEmpty(badFields);
+                .Where(field => !field.FieldType.GetTypeInfo().IsValueType);
+            TestHelper.AssertNoFailures(badFields, f => $"{f.DeclaringType}.{f.Name}");
         }
 
         [Test]
         public void AttributeOnlyAppliedToPrivateFields()
         {
             var badFields = GetFieldsWithAttribute()
-                .Where(field => !field.IsPrivate)
-                .ToList();
-            Assert.IsEmpty(badFields);
+                .Where(field => !field.IsPrivate);
+            TestHelper.AssertNoFailures(badFields, f => $"{f.DeclaringType}.{f.Name}");
         }
     }
 }

@@ -28,9 +28,9 @@ namespace NodaTime.Test.Annotations
                                                .Where(m => m.IsPublic && !m.IsStatic)
                                                .Where(m => !m.IsSpecialName) // Real methods, not properties
                                                .Where(m => !implicitlyPureNames.Contains(m.Name))
-                                               .Where(m => !m.IsDefined(typeof(PureAttribute)))
-                                               .ToList();
-            Assert.IsEmpty(impureMethods, "Impure methods: " + string.Join(", ", impureMethods.Select(m => m.DeclaringType.Name + "." + m.Name)));
+                                               .Where(m => !m.IsDefined(typeof(PureAttribute)));
+
+            TestHelper.AssertNoFailures(impureMethods, m => m.DeclaringType.Name + "." + m.Name);
         }
     }
 }

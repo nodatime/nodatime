@@ -131,6 +131,21 @@ namespace NodaTime.Test
         }
 
         /// <summary>
+        /// Typically used to report a list of items (e.g. reflection members) that fail a condition, one per line.
+        /// </summary>
+        internal static void AssertNoFailures<T>(IEnumerable<T> failures, Func<T, string> failureFormatter)
+        {
+            var failureList = failures.ToList();
+            if (failureList.Count == 0)
+            {
+                return;
+            }
+            var newLine = Environment.NewLine;
+            var message = $"Failures: {failureList.Count}{newLine}{string.Join(newLine, failureList.Select(failureFormatter))}";
+            Assert.Fail(message);
+        }
+
+        /// <summary>
         /// Asserts that the given operation throws one of InvalidOperationException, ArgumentException (including
         /// ArgumentOutOfRangeException) or OverflowException. (It's hard to always be consistent bearing in mind
         /// one method calling another.)
