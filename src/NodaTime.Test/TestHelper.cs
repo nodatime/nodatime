@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using NUnit.Framework;
 using System.Linq;
 using System.Reflection;
+using NodaTime.Annotations;
 
 #if !PCL
 using System.Runtime.Serialization.Formatters.Binary;
@@ -144,6 +145,15 @@ namespace NodaTime.Test
             var message = $"Failures: {failureList.Count}{newLine}{string.Join(newLine, failureList.Select(failureFormatter))}";
             Assert.Fail(message);
         }
+
+        internal static void AssertNoFailures<T>(IEnumerable<T> failures, Func<T, string> failureFormatter, TestExemptionCategory category)
+            where T : MemberInfo =>
+            AssertNoFailures(failures.Where(member => !IsExempt(member, category)), failureFormatter);
+
+        private static bool IsExempt(MemberInfo member, TestExemptionCategory category) =>
+            member.GetCustomAttributes(typeof(TestExemptionAttribute), false)
+                .Cast<TestExemptionAttribute>()
+                .Any(e => e.Category == category);
 
         /// <summary>
         /// Asserts that the given operation throws one of InvalidOperationException, ArgumentException (including

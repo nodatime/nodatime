@@ -516,6 +516,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>The number of days (including fractional days) since the Julian Epoch.</returns>
         [Pure]
+        [TestExemption(TestExemptionCategory.ConversionName)]
         public double ToJulianDate() => (this - JulianEpoch).TotalDays;
 
         /// <summary>
@@ -641,6 +642,7 @@ namespace NodaTime
         /// </remarks>
         /// <value>The number of seconds since the Unix epoch.</value>
         [Pure]
+        [TestExemption(TestExemptionCategory.ConversionName)]
         public long ToUnixTimeSeconds() =>
             duration.FloorDays * (long) SecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerSecond;
 
@@ -652,6 +654,7 @@ namespace NodaTime
         /// </remarks>
         /// <value>The number of milliseconds since the Unix epoch.</value>
         [Pure]
+        [TestExemption(TestExemptionCategory.ConversionName)]
         public long ToUnixTimeMilliseconds() =>
             duration.FloorDays * (long) MillisecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerMillisecond;
 
@@ -664,6 +667,7 @@ namespace NodaTime
         /// </remarks>
         /// <returns>The number of ticks since the Unix epoch.</returns>
         [Pure]
+        [TestExemption(TestExemptionCategory.ConversionName)]
         public long ToUnixTimeTicks() =>
             TickArithmetic.BoundedDaysAndTickOfDayToTicks(duration.FloorDays, duration.NanosecondOfFloorDay / NanosecondsPerTick);
 

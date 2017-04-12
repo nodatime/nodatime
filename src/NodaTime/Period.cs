@@ -722,7 +722,7 @@ namespace NodaTime
         /// changes made to the builder are not reflected in this period.
         /// </summary>
         /// <returns>A builder with the same values and units as this period.</returns>
-        [Pure] [NotNull] public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
+        [Pure] [NotNull] [TestExemption(TestExemptionCategory.ConversionName)] public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
 
         /// <summary>
         /// Returns a normalized version of this period, such that equivalent (but potentially non-equal) periods are
