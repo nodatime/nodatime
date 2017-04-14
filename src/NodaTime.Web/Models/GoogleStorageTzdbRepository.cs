@@ -3,13 +3,14 @@
 // as found in the LICENSE.txt file.
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace NodaTime.Web.Models
 {
-    // TODO: See if ASP.NET Core already has a good cache strategy. This isn't ideal.
     public class GoogleStorageTzdbRepository : ITzdbRepository
     {
         private const string Bucket = "nodatime";
@@ -18,50 +19,49 @@ namespace NodaTime.Web.Models
 
         private readonly object padlock = new object();
         private readonly StorageClient client;
-        private List<TzdbDownload> releases;
-        private Dictionary<string, TzdbDownload> releasesByName = new Dictionary<string, TzdbDownload>();
-        private Instant nextCacheRefresh;
+        private readonly TimerCache<CacheEntry> cache;
 
-        public GoogleStorageTzdbRepository(GoogleCredential credential)
+        public GoogleStorageTzdbRepository(
+            IApplicationLifetime lifetime,
+            ILoggerFactory loggerFactory,
+            GoogleCredential credential)
         {
             client = StorageClient.Create(credential);
+            cache = new TimerCache<CacheEntry>(lifetime, CacheRefreshTime, FetchReleases, loggerFactory);
         }
 
-        public IList<TzdbDownload> GetReleases()
-        {
-            lock (padlock)
-            {
-                MaybeUpdateReleases();
-                return releases;
-            }
-        }
+        public IList<TzdbDownload> GetReleases() => (cache.Value ?? FetchReleases()).Releases;
 
         public TzdbDownload GetRelease(string name)
         {
-            lock (padlock)
-            {
-                TzdbDownload value;
-                MaybeUpdateReleases();
-                releasesByName.TryGetValue(name, out value);
-                return value;
-            }
+            var releasesByName = (cache.Value ?? FetchReleases()).ReleasesByName;
+            TzdbDownload value;
+            releasesByName.TryGetValue(name, out value);
+            return value;
         }
 
-        private void MaybeUpdateReleases()
+        private CacheEntry FetchReleases()
         {
-            if (releases != null && Clock.GetCurrentInstant() < nextCacheRefresh)
-            {
-                return;
-            }
-
-            nextCacheRefresh = Clock.GetCurrentInstant() + CacheRefreshTime;
-            releases = client.ListObjects(Bucket, "tzdb/")
+            var oldReleasesByName = cache.Value?.ReleasesByName ?? new Dictionary<string, TzdbDownload>();
+            var releases = client.ListObjects(Bucket, "tzdb/")
                                 .Where(o => o.Name.EndsWith(".nzd"))
                                 .Select(obj => new TzdbDownload($"https://storage.googleapis.com/{Bucket}/{obj.Name}"))
-                                .Select(r => releasesByName.ContainsKey(r.Name) ? releasesByName[r.Name] : r)
+                                .Select(r => oldReleasesByName.ContainsKey(r.Name) ? oldReleasesByName[r.Name] : r)
                                 .OrderBy(r => r.Name, StringComparer.Ordinal)
                                 .ToList();
-            releasesByName = releases.ToDictionary(r => r.Name);
+            return new CacheEntry(releases);
+        }
+
+        private class CacheEntry
+        {
+            public Dictionary<string, TzdbDownload> ReleasesByName { get; }
+            public List<TzdbDownload> Releases { get; }
+
+            public CacheEntry(List<TzdbDownload> releases)
+            {
+                Releases = releases;
+                ReleasesByName = releases.ToDictionary(r => r.Name);
+            }
         }
     }
 }
