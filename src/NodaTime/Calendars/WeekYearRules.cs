@@ -97,6 +97,9 @@ namespace NodaTime.Calendars
         /// </remarks>
         /// <param name="calendarWeekRule">The BCL rule to emulate.</param>
         /// <param name="firstDayOfWeek">The first day of the week to use in the rule.</param>
+        /// <returns>A rule which behaves the same way as the BCL
+        /// <see cref="Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)"/>
+        /// method.</returns>
         [NotNull] public static IWeekYearRule FromCalendarWeekRule(CalendarWeekRule calendarWeekRule, DayOfWeek firstDayOfWeek)
         {
             int minDaysInFirstWeek;

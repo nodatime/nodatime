@@ -60,6 +60,7 @@ namespace NodaTime
         /// <summary>
         /// A period containing only zero-valued properties.
         /// </summary>
+        /// <value>A period containing only zero-valued properties.</value>
         [NotNull] public static Period Zero { get; } = new Period(0, 0, 0, 0);
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace NodaTime
         /// This property returns zero both when the property has been explicitly set to zero and when the period does not
         /// contain this property.
         /// </remarks>
-        /// /// <value>The number of nanoseconds within this period.</value>
+        /// <value>The number of nanoseconds within this period.</value>
         public long Nanoseconds { get; }
 
         /// <summary>
