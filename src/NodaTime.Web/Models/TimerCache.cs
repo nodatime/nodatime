@@ -37,7 +37,8 @@ namespace NodaTime.Web.Models
             lifetime.ApplicationStopping.Register(() => timer?.Dispose());
             logger = loggerFactory.CreateLogger(typeof(TimerCache<T>));
             this.provider = provider;
-            timer = new Timer(Fetch, null, TimeSpan.Zero, refreshPeriod.ToTimeSpan());
+            // Due time of zero means "immediately"
+            timer = new Timer(Fetch, state: null, dueTime: TimeSpan.Zero, period: refreshPeriod.ToTimeSpan());
         }
 
         private void Fetch(object state)
@@ -46,6 +47,7 @@ namespace NodaTime.Web.Models
             {
                 logger.LogInformation($"Refreshing cache for {typeof(T)}");
                 Value = provider();
+                logger.LogInformation($"Cache refresh complete for {typeof(T)}");
             }
             catch (Exception e)
             {

@@ -20,7 +20,7 @@ namespace NodaTime.Web.Models
         private const string Sha256Key = "SHA-256";
         private const string ReleaseDateKey = "ReleaseDate";
 
-        private static readonly Duration CacheRefreshTime = Duration.FromMinutes(5);
+        private static readonly Duration CacheRefreshTime = Duration.FromMinutes(6);
         private readonly StorageClient client;
         private readonly TimerCache<CacheValue> cache;
 

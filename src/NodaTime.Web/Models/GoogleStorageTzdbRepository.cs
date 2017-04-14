@@ -14,10 +14,8 @@ namespace NodaTime.Web.Models
     public class GoogleStorageTzdbRepository : ITzdbRepository
     {
         private const string Bucket = "nodatime";
-        private static readonly IClock Clock = SystemClock.Instance;
-        private static readonly Duration CacheRefreshTime = Duration.FromMinutes(5);
+        private static readonly Duration CacheRefreshTime = Duration.FromMinutes(7);
 
-        private readonly object padlock = new object();
         private readonly StorageClient client;
         private readonly TimerCache<CacheEntry> cache;
 
