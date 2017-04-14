@@ -3,6 +3,8 @@
 // as found in the LICENSE.txt file.
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 using NodaTime.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,6 @@ using System.Text.RegularExpressions;
 
 namespace NodaTime.Web.Models
 {
-    // TODO: See if ASP.NET Core already has a good cache strategy. This isn't ideal.
     public class GoogleStorageReleaseRepository : IReleaseRepository
     {
         private const string Bucket = "nodatime";
@@ -19,61 +20,32 @@ namespace NodaTime.Web.Models
         private const string Sha256Key = "SHA-256";
         private const string ReleaseDateKey = "ReleaseDate";
 
-        private static readonly IClock Clock = SystemClock.Instance;
         private static readonly Duration CacheRefreshTime = Duration.FromMinutes(5);
-        private readonly object padlock = new object();
         private readonly StorageClient client;
+        private readonly TimerCache<CacheValue> cache;
 
-        private ReleaseDownload latestRelease;
-        private List<ReleaseDownload> releases;
-        private Instant nextCacheRefresh;
-
-        public GoogleStorageReleaseRepository(GoogleCredential credential)
+        public GoogleStorageReleaseRepository(
+            IApplicationLifetime lifetime,
+            ILoggerFactory loggerFactory,
+            GoogleCredential credential)
         {
             client = StorageClient.Create(credential);
+            cache = new TimerCache<CacheValue>(lifetime, CacheRefreshTime, FetchReleases, loggerFactory);
         }
 
-        public IList<ReleaseDownload> GetReleases()
-        {
-            lock (padlock)
-            {
-                MaybeUpdateReleases();
-                return releases;
-            }
-        }
+        public IList<ReleaseDownload> GetReleases() => (cache.Value ?? FetchReleases()).Releases;
 
-        public ReleaseDownload LatestRelease
-        {
-            get
-            {
-                lock (padlock)
-                {
-                    MaybeUpdateReleases();
-                    return latestRelease;
-                }
-            }
-        }
+        public ReleaseDownload LatestRelease => (cache.Value ?? FetchReleases()).LatestRelease;
 
-        private void MaybeUpdateReleases()
+        private CacheValue FetchReleases()
         {
-            if (releases != null && Clock.GetCurrentInstant() < nextCacheRefresh)
-            {
-                return;
-            }
-
-            nextCacheRefresh = Clock.GetCurrentInstant() + CacheRefreshTime;
-            releases = client
+            var releases = client
                 .ListObjects(Bucket, ObjectPrefix)
                 .Where(obj => !obj.Name.EndsWith("/"))
                 .Select(ConvertObject)
                 .OrderByDescending(r => r.Release)
                 .ToList();
-            // "Latest" is in terms of version, not release date. (So if
-            // 1.4 comes out after 2.0, 2.0 is still latest.)
-            latestRelease = releases
-                .Where(r => !r.File.Contains("-src"))
-                .OrderByDescending(r => r.Release)
-                .First();
+            return new CacheValue(releases);
         }
 
         private static ReleaseDownload ConvertObject(Google.Apis.Storage.v1.Data.Object obj)
@@ -92,6 +64,23 @@ namespace NodaTime.Web.Models
                 ? LocalDate.FromDateTime(obj.Updated.Value)
                 : LocalDatePattern.Iso.Parse(releaseDateMetadata).Value;
             return new ReleaseDownload(release, obj.Name.Substring(ObjectPrefix.Length), $"https://storage.googleapis.com/{Bucket}/{obj.Name}", sha256Hash, releaseDate);
+        }
+
+        private class CacheValue
+        {
+            public List<ReleaseDownload> Releases { get; }
+            public ReleaseDownload LatestRelease { get; }
+
+            public CacheValue(List<ReleaseDownload> releases)
+            {
+                Releases = releases;
+                // "Latest" is in terms of version, not release date. (So if
+                // 1.4 comes out after 2.0, 2.0 is still latest.)
+                LatestRelease = releases
+                    .Where(r => !r.File.Contains("-src"))
+                    .OrderByDescending(r => r.Release)
+                    .First();
+            }
         }
     }
 }
