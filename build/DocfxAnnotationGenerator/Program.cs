@@ -1,4 +1,5 @@
 ﻿using DocfxYamlLoader;
+using MoreLinq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -217,21 +218,33 @@ namespace DocfxAnnotationGenerator
 
         private void AnnotateNotNullReturns(Release release, Dictionary<string, YamlStream> files)
         {
+            var errors = new List<string>();
             var members = reflectionDataByVersion[release.Version]
                 .SelectMany(asm => asm.Members)
-                .Where(m => m.NotNullReturn);
+                .Where(m => m.NotNullReturn)
+                .DistinctBy(m => m.DocfxUid);
 
             foreach (var member in members)
             {
                 var document = FindDocument(release, files, member.DocfxUid);
                 var node = FindChildByUid(document, "items", member.DocfxUid);
 
-                var description = (YamlScalarNode) node["syntax"]["return"]["description"];
+                var returnElement = (YamlMappingNode) node["syntax"]["return"];
+                if (!returnElement.Children.ContainsKey("description"))
+                {
+                    errors.Add(member.DocfxUid);
+                    continue;
+                }
+                var description = (YamlScalarNode) returnElement["description"];
                 var suffix = " (The value returned is never null.)";
                 if (!description.Value.EndsWith(suffix))
                 {
                     description.Value += suffix;
                 }
+            }
+            if (errors.Count != 0)
+            {
+                throw new Exception($"UIDs with no return description:{Environment.NewLine}{string.Join(Environment.NewLine, errors)}");
             }
         }
 
