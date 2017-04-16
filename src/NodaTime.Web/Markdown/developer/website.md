@@ -76,6 +76,26 @@ show the front page.
 Content is rendered at startup, so you'll need to restart the application if
 you change anything.
 
+## Minified source
+
+By default, the website will use bundled and minified source files generated
+as `wwwroot/css/site.min.css` and `wwwroot/js/site.min.js`. These can be
+regenerated using `dotnet bundle`:
+
+```sh
+$ dotnet bundle
+Bundling with configuration from [...]/src/NodaTime.Web/bundleconfig.json
+Processing wwwroot/css/site.min.css
+Processing wwwroot/js/site.min.js
+$
+```
+
+Alternatively, the original source files can be used by running under the
+Development environment instead of the Production environment. The easiest
+way to do this is by setting the [`ASPNETCORE_ENVIRONMENT` environment
+variable](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments)
+to `Development` when running the application.
+
 ## Deploying nodatime.org
 
 The
