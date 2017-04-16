@@ -19,7 +19,12 @@
 
     <script src="/js/vendor/custom.modernizr.js"></script>
 
-    <link rel="stylesheet" href="/css/main.css">
+<environment names="Development">
+    <link rel="stylesheet" href="/css/site.css">
+</environment>
+<environment names="Staging,Production">
+    <link rel="stylesheet" href="/css/site.min.css">
+</environment>
 
     <!-- highlight.js -->
     <link rel="stylesheet" href="/css/highlightjs/vs.css">
