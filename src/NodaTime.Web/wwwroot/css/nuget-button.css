@@ -1,0 +1,58 @@
+﻿.nuget-button-commandWrapper
+{
+    background: #d6d6d6;
+    border: 0px solid #fff;
+    padding: 0.25em;
+    margin: 2.25em 0;
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr='#d6d6d6',  endColorstr='#505050');
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#d6d6d6), to(#505050));
+    background: -moz-linear-gradient(top, #d6d6d6, #505050);
+    border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+}
+
+.nuget-button-commandPrompt
+{
+    background: #000;
+    border: 1px solid #c4c4c4; /*CSS3 properties*/
+    text-shadow: 1px 1px 1px rgba(0, 0, 0 ,1.0);
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr='#5e5e5e',  endColorstr='#000');
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#5e5e5e), to(#000));
+    background: -moz-linear-gradient(top, #5e5e5e, #000);
+    box-shadow: inset 6px 6px 14px rgba(0, 0, 0, 0.6), 1px 1px 4px rgba(102, 102, 102, 1.0);
+    -webkit-box-shadow: inset 6px 6px 14px rgba(0, 0, 0, 0.6), 1px 1px 4px rgba(102, 102, 102, 1.0);
+    -moz-box-shadow: inset 6px 6px 14px rgba(0, 0, 0, 0.6), 1px 1px 4px rgba(102, 102, 102, 1.0);
+    border-radius: 0.38em;
+    -webkit-border-radius: 0.38em;
+    -moz-border-radius: 0.38em;
+}
+
+.nuget-button-command
+{
+    color: #72eb18; /*Green*/
+    color: #e2e2e2;
+    font-family: Consolas, "Andale Mono WT" , "Andale Mono" , "Lucida Console" , "Lucida Sans Typewriter" , "DejaVu Sans Mono" , "Bitstream Vera Sans Mono" , "Liberation Mono" , "Nimbus Mono L" , Monaco, "Courier New" , Courier, monospace;
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin: 0.8em 0.5em;
+}
+
+.nuget-button-commandWrapper a:link,
+.nuget-button-commandWrapper a:visited
+{
+    outline: none;
+    text-decoration: none !important;
+    color: #e2e2e2 !important;
+    background-color: transparent !important;
+    border:0 !important;
+}
+
+.nuget-button-commandWrapper a:hover
+{
+    outline: none;
+    text-decoration: none !important;
+    color: #72eb18 !important;
+    background-color: transparent !important;
+    border: 0 !important;
+}
