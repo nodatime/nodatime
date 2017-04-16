@@ -4,6 +4,8 @@
   {
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
+      // Can't minify foundation.css.
+      "wwwroot/css/general_enclosed_foundicons.css",
       "wwwroot/css/site.css"
     ]
   },

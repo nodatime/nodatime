@@ -11,18 +11,15 @@
     <meta name="viewport" content="width=device-width" />
     <title>Noda Time | @ViewData["Title"]</title>
 
-    <!-- foundation default -->
-    <link rel="stylesheet" href="/css/foundation.css" />
-
-    <!-- Foundicons -->
-    <link rel="stylesheet" href="/css/general_enclosed_foundicons.css">
-
     <script src="/js/vendor/custom.modernizr.js"></script>
 
 <environment names="Development">
+    <link rel="stylesheet" href="/css/foundation.css" />
+    <link rel="stylesheet" href="/css/general_enclosed_foundicons.css">
     <link rel="stylesheet" href="/css/site.css">
 </environment>
 <environment names="Staging,Production">
+    <link rel="stylesheet" href="/css/foundation.min.css" />
     <link rel="stylesheet" href="/css/site.min.css">
 </environment>
 
