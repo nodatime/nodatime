@@ -10,12 +10,11 @@
         </div>
 
         <div class="large-3 columns">
-            <div class="section-container accordian">
+            <ul class="accordion" data-accordion>
                 @foreach (var category in Model.Bundle.Categories)
                 {                
-                    <section>
-                    <p class="title" data-section-title>@category.Title</p>
-                    <div class="content" data-section-content>
+                    <li class="accordion-navigation">@category.Title</li>
+                    <div class="content">
                     <ul class="side-nav">
                     @foreach (var page in category.Pages)
                     {
@@ -23,13 +22,12 @@
                     }
                     </ul>
                     </div>
-                    </section>
                 }
                 @if (Model.Bundle.Name != "developer")
                 {
                   <footer>Version @Model.Bundle.Name</footer>
                 }
-            </div>
+            </ul>
         </div>
     </div>
 </section>
