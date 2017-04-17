@@ -7,11 +7,40 @@ html {
   font-family: "Calluna Sans Regular", 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 /* Override the font defined in foundation.css to pick up the above. */
-body, h1, h2, h3, h4, h5, h6 {
-  font-family: inherit
+body, h1, h2, h3, h4, h5, h6, .top-bar-section ul li > a, .side-nav {
+  font-family: inherit;
 }
 
-nav.top-bar .top-bar-section ul.dropdown li.hover a {
+/* Revert Foundation 5 to Foundation 4 defaults. */
+body {
+  line-height: 15px;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  margin-top: 0.2em;
+  margin-bottom: 0.5em;
+}
+.top-bar {
+  background: #111;
+}
+.top-bar .name h1 a {
+  font-weight: bold;
+}
+.top-bar-section .has-form {
+  background: #111;
+}
+.top-bar-section li:not(.has-form) a:not(.button) {
+  background: #111;
+}
+.top-bar-section ul li > a {
+  font-weight: bold;
+}
+code {
+  border: 0;
+}
+/* end Foundation 4 defaults. */
+
+.top-bar-section ul li:hover:not(.has-form) > a {
   background: black;
 }
 
