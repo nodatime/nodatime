@@ -4,7 +4,7 @@
   {
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
-      // Can't minify foundation.css.
+      "wwwroot/css/foundation.min.css",
       "wwwroot/css/general_enclosed_foundicons.css",
       "wwwroot/css/site.css",
       "wwwroot/css/highlightjs/vs.css",
@@ -14,7 +14,8 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/vendor/custom.modernizr.js",
+      "wwwroot/js/vendor/modernizr.js",
+      "wwwroot/js/vendor/jquery.js",
       "wwwroot/js/foundation.min.js",
       "wwwroot/js/highlight.pack.js",
       "wwwroot/js/nuget-button.js",
