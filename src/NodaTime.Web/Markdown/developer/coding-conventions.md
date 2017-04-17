@@ -1,6 +1,6 @@
 @Title="Coding conventions"
 
-## Use of C# and .NET features ##
+## Use of C# and .NET features
 
 Noda Time targets .NET 3.5, and the code only uses features available in C# 3. While we normally build against a C# 4 or C# 5 compiler, most later features aren't useful:
 
@@ -15,7 +15,7 @@ Additionally, we're trying not to use framework features we don't need to gratui
 dropping `TimeZoneInfo` support, but it's always a possibility. Additionally, we're very likely to want to create a Portable Class Library at some point, so where possible, stick
 to core features which won't make this harder than it needs to be. (Don't worry too much though - don't feel you need to look up every member.)
 
-## PCL support ##
+## PCL support
 
 See the [Installation][] section of the user guide for which versions of the
 PCL are currently

@@ -193,7 +193,7 @@ Please ensure that *all* relevant JSON handlers are configured appropriately. In
 one involved, possibly one for reading and one for writing, depending on your configuration. For ASP.NET using
 `HttpConfiguration`, you probably want to configure `HttpConfiguration.Formatters.JsonFormatter.SerializerSettings`.
 
-### Disabling automatic date parsing ###
+### Disabling automatic date parsing
 
 Between releases 4.0 and 4.5.11, Json.NET introduced automatic date parsing: by default, if the parser detects a value which looks like a date, it will automatically convert it to a `DateTime` or (optionally) to a `DateTimeOffset`. In order to give Noda Time control over the serialization, this must be disabled in `JsonSerializerSettings` or `JsonSerializer`, like this:
 

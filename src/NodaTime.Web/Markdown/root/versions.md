@@ -447,12 +447,12 @@ Other:
   with some settings around which members to generate documentation for.
   (Members simply inherited from the BCL aren't documented.)
 
-## 1.0.1, released 2012-11-13 with tzdb 2012i ##
+## 1.0.1, released 2012-11-13 with tzdb 2012i
 
 No API changes; this release was purely to fix a problem
 with the NodaTime.Testing package.
 
-## 1.0.0, released 2012-11-07 with tzdb 2012i ##
+## 1.0.0, released 2012-11-07 with tzdb 2012i
 
 API changes:
 
