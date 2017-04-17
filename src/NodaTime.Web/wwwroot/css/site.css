@@ -20,7 +20,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0.2em;
   margin-bottom: 0.5em;
 }
-.top-bar {
+.top-bar, .top-bar.expanded > .title-area {
   background: #111;
 }
 .top-bar .name h1 a {
@@ -260,29 +260,29 @@ footer .design {
   font-style: italic;
 }
 
-.section-container footer {
+.accordion footer {
   background-color: #fff;
   padding: 10px 16px;
   font-size: 12px;
   border: 0px none;
 }
 
-.section-container > section > .title
-{
+.accordion-navigation {
   background-color: #FFE76B;
   padding: 10px;
 }
 
-.section-container > section .content
-{
-  display: inherit;
+.accordion > .content {
   background-color: #B17250;
 }
 
-.section-container > section .content a,
-.section-container > section .content a:visited
-{
+.accordion .side-nav > li > a,
+.accordion .side-nav > li > a:visited,
+.accordion .side-nav > li > a:hover,
+.accordion .side-nav > li > a:focus {
   color: #FFF;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 /* Responsive layout for smaller screens. */
