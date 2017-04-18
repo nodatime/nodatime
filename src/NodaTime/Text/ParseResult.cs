@@ -108,7 +108,7 @@ namespace NodaTime.Text
         /// Converts this result to a new target type, either by executing the given projection
         /// for a success result, or propagating the exception provider for failure.
         /// </summary>
-        public ParseResult<TTarget> Convert<TTarget>(Func<T, TTarget> projection) =>
+        [NotNull] public ParseResult<TTarget> Convert<TTarget>([NotNull] Func<T, TTarget> projection) =>
             Success ? ParseResult<TTarget>.ForValue(projection(Value))
                     : new ParseResult<TTarget>(exceptionProvider, ContinueAfterErrorWithMultipleFormats);
 
@@ -116,7 +116,7 @@ namespace NodaTime.Text
         /// Converts this result to a new target type by propagating the exception provider.
         /// This parse result must already be an error result.
         /// </summary>
-        public ParseResult<TTarget> ConvertError<TTarget>()
+        [NotNull] public ParseResult<TTarget> ConvertError<TTarget>()
         {
             if (Success)
             {
@@ -126,20 +126,20 @@ namespace NodaTime.Text
         }
 
         #region Factory methods and readonly static fields
-        
+
         /// <summary>
         /// Produces a ParseResult which represents a successful parse
         /// </summary>
         /// <param name="value">the successfully parsed value</param>
         /// <returns></returns>
-        public static ParseResult<T> ForValue(T value) => new ParseResult<T>(value);
+        [NotNull] public static ParseResult<T> ForValue([NotNull] T value) => new ParseResult<T>(value);
 
-        /// <summary>
-        /// Produces a ParseResult which represents a failed parse
-        /// </summary>
-        /// <param name="exceptionProvider">the function that produces the Exception that represents the error that caused the parse to fail</param>
-        /// <returns></returns>
-        public static ParseResult<T> ForException(Func<Exception> exceptionProvider) => new ParseResult<T>(exceptionProvider, false);
+         /// <summary>
+         /// Produces a ParseResult which represents a failed parse
+         /// </summary>
+         /// <param name="exceptionProvider">the function that produces the Exception that represents the error that caused the parse to fail</param>
+         /// <returns></returns>
+         [NotNull] public static ParseResult<T> ForException([NotNull] Func<Exception> exceptionProvider) => new ParseResult<T>(exceptionProvider, false);
 
         internal static ParseResult<T> ForInvalidValue(ValueCursor cursor, string formatString, params object[] parameters)
         {
