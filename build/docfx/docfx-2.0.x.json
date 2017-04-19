@@ -4,14 +4,17 @@
       "src": [
         {
           "files": [
-            "NodaTime/NodaTime.csproj",
-            "NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.csproj",
-            "NodaTime.Testing/NodaTime.Testing.csproj"
+            "NodaTime/*.csproj",
+            "NodaTime.Serialization.JsonNet/*.csproj",
+            "NodaTime.Testing/*.csproj"
           ],
           "cwd": "src",
           "exclude": [ "**/bin/**", "**/obj/**" ]
         }
       ],
+      "properties": {
+        "TargetFramework": "net45"
+      },
       "dest": "api",
       "shouldSkipMarkup": true
     }
