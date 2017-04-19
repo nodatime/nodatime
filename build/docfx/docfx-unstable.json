@@ -4,14 +4,17 @@
       "src": [
         {
           "files": [
-            "NodaTime/project.json",
-            "NodaTime.Serialization.JsonNet/project.json",
-            "NodaTime.Testing/project.json"
+            "NodaTime/*.csproj",
+            "NodaTime.Serialization.JsonNet/*.csproj",
+            "NodaTime.Testing/*.csproj"
           ],
           "exclude": [ "**/bin/**", "**/obj/**" ],
-          "cwd": "../src"
+          "cwd": "unstable/src"
         }
       ],
+      "properties": {
+        "TargetFramework": "net45"
+      },
       "dest": "obj/unstable/api",
       "shouldSkipMarkup": true
     }

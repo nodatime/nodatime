@@ -2,9 +2,6 @@
 
 set -e
 
-# This is currently ugly as the 1.x versions build in different ways to
-# 2.0.x and master. Once docfx understands csproj files, we should be able
-# to simplify this.
 declare -r PREVIOUS_VERSIONS="1.0.x 1.1.x 1.2.x 1.3.x 2.0.x"
 echo "Fetching previous versions from source control if necessary"
 
@@ -45,10 +42,6 @@ then
   git -C history/serialization checkout NodaTime.Serialization.JsonNet-2.0.0
   cp -r history/serialization/src/NodaTime.Serialization.JsonNet history/2.0.x/src
   echo "Preparing for docfx of 2.0"
-  cp docfx/global.json history/2.0.x
-  cp docfx/NodaTime.json history/2.0.x/src/NodaTime/project.json
-  cp docfx/NodaTime.Serialization.JsonNet.json history/2.0.x/src/NodaTime.Serialization.JsonNet/project.json
-  cp docfx/NodaTime.Testing.json history/2.0.x/src/NodaTime.Testing/project.json
   cd history/2.0.x
   dotnet restore src/NodaTime
   dotnet restore src/NodaTime.Testing
@@ -72,7 +65,7 @@ fi
 rm -rf tmp/docfx
 mkdir -p tmp/docfx
 
-for version in 1.0.x 1.1.x 1.2.x 1.3.x; do
+for version in 1.0.x 1.1.x 1.2.x 1.3.x 2.0.x; do
   echo "Building metadata for $version"
   rm -rf history/$version/api
   mkdir -p tmp/docfx/obj/$version
@@ -82,49 +75,28 @@ for version in 1.0.x 1.1.x 1.2.x 1.3.x; do
   cp docfx/toc.yml tmp/docfx/obj/$version
 done
 
-echo "Building metadata for 2.0.x"
-rm -rf history/2.0.x/api
-mkdir -p tmp/docfx/obj/2.0.x
-sed 's/..\/src/src/g' < docfx/docfx.json | sed 's/obj\/unstable\///g' > history/2.0.x/docfx.json
-docfx metadata history/2.0.x/docfx.json -f
-cp -r history/2.0.x/api tmp/docfx/obj/2.0.x
-cp docfx/toc.yml tmp/docfx/obj/2.0.x
-
 echo "Building metadata for current branch"
-# Docfx doesn't support VS2017 csproj files yet. Sigh.
-# Also, we want to include the serialization docs (sometimes? unclear)
+# We need to include the serialization docs (sometimes? unclear)
 
 git clone https://github.com/nodatime/nodatime.serialization.git -q --depth 1 tmp/docfx/serialization
 
-mkdir -p tmp/docfx/build/src
-cp -r ../src/NodaTime{,.Testing} tmp/docfx/build/src
-cp -r ../*.snk tmp/docfx/build
-cp -r tmp/docfx/serialization/src/NodaTime.Serialization.JsonNet tmp/docfx/build/src
+mkdir -p tmp/docfx/unstable/src
+cp -r ../src/NodaTime{,.Testing} tmp/docfx/unstable/src
+cp -r ../*.snk tmp/docfx/unstable
+cp -r tmp/docfx/serialization/src/NodaTime.Serialization.JsonNet tmp/docfx/unstable/src
 
 # Do the build for unstable so we can get annotations
-cd tmp/docfx
-dotnet restore build/src/NodaTime
-dotnet restore build/src/NodaTime.Testing
-dotnet restore build/src/NodaTime.Serialization.JsonNet
-dotnet build build/src/NodaTime/NodaTime.csproj
-dotnet build build/src/NodaTime.Testing/NodaTime.Testing.csproj
-dotnet build build/src/NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.csproj
-cd ../..
-
-cp docfx/global.json tmp/docfx
-cp docfx/NodaTime.json tmp/docfx/build/src/NodaTime/project.json
-cp docfx/NodaTime.Serialization.JsonNet.json tmp/docfx/build/src/NodaTime.Serialization.JsonNet/project.json
-cp docfx/NodaTime.Testing.json tmp/docfx/build/src/NodaTime.Testing/project.json
-
-# TODO: Investigate whether this restore is still necessary...
-cd tmp/docfx
-dotnet restore build/src/NodaTime
-dotnet restore build/src/NodaTime.Testing
-dotnet restore build/src/NodaTime.Serialization.JsonNet
-cd ../..
+cd tmp/docfx/unstable/src
+dotnet restore NodaTime
+dotnet restore NodaTime.Testing
+dotnet restore NodaTime.Serialization.JsonNet
+dotnet build NodaTime/NodaTime.csproj
+dotnet build NodaTime.Testing/NodaTime.Testing.csproj
+dotnet build NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.csproj
+cd ../../../..
 
 cp -r docfx/template tmp/docfx
-sed 's/..\/src/build\/src/g' < docfx/docfx.json > tmp/docfx/docfx.json
+cp docfx/docfx-unstable.json tmp/docfx/docfx.json
 docfx metadata tmp/docfx/docfx.json -f 
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
@@ -136,7 +108,7 @@ dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.2.x tmp/docfx/obj/1.3.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.3.x tmp/docfx/obj/2.0.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/2.0.x tmp/docfx/obj/unstable
-dotnet run -p DocfxAnnotationGenerator/DocfxAnnotationGenerator.csproj -- tmp/docfx history tmp/docfx/build/src 1.0.x 1.1.x 1.2.x 1.3.x 2.0.x unstable
+dotnet run -p DocfxAnnotationGenerator/DocfxAnnotationGenerator.csproj -- tmp/docfx history tmp/docfx/unstable/src 1.0.x 1.1.x 1.2.x 1.3.x 2.0.x unstable
 
 echo "Running main docfx build"
 docfx build tmp/docfx/docfx.json
