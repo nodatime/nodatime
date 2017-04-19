@@ -8,6 +8,7 @@ using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Properties;
 using JetBrains.Annotations;
+using NodaTime.Utility;
 
 namespace NodaTime.Text
 {
@@ -108,14 +109,24 @@ namespace NodaTime.Text
         /// Converts this result to a new target type, either by executing the given projection
         /// for a success result, or propagating the exception provider for failure.
         /// </summary>
-        [NotNull] public ParseResult<TTarget> Convert<TTarget>([NotNull] Func<T, TTarget> projection) =>
-            Success ? ParseResult<TTarget>.ForValue(projection(Value))
-                    : new ParseResult<TTarget>(exceptionProvider, ContinueAfterErrorWithMultipleFormats);
+        /// <param name="projection">The projection to apply for the value of this result,
+        /// if it's a success result.</param>
+        /// <returns>A ParseResult for the target type, either with a value obtained by applying the specified
+        /// projection to the value in this result, or with the same error as this result.</returns>
+        [NotNull]
+        public ParseResult<TTarget> Convert<TTarget>([NotNull] Func<T, TTarget> projection)
+        {
+            Preconditions.CheckNotNull(projection, nameof(projection));
+            return Success
+                ? ParseResult<TTarget>.ForValue(projection(Value))
+                : new ParseResult<TTarget>(exceptionProvider, ContinueAfterErrorWithMultipleFormats);
+        }
 
         /// <summary>
         /// Converts this result to a new target type by propagating the exception provider.
         /// This parse result must already be an error result.
         /// </summary>
+        /// <returns>A ParseResult for the target type, with the same error as this result.</returns>
         [NotNull] public ParseResult<TTarget> ConvertError<TTarget>()
         {
             if (Success)
@@ -128,18 +139,25 @@ namespace NodaTime.Text
         #region Factory methods and readonly static fields
 
         /// <summary>
-        /// Produces a ParseResult which represents a successful parse
+        /// Produces a ParseResult which represents a successful parse operation.
         /// </summary>
-        /// <param name="value">the successfully parsed value</param>
-        /// <returns></returns>
-        [NotNull] public static ParseResult<T> ForValue([NotNull] T value) => new ParseResult<T>(value);
+        /// <remarks>When T is a reference type, <paramref name="value"/> should not be null,
+        /// but this isn't currently checked.</remarks>
+        /// <param name="value">The successfully parsed value.</param>
+        /// <returns>A ParseResult representing a successful parsing operation.</returns>
+        [NotNull] public static ParseResult<T> ForValue(T value) => new ParseResult<T>(value);
 
          /// <summary>
-         /// Produces a ParseResult which represents a failed parse
+         /// Produces a ParseResult which represents a failed parsing operation.
          /// </summary>
-         /// <param name="exceptionProvider">the function that produces the Exception that represents the error that caused the parse to fail</param>
-         /// <returns></returns>
-         [NotNull] public static ParseResult<T> ForException([NotNull] Func<Exception> exceptionProvider) => new ParseResult<T>(exceptionProvider, false);
+         /// <remarks>This method accepts a delegate rather than the exception itself, as creating an
+         /// exception can be relatively slow: if the client doesn't need the actual exception, just the information
+         /// that the parse failed, there's no point in creating the exception.</remarks>
+         /// <param name="exceptionProvider">A delegate that produces the exception representing the error that
+         /// caused the parse to fail.</param>
+         /// <returns>A ParseResult representing a failed parsing operation.</returns>
+         [NotNull] public static ParseResult<T> ForException([NotNull] Func<Exception> exceptionProvider) =>
+            new ParseResult<T>(Preconditions.CheckNotNull(exceptionProvider, nameof(exceptionProvider)), false);
 
         internal static ParseResult<T> ForInvalidValue(ValueCursor cursor, string formatString, params object[] parameters)
         {
