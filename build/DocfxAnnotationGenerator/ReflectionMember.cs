@@ -1,6 +1,8 @@
 ﻿using Mono.Cecil;
 using Mono.Collections.Generic;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -93,7 +95,8 @@ namespace DocfxAnnotationGenerator
                 return $"{GetUid(method.DeclaringType)}.{interfaceMethodNameUid}{GetParameterNames(method.Parameters)}";
             }
             string name = method.Name.Replace('.', '#');
-            return $"{GetUid(method.DeclaringType)}.{name}{GetParameterNames(method.Parameters)}";
+            string arity = method.HasGenericParameters ? $"``{method.GenericParameters.Count}" : "";
+            return $"{GetUid(method.DeclaringType)}.{name}{arity}{GetParameterNames(method.Parameters)}";
         }
 
         private string GetUid(TypeDefinition type)
@@ -113,7 +116,10 @@ namespace DocfxAnnotationGenerator
             switch (type)
             {
                 case ByReferenceType brt: return $"{GetUid(brt.ElementType, useTypeArgumentNames)}@";
-                case GenericParameter gp: return useTypeArgumentNames ? gp.Name : $"`{gp.Position}";
+                case GenericParameter gp when useTypeArgumentNames: return gp.Name;
+                case GenericParameter gp when gp.DeclaringType != null: return $"`{gp.Position}";
+                case GenericParameter gp when gp.DeclaringMethod != null: return $"``{gp.Position}";
+                case GenericParameter gp: throw new InvalidOperationException("Unhandled generic parameter");
                 case GenericInstanceType git: return $"{RemoveArity(name)}{GetGenericArgumentNames(git.GenericArguments, useTypeArgumentNames)}";
                 default: return name;
             }

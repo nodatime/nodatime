@@ -17,16 +17,16 @@ namespace DocfxAnnotationGenerator
         private readonly IEnumerable<Release> releases;
         private readonly Dictionary<string, List<BuildAssembly>> reflectionDataByVersion;
         private readonly string docfxRoot;
-        private readonly string historyRoot;
+        private readonly string packagesDir;
         private readonly string srcRoot;
 
         private static int Main(string[] args)
         {
             if (args.Length < 4)
             {
-                Console.WriteLine("Arguments: <docfx root> <history root> <src root> <version1> <version2> ...");
+                Console.WriteLine("Arguments: <docfx root> <packages dir> <src root> <version1> <version2> ...");
                 Console.WriteLine("The docfx root dir should contain the obj directory");
-                Console.WriteLine("The history root dir should contain the nuget packages (as NodaTime-1.0.x.nupkg etc)");
+                Console.WriteLine("The packages dir should contain the nuget packages (as NodaTime-1.0.x.nupkg etc)");
                 Console.WriteLine("The src root dir should contain the 'unstable' code");
                 return 1;
             }
@@ -40,15 +40,15 @@ namespace DocfxAnnotationGenerator
             return 0;
         }
 
-        private Program(IEnumerable<string> versions, string docfxRoot, string historyRoot, string srcRoot)
+        private Program(IEnumerable<string> versions, string docfxRoot, string packagesDir, string srcRoot)
         {
             this.docfxRoot = docfxRoot;
-            this.historyRoot = historyRoot;
+            this.packagesDir = packagesDir;
             this.srcRoot = srcRoot;
             Console.WriteLine("Loading docfx metadata");
             releases = versions.Select(v => Release.Load(Path.Combine(docfxRoot, "obj", v), v)).ToList();
             Console.WriteLine("Loading assemblies");
-            reflectionDataByVersion = versions.ToDictionary(v => v, v => LoadAssemblies(v, historyRoot, srcRoot).ToList());
+            reflectionDataByVersion = versions.ToDictionary(v => v, v => LoadAssemblies(v, packagesDir, srcRoot).ToList());
         }
 
         private void CreateDirectories()
@@ -280,7 +280,7 @@ namespace DocfxAnnotationGenerator
         private string GetOverwriteDirectory(Release release)
             => Path.Combine(docfxRoot, "obj", release.Version, "overwrite");
 
-        private static IEnumerable<BuildAssembly> LoadAssemblies(string version, string historyRoot, string srcRoot)
+        private static IEnumerable<BuildAssembly> LoadAssemblies(string version, string packagesDir, string srcRoot)
         {
             if (version == "unstable")
             {
@@ -292,13 +292,11 @@ namespace DocfxAnnotationGenerator
             else
             {
                 return packages
-                    .Select(p => Path.Combine(historyRoot, $"{p}-{version}.nupkg"))
+                    .Select(p => Path.Combine(packagesDir, $"{p}-{version}.nupkg"))
                     .Where(file => File.Exists(file))
                     .Select(file => NuGetPackage.Load(file))
                     .SelectMany(pkg => pkg.Assemblies);
             }
         }
-
-
     }
 }
