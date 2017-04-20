@@ -11,34 +11,24 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            using (var stream = File.OpenRead(@"c:\users\jon\test\NodaTime.dll"))
+            using (var stream = File.OpenRead(@"c:\users\jon\test\projects\nodatime\build\tmp\docfx\unstable\src\NodaTime\bin\Debug\net45\NodaTime.dll"))
             {
                 var members = ReflectionMember.Load(stream).ToList();
-                Console.WriteLine("[NotNull] return members:");
-                foreach (var member in members.Where(m => m.NotNullReturn))
-                {
-                    Console.WriteLine($"  {member.DocfxUid}");
-                }
-                Console.WriteLine();
-                Console.WriteLine("[NotNull] parameters:");
-                foreach (var member in members.Where(m => m.NotNullParameters.Any()))
-                {
-                    Console.WriteLine($"  {member.DocfxUid}: {string.Join(", ", member.NotNullParameters)}");
-                }
-                /*
-                var release = Release.Load(@"c:\users\jon\test\projects\nodatime\build\tmp\docfx\obj\2.0.x", "2.0.x");
+                var cecilUids = members.Select(m => m.DocfxUid).ToList();
+                var release = Release.Load(@"c:\users\jon\test\projects\nodatime\build\tmp\docfx\obj\unstable", "unstable");
                 var realUids = release.Members
                     .Where(m => m.Type != DocfxMember.TypeKind.Namespace)
-                    .Where(m => m.Uid.StartsWith("NodaTime.Serialization"))
-                    .Where(m => !m.Uid.StartsWith("NodaTime.Testing"))
-                    .Select(m => m.Uid).ToList();
+                    .Where(m => !m.FullName.StartsWith("NodaTime.Testing"))
+                    .Where(m => !m.FullName.StartsWith("NodaTime.Serialization"))
+                    .Select(m => m.Uid)
+                    .ToList();
 
                 Console.WriteLine($"UIDs from Cecil: {cecilUids.Count}");
                 Console.WriteLine($"UIDs from Docfx: {realUids.Count}");
                 Console.WriteLine();
                 PrintUids("UIDs only in Cecil", cecilUids.Except(realUids));
                 Console.WriteLine();
-                PrintUids("UIDs only in Docfx", realUids.Except(cecilUids));*/
+                PrintUids("UIDs only in Docfx", realUids.Except(cecilUids));
             }
         }
 
