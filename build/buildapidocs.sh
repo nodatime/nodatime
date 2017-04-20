@@ -5,7 +5,7 @@ set -e
 if [[ ! -d history ]]
 then
   echo "Cloning history branch"
-  git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b history
+  git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b history history
 fi
 
 rm -rf tmp/docfx
