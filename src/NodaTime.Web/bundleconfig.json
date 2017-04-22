@@ -4,7 +4,8 @@
   {
     "outputFileName": "wwwroot/css/site.min.css",
     "inputFiles": [
-      "wwwroot/css/foundation.min.css",
+      "wwwroot/css/normalize.css",
+      "wwwroot/css/foundation.css",
       "wwwroot/css/general_enclosed_foundicons.css",
       "wwwroot/css/site.css",
       "wwwroot/css/highlightjs/vs.css",
