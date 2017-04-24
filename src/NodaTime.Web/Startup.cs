@@ -4,12 +4,15 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using NodaTime.Web.Controllers;
 using NodaTime.Web.Models;
 using NodaTime.Web.Providers;
@@ -20,6 +23,8 @@ namespace NodaTime.Web
 {
     public class Startup
     {
+        private static readonly MediaTypeHeaderValue TextHtml = new MediaTypeHeaderValue("text/html");
+
         // Not const to avoid unreachable code warnings.
         private static readonly bool UseGoogleCloudStorage = Environment.GetEnvironmentVariable("DISABLE_GCS") == null;
 
@@ -80,8 +85,10 @@ namespace NodaTime.Web
                 ContentTypeProvider = new FileExtensionContentTypeProvider
                 {
                     Mappings = { [".nzd"] = "application/octet-stream" }
-                }
+                },
+                OnPrepareResponse = (context) => SetCacheControlHeaderForStaticContent(env, context.Context)
             });
+
             // API documentation
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -128,6 +135,41 @@ namespace NodaTime.Web
             app.ApplicationServices.GetRequiredService<MarkdownLoader>();
             // Force the set of releases to be first loaded on startup.
             app.ApplicationServices.GetRequiredService<IReleaseRepository>().GetReleases();
+        }
+
+        /// Sets the Cache-Control header for static content, conditionally allowing the browser to use the content
+        /// without revalidation.
+        private void SetCacheControlHeaderForStaticContent(IHostingEnvironment env, HttpContext context)
+        {
+            var headers = new ResponseHeaders(context.Response.Headers);
+
+            if (headers.ContentType.IsSubsetOf(TextHtml))
+            {
+                // Don't set Cache-Control for HTML files (e.g. /tzdb/). The browser can figure out when to revalidate.
+                // (Which it can do easily, since we send an ETag with all static content responses).
+                return;
+            }
+
+            // Otherwise if the request was made with a file version query parameter (?v=..., as sent by
+            // asp-append-version=true), then we can always use the response 'indefinitely', even in development mode.
+            if (context.Request.Query.ContainsKey("v"))
+            {
+                headers.CacheControl = new CacheControlHeaderValue
+                {
+                    Public = true,
+                    MaxAge = TimeSpan.FromDays(365)
+                };
+                return;
+            }
+
+            // Otherwise, the remaining content (/favicon.ico, /fonts/, /robots.txt, etc) should be good to use for a
+            // while without revalidation. When running in the Development environment, we'll use a much shorter time,
+            // since we might be iterating on it (in particular, this also covers the unminified JS/CSS).
+            headers.CacheControl = new CacheControlHeaderValue
+            {
+                Public = true,
+                MaxAge = env.IsDevelopment() ? TimeSpan.FromMinutes(2) : TimeSpan.FromDays(1)
+            };
         }
     }
 }
