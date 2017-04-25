@@ -86,7 +86,7 @@ namespace NodaTime.Web
                 {
                     Mappings = { [".nzd"] = "application/octet-stream" }
                 },
-                OnPrepareResponse = (context) => SetCacheControlHeaderForStaticContent(env, context.Context)
+                OnPrepareResponse = context => SetCacheControlHeaderForStaticContent(env, context.Context)
             });
 
             // API documentation
@@ -96,7 +96,8 @@ namespace NodaTime.Web
                 ContentTypeProvider = new FileExtensionContentTypeProvider
                 {
                     Mappings = { [".yml"] = "text/x-yaml" }
-                }
+                },
+                OnPrepareResponse = context => SetCacheControlHeaderForStaticContent(env, context.Context)
             });
             // Captures "unstable" or a specific version - used several times below.
             string anyVersion = @"((?:1\.[0-3]\.x)|(?:unstable)|(?:2\.0\.x))";
@@ -162,9 +163,10 @@ namespace NodaTime.Web
                 return;
             }
 
-            // Otherwise, the remaining content (/favicon.ico, /fonts/, /robots.txt, etc) should be good to use for a
-            // while without revalidation. When running in the Development environment, we'll use a much shorter time,
-            // since we might be iterating on it (in particular, this also covers the unminified JS/CSS).
+            // Otherwise, the remaining content (/favicon.ico, /fonts/, /robots.txt, /styles/docfx.js etc) should be
+            // good to use for a while without revalidation. When running in the Development environment, we'll use a
+            // much shorter time, since we might be iterating on it (in particular, this also covers the unminified
+            // JS/CSS).
             headers.CacheControl = new CacheControlHeaderValue
             {
                 Public = true,
