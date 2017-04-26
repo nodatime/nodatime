@@ -74,10 +74,28 @@ namespace NodaTime.Test
 
         [Test]
         [TestCase(GregorianYearMonthDayCalculator.MaxGregorianYear + 1, 1, 1)]
-        [TestCase(2010, 13, 1), TestCase(2010, 1, 100), TestCase(2010, 2, 30)]
+        [TestCase(GregorianYearMonthDayCalculator.MinGregorianYear - 1, 1, 1)]
+        [TestCase(2010, 13, 1)]
+        [TestCase(2010, 0, 1)]
+        [TestCase(2010, 1, 100)]
+        [TestCase(2010, 2, 30)]
+        [TestCase(2010, 1, 0)]
         public void Constructor_Invalid(int year, int month, int day)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(year, month, day));
+        }
+
+        [Test]
+        [TestCase(GregorianYearMonthDayCalculator.MaxGregorianYear + 1, 1, 1)]
+        [TestCase(GregorianYearMonthDayCalculator.MinGregorianYear - 1, 1, 1)]
+        [TestCase(2010, 13, 1)]
+        [TestCase(2010, 0, 1)]
+        [TestCase(2010, 1, 100)]
+        [TestCase(2010, 2, 30)]
+        [TestCase(2010, 1, 0)]
+        public void Constructor_Invalid_WithCalendar(int year, int month, int day)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(year, month, day, CalendarSystem.Iso));
         }
 
         [Test]
