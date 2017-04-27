@@ -96,6 +96,10 @@ Properties related to week-years (e.g. `WeekOfWeekYear`) have been removed, in f
 flexible system. See the [week-years guide](weekyears) for more information. In most cases,
 the fix is to use `WeekYearRules.Iso.GetWeekOfWeekYear(date)` etc..
 
+The `IClock.Now` property has been replaced by `IClock.GetCurrentInstant()`. This is both
+clearer in meaning, and a more appropriate member type. The two calls are absolutely equivalent
+in meaning.
+
 Period
 ====
 
