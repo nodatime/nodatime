@@ -25,6 +25,18 @@ For more details on the exact formats, please see the [documentation in the deve
 Obtaining and using a "NodaZoneData" file
 =========================================
 
+Update the NodaTime NuGet package
+-----------------------------------
+
+From March 2017 onwards, we aim to update NuGet packages with new
+TZDB data shortly after each TZDB release, each update counting as a patch release.
+This has the disadvantage that it's less clear when a patch release is really just TZDB data vs when
+it's a regular bug-fix, but makes it much simpler for users. Simply update the NuGet package
+version you're using, and you will get the new data.
+
+All minor versions from 1.3 onwards are updated. Users still using versions older than 1.3
+are encouraged to migrate, at least to 1.3.
+
 Fetching a NodaZoneData file from nodatime.org
 ----------------------------------------------
 
@@ -39,24 +51,6 @@ don't have to build the file yourself either.
 The URL [http://nodatime.org/tzdb/latest.txt](/tzdb/latest.txt)
 returns a plaintext response containing the URL of the latest NZD file.
 This may be used for automation.
-
-Building a NodaZoneData file
-----------------------------
-
-1. Find the link to the [latest tzdb release](https://www.iana.org/time-zones), e.g.
-   https://www.iana.org/time-zones/repository/releases/tzdata2015e.tar.gz
-2. Determine the Windows mapping file you want to use, or let NodaTime.TzdbCompiler do it for you
-   with the versions supplied with the Noda Time source in the `data\cldr` directory. If these are
-   out of date, you can download a new file from [CLDR](http://cldr.unicode.org/).
-3. Run NodaTime.TzdbCompiler. I'd suggest leaving it in its build directory and running it like this:
-
-```bat
-path\to\NodaTime.TzdbCompiler.exe -s tzdb-url -w windows-file-or-directory -o path\to\output.nzd
-```
-
-The `-s` argument can be an unpacked archive directory, a local archive, or a remote archive. The `-w`
-argument can be a path to a single file, or a directory containing multiple Windows Zones XML files, in which
-case the most appropriate one will be selected automatically.
 
 Using a NodaZoneData file
 -------------------------
@@ -99,6 +93,28 @@ affect the source you've created. The stream can come from anywhere - typically 
 system, or an embedded resource file within one of your assemblies. You certainly *could* fetch it across a network, if you wanted.
 (It is read sequentially from start to end - no seeking is required.)
 
+
+Building a NodaZoneData file
+----------------------------
+
+This is very rarely required, given the usual short time between TZDB releases and both nodatime.org
+and the NuGet packages being updated. There is no release of the NodaTime.TzdbCompiler; you will need
+to fetch and build the source code.
+
+1. Find the link to the [latest tzdb release](https://www.iana.org/time-zones), e.g.
+   https://www.iana.org/time-zones/repository/releases/tzdata2015e.tar.gz
+2. Determine the Windows mapping file you want to use, or let NodaTime.TzdbCompiler do it for you
+   with the versions supplied with the Noda Time source in the `data\cldr` directory. If these are
+   out of date, you can download a new file from [CLDR](http://cldr.unicode.org/).
+3. Run NodaTime.TzdbCompiler. I'd suggest leaving it in its build directory and running it like this:
+
+```bat
+path\to\NodaTime.TzdbCompiler.exe -s tzdb-url -w windows-file-or-directory -o path\to\output.nzd
+```
+
+The `-s` argument can be an unpacked archive directory, a local archive, or a remote archive. The `-w`
+argument can be a path to a single file, or a directory containing multiple Windows Zones XML files, in which
+case the most appropriate one will be selected automatically.
 
 [TzdbDateTimeZoneSource]: noda-type://NodaTime.TimeZones.TzdbDateTimeZoneSource
 [DateTimeZoneCache]: noda-type://NodaTime.TimeZones.DateTimeZoneCache

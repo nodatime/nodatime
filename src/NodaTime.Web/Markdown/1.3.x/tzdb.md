@@ -25,6 +25,19 @@ For more details on the exact formats, please see the [documentation in the deve
 Obtaining and using a "NodaZoneData" file (1.1+ format)
 =======================================================
 
+
+Update the NodaTime NuGet package
+-----------------------------------
+
+From March 2017 onwards, we aim to update NuGet packages with new
+TZDB data shortly after each TZDB release, each update counting as a patch release.
+This has the disadvantage that it's less clear when a patch release is really just TZDB data vs when
+it's a regular bug-fix, but makes it much simpler for users. Simply update the NuGet package
+version you're using, and you will get the new data.
+
+All minor versions from 1.3 onwards are updated. Users still using versions older than 1.3
+are encouraged to migrate, at least to 1.3.
+
 Fetching a NodaZoneData file from nodatime.org
 ----------------------------------------------
 
