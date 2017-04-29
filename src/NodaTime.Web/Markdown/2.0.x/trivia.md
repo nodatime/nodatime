@@ -75,7 +75,7 @@ Many countries switched from the Julian calendar system to the Gregorian
 calendar system in the 16th and 18th centuries.  Most made this change by
 skipping ten or eleven days to "catch up" with where the Gregorian calendar
 would be if the two calendars had both started with the same date at some
-point in the 3rd century AD. For example, when Great Britain made the change
+point in the 3rd century CE. For example, when Great Britain made the change
 in September 1752, September 2nd was followed by September 14th.
 
 Sweden did things a little differently. Rather than skipping lots of days

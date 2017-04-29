@@ -159,7 +159,7 @@ do.
 Default values
 ====
 
-The default values of some structs have changed, from returning the Unix epoch to returning January 1st 1AD (at midnight where applicable):
+The default values of some structs have changed, from returning the Unix epoch to returning January 1st 1 CE (at midnight where applicable):
 
 - `LocalDate`
 - `LocalDateTime`
@@ -177,8 +177,8 @@ Year specifiers
 In version 1.x, the `y` format specifier meant "absolute year" (which may be negative) and the `Y` format
 specifier meant "year of era". Unfortunately, this is not compatible with the BCL, where `y` really means year
 of era. Under most calendars this is irrelevant in the BCL, as most only support a single era - but in Noda Time,
-the default calendar system (Gregorian) supports dates before 1CE. (Even so, most users will never create or use
-dates before 1CE.)
+the default calendar system (Gregorian) supports dates before 1 CE. (Even so, most users will never create or use
+dates before 1 CE.)
 
 In version 2.0, `y` means "year of era", and `u` means "absolute year". This use of `u` is in line with
 [Unicode TR-35](http://unicode.org/reports/tr35/tr35-dates.html#Date_Format_Patterns) although
@@ -193,7 +193,7 @@ the year of era will see different results.
 One unfortunate side-effect of this is that the normal BCL handling - using the patterns specified by the BCL -
 gives ambiguous values. For example, `new LocalDate(-50, 1, 1).ToString()` will return something like "01 January 0051"
 instead of the previous "01 January -0050". Users whose applications are likely to encounter
-dates before 1CE should consider using custom format patterns with the `u` specifier instead of `y`.
+dates before 1 CE should consider using custom format patterns with the `u` specifier instead of `y`.
 
 Noda Time's ISO-8601 pattern handling will provide the same text values as before, as the patterns have been
 updated to use `u`. This includes the patterns used in `NodaTime.Serialization.JsonNet`.

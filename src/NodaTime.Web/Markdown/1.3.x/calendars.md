@@ -58,11 +58,11 @@ Julian
 First supported in v1.0.0  
 API access: [`CalendarSystem.GetJulianCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetJulianCalendar_System_Int32_)
 
-The [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46BC, and took
-effect in 45BC. It was like the Gregorian calendar, but with a simpler leap year rule - every year number divisible by
+The [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46 BCE, and took
+effect in 45 BCE. It was like the Gregorian calendar, but with a simpler leap year rule - every year number divisible by
 4 was a leap year.
 
-The Noda Time implementation of the Julian calendar is proleptic, and ignores the fact that before around 4AD the leap
+The Noda Time implementation of the Julian calendar is proleptic, and ignores the fact that before around 4 CE the leap
 year rule was accidentally implemented as a leap year every *three* years. See the linked Wikipedia article for more
 details of this leap year error, along with suggestions of how history might have actually played out.
 
@@ -115,7 +115,7 @@ First supported in v1.3.0
 API access: [`CalendarSystem.GetPersianCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetPersianCalendar)
 
 The [Persian (or Solar Hijri) calendar](https://en.wikipedia.org/wiki/Solar_Hijri_calendar) is the official calendar of
-Iran and Pakistan. The first day of the Persian calendar is March 18th 622CE (Julian).
+Iran and Pakistan. The first day of the Persian calendar is March 18th 622 CE (Julian).
 
 This is properly an observational calendar, but the implementation in Noda Time is equivalent to that of
 the BCL [`PersianCalendar`](https://msdn.microsoft.com/en-us/library/system.globalization.persiancalendar.aspx) class,

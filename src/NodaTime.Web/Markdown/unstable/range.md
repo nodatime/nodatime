@@ -21,8 +21,8 @@ it doesn't affect ranges.) This is the maximal calendar: a date in any other cal
 converted to the Gregorian calendar.
 
 Additionally, all calendars are restricted to four digit formats, even in year-of-era representations,
-which avoids ever having to parse 5-digit years. This leads to a Gregorian calendar from 9999BC to
-9999AD inclusive, or -9998 to 9999 in "absolute" years. The range of other calendars is determined from this
+which avoids ever having to parse 5-digit years. This leads to a Gregorian calendar from 9999 BCE to
+9999 CE inclusive, or -9998 to 9999 in "absolute" years. The range of other calendars is determined from this
 and from natural restrictions (such as not being proleptic).
 
 The date range is always a complete number of years - the range shown below is inclusive at both ends, so every

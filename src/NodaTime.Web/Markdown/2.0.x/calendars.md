@@ -68,11 +68,11 @@ Julian
 First supported in v1.0.0  
 API access: [`CalendarSystem.Julian`](noda-property://NodaTime.CalendarSystem.Julian)
 
-The [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46BC, and took
-effect in 45BC. It was like the Gregorian calendar, but with a simpler leap year rule - every year number divisible by
+The [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46 BCE, and took
+effect in 45 BCE. It was like the Gregorian calendar, but with a simpler leap year rule - every year number divisible by
 4 was a leap year.
 
-The Noda Time implementation of the Julian calendar is proleptic, and ignores the fact that before around 4AD the leap
+The Noda Time implementation of the Julian calendar is proleptic, and ignores the fact that before around 4 CE the leap
 year rule was accidentally implemented as a leap year every *three* years. See the linked Wikipedia article for more
 details of this leap year error, along with suggestions of how history might have actually played out.
 
@@ -134,11 +134,11 @@ Iran and Pakistan. Three variants of this are supported in Noda Time:
 
 - The "simple" calendar, which was the only one supported in Noda Time 1.3, and matches the behaviour of the BCL
   `PersianCalendar` before .NET 4.6. This has a simple leap cycle of 33 years, where years 1, 5, 9, 13, 17, 22, 26,
-  and 30 in each cycle are leap years. This calendar starts on March 18th 622CE (Julian).
+  and 30 in each cycle are leap years. This calendar starts on March 18th 622 CE (Julian).
 - The "astronomical" calendar, where each new year begins on the midnight between the two consecutive solar noons which
   include the instant of the Northern spring equinox, when the sun enters the northern hemisphere. This matches the
   behaviour of the BCL `PersianCalendar` from .NET 4.6 onwards, and the Windows 10 Persian calendar. This calendar starts
-  on March 19th 622CE (Julian).
+  on March 19th 622 CE (Julian).
 - The "arithmetic" (or algorithmic) calendar proposed by Ahmad Birashk, which organizes leap years in cycles of 2820 years,
   where each full cycle consists of 21 subcycles of 128 years, followed by one subcycle of 132 years. Each 128-year
   subcycle consists of a 29 year sub-subcycle, and three 33 year sub-subcycles. A 132-year subcycle is the same as a
