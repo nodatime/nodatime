@@ -156,7 +156,7 @@ Often you don't have much choice about how to parse or format text: if you're in
   - Consider sortability. A pattern such as `yyyy-MM-dd` is naturally sortable in the text form (assuming you never need years outside the range \[0-9999\]), whereas neither `dd-MM-yyyy` or `MM-dd-yyyy` is sortable.
   - Avoid two-digit years. Aside from anything else, the meaning of "2009-10-11" is a lot more obvious than "09-10-11".
   - Think about what precision you need to go down to.
-  - Think about whether a fixed-width pattern would be useful or whether you want to save space by removing sub-second insignficant zeroes.
+  - Think about whether a fixed-width pattern would be useful or whether you want to save space by removing sub-second insignificant zeroes.
   - Try to use a pattern which is ISO-friendly where possible; it'll make it easier to interoperate with other systems in the future.
   - Quote all non-field values other than spaces.
 

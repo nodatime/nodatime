@@ -175,7 +175,7 @@ Year specifiers
 ---
 
 In version 1.x, the `y` format specifier meant "absolute year" (which may be negative) and the `Y` format
-specifier meant "year of era". Unfortunatly, this is not compatible with the BCL, where `y` really means year
+specifier meant "year of era". Unfortunately, this is not compatible with the BCL, where `y` really means year
 of era. Under most calendars this is irrelevant in the BCL, as most only support a single era - but in Noda Time,
 the default calendar system (Gregorian) supports dates before 1CE. (Even so, most users will never create or use
 dates before 1CE.)

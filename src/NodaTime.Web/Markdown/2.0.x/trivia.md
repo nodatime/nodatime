@@ -239,7 +239,7 @@ anyway.
 
 **Read more:**
 
-- [Wikipedia: Calender (New Style) act][wikipedia-newstyle-act]
+- [Wikipedia: Calendar (New Style) act][wikipedia-newstyle-act]
 - [Wikipedia: Old and New Style
   dates](https://en.wikipedia.org/wiki/Old_Style_and_New_Style_dates)
 - [Malcolm Rowe's write-up in

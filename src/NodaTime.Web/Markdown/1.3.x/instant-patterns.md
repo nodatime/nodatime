@@ -28,7 +28,7 @@ Custom Patterns
 
 [`Instant`](noda-type://NodaTime.Instant) supports all the [`LocalDateTime` custom patterns](localdatetime-patterns).
 The pattern allows the culture to be specified, but *always* uses the ISO-8601 calendar, and *always* uses the UTC
-time zone. The "template value" is always the unix epoch.
+time zone. The "template value" is always the Unix epoch.
 
 All instant patterns (other than the standard *numeric* ones) handle [`Instant.MinValue`](noda-property://NodaTime.Instant.MinValue)
 and [`Instant.MaxValue`](noda-property://NodaTime.Instant.MaxValue) separately. The default formatting of the values

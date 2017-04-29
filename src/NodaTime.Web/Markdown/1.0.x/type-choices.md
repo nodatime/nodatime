@@ -1,4 +1,4 @@
-@Title="Choosing (and convering) between types"
+@Title="Choosing (and converting) between types"
 
 This is a companion page to the
 ["core concepts quick reference"](concepts), and ["core types"](core-types)

@@ -26,7 +26,7 @@ Migration-enabling release, deprecated members in 1.3 that are not in 2.0, and i
 **Unscheduled features and issues which we hope to address at some point**
 
 - Support month name parsing/formatting for the Hebrew calendar using `CultureInfo`
-- Ethopian calendars
+- Ethiopian calendars
 - More code analysis using Roslyn (e.g. check that all non-nullable parameters are validated)
 
 **Separate CLDR project**
