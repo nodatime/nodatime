@@ -96,7 +96,7 @@ namespace NodaTime
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
             if (hour < 0 || hour > HoursPerDay - 1 ||
                 minute < 0 || minute > MinutesPerHour - 1 ||
-                second < 0 || second > SecondsPerHour - 1)
+                second < 0 || second > SecondsPerMinute - 1)
             {
                 Preconditions.CheckArgumentRange(nameof(hour), hour, 0, HoursPerDay - 1);
                 Preconditions.CheckArgumentRange(nameof(minute), minute, 0, MinutesPerHour - 1);
@@ -122,7 +122,7 @@ namespace NodaTime
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
             if (hour < 0 || hour > HoursPerDay - 1 ||
                 minute < 0 || minute > MinutesPerHour - 1 ||
-                second < 0 || second > SecondsPerHour - 1 ||
+                second < 0 || second > SecondsPerMinute - 1 ||
                 millisecond < 0 || millisecond > MillisecondsPerSecond - 1)
             {
                 Preconditions.CheckArgumentRange(nameof(hour), hour, 0, HoursPerDay - 1);
@@ -152,7 +152,7 @@ namespace NodaTime
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
             if (hour < 0 || hour > HoursPerDay - 1 ||
                 minute < 0 || minute > MinutesPerHour - 1 ||
-                second < 0 || second > SecondsPerHour - 1 ||
+                second < 0 || second > SecondsPerMinute - 1 ||
                 millisecond < 0 || millisecond > MillisecondsPerSecond - 1 ||
                 tickWithinMillisecond < 0 || tickWithinMillisecond > TicksPerMillisecond - 1)
             {
@@ -188,7 +188,7 @@ namespace NodaTime
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
             if (hour < 0 || hour > HoursPerDay - 1 ||
                 minute < 0 || minute > MinutesPerHour - 1 ||
-                second < 0 || second > SecondsPerHour - 1 ||
+                second < 0 || second > SecondsPerMinute - 1 ||
                 tickWithinSecond < 0 || tickWithinSecond > TicksPerSecond - 1)
             {
                 Preconditions.CheckArgumentRange(nameof(hour), hour, 0, HoursPerDay - 1);
@@ -220,7 +220,7 @@ namespace NodaTime
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
             if (hour < 0 || hour > HoursPerDay - 1 ||
                 minute < 0 || minute > MinutesPerHour - 1 ||
-                second < 0 || second > SecondsPerHour - 1 ||
+                second < 0 || second > SecondsPerMinute - 1 ||
                 nanosecondWithinSecond < 0 || nanosecondWithinSecond > NanosecondsPerSecond - 1)
             {
                 Preconditions.CheckArgumentRange(nameof(hour), hour, 0, HoursPerDay - 1);

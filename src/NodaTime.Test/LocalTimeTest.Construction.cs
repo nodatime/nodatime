@@ -10,6 +10,79 @@ namespace NodaTime.Test
     public partial class LocalTimeTest
     {
         [Test]
+        [TestCase(-1, 0, 0)]
+        [TestCase(24, 0, 0)]
+        [TestCase(0, -1, 0)]
+        [TestCase(0, 60, 0)]
+        [TestCase(0, 0, 60)]
+        [TestCase(0, 0, -1)]
+        public void InvalidConstructionToSecond(int hour, int minute, int second)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalTime(hour, minute, second));
+        }
+
+        [Test]
+        [TestCase(-1, 0, 0, 0)]
+        [TestCase(24, 0, 0, 0)]
+        [TestCase(0, -1, 0, 0)]
+        [TestCase(0, 60, 0, 0)]
+        [TestCase(0, 0, 60, 0)]
+        [TestCase(0, 0, -1, 0)]
+        [TestCase(0, 0, 0, -1)]
+        [TestCase(0, 0, 0, 1000)]
+        public void InvalidConstructionToMillisecond(int hour, int minute, int second, int millisecond)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalTime(hour, minute, second, millisecond));
+        }
+
+        [Test]
+        [TestCase(-1, 0, 0, 0, 0)]
+        [TestCase(24, 0, 0, 0, 0)]
+        [TestCase(0, -1, 0, 0, 0)]
+        [TestCase(0, 60, 0, 0, 0)]
+        [TestCase(0, 0, 60, 0, 0)]
+        [TestCase(0, 0, -1, 0, 0)]
+        [TestCase(0, 0, 0, -1, 0)]
+        [TestCase(0, 0, 0, 1000, 0)]
+        [TestCase(0, 0, 0, 0, -1)]
+        [TestCase(0, 0, 0, 0, (int) NodaConstants.TicksPerMillisecond)]
+        public void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int second, int millisecond, int tick)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => LocalTime.FromHourMinuteSecondMillisecondTick(hour, minute, second, millisecond, tick));
+        }
+
+        [Test]
+        [TestCase(-1, 0, 0, 0)]
+        [TestCase(24, 0, 0, 0)]
+        [TestCase(0, -1, 0, 0)]
+        [TestCase(0, 60, 0, 0)]
+        [TestCase(0, 0, 60, 0)]
+        [TestCase(0, 0, -1, 0)]
+        [TestCase(0, 0, 0, -1)]
+        [TestCase(0, 0, 0, (int) NodaConstants.TicksPerSecond)]
+        public void FromHourMinuteSecondTick_Invalid(int hour, int minute, int second, int tick)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => LocalTime.FromHourMinuteSecondTick(hour, minute, second, tick));
+        }
+
+        [Test]
+        [TestCase(-1, 0, 0, 0)]
+        [TestCase(24, 0, 0, 0)]
+        [TestCase(0, -1, 0, 0)]
+        [TestCase(0, 60, 0, 0)]
+        [TestCase(0, 0, 60, 0)]
+        [TestCase(0, 0, -1, 0)]
+        [TestCase(0, 0, 0, -1)]
+        [TestCase(0, 0, 0, NodaConstants.NanosecondsPerSecond)]
+        public void FromHourMinuteSecondNanosecond_Invalid(int hour, int minute, int second, long nanosecond)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(
+                () => LocalTime.FromHourMinuteSecondNanosecond(hour, minute, second, nanosecond));
+        }
+
+        [Test]
         public void FromNanosecondsSinceMidnight_Valid()
         {
             Assert.AreEqual(LocalTime.Midnight, LocalTime.FromNanosecondsSinceMidnight(0));
