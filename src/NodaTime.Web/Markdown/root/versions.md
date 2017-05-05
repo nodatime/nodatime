@@ -79,6 +79,7 @@ Breaking changes:
 - Binary data serialized with 1.x is not compatible with 2.0.
 - Properties related to week-years (e.g. `WeekOfWeekYear`) have been removed, in favour of a more
   flexible system. See the [week-years guide](/unstable/userguide/weekyears) for more information.
+- Removal of `IDateTimeZoneSource.MapTimeZoneId` and the introduction of `IDateTimeZoneSource.GetSystemDefaultId` instead.
 
 Bug fixes:
 
