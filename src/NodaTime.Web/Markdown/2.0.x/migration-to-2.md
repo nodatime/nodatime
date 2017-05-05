@@ -100,6 +100,11 @@ The `IClock.Now` property has been replaced by `IClock.GetCurrentInstant()`. Thi
 clearer in meaning, and a more appropriate member type. The two calls are absolutely equivalent
 in meaning.
 
+`IDateTimeZoneSource.MapTimeZoneId` has been removed, and `IDateTimeZoneSource.GetSystemDefaultId`
+has been introduced instead. `MapTimeZoneId` was only particularly useful when mapping a Windows
+ID to a TZDB ID; to do that, you should now look up the Windows ID in
+`TzdbDateTimeZoneSource.Default.WindowsMapping.PrimaryMapping`.
+
 Period
 ====
 
