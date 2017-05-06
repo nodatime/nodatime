@@ -6,6 +6,14 @@ details.
 
 ## 2.1 (current master branch)
 
+## 2.0.1, released 2017-05-05 with tzdb 2017b
+
+Patch release: bugfixes only:
+
+- Fixes [issue 743]: handling of time zones on Mono on Linux
+- Fixes [issue 801]: `LocalDate` constructor validation
+- Fixes [issue 807]: `LocalTime` validation
+
 ## 2.0, released 2017-03-31 with tzdb 2017b
 
 Major release: do *not* expect to be able to upgrade from 1.x without making adjustments to your code; please
