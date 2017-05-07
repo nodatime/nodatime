@@ -12,6 +12,7 @@
     <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">$(PackageTargetFallback);dotnet</PackageTargetFallback>
     <RuntimeFrameworkVersion Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">1.0.4</RuntimeFrameworkVersion>
     <Deterministic>True</Deterministic>
+    <IsPackable>False</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
