@@ -40,8 +40,8 @@ dotnet run -c Release -p src/NodaTime.Test/NodaTime.Test.csproj -f net451
 
 mkdir $OUTPUT
 
-dotnet pack --include-symbols --no-build -c Release $BUILD_FLAG src/NodaTime
-dotnet pack --include-symbols --no-build -c Release $BUILD_FLAG src/NodaTime.Testing
+dotnet pack --no-build -c Release $BUILD_FLAG src/NodaTime
+dotnet pack --no-build -c Release $BUILD_FLAG src/NodaTime.Testing
 cp src/NodaTime/bin/Release/*.nupkg $OUTPUT
 cp src/NodaTime.Testing/bin/Release/*.nupkg $OUTPUT
 git archive $VERSION -o $OUTPUT/NodaTime-$VERSION-src.zip --prefix=NodaTime-$VERSION-src/
