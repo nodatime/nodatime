@@ -15,6 +15,7 @@
     <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <Deterministic>True</Deterministic>
+    <IncludeSymbols>True</IncludeSymbols>
   </PropertyGroup>
 
   <ItemGroup>
