@@ -11,6 +11,7 @@
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50;netcore45</PackageTargetFallback>
     <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
     <Deterministic>True</Deterministic>
+    <IsPackable>False</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

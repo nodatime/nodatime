@@ -9,6 +9,7 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>NodaTime.NzdPrinter</PackageId>
     <Deterministic>True</Deterministic>
+    <IsPackable>False</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
