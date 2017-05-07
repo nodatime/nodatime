@@ -2,24 +2,25 @@
 
 set -e
 
+cd $(dirname $0)
+
 if [[ "$1" = "" ]]
 then
-  echo "Usage: updatetzdb.sh tzdb-release-number"
-  echo "e.g. updatetzdb 2013h"
+  echo "Usage: update-master.sh tzdb-release-number"
+  echo "e.g. updatemaster.sh 2013h"
   exit 1
 fi
 
-declare -r SRCDIR=../src
-declare -r OUTPUT=$SRCDIR/NodaTime/TimeZones/Tzdb.nzd
-declare -r DATADIR=../data
-declare -r WWWDIR=../src/NodaTime.Web/wwwroot
-declare -r PROJECTS="NodaTime NodaTime.TzdbCompiler NodaTime.TzValidate.NodaDump NodaTime.TzValidate.NzdCompatibility"
+cd $(dirname $0)
 
-for proj in $PROJECTS
-do
-  dotnet restore -v quiet $SRCDIR/$proj
-  dotnet build $SRCDIR/$proj
-done
+declare -r ROOT=../..
+declare -r SRCDIR=$ROOT/src
+declare -r OUTPUT=$SRCDIR/NodaTime/TimeZones/Tzdb.nzd
+declare -r DATADIR=$ROOT/data
+declare -r WWWDIR=$SRCDIR/NodaTime.Web/wwwroot
+
+dotnet restore -v quiet $SRCDIR/NodaTime-All.sln
+dotnet build $SRCDIR/NodaTime-All.sln
 
 dotnet run -p $SRCDIR/NodaTime.TzdbCompiler/*.csproj -- \
   -o $OUTPUT \
