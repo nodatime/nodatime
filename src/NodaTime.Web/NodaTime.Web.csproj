@@ -9,6 +9,7 @@
     <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <Deterministic>True</Deterministic>
+    <IsPackable>False</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

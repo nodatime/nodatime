@@ -6,6 +6,7 @@
     <OutputType>Exe</OutputType>
     <PackageId>NodaTime.TzValidate.NzdCompatibility</PackageId>
     <Deterministic>True</Deterministic>
+    <IsPackable>False</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
