@@ -20,6 +20,34 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Nesting for tests -->
+    <Compile Update="CalendarSystemTest.*.cs">
+      <DependentUpon>CalendarSystemTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="DateTimeZoneTest.*.cs">
+      <DependentUpon>DateTimeZoneTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="DurationTest.*.cs">
+      <DependentUpon>DurationTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="InstantTest.*.cs">
+      <DependentUpon>InstantTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="LocalDateTest.*.cs">
+      <DependentUpon>LocalDateTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="LocalDateTimeTest.*.cs">
+      <DependentUpon>LocalDateTimeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="LocalTimeTest.*.cs">
+      <DependentUpon>LocalTimeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="OffsetTest.*.cs">
+      <DependentUpon>OffsetTest.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
     <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj" />
   </ItemGroup>
