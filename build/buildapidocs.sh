@@ -50,7 +50,12 @@ dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.2.x tmp/docfx/obj/1.3.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.3.x tmp/docfx/obj/2.0.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/2.0.x tmp/docfx/obj/unstable
+
+# Extract annotations
 dotnet run -p DocfxAnnotationGenerator/DocfxAnnotationGenerator.csproj -- tmp/docfx history/packages tmp/docfx/unstable/src 1.0.x 1.1.x 1.2.x 1.3.x 2.0.x unstable
+
+# Extract snippets from NodaTime.Demo (unstable only, for now)
+dotnet run -p SnippetExtractor/SnippetExtractor.csproj -- ../src/NodaTime.Demo/NodaTime.Demo.csproj ../src/nodatime/bin/debug/net45/NodaTime.dll tmp/docfx/obj/unstable/overwrite
 
 echo "Running main docfx build"
 docfx build tmp/docfx/docfx.json

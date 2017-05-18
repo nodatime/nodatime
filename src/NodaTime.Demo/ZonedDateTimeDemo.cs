@@ -8,12 +8,14 @@ namespace NodaTime.Demo
 {
     internal class ZonedDateTimeDemo
     {
-        private static readonly DateTimeZone Dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+        // TODO: dublin used to be a static field. We could reintroduce that if the snippet
+        // processor found every static field used in a snippet and added it at the start of the snippet...
 
         [Test]
         public void Construction()
         {
-            ZonedDateTime dt = Dublin.AtStrictly(new LocalDateTime(2010, 6, 9, 15, 15, 0));
+            DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+            ZonedDateTime dt = Snippet.For(dublin.AtStrictly(new LocalDateTime(2010, 6, 9, 15, 15, 0)));
 
             Assert.AreEqual(15, dt.Hour);
             Assert.AreEqual(2010, dt.Year);
@@ -22,16 +24,20 @@ namespace NodaTime.Demo
             Assert.AreEqual(instant, dt.ToInstant());
         }
 
+        // TODO: Work out how to have multiple snippets for a single member.
+
         [Test]
-        public void Ambiguity()
+        public void AmbiguousLocalDateTime()
         {
-            Assert.Throws<AmbiguousTimeException>(() => Dublin.AtStrictly(new LocalDateTime(2010, 10, 31, 1, 15, 0)));
+            DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+            Assert.Throws<AmbiguousTimeException>(() => dublin.AtStrictly(new LocalDateTime(2010, 10, 31, 1, 15, 0)));
         }
 
         [Test]
-        public void Impossibility()
+        public void SkippedLocalDateTime()
         {
-            Assert.Throws<SkippedTimeException>(() => Dublin.AtStrictly(new LocalDateTime(2010, 3, 28, 1, 15, 0)));
+            DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+            Assert.Throws<SkippedTimeException>(() => dublin.AtStrictly(new LocalDateTime(2010, 3, 28, 1, 15, 0)));
         }
     }
 }
