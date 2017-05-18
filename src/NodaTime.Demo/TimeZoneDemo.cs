@@ -12,8 +12,9 @@ namespace NodaTime.Demo
         [Test]
         public void EarlyParis()
         {
+            // Yes, in 1900 Paris did (according to TZDB) have a UTC offset of 9 minutes, 21 seconds.
             DateTimeZone paris = DateTimeZoneProviders.Tzdb["Europe/Paris"];
-            Offset offset = paris.GetUtcOffset(Instant.FromUtc(1900, 1, 1, 0, 0));
+            Offset offset = Snippet.For(paris.GetUtcOffset(Instant.FromUtc(1900, 1, 1, 0, 0)));
             Assert.AreEqual("+00:09:21", offset.ToString());
         }
 
@@ -29,7 +30,7 @@ namespace NodaTime.Demo
         public void ZoneInterval()
         {
             DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
-            ZoneInterval interval = london.GetZoneInterval(Instant.FromUtc(2010, 6, 19, 0, 0));
+            ZoneInterval interval = Snippet.For(london.GetZoneInterval(Instant.FromUtc(2010, 6, 19, 0, 0)));
             Assert.AreEqual("BST", interval.Name);
             Assert.AreEqual(Instant.FromUtc(2010, 3, 28, 1, 0), interval.Start);
             Assert.AreEqual(Instant.FromUtc(2010, 10, 31, 1, 0), interval.End);

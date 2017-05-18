@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NUnit.Framework;
+using System.Collections;
 
 namespace NodaTime.Demo
 {

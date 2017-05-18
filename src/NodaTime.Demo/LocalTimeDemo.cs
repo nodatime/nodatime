@@ -12,7 +12,7 @@ namespace NodaTime.Demo
         [Test]
         public void Construction()
         {
-            LocalTime time = new LocalTime(16, 20, 0);
+            LocalTime time = Snippet.For(new LocalTime(16, 20, 0));
             Assert.AreEqual("16:20:00", time.ToString("HH:mm:ss", CultureInfo.InvariantCulture));
         }
     }

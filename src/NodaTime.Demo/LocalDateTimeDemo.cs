@@ -4,6 +4,7 @@
 
 using System.Globalization;
 using NUnit.Framework;
+using NodaTime.Text;
 
 namespace NodaTime.Demo
 {
@@ -13,22 +14,23 @@ namespace NodaTime.Demo
         public void SimpleConstruction()
         {
             CalendarSystem calendar = CalendarSystem.Iso;
-            LocalDateTime dt = new LocalDateTime(2010, 6, 16, 16, 20, calendar);
+            LocalDateTime dt = Snippet.For(new LocalDateTime(2010, 6, 16, 16, 20, calendar));
             Assert.AreEqual(20, dt.Minute);
         }
 
         [Test]
         public void ImplicitIsoCalendar()
         {
-            LocalDateTime dt = new LocalDateTime(2010, 6, 16, 16, 20);
-            Assert.AreEqual(20, dt.Minute);
+            LocalDateTime dt = Snippet.For(new LocalDateTime(2010, 6, 16, 16, 20));
+            Assert.AreEqual("2010-06T16:20:00", LocalDateTimePattern.GeneralIso.Format(dt));
+            Assert.AreEqual(CalendarSystem.Iso, dt.Calendar);
         }
 
         [Test]
         public void TestToString()
         {
             LocalDateTime dt = new LocalDateTime(2010, 6, 16, 16, 20);
-            Assert.AreEqual("2010-06-16T16:20:00", dt.ToString("yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture));
+            Assert.AreEqual("2010-06-16T16:20:00", Snippet.For(dt.ToString("yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture)));
         }
     }
 }
