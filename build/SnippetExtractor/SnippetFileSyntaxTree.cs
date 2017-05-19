@@ -28,9 +28,10 @@ namespace SnippetExtractor
             snippetType = model.Compilation.GetTypeByMetadataName("NodaTime.Demo.Snippet");
         }
 
-        public IEnumerable<Snippet> GetSnippets() => tree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().SelectMany(GetSnippets);
+        public IEnumerable<SourceSnippet> GetSnippets() =>
+            tree.GetRoot().DescendantNodes().OfType<MethodDeclarationSyntax>().SelectMany(GetSnippets);
 
-        private IEnumerable<Snippet> GetSnippets(MethodDeclarationSyntax method)
+        private IEnumerable<SourceSnippet> GetSnippets(MethodDeclarationSyntax method)
         {
             // Note: this won't get using directives in namespace declarations, but hey...
             var usings = method.SyntaxTree.GetCompilationUnitRoot().Usings.Select(uds => uds.ToString());
@@ -41,13 +42,11 @@ namespace SnippetExtractor
                 var targetSymbol = model.GetSymbolInfo(arg).Symbol;
                 if (targetSymbol == null)
                 {
-                    // Throw?
-                    Console.WriteLine($"Couldn't get a symbol for {snippetFor.ToString()}");
-                    continue;
+                    throw new Exception($"Couldn't get a symbol for Snippet.For argument: {snippetFor.ToString()}");
                 }
                 var uid = VisitorHelper.GetId(targetSymbol);
                 var block = snippetFor.Ancestors().OfType<BlockSyntax>().First();
-                yield return new Snippet(uid, block.GetLines(), usings);
+                yield return new SourceSnippet(uid, block.GetLines(), usings);
             }
         }
 
