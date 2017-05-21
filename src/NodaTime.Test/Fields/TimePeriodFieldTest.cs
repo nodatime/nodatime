@@ -30,5 +30,27 @@ namespace NodaTime.Test.Fields
             Assert.AreEqual(expectedEndTime, SampleField.Add(startTime, units, ref extraDays));
             Assert.AreEqual(expectedExtraDays, extraDays);
         }
+
+        [Test]
+        [TestCase(Duration.MaxDays * NodaConstants.HoursPerDay - 1, Description = "Using BigInteger")]
+        [TestCase(1, Description = "Using long")]
+        [TestCase(Duration.MinDays * NodaConstants.HoursPerDay + 1, Description = "Using BigInteger")]
+        [TestCase(-1, Description = "Using long")]
+        public void GetUnitsInDuration(int hours)
+        {
+            var duration = Duration.FromHours(hours) + Duration.FromMinutes(30 * Math.Sign(hours));
+            Assert.AreEqual(hours, TimePeriodField.Hours.GetUnitsInDuration(duration));
+        }
+
+        [Test]
+        [TestCase(Duration.MaxDays * NodaConstants.HoursPerDay - 1, Description = "Using BigInteger")]
+        [TestCase(1, Description = "Using long")]
+        [TestCase(Duration.MinDays * NodaConstants.HoursPerDay, Description = "Using BigInteger (negative)")]
+        [TestCase(-1, Description = "Using long (positive)")]
+        public void ToDuration(int hours)
+        {
+            var actual = TimePeriodField.Hours.ToDuration(hours);
+            Assert.AreEqual(Duration.FromHours(hours), actual);
+        }
     }
 }
