@@ -1152,7 +1152,7 @@ namespace NodaTime
         /// there may be values just within Int64 range for which this property returns true, but they're
         /// unlikely to come up... this property should *only* be used for optimization purposes.
         /// </summary>
-        private bool IsInt64Representable => days >= MinDaysForLongNanos && days <= MaxDaysForLongNanos;
+        internal bool IsInt64Representable => days >= MinDaysForLongNanos && days <= MaxDaysForLongNanos;
 
         /// <summary>
         /// Performs an unchecked conversion from this duration to an Int64 value of nanoseconds.
