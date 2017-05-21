@@ -132,21 +132,6 @@ namespace NodaTime.Fields
             }
         }
 
-        public long Subtract(LocalTime minuendTime, LocalTime subtrahendTime)
-        {
-            if (minuendTime.NanosecondOfDay < subtrahendTime.NanosecondOfDay)
-            {
-                return -Subtract(subtrahendTime, minuendTime);
-            }
-            unchecked
-            {
-                // We know this won't overflow, as the result must be smallish and positive.
-                long nanoseconds = (minuendTime.NanosecondOfDay - subtrahendTime.NanosecondOfDay);
-                // This will naturally truncate towards 0, which is what we want.
-                return nanoseconds / unitNanoseconds;
-            }
-        }
-
         /// <summary>
         /// Returns the number of units in the given duration, rounding towards zero.
         /// </summary>
