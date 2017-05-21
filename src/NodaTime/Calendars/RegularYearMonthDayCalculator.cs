@@ -89,31 +89,31 @@ namespace NodaTime.Calendars
             return new YearMonthDay(yearToUse, monthToUse, dayToUse);
         }
 
-        internal override int MonthsBetween(YearMonthDay minuendDate, YearMonthDay subtrahendDate)
+        internal override int MonthsBetween(YearMonthDay start, YearMonthDay end)
         {
-            int minuendYear = minuendDate.Year;
-            int subtrahendYear = subtrahendDate.Year;
-            int minuendMonth = minuendDate.Month;
-            int subtrahendMonth = subtrahendDate.Month;
+            int startMonth = start.Month;
+            int startYear = start.Year;
+            int endMonth = end.Month;
+            int endYear = end.Year;
 
-            int diff = (minuendYear - subtrahendYear) * monthsInYear + minuendMonth - subtrahendMonth;
+            int diff = (endYear - startYear) * monthsInYear + endMonth - startMonth;
 
-            // If we just add the difference in months to subtrahendDate, what do we get?
-            YearMonthDay simpleAddition = AddMonths(subtrahendDate, diff);
+            // If we just add the difference in months to start, what do we get?
+            YearMonthDay simpleAddition = AddMonths(start, diff);
 
             // Note: this relies on naive comparison of year/month/date values.
-            if (subtrahendDate <= minuendDate)
+            if (start <= end)
             {
-                // Moving forward: if the result of the simple addition is before or equal to the minuend,
+                // Moving forward: if the result of the simple addition is before or equal to the end,
                 // we're done. Otherwise, rewind a month because we've overshot.
-                return simpleAddition <= minuendDate ? diff : diff - 1;
+                return simpleAddition <= end ? diff : diff - 1;
             }
             else
             {
                 // Moving backward: if the result of the simple addition (of a non-positive number)
-                // is after or equal to the minuend, we're done. Otherwise, increment by a month because
+                // is after or equal to the end, we're done. Otherwise, increment by a month because
                 // we've overshot backwards.
-                return simpleAddition >= minuendDate ? diff : diff + 1;
+                return simpleAddition >= end ? diff : diff + 1;
             }
         }
     }

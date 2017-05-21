@@ -74,9 +74,10 @@ namespace NodaTime.Calendars
         internal abstract int GetDaysInYear([Trusted] int year);
 
         /// <summary>
-        /// Subtract subtrahendDate from minuendDate, in terms of months.
+        /// Find the months between <paramref name="start"/> and <paramref name="end"/>.
+        /// (If start is earlier than end, the result will be non-negative.)
         /// </summary>
-        internal abstract int MonthsBetween([Trusted] YearMonthDay minuendDate, [Trusted] YearMonthDay subtrahendDate);
+        internal abstract int MonthsBetween([Trusted] YearMonthDay start, [Trusted] YearMonthDay end);
 
         /// <summary>
         /// Adjusts the given YearMonthDay to the specified year, potentially adjusting

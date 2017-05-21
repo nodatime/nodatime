@@ -159,26 +159,24 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, month, day);
         }
 
-        // Note to self: this is (minuendInstant - subtrahendInstant) in months. So if minuendInstant
-        // is later than subtrahendInstant, the result should be positive.
-        internal override int MonthsBetween(YearMonthDay minuendDate, YearMonthDay subtrahendDate)
+        internal override int MonthsBetween(YearMonthDay start, YearMonthDay end)
         {
             // First (quite rough) guess... we could probably be more efficient than this, but it's unlikely to be very far off.
-            int minuendCivilMonth = CalendarToCivilMonth(minuendDate.Year, minuendDate.Month);
-            int subtrahendCivilMonth = CalendarToCivilMonth(subtrahendDate.Year, subtrahendDate.Month);
-            double minuendTotalMonths = minuendCivilMonth + (minuendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle;
-            double subtrahendTotalMonths = subtrahendCivilMonth + (subtrahendDate.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle;
-            int diff = (int) (minuendTotalMonths - subtrahendTotalMonths);
+            int startCivilMonth = CalendarToCivilMonth(start.Year, start.Month);
+            double startTotalMonths = startCivilMonth + (start.Year * MonthsPerLeapCycle) / (double)YearsPerLeapCycle;
+            int endCivilMonth = CalendarToCivilMonth(end.Year, end.Month);
+            double endTotalMonths = endCivilMonth + (end.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle;
+            int diff = (int) (endTotalMonths - startTotalMonths);
 
-            if (Compare(subtrahendDate, minuendDate) <= 0)
+            if (Compare(start, end) <= 0)
             {
                 // Go backwards until we've got a tight upper bound...
-                while (Compare(AddMonths(subtrahendDate, diff), minuendDate) > 0)
+                while (Compare(AddMonths(start, diff), end) > 0)
                 {
                     diff--;
                 }
                 // Go forwards until we've overshot
-                while (Compare(AddMonths(subtrahendDate, diff), minuendDate) <= 0)
+                while (Compare(AddMonths(start, diff), end) <= 0)
                 {
                     diff++;
                 }
@@ -187,15 +185,14 @@ namespace NodaTime.Calendars
             }
             else
             {
-                // Moving backwards, so we need to end up with a result greater than or equal to
-                // minuendInstant...
+                // Moving backwards, so we need to end up with a result greater than or equal to end...
                 // Go forwards until we've got a tight upper bound...
-                while (Compare(AddMonths(subtrahendDate, diff), minuendDate) < 0)
+                while (Compare(AddMonths(start, diff), end) < 0)
                 {
                     diff++;
                 }
                 // Go backwards until we've overshot
-                while (Compare(AddMonths(subtrahendDate, diff), minuendDate) >= 0)
+                while (Compare(AddMonths(start, diff), end) >= 0)
                 {
                     diff--;
                 }

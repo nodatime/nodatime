@@ -27,7 +27,7 @@ namespace NodaTime.Fields
         public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
         {
             var calculator = minuendDate.Calendar.YearMonthDayCalculator;
-            return calculator.MonthsBetween(minuendDate.YearMonthDay, subtrahendDate.YearMonthDay);
+            return calculator.MonthsBetween(subtrahendDate.YearMonthDay, minuendDate.YearMonthDay);
         }
     }
 }
