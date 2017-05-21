@@ -411,10 +411,10 @@ namespace NodaTime
             // Optimization for single field
             switch (units)
             {
-                case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.Subtract(endDate, start.Date));
-                case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.Subtract(endDate, start.Date));
-                case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.Subtract(endDate, start.Date));
-                case PeriodUnits.Days: return FromDays(DatePeriodFields.DaysField.Subtract(endDate, start.Date));
+                case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.UnitsBetween(start.Date, endDate));
+                case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.Date, endDate));
+                case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.Date, endDate));
+                case PeriodUnits.Days: return FromDays(DatePeriodFields.DaysField.UnitsBetween(start.Date, endDate));
                 case PeriodUnits.Hours: return FromHours(GetTimeBetween(start, end, TimePeriodField.Hours));
                 case PeriodUnits.Minutes: return FromMinutes(GetTimeBetween(start, end, TimePeriodField.Minutes));
                 case PeriodUnits.Seconds: return FromSeconds(GetTimeBetween(start, end, TimePeriodField.Seconds));
@@ -456,7 +456,7 @@ namespace NodaTime
             {
                 return 0;
             }
-            int value = dateField.Subtract(end, remaining);
+            int value = dateField.UnitsBetween(remaining, end);
             remaining = dateField.Add(remaining, value);
             return value;
         }
@@ -583,10 +583,10 @@ namespace NodaTime
             // Optimization for single field
             switch (units)
             {
-                case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.Subtract(end, start));
-                case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.Subtract(end, start));
-                case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.Subtract(end, start));
-                case PeriodUnits.Days: return FromDays(DatePeriodFields.DaysField.Subtract(end, start));
+                case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.UnitsBetween(start, end));
+                case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.UnitsBetween(start, end));
+                case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start, end));
+                case PeriodUnits.Days: return FromDays(DatePeriodFields.DaysField.UnitsBetween(start, end));
             }
 
             // Multiple fields

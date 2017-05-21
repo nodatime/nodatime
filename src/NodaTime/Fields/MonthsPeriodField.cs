@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Calendars;
 
 namespace NodaTime.Fields
@@ -24,10 +23,7 @@ namespace NodaTime.Fields
             return new LocalDate(yearMonthDay.WithCalendar(calendar));
         }
 
-        public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
-        {
-            var calculator = minuendDate.Calendar.YearMonthDayCalculator;
-            return calculator.MonthsBetween(subtrahendDate.YearMonthDay, minuendDate.YearMonthDay);
-        }
+        public int UnitsBetween(LocalDate start, LocalDate end) =>
+            start.Calendar.YearMonthDayCalculator.MonthsBetween(start.YearMonthDay, end.YearMonthDay);
     }
 }
