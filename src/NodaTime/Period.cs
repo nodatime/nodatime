@@ -415,12 +415,12 @@ namespace NodaTime
                 case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.Date, endDate));
                 case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.Date, endDate));
                 case PeriodUnits.Days: return FromDays(DatePeriodFields.DaysField.UnitsBetween(start.Date, endDate));
-                case PeriodUnits.Hours: return FromHours(GetTimeBetween(start, end, TimePeriodField.Hours));
-                case PeriodUnits.Minutes: return FromMinutes(GetTimeBetween(start, end, TimePeriodField.Minutes));
-                case PeriodUnits.Seconds: return FromSeconds(GetTimeBetween(start, end, TimePeriodField.Seconds));
-                case PeriodUnits.Milliseconds: return FromMilliseconds(GetTimeBetween(start, end, TimePeriodField.Milliseconds));
-                case PeriodUnits.Ticks: return FromTicks(GetTimeBetween(start, end, TimePeriodField.Ticks));
-                case PeriodUnits.Nanoseconds: return FromNanoseconds(GetTimeBetween(start, end, TimePeriodField.Nanoseconds));
+                case PeriodUnits.Hours: return FromHours(TimePeriodField.Hours.UnitsBetween(start, end));
+                case PeriodUnits.Minutes: return FromMinutes(TimePeriodField.Minutes.UnitsBetween(start, end));
+                case PeriodUnits.Seconds: return FromSeconds(TimePeriodField.Seconds.UnitsBetween(start, end));
+                case PeriodUnits.Milliseconds: return FromMilliseconds(TimePeriodField.Milliseconds.UnitsBetween(start, end));
+                case PeriodUnits.Ticks: return FromTicks(TimePeriodField.Ticks.UnitsBetween(start, end));
+                case PeriodUnits.Nanoseconds: return FromNanoseconds(TimePeriodField.Nanoseconds.UnitsBetween(start, end));
             }
 
             // Multiple fields
@@ -496,14 +496,6 @@ namespace NodaTime
                 return value;
             }
             return result;
-        }
-
-        private static long GetTimeBetween(LocalDateTime start, LocalDateTime end, TimePeriodField periodField)
-        {
-            LocalInstant startLocalInstant = start.ToLocalInstant();
-            LocalInstant endLocalInstant = end.ToLocalInstant();
-            Duration duration = endLocalInstant.TimeSinceLocalEpoch - startLocalInstant.TimeSinceLocalEpoch;
-            return periodField.GetUnitsInDuration(duration);
         }
 
         // TODO(optimization): These three methods are only ever used with scalar values of 1 or -1. Unlikely that

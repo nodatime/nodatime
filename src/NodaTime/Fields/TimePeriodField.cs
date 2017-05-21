@@ -135,6 +135,14 @@ namespace NodaTime.Fields
             }
         }
 
+        internal long UnitsBetween(LocalDateTime start, LocalDateTime end)
+        {
+            LocalInstant startLocalInstant = start.ToLocalInstant();
+            LocalInstant endLocalInstant = end.ToLocalInstant();
+            Duration duration = endLocalInstant.TimeSinceLocalEpoch - startLocalInstant.TimeSinceLocalEpoch;
+            return GetUnitsInDuration(duration);
+        }
+
         /// <summary>
         /// Returns the number of units in the given duration, rounding towards zero.
         /// </summary>
