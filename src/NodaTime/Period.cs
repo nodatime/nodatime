@@ -472,17 +472,6 @@ namespace NodaTime
             return value;
         }
 
-        private static long FieldBetween(PeriodUnits units, LocalTime end, ref LocalTime remaining, TimePeriodField timeField)
-        {
-            if (units == 0)
-            {
-                return 0;
-            }
-            long value = timeField.Subtract(end, remaining);
-            remaining = timeField.Add(remaining, value);
-            return value;
-        }
-
         private static long GetTimeBetween(LocalDateTime start, LocalDateTime end, TimePeriodField periodField)
         {
             LocalInstant startLocalInstant = start.ToLocalInstant();
@@ -636,26 +625,48 @@ namespace NodaTime
             Preconditions.CheckArgument(units != 0, nameof(units), "Units must not be empty");
             Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, nameof(units), "Units contains an unknown value: {0}", units);
 
-            // Optimization for single field
+            // We know that the difference is in the range of +/- 1 day, which is a relatively small
+            // number of nanoseconds. All the operations can be done with simple long division/remainder ops,
+            // so we don't need to delegate to TimePeriodField.
+
+            long remaining = unchecked (end.NanosecondOfDay - start.NanosecondOfDay);
+
+            // Optimization for a single unit
             switch (units)
             {
-                case PeriodUnits.Hours: return FromHours(TimePeriodField.Hours.Subtract(end, start));
-                case PeriodUnits.Minutes: return FromMinutes(TimePeriodField.Minutes.Subtract(end, start));
-                case PeriodUnits.Seconds: return FromSeconds(TimePeriodField.Seconds.Subtract(end, start));
-                case PeriodUnits.Milliseconds: return FromMilliseconds(TimePeriodField.Milliseconds.Subtract(end, start));
-                case PeriodUnits.Ticks: return FromTicks(TimePeriodField.Ticks.Subtract(end, start));
-                case PeriodUnits.Nanoseconds: return FromNanoseconds(TimePeriodField.Nanoseconds.Subtract(end, start));
+                case PeriodUnits.Hours: return FromHours(remaining / NanosecondsPerHour);
+                case PeriodUnits.Minutes: return FromMinutes(remaining / NanosecondsPerMinute);
+                case PeriodUnits.Seconds: return FromSeconds(remaining / NanosecondsPerSecond);
+                case PeriodUnits.Milliseconds: return FromMilliseconds(remaining / NanosecondsPerMillisecond);
+                case PeriodUnits.Ticks: return FromTicks(remaining / NanosecondsPerTick);
+                case PeriodUnits.Nanoseconds: return FromNanoseconds(remaining);
             }
 
-            LocalTime remaining = start;
-            long hours = FieldBetween(units & PeriodUnits.Hours, end, ref remaining, TimePeriodField.Hours);
-            long minutes = FieldBetween(units & PeriodUnits.Minutes, end, ref remaining, TimePeriodField.Minutes);
-            long seconds = FieldBetween(units & PeriodUnits.Seconds, end, ref remaining, TimePeriodField.Seconds);
-            long milliseconds = FieldBetween(units & PeriodUnits.Milliseconds, end, ref remaining, TimePeriodField.Milliseconds);
-            long ticks = FieldBetween(units & PeriodUnits.Ticks, end, ref remaining, TimePeriodField.Ticks);
-            long nanoseconds = FieldBetween(units & PeriodUnits.Nanoseconds, end, ref remaining, TimePeriodField.Nanoseconds);
+            long hours = UnitsBetween(units & PeriodUnits.Hours, ref remaining, NanosecondsPerHour);
+            long minutes = UnitsBetween(units & PeriodUnits.Minutes, ref remaining, NanosecondsPerMinute);
+            long seconds = UnitsBetween(units & PeriodUnits.Seconds, ref remaining, NanosecondsPerSecond);
+            long milliseconds = UnitsBetween(units & PeriodUnits.Milliseconds, ref remaining, NanosecondsPerMillisecond);
+            long ticks = UnitsBetween(units & PeriodUnits.Ticks, ref remaining, NanosecondsPerTick);
+            long nanoseconds = UnitsBetween(units & PeriodUnits.Nanoseconds, ref remaining, 1);
 
             return new Period(hours, minutes, seconds, milliseconds, ticks, nanoseconds);
+
+            // This is essentially DivRem. We could capture units and remaining instead...
+            // TODO: Investigate performance impact of using the captured variables.
+            long UnitsBetween(PeriodUnits maskedUnits, ref long remainingNanos, long nanosecondsPerUnit)
+            {
+                if (maskedUnits == 0)
+                {
+                    return 0;
+                }
+                long value = remainingNanos / nanosecondsPerUnit;
+                unchecked
+                {
+                    // TODO: remainingNanos = remainingNanos % nanosecondsPerUnit? Investigate performance.
+                    remainingNanos -= value * nanosecondsPerUnit;
+                }
+                return value;
+            }
         }
 
         /// <summary>
