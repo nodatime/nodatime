@@ -484,9 +484,10 @@ namespace NodaTime
 
         private static long GetTimeBetween(LocalDateTime start, LocalDateTime end, TimePeriodField periodField)
         {
-            int days = DatePeriodFields.DaysField.Subtract(end.Date, start.Date);
-            long units = periodField.Subtract(end.TimeOfDay, start.TimeOfDay);
-            return units + days * periodField.UnitsPerDay;
+            LocalInstant startLocalInstant = start.ToLocalInstant();
+            LocalInstant endLocalInstant = end.ToLocalInstant();
+            Duration duration = endLocalInstant.TimeSinceLocalEpoch - startLocalInstant.TimeSinceLocalEpoch;
+            return periodField.GetUnitsInDuration(duration);
         }
 
         // TODO(optimization): These three methods are only ever used with scalar values of 1 or -1. Unlikely that

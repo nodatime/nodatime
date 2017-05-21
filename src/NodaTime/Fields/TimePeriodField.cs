@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using static NodaTime.NodaConstants;
 
 namespace NodaTime.Fields
@@ -145,5 +146,13 @@ namespace NodaTime.Fields
                 return nanoseconds / unitNanoseconds;
             }
         }
+
+        /// <summary>
+        /// Returns the number of units in the given duration, rounding towards zero.
+        /// </summary>
+        internal long GetUnitsInDuration(Duration duration) =>
+            duration.IsInt64Representable
+            ? duration.ToInt64Nanoseconds() / unitNanoseconds
+            : (long)(duration.ToBigIntegerNanoseconds() / unitNanoseconds);
     }
 }
