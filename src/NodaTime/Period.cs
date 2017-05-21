@@ -428,11 +428,8 @@ namespace NodaTime
             int years = 0, months = 0, weeks = 0, days = 0;
             if ((units & PeriodUnits.AllDateUnits) != 0)
             {
-                LocalDate remainingDate = start.Date;
-                years = FieldBetween(units & PeriodUnits.Years, endDate, ref remainingDate, DatePeriodFields.YearsField);
-                months = FieldBetween(units & PeriodUnits.Months, endDate, ref remainingDate, DatePeriodFields.MonthsField);
-                weeks = FieldBetween(units & PeriodUnits.Weeks, endDate, ref remainingDate, DatePeriodFields.WeeksField);
-                days = FieldBetween(units & PeriodUnits.Days, endDate, ref remainingDate, DatePeriodFields.DaysField);
+                LocalDate remainingDate = DateComponentsBetween(
+                    start.Date, endDate, units, out years, out months, out weeks, out days);
                 remaining = new LocalDateTime(remainingDate, start.TimeOfDay);
             }
 
@@ -450,15 +447,38 @@ namespace NodaTime
             return new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
         }
 
-        private static int FieldBetween(PeriodUnits units, LocalDate end, ref LocalDate remaining, IDatePeriodField dateField)
+        /// <summary>
+        /// Common code to perform the date parts of the Between methods.
+        /// </summary>
+        /// <param name="start">Start date</param>
+        /// <param name="end">End date</param>
+        /// <param name="units">Units to compute</param>
+        /// <param name="years">(Out) Year component of result</param>
+        /// <param name="months">(Out) Months component of result</param>
+        /// <param name="weeks">(Out) weeks component of result</param>
+        /// <param name="days">(Out) days component of result</param>
+        /// <returns>The resulting date after adding the result components to <paramref name="start"/> (to
+        /// allow further computations to be made)</returns>
+        private static LocalDate DateComponentsBetween(LocalDate start, LocalDate end, PeriodUnits units,
+            out int years, out int months, out int weeks, out int days)
         {
-            if (units == 0)
+            LocalDate result = start;
+            years = UnitsBetween(units & PeriodUnits.Years, ref result, end, DatePeriodFields.YearsField);
+            months = UnitsBetween(units & PeriodUnits.Months, ref result, end, DatePeriodFields.MonthsField);
+            weeks = UnitsBetween(units & PeriodUnits.Weeks, ref result, end, DatePeriodFields.WeeksField);
+            days = UnitsBetween(units & PeriodUnits.Days, ref result, end, DatePeriodFields.DaysField);
+
+            int UnitsBetween(PeriodUnits maskedUnits, ref LocalDate startDate, LocalDate endDate, IDatePeriodField dateField)
             {
-                return 0;
+                if (maskedUnits == 0)
+                {
+                    return 0;
+                }
+                int value = dateField.UnitsBetween(startDate, endDate);
+                startDate = dateField.Add(startDate, value);
+                return value;
             }
-            int value = dateField.UnitsBetween(remaining, end);
-            remaining = dateField.Add(remaining, value);
-            return value;
+            return result;
         }
 
         private static long FieldBetween(PeriodUnits units, LocalDateTime end, ref LocalDateTime remaining, TimePeriodField timeField)
@@ -579,11 +599,7 @@ namespace NodaTime
             }
 
             // Multiple fields
-            LocalDate remainingDate = start;
-            int years = FieldBetween(units & PeriodUnits.Years, end, ref remainingDate, DatePeriodFields.YearsField);
-            int months = FieldBetween(units & PeriodUnits.Months, end, ref remainingDate, DatePeriodFields.MonthsField);
-            int weeks = FieldBetween(units & PeriodUnits.Weeks, end, ref remainingDate, DatePeriodFields.WeeksField);
-            int days = FieldBetween(units & PeriodUnits.Days, end, ref remainingDate, DatePeriodFields.DaysField);
+            DateComponentsBetween(start, end, units, out int years, out int months, out int weeks, out int days);
             return new Period(years, months, weeks, days);
         }
 
