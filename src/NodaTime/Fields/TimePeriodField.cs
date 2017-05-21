@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Numerics;
 using static NodaTime.NodaConstants;
 
 namespace NodaTime.Fields
@@ -26,12 +27,14 @@ namespace NodaTime.Fields
         internal static readonly TimePeriodField Hours = new TimePeriodField(NanosecondsPerHour);
 
         private readonly long unitNanoseconds;
+        private readonly long maxLongUnits;
 
         public long UnitsPerDay { get; }
 
         private TimePeriodField(long unitNanoseconds)
         {
             this.unitNanoseconds = unitNanoseconds;
+            maxLongUnits = long.MaxValue / unitNanoseconds;
             UnitsPerDay = NanosecondsPerDay / unitNanoseconds;
         }
 
@@ -139,5 +142,14 @@ namespace NodaTime.Fields
             duration.IsInt64Representable
             ? duration.ToInt64Nanoseconds() / unitNanoseconds
             : (long)(duration.ToBigIntegerNanoseconds() / unitNanoseconds);
+
+        /// <summary>
+        /// Returns a <see cref="Duration"/> representing the given number of units.
+        /// </summary>
+        internal Duration ToDuration(long units) =>
+            units >= -maxLongUnits && units <= maxLongUnits
+            ? Duration.FromNanoseconds(units * unitNanoseconds)
+            : Duration.FromNanoseconds(units * (BigInteger)unitNanoseconds);
+
     }
 }

@@ -434,14 +434,31 @@ namespace NodaTime
             }
 
             long hours = 0, minutes = 0, seconds = 0, milliseconds = 0, ticks = 0, nanoseconds = 0;
+
+            // The remainder of the computation is with fixed-length units, so we can do it all with
+            // Duration instead of Local* values. We don't know for sure that this is small though - we *could*
+            // be trying to find the difference between 9998 BC and 9999 CE in nanoseconds...
+            var duration = end.ToLocalInstant().TimeSinceLocalEpoch - remaining.ToLocalInstant().TimeSinceLocalEpoch;
+
             if ((units & PeriodUnits.AllTimeUnits) != 0)
             {
-                hours = FieldBetween(units & PeriodUnits.Hours, end, ref remaining, TimePeriodField.Hours);
-                minutes = FieldBetween(units & PeriodUnits.Minutes, end, ref remaining, TimePeriodField.Minutes);
-                seconds = FieldBetween(units & PeriodUnits.Seconds, end, ref remaining, TimePeriodField.Seconds);
-                milliseconds = FieldBetween(units & PeriodUnits.Milliseconds, end, ref remaining, TimePeriodField.Milliseconds);
-                ticks = FieldBetween(units & PeriodUnits.Ticks, end, ref remaining, TimePeriodField.Ticks);
-                nanoseconds = FieldBetween(units & PeriodUnits.Ticks, end, ref remaining, TimePeriodField.Nanoseconds);
+                hours = UnitsBetween(units & PeriodUnits.Hours, ref duration, TimePeriodField.Hours);
+                minutes = UnitsBetween(units & PeriodUnits.Minutes, ref duration, TimePeriodField.Minutes);
+                seconds = UnitsBetween(units & PeriodUnits.Seconds, ref duration, TimePeriodField.Seconds);
+                milliseconds = UnitsBetween(units & PeriodUnits.Milliseconds, ref duration, TimePeriodField.Milliseconds);
+                ticks = UnitsBetween(units & PeriodUnits.Ticks, ref duration, TimePeriodField.Ticks);
+                nanoseconds = UnitsBetween(units & PeriodUnits.Ticks, ref duration, TimePeriodField.Nanoseconds);
+            }
+
+            long UnitsBetween(PeriodUnits maskedUnits, ref Duration remainingDuration, TimePeriodField timeField)
+            {
+                if (maskedUnits == 0)
+                {
+                    return 0;
+                }
+                long value = timeField.GetUnitsInDuration(remainingDuration);
+                remainingDuration -= timeField.ToDuration(value);
+                return value;
             }
 
             return new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
@@ -479,17 +496,6 @@ namespace NodaTime
                 return value;
             }
             return result;
-        }
-
-        private static long FieldBetween(PeriodUnits units, LocalDateTime end, ref LocalDateTime remaining, TimePeriodField timeField)
-        {
-            if (units == 0)
-            {
-                return 0;
-            }
-            long value = GetTimeBetween(remaining, end, timeField);
-            remaining = timeField.Add(remaining, value);
-            return value;
         }
 
         private static long GetTimeBetween(LocalDateTime start, LocalDateTime end, TimePeriodField periodField)
