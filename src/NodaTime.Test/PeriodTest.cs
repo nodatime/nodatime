@@ -67,6 +67,22 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BetweenLocalDateTimes_AcrossDays()
+        {
+            Period expected = Period.FromHours(23) + Period.FromMinutes(59);
+            Period actual = Period.Between(TestDateTime1, TestDateTime1.PlusDays(1).PlusMinutes(-1));
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void BetweenLocalDateTimes_AcrossDays_MinutesAndSeconds()
+        {
+            Period expected = Period.FromMinutes(24 * 60 - 1) + Period.FromSeconds(59);
+            Period actual = Period.Between(TestDateTime1, TestDateTime1.PlusDays(1).PlusSeconds(-1), PeriodUnits.Minutes | PeriodUnits.Seconds);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void BetweenLocalDates_InvalidUnits()
         {
             Assert.Throws<ArgumentException>(() => Period.Between(TestDate1, TestDate2, 0));
