@@ -72,10 +72,10 @@ namespace NodaTime.Fields
             return new LocalDate(days, calendar);
         }
 
-        public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
+        public int UnitsBetween(LocalDate start, LocalDate end)
         {
             // We already assume the calendars are the same.
-            if (minuendDate.YearMonthDay == subtrahendDate.YearMonthDay)
+            if (start.YearMonthDay == end.YearMonthDay)
             {
                 return 0;
             }
@@ -83,9 +83,9 @@ namespace NodaTime.Fields
             // It helps a little if they're in the same month, but just that test has a cost for other situations.
             // Being able to find the day of year if they're in the same year but different months doesn't help,
             // somewhat surprisingly.
-            int minuendDays = minuendDate.DaysSinceEpoch;
-            int subtrahendDays = subtrahendDate.DaysSinceEpoch;
-            return (minuendDays - subtrahendDays) / unitDays;
+            int startDays = start.DaysSinceEpoch;
+            int endDays = end.DaysSinceEpoch;
+            return (endDays - startDays) / unitDays;
         }
     }
 }

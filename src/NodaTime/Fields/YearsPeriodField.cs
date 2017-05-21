@@ -31,25 +31,25 @@ namespace NodaTime.Fields
             return new LocalDate(calculator.SetYear(yearMonthDay, currentYear + value).WithCalendarOrdinal(calendar.Ordinal));
         }
 
-        public int Subtract(LocalDate minuendDate, LocalDate subtrahendDate)
+        public int UnitsBetween(LocalDate start, LocalDate end)
         {
-            int diff = minuendDate.Year - subtrahendDate.Year;
+            int diff = end.Year - start.Year;
 
             // If we just add the difference in years to subtrahendInstant, what do we get?
-            LocalDate simpleAddition = Add(subtrahendDate, diff);
+            LocalDate simpleAddition = Add(start, diff);
 
-            if (subtrahendDate <= minuendDate)
+            if (start <= end)
             {
-                // Moving forward: if the result of the simple addition is before or equal to the minuend,
+                // Moving forward: if the result of the simple addition is before or equal to the end,
                 // we're done. Otherwise, rewind a year because we've overshot.
-                return simpleAddition <= minuendDate ? diff : diff - 1;
+                return simpleAddition <= end ? diff : diff - 1;
             }
             else
             {
                 // Moving backward: if the result of the simple addition (of a non-positive number)
-                // is after or equal to the minuend, we're done. Otherwise, increment by a year because
+                // is after or equal to the end, we're done. Otherwise, increment by a year because
                 // we've overshot backwards.
-                return simpleAddition >= minuendDate ? diff : diff + 1;
+                return simpleAddition >= end ? diff : diff + 1;
             }
         }
     }

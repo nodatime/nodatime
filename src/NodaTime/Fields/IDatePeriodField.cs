@@ -22,19 +22,13 @@ namespace NodaTime.Fields
 
         /// <summary>
         /// Computes the difference between two local dates, as measured in the units
-        /// of this field. Any fractional units are dropped from the result. Calling
-        /// Subtract reverses the effect of calling Add, as far as possible.
+        /// of this field, rounding towards zero. This rounding means that
+        /// unit.Add(start, unit.UnitsBetween(start, end)) always ends up with a date
+        /// between start and end. (Ideally equal to end, but importantly, it never overshoots.)
         /// </summary>
-        /// <remarks>
-        /// The result is determined so as not to overshoot when added back: calling
-        /// <see cref="Add"/> using <paramref name="subtrahendDate"/> and
-        /// the result of this method will yield a value which is between <paramref name="subtrahendDate"/>
-        /// and <paramref name="minuendDate"/>. (In a simpler world, it would exactly equal
-        /// <paramref name="minuendDate"/>, but that's not always possible.)
-        /// </remarks>
-        /// <param name="minuendDate">The local date to subtract from</param>
-        /// <param name="subtrahendDate">The local date to subtract from minuendDate</param>
+        /// <param name="start">The start date</param>
+        /// <param name="end">The end date</param>
         /// <returns>The difference in the units of this field</returns>
-        int Subtract(LocalDate minuendDate, LocalDate subtrahendDate);
+        int UnitsBetween(LocalDate start, LocalDate end);
     }
 }
