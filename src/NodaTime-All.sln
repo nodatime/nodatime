@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime", "NodaTime\NodaTime.csproj", "{42B687A6-0F76-4638-A372-161C922A998B}"
 EndProject
@@ -40,6 +40,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Cldr.DataConverter", "NodaTime.Cldr.DataConverter\NodaTime.Cldr.DataConverter.csproj", "{B259C822-C4BB-42F5-A6F6-3132CAFD4B56}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Cldr.DataConverter.Test", "NodaTime.Cldr.DataConverter.Test\NodaTime.Cldr.DataConverter.Test.csproj", "{B5CF5416-F282-4B27-BD44-D33ECD354EDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Serialization.ModelBinding", "NodaTime.Serialization.ModelBinding\NodaTime.Serialization.ModelBinding.csproj", "{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -597,6 +599,36 @@ Global
 		{B5CF5416-F282-4B27-BD44-D33ECD354EDF}.Signed Release|Mixed Platforms.ActiveCfg = Signed Release|Any CPU
 		{B5CF5416-F282-4B27-BD44-D33ECD354EDF}.Signed Release|Mixed Platforms.Build.0 = Signed Release|Any CPU
 		{B5CF5416-F282-4B27-BD44-D33ECD354EDF}.Signed Release|x86.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug Portable|Any CPU.ActiveCfg = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug Portable|Any CPU.Build.0 = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug Portable|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug Portable|Mixed Platforms.Build.0 = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug Portable|x86.ActiveCfg = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release Portable|Any CPU.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release Portable|Any CPU.Build.0 = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release Portable|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release Portable|Mixed Platforms.Build.0 = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release Portable|x86.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Release|x86.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release Portable|Any CPU.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release Portable|Any CPU.Build.0 = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release Portable|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release Portable|Mixed Platforms.Build.0 = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release Portable|x86.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release|Any CPU.Build.0 = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{292A34C7-3E56-48BE-B067-BE2EE2C54D4F}.Signed Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
