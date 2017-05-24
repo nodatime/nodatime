@@ -16,6 +16,7 @@
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <Deterministic>True</Deterministic>
     <IncludeSymbols>True</IncludeSymbols>
+    <IncludeSource>True</IncludeSource>
   </PropertyGroup>
 
   <ItemGroup>
