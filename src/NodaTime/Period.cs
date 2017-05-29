@@ -432,36 +432,43 @@ namespace NodaTime
                     start.Date, endDate, units, out years, out months, out weeks, out days);
                 remaining = new LocalDateTime(remainingDate, start.TimeOfDay);
             }
-
-            long hours = 0, minutes = 0, seconds = 0, milliseconds = 0, ticks = 0, nanoseconds = 0;
+            if ((units & PeriodUnits.AllTimeUnits) == 0)
+            {
+                return new Period(years, months, weeks, days);
+            }
 
             // The remainder of the computation is with fixed-length units, so we can do it all with
             // Duration instead of Local* values. We don't know for sure that this is small though - we *could*
             // be trying to find the difference between 9998 BC and 9999 CE in nanoseconds...
+            // Where we can optimize, do everything with long arithmetic (as we do for Between(LocalTime, LocalTime)).
+            // Otherwise (rare case), use duration arithmetic.
+            long hours, minutes, seconds, milliseconds, ticks, nanoseconds;
             var duration = end.ToLocalInstant().TimeSinceLocalEpoch - remaining.ToLocalInstant().TimeSinceLocalEpoch;
-
-            if ((units & PeriodUnits.AllTimeUnits) != 0)
+            if (duration.IsInt64Representable)
             {
-                hours = UnitsBetween(units & PeriodUnits.Hours, ref duration, TimePeriodField.Hours);
-                minutes = UnitsBetween(units & PeriodUnits.Minutes, ref duration, TimePeriodField.Minutes);
-                seconds = UnitsBetween(units & PeriodUnits.Seconds, ref duration, TimePeriodField.Seconds);
-                milliseconds = UnitsBetween(units & PeriodUnits.Milliseconds, ref duration, TimePeriodField.Milliseconds);
-                ticks = UnitsBetween(units & PeriodUnits.Ticks, ref duration, TimePeriodField.Ticks);
-                nanoseconds = UnitsBetween(units & PeriodUnits.Ticks, ref duration, TimePeriodField.Nanoseconds);
+                TimeComponentsBetween(duration.ToInt64Nanoseconds(), units, out hours, out minutes, out seconds, out milliseconds, out ticks, out nanoseconds);
             }
-
-            long UnitsBetween(PeriodUnits maskedUnits, ref Duration remainingDuration, TimePeriodField timeField)
+            else
             {
-                if (maskedUnits == 0)
+                hours = UnitsBetween(PeriodUnits.Hours, TimePeriodField.Hours);
+                minutes = UnitsBetween(PeriodUnits.Minutes, TimePeriodField.Minutes);
+                seconds = UnitsBetween(PeriodUnits.Seconds, TimePeriodField.Seconds);
+                milliseconds = UnitsBetween(PeriodUnits.Milliseconds, TimePeriodField.Milliseconds);
+                ticks = UnitsBetween(PeriodUnits.Ticks, TimePeriodField.Ticks);
+                nanoseconds = UnitsBetween(PeriodUnits.Ticks, TimePeriodField.Nanoseconds);
+            }
+            return new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
+
+            long UnitsBetween(PeriodUnits mask, TimePeriodField timeField)
+            {
+                if ((mask & units) == 0)
                 {
                     return 0;
                 }
-                long value = timeField.GetUnitsInDuration(remainingDuration);
-                remainingDuration -= timeField.ToDuration(value);
+                long value = timeField.GetUnitsInDuration(duration);
+                duration -= timeField.ToDuration(value);
                 return value;
             }
-
-            return new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
         }
 
         /// <summary>
@@ -472,8 +479,8 @@ namespace NodaTime
         /// <param name="units">Units to compute</param>
         /// <param name="years">(Out) Year component of result</param>
         /// <param name="months">(Out) Months component of result</param>
-        /// <param name="weeks">(Out) weeks component of result</param>
-        /// <param name="days">(Out) days component of result</param>
+        /// <param name="weeks">(Out) Weeks component of result</param>
+        /// <param name="days">(Out) Days component of result</param>
         /// <returns>The resulting date after adding the result components to <paramref name="start"/> (to
         /// allow further computations to be made)</returns>
         private static LocalDate DateComponentsBetween(LocalDate start, LocalDate end, PeriodUnits units,
@@ -496,6 +503,47 @@ namespace NodaTime
                 return value;
             }
             return result;
+        }
+
+        /// <summary>
+        /// Common code to perform the time parts of the Between methods for long-representable nanos.
+        /// </summary>
+        /// <param name="totalNanoseconds">Number of nanoseconds to compute the units of</param>
+        /// <param name="units">Units to compute</param>
+        /// <param name="hours">(Out) Hours component of result</param>
+        /// <param name="minutes">(Out) Minutes component of result</param>
+        /// <param name="seconds">(Out) Seconds component of result</param>
+        /// <param name="milliseconds">(Out) Milliseconds component of result</param>
+        /// <param name="ticks">(Out) Ticks component of result</param>
+        /// <param name="nanoseconds">(Out) Nanoseconds component of result</param>
+        private static void TimeComponentsBetween(long totalNanoseconds, PeriodUnits units,
+            out long hours, out long minutes, out long seconds, out long milliseconds, out long ticks, out long nanoseconds)
+        {
+            hours = UnitsBetween(PeriodUnits.Hours, NanosecondsPerHour);
+            minutes = UnitsBetween(PeriodUnits.Minutes, NanosecondsPerMinute);
+            seconds = UnitsBetween(PeriodUnits.Seconds, NanosecondsPerSecond);
+            milliseconds = UnitsBetween(PeriodUnits.Milliseconds, NanosecondsPerMillisecond);
+            ticks = UnitsBetween(PeriodUnits.Ticks, NanosecondsPerTick);
+            nanoseconds = UnitsBetween(PeriodUnits.Nanoseconds, 1);
+
+            long UnitsBetween(PeriodUnits mask, long nanosecondsPerUnit)
+            {
+                if ((mask & units) == 0)
+                {
+                    return 0;
+                }
+#if NET45
+                return Math.DivRem(totalNanoseconds, nanosecondsPerUnit, out totalNanoseconds);
+#else
+                unchecked
+                {
+                    long value = totalNanoseconds / nanosecondsPerUnit;
+                    // This has been tested and found to be faster than using totalNanoseconds %= nanosecondsPerUnit
+                    totalNanoseconds -= value * nanosecondsPerUnit;
+                    return value;
+                }
+#endif
+            }
         }
 
         // TODO(optimization): These three methods are only ever used with scalar values of 1 or -1. Unlikely that
@@ -656,31 +704,8 @@ namespace NodaTime
                 case PeriodUnits.Nanoseconds: return FromNanoseconds(remaining);
             }
 
-            long hours = UnitsBetween(units & PeriodUnits.Hours, ref remaining, NanosecondsPerHour);
-            long minutes = UnitsBetween(units & PeriodUnits.Minutes, ref remaining, NanosecondsPerMinute);
-            long seconds = UnitsBetween(units & PeriodUnits.Seconds, ref remaining, NanosecondsPerSecond);
-            long milliseconds = UnitsBetween(units & PeriodUnits.Milliseconds, ref remaining, NanosecondsPerMillisecond);
-            long ticks = UnitsBetween(units & PeriodUnits.Ticks, ref remaining, NanosecondsPerTick);
-            long nanoseconds = UnitsBetween(units & PeriodUnits.Nanoseconds, ref remaining, 1);
-
+            TimeComponentsBetween(remaining, units, out long hours, out long minutes, out long seconds, out long milliseconds, out long ticks, out long nanoseconds);
             return new Period(hours, minutes, seconds, milliseconds, ticks, nanoseconds);
-
-            // This is essentially DivRem. We could capture units and remaining instead...
-            // TODO: Investigate performance impact of using the captured variables.
-            long UnitsBetween(PeriodUnits maskedUnits, ref long remainingNanos, long nanosecondsPerUnit)
-            {
-                if (maskedUnits == 0)
-                {
-                    return 0;
-                }
-                long value = remainingNanos / nanosecondsPerUnit;
-                unchecked
-                {
-                    // TODO: remainingNanos = remainingNanos % nanosecondsPerUnit? Investigate performance.
-                    remainingNanos -= value * nanosecondsPerUnit;
-                }
-                return value;
-            }
         }
 
         /// <summary>
