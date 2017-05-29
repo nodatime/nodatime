@@ -83,6 +83,25 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BetweenLocalDateTimes_NotInt64Representable()
+        {
+            LocalDateTime start = new LocalDateTime(-5000, 1, 1, 0, 1, 2, 123);
+            LocalDateTime end = new LocalDateTime(   9000, 1, 1, 1, 2, 3, 456);
+            Assert.False((end.ToLocalInstant().TimeSinceLocalEpoch - start.ToLocalInstant().TimeSinceLocalEpoch).IsInt64Representable);
+
+            Period expected = new PeriodBuilder
+            {
+                // 365.2425 * 14000 = 5113395
+                Hours = 5113395L * 24 + 1,
+                Minutes = 1,
+                Seconds = 1,
+                Milliseconds = 333
+            }.Build();
+            Period actual = Period.Between(start, end, PeriodUnits.AllTimeUnits);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void BetweenLocalDates_InvalidUnits()
         {
             Assert.Throws<ArgumentException>(() => Period.Between(TestDate1, TestDate2, 0));
