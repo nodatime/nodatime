@@ -13,6 +13,10 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly Duration SampleDuration1 = new Duration(1, 500000);
         private static readonly Duration SampleDuration2 = new Duration(2, 300000);
 
+        private static readonly BigInteger BigInteger50 = 50;
+        private static readonly BigInteger BigInteger50Years = 50L * 365 * NodaConstants.NanosecondsPerDay;
+        private static readonly BigInteger BigInteger3000Years = ((BigInteger) 365 * NodaConstants.NanosecondsPerDay) * 3000;
+
         [Benchmark]
         public Duration FromDays() =>
 #if !V1
@@ -21,27 +25,72 @@ namespace NodaTime.Benchmarks.NodaTimeTests
             Duration.FromStandardDays(100);
 #endif
 
+        // Durations where * is efficient
         [Benchmark]
-        public Duration FromHours() => Duration.FromHours(100);
+        public Duration FromHours_Tiny() => Duration.FromHours(50);
 
         [Benchmark]
-        public Duration FromMinutes() => Duration.FromMinutes(100);
+        public Duration FromMinutes_Tiny() => Duration.FromMinutes(50);
 
         [Benchmark]
-        public Duration FromSeconds() => Duration.FromSeconds(100);
+        public Duration FromSeconds_Tiny() => Duration.FromSeconds(50);
 
         [Benchmark]
-        public Duration FromMilliseconds() => Duration.FromMilliseconds(100);
+        public Duration FromMilliseconds_Tiny() => Duration.FromMilliseconds(50);
 
         [Benchmark]
-        public Duration FromTicks() => Duration.FromTicks(100);
+        public Duration FromTicks_Tiny() => Duration.FromTicks(50);
+
+        [Benchmark]
+        public Duration FromNanoseconds_TinyInt64() => Duration.FromNanoseconds(50);
+
+        [Benchmark]
+        public Duration FromNanoseconds_TinyBigInteger() => Duration.FromNanoseconds(BigInteger50);
+
+        // Durations of about 50 years (representative of Instant.FromUnixEpoch* for modern instants)
+        [Benchmark]
+        public Duration FromHours_Medium() => Duration.FromHours(50 * 365 * NodaConstants.HoursPerDay);
+
+        [Benchmark]
+        public Duration FromMinutes_Medium() => Duration.FromMinutes(50L * 365 * NodaConstants.MinutesPerDay);
+
+        [Benchmark]
+        public Duration FromSeconds_Medium() => Duration.FromSeconds(50L * 365 * NodaConstants.SecondsPerDay);
+
+        [Benchmark]
+        public Duration FromMilliseconds_Medium() => Duration.FromMilliseconds(50L * 365 * NodaConstants.MillisecondsPerDay);
+
+        [Benchmark]
+        public Duration FromTicks_Medium() => Duration.FromMilliseconds(50L * 365 * NodaConstants.TicksPerDay);
+
+        [Benchmark]
+        public Duration FromNanoseconds_MediumInt64() => Duration.FromNanoseconds(50L * 365 * NodaConstants.NanosecondsPerDay);
+
+        [Benchmark]
+        public Duration FromNanoseconds_MediumBigInteger() => Duration.FromNanoseconds(BigInteger50Years);
+
+        // Out of the range of Int64 nanoseconds: about 3000 years
+        [Benchmark]
+        public Duration FromHours_Large() => Duration.FromHours(3000 * 365 * NodaConstants.HoursPerDay);
+
+        [Benchmark]
+        public Duration FromMinutes_Large() => Duration.FromMinutes(3000L * 365 * NodaConstants.MinutesPerDay);
+
+        [Benchmark]
+        public Duration FromSeconds_Large() => Duration.FromSeconds(3000L * 365 * NodaConstants.SecondsPerDay);
+
+        [Benchmark]
+        public Duration FromMilliseconds_Large() => Duration.FromMilliseconds(3000L * 365 * NodaConstants.MillisecondsPerDay);
+
+        [Benchmark]
+        public Duration FromTicks_Large() => Duration.FromTicks(3000L * 365 * NodaConstants.TicksPerDay);
 
 #if !V1
         [Benchmark]
-        public Duration FromInt64Nanoseconds() => Duration.FromNanoseconds(int.MaxValue + 1L);
+        public Duration FromNanoseconds_LargeBigInteger() => Duration.FromNanoseconds(BigInteger3000Years);
 
-        [Benchmark]
-        public Duration FromBigIntegerNanoseconds() => Duration.FromNanoseconds(long.MaxValue + (BigInteger)100);
+        // No equivalent for Int64 as it won't fit...
+
 #endif
 
         [Benchmark]
