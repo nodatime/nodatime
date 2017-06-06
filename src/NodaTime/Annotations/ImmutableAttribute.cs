@@ -18,7 +18,7 @@ namespace NodaTime.Annotations
     /// it's important to distinguish between the value of the variable (a reference) and the
     /// object it refers to. Value types are more complicated as in some cases the compiler
     /// will copy values before operating on them; however as all value types in Noda Time are
-    /// immutable (aside from explictily implemented serialization operations) this rarely causes
+    /// immutable (aside from explictly implemented serialization operations) this rarely causes
     /// an issue.
     /// </p>
     /// <p>
