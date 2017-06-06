@@ -6,16 +6,57 @@ using System;
 using NUnit.Framework;
 using System.Numerics;
 using static NodaTime.NodaConstants;
+using System.Linq;
 
 namespace NodaTime.Test
 {
     partial class DurationTest
     {
+        // Test cases for factory methods. In general, we want to check the limits, very small, very large
+        // and medium values, with a mixture of positive and negative, "on and off" day boundaries.
+
+        private static readonly int[] DayCases = {
+            Duration.MinDays, -3000 * 365, -100, -1, 0, 1, 100, 3000 * 365, Duration.MaxDays
+        };
+
+        private static readonly int[] HourCases = {
+            Duration.MinDays * HoursPerDay, -3000 * 365 * HoursPerDay, -100, -48, -1, 0,
+            1, 48, 100, 3000 * 365 * HoursPerDay, ((Duration.MaxDays + 1) * HoursPerDay) - 1
+        };
+
+        private static readonly long[] MinuteCases = GenerateCases(MinutesPerDay);
+
+        private static readonly long[] SecondCases = GenerateCases(SecondsPerDay);
+
+        private static readonly long[] MillisecondCases = GenerateCases(MillisecondsPerDay);
+
+        // No boundary versions as Int64 doesn't have enough ticks to exceed our limits.
+        private static readonly long[] TickCases = GenerateCases(TicksPerDay).Skip(1).Reverse().Skip(1).Reverse().ToArray();
+
+        private static long[] GenerateCases(long unitsPerDay) =>
+            unchecked (new[] {
+                Duration.MinDays * unitsPerDay,
+                -3000L * 365 * unitsPerDay - 1,
+                -3000L * 365 * unitsPerDay,
+                -5 * unitsPerDay / 2,
+                -2 * unitsPerDay
+                -1,
+                0,
+                1,
+                2 * unitsPerDay,
+                5 * unitsPerDay / 2,
+                3000L * 365 * unitsPerDay,
+                3000L * 365 * unitsPerDay + 1,
+                ((Duration.MaxDays + 1) * unitsPerDay) - 1,
+            });
+
         [Test]
         public void Zero()
         {
             Duration test = Duration.Zero;
             Assert.AreEqual(0, test.BclCompatibleTicks);
+            Assert.AreEqual(0, test.NanosecondOfFloorDay);
+            Assert.AreEqual(0, test.FloorDays);
         }
 
         private static void TestFactoryMethod(Func<long, Duration> method, long value, long nanosecondsPerUnit)
@@ -33,41 +74,49 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCase(-100), TestCase(-1), TestCase(0), TestCase(1), TestCase(100)]
+        [TestCaseSource(nameof(DayCases))]
         public void FromDays_Int32(int days)
         {
             TestFactoryMethod(Duration.FromDays, days, NanosecondsPerDay);
         }
 
         [Test]
-        [TestCase(-100), TestCase(-1), TestCase(0), TestCase(1), TestCase(100)]
+        [TestCaseSource(nameof(HourCases))]
         public void FromHours_Int32(int hours)
         {
             TestFactoryMethod(Duration.FromHours, hours, NanosecondsPerHour);
         }
 
         [Test]
-        [TestCase(int.MinValue - 100L), TestCase(-100), TestCase(-1), TestCase(0)]
-        [TestCase(1), TestCase(100), TestCase(int.MaxValue + 100L)]
+        [TestCaseSource(nameof(MinuteCases))]
         public void FromMinutes_Int64(long minutes)
         {
             TestFactoryMethod(Duration.FromMinutes, minutes, NanosecondsPerMinute);
         }
 
         [Test]
-        [TestCase(int.MinValue - 100L), TestCase(-100), TestCase(-1), TestCase(0)]
-        [TestCase(1), TestCase(100), TestCase(int.MaxValue + 100L)]
+        [TestCaseSource(nameof(SecondCases))]
         public void FromSeconds_Int64(long seconds)
         {
             TestFactoryMethod(Duration.FromSeconds, seconds, NanosecondsPerSecond);
         }
 
         [Test]
-        [TestCase(int.MinValue - 100L), TestCase(-100), TestCase(-1), TestCase(0)]
-        [TestCase(1), TestCase(100), TestCase(int.MaxValue + 100L)]
+        [TestCaseSource(nameof(MillisecondCases))]
         public void FromMilliseconds_Int64(long milliseconds)
         {
             TestFactoryMethod(Duration.FromMilliseconds, milliseconds, NanosecondsPerMillisecond);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(TickCases))]
+        public void FromTicks(long ticks)
+        {
+            var nanoseconds = Duration.FromTicks(ticks);
+            Assert.AreEqual(ticks * (BigInteger)NodaConstants.NanosecondsPerTick, nanoseconds.ToBigIntegerNanoseconds());
+
+            // Just another sanity check, although Ticks is covered in more detail later.
+            Assert.AreEqual(ticks, nanoseconds.BclCompatibleTicks);
         }
 
         [Test]
@@ -186,45 +235,14 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCase(long.MinValue)]
-        [TestCase(long.MinValue + 1)]
-        [TestCase(-NodaConstants.TicksPerDay - 1)]
-        [TestCase(-NodaConstants.TicksPerDay)]
-        [TestCase(-NodaConstants.TicksPerDay + 1)]
-        [TestCase(-1)]
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(NodaConstants.TicksPerDay - 1)]
-        [TestCase(NodaConstants.TicksPerDay)]
-        [TestCase(NodaConstants.TicksPerDay + 1)]
-        [TestCase(long.MaxValue - 1)]
-        [TestCase(long.MaxValue)]
-        public void FromTicks(long ticks)
-        {
-            var nanoseconds = Duration.FromTicks(ticks);
-            Assert.AreEqual(ticks * (BigInteger) NodaConstants.NanosecondsPerTick, nanoseconds.ToBigIntegerNanoseconds());
-
-            // Just another sanity check, although Ticks is covered in more detail later.
-            Assert.AreEqual(ticks, nanoseconds.BclCompatibleTicks);
-        }
-
-        private static void AssertOutOfRange<T>(Func<T, Duration> factoryMethod, params T[] values)
-        {
-            foreach (var value in values)
-            {
-                Assert.Throws<ArgumentOutOfRangeException>(() => factoryMethod(value));
-            }
-        }
-
-        [Test]
         public void FactoryMethods_OutOfRange()
         {
-            // Not checking the exact values here so much as that the exception is appropriate.
-            AssertOutOfRange(Duration.FromDays, int.MinValue, int.MaxValue);
-            AssertOutOfRange(Duration.FromHours, int.MinValue, int.MaxValue);
-            AssertOutOfRange(Duration.FromMinutes, long.MinValue, long.MaxValue);
-            AssertOutOfRange(Duration.FromSeconds, long.MinValue, long.MaxValue);
-            AssertOutOfRange(Duration.FromMilliseconds, long.MinValue, long.MaxValue);
+            // Each set of cases starts with the minimum and ends with the maximum, so we can test just beyond the limits easily.
+            AssertLimitsInt32(Duration.FromDays, DayCases);
+            AssertLimitsInt32(Duration.FromHours, HourCases);
+            AssertLimitsInt64(Duration.FromMinutes, MinuteCases);
+            AssertLimitsInt64(Duration.FromSeconds, SecondCases);
+            AssertLimitsInt64(Duration.FromMilliseconds, MillisecondCases);
             // FromTicks(long) never throws.
 
             double[] bigBadDoubles = { double.NegativeInfinity, double.MinValue, double.MaxValue, double.PositiveInfinity, double.NaN };
@@ -238,6 +256,20 @@ namespace NodaTime.Test
             
             // No such concept as BigInteger.Min/MaxValue, so use the values we know to be just outside valid bounds.
             AssertOutOfRange(Duration.FromNanoseconds, Duration.MinNanoseconds - 1, Duration.MaxNanoseconds + 1);
+
+            void AssertLimitsInt32(Func<int, Duration> factoryMethod, int[] allCases) =>
+                AssertOutOfRange(factoryMethod, allCases.First() - 1, allCases.Last() + 1);
+
+            void AssertLimitsInt64(Func<long, Duration> factoryMethod, long[] allCases) =>
+                AssertOutOfRange(factoryMethod, allCases.First() - 1, allCases.Last() + 1);
+
+            void AssertOutOfRange<T>(Func<T, Duration> factoryMethod, params T[] values)
+            {
+                foreach (var value in values)
+                {
+                    Assert.Throws<ArgumentOutOfRangeException>(() => factoryMethod(value));
+                }
+            }
         }
     }
 }

@@ -61,7 +61,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public Duration FromMilliseconds_Medium() => Duration.FromMilliseconds(50L * 365 * NodaConstants.MillisecondsPerDay);
 
         [Benchmark]
-        public Duration FromTicks_Medium() => Duration.FromMilliseconds(50L * 365 * NodaConstants.TicksPerDay);
+        public Duration FromTicks_Medium() => Duration.FromTicks(50L * 365 * NodaConstants.TicksPerDay);
 
         [Benchmark]
         public Duration FromNanoseconds_MediumInt64() => Duration.FromNanoseconds(50L * 365 * NodaConstants.NanosecondsPerDay);

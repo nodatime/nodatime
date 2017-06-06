@@ -670,6 +670,8 @@ namespace NodaTime
                 // values are within a common range - durations of more than +/-100 days
                 // are rare, and so is multiplication by huge numbers. (The range we get is
                 // roughly +/- 1000.) If this changes, tests should change too.
+                // Note that this *isn't* a good sweet spot for Integer.FromUnixTime*... so
+                // FromSeconds etc are optimized separately.
                 const int DaysToOptimize = 100;
                 // Almost every real use case will fit in here, I suspect...
                 if (left.days >= -DaysToOptimize &&
@@ -892,15 +894,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="hours">The number of hours.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of hours.</returns>
-        public static Duration FromHours(int hours)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(hours),
-                hours,
-                (long)MinDays * HoursPerDay,
-                (MaxDays + 1L) * HoursPerDay - 1);
-            return OneHour * hours;
-        }
+        public static Duration FromHours(int hours) =>
+            FromUnits(hours, nameof(hours), (long)MinDays * HoursPerDay, ((MaxDays + 1L) * HoursPerDay) - 1, HoursPerDay, NanosecondsPerHour);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of hours.
@@ -922,15 +917,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="minutes">The number of minutes.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of minutes.</returns>
-        public static Duration FromMinutes(long minutes)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(minutes),
-                minutes,
-                (long)MinDays * MinutesPerDay,
-                (MaxDays + 1L) * MinutesPerDay - 1);
-            return OneMinute * minutes;
-        }
+        public static Duration FromMinutes(long minutes) =>
+            FromUnits(minutes, nameof(minutes), (long)MinDays * MinutesPerDay, ((MaxDays + 1L) * MinutesPerDay) - 1, MinutesPerDay, NanosecondsPerMinute);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of minutes.
@@ -952,15 +940,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="seconds">The number of seconds.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of seconds.</returns>
-        public static Duration FromSeconds(long seconds)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(seconds),
-                seconds,
-                (long)MinDays * SecondsPerDay,
-                (MaxDays + 1L) * SecondsPerDay - 1);
-            return OneSecond * seconds;
-        }
+        public static Duration FromSeconds(long seconds) =>
+            FromUnits(seconds, nameof(seconds), (long)MinDays * SecondsPerDay, ((MaxDays + 1L) * SecondsPerDay) - 1, SecondsPerDay, NanosecondsPerSecond);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of seconds.
@@ -982,15 +963,8 @@ namespace NodaTime
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of milliseconds.</returns>
-        public static Duration FromMilliseconds(long milliseconds)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(milliseconds),
-                milliseconds,
-                (long)MinDays * MillisecondsPerDay,
-                (MaxDays + 1L) * MillisecondsPerDay - 1);
-            return OneMillisecond * milliseconds;
-        }
+        public static Duration FromMilliseconds(long milliseconds) =>
+            FromUnits(milliseconds, nameof(milliseconds), (long) MinDays * MillisecondsPerDay, ((MaxDays + 1L) * MillisecondsPerDay) - 1, MillisecondsPerDay, NanosecondsPerMillisecond);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of milliseconds.
@@ -1095,6 +1069,25 @@ namespace NodaTime
         public static Duration FromTimeSpan(TimeSpan timeSpan)
         {
             return FromTicks(timeSpan.Ticks);
+        }
+
+        // Note that we could compute various parameters from nanosPerUnit, but we know them as compile-time constants, so
+        // there's no point in recomputing them on each call.
+        private static Duration FromUnits(long units, string paramName, long minValue, long maxValue, long unitsPerDay, long nanosPerUnit)
+        {
+            Preconditions.CheckArgumentRange(paramName, units, minValue, maxValue);
+            unchecked
+            {
+                // Note: DivRem appears to make this (significantly) slower, despite helping in Period.
+                int days = (int)(units / unitsPerDay);
+                long unitOfDay = units - (unitsPerDay * days);
+                if (unitOfDay < 0)
+                {
+                    days--;
+                    unitOfDay += unitsPerDay;
+                }
+                return new Duration(days, unitOfDay * nanosPerUnit);
+            }
         }
 
         /// <summary>
