@@ -6,7 +6,7 @@ using System;
 namespace NodaTime.Annotations
 {
     /// <summary>
-    /// Indicates that a value-type field which would otherwise by <c>readonly</c>
+    /// Indicates that a value-type field which would otherwise be <c>readonly</c>
     /// is read/write so that invoking members on the field avoids taking a copy of
     /// the field value.
     /// </summary>
