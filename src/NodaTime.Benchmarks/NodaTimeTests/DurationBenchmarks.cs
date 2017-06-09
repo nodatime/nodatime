@@ -13,6 +13,21 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly Duration SampleDuration1 = new Duration(1, 500000);
         private static readonly Duration SampleDuration2 = new Duration(2, 300000);
 
+        /// <summary>
+        /// A duration which is less than a day (which may allow for some optimizations).
+        /// </summary>
+        private static readonly Duration SmallDuration = Duration.FromHours(9) + Duration.FromMinutes(20);
+
+        /// <summary>
+        /// A duration which is just over a year.
+        /// </summary>
+        private static readonly Duration MediumDuration = Duration.FromDays(400) + Duration.FromHours(10);
+
+        /// <summary>
+        /// A duration which isn't representable as a 64-bit integer number of nanoseconds.
+        /// </summary>
+        private static readonly Duration LargeDuration = Duration.FromDays(365 * 400) + Duration.FromHours(5);
+
         private static readonly BigInteger BigInteger50 = 50;
         private static readonly BigInteger BigInteger50Years = 50L * 365 * NodaConstants.NanosecondsPerDay;
         private static readonly BigInteger BigInteger3000Years = ((BigInteger) 365 * NodaConstants.NanosecondsPerDay) * 3000;
@@ -103,5 +118,45 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         // which we need to correct.
         [Benchmark]
         public Duration Minus_Complex() => SampleDuration2 - SampleDuration1;
+
+        [Benchmark]
+        public Duration Multiply_SmallBoth() => SmallDuration * 25;
+
+        // Here "large" is in the context of the optimizations we make
+        [Benchmark]
+        public Duration Multiply_SmallLeftLargeRight() => SmallDuration * 10000;
+
+        [Benchmark]
+        public Duration Multiply_MediumLeftSmallRight() => MediumDuration * 25;
+
+        [Benchmark]
+        public Duration Multiply_MediumLeftLargeRight() => MediumDuration * 10000;
+
+        [Benchmark]
+        public Duration Multiply_LargeLeftSmallRight() => LargeDuration * 25;
+
+        [Benchmark]
+        public Duration Add_SmallSmall() => SmallDuration + SmallDuration;
+
+        [Benchmark]
+        public Duration Add_MediumMedium() => MediumDuration + MediumDuration;
+
+        [Benchmark]
+        public Duration Add_MediumLarge() => MediumDuration + LargeDuration;
+
+        [Benchmark]
+        public long ToInt64Nanoseconds_Small() => SmallDuration.ToInt64Nanoseconds();
+
+        [Benchmark]
+        public long ToInt64Nanoseconds_Medium() => MediumDuration.ToInt64Nanoseconds();
+
+        [Benchmark]
+        public BigInteger ToBigIntegerNanoseconds_Small() => SmallDuration.ToBigIntegerNanoseconds();
+
+        [Benchmark]
+        public BigInteger ToBigIntegerNanoseconds_Medium() => MediumDuration.ToBigIntegerNanoseconds();
+
+        [Benchmark]
+        public BigInteger ToBigIntegerNanoseconds_Large() => LargeDuration.ToBigIntegerNanoseconds();
     }
 }
