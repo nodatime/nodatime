@@ -18,6 +18,13 @@ using System.Numerics;
 
 namespace NodaTime
 {
+    // Implementation note:
+    // Although we use BigInteger in the public API as it's a better fit for "this could be a large integer"
+    // we use decimal for computations where we have to. It's more efficient in CPU (and space) than BigInteger,
+    // and still has plenty of range/precision. The FromNanoseconds(BigInteger) and ToBigIntegerNanoseconds() methods
+    // should not be called within Noda Time, except for in FromNanoseconds(double), as the double to decimal conversion
+    // loses information whereas double to BigInteger doesn't.
+
     /// <summary>
     /// Represents a fixed (and calendar-independent) length of time.
     /// </summary>
@@ -66,6 +73,8 @@ namespace NodaTime
         internal const int MinDays = ~MaxDays;
         internal static readonly BigInteger MinNanoseconds = (BigInteger)MinDays * NanosecondsPerDay;
         internal static readonly BigInteger MaxNanoseconds = (MaxDays + BigInteger.One) * NanosecondsPerDay - BigInteger.One;
+        internal static readonly decimal MinDecimalNanoseconds = (decimal) MinNanoseconds;
+        internal static readonly decimal MaxDecimalNanoseconds = (decimal) MaxNanoseconds;
         private static readonly double MinDoubleNanoseconds = (double) MinNanoseconds;
         private static readonly double MaxDoubleNanoseconds = (double) MaxNanoseconds;
 
@@ -561,8 +570,8 @@ namespace NodaTime
                 long nanos = left.ToInt64Nanoseconds() / right;
                 return FromNanoseconds(nanos);
             }
-            // Fall back to BigInteger arithmetic.
-            BigInteger x = left.ToBigIntegerNanoseconds();
+            // Fall back to decimal arithmetic.
+            decimal x = left.ToDecimalNanoseconds();
             return FromNanoseconds(x / right);
         }
 
@@ -639,10 +648,7 @@ namespace NodaTime
         {
             // Exclude infinity and NaN
             Preconditions.CheckArgumentRange(nameof(right), right, double.MinValue, double.MaxValue);
-            // TODO(optimization): Optimize
-            double originalNanos = (double) left.ToBigIntegerNanoseconds();
-            double resultNanos = originalNanos * right;
-            return FromNanoseconds(resultNanos);
+            return FromNanoseconds(left.TotalNanoseconds * right);
         }
 
         /// <summary>
@@ -683,8 +689,8 @@ namespace NodaTime
                     return FromNanoseconds(nanos * right);
                 }
             }
-            // Fall back to BigInteger arithmetic
-            return FromNanoseconds(left.ToBigIntegerNanoseconds() * right);
+            // Fall back to decimal arithmetic
+            return FromNanoseconds(left.ToDecimalNanoseconds() * right);
         }
 
         /// <summary>
@@ -1040,6 +1046,7 @@ namespace NodaTime
                 ? FromNanoseconds((long) nanoseconds) : FromNanoseconds((BigInteger) nanoseconds);
         }
 
+        // NOTE: Do not use from internal code - use decimal instead - *unless* you're converting from double.
         /// <summary>
         /// Converts a number of nanoseconds expressed as a <see cref="BigInteger"/> into a duration.
         /// </summary>
@@ -1057,6 +1064,22 @@ namespace NodaTime
                 : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
 
             long nanoOfDay = (long) (nanoseconds - ((BigInteger) days) * NanosecondsPerDay);
+            return new Duration(days, nanoOfDay);
+        }
+
+        internal static Duration FromNanoseconds(decimal nanoseconds)
+        {
+            if (nanoseconds < MinDecimalNanoseconds || nanoseconds > MaxDecimalNanoseconds)
+            {
+                // Note: use the BigInteger value rather than decimal to avoid decimal points in the message. They're the same values.
+                throw new ArgumentOutOfRangeException(nameof(nanoseconds), $"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]");
+            }
+
+            int days = nanoseconds >= 0
+                ? (int)(nanoseconds / NanosecondsPerDay)
+                : (int)((nanoseconds + 1) / NanosecondsPerDay) - 1;
+
+            long nanoOfDay = (long)(nanoseconds - ((decimal)days) * NanosecondsPerDay);
             return new Duration(days, nanoOfDay);
         }
 
@@ -1154,13 +1177,18 @@ namespace NodaTime
         [Pure]
         private long ToInt64NanosecondsUnchecked() => unchecked(days * NanosecondsPerDay + nanoOfDay);
 
+        // NOTE: Do not use from internal code. Use decimal instead. TODO: Add an attribute, and use a Roslyn analyzer to validate.
+
         /// <summary>
         /// Conversion to a <see cref="BigInteger"/> number of nanoseconds, as a convenient built-in numeric
         /// type which can always represent values in the range we need.
         /// </summary>
         /// <returns>This duration as a number of nanoseconds, represented as a <c>BigInteger</c>.</returns>
         [Pure]
-        public BigInteger ToBigIntegerNanoseconds() => ((BigInteger) days) * NanosecondsPerDay + nanoOfDay;
+        public BigInteger ToBigIntegerNanoseconds() => IsInt64Representable ? ToInt64NanosecondsUnchecked() : ((BigInteger) days) * NanosecondsPerDay + nanoOfDay;
+
+        [Pure]
+        internal decimal ToDecimalNanoseconds() => IsInt64Representable ? ToInt64NanosecondsUnchecked() : ((decimal)days) * NanosecondsPerDay + nanoOfDay;
 
 #if !PCL
         #region Binary serialization
