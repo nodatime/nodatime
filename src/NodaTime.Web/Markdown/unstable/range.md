@@ -92,7 +92,7 @@ Instant
 The range for [`Instant`](noda-type://NodaTime.Instant) is simply the range of the Gregorian calendar, in UTC.
 In other words, it covers -9998-01-01T00:00:00Z to 9999-12-031T23:59:59.999999999Z inclusive.
 
-`LocalDateTime`, `LocalDate`, `ZonedDateTime`, and `OffsetDateTime`
+LocalDateTime, LocalDate, ZonedDateTime, and OffsetDateTime
 ----
 
 All of the types in this heading are based on dates in calendars, and they all have ranges based on that
@@ -109,7 +109,7 @@ Here, `offsetDateTime` has a local date/time value of -9998-01-01T00:00:00, but 
 instant of -9999-12-31T14:00:00Z... which is out of range. That's fine, and the code above won't throw an exception... unless
 you try to convert `offsetDateTime` to an `Instant`.
 
-`Duration`
+Duration
 ----
 
 [`Duration`](noda-type://NodaTime.Duration) is designed to allow for *at least* the largest difference in
@@ -125,7 +125,7 @@ The result is that we have a range of days from -2<sup>24</sup> to +2<sup>24</su
 total range is from -2<sup>24</sup> days inclusive to +2<sup>24</sup> days exclusive - the largest valid `Duration` is 1 
 nanosecond less than 2<sup>24</sup> days.
 
-`Period`
+Period
 ----
 
 TBD. (Depends on the redesign...)
