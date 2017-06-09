@@ -122,6 +122,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public Duration Multiply_SmallBoth() => SmallDuration * 25;
 
+        [Benchmark]
+        public Duration Multiply_SmallByDouble() => SmallDuration * 25.5;
+
+        [Benchmark]
+        public Duration Multiply_LargeByDouble() => LargeDuration * 25.5;
+
         // Here "large" is in the context of the optimizations we make
         [Benchmark]
         public Duration Multiply_SmallLeftLargeRight() => SmallDuration * 10000;
@@ -158,5 +164,14 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public BigInteger ToBigIntegerNanoseconds_Large() => LargeDuration.ToBigIntegerNanoseconds();
+
+        [Benchmark]
+        public double TotalNanoseconds_Small() => SmallDuration.TotalNanoseconds;
+
+        [Benchmark]
+        public double TotalNanoseconds_Medium() => MediumDuration.TotalNanoseconds;
+
+        [Benchmark]
+        public double TotalNanoseconds_Large() => LargeDuration.TotalNanoseconds;
     }
 }
