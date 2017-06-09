@@ -153,6 +153,6 @@ namespace NodaTime.Fields
         internal long GetUnitsInDuration(Duration duration) =>
             duration.IsInt64Representable
             ? duration.ToInt64Nanoseconds() / unitNanoseconds
-            : (long)(duration.ToBigIntegerNanoseconds() / unitNanoseconds);
+            : (long)(duration.ToDecimalNanoseconds() / unitNanoseconds);
     }
 }
