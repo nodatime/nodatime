@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -43,7 +44,9 @@ namespace NodaTime.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddRazorOptions(options => options.ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7)); ;
             
             if (UseGoogleCloudStorage)
             {
@@ -52,13 +55,16 @@ namespace NodaTime.Web
                 services.AddSingleton(GoogleCredentialProvider.FetchCredential(Configuration));
                 services.AddSingleton<IReleaseRepository, GoogleStorageReleaseRepository>();
                 services.AddSingleton<ITzdbRepository, GoogleStorageTzdbRepository>();
+                services.AddSingleton<IBenchmarkRepository, GoogleStorageBenchmarkRepository>();
             }
             else
             {
                 services.AddSingleton<IReleaseRepository, FakeReleaseRepository>();
                 services.AddSingleton<ITzdbRepository, FakeTzdbRepository>();
+                services.AddSingleton<IBenchmarkRepository, FakeBenchmarkRepository>();
             }
             services.AddSingleton<MarkdownLoader>();
+            services.AddMemoryCache();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -136,6 +142,8 @@ namespace NodaTime.Web
             app.ApplicationServices.GetRequiredService<MarkdownLoader>();
             // Force the set of releases to be first loaded on startup.
             app.ApplicationServices.GetRequiredService<IReleaseRepository>().GetReleases();
+            // Force the set of benchmarks to be first loaded on startup.
+            app.ApplicationServices.GetRequiredService<IBenchmarkRepository>().ListEnvironments();
         }
 
         /// Sets the Cache-Control header for static content, conditionally allowing the browser to use the content

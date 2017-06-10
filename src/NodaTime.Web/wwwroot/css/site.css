@@ -405,3 +405,8 @@ td.pattern-description {
 td.pattern-example {
   width: 30%
 }
+
+.benchmark-important > td {
+  color: red;
+  font-weight: bold
+}

@@ -1,0 +1,59 @@
+﻿@using NodaTime.Benchmarks;
+@model (BenchmarkEnvironment env, BenchmarkRun run, BenchmarkType type, Benchmark benchmark)
+
+@{
+    ViewBag.Title = "Benchmark";
+    var env = Model.env;
+    var run = Model.run;
+    var type = Model.type;
+    var benchmark = Model.benchmark;
+}
+
+<div class="row">
+    <div>
+        <h1>Benchmark</h1>
+    </div>
+    <div>
+        <p>
+            Type: <a href="/benchmarks/types/@type.BenchmarkTypeId">@type.FullTypeName</a><br />
+            Method: @benchmark.Method<br />
+            Environment: <a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">@env.Machine, @env.TargetFramework</a><br />
+            Run: <a href="/benchmarks/runs/@run.BenchmarkRunId">@run.BenchmarkRunId.TruncateGuid()</a>
+        </p>
+        @if (benchmark.Statistics != null)
+        {
+            var stats = benchmark.Statistics;
+        <p>
+            N: @stats.TestCount <br />
+            @* TODO: Check these are all actually times! Variance is the square of a time...*@
+            Mean: @Html.RenderTime(@stats.Mean)<br />
+            Standard error: @Html.RenderTime(@stats.StandardError) <br />
+            Standard deviation: @Html.RenderTime(@stats.StandardDeviation) <br />
+            Variance: @stats.Variance<br />
+            Median: @Html.RenderTime(@stats.Median) <br />
+            Min: @Html.RenderTime(@stats.Min)<br />
+            Min: @Html.RenderTime(@stats.Max)<br />
+            Q1: @Html.RenderTime(@stats.Q1)<br />
+            Q3: @Html.RenderTime(@stats.Q3)<br />
+            Interquartile range: @Html.RenderTime(@stats.InterquartileRange)<br />
+            Lower fence: @Html.RenderTime(@stats.LowerFence)<br />
+            Upper fence: @Html.RenderTime(@stats.UpperFence)<br />
+            Skewness: @stats.Skewness<br />
+            Kurtosis: @stats.Kurtosis<br />
+        </p>
+        <p>
+            P0: @Html.RenderTime(@stats.P0)<br />
+            P25: @Html.RenderTime(@stats.P25)<br />
+            P50: @Html.RenderTime(@stats.P50)<br />
+            P67: @Html.RenderTime(@stats.P67)<br />
+            P80: @Html.RenderTime(@stats.P80)<br />
+            P85: @Html.RenderTime(@stats.P85)<br />
+            P90: @Html.RenderTime(@stats.P90)<br />
+            P95: @Html.RenderTime(@stats.P95)<br />
+            P100: @Html.RenderTime(@stats.P100)<br />
+        </p>
+        }
+    </div>
+    @* Work out how to style the above to leave some padding instead... *@
+    <p />
+</div>

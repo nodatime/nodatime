@@ -1,0 +1,96 @@
+syntax="proto3";
+
+package noda_time.benchmarks;
+
+import "google/protobuf/timestamp.proto";
+
+// These messages contain repeated types to form a hierarchy
+// (environment -> runs -> types -> benchmarks) but they may
+// be stored independently: each child "knows" the ID of its
+// parent. Be careful when using: make sure you understand
+// whether the repeated fields will actually be populated.
+
+message BenchmarkEnvironment {
+  string benchmark_environment_id = 1;
+  string machine = 2;
+  string operating_system = 3;
+  string processor = 4;
+  int32 processor_count = 5;
+  string architecture = 6;
+  string target_framework = 7;
+  string jit_modules = 8;
+  bool has_ryu_jit = 9;
+  string runtime_version = 10;
+
+  // May or may not be populated, depending on context.
+  // When populated, should be in descending order of start instant.
+  repeated BenchmarkRun runs = 100;
+}
+
+message BenchmarkRun {
+  string benchmark_run_id = 1;
+  string benchmark_environment_id = 2;
+  string commit = 3;
+  google.protobuf.Timestamp start = 4;
+  google.protobuf.Timestamp end = 5;
+  string benchmark_dot_net_version = 10;
+
+  // May or may not be populated, depending on context.
+  // When populated, should be in ascending order of full type name.
+  repeated BenchmarkType types = 100;
+}
+
+message BenchmarkType {
+  string benchmark_type_id = 1;
+  string benchmark_run_id = 2;
+  string full_type_name = 3;
+  string namespace = 4;
+  string type = 5;
+
+  // May or may not be populated, depending on context.
+  // When populated, should be in ascending order of method name.
+  repeated Benchmark benchmarks = 100;
+}
+
+// Could denormalize this... unclear for now.
+message Benchmark {
+  string benchmark_id = 1;
+  string benchmark_type_id = 2;
+  string method = 3;
+  string full_method_name = 4;
+  string parameters = 5;
+
+  // Only present if there are no errors
+  Statistics statistics = 6;
+}
+
+message Statistics {
+  int32 test_count = 1;
+  double mean = 2;
+  double min = 3;
+  double max = 4;
+  double median = 5;
+  double lower_fence = 6;
+  double upper_fence = 7;
+
+  double q1 = 8;
+  double q3 = 9;
+  double interquartile_range = 10;
+  double standard_error = 11;
+  double variance = 12;
+  double standard_deviation = 13;
+  double skewness = 14;
+  double kurtosis = 15;
+
+  // Leave space for non-percentiles
+
+  double p0 = 50;
+  double p25 = 51;
+  double p50 = 52;
+  double p67 = 53;
+  double p80 = 54;
+  double p85 = 55;
+  double p90 = 56;
+  double p95 = 57;
+  double p100 = 58;
+}

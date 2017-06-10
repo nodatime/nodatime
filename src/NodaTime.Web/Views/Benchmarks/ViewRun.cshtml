@@ -1,0 +1,54 @@
+﻿@using NodaTime.Benchmarks;
+@model (BenchmarkEnvironment env, BenchmarkRun run)
+
+@{
+    ViewBag.Title = "Benchmark run";
+    var env = Model.env;
+    var run = Model.run;
+    var types = run.Types_;
+}
+
+<div class="row">
+    <div>
+        <h1>Benchmark run</h1>
+    </div>
+    <div>
+        <p>
+            Commit: <a href="https://github.com/nodatime/nodatime/commit/@run.Commit">@run.Commit.TruncateCommit()</a><br />
+            Environment: <a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">@env.Machine, @env.TargetFramework</a><br />
+            Start time: @Html.RenderTimestamp(run.Start)<br />
+            End time: @Html.RenderTimestamp(run.End)<br />
+            BenchmarkDotNet version: @run.BenchmarkDotNetVersion
+        </p>
+    </div>
+    <div>
+        <h2>Types (by namespace)</h2>
+    </div>
+    <div>
+        @* TODO: Present in a single table with a different style for a namespace row? *@
+        @foreach (var groupByNs in types.GroupBy(t => t.Namespace).OrderBy(g => g.Key))
+        {
+        <div>
+            <h2>@groupByNs.Key</h2>
+        </div>
+        <div>
+            <table>
+                
+                <tr>
+                    <th>Type</th>
+                    <th>Count</th>
+                </tr>
+                @foreach (var type in groupByNs)
+                {
+                    <tr>
+                        <td><a href="/benchmarks/types/@type.BenchmarkTypeId">@type.Type</a></td>
+                        <td>@type.Benchmarks.Count</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        }
+    </div>
+    @* Work out how to style the above to leave some padding instead... *@
+    <p />
+</div>
