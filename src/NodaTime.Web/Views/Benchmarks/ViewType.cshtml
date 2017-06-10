@@ -1,0 +1,57 @@
+﻿@using NodaTime.Benchmarks;
+@model (BenchmarkEnvironment env, BenchmarkRun run, BenchmarkType type, BenchmarkType previousRunType)
+
+@{
+    ViewBag.Title = "Benchmark type";
+    var env = Model.env;
+    var run = Model.run;
+    var type = Model.type;
+    var benchmarks = type.Benchmarks;
+    var previousRunType = Model.previousRunType;
+}
+
+<div class="row">
+    <div>
+        <h1>Benchmark type</h1>
+    </div>
+    <div>
+        <p>
+            Type: @type.FullTypeName<br />
+            Environment: <a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">@env.Machine, @env.TargetFramework</a><br />
+            Run: <a href="/benchmarks/runs/@run.BenchmarkRunId">@run.BenchmarkRunId.TruncateGuid()</a><br />
+            @if (previousRunType != null)
+            {
+                <a href="/benchmarks/types/@type.BenchmarkTypeId/compare/@previousRunType.BenchmarkTypeId">Compare with previous run</a>
+            }
+            else
+            {            
+                @:(No previous run to compare this with.)
+            }
+        </p>
+    </div>
+    <div>
+        <h2>Benchmarks</h2>
+    </div>
+    <div>
+        <table>
+            @* TODO: Parameters, if we ever use them. *@
+            <tr>
+                <th>Method</th>
+                <th>Mean time</th>
+                <th>Standard error</th>
+                <th>Standard deviation</th>
+            </tr>
+            @foreach (var benchmark in benchmarks)
+            {
+                <tr>
+                    <td><a href="/benchmarks/benchmarks/@benchmark.BenchmarkId">@benchmark.Method</a></td>
+                    <td>@Html.RenderTime(benchmark.Statistics?.Mean)</td>
+                    <td>@Html.RenderTime(benchmark.Statistics?.StandardError)</td>
+                    <td>@Html.RenderTime(benchmark.Statistics?.StandardDeviation)</td>
+                </tr>
+            }
+        </table>
+    </div>
+    @* Work out how to style the above to leave some padding instead... *@
+    <p />
+</div>

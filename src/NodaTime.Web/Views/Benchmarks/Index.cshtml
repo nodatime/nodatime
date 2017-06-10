@@ -1,0 +1,40 @@
+﻿@using NodaTime.Benchmarks;
+@model IList<BenchmarkEnvironment>
+
+@{
+    ViewBag.Title = "Benchmarks";
+}
+
+<div class="row">
+    <div>
+        <h1>Benchmarks</h1>
+
+        <p>
+            Benchmarks are run on a daily basis (when there's been a change in the master branch)
+            on identical machines: one Linux (gabriel) and one Windows (bagpuss). The web interface
+            to view the benchmarks is still in a prototype phase; in particular, the URLs may well
+            change over time, so please don't rely on them being stable just yet.
+        </p>
+
+        <h2>Benchmark environments</h2>
+        <table>
+            <tr>
+                <th></th>
+                <th>Machine</th>
+                <th>Target framework</th>
+                <th>Operating system</th>
+                <th>Runtime version</th>
+            </tr>
+            @foreach (var env in Model.OrderBy(e => e.Machine).ThenBy(e => e.TargetFramework))
+            {
+            <tr>
+                <td><a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">View</a></td>
+                <td>@env.Machine</td>
+                <td>@env.TargetFramework</td>
+                <td>@env.OperatingSystem</td>
+                <td>@env.RuntimeVersion</td>
+            </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+﻿@using NodaTime.Web.ViewModels;
+@model CompareTypesViewModel
+
+@{
+    ViewBag.Title = "Benchmark type comparison";
+}
+
+<div class="row">
+    <div>
+        <h1>Benchmark type comparison for @Model.LeftType.FullTypeName</h1>
+    </div>
+    <div>
+        <table>
+            @* TODO: Parameters, if we ever use them. *@
+            <tr>
+                <th></th>
+                <th>Left</th>
+                <th>Right</th>
+            </tr>
+            <tr>
+                <td>Environment</td>
+                <td><a href="/benchmarks/environments/@Model.LeftEnvironment.BenchmarkEnvironmentId">@Model.LeftEnvironment.Machine, @Model.LeftEnvironment.TargetFramework</a></td>
+                <td><a href="/benchmarks/environments/@Model.RightEnvironment.BenchmarkEnvironmentId">@Model.RightEnvironment.Machine, @Model.RightEnvironment.TargetFramework</a></td>
+            </tr>
+            <tr>
+                <td>Run</td>
+                <td><a href="/benchmarks/run/@Model.LeftRun.BenchmarkRunId">@Model.LeftRun.BenchmarkRunId.TruncateGuid()</a></td>
+                <td><a href="/benchmarks/run/@Model.RightRun.BenchmarkRunId">@Model.RightRun.BenchmarkRunId.TruncateGuid()</a></td>
+            </tr>
+            <tr>
+                <td>Run start</td>
+                <td>@Html.RenderTimestamp(@Model.LeftRun.Start)</td>
+                <td>@Html.RenderTimestamp(@Model.RightRun.Start)</td>
+            </tr>
+            <tr>
+                <td>Run commit</td>
+                <td><a href="https://github.com/nodatime/nodatime/commit/@Model.LeftRun.Commit">@Model.LeftRun.Commit.TruncateCommit()</a></td>
+                <td><a href="https://github.com/nodatime/nodatime/commit/@Model.RightRun.Commit">@Model.RightRun.Commit.TruncateCommit()</a></td>
+            </tr>
+        </table>
+        <p>
+            @* TODO: Use a table for this top part as well? Need better control of table rows, resetting colors etc. *@
+            Type: @Model.LeftType.FullTypeName<br />
+            @if (Model.SingleEnvironment)
+            {
+                @:Environment: <a href="/benchmarks/environments/@Model.LeftEnvironment.BenchmarkEnvironmentId">@Model.LeftEnvironment.Machine, @Model.LeftEnvironment.TargetFramework</a><br />
+            }
+            else
+            {
+                @:Left environment: <a href="/benchmarks/environments/@Model.LeftEnvironment.BenchmarkEnvironmentId">@Model.LeftEnvironment.Machine, @Model.LeftEnvironment.TargetFramework</a><br />
+                @:Right environment: <a href="/benchmarks/environments/@Model.RightEnvironment.BenchmarkEnvironmentId">@Model.RightEnvironment.Machine, @Model.RightEnvironment.TargetFramework</a><br />
+            }
+            @* TODO: Commit, dates etc *@
+            Left Run: <a href="/benchmarks/runs/@Model.LeftRun.BenchmarkRunId">@Model.LeftRun.BenchmarkRunId.TruncateGuid()</a><br />
+            Right Run: <a href="/benchmarks/runs/@Model.RightRun.BenchmarkRunId">@Model.RightRun.BenchmarkRunId.TruncateGuid()</a><br />
+        </p>
+    </div>
+    <div>
+        <h2>Benchmarks</h2>
+    </div>
+    <div>
+        <table>
+            @* TODO: Parameters, if we ever use them. *@
+            <tr>
+                <th>Method</th>
+                <th>Mean time<br />(@Html.RenderTimestamp(Model.LeftRun.Start))</th>
+                <th>Mean time<br />(@Html.RenderTimestamp(Model.RightRun.Start))</th>
+            </tr>
+            @foreach (var item in Model.GetBenchmarks())
+            {
+                <tr class="@(item.important ? "benchmark-important": "")">
+                    <td>@item.description.Method</td>
+                    <td>@Html.RenderTime(item.left?.Mean)</td>
+                    <td>@Html.RenderTime(item.right?.Mean)</td>
+                </tr>
+            }
+        </table>
+    </div>
+    @* Work out how to style the above to leave some padding instead... *@
+    <p />
+</div>

@@ -25,7 +25,7 @@ namespace NodaTime.Web.Models
             GoogleCredential credential)
         {
             client = StorageClient.Create(credential);
-            cache = new TimerCache<CacheEntry>(lifetime, CacheRefreshTime, FetchReleases, loggerFactory);
+            cache = new TimerCache<CacheEntry>(lifetime, CacheRefreshTime, FetchReleases, loggerFactory, CacheEntry.Empty);
         }
 
         public IList<TzdbDownload> GetReleases() => (cache.Value ?? FetchReleases()).Releases;
@@ -54,6 +54,7 @@ namespace NodaTime.Web.Models
         {
             public Dictionary<string, TzdbDownload> ReleasesByName { get; }
             public List<TzdbDownload> Releases { get; }
+            public static CacheEntry Empty { get; } = new CacheEntry(new List<TzdbDownload>());
 
             public CacheEntry(List<TzdbDownload> releases)
             {

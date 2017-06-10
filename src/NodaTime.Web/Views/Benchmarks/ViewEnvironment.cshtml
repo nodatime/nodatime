@@ -1,0 +1,53 @@
+﻿@using NodaTime.Benchmarks;
+@model BenchmarkEnvironment
+
+@{
+    ViewBag.Title = "Benchmark environment";
+}
+
+<div class="row">
+    <div>
+        <h1>Benchmark environment for @Model.BenchmarkEnvironmentId.TruncateGuid()</h1>
+    </div>
+    <div>
+        <p>
+            Machine: @Model.Machine<br />
+            Target framework: @Model.TargetFramework<br />
+            Runtime version: @Model.RuntimeVersion<br />
+            Operating system: @Model.OperatingSystem<br />
+            Processor: @Model.Processor<br />
+            Architecture: @Model.Architecture<br />
+            Processor count: @Model.ProcessorCount<br />
+            Has RyuJit? @Model.HasRyuJit<br />
+            JIT modules: @Model.JitModules<br />
+        </p>
+    </div>
+    <div>
+        <h2>Runs</h2>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <th></th>
+                <th>Commit</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Types</th>
+                <th>Benchmarks</th>
+            </tr>
+            @foreach (var run in Model.Runs)
+            {
+                <tr>
+                    <td><a href="/benchmarks/runs/@run.BenchmarkRunId">View</a></td>
+                    <td><a href="https://github.com/nodatime/nodatime/commit/@run.Commit">@run.Commit.TruncateCommit()</a></td>
+                    <td>@Html.RenderTimestamp(run.Start)</td>
+                    <td>@Html.RenderTimestamp(run.End)</td>
+                    <td>@run.Types_.Count</td>
+                    <td>@run.Types_.Sum(t => t.Benchmarks.Count)</td>
+                </tr>
+            }
+        </table>
+    </div>
+    @* Work out how to style the above to leave some padding instead... *@
+    <p />
+</div>
