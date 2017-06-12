@@ -18,7 +18,8 @@
             Type: <a href="/benchmarks/types/@type.BenchmarkTypeId">@type.FullTypeName</a><br />
             Method: @benchmark.Method<br />
             Environment: <a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">@env.Machine, @env.TargetFramework</a><br />
-            Run: <a href="/benchmarks/runs/@run.BenchmarkRunId">@run.BenchmarkRunId.TruncateGuid()</a>
+            Run: <a href="/benchmarks/runs/@run.BenchmarkRunId">@run.BenchmarkRunId.TruncateGuid()</a> <br />
+            <a href="/benchmarks/benchmarks/@benchmark.BenchmarkId/history">View history (from here back)</a>
         </p>
         @if (benchmark.Statistics != null)
         {
