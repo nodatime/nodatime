@@ -60,11 +60,21 @@ namespace NodaTime.Web.Controllers
         [Route("/benchmarks/benchmarks/{benchmarkId}")]
         public IActionResult ViewBenchmark(string benchmarkId)
         {
-            var benchmark = repository.GetBenchmark(benchmarkId);
-            var type = repository.GetType(benchmark.BenchmarkTypeId);
-            var run = repository.GetRun(type.BenchmarkRunId);
-            var env = repository.GetEnvironment(run.BenchmarkEnvironmentId);
-            return View((env, run, type, benchmark));
+            return View(LookupBenchmarkAndAncestors(benchmarkId));
+        }
+
+        [Route("/benchmarks/benchmarks/{benchmarkId}/history")]
+        public IActionResult ViewBenchmarkHistory(string benchmarkId)
+        {
+            var tuple = LookupBenchmarkAndAncestors(benchmarkId);
+            // Use the provided benchmark as the latest one to use
+            var benchmarks =
+                from run in tuple.environment.Runs.SkipWhile(r => r != tuple.run)
+                from type in run.Types_ where type.FullTypeName == tuple.type.FullTypeName
+                from benchmark in type.Benchmarks where benchmark.Method == tuple.benchmark.Method
+                select (run: run, benchmark: benchmark);
+
+            return View(benchmarks.ToList());
         }
 
         private (BenchmarkEnvironment environment, BenchmarkRun run, BenchmarkType type) LookupTypeAndAncestors(string typeId)
@@ -73,6 +83,15 @@ namespace NodaTime.Web.Controllers
             var run = repository.GetRun(type.BenchmarkRunId);
             var environment = repository.GetEnvironment(run.BenchmarkEnvironmentId);
             return (environment, run, type);
+        }
+
+        private (BenchmarkEnvironment environment, BenchmarkRun run, BenchmarkType type, Benchmark benchmark) LookupBenchmarkAndAncestors(string benchmarkId)
+        {
+            var benchmark = repository.GetBenchmark(benchmarkId);
+            var type = repository.GetType(benchmark.BenchmarkTypeId);
+            var run = repository.GetRun(type.BenchmarkRunId);
+            var environment = repository.GetEnvironment(run.BenchmarkEnvironmentId);
+            return (environment, run, type, benchmark);
         }
 
         private BenchmarkRun GetPreviousRun(BenchmarkRun run) =>

@@ -1,0 +1,37 @@
+﻿@using NodaTime.Benchmarks;
+@model IEnumerable<(BenchmarkRun run, Benchmark benchmark)>
+
+@{
+    ViewBag.Title = "Benchmark history";
+    var startBenchmark = Model.First().benchmark;
+}
+
+<div class="row">
+    <div>
+        <h1>Benchmark history</h1>
+    </div>
+    <div>
+        <p>
+            History of @startBenchmark.FullMethodName from <a href="/benchmarks/benchmarks/@startBenchmark.BenchmarkId">@startBenchmark.BenchmarkId.TruncateGuid()</a>
+        </p>
+        <table>
+            <tr>
+                <th>Run start (commit)</th>
+                <th>Mean</th>
+                <th>Standard error</th>
+                <th>Standard deviation</th>
+            </tr>
+            @foreach (var pair in Model)
+            {
+                <tr>
+                    <td><a href="/benchmarks/runs/@pair.run.BenchmarkRunId">@Html.RenderTimestamp(@pair.run.Start)</a> (<a href="https://github.com/nodatime/nodatime/commit/@pair.run.Commit">@pair.run.Commit.TruncateCommit()</a>)</td>
+                    <td>@Html.RenderTime(pair.benchmark.Statistics?.Mean)</td>
+                    <td>@Html.RenderTime(pair.benchmark.Statistics?.StandardError)</td>
+                    <td>@Html.RenderTime(pair.benchmark.Statistics?.StandardDeviation)</td>
+                </tr>
+            }
+        </table>
+    </div>
+    @* Work out how to style the above to leave some padding instead... *@
+    <p />
+</div>
