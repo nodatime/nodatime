@@ -124,7 +124,9 @@ namespace NodaTime
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
             { "ISO", () => Iso },
+#pragma warning disable 1062
             { "Persian", GetPersianCalendar },
+#pragma warning restore 1062
             { "Hebrew-Civil", () => GetHebrewCalendar(HebrewMonthNumbering.Civil) },
             { "Hebrew-Scriptural", () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural) },
             { "Gregorian 1", () => GetGregorianCalendar(1) },
@@ -189,6 +191,7 @@ namespace NodaTime
         /// this implementation align exactly with the BCL implementation.
         /// </remarks>
         /// <returns>A Persian calendar system.</returns>
+        [Obsolete("Use the PersianSimple property for compatibility with 2.0.")]
         public static CalendarSystem GetPersianCalendar()
         {
             // Note: this is a method rather than a property as we may wish to overload it to allow a choice
@@ -829,6 +832,112 @@ namespace NodaTime
         {
             return yearMonthDayCalculator.GetEra(localInstant);
         }
+        #endregion
+
+
+        #region 2.0-compatible factory properties
+        /// <summary>
+        /// Returns a Gregorian calendar system with at least 4 days in the first week of a week-year.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The Gregorian calendar system defines every
+        /// fourth year as leap, unless the year is divisible by 100 and not by 400.
+        /// This improves upon the Julian calendar leap year rule.
+        /// </para>
+        /// <para>
+        /// Although the Gregorian calendar did not exist before 1582 CE, this
+        /// calendar system assumes it did, thus it is proleptic. This implementation also
+        /// fixes the start of the year at January 1.
+        /// </para>
+        /// </remarks>
+        /// <value>A Gregorian calendar system with at least 4 days in the first week of a week-year.</value>
+        [NotNull] public static CalendarSystem Gregorian => GetGregorianCalendar(4);
+
+        /// <summary>
+        /// Returns a pure proleptic Julian calendar system, which defines every
+        /// fourth year as a leap year. This implementation follows the leap year rule
+        /// strictly, even for dates before 8 CE, where leap years were actually
+        /// irregular.
+        /// </summary>
+        /// <remarks>
+        /// Although the Julian calendar did not exist before 45 BCE, this calendar
+        /// assumes it did, thus it is proleptic. This implementation also fixes the
+        /// start of the year at January 1.
+        /// </remarks>
+        /// <para>
+        /// This calendar always has at least 4 days in the first week of the week-year.
+        /// </para>
+        /// <value>A suitable Julian calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</value>
+        [NotNull] public static CalendarSystem Julian => GetJulianCalendar(4);
+
+        /// <summary>
+        /// Returns a Coptic calendar system, which defines every fourth year as
+        /// leap, much like the Julian calendar. The year is broken down into 12 months,
+        /// each 30 days in length. An extra period at the end of the year is either 5
+        /// or 6 days in length. In this implementation, it is considered a 13th month.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
+        /// Coptic years do not begin at the same time as Julian years. This calendar
+        /// is not proleptic, as it does not allow dates before the first Coptic year.
+        /// </para>
+        /// <para>
+        /// This implementation defines a day as midnight to midnight exactly as per
+        /// the ISO calendar. Some references indicate that a Coptic day starts at
+        /// sunset on the previous ISO day, but this has not been confirmed and is not
+        /// implemented.
+        /// </para>
+        /// <para>
+        /// This calendar always has at least 4 days in the first week of the week-year.
+        /// </para>
+        /// </remarks>
+        /// <value>A suitable Coptic calendar reference; the same reference may be returned by several
+        /// calls as the object is immutable and thread-safe.</value>
+        [NotNull] public static CalendarSystem Coptic => GetCopticCalendar(4);
+
+        /// <summary>
+        /// Returns an Islamic calendar system equivalent to the one used by the BCL HijriCalendar.
+        /// </summary>
+        /// <remarks>
+        /// This uses the <see cref="IslamicLeapYearPattern.Base16"/> leap year pattern and the
+        /// <see cref="IslamicEpoch.Astronomical"/> epoch. This is equivalent to HijriCalendar
+        /// when the <c>HijriCalendar.HijriAdjustment</c> is 0.
+        /// </remarks>
+        /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
+        /// <value>An Islamic calendar system equivalent to the one used by the BCL.</value>
+        [NotNull] public static CalendarSystem IslamicBcl => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+
+#pragma warning disable CS0618 // Type or member is obsolete
+        /// <summary>
+        /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
+        /// BCL <code>PersianCalendar</code> before .NET 4.6, and the sole Persian calendar in Noda Time 1.3.
+        /// </summary>
+        /// <remarks>
+        /// This implementation uses a simple 33-year leap cycle, where years  1, 5, 9, 13, 17, 22, 26, and 30
+        /// in each cycle are leap years.
+        /// </remarks>
+        /// <value>A Persian calendar system using a simple 33-year leap cycle.</value>
+        [NotNull] public static CalendarSystem PersianSimple => GetPersianCalendar();
+#pragma warning restore CS0618 // Type or member is obsolete
+
+        /// <summary>
+        /// Returns a Hebrew calendar system using the civil month numbering,
+        /// equivalent to the one used by the BCL HebrewCalendar.
+        /// </summary>
+        /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
+        /// <value>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
+        /// BCL.</value>
+        [NotNull] public static CalendarSystem HebrewCivil => GetHebrewCalendar(HebrewMonthNumbering.Civil);
+
+        /// <summary>
+        /// Returns a Hebrew calendar system using the scriptural month numbering.
+        /// </summary>
+        /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
+        /// <value>A Hebrew calendar system using the scriptural month numbering.</value>
+        [NotNull] public static CalendarSystem HebrewScriptural => GetHebrewCalendar(HebrewMonthNumbering.Scriptural);
         #endregion
     }
 }
