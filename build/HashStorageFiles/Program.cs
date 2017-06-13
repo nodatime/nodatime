@@ -22,6 +22,8 @@ namespace HashStorageFiles
 
         public static void Main(string[] args)
         {
+
+            bool validate = args.Length == 1 && args[0] == "--validate";
             var client = StorageClient.Create();
             var files = client.ListObjects(Bucket, Prefix).Where(x => !x.Name.EndsWith("/")).ToList();
 
@@ -33,8 +35,12 @@ namespace HashStorageFiles
                     {
                         file.Metadata = new Dictionary<string, string>();
                     }
-                    string existingHash;
-                    bool hashExists = file.Metadata.TryGetValue(Sha256Key, out existingHash);
+                    bool hashExists = file.Metadata.TryGetValue(Sha256Key, out string existingHash);
+                    if (hashExists && !validate)
+                    {
+                        Console.WriteLine($"Skipping {file.Name}");
+                        continue;
+                    }
                     Console.WriteLine($"{(hashExists ? "Validating" : "Hashing")} {file.Name}");
                     var stream = new MemoryStream();
                     client.DownloadObject(file, stream, new DownloadObjectOptions { IfGenerationMatch = file.Generation });
