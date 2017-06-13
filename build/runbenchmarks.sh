@@ -2,10 +2,13 @@
 
 set -e
 
+declare -r ROOT=$(realpath $(dirname $0)/..)
+
 if [[ "$3" = "" ]]
 then
-  echo "Usage: runbenchmarks.sh <repo-directory> <results-directory> <target-framework> [target-framework...]"
-  echo "e.g. runbenchmarks.sj benchmark-tmp benchmark-results netcoreapp1.1 net45"
+  echo "Usage: runbenchmarks.sh <repo-directory> <results-directory> [--upload] <target-framework> [target-framework...]"
+  echo "e.g. runbenchmarks.sh benchmark-tmp benchmark-results --upload netcoreapp1.1 net45"
+  echo "If --upload is specified, BenchmarkUploader will be run if benchmarks are successful"
   exit 1
 fi
 
@@ -29,6 +32,14 @@ cd $REPO/src
 dotnet restore NodaTime-All.sln
 cd NodaTime.Benchmarks
 
+UPLOAD=""
+
+if [[ $1 == "--upload" ]]
+then
+  shift
+  UPLOAD="true"
+fi
+
 while (( "$#" ))
 do
   TARGET_FRAMEWORK=$1
@@ -46,3 +57,11 @@ do
   done
   shift
 done
+
+if [[ $UPLOAD == "true" ]]
+then
+  echo "Uploading benchmarks"
+  cd "$ROOT/build/BenchmarkUploader"
+  dotnet restore
+  dotnet run -- $RESULTS nodatime benchmarks/
+fi
