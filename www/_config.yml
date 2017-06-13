@@ -1,9 +1,0 @@
-name: Noda Time
-pygments: true
-
-markdown:      redcarpet
-markdown_ext:  markdown,mkd,mkdn,md
-
-# The latest released version number and date of release.
-latest: 1.2.0
-latest_released_on: November 16th 2013
