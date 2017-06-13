@@ -6,6 +6,19 @@ details.
 
 ## 2.1 (current master branch)
 
+## 2.0.3, released 2017-06-13 with tzdb 2017b
+
+Patch release: optimization only:
+
+- Fixes [issue 837]: `Instant.FromUnixTimeSeconds` slow (fix in `Duration.FromXyz`)
+- Fixes [issue 838]: Improve `Duration` performance further
+
+## 2.0.2, released 2017-05-22 with tzdb 2017b
+
+Patch release: bugfix only:
+
+- Fixes [issue 824]: incorrect Period computations.
+
 ## 2.0.1, released 2017-05-05 with tzdb 2017b
 
 Patch release: bugfixes only:
