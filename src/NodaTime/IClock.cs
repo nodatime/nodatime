@@ -29,6 +29,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the current <see cref="Instant"/> on the time line according to this clock.
         /// </summary>
+        [Obsolete("Use the GetCurrentInstant() extension method for compatibility with 2.0")]
         Instant Now { get; }
     }
 }
