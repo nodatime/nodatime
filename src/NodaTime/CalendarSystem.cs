@@ -169,7 +169,7 @@ namespace NodaTime
                 default:
                     throw new InvalidOperationException($"Bug in Noda Time: calendar ordinal {ordinal} missing from switch in CalendarSystem.ForOrdinal.");
             }
-    }
+        }
 
         /// <summary>
         /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.
@@ -366,8 +366,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the name of this calendar system. Each kind of calendar system has a unique name, but this
         /// does not usually provide enough information for round-tripping. (For example, the name of an
-        /// Islamic calendar system does not indicate which kind of leap cycle it uses, and other calendars
-        /// specify the minimum number of days in the first week of a year.)
+        /// Islamic calendar system does not indicate which kind of leap cycle it uses.)
         /// </summary>
         /// <value>The name of this calendar system.</value>
         [NotNull] public string Name { get; }
@@ -599,7 +598,7 @@ namespace NodaTime
         #endregion
 
         /// <summary>
-        /// Returns a Gregorian calendar system with at least 4 days in the first week of a week-year.
+        /// Returns a Gregorian calendar system.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -613,7 +612,7 @@ namespace NodaTime
         /// fixes the start of the year at January 1.
         /// </para>
         /// </remarks>
-        /// <value>A Gregorian calendar system with at least 4 days in the first week of a week-year.</value>
+        /// <value>A Gregorian calendar system.</value>
         [NotNull] public static CalendarSystem Gregorian => GregorianJulianCalendars.Gregorian;
 
         /// <summary>
@@ -627,9 +626,6 @@ namespace NodaTime
         /// assumes it did, thus it is proleptic. This implementation also fixes the
         /// start of the year at January 1.
         /// </remarks>
-        /// <para>
-        /// This calendar always has at least 4 days in the first week of the week-year.
-        /// </para>
         /// <value>A suitable Julian calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</value>
         [NotNull] public static CalendarSystem Julian => GregorianJulianCalendars.Julian;
@@ -651,9 +647,6 @@ namespace NodaTime
         /// the ISO calendar. Some references indicate that a Coptic day starts at
         /// sunset on the previous ISO day, but this has not been confirmed and is not
         /// implemented.
-        /// </para>
-        /// <para>
-        /// This calendar always has at least 4 days in the first week of the week-year.
         /// </para>
         /// </remarks>
         /// <value>A suitable Coptic calendar reference; the same reference may be returned by several
