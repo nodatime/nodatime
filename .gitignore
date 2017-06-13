@@ -69,3 +69,12 @@ nuget/**
 /src/**/*-*.csproj
 
 /docs
+
+
+# Files present in master that get in the way when switching
+build/
+.vs
+TestResult.xml
+BenchmarkDotNet.Artifacts
+src/NodaTime.Web/docfx
+src/NodaTime.Web/wwwroot
