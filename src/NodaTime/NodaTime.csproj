@@ -70,7 +70,7 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <DocumentationFile>
     </DocumentationFile>
-    <LangVersion>5</LangVersion>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -170,7 +170,9 @@
     <Compile Include="Calendars\YearMonthDay.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
     <Compile Include="Calendars\YearStartCacheEntry.cs" />
+    <Compile Include="ClockExtensions.cs" />
     <Compile Include="DateTimeZoneProviders.cs" />
+    <Compile Include="Extensions\ClockExtensions.cs" />
     <Compile Include="Fields\MonthsPeriodField.cs" />
     <Compile Include="Fields\FixedDurationPeriodField.cs" />
     <Compile Include="Fields\IPeriodField.cs" />
@@ -298,6 +300,7 @@
     <Compile Include="Utility\NodaReadOnlyDictionary.cs" />
     <Compile Include="Utility\ReferenceEqualityComparer.cs" />
     <Compile Include="Utility\Preconditions.cs" />
+    <Compile Include="ZonedClock.cs" />
     <Compile Include="ZonedDateTime.cs" />
   </ItemGroup>
   <ItemGroup>
