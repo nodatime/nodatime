@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
-    public class PclSupportTest
+    public class NameIdMappingSupportTest
     {
         private static readonly Dictionary<string, string> DetectedMapping =
             TimeZoneInfo.GetSystemTimeZones()
@@ -28,7 +28,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void AllDetectedNamesAreMapped()
         {
-            var missingPairs = DetectedMapping.Keys.Except(PclSupport.StandardNameToIdMap.Keys)
+            var missingPairs = DetectedMapping.Keys.Except(NameIdMappingSupport.StandardNameToIdMap.Keys)
                 .Except(ExpectedMissingKeys)
                 .Select(name => new { Name = name, Id = DetectedMapping[name] })
                 .ToList();
@@ -39,9 +39,9 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void AllDetectedNamesAreMappedCorrectly()
         {
             var incorrectMappings = DetectedMapping.Keys
-                .Where(key => PclSupport.StandardNameToIdMap.ContainsKey(key))
-                .Where(key => DetectedMapping[key] != PclSupport.StandardNameToIdMap[key])
-                .Select(key => "Expected " + key + " => " + DetectedMapping[key] + "; was " + PclSupport.StandardNameToIdMap[key])
+                .Where(key => NameIdMappingSupport.StandardNameToIdMap.ContainsKey(key))
+                .Where(key => DetectedMapping[key] != NameIdMappingSupport.StandardNameToIdMap[key])
+                .Select(key => "Expected " + key + " => " + DetectedMapping[key] + "; was " + NameIdMappingSupport.StandardNameToIdMap[key])
                 .ToList();
             CollectionAssert.IsEmpty(incorrectMappings);
         }
