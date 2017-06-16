@@ -673,6 +673,18 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// The number of months within this calendar in the given year. It is assumed that
+        /// all calendars start with month 1 and go up to this month number in any valid year.
+        /// </summary>
+        /// <param name="year">The year to consider.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The given year is invalid for this calendar.
+        /// Note that some implementations may return a month rather than throw this exception (for example, if all
+        /// years have the same number of months in this calendar system). Failure to throw an exception should not be
+        /// treated as an indication that the year is valid.</exception>
+        /// <returns>The maximum month number within the given year.</returns>
+        public int GetMonthsInYear(int year) => GetMaxMonth(year);
+
+        /// <summary>
         /// The maximum valid month (inclusive) within this calendar in the given year. It is assumed that
         /// all calendars start with month 1 and go up to this month number in any valid year.
         /// </summary>
@@ -682,6 +694,7 @@ namespace NodaTime
         /// years have the same number of months in this calendar system). Failure to throw an exception should not be
         /// treated as an indication that the year is valid.</exception>
         /// <returns>The maximum month number within the given year.</returns>
+        [Obsolete("Use GetMonthsInYear for compatibility with 2.0")]
         public int GetMaxMonth(int year)
         {
             return yearMonthDayCalculator.GetMaxMonth(year);
