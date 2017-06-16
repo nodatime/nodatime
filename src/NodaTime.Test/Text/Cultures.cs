@@ -150,8 +150,8 @@ namespace NodaTime.Test.Text
         internal static readonly CultureInfo AwkwardAmPmDesignatorCulture = CreateAwkwardAmPmCulture();
 
         /// <summary>
-        /// Workaround for the lack of CultureInfo.GetCultureInfo(string) in the PCL.
-        /// Our PCL version doesn't cache, but does at least still return a readonly version.
+        /// Workaround for the lack of CultureInfo.GetCultureInfo(string) in netcoreapp1.0.
+        /// Our .NET Core version doesn't cache, but does at least still return a readonly version.
         /// </summary>
         internal static CultureInfo GetCultureInfo(string name)
         {

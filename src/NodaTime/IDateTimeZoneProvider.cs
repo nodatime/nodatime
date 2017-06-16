@@ -84,7 +84,7 @@ namespace NodaTime
         /// If it is necessary to handle this case, callers can construct a
         /// <see cref="BclDateTimeZone"/> via <see cref="BclDateTimeZone.ForSystemDefault"/>, which returns a
         /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>, and which always
-        /// succeeds. Note that <c>BclDateTimeZone</c> is not available on the PCL build of Noda Time, so
+        /// succeeds. Note that <c>BclDateTimeZone</c> is not available on the .NET Standard 1.3 build of Noda Time, so
         /// this fallback strategy can only be used with the desktop version.
         /// </para>
         /// </remarks>

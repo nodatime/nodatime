@@ -225,6 +225,7 @@ namespace NodaTime.TimeZones
         {
             lock (guesses)
             {
+                // FIXME: Stop using StandardName! (We have Id now...)
                 string cached;
                 if (guesses.TryGetValue(zone.StandardName, out cached))
                 {
@@ -244,7 +245,7 @@ namespace NodaTime.TimeZones
         /// zone for some reason. We return null if we don't get a 70% hit rate.
         /// We look at all transitions in all canonical IDs for the next 5 years.
         /// Heuristically, this seems to be good enough to get the right results in most cases.
-        /// This method used to only be called in the PCL build, but it seems reasonable enough to
+        /// This method used to only be called in the netstandard build, but it seems reasonable enough to
         /// call it if we can't get an exact match anyway.
         /// </summary>
         /// <param name="zone">Zone to resolve in a best-effort fashion.</param>

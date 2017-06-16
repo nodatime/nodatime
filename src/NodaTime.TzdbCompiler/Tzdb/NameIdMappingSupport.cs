@@ -8,8 +8,9 @@ using System.Collections.Generic;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    /// Extra support required for the PCL, which has a somewhat anaemic
-    /// version of TimeZoneInfo.
+    /// Extra support required for the PCL builds of Noda Time 1.x, which has a somewhat anaemic
+    /// version of TimeZoneInfo. These aren't used in Noda Time 2.x, as netstandard1.3 supports
+    /// the Id property.
     /// </summary>
     internal static class NameIdMappingSupport
     {
