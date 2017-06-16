@@ -34,6 +34,14 @@ namespace NodaTime.Text
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss", and is also used as the "sortable"
         /// standard pattern.
         /// </summary>
+        public static LocalDateTimePattern GeneralIso => GeneralIsoPattern;
+
+        /// <summary>
+        /// Returns an invariant local date/time pattern which is ISO-8601 compatible, down to the second.
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss", and is also used as the "sortable"
+        /// standard pattern.
+        /// </summary>
+        [Obsolete("Use GeneralIso for compatibility with 2.0")]
         public static LocalDateTimePattern GeneralIsoPattern { get { return Patterns.GeneralIsoPatternImpl; } }
 
         /// <summary>
@@ -41,6 +49,14 @@ namespace NodaTime.Text
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF".
         /// </summary>
+        public static LocalDateTimePattern ExtendedIso => ExtendedIsoPattern;
+
+        /// <summary>
+        /// Returns an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
+        /// of sub-second accuracy. (These digits are omitted when unnecessary.)
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF".
+        /// </summary>
+        [Obsolete("Use ExtendedIso for compatibility with 2.0")]
         public static LocalDateTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         /// <summary>
@@ -49,12 +65,28 @@ namespace NodaTime.Text
         /// BCL round-trip formatting of <see cref="DateTime"/> values with a kind of "unspecified".
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff".
         /// </summary>
+        public static LocalDateTimePattern BclRoundtrip => BclRoundtripPattern;
+
+        /// <summary>
+        /// Returns an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
+        /// of sub-second accuracy which are always present (including trailing zeroes). This is compatible with the
+        /// BCL round-trip formatting of <see cref="DateTime"/> values with a kind of "unspecified".
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff".
+        /// </summary>
+        [Obsolete("Use BclRoundtrip for compatibility with 2.0")]
         public static LocalDateTimePattern BclRoundtripPattern { get { return Patterns.BclRoundtripPatternImpl; } }
 
         /// <summary>
         /// Returns an invariant local date/time pattern which round trips values including the calendar system.
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'".
         /// </summary>
+        public static LocalDateTimePattern FullRoundtrip => FullRoundtripPattern;
+
+        /// <summary>
+        /// Returns an invariant local date/time pattern which round trips values including the calendar system.
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff '('c')'".
+        /// </summary>
+        [Obsolete("Use FullRoundtrip for compatibility with 2.0")]
         public static LocalDateTimePattern FullRoundtripPattern { get { return Patterns.FullRoundtripPatternImpl; } }
 
         /// <summary>

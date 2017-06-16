@@ -7,6 +7,7 @@ using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.Text
 {
@@ -24,11 +25,25 @@ namespace NodaTime.Text
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
         /// </summary>
+        public static OffsetPattern GeneralInvariant => GeneralInvariantPattern;
+
+        /// <summary>
+        /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
+        /// </summary>
+        [Obsolete("Use GeneralInvariant for compatibility with 2.0")]
         public static readonly OffsetPattern GeneralInvariantPattern = CreateWithInvariantCulture("g");
+
         /// <summary>
         /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture,
         /// but producing (and allowing) Z as a value for a zero offset.
         /// </summary>
+        public static OffsetPattern GeneralInvariantWithZ => GeneralInvariantPatternWithZ;
+
+        /// <summary>
+        /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture,
+        /// but producing (and allowing) Z as a value for a zero offset.
+        /// </summary>
+        [Obsolete("Use GeneralInvariantWithZ for compatibility with 2.0")]
         public static readonly OffsetPattern GeneralInvariantPatternWithZ = CreateWithInvariantCulture("G");
 
         private const string DefaultFormatPattern = "g";

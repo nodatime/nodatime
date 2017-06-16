@@ -7,6 +7,7 @@ using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.Text
 {
@@ -32,6 +33,13 @@ namespace NodaTime.Text
         /// Returns an invariant local date pattern which is ISO-8601 compatible.
         /// This corresponds to the text pattern "yyyy'-'MM'-'dd".
         /// </summary>
+        public static LocalDatePattern Iso => IsoPattern;
+
+        /// <summary>
+        /// Returns an invariant local date pattern which is ISO-8601 compatible.
+        /// This corresponds to the text pattern "yyyy'-'MM'-'dd".
+        /// </summary>
+        [Obsolete("Use Iso for compatibility with 2.0")]
         public static LocalDatePattern IsoPattern { get { return Patterns.IsoPatternImpl; } }
         
         /// <summary>

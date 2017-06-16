@@ -7,6 +7,7 @@ using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.Text
 {
@@ -25,6 +26,13 @@ namespace NodaTime.Text
         /// General pattern for durations using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFF".
         /// This pattern round-trips.
         /// </summary>
+        public static DurationPattern Roundtrip => RoundtripPattern;
+
+        /// <summary>
+        /// General pattern for durations using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFF".
+        /// This pattern round-trips.
+        /// </summary>
+        [Obsolete("Use Roundtrip for compatibility with 2.0")]
         public static DurationPattern RoundtripPattern { get { return Patterns.RoundtripPatternImpl; } }
 
         internal static readonly PatternBclSupport<Duration> BclSupport = new PatternBclSupport<Duration>("o", fi => fi.DurationPatternParser);
