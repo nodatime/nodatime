@@ -130,6 +130,16 @@ namespace NodaTime
         /// This property effectively represents all of the information within a Duration value; a duration
         /// is simply a number of ticks.
         /// </remarks>
+        public long BclCompatibleTicks => Ticks;
+
+        /// <summary>
+        /// The total number of ticks in the duration.
+        /// </summary>
+        /// <remarks>
+        /// This property effectively represents all of the information within a Duration value; a duration
+        /// is simply a number of ticks.
+        /// </remarks>
+        [Obsolete("Use BclCompatibleTicks for compatibility with 2.0.")]
         public long Ticks { get { return ticks; } }
 
         #region Object overrides
@@ -505,6 +515,15 @@ namespace NodaTime
         /// </summary>
         /// <param name="days">The number of days.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of days.</returns>
+        public static Duration FromDays(int days) => FromStandardDays(days);
+
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of days, assuming a 'standard' 24-hour
+        /// day.
+        /// </summary>
+        /// <param name="days">The number of days.</param>
+        /// <returns>A <see cref="Duration"/> representing the given number of days.</returns>
+        [Obsolete("Use FromDays for compatibility with 2.0.")]
         public static Duration FromStandardDays(long days)
         {
             return OneStandardDay * days;
@@ -515,6 +534,14 @@ namespace NodaTime
         /// </summary>
         /// <param name="hours">The number of hours.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of hours.</returns>
+        public static Duration FromHours(int hours) => FromHours((long) hours);
+
+        /// <summary>
+        /// Returns a <see cref="Duration"/> that represents the given number of hours.
+        /// </summary>
+        /// <param name="hours">The number of hours.</param>
+        /// <returns>A <see cref="Duration"/> representing the given number of hours.</returns>
+        [Obsolete("Use FromHours(int) for compatibility with 2.0.")]
         public static Duration FromHours(long hours)
         {
             return OneHour * hours;
