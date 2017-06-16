@@ -24,6 +24,8 @@ namespace ReleaseDiffGenerator
             var oldMemberUids = new HashSet<string>(oldRelease.MembersByUid.Keys);
             var newMemberUids = new HashSet<string>(newRelease.MembersByUid.Keys);
 
+            // TODO: Newly-obsoleted members?
+
             var addedMembers = newMemberUids
                 .Except(oldMemberUids)
                 .OrderBy(uid => uid)
@@ -93,7 +95,7 @@ namespace ReleaseDiffGenerator
                     writer.WriteLine();
                     foreach (var member in group)
                     {
-                        WriteBullet(writer, member, added);
+                        WriteBullet(writer, member, added, true);
                     }
                 }
             }
@@ -112,19 +114,23 @@ namespace ReleaseDiffGenerator
             writer.WriteLine();
             foreach (var member in kindMembers)
             {
-                WriteBullet(writer, member, link);
+                // We generate the "(obsolete)" part even for new members... unlikely, but possible.
+                // (We haven't made IsoDayOfWeekExtensions.ToIsoDayOfWeek obsolete in 2.0.x, but
+                // it's possible...)
+                WriteBullet(writer, member, link, true);
             }
         }
 
-        static void WriteBullet(TextWriter writer, DocfxMember member, bool link)
+        static void WriteBullet(TextWriter writer, DocfxMember member, bool link, bool checkObsolete)
         {
+            string obsolete = checkObsolete && member.Obsolete ? " (obsolete)" : "";
             if (link)
             {
-                writer.WriteLine($"- [`{member.DisplayName}`](xref:{WebUtility.UrlEncode(member.Uid)})");
+                writer.WriteLine($"- [`{member.DisplayName}`](xref:{WebUtility.UrlEncode(member.Uid)}){obsolete}");
             }
             else
             {
-                writer.WriteLine($"- `{member.DisplayName}`");
+                writer.WriteLine($"- `{member.DisplayName}`{obsolete}");
             }
         }
     }
