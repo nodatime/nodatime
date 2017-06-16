@@ -70,7 +70,7 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(gregorianDayOfMarch, gregorian.Day);
         }
 
-#if DEBUG && !PCL
+#if DEBUG && !NETCOREAPP1_0
         // Only a test to make it easy to generate the data.
         [Test, Explicit]
         public void GenerateData()

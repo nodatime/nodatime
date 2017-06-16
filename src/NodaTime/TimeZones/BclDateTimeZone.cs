@@ -6,7 +6,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Extensions;
-#if !PCL
+#if !NETSTANDARD1_3
 using System;
 using System.Collections.Generic;
 using NodaTime.Utility;

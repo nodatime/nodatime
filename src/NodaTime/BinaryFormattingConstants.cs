@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NodaTime
 {
-#if !PCL
+#if !NETSTANDARD1_3
     /// <summary>
     /// Names used by binary formatting, to make it easier to avoid any collisions.
     /// </summary>

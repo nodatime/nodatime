@@ -28,11 +28,11 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !PCL
+#if !NETSTANDARD1_3
     [Serializable]
 #endif
     public struct Interval : IEquatable<Interval>, IXmlSerializable
-#if !PCL
+#if !NETSTANDARD1_3
         , ISerializable
 #endif
     {
@@ -252,7 +252,7 @@ namespace NodaTime
         }
         #endregion
 
-#if !PCL
+#if !NETSTANDARD1_3
         #region Binary serialization
         /// <summary>
         /// Private constructor only present for serialization.

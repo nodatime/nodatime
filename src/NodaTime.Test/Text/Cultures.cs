@@ -19,7 +19,7 @@ namespace NodaTime.Test.Text
         // CultureInfo.GetCultures doesn't exist, so we have a big long list of cultures, generated against
         // .NET 4.6.
         internal static readonly IEnumerable<CultureInfo> AllCultures =
-#if PCL
+#if NETCOREAPP1_0
             new[] {
                 "aa-DJ", "aa-ER", "aa-ET", "af-NA", "af-ZA", "agq-CM", "ak-GH", "am-ET",
                 "ar-001", "ar-AE", "ar-BH", "ar-DJ", "ar-DZ", "ar-EG", "ar-ER", "ar-IL",
@@ -136,7 +136,7 @@ namespace NodaTime.Test.Text
         // We need a culture with a non-colon time separator. On .NET Core we can't specify this explicitly,
         // so we just rely on Finland doing the right thing. On platforms where we can set this explicitly,
         // we do so - still starting with Finland for consistency.
-#if PCL
+#if NETCOREAPP1_0
         internal static readonly CultureInfo DotTimeSeparator = CultureInfo.ReadOnly(new CultureInfo("fi-FI"));
 #else
         internal static readonly CultureInfo DotTimeSeparator = CultureInfo.ReadOnly(new CultureInfo("fi-FI") {
@@ -155,7 +155,7 @@ namespace NodaTime.Test.Text
         /// </summary>
         internal static CultureInfo GetCultureInfo(string name)
         {
-#if PCL
+#if NETCOREAPP1_0
             return CultureInfo.ReadOnly(new CultureInfo(name));
 #else
             return CultureInfo.GetCultureInfo(name);

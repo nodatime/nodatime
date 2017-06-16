@@ -271,7 +271,7 @@ namespace NodaTime.Test.TimeZones
                 lastIncorrectDate, lastIncorrectBclOffset, lastIncorrectTzdbOffset);
         }
 
-#if !PCL // CreateCustomTimeZone isn't available :(
+#if !NETCOREAPP1_0 // CreateCustomTimeZone isn't available :(
         [Test]
         [TestCase("Pacific Standard Time", 0, "America/Los_Angeles", Description = "Windows ID")]
         [TestCase("America/Los_Angeles", 0, "America/Los_Angeles", Description = "TZDB ID")]

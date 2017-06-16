@@ -13,7 +13,7 @@ using System.Linq;
 using System.Reflection;
 using NodaTime.Annotations;
 
-#if !PCL
+#if !NETCOREAPP1_0
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
 
@@ -496,9 +496,9 @@ namespace NodaTime.Test
         /// </remarks>
         internal static void AssertBinaryRoundtrip<T>(T value)
         {
-            // Can't use [Conditional("!PCL")] as ConditionalAttribute is only positive.
+            // Can't use [Conditional("!NETSTANDARD1_3")] as ConditionalAttribute is only positive.
             // This approach seems to confuse the build system less, too.
-#if !PCL
+#if !NETCOREAPP1_0
             var stream = new MemoryStream();
             new BinaryFormatter().Serialize(stream, value);
 

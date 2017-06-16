@@ -6,7 +6,7 @@ using System;
 using NodaTime.Text;
 using NUnit.Framework;
 
-#if !PCL
+#if !NETCOREAPP1_0
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 #endif

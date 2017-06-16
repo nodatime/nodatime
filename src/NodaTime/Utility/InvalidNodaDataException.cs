@@ -19,7 +19,7 @@ namespace NodaTime.Utility
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
-#if !PCL
+#if !NETSTANDARD1_3
     [Serializable]
 #endif
     [Mutable] // Exception itself is mutable
