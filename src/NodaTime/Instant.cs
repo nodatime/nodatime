@@ -66,6 +66,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="ticks">The number of ticks since the Unix epoch. Negative values represent instants before the
         /// Unix epoch.</param>
+        [Obsolete("Use FromUnixTimeTicks for compatibility with 2.0.")]
         public Instant(long ticks)
         {
             this.ticks = ticks;
@@ -77,7 +78,17 @@ namespace NodaTime
         /// <remarks>
         /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond.
         /// </remarks>
+        [Obsolete("Use ToUnixTimeTicks for compatibility with 2.0")]
         public long Ticks { get { return ticks; } }
+
+        /// <summary>
+        /// The number of ticks since the Unix epoch. Negative values represent instants before the Unix epoch.
+        /// </summary>
+        /// <remarks>
+        /// A tick is equal to 100 nanoseconds. There are 10,000 ticks in a millisecond.
+        /// </remarks>
+        /// <returns>The number of ticks since the Unix epoch.</returns>
+        [Pure] public long ToUnixTimeTicks() => Ticks;
 
         #region IComparable<Instant> and IComparable Members
         /// <summary>
@@ -520,6 +531,16 @@ namespace NodaTime
         /// <param name="seconds">Number of seconds since the Unix epoch. May be negative (for instants before the epoch).</param>
         /// <returns>An <see cref="Instant"/> at exactly the given number of seconds since the Unix epoch.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
+        public static Instant FromUnixTimeSeconds(long seconds) => FromSecondsSinceUnixEpoch(seconds);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Instant" /> struct based
+        /// on a number of seconds since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
+        /// </summary>
+        /// <param name="seconds">Number of seconds since the Unix epoch. May be negative (for instants before the epoch).</param>
+        /// <returns>An <see cref="Instant"/> at exactly the given number of seconds since the Unix epoch.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
+        [Obsolete("Use FromUnixTimeSeconds for compatibility with 2.0.")]
         public static Instant FromSecondsSinceUnixEpoch(long seconds)
         {
             Preconditions.CheckArgumentRange("seconds", seconds, long.MinValue / NodaConstants.TicksPerSecond,
@@ -534,6 +555,16 @@ namespace NodaTime
         /// <param name="milliseconds">Number of milliseconds since the Unix epoch. May be negative (for instants before the epoch).</param>
         /// <returns>An <see cref="Instant"/> at exactly the given number of milliseconds since the Unix epoch.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
+        public static Instant FromUnixTimeMilliseconds(long milliseconds) => FromMillisecondsSinceUnixEpoch(milliseconds);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Instant" /> struct based
+        /// on a number of milliseconds since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
+        /// </summary>
+        /// <param name="milliseconds">Number of milliseconds since the Unix epoch. May be negative (for instants before the epoch).</param>
+        /// <returns>An <see cref="Instant"/> at exactly the given number of milliseconds since the Unix epoch.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The constructed instant would be out of the range representable in Noda Time.</exception>
+        [Obsolete("Use FromUnixTimeMilliseconds for compatibility with 2.0.")]
         public static Instant FromMillisecondsSinceUnixEpoch(long milliseconds)
         {
             Preconditions.CheckArgumentRange("milliseconds", milliseconds, long.MinValue / NodaConstants.TicksPerMillisecond,
@@ -545,10 +576,19 @@ namespace NodaTime
         /// Initializes a new instance of the <see cref="Instant" /> struct based
         /// on a number of ticks since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
         /// </summary>
+        /// <returns>An <see cref="Instant"/> at exactly the given number of ticks since the Unix epoch.</returns>
+        /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
+        public static Instant FromUnixTimeTicks(long ticks) => FromTicksSinceUnixEpoch(ticks);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Instant" /> struct based
+        /// on a number of ticks since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
+        /// </summary>
         /// <remarks>This is equivalent to calling the constructor directly, but indicates
         /// intent more explicitly.</remarks>
         /// <returns>An <see cref="Instant"/> at exactly the given number of ticks since the Unix epoch.</returns>
         /// <param name="ticks">Number of ticks since the Unix epoch. May be negative (for instants before the epoch).</param>
+        [Obsolete("Use FromUnixTimeTicks for compatibility with 2.0.")]
         public static Instant FromTicksSinceUnixEpoch(long ticks)
         {
             return new Instant(ticks);
