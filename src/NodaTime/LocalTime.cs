@@ -126,6 +126,20 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within the millisecond.</param>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid time.</exception>
         /// <returns>The resulting time.</returns>
+        public static LocalTime FromHourMinuteSecondMillisecondTick(int hour, int minute, int second, int millisecond, int tickWithinMillisecond) =>
+            new LocalTime(hour, minute, second, millisecond, tickWithinMillisecond);
+
+        /// <summary>
+        /// Creates a local time at the given hour, minute, second, millisecond and tick within millisecond.
+        /// </summary>
+        /// <param name="hour">The hour of day.</param>
+        /// <param name="minute">The minute of the hour.</param>
+        /// <param name="second">The second of the minute.</param>
+        /// <param name="millisecond">The millisecond of the second.</param>
+        /// <param name="tickWithinMillisecond">The tick within the millisecond.</param>
+        /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid time.</exception>
+        /// <returns>The resulting time.</returns>
+        [Obsolete("Use FromHourMinuteSecondMillisecondTick for compatibility with 2.0.x")]
         public LocalTime(int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
         {
             Preconditions.CheckArgumentRange("hour", hour, 0, NodaConstants.HoursPerStandardDay - 1);
