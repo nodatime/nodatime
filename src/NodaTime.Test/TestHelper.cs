@@ -491,8 +491,8 @@ namespace NodaTime.Test
         /// returns an equal value.
         /// </summary>
         /// <remarks>
-        /// This method is effectively ignored in the PCL tests - that means all the binary serialization tests 
-        /// do nothing on the PCL, but it's simpler than conditionalizing each one of them.
+        /// This method is effectively ignored in the .NET Core tests - that means all the binary serialization tests 
+        /// do nothing on .NET Core, but it's simpler than conditionalizing each one of them.
         /// </remarks>
         internal static void AssertBinaryRoundtrip<T>(T value)
         {

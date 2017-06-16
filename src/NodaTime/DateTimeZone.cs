@@ -68,7 +68,7 @@ namespace NodaTime
     /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>. The latter will always
     /// succeed, but has access only to that information available via the .NET time zone; the former may contain more
     /// complete data, but may (in uncommon cases) fail to find a matching <see cref="DateTimeZone"/>.
-    /// Note that <c>BclDateTimeZone</c> is not available on the PCL build of Noda Time, so this fallback strategy can
+    /// Note that <c>BclDateTimeZone</c> is not available on the .NET Standard 1.3 build of Noda Time, so this fallback strategy can
     /// only be used with the desktop version.
     /// </para>
     /// <para>

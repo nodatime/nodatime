@@ -7,8 +7,9 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 
 #if !NETSTANDARD1_3
-// Although AllowPartiallyTrustedCallers is available in some flavours of the PCL,
-// it's not available in all of the ones we're currently targeting. See issue 268 for details.
+// We *could* support this in netstandard, but we never did with the PCL
+// build, and we haven't had any reports of problems. We'll leave it in for
+// net45 for backwards compatibility, and can reintroduce it if necessary.
 [assembly: System.Security.AllowPartiallyTrustedCallers]
 #endif
 

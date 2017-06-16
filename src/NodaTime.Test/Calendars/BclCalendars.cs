@@ -8,12 +8,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace NodaTime.Test.Calendars
 {
     /// <summary>
-    /// In the PCL, we can't access specific subclasses of System.Globalization.Calendar.
+    /// In netstandard, we can't access specific subclasses of System.Globalization.Calendar.
     /// We can fetch them from cultures though... and maybe use reflection.
     /// </summary>
     public class BclCalendars
@@ -67,7 +66,7 @@ namespace NodaTime.Test.Calendars
         internal static CalendarSystem CalendarSystemForCalendar(Calendar bcl)
         {
             // Yes, this is horrible... but the specific calendars aren't available to test
-            // against in the PCL
+            // against in netstandard
             switch (bcl.GetType().Name)
             {
                 case "GregorianCalendar": return CalendarSystem.Iso;
