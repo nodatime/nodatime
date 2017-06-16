@@ -29,15 +29,29 @@ namespace NodaTime
         public const long TicksPerHour = TicksPerMinute * MinutesPerHour;
 
         /// <summary>
+        /// A constant for the number of ticks in a 24-hour day.
+        /// The value of this constant is 864,000,000,000.
+        /// </summary>
+        public const long TicksPerDay = TicksPerStandardDay;
+
+        /// <summary>
         /// A constant for the number of ticks in a standard 24-hour day.
         /// The value of this constant is 864,000,000,000.
         /// </summary>
+        [Obsolete("Use TicksPerDay for compatibility with 2.0.x")]
         public const long TicksPerStandardDay = TicksPerHour * HoursPerStandardDay;
+
+        /// <summary>
+        /// A constant for the number of ticks in a week of seven 24-hour days.
+        /// The value of this constant is 6,048,000,000,000.
+        /// </summary>
+        public const long TicksPerWeek = TicksPerStandardWeek;
 
         /// <summary>
         /// A constant for the number of ticks in a standard week of seven 24-hour days.
         /// The value of this constant is 6,048,000,000,000.
         /// </summary>
+        [Obsolete("Use TicksPerWeek for compatibility with 2.0.x")]
         public const long TicksPerStandardWeek = TicksPerStandardDay * DaysPerStandardWeek;
 
         /// <summary>
@@ -56,14 +70,26 @@ namespace NodaTime
         /// </summary>
         public const int MillisecondsPerHour = MillisecondsPerMinute * MinutesPerHour;
         /// <summary>
+        /// A constant for the number of milliseconds per 24-hour day.
+        /// The value of this constant is 86,400,000.
+        /// </summary>
+        public const int MillisecondsPerDay = MillisecondsPerStandardDay;
+        /// <summary>
         /// A constant for the number of milliseconds per standard 24-hour day.
         /// The value of this constant is 86,400,000.
         /// </summary>
+        [Obsolete("Use MillisecondsPerDay for compatibility with 2.0.x")]
         public const int MillisecondsPerStandardDay = MillisecondsPerHour * HoursPerStandardDay;
         /// <summary>
         /// A constant for the number of milliseconds per standard week of seven 24-hour days.
         /// The value of this constant is 604,800,000.
         /// </summary>
+        public const int MillisecondsPerWeek = MillisecondsPerStandardWeek;
+        /// <summary>
+        /// A constant for the number of milliseconds per standard week of seven 24-hour days.
+        /// The value of this constant is 604,800,000.
+        /// </summary>
+        [Obsolete("Use MillisecondsPerWeek for compatibility with 2.0.x")]
         public const int MillisecondsPerStandardWeek = MillisecondsPerStandardDay * DaysPerStandardWeek;
 
         /// <summary>
@@ -77,12 +103,18 @@ namespace NodaTime
         /// </summary>
         public const int SecondsPerHour = SecondsPerMinute * MinutesPerHour;
         /// <summary>
+        /// A constant for the number of seconds per 24-hour day.
+        /// The value of this constant is 86,400.
+        /// </summary>
+        public const int SecondsPerDay = SecondsPerStandardDay;
+        /// <summary>
         /// A constant for the number of seconds per standard 24-hour day.
         /// The value of this constant is 86,400.
         /// </summary>
+        [Obsolete("Use SecondsPerDay for compatibility with 2.0.x")]
         public const int SecondsPerStandardDay = SecondsPerHour * HoursPerStandardDay;
         /// <summary>
-        /// A constant for the number of seconds per standard week of seven 24-hour days.
+        /// A constant for the number of seconds per week of seven 24-hour days.
         /// The value of this constant is 604,800.
         /// </summary>
         public const int SecondsPerWeek = SecondsPerStandardDay * DaysPerStandardWeek;
@@ -93,32 +125,64 @@ namespace NodaTime
         /// </summary>
         public const int MinutesPerHour = 60;
         /// <summary>
+        /// A constant for the number of minutes per 24-hour day.
+        /// The value of this constant is 1,440.
+        /// </summary>
+        public const int MinutesPerDay = MinutesPerStandardDay;
+        /// <summary>
         /// A constant for the number of minutes per standard 24-hour day.
         /// The value of this constant is 1,440.
         /// </summary>
+        [Obsolete("Use MinutesPerDay for compatibility with 2.0.x")]
         public const int MinutesPerStandardDay = MinutesPerHour * HoursPerStandardDay;
+        /// <summary>
+        /// A constant for the number of minutes per week of seven 24-hour days.
+        /// The value of this constant is 10,080.
+        /// </summary>
+        public const int MinutesPerWeek = MinutesPerStandardWeek;
         /// <summary>
         /// A constant for the number of minutes per standard week of seven 24-hour days.
         /// The value of this constant is 10,080.
         /// </summary>
+        [Obsolete("Use MinutesPerWeek for compatibility with 2.0.x")]
         public const int MinutesPerStandardWeek = MinutesPerStandardDay * DaysPerStandardWeek;
 
+        /// <summary>
+        /// A constant for the number of hours in a day. Note that the number of hours
+        /// in a day can vary due to daylight saving effects.
+        /// The value of this constant is 24.
+        /// </summary>
+        public const int HoursPerDay = HoursPerStandardDay;
         /// <summary>
         /// A constant for the number of hours in a standard day. Note that the number of hours
         /// in a day can vary due to daylight saving effects.
         /// The value of this constant is 24.
         /// </summary>
+        [Obsolete("Use HoursPerDay for compatibility with 2.0.x")]
         public const int HoursPerStandardDay = 24;
+        /// <summary>
+        /// A constant for the number of hours in a week of seven 24-hour days.
+        /// The value of this constant is 168.
+        /// </summary>
+        public const int HoursPerWeek = HoursPerStandardWeek;
         /// <summary>
         /// A constant for the number of hours in a standard week of seven 24-hour days.
         /// The value of this constant is 168.
         /// </summary>
+        [Obsolete("Use HoursPerWeek for compatibility with 2.0.x")]
         public const int HoursPerStandardWeek = HoursPerStandardDay * DaysPerStandardWeek;
+
+        /// <summary>
+        /// Number of days in a Gregorian week.
+        /// The value of this constant is 7.
+        /// </summary>
+        public const int DaysPerWeek = DaysPerStandardWeek;
 
         /// <summary>
         /// Number of days in a standard Gregorian week.
         /// The value of this constant is 7.
         /// </summary>
+        [Obsolete("Use DaysPerWeek for compatibility with 2.0.x")]
         public const int DaysPerStandardWeek = 7;
 
         /// <summary>
