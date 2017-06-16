@@ -23,8 +23,4 @@
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
   </ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <DefineConstants>$(DefineConstants);PCL</DefineConstants>
-  </PropertyGroup>
-
 </Project>

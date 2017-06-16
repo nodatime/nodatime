@@ -418,7 +418,7 @@ namespace NodaTime.Test
             TestHelper.AssertXmlRoundtrip(value, "<value zone=\"America/New_York\">2013-04-12T17:53:23-04</value>");
         }
 
-#if !PCL
+#if !NETCOREAPP1_0
         [Test]
         public void XmlSerialization_Bcl()
         {

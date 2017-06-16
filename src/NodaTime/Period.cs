@@ -43,12 +43,12 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !PCL
+#if !NETSTANDARD1_3
     [Serializable]
 #endif
     [Immutable]
     public sealed class Period : IEquatable<Period>
-#if !PCL
+#if !NETSTANDARD1_3
         , ISerializable
 #endif
     {
@@ -868,7 +868,7 @@ namespace NodaTime
             Nanoseconds == other.Nanoseconds;
         #endregion
 
-#if !PCL
+#if !NETSTANDARD1_3
         #region Binary serialization
         /// <summary>
         /// Private constructor only present for serialization.

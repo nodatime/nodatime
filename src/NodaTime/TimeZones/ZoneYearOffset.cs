@@ -138,7 +138,7 @@ namespace NodaTime.TimeZones
             if (failed)
             {
                 string range = allowNegated ? $"[{minimum}, {maximum}] or [{-maximum}, {-minimum}]" : $"[{minimum}, {maximum}]";
-#if PCL
+#if NETSTANDARD1_3
                 throw new ArgumentOutOfRangeException(name, $"{name} is not in the valid range: {range}");
 #else
                 throw new ArgumentOutOfRangeException(name, value, $"{name} is not in the valid range: {range}");

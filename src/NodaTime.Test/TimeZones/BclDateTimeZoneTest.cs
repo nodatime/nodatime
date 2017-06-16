@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-#if !PCL
+#if !NETCOREAPP1_0
 
 using System;
 using System.Collections.Generic;

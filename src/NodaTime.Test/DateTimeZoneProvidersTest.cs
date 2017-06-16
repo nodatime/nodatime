@@ -26,7 +26,7 @@ namespace NodaTime.Test
             Assert.IsTrue(allZones.Count > 50);
         }
 
-#if !PCL
+#if !NETCOREAPP1_0
         [Test]
         public void BclProviderUsesTimeZoneInfoSource()
         {

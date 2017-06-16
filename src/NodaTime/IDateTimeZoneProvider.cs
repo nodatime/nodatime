@@ -47,7 +47,7 @@ namespace NodaTime
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
         [NotNull] ReadOnlyCollection<string> Ids { get; }
 
-#if PCL
+#if NETSTANDARD1_3
         /// <summary>
         /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
         /// available.
