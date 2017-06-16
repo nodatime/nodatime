@@ -11,7 +11,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// Extra support required for the PCL, which has a somewhat anaemic
     /// version of TimeZoneInfo.
     /// </summary>
-    internal static class PclSupport
+    internal static class NameIdMappingSupport
     {
         /// <summary>
         /// Hard-coded map from StandardName to Id, where these are known to differ.
