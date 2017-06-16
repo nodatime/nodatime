@@ -910,7 +910,6 @@ namespace NodaTime
         /// <value>An Islamic calendar system equivalent to the one used by the BCL.</value>
         [NotNull] public static CalendarSystem IslamicBcl => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
 
-#pragma warning disable CS0618 // Type or member is obsolete
         /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
         /// BCL <code>PersianCalendar</code> before .NET 4.6, and the sole Persian calendar in Noda Time 1.3.
@@ -921,7 +920,6 @@ namespace NodaTime
         /// </remarks>
         /// <value>A Persian calendar system using a simple 33-year leap cycle.</value>
         [NotNull] public static CalendarSystem PersianSimple => GetPersianCalendar();
-#pragma warning restore CS0618 // Type or member is obsolete
 
         /// <summary>
         /// Returns a Hebrew calendar system using the civil month numbering,

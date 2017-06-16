@@ -18,8 +18,6 @@ namespace NodaTime
         /// <see cref="IClock.Now"/> property.</remarks>
         /// <returns>The current instant on the time line according to this clock.</returns>
         public static Instant GetCurrentInstant(this IClock clock) =>
-#pragma warning disable CS0618 // Type or member is obsolete
             Preconditions.CheckNotNull(clock, nameof(clock)).Now;
-#pragma warning restore CS0618 // Type or member is obsolete
     }
 }

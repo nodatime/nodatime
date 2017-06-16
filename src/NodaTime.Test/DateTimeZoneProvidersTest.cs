@@ -22,9 +22,7 @@ namespace NodaTime.Test
         [Test]
         public void DefaultProviderIsTzdb()
         {
-#pragma warning disable 0618
             Assert.AreSame(DateTimeZoneProviders.Tzdb, DateTimeZoneProviders.Default);
-#pragma warning restore 0618
         }
 
         [Test]
