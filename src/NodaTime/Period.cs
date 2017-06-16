@@ -152,6 +152,15 @@ namespace NodaTime
         /// <param name="years">The number of years in the new period</param>
         /// <returns>A period consisting of the given number of years.</returns>
         [NotNull]
+        public static Period FromYears(int years) => FromYears((long) years);
+
+        /// <summary>
+        /// Creates a period representing the specified number of years.
+        /// </summary>
+        /// <param name="years">The number of years in the new period</param>
+        /// <returns>A period consisting of the given number of years.</returns>
+        [NotNull]
+        [Obsolete("Use FromYears(Int32) for compatibility with 2.0")]
         public static Period FromYears(long years)
         {
             return new Period(PeriodUnits.Years, years);
@@ -162,6 +171,14 @@ namespace NodaTime
         /// </summary>
         /// <param name="weeks">The number of weeks in the new period</param>
         /// <returns>A period consisting of the given number of weeks.</returns>
+        public static Period FromWeeks(int weeks) => FromWeeks((long) weeks);
+
+        /// <summary>
+        /// Creates a period representing the specified number of weeks.
+        /// </summary>
+        /// <param name="weeks">The number of weeks in the new period</param>
+        /// <returns>A period consisting of the given number of weeks.</returns>
+        [Obsolete("Use FromWeeks(Int32) for compatibility with 2.0")]
         public static Period FromWeeks(long weeks)
         {
             return new Period(PeriodUnits.Weeks, weeks);
@@ -172,6 +189,14 @@ namespace NodaTime
         /// </summary>
         /// <param name="months">The number of months in the new period</param>
         /// <returns>A period consisting of the given number of months.</returns>
+        public static Period FromMonths(int months) => FromMonths((long) months);
+
+        /// <summary>
+        /// Creates a period representing the specified number of months.
+        /// </summary>
+        /// <param name="months">The number of months in the new period</param>
+        /// <returns>A period consisting of the given number of months.</returns>
+        [Obsolete("Use FromMonths(Int32) for compatibility with 2.0")]
         public static Period FromMonths(long months)
         {
             return new Period(PeriodUnits.Months, months);
@@ -182,6 +207,14 @@ namespace NodaTime
         /// </summary>
         /// <param name="days">The number of days in the new period</param>
         /// <returns>A period consisting of the given number of days.</returns>
+        public static Period FromDays(int days) => FromDays((long) days);
+
+        /// <summary>
+        /// Creates a period representing the specified number of days.
+        /// </summary>
+        /// <param name="days">The number of days in the new period</param>
+        /// <returns>A period consisting of the given number of days.</returns>
+        [Obsolete("Use FromDays(Int32) for compatibility with 2.0")]
         public static Period FromDays(long days)
         {
             return new Period(PeriodUnits.Days, days);
