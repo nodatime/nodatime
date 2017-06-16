@@ -7,6 +7,7 @@ using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.Text
 {
@@ -26,6 +27,14 @@ namespace NodaTime.Text
         /// (These digits are omitted when unnecessary.)
         /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFF".
         /// </summary>
+        public static LocalTimePattern ExtendedIso => ExtendedIsoPattern;
+
+        /// <summary>
+        /// Returns an invariant local time pattern which is ISO-8601 compatible, providing up to 7 decimal places.
+        /// (These digits are omitted when unnecessary.)
+        /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFF".
+        /// </summary>
+        [Obsolete("Use ExtendedIso for compatibility with 2.0")]
         public static LocalTimePattern ExtendedIsoPattern { get { return Patterns.ExtendedIsoPatternImpl; } }
 
         private const string DefaultFormatPattern = "T"; // Long

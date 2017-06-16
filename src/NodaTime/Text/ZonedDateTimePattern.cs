@@ -8,6 +8,7 @@ using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.Text
 {
@@ -34,6 +35,19 @@ namespace NodaTime.Text
         /// provider is included. Call <see cref="WithZoneProvider"/> on the value of this property to obtain a
         /// pattern which can be used for parsing.
         /// </remarks>
+        public static ZonedDateTimePattern GeneralFormatOnlyIso => GeneralFormatOnlyIsoPattern;
+
+        /// <summary>
+        /// Returns an zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
+        /// It corresponds to a custom pattern of "yyyy'-'MM'-'dd'T'HH':'mm':'ss z '('o&lt;g&gt;')'" and is available
+        /// as the 'G' standard pattern.
+        /// </summary>
+        /// <remarks>
+        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing as no time zone
+        /// provider is included. Call <see cref="WithZoneProvider"/> on the value of this property to obtain a
+        /// pattern which can be used for parsing.
+        /// </remarks>
+        [Obsolete("Use GeneralFormatOnlyIso for compatibility with 2.0")]
         public static ZonedDateTimePattern GeneralFormatOnlyIsoPattern { get { return Patterns.GeneralFormatOnlyPatternImpl; } }
 
         /// <summary>
@@ -46,6 +60,19 @@ namespace NodaTime.Text
         /// provider is included. Call <see cref="WithZoneProvider"/> on the value of this property to obtain a
         /// pattern which can be used for parsing.
         /// </remarks>
+        public static ZonedDateTimePattern ExtendedFormatOnlyIso => ExtendedFormatOnlyIsoPattern;
+
+        /// <summary>
+        /// Returns an invariant zoned date/time pattern based on ISO-8601 (down to the tick) including offset from UTC and zone ID.
+        /// It corresponds to a custom pattern of "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z '('o&lt;g&gt;')'" and is available
+        /// as the 'F' standard pattern.
+        /// </summary>
+        /// <remarks>
+        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing as no time zone
+        /// provider is included. Call <see cref="WithZoneProvider"/> on the value of this property to obtain a
+        /// pattern which can be used for parsing.
+        /// </remarks>
+        [Obsolete("Use ExtendedFormatOnlyIso for compatibility with 2.0")]
         public static ZonedDateTimePattern ExtendedFormatOnlyIsoPattern { get { return Patterns.ExtendedFormatOnlyPatternImpl; } }
 
         private readonly string patternText;

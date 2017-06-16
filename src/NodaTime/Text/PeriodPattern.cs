@@ -6,6 +6,7 @@ using System.Text;
 using NodaTime.Annotations;
 using NodaTime.Properties;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.Text
 {
@@ -23,6 +24,16 @@ namespace NodaTime.Text
         /// Each element may also be negative, independently of other elements. This pattern round-trips its
         /// values: a parse/format cycle will produce an identical period, including units.
         /// </summary>
+        public static PeriodPattern Roundtrip => RoundtripPattern;
+
+        /// <summary>
+        /// Pattern which uses the normal ISO format for all the supported ISO
+        /// fields, but extends the time part with "s" for milliseconds and "t" for ticks.
+        /// No normalization is carried out, and a period may contain weeks as well as years, months and days.
+        /// Each element may also be negative, independently of other elements. This pattern round-trips its
+        /// values: a parse/format cycle will produce an identical period, including units.
+        /// </summary>
+        [Obsolete("Use Roundtrip for compatibility with 2.0")]
         public static readonly PeriodPattern RoundtripPattern = new PeriodPattern(new RoundtripPatternImpl());
 
         /// <summary>
@@ -37,6 +48,21 @@ namespace NodaTime.Text
         /// combined weeks/days/time portions are considered. Such a period could never
         /// be useful anyway, however.
         /// </remarks>
+        public static PeriodPattern NormalizingIso => NormalizingIsoPattern;
+
+        /// <summary>
+        /// A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.
+        /// Weeks are added to the number of days (after multiplying by 7). Time units are normalized
+        /// (extending into days where necessary), and fractions of seconds are represented within the
+        /// seconds part. Unlike ISO-8601, which pattern allows for negative values within a period.
+        /// </summary>
+        /// <remarks>
+        /// Note that normalizing the period when formatting will cause an <see cref="System.OverflowException"/>
+        /// if the period contains more than <see cref="System.Int64.MaxValue"/> ticks when the
+        /// combined weeks/days/time portions are considered. Such a period could never
+        /// be useful anyway, however.
+        /// </remarks>
+        [Obsolete("Use NormalizingIso for compatibility with 2.0")]
         public static readonly PeriodPattern NormalizingIsoPattern = new PeriodPattern(new NormalizingIsoPatternImpl());
 
         private readonly IPattern<Period> pattern;
