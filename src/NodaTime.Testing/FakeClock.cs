@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+
 namespace NodaTime.Testing
 {
     /// <summary>
@@ -134,6 +136,14 @@ namespace NodaTime.Testing
         /// </summary>
         /// <param name="hours">The number of hours to advance the clock by (or if negative, the number to move it
         /// back by).</param>
+        public void AdvanceHours(int hours) => AdvanceHours((long) hours);
+
+        /// <summary>
+        /// Advances the clock by the given number of hours.
+        /// </summary>
+        /// <param name="hours">The number of hours to advance the clock by (or if negative, the number to move it
+        /// back by).</param>
+        [Obsolete("Use AdvanceHours(Int32) for compatibility with 2.0")]
         public void AdvanceHours(long hours)
         {
             Advance(Duration.FromHours(hours));
@@ -144,6 +154,14 @@ namespace NodaTime.Testing
         /// </summary>
         /// <param name="days">The number of days to advance the clock by (or if negative, the number to move it
         /// back by).</param>
+        public void AdvanceDays(int days) => AdvanceDays((long) days);
+
+        /// <summary>
+        /// Advances the clock by the given number of standard (24-hour) days.
+        /// </summary>
+        /// <param name="days">The number of days to advance the clock by (or if negative, the number to move it
+        /// back by).</param>
+        [Obsolete("Use AdvanceDays(Int32) for compatibility with 2.0")]
         public void AdvanceDays(long days)
         {
             Advance(Duration.FromStandardDays(days));
