@@ -30,6 +30,9 @@ namespace DocfxYamlLoader
         public string FullName { get; set; }
         public DocfxMember ParentMember { get; set; }
         public TypeKind Type { get; set; }
+        public List<DocfxAttribute> Attributes { get; set; }
+
+        public bool Obsolete => Attributes?.Any(attr => attr.Type == "System.ObsoleteAttribute") ?? false;
 
         // TODO: This is far from elegant...
         public string DisplayName
@@ -70,6 +73,12 @@ namespace DocfxYamlLoader
             Field,
             Namespace,
             Struct
+        }
+
+        public class DocfxAttribute
+        {
+            public string Type { get; set; }
+            // Add extra properties if necessary...
         }
     }
 }
