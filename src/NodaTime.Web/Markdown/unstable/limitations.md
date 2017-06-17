@@ -15,25 +15,18 @@ scope, but we don't support it yet, then *please* either raise an
 issue or post on the
 [mailing list](https://groups.google.com/group/noda-time).
 
-Portable Class Library (PCL) differences
-========================================
+.NET Standard vs Desktop difference
+===================================
 
-The .NET API provided for portable class libraries is more limited than the
+The API in .NET Standard libraries is more limited than the
 full desktop version. Currently this provides relatively few challenges for
-Noda Time, with one significant exception: `TimeZoneInfo`. While we are able
-to detect the local time zone's TZDB equivalent through `TimeZoneInfo.StandardName`
-instead of its ID (as we would do normally), we can't fetch arbitrary time zones
-by ID, nor can we ask for the adjustment rules for a particular time zone.
+Noda Time, with one significant exception: `TimeZoneInfo`. We can't fetch 
+arbitrary time zones by ID, nor can we ask for the adjustment rules for a particular
+time zone.
 
 The upshot of this is that we can't currently support
 [`BclDateTimeZone`](noda-type://NodaTime.TimeZones.BclDateTimeZone)
-on the PCL version of Noda Time.
-
-Additionally, the PCL doesn't support .NET resource files as fully as the desktop
-framework; in particular, it doesn't allow you to retrieve non-string resources. This
-has provoked a change from the previous resource-based format used for TZDB, to a
-stream-based format, which is now the default. For most users this will be a no-op
-change, but it does affect how you [build and use a custom version of TZDB](tzdb).
+on the `netstandard1.3` version of Noda Time.
 
 Fuller text support
 ===================

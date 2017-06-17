@@ -20,33 +20,20 @@ instructions on building Noda Time from source.
 System requirements
 -------------------
 
-From release 1.1 onwards, there are two builds of Noda Time: the desktop version and the Portable Class Library version.
+Noda Time 2.0 (and onwards) supports the Target Framework Monikers of `netstandard1.3` and `net45`.
 
-The desktop version requires .NET 3.5 (client profile). This build also supports Mono, [with some caveats](mono).
+This means it should work for any desktop framework application targeting .NET 4.5 or later, as well as .NET Core and related frameworks.
+It does *not* support Windows 8 store apps, or Windows Phone (Silverlight or not) 8 apps. It *does* support UWP for Windows 10. See
+the [.NET Standard Versions](https://github.com/dotnet/standard/blob/master/docs/versions.md) documentation for more details.
 
-The PCL build is configured to support:
-
-- .NET Framework 4 and higher
-- Silverlight 4 and higher
-- Windows Phone 7 and higher
-- .NET for Windows Store apps
-
-The PCL build also appears to work with Xamarin.iOS and Xamarin.Android apps, but that is implicit in the set of configured targets. This has not been extensively tested, although we do not particularly expect to see significantly different issues in Xamarin applications to those seen under Mono in general.
-
-Noda Time does *not* support XBox 360 or Silverlight 3, and it's unlikely that we'd ever want to introduce support
-for these. (It's more likely that over time, we'll drop support for Silverlight - but not imminently, of course.)
-See the [limitations](limitations) page for differences between the PCL build and the desktop build.
-
-The NodaTime.Serialization.JsonNet assembly is built and tested against Json.NET version 4.5.11. It's likely that any version
-of Json.NET from 4.5.0 onwards will work with Noda Time, but we'd recommend using at least 4.5.11. As far as we know, there
-have been no breaking changes in Json.NET after that which affect Noda Time, but semantic versioning rules suggest that it
-would at least be *possible* for later major versions to cause issues. If you discover any such problem, please report it to the
-[Noda Time mailing list](https://groups.google.com/group/noda-time).
+We have not tested Noda Time 2.0 against Xamarin or Unity; recent versions of Xamarin support .NET Standard so should be fine;
+Unity targeting .NET 2.0 won't work, but the 2017-onwards support for Mono 4.8 *may* just work. (Please report any problems you
+have and we can try to look into them.)
 
 Package contents and getting started
 ------------------------------------
 
-Everything you need to *use* Noda Time is contained in the NodaTime package. The NodaTime.Testing package is designed
+Everything you need to *use* Noda Time is contained in the `NodaTime` package. The `NodaTime.Testing` package is designed
 for testing code which uses Noda Time. See the [testing guide](testing) for more information. It is expected
 that production code will only refer to the `NodaTime.dll` assembly, and that's all that's required at execution time.
 This assembly includes the [TZDB database](tzdb) as an embedded resource.
@@ -60,16 +47,3 @@ information on using Noda Time with Json.NET.
 Everything within the NodaTime assembly is in the NodaTime namespace or a "child" namespace. After adding a reference to
 the main assembly (either directly via the file system or with NuGet) and including an appropriate `using` directive, you should
 be able to start using Noda Time immediately, with no further effort.
-
-Debugging
----------
-
-As of version 1.1, the source code of Noda Time is published to [SymbolSource](https://www.symbolsource.org/). You can configure
-Visual Studio to automatically fetch the source code if you need to step into it when debugging your application. It takes a little
-bit of setup, but there are [full instructions](https://www.symbolsource.org/Public/Home/VisualStudio) on the SymbolSource web site.
-(The instructions aren't specific to Noda Time, so if you're
-already using SymbolSource as one of your symbol servers, you just need to make sure you're not excluding Noda Time from the list of
-modules to fetch.)
-
-If you believe you've found a bug in Noda Time, using the SymbolSource version is likely to prove painful after a while - it's
-much better to just fetch the [source code](https://github.com/nodatime/nodatime) and build your own copy locally.
