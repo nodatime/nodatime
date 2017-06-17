@@ -41,7 +41,7 @@ by Noda Time 1.0.x and 1.1.x, but would not necessarily be able to read the
 output used by version 1.2.x. Noda Time 2.x does not necessarily need to be
 able to read anything consumed by Noda Time 1.x.
 
-(The same is true for the PCL version of Noda Time, though it is considered
+(The same is true for the PCL version of Noda Time 1.x, though it is considered
 a separate development line for the purposes of compatibility, and so does
 not need to support the same features as the earlier non-PCL versions.)
 
@@ -243,15 +243,13 @@ This field must occur exactly once, and it uses the string pool.
 
 ## Field 5: Additional information for Windows mapping (obsolete)
 
-This field is only present for the sake of the PCL version, but is loaded in both builds anyway.
+This field is only present for the sake of the PCL (1.x) versions, and is not loaded in 2.x.
 It contains a mapping from Windows `TimeZoneInfo` standard name (in the en-US
 locale) to TZDB ID for those time zones
 where the two differ. (There are only a few.) This is required as the PCL doesn't expose the 
 `TimeZoneInfo.Id` property.
 
 The field data is a single `dictionary`. It must occur exactly once, and it uses the string pool.
-
-This field is not read in Noda Time 2.x, which uses `TimeZoneInfo.Id` (present in netstandard1.3).
 
 ## Field 6: Zone location information
 
