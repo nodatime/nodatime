@@ -19,7 +19,7 @@ namespace NodaTime.Benchmarks.BclTests
                 return TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
             }
 #if NETCOREAPP1_1
-            catch (Exception) // Exception doesn't exist in netstandard :(
+            catch (Exception) // TimeZoneNotFoundException doesn't exist in netstandard :(
 #else
             catch (TimeZoneNotFoundException)
 #endif

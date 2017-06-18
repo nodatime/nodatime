@@ -12,7 +12,9 @@ namespace NodaTime.Utility
     /// data which is truncated, i.e. we expect more data than we can read.
     /// </summary>
     /// <remarks>
-    /// This type only exists as <c>InvalidDataException</c> doesn't exist in the Portable Class Library.
+    /// This type only exists as <c>InvalidDataException</c> didn't exist in Portable Class Libraries.
+    /// That does exist in netstandard1.3, but as we shipped 2.0 without realizing this, we're stuck with the
+    /// new exception type.
     /// Unfortunately, <c>InvalidDataException</c> itself is sealed, so we can't derive from it for the sake
     /// of backward compatibility.
     /// </remarks>
