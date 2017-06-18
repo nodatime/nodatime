@@ -167,7 +167,7 @@ As of Noda Time 1.2, for the desktop build only, the following types implement `
 
 Binary serialization is simpler than XML serialization in terms of not interfering with immutability, which is why `Period` itself is serializable. However, the issue of requiring a time zone provider to be configured via `DateTimeZoneProviders.Serialization` is still present. (The same property is used for both binary and XML serialization.)
 
-The PCL itself does not support binary serialization, so the interface and attribute are not applied to the above types in the PCL Noda Time build.
+The PCL and .NET Standard 1.x do not support binary serialization, so the interface and attribute are not applied to the above types in those builds of Noda Time.
 
 The serialized form is not documented here as it is not expected to be consumed other than by the `BinaryFormatter`; the relevant code is easily discovered in each serialized type, however.
 

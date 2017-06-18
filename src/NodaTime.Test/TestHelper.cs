@@ -496,7 +496,7 @@ namespace NodaTime.Test
         /// </remarks>
         internal static void AssertBinaryRoundtrip<T>(T value)
         {
-            // Can't use [Conditional("!NETSTANDARD1_3")] as ConditionalAttribute is only positive.
+            // Can't use [Conditional("!NETCOREAPP1_0")] as ConditionalAttribute is only positive.
             // This approach seems to confuse the build system less, too.
 #if !NETCOREAPP1_0
             var stream = new MemoryStream();
