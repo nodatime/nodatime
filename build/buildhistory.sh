@@ -20,8 +20,6 @@
 # but after making sure that it all looks okay, that would
 # normally be the next step.
 
-
-
 # Contents:
 
 # - 1.0.x / 1.1.x / 1.2.x / 1.3.x / 1.4.x
@@ -33,6 +31,8 @@
 #   - Docfx metadata in "api" directory
 # - packages
 #   - nupkg files for each minor version, e.g NodaTime-1.0.x.nupkg
+
+set -e
 
 echo "Removing old history directory"
 rm -rf history
@@ -58,8 +58,9 @@ echo "Cloning 2.0.x main repo"
 git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.0.x 2.0.x
 rm -rf 2.0.x/.git
 
-echo "Cloning serialization latest (for NodaTime.Serialization.JsonNet)"
-git clone https://github.com/nodatime/nodatime.serialization.git -q --depth 1 serialization
+echo "Cloning serialization (for NodaTime.Serialization.JsonNet)"
+# Not: not depth 1 as we want to check out specific tags
+git clone https://github.com/nodatime/nodatime.serialization.git -q serialization
 git -C serialization checkout NodaTime.Serialization.JsonNet-2.0.0
 mv serialization/src/NodaTime.Serialization.JsonNet 2.0.x/src
 rm -rf serialization

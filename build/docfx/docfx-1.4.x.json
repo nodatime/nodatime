@@ -1,0 +1,19 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "NodaTime/NodaTime.csproj",
+            "NodaTime.Serialization.JsonNet/NodaTime.Serialization.JsonNet.csproj",
+            "NodaTime.Testing/NodaTime.Testing.csproj"
+          ],
+          "cwd": "src",
+          "exclude": [ "**/bin/**", "**/obj/**" ]
+        }
+      ],
+      "dest": "api",
+      "shouldSkipMarkup": true
+    }
+  ]
+}
