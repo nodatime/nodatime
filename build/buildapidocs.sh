@@ -11,7 +11,7 @@ fi
 rm -rf tmp/docfx
 
 echo "Copying metadata for previous versions"
-for version in 1.0.x 1.1.x 1.2.x 1.3.x 2.0.x; do
+for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x; do
   mkdir -p tmp/docfx/obj/$version
   cp -r history/$version/api tmp/docfx/obj/$version
   cp docfx/toc.yml tmp/docfx/obj/$version
@@ -48,7 +48,8 @@ dotnet restore Tools.sln
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.0.x tmp/docfx/obj/1.1.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.1.x tmp/docfx/obj/1.2.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.2.x tmp/docfx/obj/1.3.x
-dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.3.x tmp/docfx/obj/2.0.x
+dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.3.x tmp/docfx/obj/1.4.x
+dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/1.4.x tmp/docfx/obj/2.0.x
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/2.0.x tmp/docfx/obj/unstable
 
 # Extract annotations
