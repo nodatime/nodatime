@@ -234,6 +234,7 @@ namespace NodaTime
         }
 
         /// <summary>Gets the century within the era of this local date and time.</summary>
+        [Obsolete("Century-based properties have been removed in 2.0")]
         public int CenturyOfEra { get { return Calendar.GetCenturyOfEra(localInstant); } }
 
         /// <summary>Gets the year of this local date and time.</summary>
@@ -243,6 +244,7 @@ namespace NodaTime
 
         /// <summary>Gets the year of this local date and time within its century.</summary>
         /// <remarks>This always returns a value in the range 0 to 99 inclusive.</remarks>
+        [Obsolete("Century-based properties have been removed in 2.0")]
         public int YearOfCentury { get { return Calendar.GetYearOfCentury(localInstant); } }
 
         /// <summary>Gets the year of this local date and time within its era.</summary>
