@@ -504,6 +504,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="weeks">The number of weeks.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of weeks.</returns>
+        [Obsolete("No equivalent exists in 2.0; use FromDays, multiplying the number of days by 7.")]
         public static Duration FromStandardWeeks(long weeks)
         {
             return OneStandardWeek * weeks;
