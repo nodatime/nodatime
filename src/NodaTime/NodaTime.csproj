@@ -164,13 +164,16 @@
     <Compile Include="Calendars\IslamicLeapYearPattern.cs" />
     <Compile Include="Calendars\IslamicYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\IsoYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\IWeekYearRule.cs" />
     <Compile Include="Calendars\JulianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\NamespaceDoc.cs" />
     <Compile Include="Calendars\PersianYearMonthDayCalculator.cs" />
     <Compile Include="Calendars\RegularYearMonthDayCalculator.cs" />
+    <Compile Include="Calendars\SimpleWeekYearRule.cs" />
     <Compile Include="Calendars\TickArithmetic.cs" />
     <Compile Include="Calendars\TimeOfDayCalculator.cs" />
     <Compile Include="Calendars\WeekYearCalculator.cs" />
+    <Compile Include="Calendars\WeekYearRules.cs" />
     <Compile Include="Calendars\YearMonthDay.cs" />
     <Compile Include="Calendars\YearMonthDayCalculator.cs" />
     <Compile Include="Calendars\YearStartCacheEntry.cs" />

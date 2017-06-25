@@ -363,6 +363,10 @@ namespace NodaTime
         #endregion
 
         private readonly YearMonthDayCalculator yearMonthDayCalculator;
+
+        // Introduced for SimpleWeekYearRule
+        internal YearMonthDayCalculator YearMonthDayCalculator => yearMonthDayCalculator;
+
         private readonly WeekYearCalculator weekYearCalculator;
         private readonly PeriodFieldSet periodFields;
         private readonly string id;
@@ -494,6 +498,10 @@ namespace NodaTime
         /// Returns the maximum tick number this calendar can handle.
         /// </summary>
         internal long MaxTicks { get { return maxTicks; } }
+
+        // Added in 1.4 for the sake of SimpleWeekYearRule...
+        internal int MinDays => (int) (minTicks / NodaConstants.TicksPerDay);
+        internal int MaxDays => (int)(maxTicks / NodaConstants.TicksPerDay);
 
         #region Era-based members
         /// <summary>
