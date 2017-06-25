@@ -60,6 +60,7 @@ namespace NodaTime.TimeZones
             standardRecurrence = standard;
         }
 
+        [Obsolete("General DateTimeZone equality is not supported in 2.0")]
         protected override bool EqualsImpl(DateTimeZone other)
         {
             DaylightSavingsDateTimeZone otherZone = (DaylightSavingsDateTimeZone)other;

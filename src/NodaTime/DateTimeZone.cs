@@ -573,6 +573,7 @@ namespace NodaTime
         /// <c>true</c> if the specified <see cref="DateTimeZone"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
+        [Obsolete("General DateTimeZone equality is not supported in 2.0")]
         public bool Equals(DateTimeZone obj)
         {
             if (ReferenceEquals(this, obj))
@@ -591,6 +592,7 @@ namespace NodaTime
         /// <c>true</c> if the specified <see cref="DateTimeZone"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
+        [Obsolete("General DateTimeZone equality is not supported in 2.0")]
         protected abstract bool EqualsImpl(DateTimeZone zone);
 
         /// <summary>
