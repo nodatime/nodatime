@@ -289,6 +289,7 @@ namespace NodaTime.TimeZones
         }
         #endregion
 
+        [Obsolete("General DateTimeZone equality is not supported in 2.0")]
         protected override bool EqualsImpl(DateTimeZone zone)
         {
             PrecalculatedDateTimeZone otherZone = (PrecalculatedDateTimeZone)zone;

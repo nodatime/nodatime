@@ -68,6 +68,7 @@ namespace NodaTime.Testing.TimeZones
         }
 
         /// <inheritdoc />
+        [Obsolete("General DateTimeZone equality is not supported in 2.0")]
         protected override bool EqualsImpl(DateTimeZone zone)
         {
             // Just use reference equality...

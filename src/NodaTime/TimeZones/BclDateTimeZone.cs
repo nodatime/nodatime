@@ -291,6 +291,7 @@ namespace NodaTime.TimeZones
         /// This implementation simply compares the underlying `TimeZoneInfo` values for
         /// reference equality.
         /// </remarks>
+        [Obsolete("General DateTimeZone equality is not supported in 2.0")]
         protected override bool EqualsImpl(DateTimeZone zone)
         {
             return ReferenceEquals(OriginalZone, ((BclDateTimeZone) zone).OriginalZone);

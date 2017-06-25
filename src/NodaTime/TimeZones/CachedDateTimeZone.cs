@@ -4,6 +4,7 @@
 
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.TimeZones
 {
@@ -97,6 +98,7 @@ namespace NodaTime.TimeZones
             return ForZone(timeZone);
         }
 
+        [Obsolete("General DateTimeZone equality is not supported in 2.0")]
         protected override bool EqualsImpl(DateTimeZone zone)
         {
             return TimeZone.Equals(((CachedDateTimeZone) zone).TimeZone);

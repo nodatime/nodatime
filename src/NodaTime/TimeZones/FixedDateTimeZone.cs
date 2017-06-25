@@ -6,6 +6,7 @@ using System.Globalization;
 using NodaTime.Text;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.TimeZones
 {
@@ -134,7 +135,7 @@ namespace NodaTime.TimeZones
             return new FixedDateTimeZone(id, offset);
         }
 
-
+        [Obsolete("General DateTimeZone equality is not supported in 2.0")]
         protected override bool EqualsImpl(DateTimeZone other)
         {
             FixedDateTimeZone otherZone = (FixedDateTimeZone) other;
