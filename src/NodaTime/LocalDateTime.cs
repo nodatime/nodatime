@@ -269,6 +269,7 @@ namespace NodaTime
         /// so is part of week 1 of WeekYear 2013.
         /// </para>
         /// </remarks>
+        [Obsolete("Use WeekYearRules for specific week-year rules for compatibility with 2.0.")]
         public int WeekYear { get { return Calendar.GetWeekYear(localInstant); } }
 
         /// <summary>
@@ -279,6 +280,7 @@ namespace NodaTime
         /// <summary>
         /// Gets the week within the WeekYear. See <see cref="WeekYear"/> for more details.
         /// </summary>
+        [Obsolete("Use WeekYearRules for specific week-year rules for compatibility with 2.0.")]
         public int WeekOfWeekYear { get { return Calendar.GetWeekOfWeekYear(localInstant); } }
 
         /// <summary>

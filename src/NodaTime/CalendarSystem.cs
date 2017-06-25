@@ -236,6 +236,7 @@ namespace NodaTime
         /// used to decide at what point the week year changes.</param>
         /// <returns>A suitable Gregorian calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</returns>
+        [Obsolete("Use the Gregorian property, then WeekYearRules for specific week-year rules for compatibility with 2.0.")]
         public static CalendarSystem GetGregorianCalendar(int minDaysInFirstWeek)
         {
             Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
@@ -258,6 +259,7 @@ namespace NodaTime
         /// used to decide at what point the week year changes.</param>
         /// <returns>A suitable Julian calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</returns>
+        [Obsolete("Use the Julian property, then WeekYearRules for specific week-year rules for compatibility with 2.0.")]
         public static CalendarSystem GetJulianCalendar(int minDaysInFirstWeek)
         {
             Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
@@ -288,6 +290,7 @@ namespace NodaTime
         /// used to decide at what point the week year changes.</param>
         /// <returns>A suitable Coptic calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</returns>
+        [Obsolete("Use the Coptic property, then WeekYearRules for specific week-year rules for compatibility with 2.0.")]
         public static CalendarSystem GetCopticCalendar(int minDaysInFirstWeek)
         {
             Preconditions.CheckArgumentRange("minDaysInFirstWeek", minDaysInFirstWeek, 1, 7);
@@ -469,6 +472,7 @@ namespace NodaTime
         /// can use the <see cref="IsoDayOfWeek" /> property to avoid using magic numbers.
         /// This defaults to true, but can be overridden by specific calendars.
         /// </summary>
+        [Obsolete("Removed in 2.0 as all calendar systems are deemed to use ISO days.")]
         public bool UsesIsoDayOfWeek { get { return true; } }
 
         /// <summary>
