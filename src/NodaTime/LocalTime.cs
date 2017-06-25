@@ -260,6 +260,7 @@ namespace NodaTime
         /// Returns a <see cref="T:NodaTime.LocalDateTime"/> with this local time, on January 1st 1970 in the ISO
         /// calendar.
         /// </summary>
+        [Obsolete("Use the + operator or the On method to combine with a LocalDate, for 2.0 compatibility.")]
         public LocalDateTime LocalDateTime { get { return new LocalDateTime(new LocalInstant(ticks)); } }
 
         /// <summary>

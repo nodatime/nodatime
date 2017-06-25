@@ -198,6 +198,7 @@ namespace NodaTime
         /// <param name="tickWithinMillisecond">The tick within millisecond.</param>
         /// <returns>The resulting date/time.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
+        [Obsolete("Construct with a LocalDate + LocalTime or construct to the millisecond and use PlusTicks for compatibiltiy with 2.0")]
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond)
             : this(year, month, day, hour, minute, second, millisecond, tickWithinMillisecond, CalendarSystem.Iso)
         {
@@ -218,6 +219,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar.</param>
         /// <returns>The resulting date/time.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date/time.</exception>
+        [Obsolete("Construct with a LocalDate + LocalTime or construct to the millisecond and use PlusTicks for compatibiltiy with 2.0")]
         public LocalDateTime(int year, int month, int day, int hour, int minute, int second, int millisecond, int tickWithinMillisecond, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, "calendar");
