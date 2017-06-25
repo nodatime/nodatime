@@ -64,6 +64,7 @@ namespace NodaTime.Testing.TimeZones
         }
 
         /// <inheritdoc />
+        [Obsolete("Only the system default time zone can be mapped in 2.0, using GetSystemDefaultId. For other time zones, use source-specific members.")]
         public string MapTimeZoneId(TimeZoneInfo timeZone)
         {
             Preconditions.CheckNotNull(timeZone, "timeZone");

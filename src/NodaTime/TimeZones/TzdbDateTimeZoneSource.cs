@@ -204,6 +204,7 @@ namespace NodaTime.TimeZones
 
         /// <inheritdoc />
         /// <param name="zone">The BCL time zone, which must be a known system time zone.</param>
+        [Obsolete("Only the system default time zone can be mapped in 2.0, using GetSystemDefaultId. For other time zones, use source-specific members.")]
         public string MapTimeZoneId(TimeZoneInfo zone)
         {
 #if PCL
