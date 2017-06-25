@@ -4,6 +4,7 @@
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime
 {
@@ -36,6 +37,7 @@ namespace NodaTime
         /// Explicit interface implementation of <see cref="IClock.Now"/>; use
         /// <see cref="GetCurrentInstant()"/> in preference.
         /// </summary>
+        [Obsolete("Use the GetCurrentInstant() extension method for compatibility with 2.0")]
         Instant IClock.Now => GetCurrentInstant();
 
         /// <summary>

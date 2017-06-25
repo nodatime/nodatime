@@ -189,6 +189,7 @@ namespace NodaTime.Testing
         /// If the value of the <see cref="AutoAdvance"/> property is non-zero, then every
         /// call to this method will advance the current time by that value.
         /// </remarks>
+        [Obsolete("Use the GetCurrentInstant() extension method for compatibility with 2.0")]
         public Instant Now
         {
             get
