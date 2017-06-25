@@ -123,6 +123,7 @@ namespace NodaTime.TimeZones
         /// The ID for the given BCL time zone for this source; that is, the value of the <c>Id</c> property of the
         /// passed-in <see cref="TimeZoneInfo"/>.
         /// </returns>
+        [Obsolete("Only the system default time zone can be mapped in 2.0, using GetSystemDefaultId. For other time zones, use source-specific members.")]
         public string MapTimeZoneId(TimeZoneInfo timeZone)
         {
             return timeZone.Id;

@@ -100,6 +100,7 @@ namespace NodaTime.TimeZones
         /// The ID for the given system time zone for this source, or null if the system time
         /// zone has no mapping in this source.
         /// </returns>
+        [Obsolete("Only the system default time zone can be mapped in 2.0, using GetSystemDefaultId. For other time zones, use source-specific members.")]
         string MapTimeZoneId(TimeZoneInfo timeZone);
     }
 }
