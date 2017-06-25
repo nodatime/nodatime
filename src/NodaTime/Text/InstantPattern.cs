@@ -220,6 +220,7 @@ namespace NodaTime.Text
         /// <param name="cultureInfo">The culture to use in the pattern</param>
         /// <param name="includeThousandsSeparators">True to include thousands separators when parsing or formatting; false to omit them.</param>
         /// <returns>A numeric pattern for the configuration</returns>
+        [Obsolete("Numeric patterns are not supported in 2.0")]
         public static InstantPattern CreateNumericPattern(CultureInfo cultureInfo, bool includeThousandsSeparators)
         {
             return Create(includeThousandsSeparators ? "n" : "d", cultureInfo);
@@ -255,6 +256,7 @@ namespace NodaTime.Text
         /// <param name="maxLabel">Text to use for <see cref="Instant.MaxValue"/>. Must be non-empty, and not the same as <paramref name="minLabel"/></param>
         /// <returns>A new pattern with the given min/max labels.</returns>
         /// <exception cref="ArgumentException"></exception>
+        [Obsolete("Start/end of time instants are not supported in 2.0")]
         public InstantPattern WithMinMaxLabels(string minLabel, string maxLabel)
         {
             return Create(patternText, formatInfo, minLabel, maxLabel);
