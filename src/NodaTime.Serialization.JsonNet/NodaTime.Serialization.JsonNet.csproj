@@ -30,6 +30,7 @@
     <RootNamespace>NodaTime.Serialization.JsonNet</RootNamespace>
     <AssemblyName>NodaTime.Serialization.JsonNet</AssemblyName>
     <FileAlignment>512</FileAlignment>
+    <NoWarn>0618</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
