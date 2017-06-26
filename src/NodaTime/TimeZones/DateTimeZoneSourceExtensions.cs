@@ -7,7 +7,7 @@ using System;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Extension methods for <see cref="IClock"/> to enable migration to Noda Time 2.0.
+    /// Extension methods for <see cref="IDateTimeZoneSource"/> to enable migration to Noda Time 2.0.
     /// </summary>
     public static class DateTimeZoneSourceExtensions
     {
