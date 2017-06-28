@@ -72,9 +72,7 @@ namespace NodaTime
         /// Compares two <see cref="DateInterval" /> values for equality.
         /// </summary>
         /// <remarks>
-        /// Date intervals are equal if they have the same start and end dates and are both end-inclusive or both end-exclusive:
-        /// an end-exclusive date interval of [2001-01-01, 2001-02-01) is not equal to the end-inclusive date interval of
-        /// [2001-01-01, 2001-01-31], even though both contain the same range of dates.
+        /// Date intervals are equal if they have the same start and end dates.
         /// </remarks>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
@@ -96,25 +94,21 @@ namespace NodaTime
         /// Compares two <see cref="DateInterval" /> values for inequality.
         /// </summary>
         /// <remarks>
-        /// Date intervals are equal if they have the same start and end dates and are both end-inclusive or both exclusive:
-        /// an end-exclusive date interval of [2001-01-01, 2001-02-01) is not equal to the end-inclusive date interval of
-        /// [2001-01-01, 2001-01-31], even though both contain the same range of dates.
+        /// Date intervals are equal if they have the same start and end dates.
         /// </remarks>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
-        /// <returns>False if the two date intervals have the same properties; true otherwise.</returns>
+        /// <returns>False if the two date intervals have the same start and end date; true otherwise.</returns>
         public static bool operator !=(DateInterval lhs, DateInterval rhs) => !(lhs == rhs);
 
         /// <summary>
         /// Compares the given date interval for equality with this one.
         /// </summary>
         /// <remarks>
-        /// Date intervals are equal if they have the same start and end dates and are both end-inclusive or both end-exclusive:
-        /// an end-exclusive date interval of [2001-01-01, 2001-02-01) is not equal to the end-inclusive date interval of
-        /// [2001-01-01, 2001-01-31], even though both contain the same range of dates.
+        /// Date intervals are equal if they have the same start and end dates.
         /// </remarks>
         /// <param name="other">The date interval to compare this one with.</param>
-        /// <returns>True if this date interval has the same properties as the one specified.</returns>
+        /// <returns>True if this date interval has the same same start and end date as the one specified.</returns>
         public bool Equals(DateInterval other) => this == other;
 
         /// <summary>
