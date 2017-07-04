@@ -28,9 +28,6 @@ Thumbs.db
 # (It's reasonably easy to end up with one in a working directory...)
 joda-time*.jar
 
-# Noda Time release (private) key
-NodaTime Release.snk
-
 # Build output directories (anywhere)
 **/bin/
 **/obj/
@@ -78,3 +75,6 @@ TestResult.xml
 BenchmarkDotNet.Artifacts
 src/NodaTime.Web/docfx
 src/NodaTime.Web/wwwroot
+
+# Release build directory
+releasebuild
