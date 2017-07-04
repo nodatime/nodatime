@@ -6,6 +6,18 @@ details.
 
 ## 2.1 (current master branch)
 
+## 1.4.0 beta 1, released 2017-07-04 with tzdb 2017b
+
+Release to enable migration to 2.0.
+
+- `ZonedClock` and `WeekYearRules` backported from 2.0
+- Extension methods for `IClock` and `IDateTimeZoneSource` to allow smoother migration
+- Members removed in 2.0 are obsolete where possible:
+ - In most cases, the message indicates how to migrate code ready for 2.0
+ - In some cases, members have been removed with no equivalent (e.g. `Century` properties)
+ - The `IsoDayOfWeek` properties which have been renamed to `DayOfWeek` in 2.0 have *not* been
+   made obsolete as there'd be no good way of dealing with this. (Just rename uses *after* migrating to 2.0.)
+
 ## 2.0.3, released 2017-06-13 with tzdb 2017b
 
 Patch release: optimization only:
