@@ -19,8 +19,6 @@
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <Deterministic>True</Deterministic>
-    <IncludeSymbols>True</IncludeSymbols>
-    <IncludeSource>True</IncludeSource>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +31,21 @@
       <PackagePath>build/native/</PackagePath>
       <Pack>true</Pack>
     </None>
+  </ItemGroup>
+
+  <ItemGroup Label="dotnet pack instructions">
+    <Content Include="$(OutputPath)netstandard1.3\NodaTime.pdb">
+      <Pack>true</Pack>
+      <PackagePath>lib/netstandard1.3</PackagePath>
+    </Content>
+    <Content Include="$(OutputPath)net45\NodaTime.pdb">
+      <Pack>true</Pack>
+      <PackagePath>lib/net45</PackagePath>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.1.2" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
