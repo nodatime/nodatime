@@ -15,9 +15,22 @@
     <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <Deterministic>True</Deterministic>
-    <IncludeSymbols>True</IncludeSymbols>
-    <IncludeSource>True</IncludeSource>
   </PropertyGroup>
+
+  <ItemGroup Label="dotnet pack instructions">
+    <Content Include="$(OutputPath)netstandard1.3\NodaTime.Testing.pdb">
+      <Pack>true</Pack>
+      <PackagePath>lib/netstandard1.3</PackagePath>
+    </Content>
+    <Content Include="$(OutputPath)net45\NodaTime.Testing.pdb">
+      <Pack>true</Pack>
+      <PackagePath>lib/net45</PackagePath>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.1.2" PrivateAssets="All" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />

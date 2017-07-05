@@ -19,7 +19,7 @@ declare -r RESTORE_FLAG=${SUFFIX:+-p:VersionSuffix=${SUFFIX}}
 declare -r OUTPUT=artifacts
 
 rm -rf releasebuild
-git clone https://github.com/nodatime/nodatime.git releasebuild
+git clone https://github.com/nodatime/nodatime.git releasebuild -c core.autocrlf=input
 cd releasebuild
 git checkout "$VERSION"
 
@@ -30,9 +30,9 @@ dotnet restore $RESTORE_FLAG src/NodaTime
 dotnet restore $RESTORE_FLAG src/NodaTime.Testing
 dotnet restore $RESTORE_FLAG src/NodaTime.Test
 
-dotnet build -c Release $BUILD_FLAG src/NodaTime
-dotnet build -c Release $BUILD_FLAG src/NodaTime.Testing
-dotnet build -c Release $BUILD_FLAG src/NodaTime.Test
+dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime
+dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime.Testing
+dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime.Test
 
 # Even run the slow tests before a release...
 dotnet run -c Release -p src/NodaTime.Test/NodaTime.Test.csproj -f netcoreapp1.0
