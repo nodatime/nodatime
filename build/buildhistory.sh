@@ -79,6 +79,7 @@ wget --quiet -Opackages/NodaTime-1.0.x.nupkg https://www.nuget.org/api/v2/packag
 wget --quiet -Opackages/NodaTime-1.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.1.0
 wget --quiet -Opackages/NodaTime-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.2.0
 wget --quiet -Opackages/NodaTime-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.3.2
+wget --quiet -Opackages/NodaTime-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.4.0-beta1
 wget --quiet -Opackages/NodaTime-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/2.0.0
 
 # NodaTime.Testing
@@ -86,11 +87,13 @@ wget --quiet -Opackages/NodaTime.Testing-1.0.x.nupkg https://www.nuget.org/api/v
 wget --quiet -Opackages/NodaTime.Testing-1.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.1.0
 wget --quiet -Opackages/NodaTime.Testing-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.2.0
 wget --quiet -Opackages/NodaTime.Testing-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.3.2
+wget --quiet -Opackages/NodaTime.Testing-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.4.0-beta1
 wget --quiet -Opackages/NodaTime.Testing-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/2.0.0
 
 # NodaTime.Serialization.JsonNet
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.2.0
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.3.2
+wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.4.0-beta1
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/2.0.0
 
 # Docfx metadata

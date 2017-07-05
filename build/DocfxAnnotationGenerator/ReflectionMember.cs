@@ -37,13 +37,13 @@ namespace DocfxAnnotationGenerator
                 yield break;
             }
 
-            foreach (var property in type.Properties.Where(p => (p.GetMethod?.IsPublic ?? false) || (p.SetMethod?.IsPublic ?? false)))
+            foreach (var property in type.Properties.Where(p => IsAccessible(p.GetMethod) || IsAccessible(p.SetMethod)))
             {
                 yield return new ReflectionMember(property);
             }
 
             // TODO: Do we want protected methods?
-            foreach (var method in type.Methods.Where(m => !m.IsGetter && !m.IsSetter && (m.IsPublic || m.IsFamily || IsExplicitInterfaceImplementation(m))))
+            foreach (var method in type.Methods.Where(m => !m.IsGetter && !m.IsSetter && IsAccessible(m)))
             {
                 yield return new ReflectionMember(method);
             }
@@ -59,9 +59,20 @@ namespace DocfxAnnotationGenerator
             }
         }
 
+        private static bool IsAccessible(MethodDefinition method)
+        {
+            // This is pretty crude at the moment...
+            // Handy for properties
+            if (method == null)
+            {
+                return false;
+            }
+            // Overrides is used to check for explicit interface implementation
+            return method.IsPublic || method.IsFamily || method.Overrides.Count != 0;
+        }
+
         // TODO: More specifically, is it an explicit interface implementation for a public interface?
         // (Doesn't seem to affect us right now...)
-        private static bool IsExplicitInterfaceImplementation(MethodDefinition method) => method.Overrides.Count != 0;
 
         private ReflectionMember(TypeDefinition type)
         {
@@ -70,7 +81,8 @@ namespace DocfxAnnotationGenerator
 
         private ReflectionMember(PropertyDefinition property)
         {
-            DocfxUid = $"{GetUid(property.DeclaringType)}.{property.Name}{GetParameterNames(property.Parameters)}";
+            // property.Name will be Type.Name for explicit interface implementations, e.g. NodaTime.IClock.Now
+            DocfxUid = $"{GetUid(property.DeclaringType)}.{property.Name.Replace('.', '#')}{GetParameterNames(property.Parameters)}";
             NotNullReturn = HasNotNullAttribute(property);
         }
 
