@@ -53,7 +53,8 @@ dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/
 dotnet run -p ReleaseDiffGenerator/ReleaseDiffGenerator.csproj -- tmp/docfx/obj/2.0.x tmp/docfx/obj/unstable
 
 # Extract annotations
-dotnet run -p DocfxAnnotationGenerator/DocfxAnnotationGenerator.csproj -- tmp/docfx history/packages tmp/docfx/unstable/src 1.0.x 1.1.x 1.2.x 1.3.x 2.0.x unstable
+dotnet run -p DocfxAnnotationGenerator/DocfxAnnotationGenerator.csproj -- \
+    tmp/docfx history/packages tmp/docfx/unstable/src 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x unstable
 
 # Extract snippets from NodaTime.Demo (unstable only, for now)
 # Make sure we've built everything, just to start with...
