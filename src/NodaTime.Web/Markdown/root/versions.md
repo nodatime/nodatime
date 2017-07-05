@@ -28,10 +28,10 @@ Release to enable migration to 2.0.
 - `ZonedClock` and `WeekYearRules` backported from 2.0
 - Extension methods for `IClock` and `IDateTimeZoneSource` to allow smoother migration
 - Members removed in 2.0 are obsolete where possible:
- - In most cases, the message indicates how to migrate code ready for 2.0
- - In some cases, members have been removed with no equivalent (e.g. `Century` properties)
- - The `IsoDayOfWeek` properties which have been renamed to `DayOfWeek` in 2.0 have *not* been
-   made obsolete as there'd be no good way of dealing with this. (Just rename uses *after* migrating to 2.0.)
+   - In most cases, the message indicates how to migrate code ready for 2.0
+   - In some cases, members have been removed with no equivalent (e.g. `Century` properties)
+   - The `IsoDayOfWeek` properties which have been renamed to `DayOfWeek` in 2.0 have *not* been
+     made obsolete as there'd be no good way of dealing with this. (Just rename uses *after* migrating to 2.0.)
 
 (Beta 1 was released on 2017-07-04. No changes from beta to GA.)
 
@@ -96,12 +96,12 @@ Breaking changes:
 - Changed the behavior of the `LenientResolver` to more closely match real-world usage.
   This also affects `DateTimeZone.AtLeniently` and `LocalDateTime.InZoneLeniently`.
    - For ambiguous values, the lenient resolver used to return the later of the two possible instants.
-    It now returns the *earlier* of the two possible instants.  For example, if 01:00 is ambiguous, it used to return
-    1:00 standard time and it now will return 01:00 *daylight* time.
-  - For skipped values, the lenient resolver used to return the instant corresponding to the first possible local time
-    following the "gap".  It now returns the instant that would have occurred if the gap had not existed.  This
-    corresponds to a local time that is shifted forward by the duration of the gap.  For example, if values from
-    02:00 to 02:59 were skipped, a value of 02:30 used to return 03:00 and it will now return 03:30.
+     It now returns the *earlier* of the two possible instants.  For example, if 01:00 is ambiguous, it used to return
+     1:00 standard time and it now will return 01:00 *daylight* time.
+   - For skipped values, the lenient resolver used to return the instant corresponding to the first possible local time
+     following the "gap".  It now returns the instant that would have occurred if the gap had not existed.  This
+     corresponds to a local time that is shifted forward by the duration of the gap.  For example, if values from
+     02:00 to 02:59 were skipped, a value of 02:30 used to return 03:00 and it will now return 03:30.
 - `Period` and `PeriodBuilder` properties for date-based values (years, months, weeks, days) are now of type `int` rather than `long`.
 - Default values for local date-based structs (`LocalDate` etc) now return 0001-01-01
   instead of the Unix epoch.
