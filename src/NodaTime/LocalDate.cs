@@ -43,6 +43,16 @@ namespace NodaTime
         [ReadWriteForEfficiency] private YearMonthDayCalendar yearMonthDayCalendar;
 
         /// <summary>
+        /// The maximum (latest) date representable in the ISO calendar system.
+        /// </summary>
+        public static LocalDate MaxIsoValue => new LocalDate(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.MaxGregorianYear, 12, 31, CalendarOrdinal.Iso));
+
+        /// <summary>
+        /// The minimum (earliest) date representable in the ISO calendar system.
+        /// </summary>
+        public static LocalDate MinIsoValue => new LocalDate(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.MinGregorianYear, 1, 1, CalendarOrdinal.Iso));
+
+        /// <summary>
         /// Constructs an instance from values which are assumed to already have been validated.
         /// </summary>
         internal LocalDate([Trusted] YearMonthDayCalendar yearMonthDayCalendar)
