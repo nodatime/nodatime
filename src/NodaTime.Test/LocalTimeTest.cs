@@ -61,5 +61,31 @@ namespace NodaTime.Test
         {
             TestHelper.AssertXmlInvalid<LocalTime>(xml, expectedExceptionType);
         }
+
+        [Test]
+        public void Max()
+        {
+            LocalTime x = new LocalTime(5, 10);
+            LocalTime y = new LocalTime(6, 20);
+            Assert.AreEqual(y, LocalTime.Max(x, y));
+            Assert.AreEqual(y, LocalTime.Max(y, x));
+            Assert.AreEqual(x, LocalTime.Max(x, LocalTime.MinValue));
+            Assert.AreEqual(x, LocalTime.Max(LocalTime.MinValue, x));
+            Assert.AreEqual(LocalTime.MaxValue, LocalTime.Max(LocalTime.MaxValue, x));
+            Assert.AreEqual(LocalTime.MaxValue, LocalTime.Max(x, LocalTime.MaxValue));
+        }
+
+        [Test]
+        public void Min()
+        {
+            LocalTime x = new LocalTime(5, 10);
+            LocalTime y = new LocalTime(6, 20);
+            Assert.AreEqual(x, LocalTime.Min(x, y));
+            Assert.AreEqual(x, LocalTime.Min(y, x));
+            Assert.AreEqual(LocalTime.MinValue, LocalTime.Min(x, LocalTime.MinValue));
+            Assert.AreEqual(LocalTime.MinValue, LocalTime.Min(LocalTime.MinValue, x));
+            Assert.AreEqual(x, LocalTime.Min(LocalTime.MaxValue, x));
+            Assert.AreEqual(x, LocalTime.Min(x, LocalTime.MaxValue));
+        }
     }
 }

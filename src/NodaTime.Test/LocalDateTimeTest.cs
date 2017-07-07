@@ -450,5 +450,27 @@ namespace NodaTime.Test
         {
             TestHelper.AssertXmlInvalid<LocalDateTime>(xml, expectedExceptionType);
         }
+
+        [Test]
+        public void MinMax_DifferentCalendars_Throws()
+        {
+            LocalDateTime ldt1 = new LocalDateTime(2011, 1, 2, 2, 20);
+            LocalDateTime ldt2 = new LocalDateTime(1500, 1, 1, 5, 10, CalendarSystem.Julian);
+
+            Assert.Throws<ArgumentException>(() => LocalDateTime.Max(ldt1, ldt2));
+            Assert.Throws<ArgumentException>(() => LocalDateTime.Min(ldt1, ldt2));
+        }
+
+        [Test]
+        public void MinMax_SameCalendar()
+        {
+            LocalDateTime ldt1 = new LocalDateTime(1500, 1, 1, 7, 20, CalendarSystem.Julian);
+            LocalDateTime ldt2 = new LocalDateTime(1500, 1, 1, 5, 10, CalendarSystem.Julian);
+
+            Assert.AreEqual(ldt1, LocalDateTime.Max(ldt1, ldt2));
+            Assert.AreEqual(ldt1, LocalDateTime.Max(ldt2, ldt1));
+            Assert.AreEqual(ldt2, LocalDateTime.Min(ldt1, ldt2));
+            Assert.AreEqual(ldt2, LocalDateTime.Min(ldt2, ldt1));
+        }
     }
 }

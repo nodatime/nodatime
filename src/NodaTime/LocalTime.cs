@@ -690,6 +690,25 @@ namespace NodaTime
         [Pure]
         public LocalDateTime On(LocalDate date) => date + this;
 
+        /// <summary>
+        /// Returns the later time of the given two.
+        /// </summary>
+        /// <param name="x">The first time to compare.</param>
+        /// <param name="y">The second time to compare.</param>
+        /// <returns>The later instant of <paramref name="x"/> or <paramref name="y"/>.</returns>
+        public static LocalTime Max(LocalTime x, LocalTime y)
+        {
+            return x > y ? x : y;
+        }
+
+        /// <summary>
+        /// Returns the earlier time of the given two.
+        /// </summary>
+        /// <param name="x">The first time to compare.</param>
+        /// <param name="y">The second time to compare.</param>
+        /// <returns>The earlier time of <paramref name="x"/> or <paramref name="y"/>.</returns>
+        public static LocalTime Min(LocalTime x, LocalTime y) => x < y ? x : y;
+
         #region Formatting
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

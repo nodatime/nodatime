@@ -350,5 +350,31 @@ namespace NodaTime.Test
             // of the min value.
             Assert.AreEqual(Duration.MinValue, -Duration.MaxValue - Duration.Epsilon);
         }
+
+        [Test]
+        public void Max()
+        {
+            Duration x = Duration.FromNanoseconds(100);
+            Duration y = Duration.FromNanoseconds(200);
+            Assert.AreEqual(y, Duration.Max(x, y));
+            Assert.AreEqual(y, Duration.Max(y, x));
+            Assert.AreEqual(x, Duration.Max(x, Duration.MinValue));
+            Assert.AreEqual(x, Duration.Max(Duration.MinValue, x));
+            Assert.AreEqual(Duration.MaxValue, Duration.Max(Duration.MaxValue, x));
+            Assert.AreEqual(Duration.MaxValue, Duration.Max(x, Duration.MaxValue));
+        }
+
+        [Test]
+        public void Min()
+        {
+            Duration x = Duration.FromNanoseconds(100);
+            Duration y = Duration.FromNanoseconds(200);
+            Assert.AreEqual(x, Duration.Min(x, y));
+            Assert.AreEqual(x, Duration.Min(y, x));
+            Assert.AreEqual(Duration.MinValue, Duration.Min(x, Duration.MinValue));
+            Assert.AreEqual(Duration.MinValue, Duration.Min(Duration.MinValue, x));
+            Assert.AreEqual(x, Duration.Min(Duration.MaxValue, x));
+            Assert.AreEqual(x, Duration.Min(x, Duration.MaxValue));
+        }
     }
 }

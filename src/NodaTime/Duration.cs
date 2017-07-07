@@ -1190,6 +1190,35 @@ namespace NodaTime
         [Pure]
         internal decimal ToDecimalNanoseconds() => IsInt64Representable ? ToInt64NanosecondsUnchecked() : ((decimal)days) * NanosecondsPerDay + nanoOfDay;
 
+        /// <summary>
+        /// Returns the larger duration of the given two.
+        /// </summary>
+        /// <remarks>
+        /// A "larger" duration is one that advances time by more than a "smaller" one. This means
+        /// that a positive duration is always larger than a negative one, for example. (This is the same
+        /// comparison used by the binary comparison operators.)
+        /// </remarks>
+        /// <param name="x">The first duration to compare.</param>
+        /// <param name="y">The second duration to compare.</param>
+        /// <returns>The larger duration of <paramref name="x"/> or <paramref name="y"/>.</returns>
+        public static Duration Max(Duration x, Duration y)
+        {
+            return x > y ? x : y;
+        }
+
+        /// <summary>
+        /// Returns the smaller duration of the given two.
+        /// </summary>
+        /// <remarks>
+        /// A "larger" duration is one that advances time by more than a "smaller" one. This means
+        /// that a positive duration is always larger than a negative one, for example. (This is the same
+        /// comparison used by the binary comparison operators.)
+        /// </remarks>
+        /// <param name="x">The first duration to compare.</param>
+        /// <param name="y">The second duration to compare.</param>
+        /// <returns>The smaller duration of <paramref name="x"/> or <paramref name="y"/>.</returns>
+        public static Duration Min(Duration x, Duration y) => x < y ? x : y;
+
 #if !NETSTANDARD1_3
         #region Binary serialization
         /// <summary>
