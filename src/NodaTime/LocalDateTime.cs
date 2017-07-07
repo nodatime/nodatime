@@ -868,6 +868,32 @@ namespace NodaTime
             return zone.ResolveLocal(this, resolver);
         }
 
+        /// <summary>
+        /// Returns the later date/time of the given two.
+        /// </summary>
+        /// <param name="x">The first date/time to compare.</param>
+        /// <param name="y">The second date/time to compare.</param>
+        /// <exception cref="ArgumentException">The two date/times have different calendar systems.</exception>
+        /// <returns>The later date/time of <paramref name="x"/> or <paramref name="y"/>.</returns>
+        public static LocalDateTime Max(LocalDateTime x, LocalDateTime y)
+        {
+            Preconditions.CheckArgument(x.Calendar.Equals(y.Calendar), nameof(y), "Only values with the same calendar system can be compared");
+            return x > y ? x : y;
+        }
+
+        /// <summary>
+        /// Returns the earlier date/time of the given two.
+        /// </summary>
+        /// <param name="x">The first date/time to compare.</param>
+        /// <param name="y">The second date/time to compare.</param>
+        /// <exception cref="ArgumentException">The two date/times have different calendar systems.</exception>
+        /// <returns>The earlier date/time of <paramref name="x"/> or <paramref name="y"/>.</returns>
+        public static LocalDateTime Min(LocalDateTime x, LocalDateTime y)
+        {
+            Preconditions.CheckArgument(x.Calendar.Equals(y.Calendar), nameof(y), "Only values with the same calendar system can be compared");
+            return x < y ? x : y;
+        }
+
         #region Formatting
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

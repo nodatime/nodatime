@@ -172,5 +172,27 @@ namespace NodaTime.Test
                 i_instance.CompareTo(arg);
             });
         }
+
+        [Test]
+        public void MinMax_DifferentCalendars_Throws()
+        {
+            LocalDate date1 = new LocalDate(2011, 1, 2);
+            LocalDate date2 = new LocalDate(1500, 1, 1, CalendarSystem.Julian);
+
+            Assert.Throws<ArgumentException>(() => LocalDate.Max(date1, date2));
+            Assert.Throws<ArgumentException>(() => LocalDate.Min(date1, date2));
+        }
+
+        [Test]
+        public void MinMax_SameCalendar()
+        {
+            LocalDate date1 = new LocalDate(1500, 1, 2, CalendarSystem.Julian);
+            LocalDate date2 = new LocalDate(1500, 1, 1, CalendarSystem.Julian);
+
+            Assert.AreEqual(date1, LocalDate.Max(date1, date2));
+            Assert.AreEqual(date1, LocalDate.Max(date2, date1));
+            Assert.AreEqual(date2, LocalDate.Min(date1, date2));
+            Assert.AreEqual(date2, LocalDate.Min(date2, date1));
+        }
     }
 }
