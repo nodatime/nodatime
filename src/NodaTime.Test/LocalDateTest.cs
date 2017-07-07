@@ -55,5 +55,21 @@ namespace NodaTime.Test
         {
             TestHelper.AssertXmlInvalid<LocalDate>(xml, expectedExceptionType);
         }
+
+        [Test]
+        public void MaxIsoValue()
+        {
+            var value = LocalDate.MaxIsoValue;
+            Assert.AreEqual(CalendarSystem.Iso, value.Calendar);
+            Assert.Throws<OverflowException>(() => value.PlusDays(1));
+        }
+
+        [Test]
+        public void MinIsoValue()
+        {
+            var value = LocalDate.MinIsoValue;
+            Assert.AreEqual(CalendarSystem.Iso, value.Calendar);
+            Assert.Throws<OverflowException>(() => value.PlusDays(-1));
+        }
     }
 }
