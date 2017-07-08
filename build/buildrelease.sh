@@ -66,6 +66,12 @@ cp src/NodaTime.Testing/bin/Release/net45/NodaTime.Testing.dll NodaTime-$VERSION
 cp src/NodaTime/bin/Release/netstandard1.3/NodaTime.dll NodaTime-$VERSION/Portable
 cp src/NodaTime.Testing/bin/Release/netstandard1.3/NodaTime.Testing.dll NodaTime-$VERSION/Portable
 
+# PDBs
+cp src/NodaTime/bin/Release/net45/NodaTime.pdb NodaTime-$VERSION
+cp src/NodaTime.Testing/bin/Release/net45/NodaTime.Testing.pdb NodaTime-$VERSION
+cp src/NodaTime/bin/Release/netstandard1.3/NodaTime.pdb NodaTime-$VERSION/Portable
+cp src/NodaTime.Testing/bin/Release/netstandard1.3/NodaTime.Testing.pdb NodaTime-$VERSION/Portable
+
 declare -r BUILD_DATE=$(git show -s --format=%cI)
 
 # see https://wiki.debian.org/ReproducibleBuilds/TimestampsInZip.
