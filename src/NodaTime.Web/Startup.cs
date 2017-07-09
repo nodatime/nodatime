@@ -106,7 +106,7 @@ namespace NodaTime.Web
                 OnPrepareResponse = context => SetCacheControlHeaderForStaticContent(env, context.Context)
             });
             // Captures "unstable" or a specific version - used several times below.
-            string anyVersion = @"((?:1\.[0-4]\.x)|(?:unstable)|(?:2\.0\.x))";
+            string anyVersion = @"((?:1\.[0-4]\.x)|(?:unstable)|(?:2\.[0-1]\.x))";
             var rewriteOptions = new RewriteOptions()
                 // Docfx wants index.html to exist, which is annoying... just redirect.
                 .AddRedirect($@"^index.html$", "/")
@@ -120,7 +120,7 @@ namespace NodaTime.Web
                 .AddRedirect($@"^{anyVersion}/userguide$", "$1/userguide/")
                 .AddRedirect($@"^developer$", "developer/")
                 // Make /api and /userguide links to the latest stable release.
-                .AddRedirect("^(api|userguide)(/.*)?$", "2.0.x/$1$2");
+                .AddRedirect("^(api|userguide)(/.*)?$", "2.1.x/$1$2");
             app.UseRewriter(rewriteOptions);
 
             // At some stage we may want an MVC view for the home page, but at the moment
@@ -135,6 +135,7 @@ namespace NodaTime.Web
                 routes.MapRoute("1.3.x user guide", "1.3.x/userguide/{*url}", new { controller = "Documentation", bundle = "1.3.x", action = nameof(DocumentationController.ViewDocumentation) });
                 routes.MapRoute("1.4.x user guide", "1.4.x/userguide/{*url}", new { controller = "Documentation", bundle = "1.4.x", action = nameof(DocumentationController.ViewDocumentation) });
                 routes.MapRoute("2.0.x user guide", "2.0.x/userguide/{*url}", new { controller = "Documentation", bundle = "2.0.x", action = nameof(DocumentationController.ViewDocumentation) });
+                routes.MapRoute("2.1.x user guide", "2.1.x/userguide/{*url}", new { controller = "Documentation", bundle = "2.1.x", action = nameof(DocumentationController.ViewDocumentation) });
                 routes.MapRoute("Unstable user guide", "unstable/userguide/{*url}", new { controller = "Documentation", bundle = "unstable", action = nameof(DocumentationController.ViewDocumentation) });
                 routes.MapRoute("default", "{action=Index}/{id?}", new { controller = "Home" });
             });
