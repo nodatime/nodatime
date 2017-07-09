@@ -4,9 +4,17 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
-## 2.1 (current master branch)
+## 2.1.0, released 2017-07-09 with tzdb 2017
 
-## 1.4.0 beta 1, released 2017-07-04 with tzdb 2017b
+- Some optimizations to `Period` which didn't get into 2.0.x (most `Duration` ones did)
+- Making the misnamed `ToDayOfWeek` extension method obsolete
+- Some extra functionality `ParseResult`
+- [SourceLink](https://github.com/ctaggart/SourceLink) support
+- Add `LocalDate.MinIsoValue`/`MaxIsoValue`
+
+(Beta 1 was released on 2017-07-05. Only change since beta 1 was the final addition listed above.)
+
+## 1.4.0, released 2017-07-09 with tzdb 2017
 
 Release to enable migration to 2.0.
 
@@ -17,6 +25,8 @@ Release to enable migration to 2.0.
  - In some cases, members have been removed with no equivalent (e.g. `Century` properties)
  - The `IsoDayOfWeek` properties which have been renamed to `DayOfWeek` in 2.0 have *not* been
    made obsolete as there'd be no good way of dealing with this. (Just rename uses *after* migrating to 2.0.)
+
+(Beta 1 was released on 2017-07-04. No changes from beta to GA.)
 
 ## 2.0.3, released 2017-06-13 with tzdb 2017b
 
