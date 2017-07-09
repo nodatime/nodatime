@@ -58,15 +58,27 @@ echo "Cloning 2.0.x main repo"
 git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.0.x 2.0.x
 rm -rf 2.0.x/.git
 
+echo "Cloning 2.1.x main repo"
+git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.1.x 2.1.x
+rm -rf 2.1.x/.git
+
 echo "Cloning serialization (for NodaTime.Serialization.JsonNet)"
 # Not: not depth 1 as we want to check out specific tags
 git clone https://github.com/nodatime/nodatime.serialization.git -q serialization
 git -C serialization checkout NodaTime.Serialization.JsonNet-2.0.0
-mv serialization/src/NodaTime.Serialization.JsonNet 2.0.x/src
+cp -r serialization/src/NodaTime.Serialization.JsonNet 2.0.x/src
+cp -r serialization/src/NodaTime.Serialization.JsonNet 2.1.x/src
 rm -rf serialization
 
 echo "Preparing for docfx of 2.0.x"
 cd 2.0.x
+dotnet restore src/NodaTime
+dotnet restore src/NodaTime.Testing
+dotnet restore src/NodaTime.Serialization.JsonNet
+cd ..
+
+echo "Preparing for docfx of 2.1.x"
+cd 2.1.x
 dotnet restore src/NodaTime
 dotnet restore src/NodaTime.Testing
 dotnet restore src/NodaTime.Serialization.JsonNet
@@ -79,25 +91,30 @@ wget --quiet -Opackages/NodaTime-1.0.x.nupkg https://www.nuget.org/api/v2/packag
 wget --quiet -Opackages/NodaTime-1.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.1.0
 wget --quiet -Opackages/NodaTime-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.2.0
 wget --quiet -Opackages/NodaTime-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.3.2
-wget --quiet -Opackages/NodaTime-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.4.0-beta1
+wget --quiet -Opackages/NodaTime-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/1.4.0
 wget --quiet -Opackages/NodaTime-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/2.0.0
+wget --quiet -Opackages/NodaTime-2.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/2.1.0
 
 # NodaTime.Testing
 wget --quiet -Opackages/NodaTime.Testing-1.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.0.0
 wget --quiet -Opackages/NodaTime.Testing-1.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.1.0
 wget --quiet -Opackages/NodaTime.Testing-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.2.0
 wget --quiet -Opackages/NodaTime.Testing-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.3.2
-wget --quiet -Opackages/NodaTime.Testing-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.4.0-beta1
+wget --quiet -Opackages/NodaTime.Testing-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.4.0
 wget --quiet -Opackages/NodaTime.Testing-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/2.0.0
+wget --quiet -Opackages/NodaTime.Testing-2.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/2.1.0
 
 # NodaTime.Serialization.JsonNet
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.2.0
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.3.2
-wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.4.0-beta1
+wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.4.0
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/2.0.0
+# TODO: Fix this grotty hack. It's basically pretending that we have a 2.1 serialization package,
+# for the sake of later tools.
+cp packages/NodaTime.Serialization.JsonNet-2.0.x.nupkg packages/NodaTime.Serialization.JsonNet-2.1.x.nupkg 
 
 # Docfx metadata
-for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x; do
+for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x 2.1.x; do
   echo "Building docfx metadata for $version"
   cp ../docfx/docfx-$version.json $version/docfx.json
   docfx metadata $version/docfx.json -f
