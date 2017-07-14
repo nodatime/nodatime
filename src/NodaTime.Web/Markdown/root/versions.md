@@ -4,6 +4,13 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
+## 2.2.0, released 2017-07-09 and 2017-07-14 with tzdb 2017
+
+This was an accidental release, immediately delisted but later relisted due to issues with
+it actually being visible anyway. (The NodaTime.Testing package was only released on July 14th.)
+
+It's exactly the same as 2.1.0: upgrading from 2.1.0 to 2.2.0 should be a no-op.
+
 ## 2.1.0, released 2017-07-09 with tzdb 2017
 
 - Some optimizations to `Period` which didn't get into 2.0.x (most `Duration` ones did)
