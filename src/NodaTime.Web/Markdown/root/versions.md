@@ -4,14 +4,14 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
-## 2.2.0, released 2017-07-09 and 2017-07-14 with tzdb 2017
+## 2.2.0, released 2017-07-09 and 2017-07-14 with tzdb 2017b
 
-This was an accidental release, immediately delisted but later relisted due to issues with
+This was an accidental release, immediately delisted on nuget.org but later relisted due to issues with
 it actually being visible anyway. (The NodaTime.Testing package was only released on July 14th.)
 
 It's exactly the same as 2.1.0: upgrading from 2.1.0 to 2.2.0 should be a no-op.
 
-## 2.1.0, released 2017-07-09 with tzdb 2017
+## 2.1.0, released 2017-07-09 with tzdb 2017b
 
 - Some optimizations to `Period` which didn't get into 2.0.x (most `Duration` ones did)
 - Making the misnamed `ToDayOfWeek` extension method obsolete
@@ -21,7 +21,7 @@ It's exactly the same as 2.1.0: upgrading from 2.1.0 to 2.2.0 should be a no-op.
 
 (Beta 1 was released on 2017-07-05. Only change since beta 1 was the final addition listed above.)
 
-## 1.4.0, released 2017-07-09 with tzdb 2017
+## 1.4.0, released 2017-07-09 with tzdb 2017b
 
 Release to enable migration to 2.0.
 
