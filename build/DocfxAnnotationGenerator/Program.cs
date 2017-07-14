@@ -102,8 +102,7 @@ namespace DocfxAnnotationGenerator
                 {
                     foreach (var uid in release.Members.Select(m => m.Uid))
                     {
-                        string version;
-                        if (!uidsToVersions.TryGetValue(uid, out version))
+                        if (!uidsToVersions.TryGetValue(uid, out string version))
                         {
                             version = release.Version;
                             uidsToVersions[uid] = version;
@@ -157,8 +156,7 @@ namespace DocfxAnnotationGenerator
                 var document = FindDocument(release, files, member.DocfxUid);
                 var node = FindChildByUid(document, "items", member.DocfxUid);
 
-                YamlNode exceptions;
-                if (!node.Children.TryGetValue("exceptions", out exceptions))
+                if (!node.Children.TryGetValue("exceptions", out YamlNode exceptions))
                 {
                     exceptions = new YamlSequenceNode();
                     node.Add("exceptions", exceptions);
@@ -251,9 +249,8 @@ namespace DocfxAnnotationGenerator
         private YamlMappingNode FindDocument(Release release, Dictionary<string, YamlStream> files, string uid)
         {
             var docfxMember = release.MembersByUid[uid];
-            YamlStream document;
             string file = docfxMember.YamlFile;
-            if (!files.TryGetValue(file, out document))
+            if (!files.TryGetValue(file, out YamlStream document))
             {
                 document = LoadYamlFile(file);
                 files[file] = document;
