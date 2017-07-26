@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <AssemblyName>NodaTime.TzValidate.NzdCompatibility</AssemblyName>
     <OutputType>Exe</OutputType>
-    <PackageId>NodaTime.TzValidate.NzdCompatibility</PackageId>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
   </PropertyGroup>

@@ -2,11 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.0</TargetFramework>
-    <AssemblyName>NodaTime.TzValidate.NodaDump</AssemblyName>
     <OutputType>Exe</OutputType>
-    <PackageId>NodaTime.TzValidate.NodaDump</PackageId>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50;netcore45</PackageTargetFallback>
-    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
   </PropertyGroup>
