@@ -22,7 +22,7 @@ namespace NodaTime.Demo
         public void ImplicitIsoCalendar()
         {
             LocalDateTime dt = Snippet.For(new LocalDateTime(2010, 6, 16, 16, 20));
-            Assert.AreEqual("2010-06T16:20:00", LocalDateTimePattern.GeneralIso.Format(dt));
+            Assert.AreEqual("2010-06-16T16:20:00", LocalDateTimePattern.GeneralIso.Format(dt));
             Assert.AreEqual(CalendarSystem.Iso, dt.Calendar);
         }
 
