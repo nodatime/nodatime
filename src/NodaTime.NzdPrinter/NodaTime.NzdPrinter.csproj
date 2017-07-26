@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
-    <AssemblyName>NodaTime.NzdPrinter</AssemblyName>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <PackageId>NodaTime.NzdPrinter</PackageId>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
   </PropertyGroup>
@@ -17,13 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SharpCompress" Version="0.14.1" />
-    <PackageReference Include="System.Net.Http" Version="4.1.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
+    <PackageReference Include="SharpCompress" Version="0.17.1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.0" />
   </ItemGroup>
 
 </Project>
