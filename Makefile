@@ -30,8 +30,8 @@ DOTNET := dotnet
 
 
 # Everything is under src/$(project) or build/$(project), so we can get a list
-# of all the projects by looking for project.json files.
-ALL_PROJECTS := $(dir $(wildcard src/*/project.json build/*/project.json))
+# of all the projects by looking for .csproj files.
+ALL_PROJECTS := $(dir $(wildcard src/*/*.csproj build/*/*.csproj))
 # It would be bad if this were to be empty (q.v. clean, e.g), so let's just
 # verify that first.
 ifndef ALL_PROJECTS
