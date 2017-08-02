@@ -74,7 +74,7 @@ specifiers being available for some types but not others.
 Standard and custom patterns
 ---------------
 
-*Standard* patterns are those denoted with a single character to represent a common pattern within the culture
+*Standard* patterns are those **denoted with a single character** to represent a common pattern within the culture
 being used. For example, the standard pattern `d` for a `LocalDate` is in month/day/year format in a US culture,
 but day/month/year format in a UK culture. They're usually a shorthand for a possibly-culture-specific custom format,
 but not always. (Some standard patterns in Noda Time can't be represented directly in custom patterns.)
