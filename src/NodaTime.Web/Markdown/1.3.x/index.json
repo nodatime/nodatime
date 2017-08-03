@@ -1,5 +1,6 @@
 ﻿{
   "name": "1.3.x",
+  "parent": "1.2.x",
   "categories": [
     {
       "title": "Introduction",
