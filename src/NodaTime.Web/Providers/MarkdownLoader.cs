@@ -41,63 +41,66 @@ namespace NodaTime.Web.Providers
             commonMarkSettings.UriResolver = ResolveUrl;
 
             // TODO: Make the root location configurable
-            LoadRecursive("Markdown");
+            LoadBundleMetadata("Markdown");
+            PopulateParentBundles();
+            LoadBundleContent();
         }
 
-        private void LoadRecursive(string directory)
+        private void LoadBundleMetadata(string directory)
         {
             IDirectoryContents rootContents = fileProvider.GetDirectoryContents(directory);
             foreach (var fileInfo in rootContents)
             {
-                LoadRecursive($"{directory}/{fileInfo.Name}");
+                LoadBundleMetadata($"{directory}/{fileInfo.Name}");
             }
             var index = fileProvider.GetFileInfo($"{directory}/index.json");
             if (index.Exists)
             {
-                LoadBundle(directory, index);
+                var bundle = JsonConvert.DeserializeObject<MarkdownBundle>(index.ReadAllText());
+                bundle.ContentDirectory = directory;
+                bundles.Add(bundle.Name, bundle);
             }
         }
 
-        private void LoadBundle(string directory, IFileInfo index)
+        private void PopulateParentBundles()
         {
-            var bundle = JsonConvert.DeserializeObject<MarkdownBundle>(index.ReadAllText());
-            // TODO: Try to persuade Json.NET to convert a string into a MarkdownPage to then
-            // load later.
-            foreach (var category in bundle.Categories)
+            foreach (var bundle in bundles.Values)
             {
-                category.Pages = category.PageIds.Select(id => LoadPage(directory, id, bundle)).ToList();
-            }
-            foreach (var resource in bundle.Resources ?? Enumerable.Empty<string>())
-            {
-                using (var stream = fileProvider.GetFileInfo($"{directory}/{resource}").CreateReadStream())
+                string parentName = bundle.Parent;
+                if (parentName != null)
                 {
-                    var memoryStream = new MemoryStream();
-                    stream.CopyTo(memoryStream);
-                    if (!resource.EndsWith(".png"))
+                    if (!bundles.TryGetValue(parentName, out var parentBundle))
                     {
-                        throw new InvalidOperationException("We only know how to deal with .png at the moment!");
+                        throw new Exception($"Invalid parent {parentName} for bundle {bundle.Name}");
                     }
-                    bundle.AddResource(resource, new MarkdownResource(resource, memoryStream.ToArray(), "image/png"));
+                    bundle.ParentBundle = parentBundle;
                 }
             }
-            bundle.BuildIndex();
-            bundles.Add(bundle.Name, bundle);
         }
 
-        private MarkdownPage LoadPage(string directory, string id, MarkdownBundle bundle)
+        private void LoadBundleContent()
         {
-            var filename = $"{directory}/{id}.md";
-            try
+            // TODO: Simpler way of expressing this "work out a tree" code.
+            var loadedBundleNames = new HashSet<string>();
+            var remainingBundles = bundles.Values.ToList();
+            // On each iteration, load everything which either has no parent, or
+            // whose parent has already been loaded.
+            while (remainingBundles.Count > 0)
             {
-                var file = fileProvider.GetFileInfo(filename);
-                using (var reader = file.CreateReader())
+                var bundlesToLoadThisIteration = remainingBundles
+                    .Where(b => b.Parent == null || loadedBundleNames.Contains(b.Parent))
+                    .ToList();
+                if (bundlesToLoadThisIteration.Count == 0)
                 {
-                    return MarkdownPage.Load(id, bundle, reader, commonMarkSettings);
+                    string bundleNames = string.Join(", ", remainingBundles.Select(b => b.Name));
+                    throw new Exception($"Unable to make progress loading bundles. Remaining bundles: {bundleNames}");
                 }
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"Unable to parse markdown content from {filename}", e);
+                foreach (var bundle in bundlesToLoadThisIteration)
+                {
+                    bundle.LoadContent(fileProvider, commonMarkSettings);
+                    remainingBundles.Remove(bundle);
+                    loadedBundleNames.Add(bundle.Name);
+                }
             }
         }
 
@@ -131,8 +134,7 @@ namespace NodaTime.Web.Providers
 
         public MarkdownBundle TryGetBundle(string bundle)
         {
-            MarkdownBundle ret;
-            bundles.TryGetValue(bundle, out ret);
+            bundles.TryGetValue(bundle, out var ret);
             return ret;
         }
 
