@@ -5,7 +5,6 @@ using CommonMark;
 using CommonMark.Syntax;
 using Microsoft.AspNetCore.Html;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -30,6 +29,16 @@ namespace NodaTime.Web.Models
             Content = content;
             Bundle = bundle;
         }
+
+        public static MarkdownPage InheritancePlaceholder(string id, MarkdownBundle bundle) =>
+            new MarkdownPage(id, bundle, null, null);
+
+        /// <summary>
+        /// Creates a new page with the same ID, content and title, but the specified bundle.
+        /// This is used to create an "inherited" page.
+        /// </summary>
+        public MarkdownPage WithBundle(MarkdownBundle bundle) =>
+            new MarkdownPage(Id, bundle, Title, Content);
 
         public static MarkdownPage Load(string id, MarkdownBundle bundle, TextReader reader, CommonMarkSettings commonMarkSettings)
         {
