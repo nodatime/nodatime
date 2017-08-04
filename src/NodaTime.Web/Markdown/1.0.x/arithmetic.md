@@ -1,4 +1,4 @@
-@Title="Date and time arithmetic"
+@Title = "Date and time arithmetic"
 
 There are two types of arithmetic in Noda Time: arithmetic on the
 time line (in some sense "absolute" arithmetic), and calendrical arithmetic.
@@ -40,8 +40,8 @@ what you expect when using `ZonedDateTime`, due to daylight saving transitions:
 
 ```csharp
 DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
-// 12:45am on March 27th 2012
-LocalDateTime local = new LocalDateTime(2012, 3, 27, 0, 45, 00);
+// 12:45am on March 25th 2012
+LocalDateTime local = new LocalDateTime(2012, 3, 25, 0, 45, 00);
 ZonedDateTime before = london.AtStrictly(local);
 ZonedDateTime after = before + Duration.FromMinutes(20);
 ```
