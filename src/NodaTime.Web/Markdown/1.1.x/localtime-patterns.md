@@ -7,21 +7,21 @@ Standard Patterns
 
 The following standard patterns are supported:
 
-- `t`: Short format pattern.  
-  This is the short time pattern as defined by the culture's [`DateTimeFormatInfo.ShortTimePattern`](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shorttimepattern.aspx) 
+- `t`: Short format pattern.
+  This is the short time pattern as defined by the culture's [`DateTimeFormatInfo.ShortTimePattern`](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shorttimepattern.aspx)
   For example, in the invariant culture this is "HH:mm".
 
-- `T`: Long format pattern.  
-  This is the long time pattern as defined by the culture's [`DateTimeFormatInfo.LongTimePattern`](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longtimepattern.aspx) 
+- `T`: Long format pattern.
+  This is the long time pattern as defined by the culture's [`DateTimeFormatInfo.LongTimePattern`](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longtimepattern.aspx)
   For example, in the invariant culture this is "HH:mm:ss".
 
-- `r`: Round-trip pattern.  
+- `r`: Round-trip pattern.
   This always uses a pattern of "HH:mm:ss.FFFFFFF", but with the culture-specific time separator.
 
 Custom Patterns
 ---------------
 
-The following custom offset pattern characters are supported for local times. See [custom pattern notes](text#custom-patterns)
+The following custom format pattern characters are supported for local times. See [custom pattern notes](text#custom-patterns)
 for general notes on custom patterns, including characters used for escaping and text literals.
 
 <table>
@@ -85,7 +85,7 @@ for general notes on custom patterns, including characters used for escaping and
     <tr>
       <td><code>f</code>, <code>ff</code> ... up to <code>fffffff</code></td>
       <td>
-        The fractional second part of the offset, using exactly the specified number of characters
+        The fractional second part of the time, using exactly the specified number of characters
 		(up to 7, for a representation accurate to a tick).
       </td>
       <td>
@@ -124,7 +124,7 @@ for general notes on custom patterns, including characters used for escaping and
 	<tr>
 	  <td><code>.</code></td>
 	  <td>
-	    This is *always* a period ("."); not a culture-sensitive decimal separator as one might expect. This
+	    This is <em>always</em> a period ("."); not a culture-sensitive decimal separator as one might expect. This
 		follows the example of other standard libraries, however odd it may appear. The only difference
 		between a period and any other literal character is that when followed by a series of "F" characters,
 		the period will be removed if there are no fractional seconds.
@@ -155,5 +155,5 @@ for general notes on custom patterns, including characters used for escaping and
       <td><code>HH:mm</code> => <code>07:30</code></td>
     </tr>
   </tbody>
-    
+
 </table>

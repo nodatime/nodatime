@@ -1,4 +1,4 @@
-@Title = "Date and time arithmetic"
+@Title="Date and time arithmetic"
 
 There are two types of arithmetic in Noda Time: arithmetic on the
 time line (in some sense "absolute" arithmetic), and calendrical arithmetic.
@@ -32,8 +32,8 @@ ZonedDateTime nowInIsoUtc = now.InUtc();
 ZonedDateTime thenInIsoUtc = nowInIsoUtc + duration;
 ```
 
-(There are also static `Add` and `Subtract` methods, the `-` operator and
-the instance `Minus` method on both `Instant` and `ZonedDateTime`.)
+There are also static methods (`Add` and `Subtract`), the `-` operator and
+an instance method (`Minus`) on both `Instant` and `ZonedDateTime`.
 
 Time line arithmetic is pretty simple, except you might not *always* get
 what you expect when using `ZonedDateTime`, due to daylight saving transitions:

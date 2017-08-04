@@ -1,7 +1,7 @@
 @Title="Choosing (and converting) between types"
 
 This is a companion page to the
-["core concepts quick reference"](concepts), and ["core types"](core-types)
+["core concepts"](concepts), and ["core types quick reference"](core-types)
 pages, describing when it's appropriate to use which type, and how to convert between them.
 
 Ultimately, you should be thinking about what data you really have,

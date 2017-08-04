@@ -18,7 +18,7 @@ The following standard patterns are supported:
 Custom Patterns
 ---------------
 
-The following custom offset pattern characters are supported for local dates. See [custom pattern notes](text#custom-patterns)
+The following custom format pattern characters are supported for local dates. See [custom pattern notes](text#custom-patterns)
 for general notes on custom patterns, including characters used for escaping and text literals.
 
 For the meanings of "absolute" years and text handling, see later details.
@@ -35,10 +35,13 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>y</code> or <code>yy</code></td>
       <td>
-        Two digit absolute year; a single <code>y</code> allows up to two digits to be parsed,
-		but formats only one digit where possible. The "base century" is chosen from the template
+        Two digit absolute year with an optional leading <code>-</code> sign; a single <code>y</code> allows up to two digits to be parsed,
+		but formats only one digit where possible. When parsing, the "base century" is chosen from the template
 		value; if the two-digit year is greater than 30, the corresponding year in the previous
-		century is used.
+		century is used. Note that when formatting, no checking
+        is performed to ensure that the year will be parsed to
+        the same value. (For example, 1725 would be formatted
+        as 25 but parsed as 2025.)
       </td>
       <td>
 	    Assuming a template value of 2000 (the default):
@@ -51,7 +54,8 @@ For the meanings of "absolute" years and text handling, see later details.
     <tr>
       <td><code>yyy</code></td>
       <td>
-        Three digit absolute year. This will parse up to five digits, but only format to as many as are
+        Three digit absolute year with optional leading <code>-</code>
+        sign. This will parse up to five digits, but only format to as many as are
 		required, with a minimum of three.
       </td>
       <td>
@@ -60,13 +64,33 @@ For the meanings of "absolute" years and text handling, see later details.
       </td>
     </tr>
     <tr>
-      <td><code>yyyy</code> or <code>yyyyy</code></td>
+      <td><code>yyyy</code></td>
       <td>
-        The absolute year as either always-four or always-five digits.
+        The absolute year as 4 or 5 digits with an optional leading <code>-</code> sign.
+        <p>
+        If the absolute year is outside the range [-9999, 9999] the
+        value will be formatted (with the excess digit), but
+        the result may not be parsed back to the original value.
+        If the next character in the pattern represents a literal
+        non-digit, or a non-alphanumeric character, or this appears
+        at the end of the pattern, then up to five digits will be
+        parsed. Otherwise, only exactly 4 digits will be parsed.<p>This is
+        to avoid a pattern such as "yyyyMMdd" from becoming ambiguous or
+        hard to parse, while allowing "yyyy-MM-dd" to handle 5-digit years
+        in a convenient fashion. (The detection of "5 digits would be okay"
+        is quite conservative; "yyyyVMMdd" wouldn't handle 5-digit years,
+        but "yyyy'V'MMdd" would, even though the two patterns are otherwise
+        equivalent. This algorithm may change over time.)
+      </td>
+    </tr>
+    <tr>
+      <td><code>yyyyy</code></td>
+      <td>
+        The absolute year as exactly 5 digits with an optional leading <code>-</code> sign.
       </td>
       <td>
-        2012: <code>yyyy</code> => <code>2012</code> <br />
-        2012: <code>yyyyy</code> => <code>02012</code> <br />
+        2012: => <code>02012</code> <br />
+        12345: => <code>12345</code> <br />
       </td>
     </tr>
 	<tr>
@@ -108,7 +132,7 @@ For the meanings of "absolute" years and text handling, see later details.
       <td>
 	    (In an English locale.) <br />
 	    June: <code>MMM</code> => <code>Jun</code> (can parse from "jun" or "JUN" etc.)<br />
-	    December: <code>MM</code> => <code>Dec</code> (can parse from "dec" or "DEC" etc.)<br />
+	    December: <code>MMM</code> => <code>Dec</code> (can parse from "dec" or "DEC" etc.)<br />
       </td>
     </tr>
     <tr>
@@ -118,8 +142,8 @@ For the meanings of "absolute" years and text handling, see later details.
       </td>
       <td>
 	    (In an English locale.) <br />
-	    June: <code>MMM</code> => <code>Jun</code> (can parse from "june" or "JUNE" etc.)<br />
-	    December: <code>MM</code> => <code>Dec</code> (can parse from "december" or "DECEMBER" etc.)<br />
+	    June: <code>MMMM</code> => <code>June</code> (can parse from "june" or "JUNE" etc.)<br />
+	    December: <code>MMMM</code> => <code>December</code> (can parse from "december" or "DECEMBER" etc.)<br />
       </td>
     </tr>
 	<tr>

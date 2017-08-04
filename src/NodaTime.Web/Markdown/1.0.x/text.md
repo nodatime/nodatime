@@ -71,7 +71,7 @@ specifiers being available for some types but not others.
 Note that at present, `ZonedDateTime`, `OffsetDateTime` and `Duration` do not support
 any form of parsing or user-specified formatting.
 
-<a name="custom-patterns">Custom patterns</a>
+<a name="custom-patterns"></a>Custom patterns
 ---------------
 
 All custom patterns support the following characters:
@@ -96,7 +96,7 @@ All custom patterns support the following characters:
         Open and close a text literal, which can include
         double quotes.
       </td>
-      <td><code>HH'H'mm'm'</code> => <code>07H30M</code></td>
+      <td><code>HH'H'mm'M'</code> => <code>07H30M</code></td>
     </tr>
     <tr>
       <td><code>"</code></td>
