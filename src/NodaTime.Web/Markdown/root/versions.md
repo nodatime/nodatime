@@ -14,10 +14,11 @@ It's exactly the same as 2.1.0: upgrading from 2.1.0 to 2.2.0 should be a no-op.
 ## 2.1.0, released 2017-07-09 with tzdb 2017b
 
 - Some optimizations to `Period` which didn't get into 2.0.x (most `Duration` ones did)
-- Making the misnamed `ToDayOfWeek` extension method obsolete
-- Some extra functionality `ParseResult`
-- [SourceLink](https://github.com/ctaggart/SourceLink) support
-- Add `LocalDate.MinIsoValue`/`MaxIsoValue`
+- Obsoleted the misnamed `ToDayOfWeek` extension method ([issue 776])
+- Added factory methods and some extra functionality to `ParseResult` to make it easier
+  to work with it in a functional context ([issue 780])
+- Added [SourceLink](https://github.com/ctaggart/SourceLink) support ([issue 870])
+- Added `LocalDate.MinIsoValue`/`MaxIsoValue` ([issue 898])
 
 (Beta 1 was released on 2017-07-05. Only change since beta 1 was the final addition listed above.)
 
@@ -26,7 +27,7 @@ It's exactly the same as 2.1.0: upgrading from 2.1.0 to 2.2.0 should be a no-op.
 Release to enable migration to 2.0.
 
 - `ZonedClock` and `WeekYearRules` backported from 2.0
-- Extension methods for `IClock` and `IDateTimeZoneSource` to allow smoother migration
+- Added extension methods for `IClock` and `IDateTimeZoneSource` to allow smoother migration
 - Members removed in 2.0 are obsolete where possible:
    - In most cases, the message indicates how to migrate code ready for 2.0
    - In some cases, members have been removed with no equivalent (e.g. `Century` properties)
