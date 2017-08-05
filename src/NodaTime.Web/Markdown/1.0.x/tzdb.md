@@ -54,7 +54,7 @@ file is relatively straightforward:
 
 - Create a [`ResourceSet`](https://msdn.microsoft.com/en-us/library/t15hy0dt.aspx) from the file
 - Create a [`TzdbDateTimeZoneSource`][TzdbDateTimeZoneSource] with the `ResourceSet`
-- Create [`DateTimeZoneCache`][DateTimeZoneCache] with the source 
+- Create [`DateTimeZoneCache`][DateTimeZoneCache] with the source
 - Use that cache (usually by way of dependency injection as an `IDateTimeZoneProvider`) wherever you need time zone information
 
 Here's some sample code for the first three steps above:

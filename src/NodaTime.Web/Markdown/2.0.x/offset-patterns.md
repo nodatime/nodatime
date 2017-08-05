@@ -7,19 +7,19 @@ Standard Patterns
 
 The following standard patterns are supported:
 
-- `l`: Long format, displaying information down to the second.  
+- `l`: Long format, displaying information down to the second.
   Typical pattern text: `+HH:mm:ss`
-- `m`: Medium format, displaying information down to the minute.  
+- `m`: Medium format, displaying information down to the minute.
   Typical pattern text: `+HH:mm`
-- `s`: Short format, displaying information down to the hour.  
+- `s`: Short format, displaying information down to the hour.
   Typical pattern text: `+HH`
-- `L`: Long format without punctuation, displaying information down to the second.  
+- `L`: Long format without punctuation, displaying information down to the second.
   Typical pattern text: `+HHmmss`
-- `M`: Medium format without punctuation, displaying information down to the minute.  
+- `M`: Medium format without punctuation, displaying information down to the minute.
   Typical pattern text: `+HHmm`
-- `S`: Short format without punctuation, displaying information down to the minute.  
+- `S`: Short format without punctuation, displaying information down to the minute.
   Typical pattern text: `+HH` (so equivalent to `s` in many cases, but can vary by culture)
-- `g`: General pattern. Formatting depends on the value passed in. If the offset has seconds, the long 
+- `g`: General pattern. Formatting depends on the value passed in. If the offset has seconds, the long
   format is used; otherwise, if the offset has minutes, the medium format is used; otherwise the short format is used. When parsing, the other standard format patterns are tried one at a time. This is the default format pattern.
 - `G`: As `g`, but using `Z` for an offset of 0, as if it were Z-prefixed. (See below.)
 - `i`: As `g`, but using the colon-free formats (`L`, `M`, `S`)
@@ -91,7 +91,7 @@ for general notes on custom patterns, including characters used for escaping and
       <td>
         The sign of the value, always specified whether positive or negative.
         <code>+</code> and <code>-</code> are always used as the symbols, regardless
-        of the culture used when constructing the pattern. A positive offset is used 
+        of the culture used when constructing the pattern. A positive offset is used
         when local time is ahead of UTC (e.g. Europe) and a negative offset is used
         when local time is behind UTC (e.g. America).
       </td>
@@ -119,5 +119,5 @@ for general notes on custom patterns, including characters used for escaping and
       </td>
       <td><code>HH:mm</code> => <code>07:30</code></td>
     </tr>
-  </tbody>    
+  </tbody>
 </table>

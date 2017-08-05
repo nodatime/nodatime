@@ -68,7 +68,7 @@ implements the rule specified in ISO-8601. Under this rule:
   or more in that year, then the whole of that week is in week 1 of
   that year; otherwise, the whole of that week is in the final week
   of the previous year.
-  
+
 To put the "four days or more" rule in a different way: if the first
 day of the calendar year is Monday, Tuesday, Wednesday or Thursday,
 then the week containing that day is week 1 of the same year; if
@@ -99,7 +99,7 @@ weeks, but still "four days or more" then the first day of the
 calendar year is in week 1 if it's a Sunday, Monday, Tuesday or
 Wednesday.
 - The required number of days in the week containing the first day
-of the calendar year to make that day part of week 1. For example, 
+of the calendar year to make that day part of week 1. For example,
 with a Monday-to-Sunday week, and a "minimum days in first week"
 value of 7, the first day of the calendar year will *only* be in
 week 1 if it's a Monday. At the other extreme, a "minimum days
@@ -112,7 +112,7 @@ construct ISO-like rules. The first overload defaults to using Monday
 as the first day of the week.
 
 The rule returned by `WeekYearRules.Iso` property is equivalent to
-the rule returned by 
+the rule returned by
 `WeekYearRules.ForMinDaysInFirstWeek(4, IsoDayOfWeek.Monday)`.
 
 BCL rules

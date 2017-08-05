@@ -94,7 +94,7 @@ Most serialized forms just consist of element text using a specified text handli
       <td>Example</td>
     </tr>
   </thead>
-  <tbody>    
+  <tbody>
     <tr>
       <td><code>Instant</code></td>
       <td>Extended ISO pattern</td>
@@ -146,12 +146,12 @@ Most serialized forms just consist of element text using a specified text handli
       <td><code>&lt;value&gt;1:12:34:56.1234567&lt;/value&gt;</td>
     </tr>
   </tbody>
-</table> 
+</table>
 
 Binary serialization
 --------------------
 
-As of Noda Time 1.2, for the desktop build only, the following types implement `ISerializable` and have the `[Serializable]` attribute applied to them, and can therefore be serialized using `BinaryFormatter`: 
+As of Noda Time 1.2, for the desktop build only, the following types implement `ISerializable` and have the `[Serializable]` attribute applied to them, and can therefore be serialized using `BinaryFormatter`:
 
 - `Instant`
 - `OffsetDateTime`

@@ -9,7 +9,7 @@ some problems, at least on Linux. (Earlier versions had significantly more issue
 If you can use the TZDB time zone provider within Noda Time instead of the BCL one,
 you're likely to encounter fewer problems.
 
-Some issues around cultural information used for date/time formatting have been noticed 
+Some issues around cultural information used for date/time formatting have been noticed
 in the past. These appear to have improved. Unfortunately as Mono runs in so many environments, it's
 hard to test everything - please report any errors you run into. Using the invariant culture and
 custom format patterns should always work correctly; it's only when you need localization that

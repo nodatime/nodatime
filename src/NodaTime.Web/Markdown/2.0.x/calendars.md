@@ -30,7 +30,7 @@ Details are in the [week year page](weekyears).
 ISO
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access: [`CalendarSystem.Iso`](noda-property://NodaTime.CalendarSystem.Iso)
 
 This is the default calendar system when constructing values without explicitly specifying a calendar.
@@ -46,7 +46,7 @@ consistency.
 Gregorian
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access:
 
 - [`CalendarSystem.Gregorian`](noda-property://NodaTime.CalendarSystem.Gregorian)
@@ -65,7 +65,7 @@ the calendar observed in many countries over time, it causes all sorts of API di
 Julian
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access: [`CalendarSystem.Julian`](noda-property://NodaTime.CalendarSystem.Julian)
 
 The [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46 BCE, and took
@@ -79,7 +79,7 @@ details of this leap year error, along with suggestions of how history might hav
 Coptic (Alexandrian)
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access: [`CalendarSystem.Coptic`](noda-property://NodaTime.CalendarSystem.Coptic)
 
 The Coptic calendar system is used by the Coptic Orthodox Church. Each year has 12 months of exactly 30 days, followed by
@@ -92,7 +92,7 @@ dates earlier than year 1 cannot be represented in the Coptic calendar in Noda T
 Islamic (Hijri)
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access:
 
 - [`CalendarSystem.GetIslamicCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetIslamicCalendar_NodaTime_Calendars_IslamicLeapYearPattern_NodaTime_Calendars_IslamicEpoch_)
@@ -122,7 +122,7 @@ Noda Time, as described below.
 Persian (or Solar Hijri)
 ===
 
-First supported in v1.3.0 ("simple" form only; arithmetic and astronomical introduced in 2.0.0)  
+First supported in v1.3.0 ("simple" form only; arithmetic and astronomical introduced in 2.0.0)
 API access:
 
 - [`CalendarSystem.PersianSimple`](noda-property://NodaTime.CalendarSystem.PersianSimple)
@@ -147,7 +147,7 @@ Iran and Pakistan. Three variants of this are supported in Noda Time:
 Um Al Qura
 ===
 
-First supported in v2.0.0  
+First supported in v2.0.0
 API access: [`CalendarSystem.UmAlQura`](noda-property://NodaTime.CalendarSystem.UmAlQura)
 
 The [Um Al Qura (or Umm al-Qura) calendar](https://en.wikipedia.org/wiki/Islamic_calendar#Saudi_Arabia.27s_Umm_al-Qura_calendar),
@@ -163,7 +163,7 @@ on all platforms.
 Hebrew
 ===
 
-First supported in v1.3.0  
+First supported in v1.3.0
 API access:
 
 - [`CalendarSystem.GetHebrewCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetHebrewCalendar_NodaTime_Calendars_HebrewMonthNumbering_)

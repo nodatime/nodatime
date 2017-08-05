@@ -17,7 +17,7 @@ The following standard patterns are supported:
 - `f`: The culture's [long date pattern](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longdatepattern.aspx) followed by a space,
   followed by the [short time pattern](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shorttimepattern.aspx).
 
-- `F`: The full date and time pattern as defined by the culture's [`DateTimeFormatInfo.FullDateTimePattern`](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.fulldatetimepattern.aspx) 
+- `F`: The full date and time pattern as defined by the culture's [`DateTimeFormatInfo.FullDateTimePattern`](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.fulldatetimepattern.aspx)
   For example, in the invariant culture this is "dddd, dd MMMM yyyy HH:mm:ss".
 
 - `g`: The culture's [short date pattern](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shortdatepattern.aspx) followed by a space,

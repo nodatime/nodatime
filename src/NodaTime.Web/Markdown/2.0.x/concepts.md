@@ -74,7 +74,7 @@ epoch. The value can be negative for dates and times before 1970 of
 course - the range of supported dates is from around 27000 BCE to
 around 31000 CE in the Gregorian calendar.
 
-An `Instant` has no concept of a particular time zone - it is 
+An `Instant` has no concept of a particular time zone - it is
 *just* the number of nanoseconds which have occurred since
 the Unix epoch. The fact that the Unix epoch is defined in terms of
 UTC is irrelevant - it could have been defined in terms of a

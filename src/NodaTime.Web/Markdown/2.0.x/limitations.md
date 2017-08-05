@@ -2,7 +2,7 @@
 
 Noda Time is a work in progress. It has various limitations, some of
 which we'd obviously like to remove over time. Here's a list of some
-aspects we'd like to improve; see the 
+aspects we'd like to improve; see the
 [issues list](https://github.com/nodatime/nodatime/issues) for
 others.
 
@@ -20,7 +20,7 @@ issue or post on the
 
 The API in .NET Standard libraries is more limited than the
 full desktop version. Currently this provides relatively few challenges for
-Noda Time, with one significant exception: `TimeZoneInfo`. We can't fetch 
+Noda Time, with one significant exception: `TimeZoneInfo`. We can't fetch
 arbitrary time zones by ID, nor can we ask for the adjustment rules for a particular
 time zone.
 

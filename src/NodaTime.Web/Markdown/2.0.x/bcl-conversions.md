@@ -2,7 +2,7 @@
 
 Various Noda Time types have "broadly similar" types in the .NET
 framework's Base Class Library (BCL). Where appropriate,
-conversions are provided - we have no illusions that you'll be able 
+conversions are provided - we have no illusions that you'll be able
 to use Noda Time for *everything*. Noda Time attempts to shield you
 from using "the wrong kind of `DateTime`"
 
@@ -69,7 +69,7 @@ DateTimeOffset
 ==============
 
 [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime) corresponds most closely to `DateTimeOffset`, although you can also use a [`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) with a fixed time zone. That's exactly what `ZonedDateTime.FromDateTimeOffset` does,
-but you must be aware that "real" time zone information is lost as soon as you've got a `DateTimeOffset` - 
+but you must be aware that "real" time zone information is lost as soon as you've got a `DateTimeOffset` -
 it represents an exact instant in time, with a local offset from UTC, but that doesn't tell you what the
 local offset would be a minute later or earlier. The reverse conversion (`ZonedDateTime.ToDateTimeOffset`)
 loses the time zone information in a similar way.

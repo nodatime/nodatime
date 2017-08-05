@@ -82,7 +82,7 @@ that Gregorian year can be converted into the relevant calendar.)
 			<td>9715</td>
 			<td>284</td>
 			<td>9999</td>
-		</tr>		
+		</tr>
 	</tbody>
 </table>
 
@@ -114,7 +114,7 @@ Duration
 
 [`Duration`](noda-type://NodaTime.Duration) is designed to allow for *at least* the largest difference in
 valid `Instant` values in either direction. As such, it needs to cover 631,075,881,599,999,999,999 nanoseconds -
-which is just shy of 7,304,119 days. Internally, durations are stored in terms of "day" and "nanosecond within the day" (an 
+which is just shy of 7,304,119 days. Internally, durations are stored in terms of "day" and "nanosecond within the day" (an
 implementation detail to be sure, but one which sometimes affects other decisions).
 
 Additionally, it seems useful to be able to cover the full range of
@@ -122,7 +122,7 @@ Additionally, it seems useful to be able to cover the full range of
 type.
 
 The result is that we have a range of days from -2<sup>24</sup> to +2<sup>24</sup>-1 - and the nanosecond part means that the
-total range is from -2<sup>24</sup> days inclusive to +2<sup>24</sup> days exclusive - the largest valid `Duration` is 1 
+total range is from -2<sup>24</sup> days inclusive to +2<sup>24</sup> days exclusive - the largest valid `Duration` is 1
 nanosecond less than 2<sup>24</sup> days.
 
 Period

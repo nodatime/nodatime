@@ -14,14 +14,14 @@ there are changes. This does not affect binary compatibility.
 Obsolete members
 ====
 
-A few members in 1.x were already marked as obsolete, and they have now been removed. Code using 
-these members will no longer compile. Two of these were simple typos in the name - fixing code 
+A few members in 1.x were already marked as obsolete, and they have now been removed. Code using
+these members will no longer compile. Two of these were simple typos in the name - fixing code
 using these is simply a matter of using the correct name instead:
 
 - `Era.AnnoMartyrm` should be `Era.AnnoMartyrum`
 - `Period.FromMillseconds` should be `Period.FromMilliseconds`
 
-In addition, `DateTimeZoneProviders.Default` has been removed. It wasn't the default in any Noda 
+In addition, `DateTimeZoneProviders.Default` has been removed. It wasn't the default in any Noda
 Time code, and it's clearer to use the `DateTimeZoneProviders.Tzdb` member, which the `Default`
 member was equivalent to anyway.
 
@@ -109,11 +109,11 @@ Period
 ====
 
 The `Years`, `Months`, `Weeks` and `Days` properties of `Period` (and `PeriodBuilder`) are
-now `int` rather than `long` properties. Any property for those units outside the range of `int` 
+now `int` rather than `long` properties. Any property for those units outside the range of `int`
 could never be added to a date anyway, as it would immediately go out of range. This change just
-makes that clearer, and embraces the new "`int` for dates, `long` for times" approach which 
-applies throughout Noda Time 2.0. The indexer for `PeriodBuilder` is still of type `long`, but 
-it will throw an `ArgumentOutOfRangeException` for values outside the range of `int` when 
+makes that clearer, and embraces the new "`int` for dates, `long` for times" approach which
+applies throughout Noda Time 2.0. The indexer for `PeriodBuilder` is still of type `long`, but
+it will throw an `ArgumentOutOfRangeException` for values outside the range of `int` when
 setting date-based units.
 
 Normalization of a period which has time units which add up to a "days" range outside the range
@@ -241,9 +241,9 @@ Other changes
 ---
 
 The numeric standard patterns for `Instant` and `Offset` have been removed, with no direct equivalent.
-These were not known to be useful, felt "alien" in various ways, and cause issues within the 
+These were not known to be useful, felt "alien" in various ways, and cause issues within the
 implementation. If you need these features - possibly in a specialized way - please contact the
-mailing list and we may be able to suggest alternative implementations to meet your specific 
+mailing list and we may be able to suggest alternative implementations to meet your specific
 requirements.
 
 Patterns no longer allow ASCII letters (a-z, A-Z) to act as literals when they're not escaped or quoted.

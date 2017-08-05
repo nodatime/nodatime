@@ -95,7 +95,7 @@ the corresponding attribute is omitted.)
       <td>Example</td>
     </tr>
   </thead>
-  <tbody>    
+  <tbody>
     <tr>
       <td><code>Instant</code></td>
       <td>Extended ISO pattern</td>
@@ -147,12 +147,12 @@ the corresponding attribute is omitted.)
       <td><code>&lt;value&gt;1:12:34:56.123456789&lt;/value&gt;</td>
     </tr>
   </tbody>
-</table> 
+</table>
 
 Binary serialization
 --------------------
 
-As of Noda Time 1.2, for the desktop build only, the following types implement `ISerializable` and have the `[Serializable]` attribute applied to them, and can therefore be serialized using `BinaryFormatter`: 
+As of Noda Time 1.2, for the desktop build only, the following types implement `ISerializable` and have the `[Serializable]` attribute applied to them, and can therefore be serialized using `BinaryFormatter`:
 
 - `Instant`
 - `OffsetDateTime`
@@ -219,7 +219,7 @@ All default patterns use the invariant culture.
  It does not support round-tripping offsets with sub-minute components.
 - `ZonedDateTime`: As `OffsetDateTime`, but with a time zone ID at the end: `uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> z`
 - `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer
-  sees fit. (Typically using the default representation above.) An alternative form can be specified using the `WithIsoIntervalConverter` 
+  sees fit. (Typically using the default representation above.) An alternative form can be specified using the `WithIsoIntervalConverter`
   extension method on `JsonSerializer`/`JsonSerializerSettings`. If an interval is infinite in either direction, the corresponding
   property is omitted.
 - `Offset`: general pattern, e.g. `+05` or `-03:30`

@@ -7,13 +7,13 @@ Standard Patterns
 
 The following standard patterns are supported:
 
-- `f`: Full format, displaying all information including fractional seconds.  
+- `f`: Full format, displaying all information including fractional seconds.
   Typical pattern text: `+HH:mm:ss.fff`
-- `l`: Long format, displaying information down to the second.  
+- `l`: Long format, displaying information down to the second.
   Typical pattern text: `+HH:mm:ss`
-- `m`: Medium format, displaying information down to the minute.  
+- `m`: Medium format, displaying information down to the minute.
   Typical pattern text: `+HH:mm`
-- `s`: Short format, displaying information down to the hour.  
+- `s`: Short format, displaying information down to the hour.
   Typical pattern text: `+HH`
 - `g`: General pattern. Formatting depends on the value passed in:
   - If the offset has fractional seconds, the full format is used; otherwise
@@ -155,5 +155,5 @@ for general notes on custom patterns, including characters used for escaping and
       </td>
       <td><code>HH:mm</code> => <code>07:30</code></td>
     </tr>
-  </tbody>    
+  </tbody>
 </table>

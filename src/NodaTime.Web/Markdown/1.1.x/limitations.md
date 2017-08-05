@@ -2,7 +2,7 @@
 
 Noda Time is a work in progress. It has various limitations, some of
 which we'd obviously like to remove over time. Here's a list of some
-aspects we'd like to improve; see the 
+aspects we'd like to improve; see the
 [issues list](https://github.com/nodatime/nodatime/issues) for
 others.
 
@@ -39,7 +39,7 @@ Fuller text support
 ===================
 
 Currently there's no way of parsing or formatting a
-[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) or 
+[`ZonedDateTime`](noda-type://NodaTime.ZonedDateTime) or
 [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime), partly due to
 the difficulty of representing time zones or offsets. While this is
 the primary deficiency of our current text support, it's not the

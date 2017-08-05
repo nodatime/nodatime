@@ -2,7 +2,7 @@
 
 Noda Time is a work in progress. It has various limitations, some of
 which we'd obviously like to remove over time. Here's a list of some
-aspects we'd like to improve; see the 
+aspects we'd like to improve; see the
 [issues list](https://github.com/nodatime/nodatime/issues) for
 others.
 

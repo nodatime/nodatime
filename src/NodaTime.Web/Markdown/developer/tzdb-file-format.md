@@ -166,7 +166,7 @@ Everything else is represented as a `PrecalculatedDateTimeZone` - a number of ab
 time until either the end of time, or some stable period where a pair of rules governing when daylight saving time starts
 and stops continues until the end of time. This final stable period is the "tail zone" - and is optional, as a zone which
 ends in a fixed offset can simply represent that as a final zone interval to the end of time.
-  
+
 The flag value for a precalculated zone is `2`, and the remaining data is:
 
 - The number of precalculated zone intervals as a `count`
@@ -246,7 +246,7 @@ This field must occur exactly once, and it uses the string pool.
 This field is only present for the sake of the PCL (1.x) versions, and is not loaded in 2.x.
 It contains a mapping from Windows `TimeZoneInfo` standard name (in the en-US
 locale) to TZDB ID for those time zones
-where the two differ. (There are only a few.) This is required as the PCL doesn't expose the 
+where the two differ. (There are only a few.) This is required as the PCL doesn't expose the
 `TimeZoneInfo.Id` property.
 
 The field data is a single `dictionary`. It must occur exactly once, and it uses the string pool.
@@ -310,7 +310,7 @@ ID, with (theoretically) some substitutions for invalid characters.  (The
 substitutions are not documented here, since they do not actually appear to be
 used in practice; for example, the name of the Europe/London resource is simply
 "Europe/London", and the same appears to be true for all other time zones as of
-the 2012i tzdb). 
+the 2012i tzdb).
 
 All of these resources may (theoretically) contain extra appended data not
 mentioned below; readers do not confirm that the end of the resource was
@@ -532,7 +532,7 @@ following scheme, based on the (signed) number of ticks from the Unix epoch:
 	 now be fixed due to compatibility issues.) Values outside the +/-4 year range are
 	 serialized as one of the forms below.
    * Numbers of ticks that are a whole number of seconds are serialized as
-     a `byte` followed by a `fixed32`, combined to represent a 40 bit value with the 
+     a `byte` followed by a `fixed32`, combined to represent a 40 bit value with the
 	 top two bits of the first byte set to `10`. The 40 bit value is the number of
 	 seconds, with a bias such that `0x0000000000` represents `0x1fffffffffL` seconds.
 	 This is about 4355 years. Values outside the +/-4355 year range are

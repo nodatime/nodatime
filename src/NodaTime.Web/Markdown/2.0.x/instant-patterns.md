@@ -7,7 +7,7 @@ Standard Patterns
 
 The following standard pattern is supported:
 
-- `g`: General format pattern.  
+- `g`: General format pattern.
   The ISO-8601 representation of this instant in UTC, using the
   pattern "uuuu-MM-ddTHH:mm:ss'Z'" and always using the invariant culture,
   with the default "start of time" and "end of time" labels.

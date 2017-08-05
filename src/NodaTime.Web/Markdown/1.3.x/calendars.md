@@ -19,7 +19,7 @@ another calendar system, please contact [the mailing list](https://groups.google
 ISO
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access: [`CalendarSystem.Iso`](noda-property://NodaTime.CalendarSystem.Iso)
 
 This is the default calendar system when constructing values without explicitly specifying a calendar.
@@ -36,7 +36,7 @@ in the year.
 Gregorian
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access: [`CalendarSystem.GetGregorianCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetGregorianCalendar_System_Int32_)
 
 The [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) was a refinement to the Julian calendar,
@@ -55,7 +55,7 @@ The parameter to `GetGregorianCalendar()` indicates the minimum number of days i
 Julian
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access: [`CalendarSystem.GetJulianCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetJulianCalendar_System_Int32_)
 
 The [Julian calendar](https://en.wikipedia.org/wiki/Julian_calendar) was introduced by Julius Caesar in 46 BCE, and took
@@ -71,7 +71,7 @@ The parameter to `GetJulianCalendar()` indicates the minimum number of days in t
 Coptic (Alexandrian)
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access: [`CalendarSystem.GetCopticCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetCopticCalendar_System_Int32_)
 
 The Coptic calendar system is used by the Coptic Orthodox Church. Each year has 12 months of exactly 30 days, followed by
@@ -86,7 +86,7 @@ The parameter to `GetCopticCalendar()` indicates the minimum number of days in t
 Islamic (Hijri)
 ===
 
-First supported in v1.0.0  
+First supported in v1.0.0
 API access: [`CalendarSystem.GetIslamicCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetIslamicCalendar_NodaTime_Calendars_IslamicLeapYearPattern_NodaTime_Calendars_IslamicEpoch_)
 
 The [Islamic (or Hijri) calendar](https://en.wikipedia.org/wiki/Islamic_calendar) is a lunar calendar with years of 12
@@ -111,7 +111,7 @@ Noda Time, as described below.
 Persian (or Solar Hijri)
 ===
 
-First supported in v1.3.0  
+First supported in v1.3.0
 API access: [`CalendarSystem.GetPersianCalendar()`](noda-type://NodaTime.CalendarSystem#NodaTime_CalendarSystem_GetPersianCalendar)
 
 The [Persian (or Solar Hijri) calendar](https://en.wikipedia.org/wiki/Solar_Hijri_calendar) is the official calendar of
@@ -125,7 +125,7 @@ There is a more complicated algorithmic version proposed by Ahmad Birashk, but t
 Hebrew
 ===
 
-First supported in v1.3.0  
+First supported in v1.3.0
 API access: [`CalendarSystem.GetHebrewCalendar()`](noda-type://NodaTime.CalendarSystem##NodaTime_CalendarSystem_GetHebrewCalendar_NodaTime_Calendars_HebrewMonthNumbering_)
 
 The [Hebrew calendar](https://en.wikipedia.org/wiki/Hebrew_calendar) is a lunisolar calendar used primarily for determination

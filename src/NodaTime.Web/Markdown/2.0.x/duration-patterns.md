@@ -17,14 +17,14 @@ The following custom pattern characters are supported for durations. See [custom
 for general notes on custom patterns, including characters used for escaping and text literals.
 
 The pattern letters basically split into two categories:
-- "Total" values, which represent as much of the duration as possible. For example, 1 day and 2 hours has a "total hours" value of 26. 
+- "Total" values, which represent as much of the duration as possible. For example, 1 day and 2 hours has a "total hours" value of 26.
 - "Partial" values, which represent part of a duration within a larger unit. For example, 1 day and 2 hours has an "hours of day" value of 2.
 
 A pattern can only have a single "total" value, and typically will have exactly one total value, which would be the largest unit represented. You would normally want to then use each successive "partial" unit until you've got to the precision you're interested in. For example, useful patterns are:
 
 - `-D:hh:mm:ss` - days, hours, minutes and seconds
 - `-H:mm:ss.fff` - hours, minutes, seconds and milliseconds
-- `M:ss` - just minutes and seconds (not terribly useful for very long durations, or negative ones)  
+- `M:ss` - just minutes and seconds (not terribly useful for very long durations, or negative ones)
 
 Bad (but legal) patterns would be:
 
@@ -48,7 +48,7 @@ We recommend using the repeated form in most cases.
       <td class="pattern-example">Example</td>
     </tr>
   </thead>
-  <tbody>    
+  <tbody>
     <tr>
       <td><code>D</code> (<code>DD</code> etc)</td>
       <td>Total days</td>
@@ -147,5 +147,5 @@ We recommend using the repeated form in most cases.
       </td>
       <td><code>HH:mm</code> => <code>07:30</code></td>
     </tr>
-  </tbody>    
+  </tbody>
 </table>

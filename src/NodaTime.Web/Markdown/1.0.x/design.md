@@ -8,14 +8,14 @@ don't assume that they all agree with everything.)
 Noda Time has been designed with the following goals in mind:
 
 - **We want to force you to think about decisions you really *need* to
-think about.**  
+think about.**
 In particular, what kind of data do you *really* have
 and *really* need? Is it local or global? Do you need the system
 time zone or some other time zone? If you're converting from a local
 time to a global one in a particular time zone, how do you want to
 handle ambiguities or gaps?
 
-- **We want to solve the 99% case.**  
+- **We want to solve the 99% case.**
 Noda Time doesn't support leap
 seconds, relativity or various other subtleties around time lines.
 While we support some other calendars, we don't support you creating
@@ -31,27 +31,27 @@ making complex things possible (with no indication that anyone
 actually wants to do those things), the simple things become that
 much harder.
 
-- **We don't want to be your performance bottleneck.**  
+- **We don't want to be your performance bottleneck.**
 We regard Noda Time as a system-level library: we don't know exactly
 how you'll use it, or how performance-critical that use will be.
 We're willing to do more work (occasionally at the expense of
 *internal* complexity) to get out of your way, but we're not going
 to sacrifice *public* elegance for this.
 
-- **We want your code to be robust in the face of new versions.**  
+- **We want your code to be robust in the face of new versions.**
 Noda Time follows [Semantic Versioning][2] so you should be able to
 spot incompatible versions - but additionally, by limiting the
 amount of "hooks" we provide, we've reduced the opportunities for coupling between
 your code and ours.
 
-- **We want your code using Noda Time to be testable.**  
+- **We want your code using Noda Time to be testable.**
 To some people that will conjure up images of interfaces and virtual
 methods everywhere - but that's not the case. Instead, we recommend
 that you inject appropriate dependencies (such as clocks) and we
 provide designed-for-testing implementations of types such as time
 zones.
 
-- **We don't like defaults.**  
+- **We don't like defaults.**
 Just about the only thing Noda Time will default for you is the use
 of the ISO calendar, as we believe that's what the majority of
 developers want. However, we do *not* default to using the system

@@ -142,7 +142,7 @@ Additionally:
 
 Any ASCII letters (a-z, A-Z) which are intended to be used as text literals (when parsing, they must be
 matched exactly; when formatting they are reproduced exactly) *must* be quoted or escaped. Even if they do not have
-a specific meaning for the given pattern type, their presence within the pattern would be a potential cause for 
+a specific meaning for the given pattern type, their presence within the pattern would be a potential cause for
 confusion and error. Additionally, by effectively reserving all ASCII letters, Noda Time has more room for future
 expansion without compatibility concerns. The one exception to this rule is 'T', which is explicitly allowed within
 date/time-based patterns (`LocalDateTime` etc) as a common separator between the two parts. It is *not* permitted

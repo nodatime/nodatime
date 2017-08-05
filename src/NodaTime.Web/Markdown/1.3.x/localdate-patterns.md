@@ -7,11 +7,11 @@ Standard Patterns
 
 The following standard patterns are supported:
 
-- `d`: Short format pattern.  
+- `d`: Short format pattern.
   This is the short date pattern as defined by the culture's [`DateTimeFormatInfo.ShortDatePattern`](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.shortdatepattern.aspx).
   For example, in the invariant culture this is "MM/dd/yyyy".
 
-- `D`: Long format pattern.  
+- `D`: Long format pattern.
   This is the long date pattern as defined by the culture's [`DateTimeFormatInfo.LongDatePattern`](https://msdn.microsoft.com/en-us/library/system.globalization.datetimeformatinfo.longdatepattern.aspx).
   For example, in the invariant culture this is "dddd, dd MMMM yyyy".
   This is the default format pattern.
@@ -42,7 +42,7 @@ For the meanings of "absolute" years and text handling, see later details.
 		century is used. Note that when formatting, no checking
         is performed to ensure that the year will be parsed to
         the same value. (For example, 1725 would be formatted
-        as 25 but parsed as 2025.) 
+        as 25 but parsed as 2025.)
       </td>
       <td>
 	    Assuming a template value of 2000 (the default):
@@ -203,7 +203,7 @@ For the meanings of "absolute" years and text handling, see later details.
           de-DE: <code>yyyy/MM/dd</code> => <code>2011.10.09</code></td>
     </tr>
   </tbody>
-    
+
 </table>
 
 Notes
