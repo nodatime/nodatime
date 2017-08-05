@@ -22,7 +22,7 @@ However, the following mappings are reasonable:
       <td>Noda Time type</td>
       <td>DateTime kind</td>
       <td>Conversions</td>
-  	  <td>Notes</td>
+      <td>Notes</td>
     </tr>
   </thead>
   <tbody>

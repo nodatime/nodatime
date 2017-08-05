@@ -57,12 +57,12 @@ var source = new FakeDateTimeZoneSource.Builder
 If you need to set other properties on the builder, the zones have to be specified through the `Zones` property:
 
 ```csharp
- var source = new FakeDateTimeZoneSource.Builder
- {
-     VersionId = "CustomVersionId",
-     Zones = { CreateZone("x"), CreateZone("y") }
- }.Build();
- ```
+var source = new FakeDateTimeZoneSource.Builder
+{
+    VersionId = "CustomVersionId",
+    Zones = { CreateZone("x"), CreateZone("y") }
+}.Build();
+```
 
 The production environment should usually be
 configured with one of the providers in [`DateTimeZoneProviders`](noda-type://NodaTime.DateTimeZoneProviders).

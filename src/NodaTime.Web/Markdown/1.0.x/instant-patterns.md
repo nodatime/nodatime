@@ -9,7 +9,8 @@ The following standard patterns are supported:
 
 - `g`: General format pattern.
   The ISO-8601 representation of this instant in UTC, using the
-  pattern "yyyy-MM-ddTHH:mm:ss'Z'".
+  pattern "yyyy-MM-ddTHH:mm:ss'Z'" and always using the invariant culture.
+  This is the default format pattern.
 
 - `n`: Numeric with thousand separators.
   This gives the number of ticks since the Unix epoch as an integer,

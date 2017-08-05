@@ -47,9 +47,7 @@ Gregorian
 ===
 
 First supported in v1.0.0
-API access:
-
-- [`CalendarSystem.Gregorian`](noda-property://NodaTime.CalendarSystem.Gregorian)
+API access: [`CalendarSystem.Gregorian`](noda-property://NodaTime.CalendarSystem.Gregorian)
 
 The [Gregorian calendar](https://en.wikipedia.org/wiki/Gregorian_calendar) was a refinement to the Julian calendar,
 changing the formula for which years are leap years from "whenever the year is divisible by 4" to

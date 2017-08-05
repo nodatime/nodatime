@@ -8,6 +8,7 @@ Standard Patterns
 The following standard pattern is supported:
 
 - `o`: Round-trip pattern, which always uses the invariant culture and a pattern string of `-D:hh:mm:ss.FFFFFFF`.
+  This is the default format pattern.
 
 Custom Patterns
 ---------------
@@ -86,7 +87,7 @@ We recommend using the repeated form in most cases.
     <tr>
       <td><code>f</code> ... <code>fffffff</code>
       <td>
-        The fractional second part of the offset, using exactly the specified number of characters.
+        The fractional second part of the duration, using exactly the specified number of characters.
 		Trailing digits are truncated towards zero.
       </td>
       <td>
@@ -97,7 +98,7 @@ We recommend using the repeated form in most cases.
     <tr>
       <td><code>F</code> ... <code>FFFFFFF</code></td>
       <td>
-        The fractional second part of the offset, using at most the specified number of characters (up to 7).
+        The fractional second part of the duration, using at most the specified number of characters (up to 7).
 		Trailing digits are truncated towards zero, and trailing insignificant zeroes are truncated.
 		If this comes after a decimal separator and the value is zero, the decimal separator is
 		also truncated.

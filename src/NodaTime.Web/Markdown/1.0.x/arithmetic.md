@@ -200,7 +200,7 @@ you know the rules, it's very easy to work out what Noda Time will
 do. The downside is that if you *don't* know the rules, it looks
 like it's broken. It's possible that in a future version we'll
 implement a "smarter" API (as a separate option, probably, rather
-than replacing this one) - please drop a line to the mailing list if
+than replacing this one) - please drop a line to the [mailing list][] if
 you have requirements in this area.
 
 Finding a period between two values
@@ -253,7 +253,7 @@ then another 3 days takes us to March 31st. But `period2` is "-1 month and -1 da
 a month from `date2` we get to February 29th due to truncation, and then we only have to subtract
 one more day to get to February 28th.
 
-Again, this is easy to reason about and easy to implement. Contact the mailing list with
+Again, this is easy to reason about and easy to implement. Contact the [mailing list][] with
 extra requirements if you have them.
 
 Why doesn't this work with `ZonedDateTime`?
@@ -283,7 +283,7 @@ better suggestions, please raise them!
 Currently Noda Time doesn't support arithmetic with [`OffsetDateTime`](noda-type://NodaTime.OffsetDateTime)
 either, mostly because it's not clear what the use cases would be. You can always convert to either local or
 zoned date/time values, perform arithmetic in that domain and convert back if necessary - but if you find
-yourself in this situation, we'd love to hear about it on the Noda Time mailing list.
+yourself in this situation, we'd love to hear about it on the [mailing list][].
 
 Days of the week
 ================
@@ -304,3 +304,5 @@ operating on non-ISO week days.
 See also:
 
 - [The joys of date/time arithmetic](http://blog.nodatime.org/2010/11/joys-of-datetime-arithmetic.html)
+
+[mailing list]: https://groups.google.com/group/noda-time

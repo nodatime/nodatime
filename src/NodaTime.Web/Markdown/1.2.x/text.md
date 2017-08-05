@@ -71,6 +71,23 @@ specifiers being available for some types but not others.
 - [ZonedDateTime patterns](zoneddatetime-patterns)
 - [Period patterns](period-patterns)
 
+Standard and custom patterns
+---------------
+
+*Standard* patterns are those **denoted with a single character** to represent a common pattern within the culture
+being used. For example, the standard pattern `d` for a `LocalDate` is in month/day/year format in a US culture,
+but day/month/year format in a UK culture. They're usually a shorthand for a possibly-culture-specific custom format,
+but not always. (Some standard patterns in Noda Time can't be represented directly in custom patterns.)
+
+*Custom* patterns give more direct control over how a value is formatted or parsed. It may
+still be culture-sensitive like standard patterns, but in a lower level way - the `/` format specifier within a `LocalDate` pattern is used to indicate
+the culture-sensitive date separator, which is `/` in a US culture but `.` in German culture, for example.
+
+When a single character is specified for a pattern, it is *always* treated as a standard pattern. If no standard
+pattern for that character exists, an exception is thrown. To create a custom pattern which would normally only
+contain a single character, use `%` to effectively "escape" the character. So a `LocalTime` custom pattern which
+formats the 24-hour hour-of-day without padding would be represented as `%H`.
+
 <a name="custom-patterns"></a>Custom patterns
 ---------------
 
