@@ -19,14 +19,9 @@ using NodaTime.Utility;
 namespace NodaTime
 {
     /// <summary>
-    /// Represents an instant on the global timeline.
+    /// Represents an instant on the global timeline, with nanosecond resolution.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// An instant is defined by an integral number of 'ticks' since the Unix epoch (typically described as January 1st
-    /// 1970, midnight, UTC, ISO calendar), where a tick is equal to 100 nanoseconds. There are 10,000 ticks in a
-    /// millisecond.
-    /// </para>
     /// <para>
     /// An <see cref="Instant"/> has no concept of a particular time zone or calendar: it simply represents a point in
     /// time that can be globally agreed-upon.
