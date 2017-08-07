@@ -147,6 +147,8 @@ namespace NodaTime.Web
             app.ApplicationServices.GetRequiredService<IReleaseRepository>().GetReleases();
             // Force the set of benchmarks to be first loaded on startup.
             app.ApplicationServices.GetRequiredService<IBenchmarkRepository>().ListEnvironments();
+            // Force the set of TZDB data to be first loaded on startup.
+            app.ApplicationServices.GetRequiredService<ITzdbRepository>().GetReleases();
         }
 
         /// Sets the Cache-Control header for static content, conditionally allowing the browser to use the content
