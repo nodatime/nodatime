@@ -36,7 +36,7 @@ git clone https://github.com/nodatime/nodatime.git --depth 1 $root/$commit/nodat
 git clone https://github.com/nodatime/nodatime.org.git --depth 1 $root/$commit/nodatime.org
 
 # Build site and run smoke tests
-(cd $root/$commit/nodatime/build; ./buildweb.sh ../../nodatime.org)
+(cd $root/$commit/nodatime/build; ./buildweb.sh ../../nodatime.org &> buildweb.log)
 
 echo "Build and test successful. Pushing."
 
