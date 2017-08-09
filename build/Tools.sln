@@ -12,9 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocfxYamlLoader", "DocfxYamlLoader\DocfxYamlLoader.csproj", "{093336D7-DC55-421F-B6BE-9B22E9A47FF5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseDiffGenerator", "ReleaseDiffGenerator\ReleaseDiffGenerator.csproj", "{1DD531D8-1C0D-4C0C-B916-17CAC2D7EA14}"
-	ProjectSection(ProjectDependencies) = postProject
-		{093336D7-DC55-421F-B6BE-9B22E9A47FF5} = {093336D7-DC55-421F-B6BE-9B22E9A47FF5}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocfxAnnotationGenerator", "DocfxAnnotationGenerator\DocfxAnnotationGenerator.csproj", "{201C875B-DB02-41FC-A7D2-C0C93E14EB3B}"
 EndProject
