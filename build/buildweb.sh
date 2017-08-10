@@ -18,7 +18,7 @@ if [[ "$2" != "--skip-api" ]]
 then
   ./buildapidocs.sh
   rm -rf ../src/NodaTime.Web/docfx
-  mv tmp/docfx/_site ../src/NodaTime.Web/docfx
+  cp -r tmp/docfx/_site ../src/NodaTime.Web/docfx
 fi
 
 # Build the web site ASP.NET Core
