@@ -8,15 +8,15 @@ namespace NodaTime.Web.Models
 {
     public class ReleaseDownload
     {
-        public string Release { get; }
+        public StructuredVersion Version { get; }
         public string File { get; }
         public string DownloadUrl { get; }
         public string Sha256Hash { get; }
         public LocalDate ReleaseDate { get; set; }
 
-        public ReleaseDownload(string release, string file, string downloadUrl, string sha256Hash, LocalDate releaseDate)
+        public ReleaseDownload(StructuredVersion version, string file, string downloadUrl, string sha256Hash, LocalDate releaseDate)
         {
-            Release = release;
+            Version = version;
             File = file;
             DownloadUrl = downloadUrl;
             Sha256Hash = sha256Hash;
