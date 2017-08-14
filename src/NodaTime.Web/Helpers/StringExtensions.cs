@@ -4,7 +4,7 @@
 
 using System;
 
-namespace NodaTime.Web
+namespace NodaTime.Web.Helpers
 {
     public static class StringExtensions
     {

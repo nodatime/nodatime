@@ -3,7 +3,7 @@
 // as found in the LICENSE.txt file.
 using System.Collections.Generic;
 
-namespace NodaTime.Web
+namespace NodaTime.Web.Helpers
 {
     public static class DictionaryExtensions
     {

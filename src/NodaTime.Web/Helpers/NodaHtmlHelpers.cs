@@ -5,7 +5,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NodaTime.Text;
 
-namespace NodaTime.Web
+namespace NodaTime.Web.Helpers
 {
     public static class NodaHtmlHelpers
     {
