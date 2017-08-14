@@ -43,7 +43,7 @@ namespace NodaTime.Web.Models
                 .ListObjects(Bucket, ObjectPrefix)
                 .Where(obj => !obj.Name.EndsWith("/"))
                 .Select(ConvertObject)
-                .OrderByDescending(r => r.Release)
+                .OrderByDescending(r => r.Version)
                 .ToList();
             return new CacheValue(releases);
         }
@@ -55,15 +55,11 @@ namespace NodaTime.Web.Models
             string releaseDateMetadata = null;
             obj.Metadata?.TryGetValue(ReleaseDateKey, out releaseDateMetadata);
             var match = ReleasePattern.Match(obj.Name);
-            string release = null;
-            if (match.Success)
-            {
-                release = match.Groups[1].Value;
-            }
+            StructuredVersion version = match.Success ? new StructuredVersion(match.Groups[1].Value) : null;
             LocalDate releaseDate = releaseDateMetadata == null
                 ? LocalDate.FromDateTime(obj.Updated.Value)
                 : LocalDatePattern.Iso.Parse(releaseDateMetadata).Value;
-            return new ReleaseDownload(release, obj.Name.Substring(ObjectPrefix.Length), $"https://storage.googleapis.com/{Bucket}/{obj.Name}", sha256Hash, releaseDate);
+            return new ReleaseDownload(version, obj.Name.Substring(ObjectPrefix.Length), $"https://storage.googleapis.com/{Bucket}/{obj.Name}", sha256Hash, releaseDate);
         }
 
         private class CacheValue
@@ -72,7 +68,7 @@ namespace NodaTime.Web.Models
             public ReleaseDownload LatestRelease { get; }
 
             public static CacheValue Empty { get; } =
-                new CacheValue(new List<ReleaseDownload> { new ReleaseDownload("Dummy", "Dummy", "", "", new LocalDate(2000, 1, 1)) });
+                new CacheValue(new List<ReleaseDownload> { new ReleaseDownload(null, "Dummy", "", "", new LocalDate(2000, 1, 1)) });
 
             public CacheValue(List<ReleaseDownload> releases)
             {
@@ -81,7 +77,7 @@ namespace NodaTime.Web.Models
                 // 1.4 comes out after 2.0, 2.0 is still latest.)
                 LatestRelease = releases
                     .Where(r => !r.File.Contains("-src"))
-                    .OrderByDescending(r => r.Release)
+                    .OrderByDescending(r => r.Version)
                     .First();
             }
         }

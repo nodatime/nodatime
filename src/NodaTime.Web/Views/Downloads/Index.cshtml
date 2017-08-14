@@ -28,7 +28,7 @@
                 <th>Downloads</th>
                 <th>SHA-256</th>
             </tr>
-            @foreach (var release in Model.GroupBy(r => r.Release).OrderByDescending(g => g.Key))
+            @foreach (var release in Model.GroupBy(r => r.Version).OrderByDescending(g => g.Key))
             {
                 bool first = true;
                 @foreach (var file in release.OrderBy(f => f.File))
