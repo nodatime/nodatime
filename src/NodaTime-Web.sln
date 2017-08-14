@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Web", "NodaTime.Web\NodaTime.Web.csproj", "{9554E3CB-ACAF-4BD1-841D-EF97F42DA600}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.TzValidate.NodaDump", "NodaTime.TzValidate.NodaDump\NodaTime.TzValidate.NodaDump.csproj", "{3E3DB509-7884-447D-8116-747CAEB4D6AA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.TzdbCompiler", "NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj", "{9280052D-FB49-46CD-A27F-74E7B86DC0A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Web.Test", "NodaTime.Web.Test\NodaTime.Web.Test.csproj", "{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{9280052D-FB49-46CD-A27F-74E7B86DC0A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9280052D-FB49-46CD-A27F-74E7B86DC0A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9280052D-FB49-46CD-A27F-74E7B86DC0A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
