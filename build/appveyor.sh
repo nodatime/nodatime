@@ -7,12 +7,10 @@ cd $(dirname $0)/..
 
 dotnet restore src/NodaTime-All.sln
 dotnet build -c Release src/NodaTime-All.sln
+dotnet restore src/NodaTime-Web.sln
+dotnet build src/NodaTime-Web.sln
 
-if [ -n "$COVERALLS_REPO_TOKEN" ]
-then
-  build/coverage.sh
-  packages/coveralls.net.0.7.0/tools/csmacnz.Coveralls.exe --opencover -i coverage.xml --useRelativePaths
-else
-  # Just run tests instead...
-  dotnet run -c Release -f net451 -p src/NodaTime.Test/*.csproj -- --where=cat!=Slow
-fi
+# TODO: Reinstate coverage
+
+dotnet run -c Release -f net451 -p src/NodaTime.Test/*.csproj -- --where=cat!=Slow
+dotnet run -f netcoreapp1.0 -p src/NodaTime.Web.Test/*.csproj
