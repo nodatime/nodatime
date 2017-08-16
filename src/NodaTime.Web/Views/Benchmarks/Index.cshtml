@@ -24,6 +24,9 @@
                 <th>Target framework</th>
                 <th>Operating system</th>
                 <th>Runtime version</th>
+                <th>First run</th>
+                <th>Last run</th>
+                <th>Run count</th>
             </tr>
             @foreach (var env in Model.OrderBy(e => e.Machine).ThenBy(e => e.TargetFramework))
             {
@@ -33,6 +36,9 @@
                 <td>@env.TargetFramework</td>
                 <td>@env.OperatingSystem</td>
                 <td>@env.RuntimeVersion</td>
+                <td>@Html.RenderTimestamp(env.Runs.LastOrDefault()?.Start)</td>
+                <td>@Html.RenderTimestamp(env.Runs.FirstOrDefault()?.Start)</td>
+                <td>@env.Runs.Count</td>
             </tr>
             }
         </table>
