@@ -23,7 +23,6 @@ fi
 
 # Build the web site ASP.NET Core
 rm -rf ../src/NodaTime.Web/bin/Release
-dotnet restore ../src/NodaTime.Web
 # Make sure minification happens before publish...
 dotnet build -c Release ../src/NodaTime.Web
 dotnet publish -c Release ../src/NodaTime.Web
