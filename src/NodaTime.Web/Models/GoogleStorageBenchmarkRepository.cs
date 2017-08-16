@@ -69,15 +69,6 @@ namespace NodaTime.Web.Models
                 RunsById = runsByStorageName.Values.ToDictionary(r => r.BenchmarkRunId);
                 TypesById = RunsById.Values.SelectMany(r => r.Types_).ToDictionary(t => t.BenchmarkTypeId);
                 BenchmarksById = TypesById.Values.SelectMany(t => t.Benchmarks).ToDictionary(b => b.BenchmarkId);
-
-                // Attach runs to environments (stored separately)
-                foreach (var environment in Environments)
-                {
-                    environment.Runs.Clear();
-                    environment.Runs.AddRange(RunsById.Values
-                        .Where(r => r.BenchmarkEnvironmentId == environment.BenchmarkEnvironmentId)
-                        .OrderByDescending(r => r.Start.ToInstant()));
-                }                
             }
 
             public static CacheValue Refresh(CacheValue previous, StorageClient client)
@@ -93,30 +84,41 @@ namespace NodaTime.Web.Models
                     return previous;
                 }
 
+                // We won't reload everything from storage, but we'll come up with completely new set of objects each time, so we
+                // don't need to worry about the changes involved as we reattach links.
                 var environmentObject = client.GetObject(BucketName, EnvironmentObjectName);
-                var environments = environmentObject.Crc32c == previous.environmentCrc32c
-                    ? previous.Environments : LoadEnvironments(client);
+                var environments = environmentObject.Crc32c == previous.environmentCrc32c ? previous.Environments : LoadEnvironments(client);
 
                 // Don't just use previous.runsByStorageName blindly - some may have been removed.
                 var runsByStorageName = new Dictionary<string, BenchmarkRun>();
                 foreach (var runStorageName in containerObjects)
                 {
-                    runsByStorageName[runStorageName] = previous.runsByStorageName.TryGetValue(runStorageName, out var container)
-                        ? container : LoadContainer(client, runStorageName, environments);
+                    if (previous.runsByStorageName.TryGetValue(runStorageName, out var runToAdd))
+                    {
+                        runToAdd = runToAdd.Clone();
+                    }
+                    else
+                    {
+                        runToAdd = LoadContainer(client, runStorageName);
+                    }
+                    runToAdd.Environment = environments.FirstOrDefault(env => env.BenchmarkEnvironmentId == runToAdd.BenchmarkEnvironmentId);
+                    runToAdd.PopulateLinks();
+                    runsByStorageName[runStorageName] = runToAdd;
+                }
+                // Attach the runs to environments, in reverse chronological order
+                foreach (var run in runsByStorageName.Values.OrderByDescending(r => r.Start.ToInstant()))
+                {
+                    run.Environment.Runs.Add(run);
                 }
                 return new CacheValue(environments, environmentObject.Crc32c, runsByStorageName);
             }
 
-            private static BenchmarkRun LoadContainer(StorageClient client, string runStorageName, IList<BenchmarkEnvironment> environments)
+            private static BenchmarkRun LoadContainer(StorageClient client, string runStorageName)
             {
                 var stream = new MemoryStream();
                 client.DownloadObject(BucketName, runStorageName, stream);
                 stream.Position = 0;
-                var run = BenchmarkRun.Parser.ParseFrom(stream);
-                // For the moment, let's just hope that all the environments exist...
-                run.Environment = environments.FirstOrDefault(env => env.BenchmarkEnvironmentId == run.BenchmarkEnvironmentId);
-                run.PopulateLinks();
-                return run;
+                return BenchmarkRun.Parser.ParseFrom(stream);
             }
 
             private static IList<BenchmarkEnvironment> LoadEnvironments(StorageClient client)
