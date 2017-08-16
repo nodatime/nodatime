@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using NodaTime.Benchmarks;
+using System;
 using System.Collections.Generic;
 
 namespace NodaTime.Web.Models
@@ -13,5 +14,6 @@ namespace NodaTime.Web.Models
         public BenchmarkType GetType(string benchmarkTypeId) => null;
         public Benchmark GetBenchmark(string benchmarkId) => null;
         public IList<BenchmarkEnvironment> ListEnvironments() => new List<BenchmarkEnvironment>();
+        public IList<BenchmarkType> GetTypesByCommitAndType(string commit, string fullTypeName) => new List<BenchmarkType>();
     }
 }

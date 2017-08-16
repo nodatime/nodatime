@@ -38,6 +38,8 @@ namespace NodaTime.Web.Models
         public BenchmarkType GetType(string benchmarkTypeId) => cache.Value.TypesById[benchmarkTypeId];
         public BenchmarkRun GetRun(string benchmarkRunId) => cache.Value.RunsById[benchmarkRunId];
         public Benchmark GetBenchmark(string benchmarkId) => cache.Value.BenchmarksById[benchmarkId];
+        public IList<BenchmarkType> GetTypesByCommitAndType(string commit, string fullTypeName) =>
+            cache.Value.TypesByCommitAndFullName[(commit, fullTypeName)].ToList();
 
         private class CacheValue
         {
@@ -49,6 +51,7 @@ namespace NodaTime.Web.Models
             public IDictionary<string, BenchmarkRun> RunsById { get; }
             public IDictionary<string, BenchmarkType> TypesById { get; }
             public IDictionary<string, Benchmark> BenchmarksById { get; }
+            public ILookup<(string, string), BenchmarkType> TypesByCommitAndFullName { get; }
 
             private readonly string environmentCrc32c;
             // Key is the storage object name.
@@ -68,6 +71,9 @@ namespace NodaTime.Web.Models
                 EnvironmentsById = Environments.ToDictionary(e => e.BenchmarkEnvironmentId);
                 RunsById = runsByStorageName.Values.ToDictionary(r => r.BenchmarkRunId);
                 TypesById = RunsById.Values.SelectMany(r => r.Types_).ToDictionary(t => t.BenchmarkTypeId);
+                TypesByCommitAndFullName = RunsById.Values
+                    .SelectMany(r => r.Types_.Select(type => (r.Commit, type)))
+                    .ToLookup(pair => (pair.Commit, pair.type.FullTypeName), pair => pair.type);
                 BenchmarksById = TypesById.Values.SelectMany(t => t.Benchmarks).ToDictionary(b => b.BenchmarkId);
             }
 

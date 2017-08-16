@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NodaTime.Benchmarks;
 using NodaTime.Web.Models;
 using NodaTime.Web.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NodaTime.Web.Controllers
@@ -33,7 +34,14 @@ namespace NodaTime.Web.Controllers
             var type = repository.GetType(typeId);
             var previousRun = GetPreviousRun(type.Run);
             var previousRunType = previousRun?.Types_.FirstOrDefault(t => t.FullTypeName == type.FullTypeName);
-            return View((type, previousRunType));
+            IEnumerable<BenchmarkType> comparisonTypes = repository
+                .GetTypesByCommitAndType(type.Run.Commit, type.FullTypeName)
+                .Where(t => t != type)
+                .OrderBy(t => t.Environment.Machine)
+                .ThenBy(t => t.Environment.TargetFramework)
+                .ThenBy(t => t.Environment.RuntimeVersion)
+                .ToList();
+            return View((type, previousRunType, comparisonTypes));
         }
 
         [Route("/benchmarks/types/{leftTypeId}/compare/{rightTypeId}")]
