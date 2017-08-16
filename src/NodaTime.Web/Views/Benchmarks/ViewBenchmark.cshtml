@@ -1,12 +1,12 @@
 ﻿@using NodaTime.Benchmarks;
-@model (BenchmarkEnvironment env, BenchmarkRun run, BenchmarkType type, Benchmark benchmark)
+@model Benchmark
 
 @{
     ViewBag.Title = "Benchmark";
-    var env = Model.env;
-    var run = Model.run;
-    var type = Model.type;
-    var benchmark = Model.benchmark;
+    var benchmark = Model;
+    var env = benchmark.Environment;
+    var run = benchmark.Run;
+    var type = benchmark.Type;
 }
 
 <div class="row">

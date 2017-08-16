@@ -15,36 +15,24 @@ namespace NodaTime.Web.ViewModels
     /// </summary>
     public class CompareTypesViewModel
     {
-        public BenchmarkEnvironment LeftEnvironment { get; }
-        public BenchmarkEnvironment RightEnvironment { get; }
 
-        public bool SingleEnvironment => LeftEnvironment.BenchmarkEnvironmentId == RightEnvironment.BenchmarkEnvironmentId;
+        public bool SingleEnvironment => Left.Environment.BenchmarkEnvironmentId == Right.Environment.BenchmarkEnvironmentId;
 
-        public BenchmarkRun LeftRun { get; }
-        public BenchmarkRun RightRun { get; }
+        public BenchmarkType Left { get; }
+        public BenchmarkType Right { get; }
 
-        public BenchmarkType LeftType { get; }
-        public BenchmarkType RightType { get; }
-
-        public CompareTypesViewModel(
-            (BenchmarkEnvironment, BenchmarkRun, BenchmarkType) left,
-            (BenchmarkEnvironment, BenchmarkRun, BenchmarkType) right)
+        public CompareTypesViewModel(BenchmarkType left, BenchmarkType right)
         {
-            LeftEnvironment = left.Item1;
-            LeftRun = left.Item2;
-            LeftType = left.Item3;
-
-            RightEnvironment = right.Item1;
-            RightRun = right.Item2;
-            RightType = right.Item3;
+            Left = left;
+            Right = right;
         }
 
         public IEnumerable<(Benchmark description, Statistics left, Statistics right, bool important)> GetBenchmarks()
         {
             // TODO: Handle missing types
-            var leftBenchmarks = LeftType.Benchmarks.ToDictionary(b => b.Method);
-            var rightBenchmarks = RightType.Benchmarks.ToDictionary(b => b.Method);
-            var union = LeftType.Benchmarks.Concat(RightType.Benchmarks).DistinctBy(b => b.Method).OrderBy(b => b.Method);
+            var leftBenchmarks = Left.Benchmarks.ToDictionary(b => b.Method);
+            var rightBenchmarks = Right.Benchmarks.ToDictionary(b => b.Method);
+            var union = Left.Benchmarks.Concat(Right.Benchmarks).DistinctBy(b => b.Method).OrderBy(b => b.Method);
             foreach (var benchmark in union)
             {
                 var leftStats = leftBenchmarks.GetValueOrDefault(benchmark.Method)?.Statistics;
