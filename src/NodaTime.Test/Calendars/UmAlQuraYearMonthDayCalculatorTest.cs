@@ -86,7 +86,7 @@ namespace NodaTime.Test.Calendars
             }
         }
 
-#if DEBUG && !NETCOREAPP1_0
+#if DEBUG && !NETCORE
         [Test, Explicit]
         public void GenerateData()
         {
