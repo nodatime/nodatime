@@ -11,8 +11,8 @@ namespace NodaTime.Web.Helpers
     {
         private static readonly InstantPattern instantPattern = InstantPattern.CreateWithInvariantCulture("yyyy-MM-dd HH:mm:ss");
 
-        public static string RenderTimestamp(this IHtmlHelper helper, Instant instant) => instantPattern.Format(instant);
-        public static string RenderTimestamp(this IHtmlHelper helper, Timestamp timestamp) => RenderTimestamp(helper, timestamp.ToInstant());
+        public static string RenderTimestamp(this IHtmlHelper helper, Instant? instant) => instant == null ? null : instantPattern.Format(instant.Value);
+        public static string RenderTimestamp(this IHtmlHelper helper, Timestamp timestamp) => RenderTimestamp(helper, timestamp?.ToInstant());
 
         // TODO: Render microseconds etc.
         public static string RenderTime(this IHtmlHelper helper, double? nanos) => nanos == null ? "" : $"{nanos.Value:G4} ns";
