@@ -102,17 +102,21 @@ namespace NodaTime.Web.Models
                 foreach (var runStorageName in containerObjects)
                 {
                     runsByStorageName[runStorageName] = previous.runsByStorageName.TryGetValue(runStorageName, out var container)
-                        ? container : LoadContainer(client, runStorageName);
+                        ? container : LoadContainer(client, runStorageName, environments);
                 }
                 return new CacheValue(environments, environmentObject.Crc32c, runsByStorageName);
             }
 
-            private static BenchmarkRun LoadContainer(StorageClient client, string runStorageName)
+            private static BenchmarkRun LoadContainer(StorageClient client, string runStorageName, IList<BenchmarkEnvironment> environments)
             {
                 var stream = new MemoryStream();
                 client.DownloadObject(BucketName, runStorageName, stream);
                 stream.Position = 0;
-                return BenchmarkRun.Parser.ParseFrom(stream);
+                var run = BenchmarkRun.Parser.ParseFrom(stream);
+                // For the moment, let's just hope that all the environments exist...
+                run.Environment = environments.FirstOrDefault(env => env.BenchmarkEnvironmentId == run.BenchmarkEnvironmentId);
+                run.PopulateLinks();
+                return run;
             }
 
             private static IList<BenchmarkEnvironment> LoadEnvironments(StorageClient client)
