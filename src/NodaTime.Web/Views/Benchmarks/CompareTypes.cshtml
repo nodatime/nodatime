@@ -24,8 +24,8 @@
             </tr>
             <tr>
                 <td>Run</td>
-                <td><a href="/benchmarks/run/@Model.Left.Run.BenchmarkRunId">@Model.Left.Run.BenchmarkRunId.TruncateGuid()</a></td>
-                <td><a href="/benchmarks/run/@Model.Right.Run.BenchmarkRunId">@Model.Right.Run.BenchmarkRunId.TruncateGuid()</a></td>
+                <td><a href="/benchmarks/runs/@Model.Left.BenchmarkRunId">@Model.Left.BenchmarkRunId.TruncateGuid()</a></td>
+                <td><a href="/benchmarks/runs/@Model.Right.BenchmarkRunId">@Model.Right.BenchmarkRunId.TruncateGuid()</a></td>
             </tr>
             <tr>
                 <td>Run start</td>
@@ -38,22 +38,6 @@
                 <td><a href="https://github.com/nodatime/nodatime/commit/@Model.Right.Run.Commit">@Model.Right.Run.Commit.TruncateCommit()</a></td>
             </tr>
         </table>
-        <p>
-            @* TODO: Use a table for this top part as well? Need better control of table rows, resetting colors etc. *@
-            Type: @Model.Left.FullTypeName<br />
-            @if (Model.SingleEnvironment)
-            {
-                @:Environment: <a href="/benchmarks/environments/@Model.Left.Environment.BenchmarkEnvironmentId">@Model.Left.Environment.Machine, @Model.Left.Environment.TargetFramework</a><br />
-            }
-            else
-            {
-                @:Left environment: <a href="/benchmarks/environments/@Model.Left.Environment.BenchmarkEnvironmentId">@Model.Left.Environment.Machine, @Model.Left.Environment.TargetFramework</a><br />
-                @:Right environment: <a href="/benchmarks/environments/@Model.Right.Environment.BenchmarkEnvironmentId">@Model.Right.Environment.Machine, @Model.Right.Environment.TargetFramework</a><br />
-            }
-            @* TODO: Commit, dates etc *@
-            Left Run: <a href="/benchmarks/runs/@Model.Left.Run.BenchmarkRunId">@Model.Left.Run.BenchmarkRunId.TruncateGuid()</a><br />
-            Right Run: <a href="/benchmarks/runs/@Model.Right.Run.BenchmarkRunId">@Model.Right.Run.BenchmarkRunId.TruncateGuid()</a><br />
-        </p>
     </div>
     <div>
         <h2>Benchmarks</h2>

@@ -13,5 +13,6 @@ namespace NodaTime.Web.Models
         BenchmarkRun GetRun(string benchmarkRunId);
         Benchmark GetBenchmark(string benchmarkId);
         IList<BenchmarkEnvironment> ListEnvironments();
+        IList<BenchmarkType> GetTypesByCommitAndType(string commit, string fullTypeName);
     }
 }
