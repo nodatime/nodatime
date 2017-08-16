@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net451;netcoreapp1.0</TargetFrameworks>
+    <TargetFrameworks>net451;netcoreapp1.0;netcoreapp2.0</TargetFrameworks>
     <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
+    <DefineConstants Condition="$(TargetFramework.Contains('netcore'))">NETCORE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

@@ -18,7 +18,7 @@ namespace NodaTime.Benchmarks.BclTests
             {
                 return TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
             }
-#if NETCOREAPP1_1
+#if NETCORE
             catch (Exception) // TimeZoneNotFoundException doesn't exist in netstandard :(
 #else
             catch (TimeZoneNotFoundException)
@@ -57,7 +57,7 @@ namespace NodaTime.Benchmarks.BclTests
             PacificZone.GetUtcOffset(WinterOffset);
         }
 
-#if !NETCOREAPP1_1
+#if !NETCORE
         [Benchmark]
         public void ConvertLocalToUtc()
         {

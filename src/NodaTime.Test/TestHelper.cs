@@ -13,7 +13,7 @@ using System.Linq;
 using System.Reflection;
 using NodaTime.Annotations;
 
-#if !NETCOREAPP1_0
+#if !NETCORE
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
 
@@ -496,9 +496,9 @@ namespace NodaTime.Test
         /// </remarks>
         internal static void AssertBinaryRoundtrip<T>(T value)
         {
-            // Can't use [Conditional("!NETCOREAPP1_0")] as ConditionalAttribute is only positive.
+            // Can't use [Conditional("!NETCORE")] as ConditionalAttribute is only positive.
             // This approach seems to confuse the build system less, too.
-#if !NETCOREAPP1_0
+#if !NETCORE
             var stream = new MemoryStream();
             new BinaryFormatter().Serialize(stream, value);
 
