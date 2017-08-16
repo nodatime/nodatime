@@ -24,11 +24,15 @@
                 <th>Target framework</th>
                 <th>Operating system</th>
                 <th>Runtime version</th>
+                <th>JIT</th>
                 <th>First run</th>
                 <th>Last run</th>
                 <th>Run count</th>
             </tr>
-            @foreach (var env in Model.OrderBy(e => e.Machine).ThenBy(e => e.TargetFramework))
+            @foreach (var env in Model
+                .OrderByDescending(e => e.Runs?.FirstOrDefault()?.Start?.ToInstant())
+                .ThenBy(e => e.Machine)
+                .ThenBy(e => e.TargetFramework))
             {
             <tr>
                 <td><a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">View</a></td>
@@ -36,8 +40,9 @@
                 <td>@env.TargetFramework</td>
                 <td>@env.OperatingSystem</td>
                 <td>@env.RuntimeVersion</td>
-                <td>@Html.RenderTimestamp(env.Runs.LastOrDefault()?.Start)</td>
-                <td>@Html.RenderTimestamp(env.Runs.FirstOrDefault()?.Start)</td>
+                <td>@env.JitModules</td>
+                <td>@Html.RenderTimestampAsUtcDate(env.Runs.LastOrDefault()?.Start)</td>
+                <td>@Html.RenderTimestampAsUtcDate(env.Runs.FirstOrDefault()?.Start)</td>
                 <td>@env.Runs.Count</td>
             </tr>
             }
