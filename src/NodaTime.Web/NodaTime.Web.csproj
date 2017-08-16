@@ -6,6 +6,7 @@
     <OutputType>Exe</OutputType>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
