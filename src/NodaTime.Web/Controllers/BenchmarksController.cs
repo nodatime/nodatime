@@ -32,24 +32,41 @@ namespace NodaTime.Web.Controllers
         public IActionResult ViewType(string typeId)
         {
             var type = repository.GetType(typeId);
-            var previousRun = GetPreviousRun(type.Run);
-            var previousRunType = previousRun?.Types_.FirstOrDefault(t => t.FullTypeName == type.FullTypeName);
-            IEnumerable<BenchmarkType> comparisonTypes = repository
-                .GetTypesByCommitAndType(type.Run.Commit, type.FullTypeName)
-                .Where(t => t != type)
-                .OrderBy(t => t.Environment.Machine)
-                .ThenBy(t => t.Environment.TargetFramework)
-                .ThenBy(t => t.Environment.RuntimeVersion)
-                .ToList();
-            return View((type, previousRunType, comparisonTypes));
+            var previousCommit = GetPreviousRun(type.Run)?.Commit;
+            return View((type, previousCommit));
         }
 
-        [Route("/benchmarks/types/{leftTypeId}/compare/{rightTypeId}")]
-        public IActionResult CompareTypes(string leftTypeId, string rightTypeId)
+        [Route("/benchmarks/types/{typeId}:compareEnvironments")]
+        public IActionResult CompareTypesByEnvironment(string typeId)
         {
-            var left = repository.GetType(leftTypeId);
-            var right = repository.GetType(rightTypeId);
-            return View(new CompareTypesViewModel(left, right));
+            var left = repository.GetType(typeId);
+            var runs = repository.ListEnvironments()
+                .Select(e => e.Runs.FirstOrDefault(r => r.Commit == left.Run.Commit))
+                .Where(r => r != null && r != left.Run)
+                .Select(r => r.Types_.FirstOrDefault(t => t.FullTypeName == left.FullTypeName))
+                .ToList();
+            // Always make the selected run the first one.
+            runs.Insert(0, left);
+            return View(new CompareTypesByEnvironmentViewModel(runs));
+        }
+
+
+        [Route("/benchmarks/types/{leftTypeId}:compareWithCommit")]
+        public IActionResult CompareTypesByCommit(string leftTypeId, [FromQuery] string commit)
+        {
+            var leftType = repository.GetType(leftTypeId);
+            var environment = leftType.Environment;
+            var run = environment.Runs.FirstOrDefault(r => r.Commit == commit);
+            if (run == null)
+            {
+                return NotFound();
+            }
+            var rightType = run.Types_.FirstOrDefault(t => t.FullTypeName == leftType.FullTypeName);
+            if (rightType == null)
+            {
+                return NotFound();
+            }
+            return View(new CompareTypesByCommitViewModel(leftType, rightType));
         }
 
         [Route("/benchmarks/benchmarks/{benchmarkId}")]

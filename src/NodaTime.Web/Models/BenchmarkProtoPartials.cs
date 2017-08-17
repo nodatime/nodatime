@@ -38,4 +38,12 @@
             }
         }
     }
+
+    public partial class BenchmarkEnvironment
+    {
+        public string BriefOperatingSystem =>
+            OperatingSystem.StartsWith("Ubuntu") || OperatingSystem.Contains("Linux") ? "Linux"
+            : OperatingSystem.Contains("Microsoft Windows") ? "Windows"
+            : OperatingSystem;
+    }
 }

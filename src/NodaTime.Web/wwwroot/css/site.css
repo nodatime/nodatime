@@ -406,7 +406,8 @@ td.pattern-example {
   width: 30%
 }
 
-.benchmark-important > td {
+/* TODO: Can we do better than this? */
+.benchmark-important > td, .benchmark-important td {
   color: red;
   font-weight: bold
 }

@@ -1,0 +1,44 @@
+﻿@using NodaTime.Web.ViewModels;
+@model CompareTypesByCommitViewModel
+
+@{
+    ViewBag.Title = "Benchmark type comparison";
+}
+
+<div class="row">
+    <div>
+        <h1>Benchmark type comparison for @Model.Left.FullTypeName</h1>
+    </div>
+    <div>
+        Environment: <a href="/benchmarks/environments/@Model.Environment.BenchmarkEnvironmentId">@Model.Environment.Machine, @Model.Environment.TargetFramework</a><br />
+        Left run: <a href="/benchmarks/runs/@Model.Left.Run.BenchmarkRunId">@Model.Left.Run.BenchmarkRunId.TruncateGuid()</a>
+            (@Html.RenderTimestamp(@Model.Left.Run.Start));
+            commit <a href="https://github.com/nodatime/nodatime/commit/@Model.Left.Run.Commit">@Model.Left.Run.Commit.TruncateCommit()</a><br />
+        Right run: <a href="/benchmarks/runs/@Model.Right.Run.BenchmarkRunId">@Model.Right.Run.BenchmarkRunId.TruncateGuid()</a>
+            (@Html.RenderTimestamp(@Model.Right.Run.Start));
+            commit <a href="https://github.com/nodatime/nodatime/commit/@Model.Right.Run.Commit">@Model.Right.Run.Commit.TruncateCommit()</a><br />
+    </div>
+    <div>
+        <h2>Benchmarks</h2>
+    </div>
+    <div>
+        <table>
+            @* TODO: Parameters, if we ever use them. *@
+            <tr>
+                <th>Method</th>
+                <th>Mean time (left)</th>
+                <th>Mean time (right)</th>
+            </tr>
+            @foreach (var item in Model.GetBenchmarks())
+            {
+                <tr class="@(item.important ? "benchmark-important": "")">
+                    <td>@item.description.Method</td>
+                    <td>@Html.RenderTime(item.left?.Mean)</td>
+                    <td>@Html.RenderTime(item.right?.Mean)</td>
+                </tr>
+            }
+        </table>
+    </div>
+    @* Work out how to style the above to leave some padding instead... *@
+    <p />
+</div>
