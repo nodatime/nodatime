@@ -11,17 +11,15 @@ using System.Linq;
 namespace NodaTime.Web.ViewModels
 {
     /// <summary>
-    /// View-model for comparing two runs of the same type (by fully-qualified name).
+    /// View-model for comparing two runs of the same type, in the same environment, at different commits.
     /// </summary>
-    public class CompareTypesViewModel
+    public class CompareTypesByCommitViewModel
     {
-
-        public bool SingleEnvironment => Left.Environment.BenchmarkEnvironmentId == Right.Environment.BenchmarkEnvironmentId;
-
+        public BenchmarkEnvironment Environment => Left.Environment;
         public BenchmarkType Left { get; }
         public BenchmarkType Right { get; }
 
-        public CompareTypesViewModel(BenchmarkType left, BenchmarkType right)
+        public CompareTypesByCommitViewModel(BenchmarkType left, BenchmarkType right)
         {
             Left = left;
             Right = right;

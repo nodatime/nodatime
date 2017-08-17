@@ -62,8 +62,7 @@ namespace NodaTime.Web.Models
                 string environmentCrc32c,
                 Dictionary<string, BenchmarkRun> runsByStorageName)
             {
-                // Clone the environments to avoid mutating one that might still be being used elsewhere.
-                Environments = environments.Select(e => e.Clone()).ToList();
+                Environments = environments;
 
                 this.environmentCrc32c = environmentCrc32c;
                 this.runsByStorageName = runsByStorageName;
@@ -95,7 +94,7 @@ namespace NodaTime.Web.Models
                 var environmentObject = client.GetObject(BucketName, EnvironmentObjectName);
                 var environments = environmentObject.Crc32c == previous.environmentCrc32c
                     ? previous.Environments.Select(env => env.Clone()).ToList()
-                    : LoadEnvironments(client);
+                    : LoadEnvironments(client).OrderBy(e => e.Machine).ThenBy(e => e.TargetFramework).ThenBy(e => e.OperatingSystem).ToList();
 
                 // Don't just use previous.runsByStorageName blindly - some may have been removed.
                 var runsByStorageName = new Dictionary<string, BenchmarkRun>();

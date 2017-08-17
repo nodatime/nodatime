@@ -1,0 +1,44 @@
+﻿@using NodaTime.Web.ViewModels;
+@model CompareTypesByEnvironmentViewModel
+
+@{
+    ViewBag.Title = "Benchmark type comparison";
+}
+
+<div class="row">
+    <div>
+        <h1>Benchmark environment comparison for @Model.TargetType.FullTypeName</h1>
+    </div>
+    <div>
+        <p>
+            Type @Model.TargetType.FullTypeName at commit <a href="https://github.com/nodatime/nodatime/commit/@Model.TargetType.Run.Commit">@Model.TargetType.Run.Commit.TruncateCommit()</a>
+        </p>
+    </div>
+    <div>
+        <h2>Benchmarks</h2>
+    </div>
+    <div>
+        <table>
+            @* TODO: Parameters, if we ever use them. *@
+            <tr>
+                <th>Method</th>
+                @foreach (var type in Model.Types)
+                {
+                    <th><a href="/benchmarks/types/@type.BenchmarkTypeId">@type.Environment.Machine<br />@type.Environment.TargetFramework<br />@type.Environment.BriefOperatingSystem</a></th>
+                }
+            </tr>
+            @foreach (var item in Model.GetBenchmarks())
+            {
+                <tr>
+                    <td>@item.description.Method</td>
+                    @foreach (var stat in item.statistics)
+                    {
+                      <td>@Html.RenderTime(stat?.Mean)</td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+    @* Work out how to style the above to leave some padding instead... *@
+    <p />
+</div>

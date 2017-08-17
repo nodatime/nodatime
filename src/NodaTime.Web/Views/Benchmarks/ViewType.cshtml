@@ -1,5 +1,5 @@
 ﻿@using NodaTime.Benchmarks;
-@model (BenchmarkType type, BenchmarkType previousRunType, IEnumerable<BenchmarkType> comparisonEnvironments)
+@model (BenchmarkType type, string previousCommit)
 
 @{
     ViewBag.Title = "Benchmark type";
@@ -7,8 +7,7 @@
     var run = type.Run;
     var env = type.Environment;
     var benchmarks = type.Benchmarks;
-    var previousRunType = Model.previousRunType;
-    var comparisonEnvironments = Model.comparisonEnvironments;
+    var previousCommit = Model.previousCommit;
 }
 
 <div class="row">
@@ -20,28 +19,15 @@
             Type: @type.FullTypeName<br />
             Environment: <a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">@env.Machine, @env.TargetFramework</a><br />
             Run: <a href="/benchmarks/runs/@run.BenchmarkRunId">@run.BenchmarkRunId.TruncateGuid()</a><br />
-            Compare with:
-            <ul>
-                @if (previousRunType != null)
-                {
-                    <li><a href="/benchmarks/types/@type.BenchmarkTypeId/compare/@previousRunType.BenchmarkTypeId">Compare with previous run</a></li>
-                }
-                else
-                {
-                    <li>(No previous run to compare this with.)</li>
-                }
-                @if (comparisonEnvironments.Any())
-                {
-                    @foreach (var comparison in comparisonEnvironments)
-                    {
-                        <li><a href="/benchmarks/types/@type.BenchmarkTypeId/compare/@comparison.BenchmarkTypeId">Same commit on @comparison.Environment.Machine (@comparison.Environment.TargetFramework)</a></li>
-                    }
-                }
-                else
-                {
-                    <li>(No other environments to compare this with.)</li>
-                }
-            </ul>
+            @if (previousCommit != null)
+            {
+                <a href="/benchmarks/types/@type.BenchmarkTypeId:compareWithCommit?commit=@previousCommit">Compare with previous commit in this environment</a><br />
+            }
+            else
+            {
+                @:(No previous commit to compare this with.)<br />
+            }
+            <a href="/benchmarks/types/@type.BenchmarkTypeId:compareEnvironments">Compare with same type and commit in other environments</a>
         </p>
     </div>
     <div>
