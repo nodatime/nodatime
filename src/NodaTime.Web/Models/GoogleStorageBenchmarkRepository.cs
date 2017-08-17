@@ -93,7 +93,9 @@ namespace NodaTime.Web.Models
                 // We won't reload everything from storage, but we'll come up with completely new set of objects each time, so we
                 // don't need to worry about the changes involved as we reattach links.
                 var environmentObject = client.GetObject(BucketName, EnvironmentObjectName);
-                var environments = environmentObject.Crc32c == previous.environmentCrc32c ? previous.Environments : LoadEnvironments(client);
+                var environments = environmentObject.Crc32c == previous.environmentCrc32c
+                    ? previous.Environments.Select(env => env.Clone()).ToList()
+                    : LoadEnvironments(client);
 
                 // Don't just use previous.runsByStorageName blindly - some may have been removed.
                 var runsByStorageName = new Dictionary<string, BenchmarkRun>();
