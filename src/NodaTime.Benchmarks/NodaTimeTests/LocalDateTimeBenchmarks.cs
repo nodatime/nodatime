@@ -147,11 +147,14 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public LocalDateTime MinusMixedPeriod() => (Sample - SampleMixedPeriod);
 
 #if !NO_INTERNALS
-        //        [Benchmark]
-        //        public LocalInstant ToLocalInstant()
-        //        {
-        //            return Sample.ToLocalInstant();
-        //        }
+        [Benchmark]
+        public LocalInstantWrapper ToLocalInstant() => new LocalInstantWrapper(Sample.ToLocalInstant());
+
+        public struct LocalInstantWrapper
+        {
+            private readonly LocalInstant value;
+            internal LocalInstantWrapper(LocalInstant value) => this.value = value;
+        }
 #endif
     }
 }
