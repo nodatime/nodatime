@@ -21,13 +21,13 @@
             Run: <a href="/benchmarks/runs/@run.BenchmarkRunId">@run.BenchmarkRunId.TruncateGuid()</a><br />
             @if (previousCommit != null)
             {
-                <a href="/benchmarks/types/@type.BenchmarkTypeId:compareWithCommit?commit=@previousCommit">Compare with previous commit in this environment</a><br />
+                <a href="/benchmarks/types/@type.BenchmarkTypeId/compareWithCommit/@previousCommit">Compare with previous commit in this environment</a><br />
             }
             else
             {
                 @:(No previous commit to compare this with.)<br />
             }
-            <a href="/benchmarks/types/@type.BenchmarkTypeId:compareEnvironments">Compare with same type and commit in other environments</a>
+            <a href="/benchmarks/types/@type.BenchmarkTypeId/compareEnvironments">Compare with same type and commit in other environments</a>
         </p>
     </div>
     <div>

@@ -36,7 +36,10 @@ namespace NodaTime.Web.Controllers
             return View((type, previousCommit));
         }
 
-        [Route("/benchmarks/types/{typeId}:compareEnvironments")]
+        // TODO: Revisit these URLs. They're not terribly nice. I tried using colons (e.g. /{typeId}:compareEnvironments)
+        // which also isn't great, but indicates it's somewhat less of a resource... it worked locally, but not on Azure.
+
+        [Route("/benchmarks/types/{typeId}/compareEnvironments")]
         public IActionResult CompareTypesByEnvironment(string typeId)
         {
             var left = repository.GetType(typeId);
@@ -51,8 +54,8 @@ namespace NodaTime.Web.Controllers
         }
 
 
-        [Route("/benchmarks/types/{leftTypeId}:compareWithCommit")]
-        public IActionResult CompareTypesByCommit(string leftTypeId, [FromQuery] string commit)
+        [Route("/benchmarks/types/{leftTypeId}/compareWithCommit/{commit}")]
+        public IActionResult CompareTypesByCommit(string leftTypeId, string commit)
         {
             var leftType = repository.GetType(leftTypeId);
             var environment = leftType.Environment;
