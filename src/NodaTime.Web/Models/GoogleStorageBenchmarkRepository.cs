@@ -93,7 +93,7 @@ namespace NodaTime.Web.Models
                 // don't need to worry about the changes involved as we reattach links.
                 var environmentObject = client.GetObject(BucketName, EnvironmentObjectName);
                 var environments = environmentObject.Crc32c == previous.environmentCrc32c
-                    ? previous.Environments.Select(env => env.Clone()).ToList()
+                    ? previous.Environments.Select(env => { var clone = env.Clone(); clone.Runs.Clear(); return clone; }).ToList()
                     : LoadEnvironments(client).OrderBy(e => e.Machine).ThenBy(e => e.TargetFramework).ThenBy(e => e.OperatingSystem).ToList();
 
                 // Don't just use previous.runsByStorageName blindly - some may have been removed.
