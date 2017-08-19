@@ -13,7 +13,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     /// </summary>
     public class StandardDaylightAlternatingMapBenchmarks
     {
-        private static readonly Instant January1st = Instant.FromUtc(2010, 1, 1, 0, 0);
+        private static readonly Instant February1st = Instant.FromUtc(2010, 2, 1, 0, 0);
         private static readonly Instant July1st = Instant.FromUtc(2010, 7, 1, 0, 0);
 
         private static readonly StandardDaylightAlternatingMap SampleZone;
@@ -33,13 +33,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public void GetZoneInterval_Winter()
+        public ZoneInterval GetZoneInterval_Winter()
         {
-            SampleZone.GetZoneInterval(January1st);
+            SampleZone.GetZoneInterval(February1st);
         }
 
         [Benchmark]
-        public void GetZoneInterval_Summer()
+        public ZoneInterval GetZoneInterval_Summer()
         {
             SampleZone.GetZoneInterval(July1st);
         }
