@@ -7,7 +7,7 @@ using NodaTime.TimeZones;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
-    public class ZoneRecurrenceBenchmarks
+    public class ZoneYearOffsetBenchmarks
     {
         private static readonly ZoneYearOffset Sample =
             new ZoneYearOffset(TransitionMode.Wall, 3, 15, (int)IsoDayOfWeek.Sunday, true, new LocalTime(1, 0, 0));
