@@ -33,16 +33,10 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         }
 
         [Benchmark]
-        public ZoneInterval GetZoneInterval_Winter()
-        {
-            SampleZone.GetZoneInterval(February1st);
-        }
+        public ZoneInterval GetZoneInterval_Winter() => SampleZone.GetZoneInterval(February1st);
 
         [Benchmark]
-        public ZoneInterval GetZoneInterval_Summer()
-        {
-            SampleZone.GetZoneInterval(July1st);
-        }
+        public ZoneInterval GetZoneInterval_Summer() => SampleZone.GetZoneInterval(July1st);
     }
 }
 #endif
