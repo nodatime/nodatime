@@ -5,7 +5,7 @@
 using BenchmarkDotNet.Attributes;
 using NodaTime.TimeZones;
 
-namespace NodaTime.Benchmarks.NodaTimeTests.TimeZones
+namespace NodaTime.Benchmarks.NodaTimeTests
 {
     public class ZoneRecurrenceBenchmarks
     {
