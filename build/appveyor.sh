@@ -6,13 +6,14 @@
 set -e
 
 declare -r ROOT=$(realpath $(dirname $0)/..)
+cd $ROOT
 
 dotnet --info
 
 dotnet build -c Release src/NodaTime-All.sln
 
 # Run just the net451 tests under dotCover
-$ROOT/build/coverage.sh
+build/coverage.sh
 
 dotnet run --no-build -c Release -f netcoreapp1.0 -p src/NodaTime.Test -- --where=cat!=Slow
 dotnet run --no-build -c Release -f netcoreapp2.0 -p src/NodaTime.Test -- --where=cat!=Slow
