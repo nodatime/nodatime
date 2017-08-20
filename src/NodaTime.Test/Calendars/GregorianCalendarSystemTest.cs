@@ -32,5 +32,14 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(Era.Common, startOfEra.Era);
             Assert.AreEqual(Era.BeforeCommon, startOfEra.PlusTicks(-1).Era);
         }
+
+        [Test]
+        public void AddMonths_BoundaryCondition()
+        {
+            var start = new LocalDate(2017, 8, 20);
+            var end = start.PlusMonths(-7);
+            var expected = new LocalDate(2017, 1, 20);
+            Assert.AreEqual(expected, end);
+        }
     }
 }

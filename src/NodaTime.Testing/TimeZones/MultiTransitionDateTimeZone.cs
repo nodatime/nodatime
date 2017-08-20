@@ -131,10 +131,8 @@ namespace NodaTime.Testing.TimeZones
             /// </summary>
             /// <param name="transition">Instant at which the zone changes.</param>
             /// <param name="newStandardOffsetHours">The new standard offset, in hours.</param>
-            public void Add(Instant transition, int newStandardOffsetHours)
-            {
+            public void Add(Instant transition, int newStandardOffsetHours) =>
                 Add(transition, newStandardOffsetHours, 0);
-            }
 
             /// <summary>
             /// Adds a transition at the given instant, to the specified new standard offset,
@@ -143,10 +141,8 @@ namespace NodaTime.Testing.TimeZones
             /// <param name="transition">Instant at which the zone changes.</param>
             /// <param name="newStandardOffsetHours">The new standard offset, in hours.</param>
             /// <param name="newSavingOffsetHours">The new daylight saving offset, in hours.</param>
-            public void Add(Instant transition, int newStandardOffsetHours, int newSavingOffsetHours)
-            {
+            public void Add(Instant transition, int newStandardOffsetHours, int newSavingOffsetHours) =>
                 Add(transition, newStandardOffsetHours, newSavingOffsetHours, "Interval from " + transition);
-            }
 
             /// <summary>
             /// Adds a transition at the given instant, to the specified new standard offset,
@@ -191,10 +187,7 @@ namespace NodaTime.Testing.TimeZones
             /// <summary>
             /// We don't *really* want to implement this, but we want the collection initializer...
             /// </summary>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                throw new NotImplementedException();
-            }
+            IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
         }
     }
 }
