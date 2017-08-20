@@ -231,7 +231,10 @@ namespace NodaTime.TimeZones
                 {
                     return cached;
                 }
-                string guess = GuessZoneIdByTransitionsUncached(zone);
+                // Build the list of candidates here instead of within the method, so that
+                // tests can pass in the same list on each iteration.
+                var candidates = CanonicalIdMap.Values.Select(ForId).ToList();
+                string guess = GuessZoneIdByTransitionsUncached(zone, candidates);
                 guesses[zone.StandardName] = guess;
                 return guess;
             }
@@ -249,17 +252,16 @@ namespace NodaTime.TimeZones
         /// call it if we can't get an exact match anyway.
         /// </summary>
         /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
-        internal string GuessZoneIdByTransitionsUncached(TimeZoneInfo zone)
+        /// <param name="candidates">All the Noda Time zones to consider - normally a list 
+        /// obtained from this source.</param>
+        internal string GuessZoneIdByTransitionsUncached(TimeZoneInfo zone, List<DateTimeZone> candidates)
         {
             // See https://github.com/nodatime/nodatime/issues/686 for performance observations.
-            // If this were going to be called a lot, we could optimize further - but as it is,
-            // there's not much point.
             // Very rare use of the system clock! Windows time zone updates sometimes sacrifice past
             // accuracy for future accuracy, so let's use the current year's transitions.
             int thisYear = SystemClock.Instance.GetCurrentInstant().InUtc().Year;
             Instant startOfThisYear = Instant.FromUtc(thisYear, 1, 1, 0, 0);
             Instant startOfNextYear = Instant.FromUtc(thisYear + 5, 1, 1, 0, 0);
-            var candidates = CanonicalIdMap.Values.Select(ForId).ToList();
             var instants = candidates.SelectMany(z => z.GetZoneIntervals(startOfThisYear, startOfNextYear))
                                      .Select(zi => Instant.Max(zi.RawStart, startOfThisYear)) // Clamp to start of interval
                                      .Distinct()

@@ -210,6 +210,11 @@ namespace NodaTime.Test.TimeZones
             return ret;
         }
 
+        // By retrieving this once, we can massively speed up GuessZoneIdByTransitionsUncached. We don't need to
+        // reload the time zones for each test, and CachedDateTimeZone will speed things up after that too.
+        private static readonly List<DateTimeZone> TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached =
+            TzdbDateTimeZoneSource.Default.CanonicalIdMap.Values.Select(TzdbDateTimeZoneSource.Default.ForId).ToList();
+
         // We should be able to use TestCaseSource to call TimeZoneInfo.GetSystemTimeZones directly,
         // but that appears to fail under Mono.
         [Test]
@@ -223,7 +228,8 @@ namespace NodaTime.Test.TimeZones
                 return;
             }
 
-            string id = TzdbDateTimeZoneSource.Default.GuessZoneIdByTransitionsUncached(bclZone);
+            string id = TzdbDateTimeZoneSource.Default.GuessZoneIdByTransitionsUncached(bclZone,
+                TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached);
 
             // Unmappable zones may not be mapped, or may be mapped to something reasonably accurate.
             // We don't mind either way.
