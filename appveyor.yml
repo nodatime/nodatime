@@ -17,6 +17,8 @@ environment:
 build_script:
   - dotnet --info
   - bash build/appveyor.sh
+  - choco install codecov
+  - codecov -f coverage/coverage.xml
 
 # The tests are run as part of the build.
 test: off

@@ -53,20 +53,11 @@ TestResult.xml
 # Roslyn temporary files
 /src/*.sln.ide/**
 
-# Generated packages/projects
-/src/NodaTime-Core-*.sln
-/src/**/*-*.csproj
-
-# .NET Core files
-project.lock.json
-
 # BenchmarkDotNet output
 BenchmarkDotNet.Artifacts
 
 # Packages installed during the build
 packages
-
-coverage.xml
 coverage
 src/NodaTime.Web/docfx
 build/history
