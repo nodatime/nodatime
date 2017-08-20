@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+ - dotCover CLI configuration
+ - See https://www.jetbrains.com/help/dotcover/dotCover__Console_Runner_Commands.html#cover
+ -->
+<CoverageParams>
+  <TargetExecutable>/Program Files/dotnet/dotnet.exe</TargetExecutable>
+  <TargetArguments>run -f net451 -c Release -- --where=cat!=Slow</TargetArguments>
+  <TargetWorkingDir>.</TargetWorkingDir>
+  <Filters>
+    <IncludeFilters>
+      <FilterEntry>
+        <ModuleMask>NodaTime</ModuleMask>
+      </FilterEntry>
+      <FilterEntry>
+        <ModuleMask>NodaTime.Testing</ModuleMask>
+      </FilterEntry>
+    </IncludeFilters>
+    <ExcludeFilters>
+      <FilterEntry>
+        <ClassMask>JetBrains.Annotations.*</ClassMask>
+        <ClassMask>NodaTime.Annotations.*</ClassMask>
+      </FilterEntry>
+    </ExcludeFilters>
+  </Filters>
+  <Output>../../coverage/NodaTime.dvcr</Output>
+</CoverageParams>
