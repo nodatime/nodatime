@@ -94,70 +94,49 @@ namespace NodaTime.Testing
         /// </summary>
         /// <param name="nanoseconds">The number of nanoseconds to advance the clock by (or if negative, the number to move it back
         /// by).</param>
-        public void AdvanceNanoseconds(long nanoseconds)
-        {
-            Advance(Duration.FromNanoseconds(nanoseconds));
-        }
+        public void AdvanceNanoseconds(long nanoseconds) => Advance(Duration.FromNanoseconds(nanoseconds));        
 
         /// <summary>
         /// Advances the clock by the given number of ticks.
         /// </summary>
         /// <param name="ticks">The number of ticks to advance the clock by (or if negative, the number to move it back
         /// by).</param>
-        public void AdvanceTicks(long ticks)
-        {
-            Advance(Duration.FromTicks(ticks));
-        }
+        public void AdvanceTicks(long ticks) => Advance(Duration.FromTicks(ticks));
 
         /// <summary>
         /// Advances the clock by the given number of milliseconds.
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds to advance the clock by (or if negative, the number
         /// to move it back by).</param>
-        public void AdvanceMilliseconds(long milliseconds)
-        {
-            Advance(Duration.FromMilliseconds(milliseconds));
-        }
+        public void AdvanceMilliseconds(long milliseconds) => Advance(Duration.FromMilliseconds(milliseconds));
 
         /// <summary>
         /// Advances the clock by the given number of seconds.
         /// </summary>
         /// <param name="seconds">The number of seconds to advance the clock by (or if negative, the number to move it
         /// back by).</param>
-        public void AdvanceSeconds(long seconds)
-        {
-            Advance(Duration.FromSeconds(seconds));
-        }
+        public void AdvanceSeconds(long seconds) => Advance(Duration.FromSeconds(seconds));
 
         /// <summary>
         /// Advances the clock by the given number of minutes.
         /// </summary>
         /// <param name="minutes">The number of minutes to advance the clock by (or if negative, the number to move it
         /// back by).</param>
-        public void AdvanceMinutes(long minutes)
-        {
-            Advance(Duration.FromMinutes(minutes));
-        }
+        public void AdvanceMinutes(long minutes) => Advance(Duration.FromMinutes(minutes));
 
         /// <summary>
         /// Advances the clock by the given number of hours.
         /// </summary>
         /// <param name="hours">The number of hours to advance the clock by (or if negative, the number to move it
         /// back by).</param>
-        public void AdvanceHours(int hours)
-        {
-            Advance(Duration.FromHours(hours));
-        }
+        public void AdvanceHours(int hours) => Advance(Duration.FromHours(hours));
 
         /// <summary>
         /// Advances the clock by the given number of standard (24-hour) days.
         /// </summary>
         /// <param name="days">The number of days to advance the clock by (or if negative, the number to move it
         /// back by).</param>
-        public void AdvanceDays(int days)
-        {
-            Advance(Duration.FromDays(days));
-        }
+        public void AdvanceDays(int days) => Advance(Duration.FromDays(days));
 
         /// <summary>
         /// Resets the clock to the given instant.

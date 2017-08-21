@@ -74,6 +74,14 @@ namespace NodaTime.Test.Testing
         }
 
         [Test]
+        public void AdvanceNanoseconds()
+        {
+            FakeClock clock = new FakeClock(Instant.FromUnixTimeSeconds(1));
+            clock.AdvanceNanoseconds(3);
+            Assert.AreEqual(1_000_000_003L, clock.GetCurrentInstant().TimeSinceEpoch.ToInt64Nanoseconds());
+        }
+
+        [Test]
         public void AdvanceTicks()
         {
             FakeClock clock = new FakeClock(Instant.FromUnixTimeTicks(100L));

@@ -19,7 +19,7 @@ namespace NodaTime.Test.Text
         // CultureInfo.GetCultures doesn't exist, so we have a big long list of cultures, generated against
         // .NET 4.6.
         internal static readonly IEnumerable<CultureInfo> AllCultures =
-#if NETCORE
+#if NETCORE || NET451
             new[] {
                 "aa-DJ", "aa-ER", "aa-ET", "af-NA", "af-ZA", "agq-CM", "ak-GH", "am-ET",
                 "ar-001", "ar-AE", "ar-BH", "ar-DJ", "ar-DZ", "ar-EG", "ar-ER", "ar-IL",
