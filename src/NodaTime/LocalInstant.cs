@@ -124,7 +124,7 @@ namespace NodaTime
                 return Instant.AfterMaxValue;
             }
             // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
-            var asDuration = duration.PlusSmallNanoseconds(offset.Nanoseconds);
+            var asDuration = duration.MinusSmallNanoseconds(offset.Nanoseconds);
             if (asDuration.FloorDays < Instant.MinDays)
             {
                 return Instant.BeforeMinValue;

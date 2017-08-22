@@ -248,6 +248,8 @@ namespace NodaTime
 
         /// <summary>
         /// Adds the given offset to this instant, to return a <see cref="LocalInstant" />.
+        /// A positive offset indicates that the local instant represents a "later local time" than the UTC
+        /// representation of this instant.
         /// </summary>
         /// <remarks>
         /// This was previously an operator+ implementation, but operators can't be internal.
