@@ -417,5 +417,58 @@ namespace NodaTime.Test
             TestHelper.AssertValid(Instant.FromUnixTimeTicks, largestValid);
             TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, largestValid + 1);
         }
+
+        [Test]
+        public void PlusOffset()
+        {
+            var localInstant = NodaConstants.UnixEpoch.Plus(Offset.FromHours(1));
+            Assert.AreEqual(Duration.FromHours(1), localInstant.TimeSinceLocalEpoch);
+        }
+
+        [Test]
+        public void SafePlus_NormalTime()
+        {
+            var localInstant = NodaConstants.UnixEpoch.SafePlus(Offset.FromHours(1));
+            Assert.AreEqual(Duration.FromHours(1), localInstant.TimeSinceLocalEpoch);
+        }
+
+        [Test]
+        [TestCase(null, 0, null)]
+        [TestCase(null, 1, null)]
+        [TestCase(null, -1, null)]
+        [TestCase(1, -1, 0)]
+        [TestCase(1, -2, null)]
+        [TestCase(2, 1, 3)]
+        public void SafePlus_NearStartOfTime(int? initialOffset, int offsetToAdd, int? finalOffset)
+        {
+            var start = initialOffset == null
+                ? Instant.BeforeMinValue
+                : Instant.MinValue + Duration.FromHours(initialOffset.Value);
+            var expected = finalOffset == null
+                ? LocalInstant.BeforeMinValue
+                : Instant.MinValue.Plus(Offset.FromHours(finalOffset.Value));
+            var actual = start.SafePlus(Offset.FromHours(offsetToAdd));
+            Assert.AreEqual(expected, actual);
+        }
+
+        // A null offset indicates "AfterMaxValue". Otherwise, MaxValue.Plus(offset)
+        [Test]
+        [TestCase(null, 0, null)]
+        [TestCase(null, 1, null)]
+        [TestCase(null, -1, null)]
+        [TestCase(-1, 1, 0)]
+        [TestCase(-1, 2, null)]
+        [TestCase(-2, -1, -3)]
+        public void SafePlus_NearEndOfTime(int? initialOffset, int offsetToAdd, int? finalOffset)
+        {
+            var start = initialOffset == null
+                ? Instant.AfterMaxValue
+                : Instant.MaxValue + Duration.FromHours(initialOffset.Value);
+            var expected = finalOffset == null
+                ? LocalInstant.AfterMaxValue
+                : Instant.MaxValue.Plus(Offset.FromHours(finalOffset.Value));
+            var actual = start.SafePlus(Offset.FromHours(offsetToAdd));
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
