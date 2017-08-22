@@ -199,16 +199,8 @@ namespace NodaTime.Test.TimeZones
             StringAssert.StartsWith("TZDB: " + source.TzdbVersion, source.VersionId);
         }
 
-        private static List<string> ReadLines(TextReader reader)
-        {
-            var ret = new List<string>();
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                ret.Add(line);
-            }
-            return ret;
-        }
+        [Test]
+        public void ValidateDefault() => TzdbDateTimeZoneSource.Default.Validate();
 
         // By retrieving this once, we can massively speed up GuessZoneIdByTransitionsUncached. We don't need to
         // reload the time zones for each test, and CachedDateTimeZone will speed things up after that too.
