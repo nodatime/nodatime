@@ -49,5 +49,53 @@ namespace NodaTime.Test
             Assert.AreEqual(InstantPatternParser.BeforeMinValueText, LocalInstant.BeforeMinValue.ToString());
             Assert.AreEqual(InstantPatternParser.AfterMaxValueText, LocalInstant.AfterMaxValue.ToString());
         }
+
+        [Test]
+        public void SafeMinus_NormalTime()
+        {
+            var start = new LocalInstant(0, 0);
+            var end = start.SafeMinus(Offset.FromHours(1));
+            Assert.AreEqual(Duration.FromHours(-1), end.TimeSinceEpoch);
+        }
+
+        // A null offset indicates "BeforeMinValue". Otherwise, MinValue.Plus(offset)
+        [Test]
+        [TestCase(null, 0, null)]
+        [TestCase(null, 1, null)]
+        [TestCase(null, -1, null)]
+        [TestCase(1, 1, 0)]
+        [TestCase(1, 2, null)]
+        [TestCase(2, 1, 1)]
+        public void SafeMinus_NearStartOfTime(int? initialOffset, int offsetToSubtract, int? finalOffset)
+        {
+            var start = initialOffset == null
+                ? LocalInstant.BeforeMinValue
+                : Instant.MinValue.Plus(Offset.FromHours(initialOffset.Value));
+            var expected = finalOffset == null
+                ? Instant.BeforeMinValue
+                : Instant.MinValue + Duration.FromHours(finalOffset.Value);
+            var actual = start.SafeMinus(Offset.FromHours(offsetToSubtract));
+            Assert.AreEqual(expected, actual);
+        }
+
+        // A null offset indicates "AfterMaxValue". Otherwise, MaxValue.Plus(offset)
+        [Test]
+        [TestCase(null, 0, null)]
+        [TestCase(null, 1, null)]
+        [TestCase(null, -1, null)]
+        [TestCase(-1, -1, 0)]
+        [TestCase(-1, -2, null)]
+        [TestCase(-2, -1, -1)]
+        public void SafeMinus_NearEndOfTime(int? initialOffset, int offsetToSubtract, int? finalOffset)
+        {
+            var start = initialOffset == null
+                ? LocalInstant.AfterMaxValue
+                : Instant.MaxValue.Plus(Offset.FromHours(initialOffset.Value));
+            var expected = finalOffset == null
+                ? Instant.AfterMaxValue
+                : Instant.MaxValue + Duration.FromHours(finalOffset.Value);
+            var actual = start.SafeMinus(Offset.FromHours(offsetToSubtract));
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
