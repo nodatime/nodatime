@@ -2,11 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
-using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Text;
-using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NodaTime.Test.Text
 {
@@ -34,6 +33,7 @@ namespace NodaTime.Test.Text
         /// Test data for invalid patterns
         /// </summary>
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "HH:MM", Message = Messages.Parse_MultipleCapitalDurationFields },
             new Data { Pattern = "MM mm", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'm' } },
             new Data { Pattern = "G", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'G', typeof(Duration) } },

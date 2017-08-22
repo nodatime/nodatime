@@ -13,6 +13,7 @@ namespace NodaTime.Test.Text
     public class InstantPatternTest : PatternTestBase<Instant>
     {
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "!", Message = Messages.Parse_UnknownStandardFormat, Parameters = {'!', typeof(Instant).FullName}},
             new Data { Pattern = "%", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '%', typeof(Instant).FullName } },
             new Data { Pattern = "\\", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '\\', typeof(Instant).FullName } },

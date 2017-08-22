@@ -2,11 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
-using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Text;
-using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NodaTime.Test.Text
 {
@@ -21,6 +20,7 @@ namespace NodaTime.Test.Text
         private static readonly Offset AthensOffset = Offset.FromHours(3);
 
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
             new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
