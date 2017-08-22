@@ -57,4 +57,36 @@
     <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.1.1" />
   </ItemGroup>
 
+  <!--
+    - ResX file associations.
+    - The generator creates code that doesn't work with .NET Core out of the box;
+    - after changing the resx file, change "typeof(...).Assembly"
+    - to "typeof(...).GetTypeInfo().Assembly" and add a using directive for System.Reflection.
+    - Maybe we ought to just not generate the files...
+    -->
+
+  <ItemGroup>
+    <Compile Update="Properties\Messages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+      <Compile Update="Properties\PatternResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PatternResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+      <EmbeddedResource Update="Properties\PatternResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>PatternResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

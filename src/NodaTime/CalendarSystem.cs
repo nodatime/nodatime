@@ -592,7 +592,10 @@ namespace NodaTime
         [Conditional("DEBUG")]
         internal void DebugValidateYearMonthDay(YearMonthDay yearMonthDay)
         {
+            // Avoid the line even being compiled in a release build...
+#if DEBUG
             ValidateYearMonthDay(yearMonthDay.Year, yearMonthDay.Month, yearMonthDay.Day);
+#endif
         }
 
         #endregion

@@ -159,9 +159,8 @@ namespace NodaTime.Text
          [NotNull] public static ParseResult<T> ForException([NotNull] Func<Exception> exceptionProvider) =>
             new ParseResult<T>(Preconditions.CheckNotNull(exceptionProvider, nameof(exceptionProvider)), false);
 
-        internal static ParseResult<T> ForInvalidValue(ValueCursor cursor, string formatString, params object[] parameters)
-        {
-            return ForInvalidValue(() =>
+        internal static ParseResult<T> ForInvalidValue(ValueCursor cursor, string formatString, params object[] parameters) =>
+            ForInvalidValue(() =>
             {
                 // Format the message which is specific to the kind of parse error.
                 string detailMessage = string.Format(CultureInfo.CurrentCulture, formatString, parameters);
@@ -169,11 +168,9 @@ namespace NodaTime.Text
                 string overallMessage = string.Format(CultureInfo.CurrentCulture, Messages.Parse_UnparsableValue, detailMessage, cursor);
                 return new UnparsableValueException(overallMessage);
             });
-        }
 
-        internal static ParseResult<T> ForInvalidValuePostParse(string text, string formatString, params object[] parameters)
-        {
-            return ForInvalidValue(() =>
+        internal static ParseResult<T> ForInvalidValuePostParse(string text, string formatString, params object[] parameters) =>
+            ForInvalidValue(() =>
             {
                 // Format the message which is specific to the kind of parse error.
                 string detailMessage = string.Format(CultureInfo.CurrentCulture, formatString, parameters);
@@ -181,15 +178,12 @@ namespace NodaTime.Text
                 string overallMessage = string.Format(CultureInfo.CurrentCulture, Messages.Parse_UnparsableValuePostParse, detailMessage, text);
                 return new UnparsableValueException(overallMessage);
             });
-        }
 
         private static ParseResult<T> ForInvalidValue(Func<Exception> exceptionProvider) => new ParseResult<T>(exceptionProvider, true);
 
         internal static ParseResult<T> ArgumentNull(string parameter) => new ParseResult<T>(() => new ArgumentNullException(parameter), false);
 
         internal static ParseResult<T> PositiveSignInvalid(ValueCursor cursor) => ForInvalidValue(cursor, Messages.Parse_PositiveSignInvalid);
-
-        internal static ParseResult<T> CannotParseValue(ValueCursor cursor, string format) => ForInvalidValue(cursor, Messages.Parse_CannotParseValue, typeof(T), format);
 
         // Special case: it's a fault with the value, but we still don't want to continue with multiple patterns.
         // Also, there's no point in including the text.

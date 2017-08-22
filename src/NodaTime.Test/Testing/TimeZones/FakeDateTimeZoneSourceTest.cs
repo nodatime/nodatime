@@ -122,7 +122,7 @@ namespace NodaTime.Test.Testing.TimeZones
             // Tests IEnumerable<T>
             CollectionAssert.AreEqual(new[] { x, y }, source.ToList());
             // Tests IEnumerable
-            CollectionAssert.AreEqual(new[] { x, y }, source.Cast<DateTimeZone>().ToList());
+            CollectionAssert.AreEqual(new[] { x, y }, source.OfType<DateTimeZone>().ToList());
         }
 
         // We don't really care how it fails - just that an exception is thrown.

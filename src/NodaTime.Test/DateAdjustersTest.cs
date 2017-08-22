@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test
 {
@@ -90,6 +91,34 @@ namespace NodaTime.Test
             LocalDate actual = start.With(DateAdjusters.Previous(dayOfWeek));
             LocalDate expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Month_Valid()
+        {
+            var adjuster = DateAdjusters.Month(2);
+            var start = new LocalDate(2017, 8, 21, CalendarSystem.Julian);
+            var actual = start.With(adjuster);
+            var expected = new LocalDate(2017, 2, 21, CalendarSystem.Julian);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Month_InvalidAdjustment()
+        {
+            var adjuster = DateAdjusters.Month(2);
+            var start = new LocalDate(2017, 8, 30, CalendarSystem.Julian);
+            Assert.Throws<ArgumentOutOfRangeException>(() => start.With(adjuster));
+        }
+
+        [Test]
+        public void IsoDayOfWeekAdjusters_Invalid()
+        {
+            var invalid = (IsoDayOfWeek) 10;
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Next(invalid));
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.NextOrSame(invalid));
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Previous(invalid));
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.PreviousOrSame(invalid));
         }
     }
 }

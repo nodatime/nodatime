@@ -103,8 +103,8 @@ namespace NodaTime.Test.Text
 
         internal void TestAppendFormat()
         {
-            var pattern = CreatePartialPattern();
             Assert.IsNull(Message);
+            var pattern = CreatePattern();
             var builder = new StringBuilder("x");
             pattern.AppendFormat(Value, builder);
             Assert.AreEqual("x" + Text, builder.ToString());

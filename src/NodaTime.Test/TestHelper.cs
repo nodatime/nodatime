@@ -324,7 +324,7 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        /// Tests the less than (^lt;) and greater than (&gt;) operators if they exist on the object.
+        /// Tests the less than (&lt;) and greater than (&gt;) operators if they exist on the object.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>

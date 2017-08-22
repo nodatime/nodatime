@@ -72,6 +72,19 @@ namespace NodaTime.Test
             TestHelper.TestEqualsStruct(original, original, new YearMonthDayCalendar(original.Year, original.Month + 1, original.Day, original.CalendarOrdinal));
             TestHelper.TestEqualsStruct(original, original, new YearMonthDayCalendar(original.Year, original.Month, original.Day + 1, original.CalendarOrdinal));
             TestHelper.TestEqualsStruct(original, original, new YearMonthDayCalendar(original.Year, original.Month, original.Day, CalendarOrdinal.Gregorian));
+            // Just test the first one again with operators.
+            TestHelper.TestOperatorEquality(original, original, new YearMonthDayCalendar(original.Year + 1, original.Month, original.Day, original.CalendarOrdinal));
+        }
+
+        [Test]
+        public void Parse()
+        {
+            string text = "2017-08-21-Julian";
+            var value = YearMonthDayCalendar.Parse(text);
+            Assert.AreEqual(2017, value.Year);
+            Assert.AreEqual(8, value.Month);
+            Assert.AreEqual(21, value.Day);
+            Assert.AreEqual(CalendarOrdinal.Julian, value.CalendarOrdinal);
         }
     }
 }

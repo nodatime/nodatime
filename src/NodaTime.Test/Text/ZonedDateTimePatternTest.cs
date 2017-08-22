@@ -41,6 +41,7 @@ namespace NodaTime.Test.Text
         private static readonly ZonedDateTime MsdnStandardExampleNoMillis = LocalDateTimePatternTest.MsdnStandardExampleNoMillis.InUtc();
 
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
             new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
@@ -91,6 +92,9 @@ namespace NodaTime.Test.Text
 
             // Can't parse using a pattern that has no provider
             new Data { ZoneProvider = null, Pattern = "yyyy-MM-dd z", Text = "ignored", Message = Messages.Parse_FormatOnlyPattern },
+
+            // Invalid ID
+            new Data { Pattern = "yyyy-MM-dd z", Text = "2017-08-21 LemonCurdIceCream", Message = Messages.Parse_NoMatchingZoneId }
         };
 
         internal static Data[] ParseOnlyData = {

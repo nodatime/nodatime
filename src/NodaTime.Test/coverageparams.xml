@@ -23,12 +23,6 @@
       <FilterEntry>
         <ClassMask>NodaTime.Annotations.*</ClassMask>
       </FilterEntry>
-      <FilterEntry>
-        <ClassMask>NodaTime.Properties.PatternResources</ClassMask>
-      </FilterEntry>
-      <FilterEntry>
-        <ClassMask>NodaTime.Properties.Messages</ClassMask>
-      </FilterEntry>
     </ExcludeFilters>
   </Filters>
   <Output>../../coverage/NodaTime.dvcr</Output>

@@ -50,6 +50,7 @@ namespace NodaTime.Test.Text
             new Data { Text = "17 AM", Pattern = "HH tt", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
             new Data { Text = "04.", Pattern = "ss.FF", Message = Messages.Parse_MismatchedNumber, Parameters = { "FF" } },
             new Data { Text = "04.", Pattern = "ss.ff", Message = Messages.Parse_MismatchedNumber, Parameters = { "ff" } },
+            new Data { Text = "05 Foo", Pattern = "HH tt", Message = Messages.Parse_MissingAmPmDesignator }
         };
 
         internal static Data[] ParseOnlyData = {

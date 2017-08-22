@@ -212,14 +212,7 @@ namespace NodaTime.Test.Text
         public void ParsePartial(PatternTestData<Offset> data)
         {
             data.TestParsePartial();
-        }
-
-        [Test]
-        [TestCaseSource(nameof(FormatData))]
-        public void AppendFormat(PatternTestData<Offset> data)
-        {
-            data.TestAppendFormat();
-        }
+        }        
 
         [Test]
         public void NumberFormatIgnored()
