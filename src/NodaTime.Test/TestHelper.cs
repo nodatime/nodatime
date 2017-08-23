@@ -267,15 +267,18 @@ namespace NodaTime.Test
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestEqualsClass<T>(T value, T equalValue, T unEqualValue) where T : class, IEquatable<T>
+        /// <param name="unequalValue">Values not equal to the base value.</param>
+        public static void TestEqualsClass<T>(T value, T equalValue, params T[] unequalValues) where T : class, IEquatable<T>
         {
-            TestObjectEquals(value, equalValue, unEqualValue);
+            TestObjectEquals(value, equalValue, unequalValues);
             Assert.False(value.Equals(null), "value.Equals<T>(null)");
             Assert.True(value.Equals(value), "value.Equals<T>(value)");
             Assert.True(value.Equals(equalValue), "value.Equals<T>(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals<T>(value)");
-            Assert.False(value.Equals(unEqualValue), "value.Equals<T>(unEqualValue)");
+            foreach (var unequal in unequalValues)
+            {
+                Assert.False(value.Equals(unequal), "value.Equals<T>(unEqualValue)");
+            }
         }
 
         /// <summary>
@@ -286,14 +289,14 @@ namespace NodaTime.Test
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestEqualsStruct<T>(T value, T equalValue, params T[] unEqualValues) where T : struct, IEquatable<T>
+        public static void TestEqualsStruct<T>(T value, T equalValue, params T[] unequalValues) where T : struct, IEquatable<T>
         {
-            var unEqualArray = unEqualValues.Cast<object>().ToArray();
+            var unEqualArray = unequalValues.Cast<object>().ToArray();
             TestObjectEquals(value, equalValue, unEqualArray);
             Assert.True(value.Equals(value), "value.Equals<T>(value)");
             Assert.True(value.Equals(equalValue), "value.Equals<T>(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals<T>(value)");
-            foreach (var unEqualValue in unEqualValues)
+            foreach (var unEqualValue in unequalValues)
             {
                 Assert.False(value.Equals(unEqualValue), "value.Equals<T>(unEqualValue)");
             }
@@ -308,14 +311,14 @@ namespace NodaTime.Test
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
         /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestObjectEquals(object value, object equalValue, params object[] unEqualValues)
+        public static void TestObjectEquals(object value, object equalValue, params object[] unequalValues)
         {
-            ValidateInput(value, equalValue, unEqualValues, "unEqualValue");
+            ValidateInput(value, equalValue, unequalValues, "unEqualValue");
             Assert.False(value.Equals(null), "value.Equals(null)");
             Assert.True(value.Equals(value), "value.Equals(value)");
             Assert.True(value.Equals(equalValue), "value.Equals(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals(value)");
-            foreach (var unEqualValue in unEqualValues)
+            foreach (var unEqualValue in unequalValues)
             {
                 Assert.False(value.Equals(unEqualValue), "value.Equals(unEqualValue)");
             }
@@ -484,6 +487,9 @@ namespace NodaTime.Test
         internal static void AssertXmlRoundtrip<T>(T value, string expectedXml) where T : IXmlSerializable, new()
         {
             AssertXmlRoundtrip(value, expectedXml, EqualityComparer<T>.Default);
+
+            // Just include this here to simply cover everything that's doing XML serialization.
+            Assert.Null(value.GetSchema());
         }
 
         /// <summary>

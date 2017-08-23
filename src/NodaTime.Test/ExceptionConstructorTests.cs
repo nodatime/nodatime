@@ -25,6 +25,14 @@ namespace NodaTime.Test
             Assert.AreEqual(new FormatException().Message, exception.Message);
         }
 
+        // We never actually use this constructor, but it's in the public API and it's harmless...
+        [Test]
+        public void UnparsableValueExceptionParameterlessConstructor()
+        {
+            var exception = new UnparsableValueException();
+            Assert.AreEqual(new FormatException().Message, exception.Message);
+        }
+
         // Only two of our constructors actually have a private constructor for serialization.
         // Others have the serializable attribute without the constructor - which may or may not be bad,
         // but I'm not going to investigate it...

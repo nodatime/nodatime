@@ -77,14 +77,16 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Parse()
+        [TestCase("2017-08-21-Julian", 2017, 8, 21, (int) CalendarOrdinal.Julian)]
+        [TestCase("-0005-08-21-Iso", -5, 8, 21, (int)CalendarOrdinal.Iso)]
+        public void Parse(string text, int year, int month, int day, int calendar)
         {
-            string text = "2017-08-21-Julian";
             var value = YearMonthDayCalendar.Parse(text);
-            Assert.AreEqual(2017, value.Year);
-            Assert.AreEqual(8, value.Month);
-            Assert.AreEqual(21, value.Day);
-            Assert.AreEqual(CalendarOrdinal.Julian, value.CalendarOrdinal);
+            Assert.AreEqual(year, value.Year);
+            Assert.AreEqual(month, value.Month);
+            Assert.AreEqual(day, value.Day);
+            Assert.AreEqual((CalendarOrdinal) calendar, value.CalendarOrdinal);
+            Assert.AreEqual(text, value.ToString());
         }
     }
 }

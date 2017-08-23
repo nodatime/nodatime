@@ -10,6 +10,16 @@ namespace NodaTime.Test
     public partial class LocalTimeTest
     {
         [Test]
+        [TestCase(-1, 0)]
+        [TestCase(24, 0)]
+        [TestCase(0, -1)]
+        [TestCase(0, 60)]
+        public void InvalidConstructionToMinute(int hour, int minute)
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LocalTime(hour, minute));
+        }
+
+        [Test]
         [TestCase(-1, 0, 0)]
         [TestCase(24, 0, 0)]
         [TestCase(0, -1, 0)]
@@ -65,6 +75,16 @@ namespace NodaTime.Test
         {
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => LocalTime.FromHourMinuteSecondTick(hour, minute, second, tick));
+        }
+
+        [Test]
+        public void FromHourMinuteSecondTick_Valid()
+        {
+            var result = LocalTime.FromHourMinuteSecondTick(1, 2, 3, (int) (NodaConstants.TicksPerSecond - 1));
+            Assert.AreEqual(1, result.Hour);
+            Assert.AreEqual(2, result.Minute);
+            Assert.AreEqual(3, result.Second);
+            Assert.AreEqual((int)(NodaConstants.TicksPerSecond - 1), result.TickOfSecond);
         }
 
         [Test]

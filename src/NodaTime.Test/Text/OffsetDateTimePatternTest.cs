@@ -86,9 +86,9 @@ namespace NodaTime.Test.Text
             new Data(SampleOffsetDateTimeCoptic) { Pattern = "uuuu-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF o<g>", Text = "1976-06-19CCopticT21:13:34.123456789 +00", Culture = Cultures.EnUs },
 
             // Standard patterns (all invariant)
-            new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "2009-06-15T13:45:30+01", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.09+01", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.09+01 (ISO)", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExampleNoMillis) { StandardPattern = OffsetDateTimePattern.GeneralIso, Pattern = "G", Text = "2009-06-15T13:45:30+01", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { StandardPattern = OffsetDateTimePattern.ExtendedIso, Pattern = "o", Text = "2009-06-15T13:45:30.09+01", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { StandardPattern = OffsetDateTimePattern.FullRoundtrip, Pattern = "r", Text = "2009-06-15T13:45:30.09+01 (ISO)", Culture = Cultures.FrFr },
 
             // Custom embedded patterns (or mixture of custom and standard)
             new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss> o<g>", Text = "2015*10*24X11_55_30 +03" },

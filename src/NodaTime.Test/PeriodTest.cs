@@ -867,6 +867,13 @@ namespace NodaTime.Test
                                                         long.MinValue));
         }
 
+        [Test]
+        public void FromNanoseconds()
+        {
+            var period = Period.FromNanoseconds(1234567890L);
+            Assert.AreEqual(1234567890L, period.Nanoseconds);
+        }
+
         /// <summary>
         /// Just a simple way of parsing a period string. It's a more compact period representation.
         /// </summary>

@@ -447,11 +447,8 @@ namespace NodaTime
                     newDays++;
                     newNanos -= NanosecondsPerDay;
                 }
-                else if (newNanos < 0)
-                {
-                    newDays--;
-                    newNanos += NanosecondsPerDay;
-                }
+                // nanoOfDay is always non-negative (and much less than half of long.MaxValue), so adding two 
+                // of them together will never produce a negative result.
                 return new Duration(newDays, newNanos);
             }
         }

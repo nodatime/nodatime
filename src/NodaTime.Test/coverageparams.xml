@@ -23,6 +23,11 @@
       <FilterEntry>
         <ClassMask>NodaTime.Annotations.*</ClassMask>
       </FilterEntry>
+      <FilterEntry>
+        <!-- Our tests run the release build, so it doesn't exercise the Debug* methods. -->
+        <ClassMask>NodaTime.Utility.Preconditions</ClassMask>
+        <FunctionMask>Debug*</FunctionMask>
+      </FilterEntry>
     </ExcludeFilters>
   </Filters>
   <Output>../../coverage/NodaTime.dvcr</Output>

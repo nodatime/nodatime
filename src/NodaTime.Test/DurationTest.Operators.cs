@@ -201,16 +201,13 @@ namespace NodaTime.Test
         }
         #endregion
 
-        #region Unary operator -
-        public static void UnaryMinus()
+        [Test]
+        public void UnaryMinusAndNegate()
         {
-            Assert.AreEqual(Duration.FromNanoseconds(-5000), -Duration.FromNanoseconds(5000));
+            var start = Duration.FromNanoseconds(5000);
+            var expected = Duration.FromNanoseconds(-5000);
+            Assert.AreEqual(expected, -start);
+            Assert.AreEqual(expected, Duration.Negate(start));
         }
-
-        public static void Negate()
-        {
-            Assert.AreEqual(Duration.FromNanoseconds(-5000), Duration.Negate(Duration.FromNanoseconds(5000)));
-        }
-        #endregion
     }
 }

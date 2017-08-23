@@ -202,9 +202,9 @@ namespace NodaTime.Test.TimeZones
 
             TestHelper.TestEqualsClass(map1, map2, map4);
             TestHelper.TestEqualsClass(map1, map3, map4);
-            /*
+            
             // Recurrences like Summer, but different in one aspect each, *except* 
-            var recurrences = new[]
+            var unequalMaps = new[]
             {
                 new ZoneRecurrence("Different name", Offset.FromHours(1),
                     new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, new LocalTime(1, 0)), 2000, int.MaxValue),
@@ -223,14 +223,8 @@ namespace NodaTime.Test.TimeZones
                     new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, true, new LocalTime(1, 0)), 2000, int.MaxValue),
                 new ZoneRecurrence("Summer", Offset.FromHours(1),
                     new ZoneYearOffset(TransitionMode.Wall, 3, 10, 0, false, new LocalTime(2, 0)), 2000, int.MaxValue)
-            };
-
-            foreach (var recurrence in recurrences)
-            {
-                var differentMap = new StandardDaylightAlternatingMap(Offset.FromHours(1), Winter, recurrence);
-                TestHelper.TestEqualsClass(map1, map2, differentMap);
-            }
-            */
+            }.Select(recurrence => new StandardDaylightAlternatingMap(Offset.FromHours(1), Winter, recurrence)).ToArray();
+            TestHelper.TestEqualsClass(map1, map2, unequalMaps);
         }
 
         [Test]

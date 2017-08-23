@@ -25,7 +25,8 @@ namespace NodaTime.Test
                 Minutes = 5,
                 Seconds = 6,
                 Milliseconds = 7,
-                Ticks = 8
+                Ticks = 8,
+                Nanoseconds = 9
             };
             Assert.AreEqual(0, builder[PeriodUnits.Years]);
             Assert.AreEqual(1, builder[PeriodUnits.Months]);
@@ -36,6 +37,7 @@ namespace NodaTime.Test
             Assert.AreEqual(6L, builder[PeriodUnits.Seconds]);
             Assert.AreEqual(7L, builder[PeriodUnits.Milliseconds]);
             Assert.AreEqual(8L, builder[PeriodUnits.Ticks]);
+            Assert.AreEqual(9L, builder[PeriodUnits.Nanoseconds]);
         }
 
         [Test]

@@ -307,6 +307,10 @@ namespace NodaTime.Test
             Assert.IsTrue(comparer.Equals(control, differentCalendar));
             Assert.IsFalse(comparer.Equals(control, earlierLocal));
             Assert.IsTrue(comparer.Equals(control, equalAndOppositeChanges));
+
+            Assert.AreEqual(comparer.GetHashCode(control), comparer.GetHashCode(differentCalendar));
+            Assert.AreEqual(comparer.GetHashCode(control), comparer.GetHashCode(equalAndOppositeChanges));
+            Assert.AreNotEqual(comparer.GetHashCode(control), comparer.GetHashCode(earlierLocal));
         }
 
         /// <summary>

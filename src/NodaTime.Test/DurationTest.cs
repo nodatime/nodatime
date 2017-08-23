@@ -327,6 +327,7 @@ namespace NodaTime.Test
             Assert.AreEqual(5942.0187, duration.TotalMinutes, 0.0001);
             Assert.AreEqual(356521.123456789, duration.TotalSeconds, 0.000000001);
             Assert.AreEqual(356521123.456789, duration.TotalMilliseconds, 0.000001);
+            Assert.AreEqual(3565211234567.89d, duration.TotalTicks, 0.01);
             Assert.AreEqual(356521123456789d, duration.TotalNanoseconds, 1);
         }
 

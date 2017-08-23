@@ -36,6 +36,9 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void CountryToString() => Assert.AreEqual("CO (Country name)", SampleCountry.ToString());
+
+        [Test]
         public void Serialization()
         {
             var location = new TzdbZone1970Location(
