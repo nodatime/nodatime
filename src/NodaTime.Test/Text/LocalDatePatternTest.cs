@@ -223,6 +223,22 @@ namespace NodaTime.Test.Text
             Assert.AreEqual(new LocalDate(284, 8, 29, CalendarSystem.Coptic), value);
         }
 
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            var date = new LocalDate(2017, 8, 23);
+            using (CultureSaver.SetCultures(Cultures.FrFr))
+            {
+                var pattern = LocalDatePattern.CreateWithCurrentCulture("d");
+                Assert.AreEqual("23/08/2017", pattern.Format(date));
+            }
+            using (CultureSaver.SetCultures(Cultures.FrCa))
+            {
+                var pattern = LocalDatePattern.CreateWithCurrentCulture("d");
+                Assert.AreEqual("2017-08-23", pattern.Format(date));
+            }
+        }
+
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             // The BCL never seems to use abbreviated month genitive names.

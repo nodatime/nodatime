@@ -4,6 +4,7 @@
 
 using NodaTime.Properties;
 using NodaTime.Text;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -122,6 +123,25 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
+
+        [Test]
+        public void WithCulture()
+        {
+            var pattern = DurationPattern.CreateWithInvariantCulture("H:mm").WithCulture(Cultures.DotTimeSeparator);
+            var text = pattern.Format(Duration.FromMinutes(90));
+            Assert.AreEqual("1.30", text);
+        }
+
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            using (CultureSaver.SetCultures(Cultures.DotTimeSeparator))
+            {
+                var pattern = DurationPattern.CreateWithCurrentCulture("H:mm");
+                var text = pattern.Format(Duration.FromMinutes(90));
+                Assert.AreEqual("1.30", text);
+            }
+        }
 
         /// <summary>
         /// A container for test data for formatting and parsing <see cref="Duration" /> objects.

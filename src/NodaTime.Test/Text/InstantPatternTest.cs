@@ -44,6 +44,25 @@ namespace NodaTime.Test.Text
             Assert.AreEqual(actual, expected);
         }
 
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            using (CultureSaver.SetCultures(Cultures.DotTimeSeparator))
+            {
+                var pattern = InstantPattern.CreateWithCurrentCulture("HH:mm:ss");
+                var text = pattern.Format(Instant.FromUtc(2000, 1, 1, 12, 34, 56));
+                Assert.AreEqual("12.34.56", text);
+            }
+        }
+
+        [Test]
+        public void Create()
+        {
+            var pattern = InstantPattern.Create("HH:mm:ss", Cultures.DotTimeSeparator);
+            var text = pattern.Format(Instant.FromUtc(2000, 1, 1, 12, 34, 56));
+            Assert.AreEqual("12.34.56", text);
+        }
+
         /// <summary>
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
@@ -56,6 +75,9 @@ namespace NodaTime.Test.Text
             new Data { Text = " 1970 ", Pattern = " yyyy " },
             new Data(Instant.MinValue) { Text = "-9998-01-01T00:00:00Z", Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
             new Data(Instant.MaxValue) { Text = "9999-12-31T23:59:59.999999999Z", Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
+
+            // General pattern has no standard single character.
+            new Data(2012, 1, 31, 17, 36, 45) { StandardPattern = InstantPattern.General, Text = "2012-01-31T17:36:45Z", Pattern = "uuuu-MM-ddTHH:mm:ss'Z'" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);

@@ -226,6 +226,17 @@ namespace NodaTime.Test.Text
             Assert.AreEqual("-05:00", pattern.Format(Offset.FromHours(-5)));
         }
 
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            using (CultureSaver.SetCultures(Cultures.DotTimeSeparator))
+            {
+                var pattern = OffsetPattern.CreateWithCurrentCulture("H:mm");
+                var text = pattern.Format(Offset.FromHoursAndMinutes(1, 30));
+                Assert.AreEqual("1.30", text);
+            }
+        }
+
         /// <summary>
         /// A container for test data for formatting and parsing <see cref="Offset" /> objects.
         /// </summary>

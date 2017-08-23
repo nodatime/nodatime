@@ -6,6 +6,7 @@ using NodaTime.Properties;
 using NodaTime.Testing.TimeZones;
 using NodaTime.Text;
 using NodaTime.TimeZones;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -232,6 +233,54 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
+
+        [Test]
+        public void WithTemplateValue()
+        {
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider)
+                .WithTemplateValue(Instant.FromUtc(1970, 1, 1, 11, 30).InZone(TestZone3));
+            var parsed = pattern.Parse("2017-08-23").Value;
+            Assert.AreSame(TestZone3, parsed.Zone);
+            // TestZone3 is at UTC+1 in 1970, so the template value's *local* time is 12pm.
+            // Even though we're parsing a date in 2017, it's the local time from the template value that's used.
+            Assert.AreEqual(new LocalDateTime(2017, 8, 23, 12, 30, 0), parsed.LocalDateTime);
+            Assert.AreEqual(Offset.FromHours(2), parsed.Offset);
+        }
+
+        [Test]
+        public void WithCalendar()
+        {
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider).WithCalendar(CalendarSystem.Coptic);
+            var parsed = pattern.Parse("0284-08-29").Value;
+            Assert.AreEqual(new LocalDateTime(284, 8, 29, 0, 0, CalendarSystem.Coptic), parsed.LocalDateTime);
+        }
+
+        [Test]
+        public void WithPatternText()
+        {
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy", TestProvider).WithPatternText("yyyy-MM-dd");
+            var text = pattern.Format(NodaConstants.UnixEpoch.InUtc());
+            Assert.AreEqual("1970-01-01", text);
+        }
+
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            using (CultureSaver.SetCultures(Cultures.DotTimeSeparator))
+            {
+                var pattern = ZonedDateTimePattern.CreateWithCurrentCulture("HH:mm", null);
+                var text = pattern.Format(Instant.FromUtc(2000, 1, 1, 19, 30).InUtc());
+                Assert.AreEqual("19.30", text);
+            }
+        }
+
+        [Test]
+        public void WithCulture()
+        {
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("HH:mm", null).WithCulture(Cultures.DotTimeSeparator);
+            var text = pattern.Format(Instant.FromUtc(2000, 1, 1, 19, 30).InUtc());
+            Assert.AreEqual("19.30", text);
+        }
 
         public sealed class Data : PatternTestData<ZonedDateTime>
         {
