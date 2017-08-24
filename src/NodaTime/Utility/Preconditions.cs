@@ -152,17 +152,6 @@ namespace NodaTime.Utility
             }
         }
 
-        [ContractAnnotation("expression:false => halt")]
-        [StringFormatMethod("messageFormat")]
-        internal static void CheckArgument(bool expression, string parameter, string messageFormat, params object[] messageArgs)
-        {
-            if (!expression)
-            {
-                string message = string.Format(messageFormat, messageArgs);
-                throw new ArgumentException(message, parameter);
-            }
-        }
-
         internal static void CheckState(bool expression, string message)
         {
             if (!expression)

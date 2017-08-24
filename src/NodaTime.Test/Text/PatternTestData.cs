@@ -28,6 +28,11 @@ namespace NodaTime.Test.Text
         internal CultureInfo Culture { get; set; } = CultureInfo.InvariantCulture;
 
         /// <summary>
+        /// Standard pattern, expected to format/parse the same way as Pattern.
+        /// </summary>
+        internal IPattern<T> StandardPattern { get; set; }
+
+        /// <summary>
         /// Pattern text.
         /// </summary>
         internal string Pattern { get; set; }
@@ -72,6 +77,11 @@ namespace NodaTime.Test.Text
             var result = pattern.Parse(Text);
             var actualValue = result.Value;
             Assert.AreEqual(Value, actualValue);
+
+            if (StandardPattern != null)
+            {
+                Assert.AreEqual(Value, StandardPattern.Parse(Text).Value);
+            }
         }
 
         internal void TestFormat()
@@ -79,6 +89,11 @@ namespace NodaTime.Test.Text
             Assert.IsNull(Message);
             IPattern<T> pattern = CreatePattern();
             Assert.AreEqual(Text, pattern.Format(Value));
+
+            if (StandardPattern != null)
+            {
+                Assert.AreEqual(Text, StandardPattern.Format(Value));
+            }
         }
 
         internal void TestParsePartial()
@@ -103,8 +118,8 @@ namespace NodaTime.Test.Text
 
         internal void TestAppendFormat()
         {
-            var pattern = CreatePartialPattern();
             Assert.IsNull(Message);
+            var pattern = CreatePattern();
             var builder = new StringBuilder("x");
             pattern.AppendFormat(Value, builder);
             Assert.AreEqual("x" + Text, builder.ToString());

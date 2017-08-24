@@ -45,16 +45,10 @@ namespace NodaTime.Text
         /// </summary>
         /// <value>The pattern text for this pattern, as supplied on creation.</value>
         [NotNull] public string PatternText { get; }
-
-        /// <summary>
-        /// Gets the localization information used in this pattern.
-        /// </summary>
-        internal NodaFormatInfo FormatInfo { get; }
-
-        private DurationPattern(string patternText, NodaFormatInfo formatInfo, IPattern<Duration> pattern)
+        
+        private DurationPattern(string patternText, IPattern<Duration> pattern)
         {
             this.PatternText = patternText;
-            this.FormatInfo = formatInfo;
             this.pattern = pattern;
         }
 
@@ -97,7 +91,7 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
             var pattern = formatInfo.DurationPatternParser.ParsePattern(patternText);
-            return new DurationPattern(patternText, formatInfo, pattern);
+            return new DurationPattern(patternText, pattern);
         }
 
         /// <summary>

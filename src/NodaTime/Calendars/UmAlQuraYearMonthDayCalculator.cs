@@ -5,6 +5,7 @@
 using NodaTime.Annotations;
 using NodaTime.Utility;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NodaTime.Calendars
 {
@@ -81,6 +82,9 @@ namespace NodaTime.Calendars
         // No need to use the YearMonthDayCalculator cache, given that we've got the value in array already.
         internal override int GetStartOfYearInDays([Trusted] int year) => YearStartDays[year - ComputedMinYear + 1];
 
+#if NET45
+        [ExcludeFromCodeCoverage]
+#endif
         protected override int CalculateStartOfYearDays([Trusted] int year)
         {
             // Only called from the base GetStartOfYearInDays implementation.

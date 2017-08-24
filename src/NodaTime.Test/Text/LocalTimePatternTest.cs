@@ -26,6 +26,7 @@ namespace NodaTime.Test.Text
         private static readonly CultureInfo NoAmOrPmCulture = CreateCustomAmPmCulture("", "");
 
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "!", Message = Messages.Parse_UnknownStandardFormat, Parameters = {'!', typeof(LocalTime).FullName}},
             new Data { Pattern = "%", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '%', typeof(LocalTime).FullName } },
             new Data { Pattern = "\\", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '\\', typeof(LocalTime).FullName } },
@@ -50,6 +51,7 @@ namespace NodaTime.Test.Text
             new Data { Text = "17 AM", Pattern = "HH tt", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
             new Data { Text = "04.", Pattern = "ss.FF", Message = Messages.Parse_MismatchedNumber, Parameters = { "FF" } },
             new Data { Text = "04.", Pattern = "ss.ff", Message = Messages.Parse_MismatchedNumber, Parameters = { "ff" } },
+            new Data { Text = "05 Foo", Pattern = "HH tt", Message = Messages.Parse_MissingAmPmDesignator }
         };
 
         internal static Data[] ParseOnlyData = {
@@ -298,6 +300,9 @@ namespace NodaTime.Test.Text
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF", Text = "16:05:20.352" },
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20.352 end" },
             new Data(16, 05, 20) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20 end" },
+            
+            // Patterns obtainable by properties but not single character standard patterns
+            new Data(1, 2, 3, 123456700L) { StandardPattern = LocalTimePattern.ExtendedIso, Culture = Cultures.EnUs, Text = "01:02:03.1234567", Pattern = "HH':'mm':'ss;FFFFFFF" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
@@ -360,6 +365,17 @@ namespace NodaTime.Test.Text
         {
             var pattern = LocalTimePattern.CreateWithInvariantCulture("HH");
             Assert.AreEqual(LocalTime.Midnight, pattern.TemplateValue);
+        }
+
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            using (CultureSaver.SetCultures(Cultures.DotTimeSeparator))
+            {
+                var pattern = LocalTimePattern.CreateWithCurrentCulture("HH:mm");
+                var text = pattern.Format(new LocalTime(13, 45));   
+                Assert.AreEqual("13.45", text);
+            }
         }
 
         [Test]

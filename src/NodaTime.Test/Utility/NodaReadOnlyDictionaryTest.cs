@@ -34,9 +34,13 @@ namespace NodaTime.Test.Utility
             Assert.IsTrue(readOnly.TryGetValue(10, out value));
             Assert.AreEqual(20, value);
             Assert.AreEqual(1, readOnly.Count);
+            Assert.IsTrue(readOnly.Contains(new KeyValuePair<int, int>(10, 20)));
             CollectionAssert.AreEqual(original, readOnly);
             CollectionAssert.AreEqual(original.Keys, readOnly.Keys);
             CollectionAssert.AreEqual(original.Values, readOnly.Values);
+            var array = new KeyValuePair<int, int>[1];
+            readOnly.CopyTo(array, 0);
+            Assert.AreEqual(new KeyValuePair<int, int>(10, 20), array[0]);
         }
 
         [Test]

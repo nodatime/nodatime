@@ -37,7 +37,7 @@ namespace NodaTime.TimeZones.IO
             /// <summary>The marker value representing an instant as a fixed 64-bit number of ticks.</summary>
             internal const int MarkerRaw = 2;
             /// <summary>The minimum varint value that represents an number of hours-since-previous.</summary>
-            /// <remarks>Values below value are reserved for markers.</remarks>
+            /// <remarks>Values below this are reserved for markers.</remarks>
             internal const int MinValueForHoursSincePrevious = 1 << 7;
             /// <summary>The minimum varint value that represents an number of minutes since an epoch.</summary>
             /// <remarks>Values below this are interpreted as hours-since-previous (for a range of about 240 years),

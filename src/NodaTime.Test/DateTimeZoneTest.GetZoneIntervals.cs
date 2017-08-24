@@ -31,6 +31,14 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void GetZoneIntervals_InvalidOptions()
+        {
+            var zone = DateTimeZone.Utc;
+            var interval = new Interval(Instant.FromUtc(2000, 1, 1, 0, 0), Instant.FromUtc(2001, 1, 1, 0, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => zone.GetZoneIntervals(interval, (ZoneEqualityComparer.Options) 1234567));
+        }
+
+        [Test]
         public void GetZoneIntervals_FixedZone()
         {
             var zone = DateTimeZone.ForOffset(Offset.FromHours(3));

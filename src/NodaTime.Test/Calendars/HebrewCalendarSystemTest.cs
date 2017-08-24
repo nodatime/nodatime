@@ -213,6 +213,26 @@ namespace NodaTime.Test.Calendars
             }
         }
 
+        [Test]
+        [TestCase("5502-01-01", "5503-01-01")]
+        [TestCase("5502-01-01", "5502-02-01", Description = "Months in same half of year")]
+        // This is the test that looks odd...
+        [TestCase("5502-12-01", "5502-02-01", Description = "Months in opposite half of year")]
+        [TestCase("5502-03-10", "5502-03-12")]
+        public void ScripturalCompare(string earlier, string later)
+        {
+            var pattern = LocalDatePattern.Iso.WithCalendar(CalendarSystem.HebrewScriptural);
+            var earlierDate = pattern.Parse(earlier).Value;
+            var laterDate = pattern.Parse(later).Value;
+            TestHelper.TestCompareToStruct(earlierDate, earlierDate, laterDate);
+        }
+
+        [Test]
+        public void ScripturalGetDaysFromStartOfYearToStartOfMonth_InvalidForCoverage()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => HebrewScripturalCalculator.GetDaysFromStartOfYearToStartOfMonth(5502, 0));
+        }
+
         // Cases used for adding months and differences between months.
         // 5501 is not a leap year; 5502 is; 5503 is not; 5505 is.
         // Heshvan (civil 2) is long in 5507 and 5509; it is short in 5506 and 5508

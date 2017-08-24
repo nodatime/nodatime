@@ -109,5 +109,20 @@ namespace NodaTime.Test.TimeZones
             interval = new ZoneInterval("All time", null, Instant.MaxValue, Offset.FromHours(11), Offset.Zero);
             Assert.Throws<OverflowException>(() => interval.IsoLocalEnd.ToString());
         }
+
+        [Test]
+        public void Equality()
+        {
+            TestHelper.TestEqualsClass(
+                // Equal values
+                new ZoneInterval("name", SampleStart, SampleEnd, Offset.FromHours(1), Offset.FromHours(2)),
+                new ZoneInterval("name", SampleStart, SampleEnd, Offset.FromHours(1), Offset.FromHours(2)),
+                // Unequal values
+                new ZoneInterval("name2", SampleStart, SampleEnd, Offset.FromHours(1), Offset.FromHours(2)),
+                new ZoneInterval("name", SampleStart.PlusNanoseconds(1), SampleEnd, Offset.FromHours(1), Offset.FromHours(2)),
+                new ZoneInterval("name", SampleStart, SampleEnd.PlusNanoseconds(1), Offset.FromHours(1), Offset.FromHours(2)),
+                new ZoneInterval("name", SampleStart, SampleEnd, Offset.FromHours(2), Offset.FromHours(2)),
+                new ZoneInterval("name", SampleStart, SampleEnd, Offset.FromHours(1), Offset.FromHours(3)));
+        }
     }
 }

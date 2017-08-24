@@ -7,6 +7,7 @@ using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
+using System;
 
 namespace NodaTime.Test.Text
 {
@@ -38,6 +39,7 @@ namespace NodaTime.Test.Text
                 new Data { Text = "P5.5S", Message = Messages.Parse_MisplacedUnitSpecifier, Parameters = { '.' } },
                 new Data { Text = "PT.5S", Message = Messages.Parse_MissingNumber },
                 new Data { Text = "PT0.5X", Message = Messages.Parse_MismatchedCharacter, Parameters = { 'S' } },
+                new Data { Text = "PT0.X", Message = Messages.Parse_MissingNumber },
                 new Data { Text = "PT5S0.5S", Message = Messages.Parse_MisplacedUnitSpecifier, Parameters = { '.' } },
                 new Data { Text = "PT5.", Message = Messages.Parse_MissingNumber },
                 new Data { Text = "PT5.5SX", Message = Messages.Parse_ExpectedEndOfString }
@@ -98,6 +100,12 @@ namespace NodaTime.Test.Text
                         item.StandardPattern = PeriodPattern.NormalizingIso;
                     }
                 }
+            }
+
+            [Test]
+            public void NullArgument()
+            {
+                Assert.IsInstanceOf<ArgumentException>(PeriodPattern.NormalizingIso.Parse(null).Exception);
             }
         }
     }
