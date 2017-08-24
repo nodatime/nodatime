@@ -25,29 +25,5 @@ namespace NodaTime.Testing
             }
             return argument;
         }
-
-        internal static void CheckArgumentRange(string paramName, long value, long minInclusive, long maxInclusive)
-        {
-            if (value < minInclusive || value > maxInclusive)
-            {
-                throw new ArgumentOutOfRangeException(paramName, $"Value should be in range [{minInclusive}-{maxInclusive}]");
-            }
-        }
-
-        internal static void CheckArgumentRange(string paramName, int value, int minInclusive, int maxInclusive)
-        {
-            if (value < minInclusive || value > maxInclusive)
-            {
-                throw new ArgumentOutOfRangeException(paramName, $"Value should be in range [{minInclusive}-{maxInclusive}]");
-            }
-        }
-
-        internal static void CheckArgument(bool expression, string parameter, string message)
-        {
-            if (!expression)
-            {
-                throw new ArgumentException(message, parameter);
-            }
-        }
     }
 }
