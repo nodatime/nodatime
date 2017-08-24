@@ -7,6 +7,7 @@ using NodaTime.TimeZones;
 using NUnit.Framework;
 using NodaTime.TimeZones.IO;
 using System.IO;
+using NodaTime.Utility;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -87,6 +88,23 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual("CO", location2.CountryCode);
             Assert.AreEqual("Etc/MadeUpZone", location2.ZoneId);
             Assert.AreEqual("Comment", location2.Comment);
+        }
+
+        [Test]
+        public void ReadInvalid()
+        {
+            var stream = new MemoryStream();
+            var writer = new DateTimeZoneWriter(stream, null);
+            // This is invalid
+            writer.WriteSignedCount(90 * 3600 + 1);
+            writer.WriteSignedCount(0);
+            writer.WriteString("name");
+            writer.WriteString("co");
+            writer.WriteString("Europe/Somewhere");
+            writer.WriteString("");
+            stream.Position = 0;
+            var reader = new DateTimeZoneReader(stream, null);
+            Assert.Throws<InvalidNodaDataException>(() => TzdbZoneLocation.Read(reader));
         }
     }
 }

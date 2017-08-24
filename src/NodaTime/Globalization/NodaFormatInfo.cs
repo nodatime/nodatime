@@ -180,8 +180,7 @@ namespace NodaTime.Globalization
         /// </remarks>
         private IList<string> ConvertGenitiveMonthArray(IList<string> nonGenitiveNames, string[] bclNames, string[] invariantNames)
         {
-            int ignored;
-            if (int.TryParse(bclNames[0], out ignored))
+            if (int.TryParse(bclNames[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out var _))
             {
                 return nonGenitiveNames;
             }

@@ -129,9 +129,21 @@ namespace NodaTime
             }
             // Not found it in the array. This can happen if the calendar system was initialized in
             // a different thread, and the write to the array isn't visible in this thread yet.
-            // A simple switch will do the right thing.
+            // A simple switch will do the right thing. This is separated out (directly below) to allow
+            // it to be tested separately. (It may also help this method be inlined...) The return
+            // statement below is unlikely to ever be hit by code coverage, as it's handling a very
+            // unusual and hard-to-provoke situation.
+            return ForOrdinalUncached(ordinal);
+        }
+        
+        [VisibleForTesting]
+        internal static CalendarSystem ForOrdinalUncached([Trusted] CalendarOrdinal ordinal)
+        {
             switch (ordinal)
             {
+                // This entry is really just for completeness. We'd never get called with this.
+                case CalendarOrdinal.Iso:
+                    return Iso;
                 case CalendarOrdinal.Gregorian:
                     return Gregorian;
                 case CalendarOrdinal.Julian:

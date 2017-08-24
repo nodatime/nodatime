@@ -49,6 +49,12 @@ namespace NodaTime.Test.Text
             ValidateCurrentCharacter(cursor, 1, 'e');
             Assert.True(cursor.MoveNext(), "MoveNext()");
             ValidateCurrentCharacter(cursor, 2, 's');
+            Assert.True(cursor.MovePrevious()); // 1
+            Assert.True(cursor.MovePrevious()); // 0
+            Assert.False(cursor.MovePrevious());
+            ValidateCurrentCharacter(cursor, -1, '\0');
+            Assert.False(cursor.MovePrevious());
+            ValidateCurrentCharacter(cursor, -1, '\0');
         }
 
         [Test]

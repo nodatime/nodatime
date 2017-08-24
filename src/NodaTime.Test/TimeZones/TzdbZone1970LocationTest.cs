@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 // TODO: Remove this when Mono-latest supports using static properly.
 using Country = NodaTime.TimeZones.TzdbZone1970Location.Country;
+using NodaTime.Utility;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -57,6 +58,23 @@ namespace NodaTime.Test.TimeZones
             CollectionAssert.AreEqual(location.Countries, reloaded.Countries);
             Assert.AreEqual(location.ZoneId, reloaded.ZoneId);
             Assert.AreEqual(location.Comment, reloaded.Comment);
+        }
+
+        [Test]
+        public void ReadInvalid()
+        {
+            var stream = new MemoryStream();
+            var writer = new DateTimeZoneWriter(stream, null);
+            // Valid latitude/longitude
+            writer.WriteSignedCount(0);
+            writer.WriteSignedCount(0);
+            // But no countries
+            writer.WriteCount(0);
+            writer.WriteString("Europe/Somewhere");
+            writer.WriteString("");
+            stream.Position = 0;
+            var reader = new DateTimeZoneReader(stream, null);
+            Assert.Throws<InvalidNodaDataException>(() => TzdbZone1970Location.Read(reader));
         }
 
         [Test]

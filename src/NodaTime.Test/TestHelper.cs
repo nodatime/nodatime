@@ -483,15 +483,7 @@ namespace NodaTime.Test
                 Assert.True((bool)inequality.Invoke(null, new object[] { value, unEqualValue }), "value != unEqualValue");
             }
         }
-
-        internal static void AssertXmlRoundtrip<T>(T value, string expectedXml) where T : IXmlSerializable, new()
-        {
-            AssertXmlRoundtrip(value, expectedXml, EqualityComparer<T>.Default);
-
-            // Just include this here to simply cover everything that's doing XML serialization.
-            Assert.Null(value.GetSchema());
-        }
-
+        
         /// <summary>
         /// Validates that the given value can be serialized, and that deserializing the same data
         /// returns an equal value.
@@ -519,9 +511,14 @@ namespace NodaTime.Test
         /// value, and that a direct call of ReadXml on a value with an XmlReader initially positioned
         /// at an element will read to the end of that element.
         /// </summary>
-        internal static void AssertXmlRoundtrip<T>(T value, string expectedXml, IEqualityComparer<T> comparer)
+        internal static void AssertXmlRoundtrip<T>(T value, string expectedXml, IEqualityComparer<T> comparer = null)
             where T : IXmlSerializable, new()
         {
+            comparer = comparer ?? EqualityComparer<T>.Default;
+
+            // Just include this here to simply cover everything that's doing XML serialization.
+            Assert.Null(value.GetSchema());
+
             XmlSerializer serializer = new XmlSerializer(typeof(SerializationHelper<T>));
             var helper = new SerializationHelper<T> { Value = value, Before = 100, After = 200 };
             using (var stream = new MemoryStream())

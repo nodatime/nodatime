@@ -222,5 +222,17 @@ namespace NodaTime.Test.Globalization
             var info = NodaFormatInfo.GetFormatInfo(enUs);
             Assert.Throws<ArgumentNullException>(() => info.GetEraPrimaryName(null));
         }
+
+        [Test]
+        public void TestIntegerGenitiveMonthNames()
+        {
+            // Emulate behavior of Mono 3.0.6
+            var culture = (CultureInfo) CultureInfo.InvariantCulture.Clone();
+            culture.DateTimeFormat.MonthGenitiveNames = new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+            culture.DateTimeFormat.AbbreviatedMonthGenitiveNames = new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" };
+            var info = NodaFormatInfo.GetFormatInfo(culture);
+            CollectionAssert.AreEqual(info.LongMonthGenitiveNames, info.LongMonthNames);
+            CollectionAssert.AreEqual(info.ShortMonthGenitiveNames, info.ShortMonthNames);
+        }
     }
 }
