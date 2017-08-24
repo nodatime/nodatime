@@ -34,6 +34,8 @@ namespace NodaTime.Test.Text
         private static readonly LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime(2009, 06, 15, 13, 45);
 
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
+            new Data { Pattern = "a", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'a', typeof(LocalDateTime) } },
             new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
             new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
@@ -51,6 +53,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = Messages.Parse_MismatchedNumber, Parameters = { "dd" }},
             new Data { Pattern = "(c)", Text = "(xxx)", Message = Messages.Parse_NoMatchingCalendarSystem },
             // 24 as an hour is only valid when the time is midnight
+            new Data { Pattern = "yyyy-MM-dd", Text = "2017-02-30", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 30, 2, 2017 } },
             new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:05", Message = Messages.Parse_InvalidHour24 },
             new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:01:00", Message = Messages.Parse_InvalidHour24 },
             new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = Messages.Parse_InvalidHour24 },
@@ -104,13 +107,13 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExampleNoSeconds) { Pattern = "g", Text = "15/06/2009 13:45", Culture = Cultures.FrFr },
             new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "15/06/2009 13:45:30", Culture = Cultures.FrFr },
             // Culture has no impact on round-trip or sortable formats
-            new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "R", Text = "2009-06-15T13:45:30.090000000", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.090000000 (ISO)", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
-            new Data(SampleLocalDateTime) { Pattern = "R", Text = "1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
-            new Data(SampleLocalDateTime) { Pattern = "r", Text = "1976-06-19T21:13:34.123456789 (ISO)", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.BclRoundtrip, Pattern = "o", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.BclRoundtrip, Pattern = "O", Text = "2009-06-15T13:45:30.0900000", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.FullRoundtripWithoutCalendar, Pattern = "R", Text = "2009-06-15T13:45:30.090000000", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.FullRoundtrip, Pattern = "r", Text = "2009-06-15T13:45:30.090000000 (ISO)", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExampleNoMillis) { StandardPattern = LocalDateTimePattern.GeneralIso, Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
+            new Data(SampleLocalDateTime) { StandardPattern = LocalDateTimePattern.FullRoundtripWithoutCalendar, Pattern = "R", Text = "1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
+            new Data(SampleLocalDateTime) { StandardPattern = LocalDateTimePattern.FullRoundtrip, Pattern = "r", Text = "1976-06-19T21:13:34.123456789 (ISO)", Culture = Cultures.FrFr },
 
             // Calendar patterns are invariant
             new Data(MsdnStandardExample) { Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(ISO) 2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
@@ -118,6 +121,9 @@ namespace NodaTime.Test.Text
             new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(Coptic) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
             new Data(SampleLocalDateTimeCoptic) { Pattern = "uuuu-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCopticT21:13:34.123456789", Culture = Cultures.EnUs },
             
+            // Standard invariant patterns with a property but no pattern character
+            new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.ExtendedIso, Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF", Text = "2009-06-15T13:45:30.09", Culture = Cultures.FrFr },            
+
             // Use of the semi-colon "comma dot" specifier
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20.352" },
@@ -148,6 +154,31 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
+
+        [Test]
+        public void WithCalendar()
+        {
+            var pattern = LocalDateTimePattern.GeneralIso.WithCalendar(CalendarSystem.Coptic);
+            var value = pattern.Parse("0284-08-29T12:34:56").Value;
+            Assert.AreEqual(new LocalDateTime(284, 8, 29, 12, 34, 56, CalendarSystem.Coptic), value);
+        }
+
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            var dateTime = new LocalDateTime(2017, 8, 23, 12, 34, 56);
+            using (CultureSaver.SetCultures(Cultures.FrFr))
+            {
+                var pattern = LocalDateTimePattern.CreateWithCurrentCulture("g");
+                Assert.AreEqual("23/08/2017 12:34", pattern.Format(dateTime));
+            }
+            using (CultureSaver.SetCultures(Cultures.FrCa))
+            {
+                var pattern = LocalDateTimePattern.CreateWithCurrentCulture("g");
+                Assert.AreEqual("2017-08-23 12:34", pattern.Format(dateTime));
+            }
+        }
+
 
         [Test]
         [TestCaseSource(nameof(AllCulturesStandardPatterns))]

@@ -2,11 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
-using System.Linq;
+using NodaTime.Globalization;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NodaTime.Test.Text
 {
@@ -21,6 +22,7 @@ namespace NodaTime.Test.Text
         private static readonly Offset AthensOffset = Offset.FromHours(3);
 
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
             new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
@@ -86,9 +88,12 @@ namespace NodaTime.Test.Text
             new Data(SampleOffsetDateTimeCoptic) { Pattern = "uuuu-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF o<g>", Text = "1976-06-19CCopticT21:13:34.123456789 +00", Culture = Cultures.EnUs },
 
             // Standard patterns (all invariant)
-            new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "2009-06-15T13:45:30+01", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "o", Text = "2009-06-15T13:45:30.09+01", Culture = Cultures.FrFr },
-            new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.09+01 (ISO)", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExampleNoMillis) { StandardPattern = OffsetDateTimePattern.GeneralIso, Pattern = "G", Text = "2009-06-15T13:45:30+01", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { StandardPattern = OffsetDateTimePattern.ExtendedIso, Pattern = "o", Text = "2009-06-15T13:45:30.09+01", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { StandardPattern = OffsetDateTimePattern.FullRoundtrip, Pattern = "r", Text = "2009-06-15T13:45:30.09+01 (ISO)", Culture = Cultures.FrFr },
+
+            // Property-only patterns            
+            new Data(MsdnStandardExample) { StandardPattern = OffsetDateTimePattern.Rfc3339, Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", Text = "2009-06-15T13:45:30.09+01:00", Culture = Cultures.FrFr },
 
             // Custom embedded patterns (or mixture of custom and standard)
             new Data(2015, 10, 24, 11, 55, 30, AthensOffset) { Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss> o<g>", Text = "2015*10*24X11_55_30 +03" },
@@ -114,6 +119,68 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
+
+        [Test]
+        public void CreateWithInvariantCulture()
+        {
+            var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd'T'HH:mm:sso<g>");
+            Assert.AreSame(NodaFormatInfo.InvariantInfo, pattern.FormatInfo);
+            var odt = new LocalDateTime(2017, 8, 23, 12, 34, 56).WithOffset(Offset.FromHours(2));
+            Assert.AreEqual("2017-08-23T12:34:56+02", pattern.Format(odt));
+        }
+
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            var odt = new LocalDateTime(2017, 8, 23, 12, 34, 56).WithOffset(Offset.FromHours(2));
+            using (CultureSaver.SetCultures(Cultures.FrFr))
+            {
+                var pattern = OffsetDateTimePattern.CreateWithCurrentCulture("l<g> o<g>");
+                Assert.AreEqual("23/08/2017 12:34 +02", pattern.Format(odt));
+            }
+            using (CultureSaver.SetCultures(Cultures.FrCa))
+            {
+                var pattern = OffsetDateTimePattern.CreateWithCurrentCulture("l<g> o<g>");
+                Assert.AreEqual("2017-08-23 12:34 +02", pattern.Format(odt));
+            }
+        }
+
+        [Test]
+        public void WithCulture()
+        {
+            var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("HH:mm").WithCulture(Cultures.DotTimeSeparator);
+            var text = pattern.Format(Instant.FromUtc(2000, 1, 1, 19, 30).WithOffset(Offset.Zero));
+            Assert.AreEqual("19.30", text);
+        }
+
+        [Test]
+        public void WithPatternText()
+        {
+            var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd").WithPatternText("HH:mm");
+            var value = Instant.FromUtc(1970, 1, 1, 11, 30).WithOffset(Offset.FromHours(2));
+            var text = pattern.Format(value);
+            Assert.AreEqual("13:30", text);
+        }
+
+        [Test]
+        public void WithTemplateValue()
+        {
+            var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd")
+                .WithTemplateValue(Instant.FromUtc(1970, 1, 1, 11, 30).WithOffset(Offset.FromHours(2)));
+            var parsed = pattern.Parse("2017-08-23").Value;
+            // Local time of template value was 13:30
+            Assert.AreEqual(new LocalDateTime(2017, 8, 23, 13, 30, 0), parsed.LocalDateTime);
+            Assert.AreEqual(Offset.FromHours(2), parsed.Offset);
+        }
+
+        [Test]
+        public void WithCalendar()
+        {
+            var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd")
+                .WithCalendar(CalendarSystem.Coptic);
+            var parsed = pattern.Parse("0284-08-29").Value;
+            Assert.AreEqual(new LocalDateTime(284, 8, 29, 0, 0, CalendarSystem.Coptic), parsed.LocalDateTime);
+        }
 
         internal sealed class Data : PatternTestData<OffsetDateTime>
         {

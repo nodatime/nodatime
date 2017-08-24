@@ -215,13 +215,6 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
-        [TestCaseSource(nameof(FormatData))]
-        public void AppendFormat(PatternTestData<Offset> data)
-        {
-            data.TestAppendFormat();
-        }
-
-        [Test]
         public void NumberFormatIgnored()
         {
             var culture = (CultureInfo) Cultures.EnUs.Clone();
@@ -231,6 +224,17 @@ namespace NodaTime.Test.Text
 
             Assert.AreEqual("+05:00", pattern.Format(Offset.FromHours(5)));
             Assert.AreEqual("-05:00", pattern.Format(Offset.FromHours(-5)));
+        }
+
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            using (CultureSaver.SetCultures(Cultures.DotTimeSeparator))
+            {
+                var pattern = OffsetPattern.CreateWithCurrentCulture("H:mm");
+                var text = pattern.Format(Offset.FromHoursAndMinutes(1, 30));
+                Assert.AreEqual("1.30", text);
+            }
         }
 
         /// <summary>

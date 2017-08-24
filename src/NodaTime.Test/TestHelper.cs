@@ -267,15 +267,18 @@ namespace NodaTime.Test
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestEqualsClass<T>(T value, T equalValue, T unEqualValue) where T : class, IEquatable<T>
+        /// <param name="unequalValue">Values not equal to the base value.</param>
+        public static void TestEqualsClass<T>(T value, T equalValue, params T[] unequalValues) where T : class, IEquatable<T>
         {
-            TestObjectEquals(value, equalValue, unEqualValue);
+            TestObjectEquals(value, equalValue, unequalValues);
             Assert.False(value.Equals(null), "value.Equals<T>(null)");
             Assert.True(value.Equals(value), "value.Equals<T>(value)");
             Assert.True(value.Equals(equalValue), "value.Equals<T>(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals<T>(value)");
-            Assert.False(value.Equals(unEqualValue), "value.Equals<T>(unEqualValue)");
+            foreach (var unequal in unequalValues)
+            {
+                Assert.False(value.Equals(unequal), "value.Equals<T>(unequalValue)");
+            }
         }
 
         /// <summary>
@@ -285,17 +288,17 @@ namespace NodaTime.Test
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestEqualsStruct<T>(T value, T equalValue, params T[] unEqualValues) where T : struct, IEquatable<T>
+        /// <param name="unequalValue">The value not equal to the base value.</param>
+        public static void TestEqualsStruct<T>(T value, T equalValue, params T[] unequalValues) where T : struct, IEquatable<T>
         {
-            var unEqualArray = unEqualValues.Cast<object>().ToArray();
-            TestObjectEquals(value, equalValue, unEqualArray);
+            var unequalArray = unequalValues.Cast<object>().ToArray();
+            TestObjectEquals(value, equalValue, unequalArray);
             Assert.True(value.Equals(value), "value.Equals<T>(value)");
             Assert.True(value.Equals(equalValue), "value.Equals<T>(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals<T>(value)");
-            foreach (var unEqualValue in unEqualValues)
+            foreach (var unequalValue in unequalValues)
             {
-                Assert.False(value.Equals(unEqualValue), "value.Equals<T>(unEqualValue)");
+                Assert.False(value.Equals(unequalValue), "value.Equals<T>(unequalValue)");
             }
         }
 
@@ -307,24 +310,24 @@ namespace NodaTime.Test
         /// </remarks>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestObjectEquals(object value, object equalValue, params object[] unEqualValues)
+        /// <param name="unequalValue">The value not equal to the base value.</param>
+        public static void TestObjectEquals(object value, object equalValue, params object[] unequalValues)
         {
-            ValidateInput(value, equalValue, unEqualValues, "unEqualValue");
+            ValidateInput(value, equalValue, unequalValues, "unequalValue");
             Assert.False(value.Equals(null), "value.Equals(null)");
             Assert.True(value.Equals(value), "value.Equals(value)");
             Assert.True(value.Equals(equalValue), "value.Equals(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals(value)");
-            foreach (var unEqualValue in unEqualValues)
+            foreach (var unequalValue in unequalValues)
             {
-                Assert.False(value.Equals(unEqualValue), "value.Equals(unEqualValue)");
+                Assert.False(value.Equals(unequalValue), "value.Equals(unequalValue)");
             }
             Assert.AreEqual(value.GetHashCode(), value.GetHashCode(), "GetHashCode() twice for same object");
             Assert.AreEqual(value.GetHashCode(), equalValue.GetHashCode(), "GetHashCode() for two different but equal objects");
         }
 
         /// <summary>
-        /// Tests the less than (^lt;) and greater than (&gt;) operators if they exist on the object.
+        /// Tests the less than (&lt;) and greater than (&gt;) operators if they exist on the object.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
@@ -446,10 +449,10 @@ namespace NodaTime.Test
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="unEqualValue">The value not equal to the base value.</param>
-        public static void TestOperatorEquality<T>(T value, T equalValue, T unEqualValue)
+        /// <param name="unequalValue">The value not equal to the base value.</param>
+        public static void TestOperatorEquality<T>(T value, T equalValue, T unequalValue)
         {
-            ValidateInput(value, equalValue, unEqualValue, "unEqualValue");
+            ValidateInput(value, equalValue, unequalValue, "unequalValue");
             Type type = typeof(T);
             var equality = type.GetMethod("op_Equality", new[] { type, type });
             if (equality != null)
@@ -463,7 +466,7 @@ namespace NodaTime.Test
                 Assert.True((bool)equality.Invoke(null, new object[] { value, value }), "value == value");
                 Assert.True((bool)equality.Invoke(null, new object[] { value, equalValue }), "value == equalValue");
                 Assert.True((bool)equality.Invoke(null, new object[] { equalValue, value }), "equalValue == value");
-                Assert.False((bool)equality.Invoke(null, new object[] { value, unEqualValue }), "value == unEqualValue");
+                Assert.False((bool)equality.Invoke(null, new object[] { value, unequalValue }), "value == unequalValue");
             }
             var inequality = type.GetMethod("op_Inequality", new[] { type, type });
             if (inequality != null)
@@ -477,15 +480,10 @@ namespace NodaTime.Test
                 Assert.False((bool)inequality.Invoke(null, new object[] { value, value }), "value != value");
                 Assert.False((bool)inequality.Invoke(null, new object[] { value, equalValue }), "value != equalValue");
                 Assert.False((bool)inequality.Invoke(null, new object[] { equalValue, value }), "equalValue != value");
-                Assert.True((bool)inequality.Invoke(null, new object[] { value, unEqualValue }), "value != unEqualValue");
+                Assert.True((bool)inequality.Invoke(null, new object[] { value, unequalValue }), "value != unequalValue");
             }
         }
-
-        internal static void AssertXmlRoundtrip<T>(T value, string expectedXml) where T : IXmlSerializable, new()
-        {
-            AssertXmlRoundtrip(value, expectedXml, EqualityComparer<T>.Default);
-        }
-
+        
         /// <summary>
         /// Validates that the given value can be serialized, and that deserializing the same data
         /// returns an equal value.
@@ -513,9 +511,14 @@ namespace NodaTime.Test
         /// value, and that a direct call of ReadXml on a value with an XmlReader initially positioned
         /// at an element will read to the end of that element.
         /// </summary>
-        internal static void AssertXmlRoundtrip<T>(T value, string expectedXml, IEqualityComparer<T> comparer)
+        internal static void AssertXmlRoundtrip<T>(T value, string expectedXml, IEqualityComparer<T> comparer = null)
             where T : IXmlSerializable, new()
         {
+            comparer = comparer ?? EqualityComparer<T>.Default;
+
+            // Just include this here to simply cover everything that's doing XML serialization.
+            Assert.Null(value.GetSchema());
+
             XmlSerializer serializer = new XmlSerializer(typeof(SerializationHelper<T>));
             var helper = new SerializationHelper<T> { Value = value, Before = 100, After = 200 };
             using (var stream = new MemoryStream())
@@ -601,17 +604,17 @@ namespace NodaTime.Test
         /// </summary>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="unEqualValues">The values not equal to the base value.</param>
-        /// <param name="unEqualName">The name to use in "not equal value" error messages.</param>
-        private static void ValidateInput(object value, object equalValue, object[] unEqualValues, string unEqualName)
+        /// <param name="unequalValues">The values not equal to the base value.</param>
+        /// <param name="unequalName">The name to use in "not equal value" error messages.</param>
+        private static void ValidateInput(object value, object equalValue, object[] unequalValues, string unequalName)
         {
             Assert.NotNull(value, "value cannot be null in TestObjectEquals() method");
             Assert.NotNull(equalValue, "equalValue cannot be null in TestObjectEquals() method");
             Assert.AreNotSame(value, equalValue, "value and equalValue MUST be different objects");
-            foreach (var unEqualValue in unEqualValues)
+            foreach (var unequalValue in unequalValues)
             {
-                Assert.NotNull(unEqualValue, unEqualName + " cannot be null in TestObjectEquals() method");
-                Assert.AreNotSame(value, unEqualValue, unEqualName + " and value MUST be different objects");
+                Assert.NotNull(unequalValue, unequalName + " cannot be null in TestObjectEquals() method");
+                Assert.AreNotSame(value, unequalValue, unequalName + " and value MUST be different objects");
             }
         }
 
@@ -620,11 +623,11 @@ namespace NodaTime.Test
         /// </summary>
         /// <param name="value">The base value.</param>
         /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-        /// <param name="unEqualValue">The value not equal to the base value.</param>
-        /// <param name="unEqualName">The name to use in "not equal value" error messages.</param>
-        private static void ValidateInput(object value, object equalValue, object unEqualValue, string unEqualName)
+        /// <param name="unequalValue">The value not equal to the base value.</param>
+        /// <param name="unequalName">The name to use in "not equal value" error messages.</param>
+        private static void ValidateInput(object value, object equalValue, object unequalValue, string unequalName)
         {
-            ValidateInput(value, equalValue, new object[] { unEqualValue }, unEqualName);
+            ValidateInput(value, equalValue, new object[] { unequalValue }, unequalName);
         }
     }
 

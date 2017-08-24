@@ -106,16 +106,19 @@ namespace NodaTime.Test
 
         private static void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
         {
-            try
-            {
-                zone.MapLocal(localTime).Single();
-                Assert.Fail("Expected exception");
-            }
-            catch (SkippedTimeException e)
-            {
-                Assert.AreEqual(localTime, e.LocalDateTime);
-                Assert.AreEqual(zone, e.Zone);
-            }
+            var mapping = zone.MapLocal(localTime);
+            Assert.AreEqual(0, mapping.Count);
+            var e = Assert.Throws<SkippedTimeException>(() => mapping.Single());
+            Assert.AreEqual(localTime, e.LocalDateTime);
+            Assert.AreEqual(zone, e.Zone);
+            
+            e = Assert.Throws<SkippedTimeException>(() => mapping.First());
+            Assert.AreEqual(localTime, e.LocalDateTime);
+            Assert.AreEqual(zone, e.Zone);
+
+            e = Assert.Throws<SkippedTimeException>(() => mapping.Last());
+            Assert.AreEqual(localTime, e.LocalDateTime);
+            Assert.AreEqual(zone, e.Zone);
         }
 
         private static void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
@@ -126,23 +129,25 @@ namespace NodaTime.Test
             Assert.AreEqual(localTime, later.LocalDateTime);
             Assert.That(earlier.ToInstant(), Is.LessThan(later.ToInstant()));
 
-            try
-            {
-                zone.MapLocal(localTime).Single();
-                Assert.Fail("Expected exception");
-            }
-            catch (AmbiguousTimeException e)
-            {
-                Assert.AreEqual(localTime, e.LocalDateTime);
-                Assert.AreEqual(zone, e.Zone);
-                Assert.AreEqual(earlier, e.EarlierMapping);
-                Assert.AreEqual(later, e.LaterMapping);
-            }
+            var mapping = zone.MapLocal(localTime);
+            Assert.AreEqual(2, mapping.Count);
+            var e = Assert.Throws<AmbiguousTimeException>(() => mapping.Single());
+            Assert.AreEqual(localTime, e.LocalDateTime);
+            Assert.AreEqual(zone, e.Zone);
+            Assert.AreEqual(earlier, e.EarlierMapping);
+            Assert.AreEqual(later, e.LaterMapping);
+
+            Assert.AreEqual(earlier, mapping.First());
+            Assert.AreEqual(later, mapping.Last());
         }
 
         private static void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
         {
-            var zoned = zone.MapLocal(localTime).Single();
+            var mapping = zone.MapLocal(localTime);
+            Assert.AreEqual(1, mapping.Count);
+            var zoned = mapping.Single();
+            Assert.AreEqual(zoned, mapping.First());
+            Assert.AreEqual(zoned, mapping.Last());
             int actualHours = zoned.Offset.Milliseconds / NodaConstants.MillisecondsPerHour;
             Assert.AreEqual(expectedHours, actualHours);
         }

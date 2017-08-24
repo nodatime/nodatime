@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+using System.Collections;
 using System.Linq;
 using NodaTime.Testing.TimeZones;
 using NodaTime.TimeZones;
@@ -38,6 +40,19 @@ namespace NodaTime.Test.Testing.TimeZones
         }
 
         [Test]
+        public void Transitions()
+        {
+            var transition1 = Instant.FromUnixTimeTicks(0L);
+            var transition2 = Instant.FromUnixTimeTicks(100000L);
+            var zone = new MultiTransitionDateTimeZone.Builder
+            {
+                { transition1, 5 },
+                { transition2, 3 }
+            }.Build();
+            CollectionAssert.AreEqual(new[] { transition1, transition2 }, zone.Transitions);
+        }
+
+        [Test]
         public void ComplexBuilding()
         {
             var transition1 = Instant.FromUnixTimeTicks(0L);
@@ -57,6 +72,21 @@ namespace NodaTime.Test.Testing.TimeZones
             };
 
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void BuildTwice()
+        {
+            var builder = new MultiTransitionDateTimeZone.Builder();
+            builder.Build();
+            Assert.Throws<InvalidOperationException>(() => builder.Build());
+        }
+
+        [Test]
+        public void BuilderGetEnumerator_Throws()
+        {
+            var builder = new MultiTransitionDateTimeZone.Builder();
+            Assert.Throws<NotImplementedException>(() => ((IEnumerable)builder).GetEnumerator());
         }
     }
 }

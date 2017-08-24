@@ -6,6 +6,9 @@ using System;
 using NodaTime.Testing.TimeZones;
 using NodaTime.TimeZones;
 using NUnit.Framework;
+using System.IO;
+using NodaTime.TimeZones.IO;
+using System.Linq;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -277,6 +280,22 @@ namespace NodaTime.Test.TimeZones
                 new ZoneInterval("foo", Instant.FromUnixTimeTicks(20), Instant.AfterMaxValue, Offset.Zero, Offset.Zero)
             };
             PrecalculatedDateTimeZone.ValidatePeriods(intervals, null);
+        }
+
+        [Test]
+        public void Serialization()
+        {
+            var stream = new MemoryStream();
+            var writer = new DateTimeZoneWriter(stream, null);
+            TestZone.Write(writer);
+            stream.Position = 0;
+            var reloaded = PrecalculatedDateTimeZone.Read(new DateTimeZoneReader(stream, null), TestZone.Id);
+
+            // Check equivalence by finding zone intervals
+            var interval = new Interval(Instant.FromUtc(1990, 1, 1, 0, 0), Instant.FromUtc(2010, 1, 1, 0, 0));
+            var originalZoneIntervals = TestZone.GetZoneIntervals(interval, ZoneEqualityComparer.Options.StrictestMatch).ToList();
+            var reloadedZoneIntervals = TestZone.GetZoneIntervals(interval, ZoneEqualityComparer.Options.StrictestMatch).ToList();
+            CollectionAssert.AreEqual(originalZoneIntervals, reloadedZoneIntervals);
         }
     }
 }

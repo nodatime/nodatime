@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NodaTime.Properties;
 using NUnit.Framework;
+using NodaTime.Text;
+using System;
 
 namespace NodaTime.Test.Text
 {
@@ -58,6 +60,7 @@ namespace NodaTime.Test.Text
                 new Data(new PeriodBuilder { Seconds = 5 }) { Text = "PT5S" },
                 new Data(new PeriodBuilder { Milliseconds = 5 }) { Text = "PT5s" },
                 new Data(new PeriodBuilder { Ticks = 5 }) { Text = "PT5t" },
+                new Data(new PeriodBuilder { Nanoseconds = 5 }) { Text = "PT5n" },
                 
                 // No normalization
                 new Data(new PeriodBuilder { Hours = 25, Minutes = 90 }) { Text = "PT25H90M" },
@@ -75,6 +78,12 @@ namespace NodaTime.Test.Text
 
             internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
             internal static IEnumerable<Data> FormatData = FormatAndParseData;
+
+            [Test]
+            public void NullArgument()
+            {
+                Assert.IsInstanceOf<ArgumentException>(PeriodPattern.Roundtrip.Parse(null).Exception);
+            }
         }
     }
 }

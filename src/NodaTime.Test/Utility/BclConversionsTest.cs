@@ -5,6 +5,7 @@
 using System;
 using NodaTime.Utility;
 using NUnit.Framework;
+using NodaTime.Extensions;
 
 namespace NodaTime.Test.Utility
 {
@@ -24,6 +25,11 @@ namespace NodaTime.Test.Utility
         {
             Assert.AreEqual(bcl, BclConversions.ToDayOfWeek(noda));
             Assert.AreEqual(noda, BclConversions.ToIsoDayOfWeek(bcl));
+            Assert.AreEqual(bcl, noda.ToDayOfWeek());
+#pragma warning disable CS0618 // Type or member is obsolete
+            Assert.AreEqual(bcl, noda.ToIsoDayOfWeek());
+#pragma warning restore CS0618 // Type or member is obsolete
+            Assert.AreEqual(noda, bcl.ToIsoDayOfWeek());
         }
 
         [TestCase(0)]
@@ -31,6 +37,10 @@ namespace NodaTime.Test.Utility
         public void ToDayOfWeek_InvalidValues(IsoDayOfWeek noda)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => BclConversions.ToDayOfWeek(noda));
+            Assert.Throws<ArgumentOutOfRangeException>(() => noda.ToDayOfWeek());
+#pragma warning disable CS0618 // Type or member is obsolete
+            Assert.Throws<ArgumentOutOfRangeException>(() => noda.ToIsoDayOfWeek());
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         [TestCase(-1)]
@@ -38,6 +48,7 @@ namespace NodaTime.Test.Utility
         public void ToIsoDayOfWeek_InvalidValues(DayOfWeek bcl)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => BclConversions.ToIsoDayOfWeek(bcl));
+            Assert.Throws<ArgumentOutOfRangeException>(() => bcl.ToIsoDayOfWeek());
         }
     }
 }

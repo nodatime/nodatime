@@ -5,6 +5,9 @@
 using System;
 using NodaTime.TimeZones;
 using NUnit.Framework;
+using NodaTime.TimeZones.IO;
+using System.IO;
+using NodaTime.Utility;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -58,6 +61,50 @@ namespace NodaTime.Test.TimeZones
             Assert.Throws<ArgumentException>(() => new TzdbZoneLocation(0, 0, "", "CO", "Zone", ""));
             Assert.Throws<ArgumentException>(() => new TzdbZoneLocation(0, 0, "Name", "Long code", "Zone", ""));
             Assert.Throws<ArgumentException>(() => new TzdbZoneLocation(0, 0, "Name", "S", "Zone", ""));
+        }
+
+        [Test]
+        public void Serialization()
+        {
+            var location = new TzdbZoneLocation(
+                60 * 3600 + 15 * 60 + 5,
+                100 * 3600 + 30 * 60 + 10,
+                "Country name",
+                "CO",
+                "Etc/MadeUpZone",
+                "Comment");
+
+            var stream = new MemoryStream();
+            var writer = new DateTimeZoneWriter(stream, null);
+            location.Write(writer);
+            stream.Position = 0;
+
+            var reader = new DateTimeZoneReader(stream, null);
+            var location2 = TzdbZoneLocation.Read(reader);
+
+            Assert.AreEqual(60.25 + 5.0 / 3600, location2.Latitude, 0.000001);
+            Assert.AreEqual(100.5 + 10.0 / 3600, location2.Longitude, 0.000001);
+            Assert.AreEqual("Country name", location2.CountryName);
+            Assert.AreEqual("CO", location2.CountryCode);
+            Assert.AreEqual("Etc/MadeUpZone", location2.ZoneId);
+            Assert.AreEqual("Comment", location2.Comment);
+        }
+
+        [Test]
+        public void ReadInvalid()
+        {
+            var stream = new MemoryStream();
+            var writer = new DateTimeZoneWriter(stream, null);
+            // This is invalid
+            writer.WriteSignedCount(90 * 3600 + 1);
+            writer.WriteSignedCount(0);
+            writer.WriteString("name");
+            writer.WriteString("co");
+            writer.WriteString("Europe/Somewhere");
+            writer.WriteString("");
+            stream.Position = 0;
+            var reader = new DateTimeZoneReader(stream, null);
+            Assert.Throws<InvalidNodaDataException>(() => TzdbZoneLocation.Read(reader));
         }
     }
 }

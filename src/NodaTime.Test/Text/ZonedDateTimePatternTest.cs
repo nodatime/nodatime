@@ -2,13 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
-using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Testing.TimeZones;
 using NodaTime.Text;
 using NodaTime.TimeZones;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NodaTime.Test.Text
 {
@@ -41,6 +41,7 @@ namespace NodaTime.Test.Text
         private static readonly ZonedDateTime MsdnStandardExampleNoMillis = LocalDateTimePatternTest.MsdnStandardExampleNoMillis.InUtc();
 
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
             new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
@@ -91,6 +92,9 @@ namespace NodaTime.Test.Text
 
             // Can't parse using a pattern that has no provider
             new Data { ZoneProvider = null, Pattern = "yyyy-MM-dd z", Text = "ignored", Message = Messages.Parse_FormatOnlyPattern },
+
+            // Invalid ID
+            new Data { Pattern = "yyyy-MM-dd z", Text = "2017-08-21 LemonCurdIceCream", Message = Messages.Parse_NoMatchingZoneId }
         };
 
         internal static Data[] ParseOnlyData = {
@@ -139,11 +143,11 @@ namespace NodaTime.Test.Text
             new Data(2013, 6, 13, 16, 2, France) { ZoneProvider = null, Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-06-13 16:02 Europe/Paris" },
 
             // Standard patterns without a DateTimeZoneProvider
-            new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr, ZoneProvider = null},
-            new Data(MsdnStandardExample) { Pattern = "F", Text = "2009-06-15T13:45:30.09 UTC (+00)", Culture = Cultures.FrFr, ZoneProvider = null },
+            new Data(MsdnStandardExampleNoMillis) { StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso, Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr, ZoneProvider = null},
+            new Data(MsdnStandardExample) { StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso, Pattern = "F", Text = "2009-06-15T13:45:30.09 UTC (+00)", Culture = Cultures.FrFr, ZoneProvider = null },
             // Standard patterns without a resolver
-            new Data(MsdnStandardExampleNoMillis) { Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr, Resolver = null},
-            new Data(MsdnStandardExample) { Pattern = "F", Text = "2009-06-15T13:45:30.09 UTC (+00)", Culture = Cultures.FrFr, Resolver = null },
+            new Data(MsdnStandardExampleNoMillis) { StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso, Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr, Resolver = null},
+            new Data(MsdnStandardExample) { StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso, Pattern = "F", Text = "2009-06-15T13:45:30.09 UTC (+00)", Culture = Cultures.FrFr, Resolver = null },
         };
 
         internal static Data[] FormatAndParseData = {
@@ -202,8 +206,8 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20 end" },
 
             // Standard patterns with a time zone provider
-            new Data(2013, 01, 13, 15, 44, 30, 0, TestZone1) { Pattern = "G", Text = "2013-01-13T15:44:30 ab (+02)", Culture = Cultures.FrFr },
-            new Data(2013, 01, 13, 15, 44, 30, 90, TestZone1) { Pattern = "F", Text = "2013-01-13T15:44:30.09 ab (+02)", Culture = Cultures.FrFr },
+            new Data(2013, 01, 13, 15, 44, 30, 0, TestZone1) { StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso.WithZoneProvider(TestProvider) , Pattern = "G", Text = "2013-01-13T15:44:30 ab (+02)", Culture = Cultures.FrFr },
+            new Data(2013, 01, 13, 15, 44, 30, 90, TestZone1) { StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso.WithZoneProvider(TestProvider), Pattern = "F", Text = "2013-01-13T15:44:30.09 ab (+02)", Culture = Cultures.FrFr },
 
             // Custom embedded patterns (or mixture of custom and standard)
             new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss> z o<g>", Text = "2015*10*24X11_55_30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
@@ -229,6 +233,54 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
+
+        [Test]
+        public void WithTemplateValue()
+        {
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider)
+                .WithTemplateValue(Instant.FromUtc(1970, 1, 1, 11, 30).InZone(TestZone3));
+            var parsed = pattern.Parse("2017-08-23").Value;
+            Assert.AreSame(TestZone3, parsed.Zone);
+            // TestZone3 is at UTC+1 in 1970, so the template value's *local* time is 12pm.
+            // Even though we're parsing a date in 2017, it's the local time from the template value that's used.
+            Assert.AreEqual(new LocalDateTime(2017, 8, 23, 12, 30, 0), parsed.LocalDateTime);
+            Assert.AreEqual(Offset.FromHours(2), parsed.Offset);
+        }
+
+        [Test]
+        public void WithCalendar()
+        {
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider).WithCalendar(CalendarSystem.Coptic);
+            var parsed = pattern.Parse("0284-08-29").Value;
+            Assert.AreEqual(new LocalDateTime(284, 8, 29, 0, 0, CalendarSystem.Coptic), parsed.LocalDateTime);
+        }
+
+        [Test]
+        public void WithPatternText()
+        {
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy", TestProvider).WithPatternText("yyyy-MM-dd");
+            var text = pattern.Format(NodaConstants.UnixEpoch.InUtc());
+            Assert.AreEqual("1970-01-01", text);
+        }
+
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            using (CultureSaver.SetCultures(Cultures.DotTimeSeparator))
+            {
+                var pattern = ZonedDateTimePattern.CreateWithCurrentCulture("HH:mm", null);
+                var text = pattern.Format(Instant.FromUtc(2000, 1, 1, 19, 30).InUtc());
+                Assert.AreEqual("19.30", text);
+            }
+        }
+
+        [Test]
+        public void WithCulture()
+        {
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("HH:mm", null).WithCulture(Cultures.DotTimeSeparator);
+            var text = pattern.Format(Instant.FromUtc(2000, 1, 1, 19, 30).InUtc());
+            Assert.AreEqual("19.30", text);
+        }
 
         public sealed class Data : PatternTestData<ZonedDateTime>
         {
