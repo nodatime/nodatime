@@ -112,37 +112,16 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FormatDefaultExceptionMessage" xml:space="preserve">
-    <value>Format error.</value>
-  </data>
-  <data name="Format_BadQuote" xml:space="preserve">
-    <value>Format string is missing a close quote: {0}</value>
-  </data>
-  <data name="Noda_ArgumentNull" xml:space="preserve">
-    <value>Argument cannot be null.</value>
-  </data>
-  <data name="Noda_CannotChangeReadOnly" xml:space="preserve">
-    <value>Cannot change a read only object.</value>
-  </data>
-  <data name="Noda_StringEmpty" xml:space="preserve">
-    <value>The string cannot be empty.</value>
-  </data>
-  <data name="Noda_StringEmptyOrWhitespace" xml:space="preserve">
-    <value>The string cannot be empty or only contain white space.</value>
-  </data>
   <data name="Parse_AmbiguousLocalTime" xml:space="preserve">
     <value>The local date/time is ambiguous in the target time zone.</value>
   </data>
   <data name="Parse_CalendarAndEra" xml:space="preserve">
     <value>The era specifier cannot be specified in the same pattern as the calendar specifier.</value>
-  </data>
-  <data name="Parse_CannotParseValue" xml:space="preserve">
-    <value>The value "{0}" cannot be parsed into an instance of {1} using pattern "{2}"</value>
   </data>
   <data name="Parse_DateFieldAndEmbeddedDate" xml:space="preserve">
     <value>Custom date specifiers cannot be specified in the same pattern as an embedded date specifier</value>
@@ -152,12 +131,6 @@
   </data>
   <data name="Parse_DayOfMonthOutOfRange" xml:space="preserve">
     <value>The day {0} is out of range in month {1} of year {2}.</value>
-  </data>
-  <data name="Parse_DoubleAssignment" xml:space="preserve">
-    <value>The pattern flag '{0}' cannot appear twice and parse different values.</value>
-  </data>
-  <data name="Parse_EmptyFormatsArray" xml:space="preserve">
-    <value>The list of formats cannot be empty.</value>
   </data>
   <data name="Parse_EmptyPeriod" xml:space="preserve">
     <value>The specified period was empty.</value>
@@ -185,12 +158,6 @@
   </data>
   <data name="Parse_FieldValueOutOfRange" xml:space="preserve">
     <value>The value {0} is out of range for the field '{1}' in the {2} type.</value>
-  </data>
-  <data name="Parse_FormatElementInvalid" xml:space="preserve">
-    <value>The items of the format string array cannot be null or empty.</value>
-  </data>
-  <data name="Parse_FormatInvalid" xml:space="preserve">
-    <value>The format string is invalid: "{0}"</value>
   </data>
   <data name="Parse_FormatOnlyPattern" xml:space="preserve">
     <value>This pattern is only capable of formatting, not parsing.</value>
@@ -282,17 +249,11 @@
   <data name="Parse_PositiveSignInvalid" xml:space="preserve">
     <value>A positive value sign is not valid at this point.</value>
   </data>
-  <data name="Parse_PrecisionNotSupported" xml:space="preserve">
-    <value>The standard format "{0}" for type {1} does not support a precision.</value>
-  </data>
   <data name="Parse_QuotedStringMismatch" xml:space="preserve">
     <value>The value string does not match a quoted string in the pattern.</value>
   </data>
   <data name="Parse_RepeatCountExceeded" xml:space="preserve">
     <value>There were more consecutive copies of the pattern character "{0}" than the maximum allowed ({1}) in the format string.</value>
-  </data>
-  <data name="Parse_RepeatCountUnderMinimum" xml:space="preserve">
-    <value>There were fewer consecutive copies of the pattern character "{0}" than the minimum allowed ({1}) in the format string.</value>
   </data>
   <data name="Parse_RepeatedFieldInPattern" xml:space="preserve">
     <value>The field "{0}" is specified multiple times in the pattern.</value>
@@ -309,14 +270,8 @@
   <data name="Parse_TimeSeparatorMismatch" xml:space="preserve">
     <value>The value string does not match a time separator in the format string.</value>
   </data>
-  <data name="Parse_UnexpectedEndOfString" xml:space="preserve">
-    <value>More characters were expected in the parsable string [{0}].</value>
-  </data>
   <data name="Parse_UnexpectedNegative" xml:space="preserve">
     <value>The value string includes a negative value where only a non-negative one is allowed.</value>
-  </data>
-  <data name="Parse_UnknownFailure" xml:space="preserve">
-    <value>Internal Error: The specified ParseFailureKind is unknown [{0}].</value>
   </data>
   <data name="Parse_UnknownStandardFormat" xml:space="preserve">
     <value>The standard format "{0}" is not valid for the {1} type.</value>

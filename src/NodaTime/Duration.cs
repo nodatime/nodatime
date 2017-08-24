@@ -124,46 +124,6 @@ namespace NodaTime
         /// The value of this property is 86.4 trillion nanoseconds; that is, 86,400,000,000,000 nanoseconds.
         /// </remarks>
         internal static Duration OneDay => new Duration(1, 0L);
-
-        /// <summary>
-        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 hour.
-        /// </summary>
-        /// <remarks>
-        /// The value of this property is 3.6 trillion nanoseconds; that is, 3,600,000,000,000 nanoseconds.
-        /// </remarks>
-        private static Duration OneHour => new Duration(0, NanosecondsPerHour);
-
-        /// <summary>
-        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 minute.
-        /// </summary>
-        /// <remarks>
-        /// The value of this property is 60 billion nanoseconds; that is, 60,000,000,000 nanoseconds.
-        /// </remarks>
-        private static Duration OneMinute => new Duration(0, NanosecondsPerMinute);
-
-        /// <summary>
-        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 second.
-        /// </summary>
-        /// <remarks>
-        /// The value of this property is 1 billion nanoseconds; that is, 1,000,000,000 nanoseconds.
-        /// </remarks>
-        private static Duration OneSecond => new Duration(0, NanosecondsPerSecond);
-
-        /// <summary>
-        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 millisecond.
-        /// </summary>
-        /// <remarks>
-        /// The value of this property is 1,000,000 nanoseconds.
-        /// </remarks>
-        private static Duration OneMillisecond => new Duration(0, NanosecondsPerMillisecond);
-
-        /// <summary>
-        /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 tick.
-        /// </summary>
-        /// <remarks>
-        /// The value of this property is 100 nanoseconds.
-        /// </remarks>
-        private static Duration OneTick => new Duration(0, NanosecondsPerTick);
         #endregion
 
         // This is effectively a 25 bit value. (It can't be 24 bits, or we can't represent every TimeSpan value.)
@@ -487,11 +447,8 @@ namespace NodaTime
                     newDays++;
                     newNanos -= NanosecondsPerDay;
                 }
-                else if (newNanos < 0)
-                {
-                    newDays--;
-                    newNanos += NanosecondsPerDay;
-                }
+                // nanoOfDay is always non-negative (and much less than half of long.MaxValue), so adding two 
+                // of them together will never produce a negative result.
                 return new Duration(newDays, newNanos);
             }
         }

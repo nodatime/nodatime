@@ -4,6 +4,7 @@
 
 using NodaTime.Utility;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace NodaTime.Calendars
@@ -63,6 +64,9 @@ namespace NodaTime.Calendars
             return startOfYearInDaysCache[year];
         }
 
+#if NET45
+        [ExcludeFromCodeCoverage]
+#endif
         protected sealed override int CalculateStartOfYearDays(int year)
         {
             // This would only be called from GetStartOfYearInDays, which is overridden.

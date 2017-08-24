@@ -49,11 +49,6 @@ namespace NodaTime
 
         private readonly int value;
 
-        internal YearMonthDayCalendar(int rawValue)
-        {
-            this.value = rawValue;
-        }
-
         internal YearMonthDayCalendar(int yearMonthDay, CalendarOrdinal calendarOrdinal)
         {
             this.value = (yearMonthDay << CalendarBits) | (int) calendarOrdinal;

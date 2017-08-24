@@ -24,7 +24,7 @@ namespace NodaTime.Text
     public sealed class InvalidPatternException : FormatException
     {
         /// <summary>
-        /// Creates a new InvalidPatternException with no message.
+        /// Creates a new InvalidPatternException with the default FormatException message.
         /// </summary>
         public InvalidPatternException()
         {

@@ -47,20 +47,14 @@ namespace NodaTime.Text
         [NotNull] public string PatternText { get; }
 
         /// <summary>
-        /// Returns the localization information used in this pattern.
-        /// </summary>
-        internal NodaFormatInfo FormatInfo { get; }
-
-        /// <summary>
         /// Returns the pattern that this object delegates to. Mostly useful to avoid this public class
         /// implementing an internal interface.
         /// </summary>
         internal IPartialPattern<Offset> UnderlyingPattern { get; }
 
-        private OffsetPattern(string patternText, NodaFormatInfo formatInfo, IPartialPattern<Offset> pattern)
+        private OffsetPattern(string patternText, IPartialPattern<Offset> pattern)
         {
             this.PatternText = patternText;
-            this.FormatInfo = formatInfo;
             this.UnderlyingPattern = pattern;
         }
 
@@ -103,7 +97,7 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
             var pattern = (IPartialPattern<Offset>) formatInfo.OffsetPatternParser.ParsePattern(patternText);
-            return new OffsetPattern(patternText, formatInfo, pattern);
+            return new OffsetPattern(patternText, pattern);
         }
 
         /// <summary>

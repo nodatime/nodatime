@@ -67,10 +67,13 @@ namespace NodaTime.TimeZones
         /// </returns>
         public override int GetHashCode()
         {
-            int hash = 23;
-            hash = hash * 31 + Instant.GetHashCode();
-            hash = hash * 31 + NewOffset.GetHashCode();
-            return hash;
+            unchecked
+            {
+                int hash = 23;
+                hash = hash * 31 + Instant.GetHashCode();
+                hash = hash * 31 + NewOffset.GetHashCode();
+                return hash;
+            }
         }
 
         /// <summary>
