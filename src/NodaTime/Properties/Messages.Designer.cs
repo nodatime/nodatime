@@ -8,11 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Reflection;
-    
 namespace NodaTime.Properties {
     using System;
-    
+    using System.Reflection;
     
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
@@ -21,23 +19,23 @@ namespace NodaTime.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-//    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-//    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-//    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Messages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
-//        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Messages() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
-//      [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
@@ -52,67 +50,13 @@ namespace NodaTime.Properties {
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
-//        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Format string is missing a close quote: {0}.
-        /// </summary>
-        internal static string Format_BadQuote {
-            get {
-                return ResourceManager.GetString("Format_BadQuote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Format error..
-        /// </summary>
-        internal static string FormatDefaultExceptionMessage {
-            get {
-                return ResourceManager.GetString("FormatDefaultExceptionMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Argument cannot be null..
-        /// </summary>
-        internal static string Noda_ArgumentNull {
-            get {
-                return ResourceManager.GetString("Noda_ArgumentNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot change a read only object..
-        /// </summary>
-        internal static string Noda_CannotChangeReadOnly {
-            get {
-                return ResourceManager.GetString("Noda_CannotChangeReadOnly", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The string cannot be empty..
-        /// </summary>
-        internal static string Noda_StringEmpty {
-            get {
-                return ResourceManager.GetString("Noda_StringEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The string cannot be empty or only contain white space..
-        /// </summary>
-        internal static string Noda_StringEmptyOrWhitespace {
-            get {
-                return ResourceManager.GetString("Noda_StringEmptyOrWhitespace", resourceCulture);
             }
         }
         
@@ -131,15 +75,6 @@ namespace NodaTime.Properties {
         internal static string Parse_CalendarAndEra {
             get {
                 return ResourceManager.GetString("Parse_CalendarAndEra", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The value &quot;{0}&quot; cannot be parsed into an instance of {1} using pattern &quot;{2}&quot;.
-        /// </summary>
-        internal static string Parse_CannotParseValue {
-            get {
-                return ResourceManager.GetString("Parse_CannotParseValue", resourceCulture);
             }
         }
         
@@ -167,24 +102,6 @@ namespace NodaTime.Properties {
         internal static string Parse_DayOfMonthOutOfRange {
             get {
                 return ResourceManager.GetString("Parse_DayOfMonthOutOfRange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The pattern flag &apos;{0}&apos; cannot appear twice and parse different values..
-        /// </summary>
-        internal static string Parse_DoubleAssignment {
-            get {
-                return ResourceManager.GetString("Parse_DoubleAssignment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The list of formats cannot be empty..
-        /// </summary>
-        internal static string Parse_EmptyFormatsArray {
-            get {
-                return ResourceManager.GetString("Parse_EmptyFormatsArray", resourceCulture);
             }
         }
         
@@ -266,24 +183,6 @@ namespace NodaTime.Properties {
         internal static string Parse_FieldValueOutOfRange {
             get {
                 return ResourceManager.GetString("Parse_FieldValueOutOfRange", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The items of the format string array cannot be null or empty..
-        /// </summary>
-        internal static string Parse_FormatElementInvalid {
-            get {
-                return ResourceManager.GetString("Parse_FormatElementInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The format string is invalid: &quot;{0}&quot;.
-        /// </summary>
-        internal static string Parse_FormatInvalid {
-            get {
-                return ResourceManager.GetString("Parse_FormatInvalid", resourceCulture);
             }
         }
         
@@ -558,15 +457,6 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; for type {1} does not support a precision..
-        /// </summary>
-        internal static string Parse_PrecisionNotSupported {
-            get {
-                return ResourceManager.GetString("Parse_PrecisionNotSupported", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The value string does not match a quoted string in the pattern..
         /// </summary>
         internal static string Parse_QuotedStringMismatch {
@@ -581,15 +471,6 @@ namespace NodaTime.Properties {
         internal static string Parse_RepeatCountExceeded {
             get {
                 return ResourceManager.GetString("Parse_RepeatCountExceeded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There were fewer consecutive copies of the pattern character &quot;{0}&quot; than the minimum allowed ({1}) in the format string..
-        /// </summary>
-        internal static string Parse_RepeatCountUnderMinimum {
-            get {
-                return ResourceManager.GetString("Parse_RepeatCountUnderMinimum", resourceCulture);
             }
         }
         
@@ -639,29 +520,11 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to More characters were expected in the parsable string [{0}]..
-        /// </summary>
-        internal static string Parse_UnexpectedEndOfString {
-            get {
-                return ResourceManager.GetString("Parse_UnexpectedEndOfString", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The value string includes a negative value where only a non-negative one is allowed..
         /// </summary>
         internal static string Parse_UnexpectedNegative {
             get {
                 return ResourceManager.GetString("Parse_UnexpectedNegative", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Internal Error: The specified ParseFailureKind is unknown [{0}]..
-        /// </summary>
-        internal static string Parse_UnknownFailure {
-            get {
-                return ResourceManager.GetString("Parse_UnknownFailure", resourceCulture);
             }
         }
         
