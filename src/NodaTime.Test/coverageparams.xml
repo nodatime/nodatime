@@ -19,9 +19,20 @@
     <ExcludeFilters>
       <FilterEntry>
         <ClassMask>JetBrains.Annotations.*</ClassMask>
+      </FilterEntry>
+      <FilterEntry>
         <ClassMask>NodaTime.Annotations.*</ClassMask>
+      </FilterEntry>
+      <FilterEntry>
+        <!-- Our tests run the release build, so it doesn't exercise the Debug* methods. -->
+        <ClassMask>NodaTime.Utility.Preconditions</ClassMask>
+        <FunctionMask>Debug*</FunctionMask>
       </FilterEntry>
     </ExcludeFilters>
   </Filters>
+  <AttributeFilters>
+    <AttributeFilterEntry>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</AttributeFilterEntry>
+    <AttributeFilterEntry>System.Diagnostics.DebuggerNonUserCodeAttribute</AttributeFilterEntry>
+  </AttributeFilters>
   <Output>../../coverage/NodaTime.dvcr</Output>
 </CoverageParams>
