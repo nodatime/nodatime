@@ -411,5 +411,12 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(30, expectedEnd.Day);
             Assert.AreEqual(expectedEnd, start.PlusMonths(11));
         }
+
+        [Test]
+        public void Constructor_InvalidEnumsForCoverage()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new IslamicYearMonthDayCalculator(IslamicLeapYearPattern.Base15 + 100, IslamicEpoch.Astronomical));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new IslamicYearMonthDayCalculator(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical + 100));
+        }
     }
 }

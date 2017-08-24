@@ -209,38 +209,22 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ComparisonOperators_SameCalendar()
+        public void Operators_SameCalendar()
         {
             LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
             LocalDateTime value2 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
             LocalDateTime value3 = new LocalDateTime(2011, 1, 2, 10, 45, 0);
-
-            Assert.IsFalse(value1 < value2);
-            Assert.IsTrue(value1 < value3);
-            Assert.IsFalse(value2 < value1);
-            Assert.IsFalse(value3 < value1);
-
-            Assert.IsTrue(value1 <= value2);
-            Assert.IsTrue(value1 <= value3);
-            Assert.IsTrue(value2 <= value1);
-            Assert.IsFalse(value3 <= value1);
-
-            Assert.IsFalse(value1 > value2);
-            Assert.IsFalse(value1 > value3);
-            Assert.IsFalse(value2 > value1);
-            Assert.IsTrue(value3 > value1);
-
-            Assert.IsTrue(value1 >= value2);
-            Assert.IsFalse(value1 >= value3);
-            Assert.IsTrue(value2 >= value1);
-            Assert.IsTrue(value3 >= value1);
+            TestHelper.TestOperatorComparisonEquality(value1, value2, value3);            
         }
 
         [Test]
-        public void ComparisonOperators_DifferentCalendars_Throws()
+        public void Operators_DifferentCalendars_Throws()
         {
             LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30);
             LocalDateTime value2 = new LocalDateTime(2011, 1, 3, 10, 30, CalendarSystem.Julian);
+
+            Assert.False(value1 == value2);
+            Assert.True(value1 != value2);
 
             Assert.Throws<ArgumentException>(() => (value1 < value2).ToString());
             Assert.Throws<ArgumentException>(() => (value1 <= value2).ToString());

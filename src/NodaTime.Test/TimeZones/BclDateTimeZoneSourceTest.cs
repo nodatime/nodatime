@@ -39,6 +39,12 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void ForId_Invalid()
+        {
+            Assert.Throws<ArgumentException>(() => new BclDateTimeZoneSource().ForId("This will never be a valid ID"));
+        }
+
+        [Test]
         public void CanLookupLocalTimeZoneById()
         {
             // Note that this test can fail legitimately, as there are valid situations where TimeZoneInfo.Local returns

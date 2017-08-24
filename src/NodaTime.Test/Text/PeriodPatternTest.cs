@@ -14,8 +14,6 @@ namespace NodaTime.Test.Text
         /// </summary>
         public sealed class Data : PatternTestData<Period>
         {
-            public IPattern<Period> StandardPattern { get; set; }
-
             // Irrelevant
             protected override Period DefaultTemplate => Period.FromDays(0);
 

@@ -5,6 +5,7 @@
 using System;
 using NodaTime.Testing.TimeZones;
 using NUnit.Framework;
+using System.Linq;
 
 namespace NodaTime.Test.Testing.TimeZones
 {
@@ -106,6 +107,22 @@ namespace NodaTime.Test.Testing.TimeZones
                 Zones = { CreateZone("x"), CreateZone("y") }
             };
             AssertBuildFails(source);
+        }
+
+        [Test]
+        public void GetEnumerator()
+        {
+            var x = CreateZone("x");
+            var y = CreateZone("y");
+            var source = new FakeDateTimeZoneSource.Builder
+            {
+                Zones = { x, y }
+            };
+
+            // Tests IEnumerable<T>
+            CollectionAssert.AreEqual(new[] { x, y }, source.ToList());
+            // Tests IEnumerable
+            CollectionAssert.AreEqual(new[] { x, y }, source.OfType<DateTimeZone>().ToList());
         }
 
         // We don't really care how it fails - just that an exception is thrown.

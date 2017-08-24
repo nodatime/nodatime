@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using NodaTime.TimeZones.IO;
 using NUnit.Framework;
+using System.IO;
 
 namespace NodaTime.Test.TimeZones.IO
 {

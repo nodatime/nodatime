@@ -34,6 +34,7 @@ namespace NodaTime.Test
         public void Construction_EndBeforeStart()
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => new Interval(SampleEnd, SampleStart));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new Interval((Instant?) SampleEnd, (Instant?) SampleStart));
         }
 
         [Test]

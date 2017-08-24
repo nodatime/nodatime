@@ -234,8 +234,12 @@ namespace NodaTime.Test
             var differentCalendar = control.LocalDateTime.WithCalendar(CalendarSystem.Coptic).WithOffset(Offset.FromHours(5));
             // Later instant, earlier local
             var earlierLocal = control.LocalDateTime.PlusHours(-2).WithOffset(Offset.FromHours(-10));
+            // Same offset, previous day
+            var muchEarlierLocal = control.PlusHours(-24);
             // Earlier instant, later local
             var laterLocal = control.LocalDateTime.PlusHours(2).WithOffset(Offset.FromHours(10));
+            // Same offset, next day
+            var muchLaterLocal = control.PlusHours(24);
 
             var comparer = OffsetDateTime.Comparer.Local;
 
@@ -243,13 +247,28 @@ namespace NodaTime.Test
             Assert.AreEqual(0, comparer.Compare(control, positiveOffset));
             Assert.Throws<ArgumentException>(() => comparer.Compare(control, differentCalendar));
             Assert.AreEqual(1, Math.Sign(comparer.Compare(control, earlierLocal)));
+            Assert.AreEqual(1, Math.Sign(comparer.Compare(control, muchEarlierLocal)));
             Assert.AreEqual(-1, Math.Sign(comparer.Compare(earlierLocal, control)));
+            Assert.AreEqual(-1, Math.Sign(comparer.Compare(muchEarlierLocal, control)));
             Assert.AreEqual(-1, Math.Sign(comparer.Compare(control, laterLocal)));
+            Assert.AreEqual(-1, Math.Sign(comparer.Compare(control, muchLaterLocal)));
             Assert.AreEqual(1, Math.Sign(comparer.Compare(laterLocal, control)));
+            Assert.AreEqual(1, Math.Sign(comparer.Compare(muchLaterLocal, control)));
 
             Assert.IsFalse(comparer.Equals(control, differentCalendar));
             Assert.IsFalse(comparer.Equals(control, earlierLocal));
+            Assert.IsFalse(comparer.Equals(control, muchEarlierLocal));
+            Assert.IsFalse(comparer.Equals(control, laterLocal));
+            Assert.IsFalse(comparer.Equals(control, muchLaterLocal));
             Assert.IsTrue(comparer.Equals(control, control));
+
+            Assert.AreEqual(comparer.GetHashCode(control), comparer.GetHashCode(negativeOffset));
+            Assert.AreEqual(comparer.GetHashCode(control), comparer.GetHashCode(positiveOffset));
+            Assert.AreNotEqual(comparer.GetHashCode(control), comparer.GetHashCode(earlierLocal));
+            Assert.AreNotEqual(comparer.GetHashCode(control), comparer.GetHashCode(muchEarlierLocal));
+            Assert.AreNotEqual(comparer.GetHashCode(control), comparer.GetHashCode(laterLocal));
+            Assert.AreNotEqual(comparer.GetHashCode(control), comparer.GetHashCode(muchLaterLocal));
+            Assert.AreNotEqual(comparer.GetHashCode(control), comparer.GetHashCode(differentCalendar));
         }
 
         [Test]
@@ -288,6 +307,10 @@ namespace NodaTime.Test
             Assert.IsTrue(comparer.Equals(control, differentCalendar));
             Assert.IsFalse(comparer.Equals(control, earlierLocal));
             Assert.IsTrue(comparer.Equals(control, equalAndOppositeChanges));
+
+            Assert.AreEqual(comparer.GetHashCode(control), comparer.GetHashCode(differentCalendar));
+            Assert.AreEqual(comparer.GetHashCode(control), comparer.GetHashCode(equalAndOppositeChanges));
+            Assert.AreNotEqual(comparer.GetHashCode(control), comparer.GetHashCode(earlierLocal));
         }
 
         /// <summary>
@@ -413,6 +436,27 @@ namespace NodaTime.Test
             Offset newOffset = Offset.FromHours(2);
             OffsetDateTime expected = new OffsetDateTime(evening, newOffset);
             Assert.AreEqual(expected, original.WithOffset(newOffset));
+        }
+
+        [Test]
+        public void WithOffset_CrossDates()
+        {
+            OffsetDateTime noon = new OffsetDateTime(new LocalDateTime(2017, 8, 22, 12, 0, 0), Offset.FromHours(0));
+            OffsetDateTime previousNight = noon.WithOffset(Offset.FromHours(-14));
+            OffsetDateTime nextMorning = noon.WithOffset(Offset.FromHours(14));
+            Assert.AreEqual(new LocalDateTime(2017, 8, 21, 22, 0, 0), previousNight.LocalDateTime);
+            Assert.AreEqual(new LocalDateTime(2017, 8, 23, 2, 0, 0), nextMorning.LocalDateTime);
+        }
+
+        [Test]
+        public void WithOffset_TwoDaysForwardAndBack()
+        {
+            // Go from UTC-18 to UTC+18
+            OffsetDateTime night = new OffsetDateTime(new LocalDateTime(2017, 8, 21, 18, 0, 0), Offset.FromHours(-18));
+            OffsetDateTime morning = night.WithOffset(Offset.FromHours(18));
+            Assert.AreEqual(new LocalDateTime(2017, 8, 23, 6, 0, 0), morning.LocalDateTime);
+            OffsetDateTime backAgain = morning.WithOffset(Offset.FromHours(-18));
+            Assert.AreEqual(night, backAgain);
         }
 
         [Test]

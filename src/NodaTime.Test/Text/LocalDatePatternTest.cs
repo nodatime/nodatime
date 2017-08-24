@@ -18,6 +18,7 @@ namespace NodaTime.Test.Text
         private static readonly LocalDate SampleLocalDate = new LocalDate(1976, 6, 19);
 
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "!", Message = Messages.Parse_UnknownStandardFormat, Parameters = {'!', typeof(LocalDate).FullName }},
             new Data { Pattern = "%", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '%', typeof(LocalDate).FullName } },
             new Data { Pattern = "\\", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '\\', typeof(LocalDate).FullName } },
@@ -57,6 +58,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "yyyy uuuu gg", Text = "0010 0009 B.C.", Message = Messages.Parse_InconsistentValues2, Parameters = {'g', 'u', typeof(LocalDate)} },
             new Data { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 Saturday", Message = Messages.Parse_InconsistentDayOfWeekTextValue },
             new Data { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 Sat", Message = Messages.Parse_InconsistentDayOfWeekTextValue },
+            new Data { Pattern = "yyyy MM dd MMMM", Text = "2011 10 09 January", Message = Messages.Parse_InconsistentMonthTextValue },
             new Data { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 FooBar", Message = Messages.Parse_MismatchedText, Parameters = {'d'} },
             new Data { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 FooBar", Message = Messages.Parse_MismatchedText, Parameters = {'d'} },
             new Data { Pattern = "yyyy/MM/dd", Text = "2011/02-29", Message = Messages.Parse_DateSeparatorMismatch },
@@ -219,6 +221,22 @@ namespace NodaTime.Test.Text
             var pattern = LocalDatePattern.Iso.WithCalendar(CalendarSystem.Coptic);
             var value = pattern.Parse("0284-08-29").Value;
             Assert.AreEqual(new LocalDate(284, 8, 29, CalendarSystem.Coptic), value);
+        }
+
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            var date = new LocalDate(2017, 8, 23);
+            using (CultureSaver.SetCultures(Cultures.FrFr))
+            {
+                var pattern = LocalDatePattern.CreateWithCurrentCulture("d");
+                Assert.AreEqual("23/08/2017", pattern.Format(date));
+            }
+            using (CultureSaver.SetCultures(Cultures.FrCa))
+            {
+                var pattern = LocalDatePattern.CreateWithCurrentCulture("d");
+                Assert.AreEqual("2017-08-23", pattern.Format(date));
+            }
         }
 
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)

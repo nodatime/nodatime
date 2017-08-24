@@ -205,6 +205,15 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void FromNanosecondsDecimal_Limits()
+        {
+            Assert.AreEqual(Duration.MinValue, Duration.FromNanoseconds(Duration.MinDecimalNanoseconds));
+            Assert.AreEqual(Duration.MaxValue, Duration.FromNanoseconds(Duration.MaxDecimalNanoseconds));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(Duration.MinDecimalNanoseconds - 1m));
+            Assert.Throws<ArgumentOutOfRangeException>(() => Duration.FromNanoseconds(Duration.MaxDecimalNanoseconds + 1m));
+        }
+
+        [Test]
         public void FromNanoseconds_BigInteger()
         {
             Assert.AreEqual(Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay - BigInteger.One));

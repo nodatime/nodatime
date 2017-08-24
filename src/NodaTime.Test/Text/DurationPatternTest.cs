@@ -2,11 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
-using System.Linq;
 using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NodaTime.Test.Text
 {
@@ -34,6 +34,7 @@ namespace NodaTime.Test.Text
         /// Test data for invalid patterns
         /// </summary>
         internal static readonly Data[] InvalidPatternData = {
+            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "HH:MM", Message = Messages.Parse_MultipleCapitalDurationFields },
             new Data { Pattern = "MM mm", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'm' } },
             new Data { Pattern = "G", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'G', typeof(Duration) } },
@@ -106,8 +107,8 @@ namespace NodaTime.Test.Text
             new Data(1, 2, 3, 4, 123456789) { Pattern = "D:hh:mm:ss.FFFFFFFFF", Text = "1.02.03.04.123456789", Culture = Cultures.DotTimeSeparator },
 
             // Roundtrip pattern is invariant; redundantly specify the culture to validate that it doesn't make a difference.
-            new Data(1, 2, 3, 4, 123456789) { Pattern = "o", Text = "1:02:03:04.123456789", Culture = Cultures.DotTimeSeparator },
-            new Data(-1, -2, -3, -4, -123456789) { Pattern = "o", Text = "-1:02:03:04.123456789", Culture = Cultures.DotTimeSeparator },
+            new Data(1, 2, 3, 4, 123456789) { StandardPattern = DurationPattern.Roundtrip, Pattern = "o", Text = "1:02:03:04.123456789", Culture = Cultures.DotTimeSeparator },
+            new Data(-1, -2, -3, -4, -123456789) { StandardPattern = DurationPattern.Roundtrip, Pattern = "o", Text = "-1:02:03:04.123456789", Culture = Cultures.DotTimeSeparator },
 
             // Extremes...
             new Data(Duration.MinValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "-16777216:00:00:00.000000000" },
@@ -122,6 +123,25 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
+
+        [Test]
+        public void WithCulture()
+        {
+            var pattern = DurationPattern.CreateWithInvariantCulture("H:mm").WithCulture(Cultures.DotTimeSeparator);
+            var text = pattern.Format(Duration.FromMinutes(90));
+            Assert.AreEqual("1.30", text);
+        }
+
+        [Test]
+        public void CreateWithCurrentCulture()
+        {
+            using (CultureSaver.SetCultures(Cultures.DotTimeSeparator))
+            {
+                var pattern = DurationPattern.CreateWithCurrentCulture("H:mm");
+                var text = pattern.Format(Duration.FromMinutes(90));
+                Assert.AreEqual("1.30", text);
+            }
+        }
 
         /// <summary>
         /// A container for test data for formatting and parsing <see cref="Duration" /> objects.
