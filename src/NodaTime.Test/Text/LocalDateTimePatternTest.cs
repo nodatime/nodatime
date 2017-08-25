@@ -179,6 +179,8 @@ namespace NodaTime.Test.Text
             }
         }
 
+        [Test]
+        public void ParseNull() => AssertParseNull(LocalDateTimePattern.ExtendedIso);
 
         [Test]
         [TestCaseSource(nameof(AllCulturesStandardPatterns))]

@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
+using NodaTime.Utility;
 using System;
 using System.Globalization;
 
@@ -282,20 +284,18 @@ namespace NodaTime.Text
         /// <summary>
         /// Parses digits at the current point in the string as a fractional value.
         /// </summary>
-        /// <param name="maximumDigits">The maximum allowed digits.</param>
+        /// <param name="maximumDigits">The maximum allowed digits. Trusted to be less than or equal to scale.</param>
         /// <param name="scale">The scale of the fractional value.</param>
         /// <param name="result">The result value scaled by scale. The value of this is not guaranteed
         /// to be anything specific if the return value is false.</param>
         /// <param name="minimumDigits">The minimum number of digits that must be specified in the value.</param>
         /// <returns><c>true</c> if the digits were parsed.</returns>
-        internal bool ParseFraction(int maximumDigits, int scale, out int result, int minimumDigits)
+        internal bool ParseFraction([Trusted] int maximumDigits, int scale, out int result, int minimumDigits)
         {
             unchecked
             {
-                if (scale < maximumDigits)
-                {
-                    scale = maximumDigits;
-                }
+                Preconditions.DebugCheckArgument(maximumDigits <= scale , nameof(maximumDigits),
+                    "Must not allow more maximum digits than scale");
 
                 result = 0;
                 int localIndex = Index;

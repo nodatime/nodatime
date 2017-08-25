@@ -5,6 +5,7 @@
 using NodaTime.Text;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace NodaTime.Test.Text
 {
@@ -60,6 +61,22 @@ namespace NodaTime.Test.Text
         {
             var pattern = new CompositePatternBuilder<LocalDate>();
             Assert.Throws<InvalidOperationException>(() => pattern.Build());
+        }
+
+        [Test]
+        public void Enumerators()
+        {
+            var pattern1 = LocalDatePattern.Iso;
+            var pattern2 = LocalDatePattern.CreateWithInvariantCulture("yyyy");
+
+            var builder = new CompositePatternBuilder<LocalDate>
+            {
+                { pattern1, _ => true },
+                { pattern2, _ => false },
+            };
+
+            CollectionAssert.AreEqual(new[] { pattern1, pattern2 }, builder.ToList());
+            CollectionAssert.AreEqual(new[] { pattern1, pattern2 }, builder.OfType<LocalDatePattern>().ToList());
         }
     }
 }

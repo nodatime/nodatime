@@ -96,5 +96,14 @@ namespace NodaTime.Test.Text
             ParseResult<int> original = ParseResult<int>.ForValue(10);
             Assert.Throws<InvalidOperationException>(() => original.ConvertError<string>());            
         }
+
+        [Test]
+        public void ForException()
+        {
+            Exception e = new Exception();
+            ParseResult<int> result = ParseResult<int>.ForException(() => e);
+            Assert.IsFalse(result.Success);
+            Assert.AreSame(e, result.Exception);
+        }
     }
 }

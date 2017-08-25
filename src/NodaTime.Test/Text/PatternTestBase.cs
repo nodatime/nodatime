@@ -4,6 +4,7 @@
 
 using NodaTime.Text;
 using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Reflection;
@@ -61,6 +62,13 @@ namespace NodaTime.Test.Text
             string text = pattern.Format(value);
             var parseResult = pattern.Parse(text);
             Assert.AreEqual(value, parseResult.Value);            
+        }
+
+        protected void AssertParseNull(IPattern<T> pattern)
+        {
+            var result = pattern.Parse(null);
+            Assert.IsFalse(result.Success);
+            Assert.IsInstanceOf<ArgumentNullException>(result.Exception);
         }
     }
 }

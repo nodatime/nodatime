@@ -40,6 +40,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "l<F> ld<d>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
             new Data { Pattern = "lt<T> l<F>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
             new Data { Pattern = "l<F> lt<T>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = @"l<\", Message = Messages.Parse_EscapeAtEndOfString },
         };
 
         internal static Data[] ParseFailureData = {
@@ -181,6 +182,9 @@ namespace NodaTime.Test.Text
             var parsed = pattern.Parse("0284-08-29").Value;
             Assert.AreEqual(new LocalDateTime(284, 8, 29, 0, 0, CalendarSystem.Coptic), parsed.LocalDateTime);
         }
+
+        [Test]
+        public void ParseNull() => AssertParseNull(OffsetDateTimePattern.ExtendedIso);
 
         internal sealed class Data : PatternTestData<OffsetDateTime>
         {

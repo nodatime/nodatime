@@ -196,6 +196,14 @@ namespace NodaTime.Test.Text
             // December 13th 2012 was a Thursday. Friday is "FooBaz" or "FooBa" in AwkwardDayOfWeekCulture.
             new Data(2012, 12, 13) { Pattern = "ddd yyyy MM dd", Text = "FooBaz 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
             new Data(2012, 12, 13) { Pattern = "dddd yyyy MM dd", Text = "FooBa 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
+
+            // 3 digit year patterns (odd, but valid)
+            new Data(12, 1, 2) { Pattern = "uuu MM dd", Text = "012 01 02" },
+            new Data(-12, 1, 2) { Pattern = "uuu MM dd", Text = "-012 01 02" },
+            new Data(123, 1, 2) { Pattern = "uuu MM dd", Text = "123 01 02" },
+            new Data(-123, 1, 2) { Pattern = "uuu MM dd", Text = "-123 01 02" },
+            new Data(1234, 1, 2) { Pattern = "uuu MM dd", Text = "1234 01 02" },
+            new Data(-1234, 1, 2) { Pattern = "uuu MM dd", Text = "-1234 01 02" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
@@ -238,6 +246,9 @@ namespace NodaTime.Test.Text
                 Assert.AreEqual("2017-08-23", pattern.Format(date));
             }
         }
+
+        [Test]
+        public void ParseNull() => AssertParseNull(LocalDatePattern.Iso);
 
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {

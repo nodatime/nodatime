@@ -63,6 +63,9 @@ namespace NodaTime.Test.Text
             Assert.AreEqual("12.34.56", text);
         }
 
+        [Test]
+        public void ParseNull() => AssertParseNull(InstantPattern.General);
+
         /// <summary>
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
