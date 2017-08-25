@@ -19,7 +19,8 @@ namespace NodaTime.TimeZones
     /// This represents a recurring transition from or to a daylight savings time. The name is the
     /// name of the time zone during this period (e.g. PST or PDT). The savings is usually 0 or the
     /// daylight offset. This is also used to support some of the tricky transitions that occurred
-    /// before that calendars were "standardized."
+    /// before the time zones were normalized (i.e. when they were still tightly longitude-based,
+    /// with multiple towns in the same country observing different times).
     /// </para>
     /// <para>
     /// Immutable, thread safe.
@@ -129,27 +130,17 @@ namespace NodaTime.TimeZones
             else if (safeLocal >= maxLocalInstant)
             {
                 // Asked for a transition after our final transition... or both are beyond the end of time (in which case
-                // we can return an infinite transition)
-                return maxLocalInstant == LocalInstant.AfterMaxValue ? new Transition(Instant.AfterMaxValue, newOffset) :  (Transition?) null;
+                // we can return an infinite transition). This branch will always be taken for transitions beyond the end
+                // of time.
+                return maxLocalInstant == LocalInstant.AfterMaxValue ? new Transition(Instant.AfterMaxValue, newOffset) : (Transition?)null;
             }
-            else if (!safeLocal.IsValid)
+            else if (safeLocal == LocalInstant.BeforeMinValue)
             {
-                if (safeLocal == LocalInstant.BeforeMinValue)
-                {
-                    // We've been asked to find the next transition after some point which is a valid instant, but is before the
-                    // start of valid local time after applying the rule offset. For example, passing Instant.MinValue for a rule which says
-                    // "transition uses wall time, which is UTC-5". Proceed as if we'd been asked for something in -9998.
-                    // I *think* that works...
-                    targetYear = GregorianYearMonthDayCalculator.MinGregorianYear;
-                }
-                else
-                {
-                    // We've been asked to find the next transition after some point which is a valid instant, but is after the
-                    // end of valid local time after applying the rule offset. It's possible that the next transition *would*
-                    // be representable as an instant (e.g. 1am Jan 1st 10000 with an offset of +5) but it's reasonable to
-                    // just return an infinite transition.
-                    return new Transition(Instant.AfterMaxValue, newOffset);
-                }
+                // We've been asked to find the next transition after some point which is a valid instant, but is before the
+                // start of valid local time after applying the rule offset. For example, passing Instant.MinValue for a rule which says
+                // "transition uses wall time, which is UTC-5". Proceed as if we'd been asked for something in -9998.
+                // I *think* that works...
+                targetYear = GregorianYearMonthDayCalculator.MinGregorianYear;
             }
             else
             {
@@ -167,11 +158,9 @@ namespace NodaTime.TimeZones
             }
 
             // We've got a transition earlier than we were asked for. Try next year.
+            // Note that this will stil be within the FromYear/ToYear range, otherwise
+            // safeLocal >= maxLocalInstant would have been triggered earlier.
             targetYear++;
-            if (targetYear > ToYear)
-            {
-                return null;
-            }
             // Handle infinite transitions
             if (targetYear > GregorianYearMonthDayCalculator.MaxGregorianYear)
             {
@@ -243,11 +232,9 @@ namespace NodaTime.TimeZones
             }
 
             // We've got a transition later than we were asked for. Try next year.
+            // Note that this will stil be within the FromYear/ToYear range, otherwise
+            // safeLocal < minLocalInstant would have been triggered earlier.
             targetYear--;
-            if (targetYear < FromYear)
-            {
-                return null;
-            }
             // Handle infinite transitions
             if (targetYear < GregorianYearMonthDayCalculator.MinGregorianYear)
             {
@@ -358,13 +345,5 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal ZoneRecurrence ToStartOfTime() =>
             FromYear == int.MinValue ? this : new ZoneRecurrence(Name, Savings, YearOffset, int.MinValue, ToYear);
-
-        /// <summary>
-        /// Returns either "this" (if this zone recurrence is already infinite)
-        /// or a new zone recurrence which is identical but with a from year of int.MinValue
-        /// and an end year of int.MaxValue.
-        /// </summary>
-        internal ZoneRecurrence ToInfinity() =>
-            IsInfinite ? this : new ZoneRecurrence(Name, Savings, YearOffset, int.MinValue, int.MaxValue);
     }
 }

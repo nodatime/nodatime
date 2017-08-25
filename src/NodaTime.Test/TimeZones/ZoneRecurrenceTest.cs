@@ -140,11 +140,38 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void TestSerialization()
+        public void NextOrFail_Fail()
+        {
+            var afterRecurrenceEnd = Instant.FromUtc(1980, 1, 1, 0, 0);
+            var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
+            var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
+            Assert.Throws<InvalidOperationException>(() => recurrence.NextOrFail(afterRecurrenceEnd, Offset.Zero, Offset.Zero));
+        }
+
+        [Test]
+        public void PreviousOrSameOrFail_Fail()
+        {
+            var beforeRecurrenceStart = Instant.FromUtc(1960, 1, 1, 0, 0);
+            var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.Utc, 1, 1, 0, true, LocalTime.Midnight);
+            var recurrence = new ZoneRecurrence("bob", Offset.Zero, januaryFirstMidnight, 1970, 1972);
+            Assert.Throws<InvalidOperationException>(() => recurrence.PreviousOrSameOrFail(beforeRecurrenceStart, Offset.Zero, Offset.Zero));
+        }
+
+        [Test]
+        public void Serialization()
         {
             var dio = DtzIoHelper.CreateNoStringPool();
             var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
             var expected = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
+            dio.TestZoneRecurrence(expected);
+        }
+
+        [Test]
+        public void Serialization_Infinite()
+        {
+            var dio = DtzIoHelper.CreateNoStringPool();
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
+            var expected = new ZoneRecurrence("bob", Offset.Zero, yearOffset, int.MinValue, int.MaxValue);
             dio.TestZoneRecurrence(expected);
         }
 
@@ -189,6 +216,40 @@ namespace NodaTime.Test.TimeZones
 
             // But we correctly reject anything after that
             Assert.IsNull(recurrence.Next(finalTransition, Offset.Zero, Offset.Zero));
+        }
+
+        [Test]
+        public void WithName()
+        {
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
+            var original = new ZoneRecurrence("original", Offset.FromHours(1), yearOffset, 1900, 2000);
+            var renamed = original.WithName("renamed");
+            Assert.AreEqual("renamed", renamed.Name);
+            Assert.AreEqual(original.Savings, renamed.Savings);
+            Assert.AreEqual(original.YearOffset, renamed.YearOffset);
+            Assert.AreEqual(original.FromYear, renamed.FromYear);
+            Assert.AreEqual(original.ToYear, renamed.ToYear);
+        }
+
+        [Test]
+        public void ForSingleYear()
+        {
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
+            var original = new ZoneRecurrence("original", Offset.FromHours(1), yearOffset, 1900, 2000);
+            var singleYear = original.ForSingleYear(2017);
+            Assert.AreEqual(original.Name, singleYear.Name);
+            Assert.AreEqual(original.Savings, singleYear.Savings);
+            Assert.AreEqual(original.YearOffset, singleYear.YearOffset);
+            Assert.AreEqual(2017, singleYear.FromYear);
+            Assert.AreEqual(2017, singleYear.ToYear);
+        }
+
+        [Test]
+        public void ZoneRecurrenceToString()
+        {
+            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
+            var recurrence = new ZoneRecurrence("name", Offset.FromHours(1), yearOffset, 1900, 2000);
+            Assert.AreEqual("name +01 ZoneYearOffset[mode:Utc monthOfYear:10 dayOfMonth:31 dayOfWeek:3 advance:True timeOfDay:00:00:00 addDay:False] [1900-2000]", recurrence.ToString());
         }
     }
 }
