@@ -274,6 +274,10 @@ namespace NodaTime
                     new Duration(info,
                         BinaryFormattingConstants.EndDaysSerializationName,
                         BinaryFormattingConstants.EndNanosecondOfDaySerializationName));
+            if (end < start)
+            {
+                throw new ArgumentException("Serialization data contains end before start");
+            }
         }
 
         /// <summary>

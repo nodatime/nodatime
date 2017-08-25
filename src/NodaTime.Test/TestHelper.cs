@@ -11,7 +11,9 @@ using System.Xml.Serialization;
 using NUnit.Framework;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using NodaTime.Annotations;
+using NodaTime.TimeZones;
 
 #if !NETCORE
 using System.Runtime.Serialization.Formatters.Binary;
@@ -505,6 +507,20 @@ namespace NodaTime.Test
             Assert.AreEqual(value, rehydrated);
 #endif
         }
+
+#if !NETCORE
+        internal static void AssertBinaryDeserializationFailure<T>(Type expectedExceptionType, Action<SerializationInfo> fillInfoAction)
+        {
+            var info = new SerializationInfo(typeof(T), new FormatterConverter());
+            fillInfoAction(info);
+            var ctor = typeof(T).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null,
+                new Type[] { typeof(SerializationInfo), typeof(StreamingContext) }, null);
+            Assert.NotNull(ctor);
+            var context = new StreamingContext();
+            var exception = Assert.Throws<TargetInvocationException>(() => ctor.Invoke(new object[] { info, context }));
+            Assert.IsInstanceOf(expectedExceptionType, exception.InnerException);
+        }
+#endif
 
         /// <summary>
         /// Validates that a value can be serialized to the expected XML, deserialized to an equal

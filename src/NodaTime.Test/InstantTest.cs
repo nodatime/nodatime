@@ -327,6 +327,21 @@ namespace NodaTime.Test
             TestHelper.AssertBinaryRoundtrip(Instant.MaxValue);
         }
 
+#if !NETCORE
+
+        [Test]
+        [TestCase(typeof(OverflowException), Instant.MinDays - 1, 0L)]
+        [TestCase(typeof(OverflowException), Instant.MaxDays + 1, 0L)]
+        [TestCase(typeof(ArgumentException), 0, -1L)]
+        [TestCase(typeof(ArgumentException), 0, NodaConstants.NanosecondsPerDay)]
+        public void InvalidBinaryData(Type expectedExceptionType, int days, long nanoOfDay) =>
+            TestHelper.AssertBinaryDeserializationFailure<Instant>(expectedExceptionType, info =>
+            {
+                info.AddValue(BinaryFormattingConstants.DurationDefaultDaysSerializationName, days);
+                info.AddValue(BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName, nanoOfDay);
+            });
+#endif
+
         [Test]
         [TestCase(-101L, -2L)]
         [TestCase(-100L, -1L)]

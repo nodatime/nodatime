@@ -294,7 +294,7 @@ namespace NodaTime.Text
         {
             unchecked
             {
-                Preconditions.DebugCheckArgument(maximumDigits <= scale , nameof(maximumDigits),
+                Preconditions.DebugCheckArgument(maximumDigits <= scale, nameof(maximumDigits),
                     "Must not allow more maximum digits than scale");
 
                 result = 0;
