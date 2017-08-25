@@ -469,6 +469,33 @@ namespace NodaTime.Test
             TestHelper.AssertBinaryRoundtrip(value);
         }
 
+#if !NETCORE
+
+        [Test]
+        [TestCase(typeof(ArgumentException), 10000, 8, 25, 0L, 0, 60, "Europe/London")]
+        [TestCase(typeof(ArgumentException), 2017, 8, 25, 0L, 0, 60, "Europe/London")]
+        [TestCase(typeof(ArgumentException), 2017, 13, 25, 0L, 0, 60, "Europe/London")]
+        [TestCase(typeof(ArgumentException), 2017, 8, 32, 0L, 0, 60, "Europe/London")]
+        [TestCase(typeof(ArgumentException), 2017, 8, 25, -1L, 0, 60, "Europe/London")]
+        [TestCase(typeof(ArgumentException), 2017, 8, 25, 0L, -1, 60, "Europe/London", Description = "Invalid calendar ordinal")]
+        [TestCase(typeof(ArgumentException), 2017, 8, 25, 0L, 0, 120, "Europe/London", Description = "Wrong offset")]
+        [TestCase(typeof(TimeZoneNotFoundException), 2017, 8, 25, 0L, 0, 120, "Europe/NotLondon", Description = "Unknown zone ID")]
+        public void InvalidBinaryData(Type expectedExceptionType, int year, int month, int day, long nanosecondOfDay, int calendarOrdinal, int offsetSeconds, string zoneId)
+        {
+            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
+            TestHelper.AssertBinaryDeserializationFailure<ZonedDateTime>(expectedExceptionType, info =>
+            {
+                info.AddValue(BinaryFormattingConstants.YearSerializationName, year);
+                info.AddValue(BinaryFormattingConstants.MonthSerializationName, month);
+                info.AddValue(BinaryFormattingConstants.DaySerializationName, day);
+                info.AddValue(BinaryFormattingConstants.NanoOfDaySerializationName, nanosecondOfDay);
+                info.AddValue(BinaryFormattingConstants.CalendarSerializationName, calendarOrdinal);
+                info.AddValue(BinaryFormattingConstants.OffsetSecondsSerializationName, offsetSeconds);
+                info.AddValue(BinaryFormattingConstants.ZoneIdSerializationName, zoneId);
+            });
+        }
+#endif
+
         [Test]
         [TestCase("<value zone=\"America/New_York\" calendar=\"Rubbish\">2013-06-12T17:53:23-04</value>", typeof(KeyNotFoundException), Description = "Unknown calendar system")]
         [TestCase("<value>2013-04-12T17:53:23-04</value>", typeof(ArgumentException), Description = "No zone")]

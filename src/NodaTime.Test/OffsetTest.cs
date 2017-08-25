@@ -90,6 +90,18 @@ namespace NodaTime.Test
             TestHelper.AssertBinaryRoundtrip(Offset.FromSeconds(-12345));
         }
 
+#if !NETCORE
+
+        [Test]
+        [TestCase(typeof(ArgumentException), Offset.MinSeconds - 1)]
+        [TestCase(typeof(ArgumentException), Offset.MaxSeconds + 1)]
+        public void InvalidBinaryData(Type expectedExceptionType, int seconds) =>
+            TestHelper.AssertBinaryDeserializationFailure<Offset>(expectedExceptionType, info =>
+            {
+                info.AddValue(BinaryFormattingConstants.OffsetSecondsSerializationName, seconds);
+            });
+#endif
+         
         [Test]
         public void XmlSerialization()
         {

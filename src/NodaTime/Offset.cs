@@ -59,8 +59,8 @@ namespace NodaTime
 
         private const int MinHours = -18;
         private const int MaxHours = 18;
-        private const int MinSeconds = -18 * SecondsPerHour;
-        private const int MaxSeconds = 18 * SecondsPerHour;
+        internal const int MinSeconds = -18 * SecondsPerHour;
+        internal const int MaxSeconds = 18 * SecondsPerHour;
         private const int MinMilliseconds = -18 * MillisecondsPerHour;
         private const int MaxMilliseconds = 18 * MillisecondsPerHour;
         private const long MinTicks = -18 * TicksPerHour;
