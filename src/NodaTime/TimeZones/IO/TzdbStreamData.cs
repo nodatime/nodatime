@@ -16,7 +16,7 @@ namespace NodaTime.TimeZones.IO
     /// </summary>
     internal sealed class TzdbStreamData
     {
-        private static readonly Dictionary<TzdbStreamFieldId, Action<Builder, TzdbStreamField>> FieldHanders =
+        private static readonly Dictionary<TzdbStreamFieldId, Action<Builder, TzdbStreamField>> FieldHandlers =
             new Dictionary<TzdbStreamFieldId, Action<Builder, TzdbStreamField>>
         {
             [TzdbStreamFieldId.StringPool] = (builder, field) => builder.HandleStringPoolField(field),
@@ -130,7 +130,7 @@ namespace NodaTime.TimeZones.IO
             {
                 // Only handle fields we know about
                 Action<Builder, TzdbStreamField> handler;
-                if (FieldHanders.TryGetValue(field.Id, out handler))
+                if (FieldHandlers.TryGetValue(field.Id, out handler))
                 {
                     handler(builder, field);
                 }
