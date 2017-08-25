@@ -62,6 +62,14 @@ namespace NodaTime.Test
             var greater = YearMonthDay.Parse(greaterText);
             TestHelper.TestCompareToStruct(smaller, smaller, greater);
             TestHelper.TestOperatorComparisonEquality(smaller, smaller, greater);
+            TestHelper.TestEqualsStruct(smaller, smaller, greater);
+        }
+
+        [Test]
+        public void YearMonthDayToString()
+        {
+            var ymd = new YearMonthDay(2017, 8, 25);
+            Assert.AreEqual("2017-08-25", ymd.ToString());
         }
     }
 }

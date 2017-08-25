@@ -10,21 +10,8 @@ namespace NodaTime.Test.TimeZones
     // Note that this tests CachingZoneIntervalMap as much as CachedDateTimeZone...
     public class CachedDateTimeZoneTest
     {
-        #region Setup/Teardown
-        [SetUp]
-        public void Setup()
-        {
-            timeZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"] as CachedDateTimeZone;
-            if (timeZone == null)
-            {
-                Assert.Fail("The America/Los_Angeles time zone does not contain a CachedDateTimeZone.");
-            }
-            summer = Instant.FromUtc(2010, 6, 1, 0, 0);
-        }
-        #endregion
-
-        private CachedDateTimeZone timeZone;
-        private Instant summer;
+        private static readonly CachedDateTimeZone timeZone = (CachedDateTimeZone) DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
+        private static readonly Instant summer = Instant.FromUtc(2010, 6, 1, 0, 0);
 
         [Test]
         public void GetZoneIntervalInstant_NotNull()
@@ -61,6 +48,19 @@ namespace NodaTime.Test.TimeZones
         {
             Assert.AreEqual(timeZone.Uncached().MinOffset, timeZone.MinOffset);
             Assert.AreEqual(timeZone.Uncached().MaxOffset, timeZone.MaxOffset);
+        }
+
+        [Test]
+        public void ForZone_Fixed()
+        {
+            var zone = DateTimeZone.ForOffset(Offset.FromHours(1));
+            Assert.AreSame(zone, CachedDateTimeZone.ForZone(zone));
+        }
+
+        [Test]
+        public void ForZone_AlreadyCached()
+        {
+            Assert.AreSame(timeZone, CachedDateTimeZone.ForZone(timeZone));
         }
     }
 }
