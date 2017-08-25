@@ -215,6 +215,9 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
+        public void ParseNull() => AssertParseNull(OffsetPattern.GeneralInvariant);
+
+        [Test]
         public void NumberFormatIgnored()
         {
             var culture = (CultureInfo) Cultures.EnUs.Clone();

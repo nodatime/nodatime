@@ -317,6 +317,9 @@ namespace NodaTime.Test.Text
         }
 
         [Test]
+        public void ParseNull() => AssertParseNull(LocalTimePattern.ExtendedIso);
+
+        [Test]
         [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclLongTimePatternIsValidNodaPattern(CultureInfo culture)
         {

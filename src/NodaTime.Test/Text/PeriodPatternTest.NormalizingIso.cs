@@ -103,10 +103,7 @@ namespace NodaTime.Test.Text
             }
 
             [Test]
-            public void NullArgument()
-            {
-                Assert.IsInstanceOf<ArgumentException>(PeriodPattern.NormalizingIso.Parse(null).Exception);
-            }
+            public void ParseNull() => AssertParseNull(PeriodPattern.NormalizingIso);
         }
     }
 }

@@ -80,10 +80,8 @@ namespace NodaTime.Test.Text
             internal static IEnumerable<Data> FormatData = FormatAndParseData;
 
             [Test]
-            public void NullArgument()
-            {
-                Assert.IsInstanceOf<ArgumentException>(PeriodPattern.Roundtrip.Parse(null).Exception);
-            }
+            public void ParseNull() => AssertParseNull(PeriodPattern.Roundtrip);
+
         }
     }
 }

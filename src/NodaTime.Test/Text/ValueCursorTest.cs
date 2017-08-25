@@ -455,5 +455,17 @@ namespace NodaTime.Test.Text
             Assert.Greater(value.CompareOrdinal("aaaa"), 0);
             Assert.AreEqual(1, value.Index); // Cursor hasn't moved
         }
+
+        [Test]
+        public void ParseInt64_TooManyDigits()
+        {
+            // We can cope as far as 9223372036854775807, but the trailing 1 causes a failure.
+            var value = new ValueCursor("92233720368547758071");
+            value.Move(0);
+            var parseResult = value.ParseInt64<string>(out long result);
+            Assert.IsFalse(parseResult.Success);
+            Assert.IsInstanceOf<UnparsableValueException>(parseResult.Exception);            
+            Assert.AreEqual(0, value.Index); // Cursor hasn't moved
+        }
     }
 }

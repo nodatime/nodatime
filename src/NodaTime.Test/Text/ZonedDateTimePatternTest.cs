@@ -282,6 +282,9 @@ namespace NodaTime.Test.Text
             Assert.AreEqual("19.30", text);
         }
 
+        [Test]
+        public void ParseNull() => AssertParseNull(ZonedDateTimePattern.ExtendedFormatOnlyIso.WithZoneProvider(TestProvider));
+
         public sealed class Data : PatternTestData<ZonedDateTime>
         {
             // Default to the start of the year 2000 UTC

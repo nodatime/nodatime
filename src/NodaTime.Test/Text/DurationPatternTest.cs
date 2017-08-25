@@ -125,6 +125,9 @@ namespace NodaTime.Test.Text
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
 
         [Test]
+        public void ParseNull() => AssertParseNull(DurationPattern.Roundtrip);
+
+        [Test]
         public void WithCulture()
         {
             var pattern = DurationPattern.CreateWithInvariantCulture("H:mm").WithCulture(Cultures.DotTimeSeparator);
