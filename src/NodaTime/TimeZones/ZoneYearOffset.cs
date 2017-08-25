@@ -178,8 +178,8 @@ namespace NodaTime.TimeZones
 
         public override string ToString() =>
             string.Format(CultureInfo.InvariantCulture,
-                "ZoneYearOffset[mode:{0} monthOfYear:{1} dayOfMonth:{2} advance:{3} timeOfDay:{4:r} addDay:{5}]",
-                Mode, monthOfYear, dayOfMonth, AdvanceDayOfWeek, TimeOfDay, addDay);
+                "ZoneYearOffset[mode:{0} monthOfYear:{1} dayOfMonth:{2} dayOfWeek:{3} advance:{4} timeOfDay:{5:r} addDay:{6}]",
+                Mode, monthOfYear, dayOfMonth, dayOfWeek, AdvanceDayOfWeek, TimeOfDay, addDay);
 
         /// <summary>
         /// Returns the occurrence of this rule within the given year, as a LocalInstant.
