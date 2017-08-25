@@ -540,11 +540,15 @@ namespace NodaTime.Test
                                              .WithCalendar(CalendarSystem.PersianSimple)
                                              .InZoneStrictly(london);
 
-            TestHelper.TestComparerStruct(ZonedDateTime.Comparer.Local, losAngelesAfternoon, londonAfternoon, londonEvening);
-            Assert.Throws<ArgumentException>(() => ZonedDateTime.Comparer.Local.Compare(londonPersian, londonEvening));
-            Assert.IsFalse(ZonedDateTime.Comparer.Local.Equals(londonPersian, londonEvening));
-            Assert.IsFalse(ZonedDateTime.Comparer.Local.Equals(londonAfternoon, londonEvening));
-            Assert.IsTrue(ZonedDateTime.Comparer.Local.Equals(londonAfternoon, losAngelesAfternoon));
+            var comparer = ZonedDateTime.Comparer.Local;
+            TestHelper.TestComparerStruct(comparer, losAngelesAfternoon, londonAfternoon, londonEvening);
+            Assert.Throws<ArgumentException>(() => comparer.Compare(londonPersian, londonEvening));
+            Assert.IsFalse(comparer.Equals(londonPersian, londonEvening));
+            Assert.AreNotEqual(comparer.GetHashCode(londonPersian), comparer.GetHashCode(londonEvening));
+            Assert.IsFalse(comparer.Equals(londonAfternoon, londonEvening));
+            Assert.AreNotEqual(comparer.GetHashCode(londonAfternoon), comparer.GetHashCode(londonEvening));
+            Assert.IsTrue(comparer.Equals(londonAfternoon, losAngelesAfternoon));
+            Assert.AreEqual(comparer.GetHashCode(londonAfternoon), comparer.GetHashCode(losAngelesAfternoon));
         }
 
         [Test]
@@ -564,11 +568,15 @@ namespace NodaTime.Test
                                              .WithCalendar(CalendarSystem.PersianSimple)
                                              .InZoneStrictly(london);
 
-            TestHelper.TestComparerStruct(ZonedDateTime.Comparer.Instant, londonEvening, losAngelesLunchtime, losAngelesAfternoon);
-            Assert.AreEqual(0, ZonedDateTime.Comparer.Instant.Compare(londonPersian, londonEvening));
-            Assert.IsTrue(ZonedDateTime.Comparer.Instant.Equals(londonPersian, londonEvening));
-            Assert.IsTrue(ZonedDateTime.Comparer.Instant.Equals(losAngelesLunchtime, londonEvening));
-            Assert.IsFalse(ZonedDateTime.Comparer.Instant.Equals(losAngelesAfternoon, londonEvening));
+            var comparer = ZonedDateTime.Comparer.Instant;
+            TestHelper.TestComparerStruct(comparer, londonEvening, losAngelesLunchtime, losAngelesAfternoon);
+            Assert.AreEqual(0, comparer.Compare(londonPersian, londonEvening));
+            Assert.IsTrue(comparer.Equals(londonPersian, londonEvening));
+            Assert.AreEqual(comparer.GetHashCode(londonPersian), comparer.GetHashCode(londonEvening));
+            Assert.IsTrue(comparer.Equals(losAngelesLunchtime, londonEvening));
+            Assert.AreEqual(comparer.GetHashCode(losAngelesLunchtime), comparer.GetHashCode(londonEvening));
+            Assert.IsFalse(comparer.Equals(losAngelesAfternoon, londonEvening));
+            Assert.AreNotEqual(comparer.GetHashCode(losAngelesAfternoon), comparer.GetHashCode(londonEvening));
         }
     }
 }

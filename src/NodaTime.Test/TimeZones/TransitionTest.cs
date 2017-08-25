@@ -21,5 +21,12 @@ namespace NodaTime.Test.TimeZones
             TestHelper.TestOperatorEquality(equal1, equal2, unequal1);
             TestHelper.TestOperatorEquality(equal1, equal2, unequal2);
         }
+
+        [Test]
+        public void TransitionToString()
+        {
+            var transition = new Transition(Instant.FromUtc(2017, 8, 25, 15, 26, 30), Offset.FromHours(1));
+            Assert.AreEqual("Transition to +01 at 2017-08-25T15:26:30Z", transition.ToString());
+        }
     }
 }

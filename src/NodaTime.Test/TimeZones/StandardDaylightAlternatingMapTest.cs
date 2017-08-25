@@ -8,6 +8,7 @@ using NodaTime.TimeZones;
 using NUnit.Framework;
 using System.IO;
 using NodaTime.TimeZones.IO;
+using System;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -276,6 +277,21 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(lastWinter, zone.GetZoneInterval(lastAutumn));
             Assert.AreEqual(lastWinter, zone.GetZoneInterval(Instant.FromUtc(9999, 11, 1, 0, 0)));
             Assert.AreEqual(lastWinter, zone.GetZoneInterval(Instant.MaxValue));
+        }
+
+        [Test]
+        public void InvalidMap_SimultaneousTransition()
+        {
+            // Two recurrences with different savings, but which occur at the same instant in time every year.
+            ZoneRecurrence r1 = new ZoneRecurrence("Recurrence1", Offset.Zero,
+                new ZoneYearOffset(TransitionMode.Utc, 10, 5, 0, false, new LocalTime(2, 0)), int.MinValue, int.MaxValue);
+
+            ZoneRecurrence r2 = new ZoneRecurrence("Recurrence2", Offset.FromHours(1),
+                new ZoneYearOffset(TransitionMode.Utc, 10, 5, 0, false, new LocalTime(2, 0)), int.MinValue, int.MaxValue);
+
+            var map = new StandardDaylightAlternatingMap(Offset.Zero, r1, r2);
+
+            Assert.Throws<InvalidOperationException>(() => map.GetZoneInterval(Instant.FromUtc(2017, 8, 25, 0, 0, 0)));
         }
 
         private void CheckMapping(ZoneLocalMapping mapping, string earlyIntervalName, string lateIntervalName, int count)

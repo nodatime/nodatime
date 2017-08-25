@@ -9,6 +9,21 @@ namespace NodaTime.Test.Utility
 {
     public class PreconditionsTest
     {
+        // This overload is only called from one place, and only when it's going to fail...
+        [Test]
+        public void CheckArgument2_Success()
+        {
+            Preconditions.CheckArgument(true, "param", "{0} is {1}", 1, 10);
+        }
+
+        [Test]
+        public void CheckArgument2_Failure()
+        {
+            var exception = Assert.Throws<ArgumentException>(() => Preconditions.CheckArgument(false, "param", "{0} is {1}", 1, 10));
+            Assert.AreEqual("param", exception.ParamName);
+            Assert.IsTrue(exception.Message.Contains("1 is 10"));
+        }
+
         // It's really not worth inventing parameters for these...
 #pragma warning disable InvokerParameterName
 #pragma warning disable NotNullCheckWithoutParameter

@@ -61,7 +61,7 @@ namespace NodaTime.TimeZones
             {
                 return timeZone;
             }
-            return new CachedDateTimeZone(timeZone, CachingZoneIntervalMap.CacheMap(timeZone, CachingZoneIntervalMap.CacheType.Hashtable));
+            return new CachedDateTimeZone(timeZone, CachingZoneIntervalMap.CacheMap(timeZone));
         }
 
         /// <summary>
