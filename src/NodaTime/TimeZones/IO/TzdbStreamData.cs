@@ -102,7 +102,7 @@ namespace NodaTime.TimeZones.IO
                     case DateTimeZoneWriter.DateTimeZoneType.Precalculated:
                         return CachedDateTimeZone.ForZone(PrecalculatedDateTimeZone.Read(reader, id));
                     default:
-                            throw new InvalidNodaDataException("Unknown time zone type " + type);
+                        throw new InvalidNodaDataException("Unknown time zone type " + type);
                 }
             }
         }
