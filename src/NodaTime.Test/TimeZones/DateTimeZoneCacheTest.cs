@@ -23,18 +23,26 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void InvalidProvider_NullVersionId()
+        public void InvalidSource_NullVersionId()
         {
             var source = new TestDateTimeZoneSource("Test1", "Test2") { VersionId = null };
             Assert.Throws<InvalidDateTimeZoneSourceException>(() => new DateTimeZoneCache(source));
         }
 
         [Test]
-        public void InvalidProvider_NullIdSequence()
+        public void InvalidSource_NullIdSequence()
         {
             string[] ids = null;
             var source = new TestDateTimeZoneSource(ids);
             Assert.Throws<InvalidDateTimeZoneSourceException>(() => new DateTimeZoneCache(source));
+        }
+
+        [Test]
+        public void InvalidSource_ReturnsNullForAdvertisedId()
+        {
+            var source = new NullReturningTestDateTimeZoneSource("foo", "bar");
+            var cache = new DateTimeZoneCache(source);
+            Assert.Throws<InvalidDateTimeZoneSourceException>(() => cache.GetZoneOrNull("foo"));
         }
 
         [Test]
@@ -235,6 +243,14 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
+        [Test]
+        public void GetSystemDefault_SourceReturnsNullId()
+        {
+            var source = new NullReturningTestDateTimeZoneSource("foo", "bar");
+            var cache = new DateTimeZoneCache(source);
+            Assert.Throws<DateTimeZoneNotFoundException>(() => cache.GetSystemDefault());
+        }
+
         private class TestDateTimeZoneSource : IDateTimeZoneSource
         {
             public string LastRequestedId { get; set; }
@@ -248,7 +264,7 @@ namespace NodaTime.Test.TimeZones
 
             public IEnumerable<string> GetIds() { return ids; }
 
-            public DateTimeZone ForId(string id)
+            public virtual DateTimeZone ForId(string id)
             {
                 LastRequestedId = id;
                 return new SingleTransitionDateTimeZone(NodaConstants.UnixEpoch, Offset.Zero, Offset.FromHours(id.GetHashCode() % 18), id);
@@ -256,7 +272,24 @@ namespace NodaTime.Test.TimeZones
 
             public string VersionId { get; set; }
 
-            public string GetSystemDefaultId() => "map";
+            public virtual string GetSystemDefaultId() => "map";
+        }
+
+        // A test source that returns null from ForId and GetSystemDefaultId()
+        private class NullReturningTestDateTimeZoneSource : TestDateTimeZoneSource
+        {
+            public NullReturningTestDateTimeZoneSource(params string[] ids) : base(ids)
+            {
+            }
+
+            public override DateTimeZone ForId(string id)
+            {
+                // Still remember what was requested.
+                base.ForId(id);
+                return null;
+            }
+
+            public override string GetSystemDefaultId() => null;
         }
     }
 }
