@@ -93,6 +93,34 @@ namespace NodaTime.Test.TimeZones
             var nonBclZones = provider.Ids.Select(id => provider[id]).Where(zone => !(zone is BclDateTimeZone));
             Assert.IsEmpty(nonBclZones);
         }
+
+        [Test]
+        public void LocalZoneIsNotSystemZone()
+        {
+            var systemZone = TimeZoneInfo.CreateCustomTimeZone("Normal zone", TimeSpan.Zero, "Display", "Standard");
+            var localZone = TimeZoneInfo.CreateCustomTimeZone("Local zone not in system zones", TimeSpan.FromHours(5), "Foo", "Bar");
+            using (TimeZoneInfoReplacer.Replace(localZone, systemZone))
+            {
+                var source = new BclDateTimeZoneSource();
+                CollectionAssert.AreEqual(new[] { systemZone.Id }, source.GetIds().ToList());
+
+                // We can't look it up later, but we can still find it...
+                Assert.AreEqual(localZone.Id, source.GetSystemDefaultId());
+            }
+        }
+
+        [Test]
+        public void LocalZoneIsNull()
+        {
+            var systemZone = TimeZoneInfo.CreateCustomTimeZone("Normal zone", TimeSpan.Zero, "Display", "Standard");
+            using (TimeZoneInfoReplacer.Replace(null, systemZone))
+            {
+                var source = new BclDateTimeZoneSource();
+                CollectionAssert.AreEqual(new[] { systemZone.Id }, source.GetIds().ToList());
+                Assert.Null(source.GetSystemDefaultId());
+
+            }
+        }
     }
 }
 #endif

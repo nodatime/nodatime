@@ -58,6 +58,14 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
+        [Test]
+        [TestCaseSource(nameof(BclZones))]
+        public void DisplayName(TimeZoneInfo windowsZone)
+        {
+            var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
+            Assert.AreEqual(windowsZone.DisplayName, nodaZone.DisplayName);
+        }
+
         /// <summary>
         /// This test catches situations where the Noda Time representation doesn't have all the
         /// transitions it should; AllZoneTransitions may pass not spot times when we *should* have
@@ -201,6 +209,33 @@ namespace NodaTime.Test.TimeZones
                 new ZoneInterval("Standard", expectedTransition2, Instant.AfterMaxValue, Offset.Zero, Offset.Zero),
                 zoneIntervalAfter);
         }
+
+#if NET451
+        [Test]
+        public void FakeDaylightSavingTime()
+        {
+            // Linux time zones on Mono can have a strange situation with a "0 savings" adjustment rule to represent
+            // "we want to change standard time but we can't".
+            // See https://github.com/nodatime/nodatime/issues/746
+            // Normally the odd rule would only be in place for a year, but it's simplest to just make it all the time.
+            // We go into daylight savings at midday on March 10th, and out again at midday on September 25.
+
+            // We should be able to use DateTime.MaxValue for dateEnd, but not in .NET 4.5 apparently.
+            var rule = TimeZoneInfo.AdjustmentRule.CreateAdjustmentRule(DateTime.MinValue, new DateTime(9999, 12, 31), TimeSpan.Zero,
+                TimeZoneInfo.TransitionTime.CreateFixedDateRule(new DateTime(1, 1, 1, 12, 0, 0), 3, 10),
+                TimeZoneInfo.TransitionTime.CreateFixedDateRule(new DateTime(1, 1, 1, 12, 0, 0), 9, 25));
+            var bclZone = TimeZoneInfo.CreateCustomTimeZone("Nasty", TimeSpan.FromHours(4), "Display", "Standard", "Daylight", new[] { rule });
+            var nodaZone = BclDateTimeZone.FromTimeZoneInfo(bclZone);
+            var winterInterval = nodaZone.GetZoneInterval(Instant.FromUtc(2017, 2, 1, 0, 0));
+            var summerInterval = nodaZone.GetZoneInterval(Instant.FromUtc(2017, 6, 1, 0, 0));
+
+            var expectedWinter = new ZoneInterval("Standard", Instant.FromUtc(2016, 9, 25, 8, 0), Instant.FromUtc(2017, 3, 10, 8, 0), Offset.FromHours(4), Offset.Zero);
+            var expectedSummer = new ZoneInterval("Daylight", Instant.FromUtc(2017, 3, 10, 8, 0), Instant.FromUtc(2017, 9, 25, 8, 0), Offset.FromHours(4), Offset.FromHours(1));
+
+            Assert.AreEqual(expectedWinter, winterInterval);
+            Assert.AreEqual(expectedSummer, summerInterval);
+        }
+#endif
 
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {

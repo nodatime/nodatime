@@ -277,9 +277,14 @@ namespace NodaTime.Test.TimeZones
         public void MapTimeZoneInfoId(string timeZoneInfoId, int standardUtc, string expectedId)
         {
             var zoneInfo = TimeZoneInfo.CreateCustomTimeZone(timeZoneInfoId, TimeSpan.FromHours(standardUtc),
-                "Ignored display name", "Ignored standard display name");
+                "Ignored display name", "Standard name for " + timeZoneInfoId);
             var mappedId = TzdbDateTimeZoneSource.Default.MapTimeZoneInfoId(zoneInfo);
             Assert.AreEqual(expectedId, mappedId);
+
+            // Do it again, and expect to get the same result again.
+            // In the case of the "Lilo and Stitch" zone, this means hitting the cache rather than guessing
+            // via transitions again.
+            Assert.AreEqual(mappedId, TzdbDateTimeZoneSource.Default.MapTimeZoneInfoId(zoneInfo));
         }
 #endif
     }

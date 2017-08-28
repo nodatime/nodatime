@@ -45,7 +45,7 @@ namespace NodaTime.TimeZones
             // Always include the local time zone, since Mono may not include it in the list of system time zones, even
             // though it allows the Id to be passed to FindSystemTimeZoneById().
             // See https://github.com/nodatime/nodatime/issues/235.
-            return TimeZoneInfo.GetSystemTimeZones()
+            return TimeZoneInfoInterceptor.GetSystemTimeZones()
                 .Select(zone => zone.Id)
                 .Union(GetTimeZoneInfoLocalIdOrEmpty());
         }
@@ -62,13 +62,13 @@ namespace NodaTime.TimeZones
             {
                 // May throw TimeZoneNotFoundException, particularly on Mono/Windows.
                 // See https://bugzilla.xamarin.com/show_bug.cgi?id=11817
-                var local = TimeZoneInfo.Local;
+                var local = TimeZoneInfoInterceptor.Local;
 
                 if (local != null)  // https://github.com/nodatime/nodatime/issues/235#issuecomment-80932079
                 {
                     // Make sure we can look it up again, as there are legitimate cases where the local time zone is not
                     // a system time zone.  If not, this also throws TimeZoneNotFoundException.
-                    TimeZoneInfo.FindSystemTimeZoneById(local.Id);
+                    TimeZoneInfoInterceptor.FindSystemTimeZoneById(local.Id);
 
                     return new[] { local.Id };
                 }
@@ -109,7 +109,7 @@ namespace NodaTime.TimeZones
         {
             try
             {
-                TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById(id);
+                TimeZoneInfo zone = TimeZoneInfoInterceptor.FindSystemTimeZoneById(id);
                 return BclDateTimeZone.FromTimeZoneInfo(zone);
             }
             catch (TimeZoneNotFoundException)
@@ -118,8 +118,12 @@ namespace NodaTime.TimeZones
             }
         }
 
+        // Note: if TimeZoneInfo.Local returns a null reference, we'll return a null reference here as well.
+        // However, we *don't* attempt to validate that a non-null reference has a valid ID that can be looked up.
+        // We'll let the DateTimeZoneCache do that for us. (We get a DateTimeZoneNotFoundException either way.)
+
         /// <inheritdoc />
-        [NotNull] public string GetSystemDefaultId() => TimeZoneInfo.Local.Id;
+        [NotNull] public string GetSystemDefaultId() => TimeZoneInfoInterceptor.Local?.Id;
     }
 }
 #endif
