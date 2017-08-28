@@ -49,6 +49,7 @@ namespace NodaTime.Test.Text
         internal static Data[] ParseFailureData = {
             new Data { Text = "17 6", Pattern = "HH h", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
             new Data { Text = "17 AM", Pattern = "HH tt", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
+            new Data { Text = "5 foo", Pattern = "h t", Message = Messages.Parse_MissingAmPmDesignator},
             new Data { Text = "04.", Pattern = "ss.FF", Message = Messages.Parse_MismatchedNumber, Parameters = { "FF" } },
             new Data { Text = "04.", Pattern = "ss.ff", Message = Messages.Parse_MismatchedNumber, Parameters = { "ff" } },
             new Data { Text = "05 Foo", Pattern = "HH tt", Message = Messages.Parse_MissingAmPmDesignator }
@@ -256,6 +257,8 @@ namespace NodaTime.Test.Text
             new Data(6, 0, 0) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h" },
             new Data(0, 0, 0) { Culture = Cultures.EnUs, Text = "AM", Pattern = "tt" },
             new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt" },
+            new Data(0, 0, 0) { Culture = Cultures.EnUs, Text = "A", Pattern = "%t" },
+            new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "P", Pattern = "%t" },
 
             // Pattern specifies nothing - template value is passed through
             new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "*", Pattern = "%*", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
