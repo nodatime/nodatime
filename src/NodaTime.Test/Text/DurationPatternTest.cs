@@ -36,6 +36,7 @@ namespace NodaTime.Test.Text
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
             new Data { Pattern = "HH:MM", Message = Messages.Parse_MultipleCapitalDurationFields },
+            new Data { Pattern = "HH D", Message = Messages.Parse_MultipleCapitalDurationFields },
             new Data { Pattern = "MM mm", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'm' } },
             new Data { Pattern = "G", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'G', typeof(Duration) } },
         };
@@ -72,6 +73,7 @@ namespace NodaTime.Test.Text
                 Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-S.fffffffff", Text = "1449551462400.000000000",
                 Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "'x'S", Text = "x", Message = Messages.Parse_MismatchedNumber, Parameters = { "S" } },
         };
 
         /// <summary>

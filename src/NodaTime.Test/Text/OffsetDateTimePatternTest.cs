@@ -116,6 +116,9 @@ namespace NodaTime.Test.Text
 
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
+
+            // Fields not otherwise covered
+            new Data(MsdnStandardExample) { Pattern = "d MMMM yyyy (g) h:mm:ss.FF tt o<g>", Text = "15 June 2009 (A.D.) 1:45:30.09 PM +01" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
