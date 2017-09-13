@@ -61,7 +61,7 @@ namespace NodaTime.Text
             // Nullity check is performed in OffsetDateTimePattern.
             if (patternText.Length == 0)
             {
-                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
+                throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);
             }
 
             // Handle standard patterns
@@ -76,7 +76,7 @@ namespace NodaTime.Text
                     case 'r':
                         return OffsetDateTimePattern.Patterns.FullRoundtripPatternImpl;
                     default:
-                        throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText[0], typeof(OffsetDateTime));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText[0], typeof(OffsetDateTime));
                 }
             }
 

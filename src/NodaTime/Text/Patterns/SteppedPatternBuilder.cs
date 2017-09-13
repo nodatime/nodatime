@@ -82,7 +82,7 @@ namespace NodaTime.Text.Patterns
                     if ((current >= 'A' && current <= 'Z') || (current >= 'a' && current <= 'z') ||
                         current == PatternCursor.EmbeddedPatternStart || current == PatternCursor.EmbeddedPatternEnd)
                     {
-                        throw new InvalidPatternException(Messages.Parse_UnquotedLiteral, current);
+                        throw new InvalidPatternException(TextErrorMessages.UnquotedLiteral, current);
                     }
                     AddLiteral(patternCursor.Current, ParseResult<TResult>.MismatchedCharacter);
                 }
@@ -100,12 +100,12 @@ namespace NodaTime.Text.Patterns
 
             if ((usedFields & (PatternFields.Era | PatternFields.YearOfEra)) == PatternFields.Era)
             {
-                throw new InvalidPatternException(Messages.Parse_EraWithoutYearOfEra);
+                throw new InvalidPatternException(TextErrorMessages.EraWithoutYearOfEra);
             }
             const PatternFields calendarAndEra = PatternFields.Era | PatternFields.Calendar;
             if ((usedFields & calendarAndEra) == calendarAndEra)
             {
-                throw new InvalidPatternException(Messages.Parse_CalendarAndEra);
+                throw new InvalidPatternException(TextErrorMessages.CalendarAndEra);
             }
         }
 
@@ -120,13 +120,13 @@ namespace NodaTime.Text.Patterns
             if (usedFields.HasAny(PatternFields.EmbeddedDate) &&
                 usedFields.HasAny(PatternFields.AllDateFields & ~PatternFields.EmbeddedDate))
             {
-                throw new InvalidPatternException(Messages.Parse_DateFieldAndEmbeddedDate);
+                throw new InvalidPatternException(TextErrorMessages.DateFieldAndEmbeddedDate);
             }
             // Ditto for time
             if (usedFields.HasAny(PatternFields.EmbeddedTime) &&
                 usedFields.HasAny(PatternFields.AllTimeFields & ~PatternFields.EmbeddedTime))
             {
-                throw new InvalidPatternException(Messages.Parse_TimeFieldAndEmbeddedTime);
+                throw new InvalidPatternException(TextErrorMessages.TimeFieldAndEmbeddedTime);
             }
 
             Action<TResult, StringBuilder> formatDelegate = null;
@@ -147,7 +147,7 @@ namespace NodaTime.Text.Patterns
             PatternFields newUsedFields = usedFields | field;
             if (newUsedFields == usedFields)
             {
-                throw new InvalidPatternException(Messages.Parse_RepeatedFieldInPattern, characterInPattern);
+                throw new InvalidPatternException(TextErrorMessages.RepeatedFieldInPattern, characterInPattern);
             }
             usedFields = newUsedFields;
         }
@@ -245,7 +245,7 @@ namespace NodaTime.Text.Patterns
         {
             if (!pattern.MoveNext())
             {
-                throw new InvalidPatternException(Messages.Parse_EscapeAtEndOfString);
+                throw new InvalidPatternException(TextErrorMessages.EscapeAtEndOfString);
             }
             builder.AddLiteral(pattern.Current, ParseResult<TResult>.EscapedCharacterMismatch);
         }
@@ -263,9 +263,9 @@ namespace NodaTime.Text.Patterns
                     // Handle the next character as normal
                     return;
                 }
-                throw new InvalidPatternException(Messages.Parse_PercentDoubled);
+                throw new InvalidPatternException(TextErrorMessages.PercentDoubled);
             }
-            throw new InvalidPatternException(Messages.Parse_PercentAtEndOfString);
+            throw new InvalidPatternException(TextErrorMessages.PercentAtEndOfString);
         }
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace NodaTime.Text.Patterns
                 case '<':
                     if (dateTimeExtractor == null)
                     {
-                        throw new InvalidPatternException(Messages.Parse_InvalidEmbeddedPatternType);
+                        throw new InvalidPatternException(TextErrorMessages.InvalidEmbeddedPatternType);
                     }
                     AddField(PatternFields.EmbeddedDate, 'l');
                     AddField(PatternFields.EmbeddedTime, 'l');

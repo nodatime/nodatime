@@ -13,21 +13,21 @@ namespace NodaTime.Test.Text
     public class InstantPatternTest : PatternTestBase<Instant>
     {
         internal static readonly Data[] InvalidPatternData = {
-            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
-            new Data { Pattern = "!", Message = Messages.Parse_UnknownStandardFormat, Parameters = {'!', typeof(Instant).FullName}},
-            new Data { Pattern = "%", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '%', typeof(Instant).FullName } },
-            new Data { Pattern = "\\", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '\\', typeof(Instant).FullName } },
+            new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
+            new Data { Pattern = "!", Message = TextErrorMessages.UnknownStandardFormat, Parameters = {'!', typeof(Instant).FullName}},
+            new Data { Pattern = "%", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '%', typeof(Instant).FullName } },
+            new Data { Pattern = "\\", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '\\', typeof(Instant).FullName } },
             // Just a few - these are taken from other tests
-            new Data { Pattern = "%%", Message = Messages.Parse_PercentDoubled },
-            new Data { Pattern = "%\\", Message = Messages.Parse_EscapeAtEndOfString },
-            new Data { Pattern = "ffffffffff", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'f', 9 } },
-            new Data { Pattern = "FFFFFFFFFF", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'F', 9 } },
+            new Data { Pattern = "%%", Message = TextErrorMessages.PercentDoubled },
+            new Data { Pattern = "%\\", Message = TextErrorMessages.EscapeAtEndOfString },
+            new Data { Pattern = "ffffffffff", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 'f', 9 } },
+            new Data { Pattern = "FFFFFFFFFF", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 'F', 9 } },
         };
 
         internal static Data[] ParseFailureData = {
-            new Data { Text = "rubbish", Pattern = "yyyyMMdd'T'HH:mm:ss", Message = Messages.Parse_MismatchedNumber, Parameters = { "yyyy" } },
-            new Data { Text = "17 6", Pattern = "HH h", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
-            new Data { Text = "17 AM", Pattern = "HH tt", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
+            new Data { Text = "rubbish", Pattern = "yyyyMMdd'T'HH:mm:ss", Message = TextErrorMessages.MismatchedNumber, Parameters = { "yyyy" } },
+            new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
+            new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
         };
 
         internal static Data[] ParseOnlyData = {

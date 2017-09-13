@@ -69,7 +69,7 @@ namespace NodaTime.Text
             // Nullity check is performed in ZonedDateTimePattern.
             if (patternText.Length == 0)
             {
-                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
+                throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);
             }
 
             // Handle standard patterns
@@ -86,7 +86,7 @@ namespace NodaTime.Text
                             .WithZoneProvider(zoneProvider)
                             .WithResolver(resolver);
                     default:
-                        throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText[0], typeof(ZonedDateTime));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText[0], typeof(ZonedDateTime));
                 }
             }
 

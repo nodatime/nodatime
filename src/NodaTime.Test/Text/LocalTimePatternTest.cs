@@ -26,33 +26,33 @@ namespace NodaTime.Test.Text
         private static readonly CultureInfo NoAmOrPmCulture = CreateCustomAmPmCulture("", "");
 
         internal static readonly Data[] InvalidPatternData = {
-            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
-            new Data { Pattern = "!", Message = Messages.Parse_UnknownStandardFormat, Parameters = {'!', typeof(LocalTime).FullName}},
-            new Data { Pattern = "%", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '%', typeof(LocalTime).FullName } },
-            new Data { Pattern = "\\", Message = Messages.Parse_UnknownStandardFormat, Parameters = { '\\', typeof(LocalTime).FullName } },
-            new Data { Pattern = "%%", Message = Messages.Parse_PercentDoubled },
-            new Data { Pattern = "%\\", Message = Messages.Parse_EscapeAtEndOfString },
-            new Data { Pattern = "ffffffffff", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'f', 9 } },
-            new Data { Pattern = "FFFFFFFFFF", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'F', 9 } },
-            new Data { Pattern = "H%", Message = Messages.Parse_PercentAtEndOfString },
-            new Data { Pattern = "HHH", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'H', 2 } },
-            new Data { Pattern = "mmm", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'm', 2 } },
-            new Data { Pattern = "mmmmmmmmmmmmmmmmmmm", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 'm', 2 } },
-            new Data { Pattern = "'qwe", Message = Messages.Parse_MissingEndQuote, Parameters = { '\'' } },
-            new Data { Pattern = "'qwe\\", Message = Messages.Parse_EscapeAtEndOfString },
-            new Data { Pattern = "'qwe\\'", Message = Messages.Parse_MissingEndQuote, Parameters = { '\'' } },
-            new Data { Pattern = "sss", Message = Messages.Parse_RepeatCountExceeded, Parameters = { 's', 2 } },
+            new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
+            new Data { Pattern = "!", Message = TextErrorMessages.UnknownStandardFormat, Parameters = {'!', typeof(LocalTime).FullName}},
+            new Data { Pattern = "%", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '%', typeof(LocalTime).FullName } },
+            new Data { Pattern = "\\", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '\\', typeof(LocalTime).FullName } },
+            new Data { Pattern = "%%", Message = TextErrorMessages.PercentDoubled },
+            new Data { Pattern = "%\\", Message = TextErrorMessages.EscapeAtEndOfString },
+            new Data { Pattern = "ffffffffff", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 'f', 9 } },
+            new Data { Pattern = "FFFFFFFFFF", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 'F', 9 } },
+            new Data { Pattern = "H%", Message = TextErrorMessages.PercentAtEndOfString },
+            new Data { Pattern = "HHH", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 'H', 2 } },
+            new Data { Pattern = "mmm", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 'm', 2 } },
+            new Data { Pattern = "mmmmmmmmmmmmmmmmmmm", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 'm', 2 } },
+            new Data { Pattern = "'qwe", Message = TextErrorMessages.MissingEndQuote, Parameters = { '\'' } },
+            new Data { Pattern = "'qwe\\", Message = TextErrorMessages.EscapeAtEndOfString },
+            new Data { Pattern = "'qwe\\'", Message = TextErrorMessages.MissingEndQuote, Parameters = { '\'' } },
+            new Data { Pattern = "sss", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 's', 2 } },
             // T isn't valid in a time pattern
-            new Data { Pattern = "1970-01-01THH:mm:ss", Message = Messages.Parse_UnquotedLiteral, Parameters = { 'T' } }
+            new Data { Pattern = "1970-01-01THH:mm:ss", Message = TextErrorMessages.UnquotedLiteral, Parameters = { 'T' } }
         };
 
         internal static Data[] ParseFailureData = {
-            new Data { Text = "17 6", Pattern = "HH h", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
-            new Data { Text = "17 AM", Pattern = "HH tt", Message = Messages.Parse_InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
-            new Data { Text = "5 foo", Pattern = "h t", Message = Messages.Parse_MissingAmPmDesignator},
-            new Data { Text = "04.", Pattern = "ss.FF", Message = Messages.Parse_MismatchedNumber, Parameters = { "FF" } },
-            new Data { Text = "04.", Pattern = "ss.ff", Message = Messages.Parse_MismatchedNumber, Parameters = { "ff" } },
-            new Data { Text = "05 Foo", Pattern = "HH tt", Message = Messages.Parse_MissingAmPmDesignator }
+            new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
+            new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
+            new Data { Text = "5 foo", Pattern = "h t", Message = TextErrorMessages.MissingAmPmDesignator},
+            new Data { Text = "04.", Pattern = "ss.FF", Message = TextErrorMessages.MismatchedNumber, Parameters = { "FF" } },
+            new Data { Text = "04.", Pattern = "ss.ff", Message = TextErrorMessages.MismatchedNumber, Parameters = { "ff" } },
+            new Data { Text = "05 Foo", Pattern = "HH tt", Message = TextErrorMessages.MissingAmPmDesignator }
         };
 
         internal static Data[] ParseOnlyData = {

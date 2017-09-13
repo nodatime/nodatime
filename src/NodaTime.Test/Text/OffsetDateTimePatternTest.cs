@@ -22,39 +22,39 @@ namespace NodaTime.Test.Text
         private static readonly Offset AthensOffset = Offset.FromHours(3);
 
         internal static readonly Data[] InvalidPatternData = {
-            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
-            new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
+            new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
+            new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
-            new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
+            new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = TextErrorMessages.EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
-            new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
-            new Data { Pattern = "g", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'g', typeof(OffsetDateTime) } },
+            new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = TextErrorMessages.CalendarAndEra },
+            new Data { Pattern = "g", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { 'g', typeof(OffsetDateTime) } },
             // Invalid patterns involving embedded values
-            new Data { Pattern = "ld<d> yyyy", Message = Messages.Parse_DateFieldAndEmbeddedDate },
-            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> dd", Message = Messages.Parse_DateFieldAndEmbeddedDate },
-            new Data { Pattern = "ld<d> ld<f>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
-            new Data { Pattern = "lt<T> HH", Message = Messages.Parse_TimeFieldAndEmbeddedTime },
-            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> HH", Message = Messages.Parse_TimeFieldAndEmbeddedTime },
-            new Data { Pattern = "lt<T> lt<t>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
-            new Data { Pattern = "ld<d> l<F>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
-            new Data { Pattern = "l<F> ld<d>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
-            new Data { Pattern = "lt<T> l<F>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
-            new Data { Pattern = "l<F> lt<T>", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'l' } },
-            new Data { Pattern = @"l<\", Message = Messages.Parse_EscapeAtEndOfString },
+            new Data { Pattern = "ld<d> yyyy", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
+            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> dd", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
+            new Data { Pattern = "ld<d> ld<f>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "lt<T> HH", Message = TextErrorMessages.TimeFieldAndEmbeddedTime },
+            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> HH", Message = TextErrorMessages.TimeFieldAndEmbeddedTime },
+            new Data { Pattern = "lt<T> lt<t>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "ld<d> l<F>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "l<F> ld<d>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "lt<T> l<F>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = "l<F> lt<T>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
+            new Data { Pattern = @"l<\", Message = TextErrorMessages.EscapeAtEndOfString },
         };
 
         internal static Data[] ParseFailureData = {
             // Failures copied from LocalDateTimePatternTest
-            new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = Messages.Parse_MismatchedNumber, Parameters = { "dd" }},
-            new Data { Pattern = "(c)", Text = "(xxx)", Message = Messages.Parse_NoMatchingCalendarSystem },
+            new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "dd" }},
+            new Data { Pattern = "(c)", Text = "(xxx)", Message = TextErrorMessages.NoMatchingCalendarSystem },
             // 24 as an hour is only valid when the time is midnight
-            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:05", Message = Messages.Parse_InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:01:00", Message = Messages.Parse_InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = Messages.Parse_InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:00", Template = new LocalDateTime(1970, 1, 1, 0, 0, 5).WithOffset(Offset.Zero), Message = Messages.Parse_InvalidHour24},
-            new Data { Pattern = "yyyy-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0).WithOffset(Offset.Zero), Message = Messages.Parse_InvalidHour24},
+            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:05", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:01:00", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:00", Template = new LocalDateTime(1970, 1, 1, 0, 0, 5).WithOffset(Offset.Zero), Message = TextErrorMessages.InvalidHour24},
+            new Data { Pattern = "yyyy-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0).WithOffset(Offset.Zero), Message = TextErrorMessages.InvalidHour24},
 
-            new Data { Pattern = "yyyy-MM-dd HH:mm:ss o<+HH>", Text = "2011-10-19 16:02 +15:00", Message = Messages.Parse_TimeSeparatorMismatch},
+            new Data { Pattern = "yyyy-MM-dd HH:mm:ss o<+HH>", Text = "2011-10-19 16:02 +15:00", Message = TextErrorMessages.TimeSeparatorMismatch},
         };
 
         internal static Data[] ParseOnlyData = {

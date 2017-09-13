@@ -67,7 +67,7 @@ namespace NodaTime.Text
             // Nullity check is performed in LocalDateTimePattern.
             if (patternText.Length == 0)
             {
-                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
+                throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);
             }
 
             if (patternText.Length == 1)
@@ -92,7 +92,7 @@ namespace NodaTime.Text
                 patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
                 if (patternText == null)
                 {
-                    throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternCharacter, typeof(LocalDateTime));
+                    throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternCharacter, typeof(LocalDateTime));
                 }
             }
 

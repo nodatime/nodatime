@@ -92,11 +92,11 @@ namespace NodaTime.Text
             builder.Append(suffix);
         }
 
-        private static ParseResult<Period> InvalidUnit(ValueCursor cursor, char unitCharacter) => ParseResult<Period>.ForInvalidValue(cursor, Messages.Parse_InvalidUnitSpecifier, unitCharacter);
+        private static ParseResult<Period> InvalidUnit(ValueCursor cursor, char unitCharacter) => ParseResult<Period>.ForInvalidValue(cursor, TextErrorMessages.InvalidUnitSpecifier, unitCharacter);
 
-        private static ParseResult<Period> RepeatedUnit(ValueCursor cursor, char unitCharacter) => ParseResult<Period>.ForInvalidValue(cursor, Messages.Parse_RepeatedUnitSpecifier, unitCharacter);
+        private static ParseResult<Period> RepeatedUnit(ValueCursor cursor, char unitCharacter) => ParseResult<Period>.ForInvalidValue(cursor, TextErrorMessages.RepeatedUnitSpecifier, unitCharacter);
 
-        private static ParseResult<Period> MisplacedUnit(ValueCursor cursor, char unitCharacter) => ParseResult<Period>.ForInvalidValue(cursor, Messages.Parse_MisplacedUnitSpecifier, unitCharacter);
+        private static ParseResult<Period> MisplacedUnit(ValueCursor cursor, char unitCharacter) => ParseResult<Period>.ForInvalidValue(cursor, TextErrorMessages.MisplacedUnitSpecifier, unitCharacter);
 
         private sealed class RoundtripPatternImpl : IPattern<Period>
         {            
@@ -334,7 +334,7 @@ namespace NodaTime.Text
                 }
                 if (unitsSoFar == 0)
                 {
-                    return ParseResult<Period>.ForInvalidValue(valueCursor, Messages.Parse_EmptyPeriod);
+                    return ParseResult<Period>.ForInvalidValue(valueCursor, TextErrorMessages.EmptyPeriod);
                 }
                 return ParseResult<Period>.ForValue(builder.Build());
             }
