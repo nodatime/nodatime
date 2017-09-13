@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using NodaTime.Globalization;
-using NodaTime.Properties;
 using NodaTime.Utility;
 using JetBrains.Annotations;
 

@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using NodaTime.Properties;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
 using NUnit.Framework;

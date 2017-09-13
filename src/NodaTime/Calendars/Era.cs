@@ -5,7 +5,6 @@
 using System;
 using NodaTime.Annotations;
 using JetBrains.Annotations;
-using NodaTime.Properties;
 
 namespace NodaTime.Calendars
 {

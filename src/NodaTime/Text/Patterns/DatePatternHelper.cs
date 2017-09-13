@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Text;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
-using NodaTime.Properties;
 #if NET45
 using System.Diagnostics.CodeAnalysis;
 #endif

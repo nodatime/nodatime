@@ -6,7 +6,6 @@ using static NodaTime.NodaConstants;
 
 using System.Text;
 using NodaTime.Annotations;
-using NodaTime.Properties;
 using NodaTime.Utility;
 using JetBrains.Annotations;
 

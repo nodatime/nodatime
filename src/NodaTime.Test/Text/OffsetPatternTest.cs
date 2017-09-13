@@ -4,7 +4,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
 using System.Globalization;

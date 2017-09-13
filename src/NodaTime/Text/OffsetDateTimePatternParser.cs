@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Globalization;
-using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using System.Collections.Generic;
 

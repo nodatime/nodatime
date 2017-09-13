@@ -4,7 +4,6 @@
 
 using JetBrains.Annotations;
 using NodaTime.Globalization;
-using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 using System.Text;
