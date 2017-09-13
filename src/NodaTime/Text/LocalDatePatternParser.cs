@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
-using NodaTime.Properties;
 using NodaTime.Text.Patterns;
 
 namespace NodaTime.Text

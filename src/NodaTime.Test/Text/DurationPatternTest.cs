@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
 using System.Collections.Generic;

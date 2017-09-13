@@ -6,7 +6,6 @@ using System;
 using System.Globalization;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
-using NodaTime.Properties;
 using JetBrains.Annotations;
 using NodaTime.Utility;
 

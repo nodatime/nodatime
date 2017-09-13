@@ -5,7 +5,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using NodaTime.Properties;
 using NodaTime.Text;
 using NUnit.Framework;
 using NodaTime.Test.Calendars;

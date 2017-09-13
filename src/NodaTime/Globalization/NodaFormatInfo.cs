@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using JetBrains.Annotations;
 using NodaTime.Calendars;
-using NodaTime.Properties;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
