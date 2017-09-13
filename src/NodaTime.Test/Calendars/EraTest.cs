@@ -26,11 +26,6 @@ namespace NodaTime.Test.Calendars
         {
             var valueByName = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo.InvariantCulture);
             Assert.NotNull(valueByName, "Missing resource for " + era.ResourceIdentifier);
-            // Check that we *could* get the property by name as well... not that we need to.
-            var valueByProperty = (string) typeof(PatternResources).GetTypeInfo()
-                .GetProperty(era.ResourceIdentifier, BindingFlags.NonPublic | BindingFlags.Static)
-                .GetValue(null);
-            Assert.AreEqual(valueByName, valueByProperty);
         }
     }
 }

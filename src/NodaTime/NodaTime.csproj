@@ -71,21 +71,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
-      <Compile Update="Properties\PatternResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PatternResources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Properties\Messages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-      <EmbeddedResource Update="Properties\PatternResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>PatternResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

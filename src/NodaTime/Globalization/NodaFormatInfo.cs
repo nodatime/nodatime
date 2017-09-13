@@ -359,27 +359,27 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the <see cref="Offset" /> "l" pattern.
         /// </summary>
-        public string OffsetPatternLong => PatternResources.ResourceManager.GetString(nameof(PatternResources.OffsetPatternLong), CultureInfo);
+        public string OffsetPatternLong => PatternResources.ResourceManager.GetString("OffsetPatternLong", CultureInfo);
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "m" pattern.
         /// </summary>
-        public string OffsetPatternMedium => PatternResources.ResourceManager.GetString(nameof(PatternResources.OffsetPatternMedium), CultureInfo);
+        public string OffsetPatternMedium => PatternResources.ResourceManager.GetString("OffsetPatternMedium", CultureInfo);
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "s" pattern.
         /// </summary>
-        public string OffsetPatternShort => PatternResources.ResourceManager.GetString(nameof(PatternResources.OffsetPatternShort), CultureInfo);
+        public string OffsetPatternShort => PatternResources.ResourceManager.GetString("OffsetPatternShort", CultureInfo);
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "L" pattern.
         /// </summary>
-        public string OffsetPatternLongNoPunctuation => PatternResources.ResourceManager.GetString(nameof(PatternResources.OffsetPatternLongNoPunctuation), CultureInfo);
+        public string OffsetPatternLongNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternLongNoPunctuation", CultureInfo);
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "M" pattern.
         /// </summary>
-        public string OffsetPatternMediumNoPunctuation => PatternResources.ResourceManager.GetString(nameof(PatternResources.OffsetPatternMediumNoPunctuation), CultureInfo);
+        public string OffsetPatternMediumNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternMediumNoPunctuation", CultureInfo);
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "S" pattern.
