@@ -34,46 +34,46 @@ namespace NodaTime.Test.Text
         /// Test data for invalid patterns
         /// </summary>
         internal static readonly Data[] InvalidPatternData = {
-            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
-            new Data { Pattern = "HH:MM", Message = Messages.Parse_MultipleCapitalDurationFields },
-            new Data { Pattern = "HH D", Message = Messages.Parse_MultipleCapitalDurationFields },
-            new Data { Pattern = "MM mm", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'm' } },
-            new Data { Pattern = "G", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'G', typeof(Duration) } },
+            new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
+            new Data { Pattern = "HH:MM", Message = TextErrorMessages.MultipleCapitalDurationFields },
+            new Data { Pattern = "HH D", Message = TextErrorMessages.MultipleCapitalDurationFields },
+            new Data { Pattern = "MM mm", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'm' } },
+            new Data { Pattern = "G", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { 'G', typeof(Duration) } },
         };
 
         /// <summary>
         /// Tests for parsing failures (of values)
         /// </summary>
         internal static readonly Data[] ParseFailureData = {
-            new Data(Duration.Zero) { Pattern = "H:mm", Text = "1:60", Message = Messages.Parse_FieldValueOutOfRange, Parameters = { 60, 'm', typeof(Duration) }},
+            new Data(Duration.Zero) { Pattern = "H:mm", Text = "1:60", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { 60, 'm', typeof(Duration) }},
             // Total field values out of range
             new Data(Duration.MinValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "16777217:00:00:00.000000000",
-                Message = Messages.Parse_FieldValueOutOfRange, Parameters = { "16777217", 'D', typeof(Duration) } },
+                Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { "16777217", 'D', typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-H:mm:ss.fffffffff", Text = "402653185:00:00.000000000",
-                Message = Messages.Parse_FieldValueOutOfRange, Parameters = { "402653185", 'H', typeof(Duration) } },
+                Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { "402653185", 'H', typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-M:ss.fffffffff", Text = "24159191041:00.000000000",
-                Message = Messages.Parse_FieldValueOutOfRange, Parameters = { "24159191041", 'M', typeof(Duration) } },
+                Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { "24159191041", 'M', typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-S.fffffffff", Text = "1449551462401.000000000",
-                Message = Messages.Parse_FieldValueOutOfRange, Parameters = { "1449551462401", 'S', typeof(Duration) } },
+                Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { "1449551462401", 'S', typeof(Duration) } },
 
             // Each field in range, but overall result out of range
             new Data(Duration.MinValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "-16777216:00:00:00.000000001",
-                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+                Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Duration) } },
             new Data(Duration.MaxValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "16777216:00:00:00.000000000",
-                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+                Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-H:mm:ss.fffffffff", Text = "-402653184:00:00.000000001",
-                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+                Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-H:mm:ss.fffffffff", Text = "402653184:00:00.000000000",
-                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+                Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-M:ss.fffffffff", Text = "-24159191040:00.000000001",
-                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+                Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-M:ss.fffffffff", Text = "24159191040:00.000000000",
-                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+                Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-S.fffffffff", Text = "-1449551462400.000000001",
-                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+                Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Duration) } },
             new Data(Duration.MinValue) { Pattern = "-S.fffffffff", Text = "1449551462400.000000000",
-                Message = Messages.Parse_OverallValueOutOfRange, Parameters = { typeof(Duration) } },
-            new Data(Duration.MinValue) { Pattern = "'x'S", Text = "x", Message = Messages.Parse_MismatchedNumber, Parameters = { "S" } },
+                Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Duration) } },
+            new Data(Duration.MinValue) { Pattern = "'x'S", Text = "x", Message = TextErrorMessages.MismatchedNumber, Parameters = { "S" } },
         };
 
         /// <summary>

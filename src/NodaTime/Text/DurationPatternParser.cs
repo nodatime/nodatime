@@ -47,7 +47,7 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             if (patternText.Length == 0)
             {
-                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
+                throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);
             }
 
             // The sole standard pattern...
@@ -58,7 +58,7 @@ namespace NodaTime.Text
                     case 'o':
                         return DurationPattern.Patterns.RoundtripPatternImpl;
                     default:
-                        throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText[0], typeof(Duration));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText[0], typeof(Duration));
                 }
             }
 
@@ -84,7 +84,7 @@ namespace NodaTime.Text
                 // AddField would throw an inappropriate exception here, so handle it specially.
                 if ((builder.UsedFields & PatternFields.TotalDuration) != 0)
                 {
-                    throw new InvalidPatternException(Messages.Parse_MultipleCapitalDurationFields);
+                    throw new InvalidPatternException(TextErrorMessages.MultipleCapitalDurationFields);
                 }
                 builder.AddField(field, pattern.Current);
                 builder.AddField(PatternFields.TotalDuration, pattern.Current);
@@ -101,7 +101,7 @@ namespace NodaTime.Text
                 // AddField would throw an inappropriate exception here, so handle it specially.
                 if ((builder.UsedFields & PatternFields.TotalDuration) != 0)
                 {
-                    throw new InvalidPatternException(Messages.Parse_MultipleCapitalDurationFields);
+                    throw new InvalidPatternException(TextErrorMessages.MultipleCapitalDurationFields);
                 }
                 builder.AddField(PatternFields.DayOfMonth, pattern.Current);
                 builder.AddField(PatternFields.TotalDuration, pattern.Current);
@@ -208,7 +208,7 @@ namespace NodaTime.Text
                 }
                 if (currentNanos < Duration.MinNanoseconds || currentNanos > Duration.MaxNanoseconds)
                 {
-                    return ParseResult<Duration>.ForInvalidValuePostParse(text, Messages.Parse_OverallValueOutOfRange,
+                    return ParseResult<Duration>.ForInvalidValuePostParse(text, TextErrorMessages.OverallValueOutOfRange,
                         typeof(Duration));
                 }
                 return ParseResult<Duration>.ForValue(Duration.FromNanoseconds(currentNanos));

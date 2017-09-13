@@ -25,7 +25,7 @@ namespace NodaTime.Text
             { '\"', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleQuote },
             { '\\', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandleBackslash },
             { ':', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.TimeSeparator, ParseResult<Offset>.TimeSeparatorMismatch) },
-            { 'h', (pattern, builder) => { throw new InvalidPatternException(Messages.Parse_Hour12PatternNotSupported, typeof(Offset)); } },
+            { 'h', (pattern, builder) => { throw new InvalidPatternException(TextErrorMessages.Hour12PatternNotSupported, typeof(Offset)); } },
             { 'H', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
                        (2, PatternFields.Hours24, 0, 23, GetPositiveHours, (bucket, value) => bucket.Hours = value) },
             { 'm', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePaddedField
@@ -34,7 +34,7 @@ namespace NodaTime.Text
                        (2, PatternFields.Seconds, 0, 59, GetPositiveSeconds, (bucket, value) => bucket.Seconds = value) },
             { '+', HandlePlus },
             { '-', HandleMinus },
-            { 'Z', (ignored1, ignored2) => { throw new InvalidPatternException(Messages.Parse_ZPrefixNotAtStartOfPattern); } }
+            { 'Z', (ignored1, ignored2) => { throw new InvalidPatternException(TextErrorMessages.ZPrefixNotAtStartOfPattern); } }
         };
 
         // These are used to compute the individual (always-positive) components of an offset.
@@ -55,7 +55,7 @@ namespace NodaTime.Text
             // Nullity check is performed in OffsetPattern.
             if (patternText.Length == 0)
             {
-                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
+                throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);
             }
 
             if (patternText.Length == 1)
@@ -99,13 +99,13 @@ namespace NodaTime.Text
                         patternText = formatInfo.OffsetPatternShortNoPunctuation;
                         break;
                     default:
-                        throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText, typeof(Offset));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(Offset));
                 }
             }
             // This is the only way we'd normally end up in custom parsing land for Z on its own.
             if (patternText == "%Z")
             {
-                throw new InvalidPatternException(Messages.Parse_EmptyZPrefixedOffsetPattern);
+                throw new InvalidPatternException(TextErrorMessages.EmptyZPrefixedOffsetPattern);
             }
 
             // Handle Z-prefix by stripping it, parsing the rest as a normal pattern, then building a special pattern

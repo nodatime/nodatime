@@ -31,7 +31,7 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             if (patternText.Length == 0)
             {
-                throw new InvalidPatternException(Messages.Parse_FormatStringEmpty);
+                throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);
             }
             if (patternText.Length == 1)
             {
@@ -41,7 +41,7 @@ namespace NodaTime.Text
                         patternText = GeneralPatternText;
                         break;
                     default:
-                        throw new InvalidPatternException(Messages.Parse_UnknownStandardFormat, patternText, typeof(Instant));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(Instant));
                 }
             }
 

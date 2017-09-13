@@ -34,31 +34,31 @@ namespace NodaTime.Test.Text
         private static readonly LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime(2009, 06, 15, 13, 45);
 
         internal static readonly Data[] InvalidPatternData = {
-            new Data { Pattern = "", Message = Messages.Parse_FormatStringEmpty },
-            new Data { Pattern = "a", Message = Messages.Parse_UnknownStandardFormat, Parameters = { 'a', typeof(LocalDateTime) } },
-            new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = Messages.Parse_RepeatedFieldInPattern, Parameters = { 'M' } },
+            new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
+            new Data { Pattern = "a", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { 'a', typeof(LocalDateTime) } },
+            new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
-            new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = Messages.Parse_EraWithoutYearOfEra },
+            new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = TextErrorMessages.EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
-            new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = Messages.Parse_CalendarAndEra },
+            new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = TextErrorMessages.CalendarAndEra },
             // Embedded pattern start without ld or lt
-            new Data { Pattern = "yyyy MM dd <", Message = Messages.Parse_UnquotedLiteral, Parameters = { '<' } },
+            new Data { Pattern = "yyyy MM dd <", Message = TextErrorMessages.UnquotedLiteral, Parameters = { '<' } },
             // Attempt to use a full embedded date/time pattern (not valid for LocalDateTime)
-            new Data { Pattern = "l<yyyy MM dd HH:mm>", Message = Messages.Parse_InvalidEmbeddedPatternType },
+            new Data { Pattern = "l<yyyy MM dd HH:mm>", Message = TextErrorMessages.InvalidEmbeddedPatternType },
             // Invalid nested pattern (local date pattern doesn't know about embedded patterns)
-            new Data { Pattern = "ld<<D>>", Message = Messages.Parse_UnquotedLiteral, Parameters = { '<' } },
+            new Data { Pattern = "ld<<D>>", Message = TextErrorMessages.UnquotedLiteral, Parameters = { '<' } },
         };
 
         internal static Data[] ParseFailureData = {
-            new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = Messages.Parse_MismatchedNumber, Parameters = { "dd" }},
-            new Data { Pattern = "(c)", Text = "(xxx)", Message = Messages.Parse_NoMatchingCalendarSystem },
+            new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "dd" }},
+            new Data { Pattern = "(c)", Text = "(xxx)", Message = TextErrorMessages.NoMatchingCalendarSystem },
             // 24 as an hour is only valid when the time is midnight
-            new Data { Pattern = "yyyy-MM-dd", Text = "2017-02-30", Message = Messages.Parse_DayOfMonthOutOfRange, Parameters = { 30, 2, 2017 } },
-            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:05", Message = Messages.Parse_InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:01:00", Message = Messages.Parse_InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = Messages.Parse_InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:00", Template = new LocalDateTime(1970, 1, 1, 0, 0, 5), Message = Messages.Parse_InvalidHour24},
-            new Data { Pattern = "yyyy-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0), Message = Messages.Parse_InvalidHour24},
+            new Data { Pattern = "yyyy-MM-dd", Text = "2017-02-30", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 30, 2, 2017 } },
+            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:05", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:01:00", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:00", Template = new LocalDateTime(1970, 1, 1, 0, 0, 5), Message = TextErrorMessages.InvalidHour24},
+            new Data { Pattern = "yyyy-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0), Message = TextErrorMessages.InvalidHour24},
         };
 
         internal static Data[] ParseOnlyData = {

@@ -48,14 +48,14 @@ namespace NodaTime.Text.Patterns
                 {
                     if (!MoveNext())
                     {
-                        throw new InvalidPatternException(Messages.Parse_EscapeAtEndOfString);
+                        throw new InvalidPatternException(TextErrorMessages.EscapeAtEndOfString);
                     }
                 }
                 builder.Append(Current);
             }
             if (!endQuoteFound)
             {
-                throw new InvalidPatternException(Messages.Parse_MissingEndQuote, closeQuote);
+                throw new InvalidPatternException(TextErrorMessages.MissingEndQuote, closeQuote);
             }
             MovePrevious();
             return builder.ToString();
@@ -79,7 +79,7 @@ namespace NodaTime.Text.Patterns
             MovePrevious();
             if (repeatLength > maximumCount)
             {
-                throw new InvalidPatternException(Messages.Parse_RepeatCountExceeded, patternCharacter, maximumCount);
+                throw new InvalidPatternException(TextErrorMessages.RepeatCountExceeded, patternCharacter, maximumCount);
             }
             return repeatLength;
         }
@@ -105,7 +105,7 @@ namespace NodaTime.Text.Patterns
         {
             if (!MoveNext() || Current != EmbeddedPatternStart)
             {
-                throw new InvalidPatternException(string.Format(Messages.Parse_MissingEmbeddedPatternStart, EmbeddedPatternStart));
+                throw new InvalidPatternException(string.Format(TextErrorMessages.MissingEmbeddedPatternStart, EmbeddedPatternStart));
             }
             int startIndex = Index + 1;
             int depth = 1; // For nesting
@@ -128,7 +128,7 @@ namespace NodaTime.Text.Patterns
                 {
                     if (!MoveNext())
                     {
-                        throw new InvalidPatternException(Messages.Parse_EscapeAtEndOfString);
+                        throw new InvalidPatternException(TextErrorMessages.EscapeAtEndOfString);
                     }
                 }
                 else if (current == '\'' || current == '\"')
@@ -139,7 +139,7 @@ namespace NodaTime.Text.Patterns
                 }
             }
             // We've reached the end of the enclosing pattern without reaching the end of the embedded pattern. Oops.
-            throw new InvalidPatternException(string.Format(Messages.Parse_MissingEmbeddedPatternEnd, EmbeddedPatternEnd));
+            throw new InvalidPatternException(string.Format(TextErrorMessages.MissingEmbeddedPatternEnd, EmbeddedPatternEnd));
         }
     }
 }

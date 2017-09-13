@@ -50,7 +50,7 @@ namespace NodaTime.Text.Patterns
                             assumeFitsInCount: true);
                         break;
                     default:
-                        throw new InvalidPatternException(Messages.Parse_InvalidRepeatCount, pattern.Current, count);
+                        throw new InvalidPatternException(TextErrorMessages.InvalidRepeatCount, pattern.Current, count);
                 }
             };
         }
