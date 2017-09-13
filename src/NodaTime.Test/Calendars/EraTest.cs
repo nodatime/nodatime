@@ -3,7 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Calendars;
-using NodaTime.Properties;
+using NodaTime.Globalization;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Globalization;
