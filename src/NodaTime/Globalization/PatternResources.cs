@@ -5,7 +5,7 @@
 using System.Reflection;
 using System.Resources;
 
-namespace NodaTime.Properties
+namespace NodaTime.Globalization
 {
     /// <summary>
     /// Takes the place of the designer-generated code for PatternResources.resx
@@ -13,6 +13,6 @@ namespace NodaTime.Properties
     static class PatternResources
     {
         internal static ResourceManager ResourceManager { get; }
-            = new ResourceManager("NodaTime.Properties.PatternResources", typeof(PatternResources).GetTypeInfo().Assembly);
+            = new ResourceManager(typeof(PatternResources).FullName, typeof(PatternResources).GetTypeInfo().Assembly);
     }
 }

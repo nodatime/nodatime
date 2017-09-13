@@ -57,12 +57,4 @@
     <PackageReference Include="System.Runtime.Serialization.Xml" Version="4.1.1" />
   </ItemGroup>
 
-  <!--
-    - ResX file associations.
-    - The generator creates code that doesn't work with .NET Core out of the box;
-    - after changing the resx file, change "typeof(...).Assembly"
-    - to "typeof(...).GetTypeInfo().Assembly" and add a using directive for System.Reflection.
-    - Maybe we ought to just not generate the files...
-    -->
-
 </Project>

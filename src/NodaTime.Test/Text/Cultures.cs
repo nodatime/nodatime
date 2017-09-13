@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using NodaTime.Properties;
+using NodaTime.Globalization;
 
 namespace NodaTime.Test.Text
 {
