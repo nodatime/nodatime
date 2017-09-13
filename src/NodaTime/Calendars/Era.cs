@@ -23,37 +23,37 @@ namespace NodaTime.Calendars
         /// The "Common" era (CE), also known as Anno Domini (AD). This is used in the ISO, Gregorian and Julian calendars.
         /// </summary>
         /// <value>The "Common" era (CE), also known as Anno Domini (AD).</value>
-        [NotNull] public static Era Common { get; } = new Era("CE", nameof(PatternResources.Eras_Common));
+        [NotNull] public static Era Common { get; } = new Era("CE", "Eras_Common");
 
         /// <summary>
         /// The "before common" era (BCE), also known as Before Christ (BC). This is used in the ISO, Gregorian and Julian calendars.
         /// </summary>
         /// <value>The "before common" era (BCE), also known as Before Christ (BC).</value>
-        [NotNull] public static Era BeforeCommon { get; } = new Era("BCE", nameof(PatternResources.Eras_BeforeCommon));
+        [NotNull] public static Era BeforeCommon { get; } = new Era("BCE", "Eras_BeforeCommon");
 
         /// <summary>
         /// The "Anno Martyrum" or "Era of the Martyrs". This is the sole era used in the Coptic calendar.
         /// </summary>
         /// <value>The "Anno Martyrum" or "Era of the Martyrs".</value>
-        [NotNull] public static Era AnnoMartyrum { get; } = new Era("AM", nameof(PatternResources.Eras_AnnoMartyrum));
+        [NotNull] public static Era AnnoMartyrum { get; } = new Era("AM", "Eras_AnnoMartyrum");
 
         /// <summary>
         /// The "Anno Hegira" era. This is the sole era used in the Hijri (Islamic) calendar.
         /// </summary>
         /// <value>The "Anno Hegira" era.</value>
-        [NotNull] public static Era AnnoHegirae { get; } = new Era("EH", nameof(PatternResources.Eras_AnnoHegirae));
+        [NotNull] public static Era AnnoHegirae { get; } = new Era("EH", "Eras_AnnoHegirae");
 
         /// <summary>
         /// The "Anno Mundi" era. This is the sole era used in the Hebrew calendar.
         /// </summary>
         /// <value>The "Anno Mundi" era.</value>
-        [NotNull] public static Era AnnoMundi { get; } = new Era("AM", nameof(PatternResources.Eras_AnnoMundi));
+        [NotNull] public static Era AnnoMundi { get; } = new Era("AM", "Eras_AnnoMundi");
 
         /// <summary>
         /// The "Anno Persico" era. This is the sole era used in the Persian calendar.
         /// </summary>
         /// <value>The "Anno Persico" era.</value>
-        [NotNull] public static Era AnnoPersico { get; } = new Era("AP", nameof(PatternResources.Eras_AnnoPersico));
+        [NotNull] public static Era AnnoPersico { get; } = new Era("AP", "Eras_AnnoPersico");
 
         internal string ResourceIdentifier { get; }
 
