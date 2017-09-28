@@ -133,8 +133,11 @@ namespace NodaTime
         // NanosecondsPerDay - 1, for example.)
         private readonly long nanoOfDay;
 
-        // TODO(optimization): Make this internal and call it directly from Instant.FromUnixTimeSeconds etc? No point in
-        // doing two different range checks...
+        // Implementation note: I've tried making this internal and calling it directly from Instant.FromUnixTimeSeconds etc?
+        // That reduces the number of range checks, but doesn't seem to affect the performance in a significant way.
+        // Leaving it as it is leaves a cleaner API - this constructor doesn't feel like something that *should*
+        // be exposed to other classes.
+
         /// <summary>
         /// Constructs an instance from a given number of units. This was previously a method (FromUnits) but making it a
         /// constructor avoids calling the other constructor which validates its "days" parameter.
