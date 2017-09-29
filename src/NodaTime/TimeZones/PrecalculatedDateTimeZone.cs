@@ -39,7 +39,6 @@ namespace NodaTime.TimeZones
                    ComputeOffset(intervals, tailZone, Offset.Min),
                    ComputeOffset(intervals, tailZone, Offset.Max))
         {
-            this.tailZone = tailZone;
             this.periods = intervals;
             this.tailZone = tailZone;
             this.tailZoneStart = intervals[intervals.Length - 1].RawEnd; // We want this to be AfterMaxValue for tail-less zones.
