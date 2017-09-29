@@ -80,7 +80,7 @@ namespace NodaTime.Utility
         {
             unchecked
             {
-                return new HashCodeHelper(Value * HashCodeMultiplier + value?.GetHashCode() ?? 0);
+                return new HashCodeHelper(Value * HashCodeMultiplier + (value?.GetHashCode() ?? 0));
             }
         }
     }
