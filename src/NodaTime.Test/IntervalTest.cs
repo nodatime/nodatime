@@ -271,5 +271,25 @@ namespace NodaTime.Test
             // This would have been true under Noda Time 1.x
             Assert.IsFalse(interval.Contains(instant));
         }
+
+        [Test]
+        [TestCase("2000-01-01T00:00:00Z", "2020-01-01T00:00:00Z", "2020-01-01T00:00:00Z", "2040-01-01T00:00:00Z", ExpectedResult = false, Description = "First interval before second interval")]
+        [TestCase("2020-01-01T00:00:00Z", "2040-01-01T00:00:00Z", "2000-01-01T00:00:00Z", "2020-01-01T00:00:00Z", ExpectedResult = false, Description = "First interval after second interval")]
+        [TestCase("2000-01-01T00:00:00Z", "2020-01-01T00:00:00Z", "2001-01-01T00:00:00Z", "2019-01-01T00:00:00Z", ExpectedResult = true, Description = "First interval inside second interval")]
+        [TestCase("2001-01-01T00:00:00Z", "2019-01-01T00:00:00Z", "2000-01-01T00:00:00Z", "2020-01-01T00:00:00Z", ExpectedResult = true, Description = "First interval outside second interval")]
+        [TestCase("2000-01-01T00:00:00Z", "2010-01-01T00:00:00Z", "2005-01-01T00:00:00Z", "2015-01-01T00:00:00Z", ExpectedResult = true, Description = "First interval starts before second interval starts")]
+        [TestCase("2005-01-01T00:00:00Z", "2015-01-01T00:00:00Z", "2000-01-01T00:00:00Z", "2010-01-01T00:00:00Z", ExpectedResult = true, Description = "First interval starts after second interval starts")]
+        public bool Intersects(string start1Text, string end1Text, string start2Text, string end2Text)
+        {
+            var start1 = InstantPattern.ExtendedIso.Parse(start1Text).Value;
+            var end1 = InstantPattern.ExtendedIso.Parse(end1Text).Value;
+            var start2 = InstantPattern.ExtendedIso.Parse(start2Text).Value;
+            var end2 = InstantPattern.ExtendedIso.Parse(end2Text).Value;
+
+            var interval1 = new Interval(start1, end1);
+            var interval2 = new Interval(start2, end2);
+
+            return interval1.Intersects(interval2);
+        }
     }
 }

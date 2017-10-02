@@ -155,6 +155,14 @@ namespace NodaTime
         [Pure]
         public bool Contains(Instant instant) => instant >= start && instant < end;
 
+        /// <summary>
+        /// Returns whether or not this interval intersects with the given interval.
+        /// </summary>
+        /// <param name="interval">Interval to test.</param>
+        /// <returns>True if this interval intersects with the given interval; false otherwise.</returns>
+        [Pure]
+        public bool Intersects(Interval interval) => interval.start < end && interval.end > start;
+
         #region Implementation of IEquatable<Interval>
         /// <summary>
         /// Indicates whether the value of this interval is equal to the value of the specified interval.
