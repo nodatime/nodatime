@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net451;netcoreapp1.0</TargetFrameworks>
+    <TargetFramework>net451</TargetFramework>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
   </PropertyGroup>

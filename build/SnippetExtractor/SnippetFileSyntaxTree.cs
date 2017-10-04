@@ -21,7 +21,7 @@ namespace SnippetExtractor
         private readonly SemanticModel model;
         private readonly INamedTypeSymbol snippetType;
 
-        public SnippetFileSyntaxTree(Document document, SyntaxTree tree, SemanticModel model)
+        public SnippetFileSyntaxTree(SyntaxTree tree, SemanticModel model)
         {
             this.tree = tree;
             this.model = model;
@@ -61,7 +61,7 @@ namespace SnippetExtractor
         {
             var tree = await document.GetSyntaxTreeAsync().ConfigureAwait(false);
             var model = await document.GetSemanticModelAsync().ConfigureAwait(false);
-            return new SnippetFileSyntaxTree(document, tree, model);
+            return new SnippetFileSyntaxTree(tree, model);
         }
     }
 }
