@@ -326,7 +326,7 @@ namespace NodaTime
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Instant" /> representing the difference of the given values.</returns>
-        public static Instant operator -(Instant left, Duration right) => new Instant(left.duration - right);
+        public static Instant operator -(Instant left, Duration right) => FromUntrustedDuration(left.duration - right);
 
         /// <summary>
         ///   Subtracts one instant from another. Friendly alternative to <c>operator-()</c>.
