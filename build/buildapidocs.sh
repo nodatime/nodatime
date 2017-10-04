@@ -63,8 +63,7 @@ dotnet run -p DocfxAnnotationGenerator -- \
 # (We could probably just build NodaTime.Demo... but we need the
 # built file to reference.)
 dotnet build ../src/NodaTime-All.sln
-# TODO: Fix the snippet extractor and re-enable it
-# dotnet run -p SnippetExtractor -- ../src/NodaTime.Demo/NodaTime.Demo.csproj tmp/docfx/obj/unstable/overwrite
+dotnet run -p SnippetExtractor -- ../src/NodaTime-All.sln NodaTime.Demo tmp/docfx/obj/unstable/overwrite
 
 echo "Running main docfx build"
 "$DOCFX" build tmp/docfx/docfx.json

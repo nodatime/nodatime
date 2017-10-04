@@ -2,21 +2,29 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build" Version="15.1.1012" />
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.1.1012" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Build.Tasks" Version="2.3.0-beta2-61709-08" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.3.0-beta2-61709-08" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.0-beta2-61709-08" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.3.0-beta2-61709-08" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="2.3.0-beta2-61709-08" />
-    <PackageReference Include="Microsoft.DocAsCode.Metadata.ManagedReference" Version="2.17.2" />
-    <PackageReference Include="Microsoft.DocAsCode.Plugins" Version="2.17.2" />
-    <PackageReference Include="Microsoft.DocAsCode.Common" Version="2.17.2" />
-    <PackageReference Include="Microsoft.DocAsCode.YamlSerialization" Version="2.17.2" />
+    <!-- MsBuild dependencies -->
+    <PackageReference Include="Microsoft.Build" Version="15.5.180" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.5.180" />
+    
+    <!-- Roslyn dependencies -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.6.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.6.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="2.6.1" />
+    
+    <!-- docfx dependencies -->
+    <PackageReference Include="Microsoft.DocAsCode.Metadata.ManagedReference" Version="2.28.2" />
+    <PackageReference Include="Microsoft.DocAsCode.Plugins" Version="2.28.2" />
+    <PackageReference Include="Microsoft.DocAsCode.Common" Version="2.28.2" />
+    <PackageReference Include="Microsoft.DocAsCode.YamlSerialization" Version="2.28.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
