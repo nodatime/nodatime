@@ -62,7 +62,7 @@ dotnet run -p DocfxAnnotationGenerator/DocfxAnnotationGenerator.csproj -- \
 # built file to reference.)
 dotnet restore ../src/NodaTime-All.sln
 dotnet build ../src/NodaTime-All.sln
-dotnet run -p SnippetExtractor/SnippetExtractor.csproj -- ../src/NodaTime.Demo/NodaTime.Demo.csproj tmp/docfx/obj/unstable/overwrite
+dotnet run -p SnippetExtractor/SnippetExtractor.csproj -- ../src/NodaTime-All.sln NodaTime.Demo tmp/docfx/obj/unstable/overwrite
 
 echo "Running main docfx build"
 docfx build tmp/docfx/docfx.json

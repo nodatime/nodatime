@@ -30,10 +30,9 @@ namespace SnippetExtractor
 
         public SnippetRewriter(Project project)
         {
-            var compiledProjects = GetProjectMetadataReferences(project);
             options = ScriptOptions.Default
                 .AddReferences(project.MetadataReferences)
-                .AddReferences(compiledProjects);
+                .AddReferences(new[] { MetadataReference.CreateFromFile(project.OutputFilePath) });
         }
 
         public async Task<RewrittenSnippet> RewriteSnippetAsync(SourceSnippet snippet)
@@ -50,22 +49,6 @@ namespace SnippetExtractor
             var script = CSharpScript.Create(compilation.SyntaxTrees.Single().ToString(), options);
             var output = await RunScriptAsync(script);
             return new RewrittenSnippet(script.Code, output, snippet.Uid);
-        }
-
-        /// <summary>
-        /// Gets the metadata references for this project, which must already have been built in msbuild.
-        /// (We can't build entirely in Roslyn, as it doesn't expose embedded resources from projects yet. See
-        /// https://github.com/dotnet/roslyn/issues/7772)
-        /// </summary>
-        private static IList<MetadataReference> GetProjectMetadataReferences(Project project)
-        {
-            var outputDirectory = Path.GetDirectoryName(project.OutputFilePath);
-            var files = project.ProjectReferences
-                .Select(pr => project.Solution.GetProject(pr.ProjectId))
-                .Select(p => Path.Combine(outputDirectory, p.CompilationOptions.ModuleName))
-                .ToList();
-            files.Add(project.OutputFilePath);
-            return files.Select(f => MetadataReference.CreateFromFile(f)).ToList<MetadataReference>();
         }
 
         private static Compilation RewriteInvocations(Compilation compilation)
