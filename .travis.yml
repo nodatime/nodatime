@@ -11,6 +11,5 @@ script:
   - dotnet build src/NodaTime/*.csproj -f netstandard1.3
   - dotnet build src/NodaTime.Testing/*.csproj -f netstandard1.3
   - dotnet build src/NodaTime.Benchmarks/*.csproj -f netcoreapp1.1
-  - dotnet build src/NodaTime.Demo/*.csproj -f netcoreapp1.0
   - dotnet build src/NodaTime.Test/*.csproj -f netcoreapp1.0
   - dotnet run -p src/NodaTime.Test/*.csproj -f netcoreapp1.0 -- --where=cat!=Slow

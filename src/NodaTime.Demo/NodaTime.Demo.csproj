@@ -2,12 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net451;netcoreapp1.0</TargetFrameworks>
-    <AssemblyName>NodaTime.Demo</AssemblyName>
-    <PackageId>NodaTime.Demo</PackageId>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <PackageTargetFallback Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">$(PackageTargetFallback);dotnet</PackageTargetFallback>
-    <RuntimeFrameworkVersion Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">1.0.4</RuntimeFrameworkVersion>
+    <TargetFramework>net451</TargetFramework>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
   </PropertyGroup>
