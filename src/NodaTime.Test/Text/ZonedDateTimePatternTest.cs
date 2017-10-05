@@ -225,6 +225,9 @@ namespace NodaTime.Test.Text
 
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
+
+            // Issue981
+            new Data(1906, 8, 29, 20, 58, 32, 0, DateTimeZoneProviders.Tzdb["Etc/GMT-12"]) { Text = "1906-08-29T20:58:32 Etc/GMT-12 (+12)", Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'", ZoneProvider = DateTimeZoneProviders.Tzdb },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
