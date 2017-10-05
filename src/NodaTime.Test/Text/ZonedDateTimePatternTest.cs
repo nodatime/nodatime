@@ -7,6 +7,7 @@ using NodaTime.Text;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace NodaTime.Test.Text
@@ -229,6 +230,9 @@ namespace NodaTime.Test.Text
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
 
+            // Issue981
+            new Data(1906, 8, 29, 20, 58, 32, 0, DateTimeZoneProviders.Tzdb["Etc/GMT-12"]) { Text = "1906-08-29T20:58:32 Etc/GMT-12 (+12)", Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'", ZoneProvider = DateTimeZoneProviders.Tzdb },
+
             // Fields not otherwise covered (according to tests running on AppVeyor...)
             new Data(MsdnStandardExample) { Pattern = "d MMMM yyyy (g) h:mm:ss.FF tt", Text = "15 June 2009 (A.D.) 1:45:30.09 PM" },
         };
@@ -282,6 +286,33 @@ namespace NodaTime.Test.Text
             var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("HH:mm", null).WithCulture(Cultures.DotTimeSeparator);
             var text = pattern.Format(Instant.FromUtc(2000, 1, 1, 19, 30).InUtc());
             Assert.AreEqual("19.30", text);
+        }
+
+        // Test to hit each exit condition in the time zone ID parsing part of ZonedDateTimePatternParser
+        [Test]
+        public void FindLongestZoneId()
+        {
+            var source = new FakeDateTimeZoneSource.Builder
+            {
+                CreateZone("ABC"),
+                CreateZone("ABCA"),
+                CreateZone("ABCB"),
+                CreateZone("ABCBX"),
+                CreateZone("ABCD")
+            }.Build();
+
+            var provider = new DateTimeZoneCache(source);
+            var pattern = ZonedDateTimePattern.Create("z 'x'", CultureInfo.InvariantCulture, Resolvers.StrictResolver,
+                provider, NodaConstants.UnixEpoch.InUtc());
+
+            foreach (var id in provider.Ids)
+            {
+                var value = pattern.Parse($"{id} x").Value;
+                Assert.AreEqual(id, value.Zone.Id);
+            }
+
+            DateTimeZone CreateZone(string id) =>
+                new SingleTransitionDateTimeZone(NodaConstants.UnixEpoch - Duration.FromDays(1),Offset.FromHours(-1), Offset.FromHours(0), id);
         }
 
         [Test]
