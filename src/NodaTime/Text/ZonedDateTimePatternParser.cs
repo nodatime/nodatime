@@ -223,14 +223,39 @@ namespace NodaTime.Text
                     else
                     {
                         // We've found a match! But it may not be as long as it
-                        // could be. Keep looking until we find a value which isn't a match...
-                        while (guess + 1 < upperBound && value.CompareOrdinal(ids[guess + 1]) == 0)
+                        // could be. Keep track of a "longest match so far" (starting with the match we've found),
+                        // and keep looking through the IDs until we find an ID which doesn't start with that "longest
+                        // match so far", at which point we know we're done.
+                        //
+                        // We can't just look through all the IDs from "guess" to "lowerBound" and stop when we hit
+                        // a non-match against "value", because of situations like this:
+                        // value=Etc/GMT-12
+                        // guess=Etc/GMT-1
+                        // IDs includes { Etc/GMT-1, Etc/GMT-10, Etc/GMT-11, Etc/GMT-12, Etc/GMT-13 }
+                        // We can't stop when we hit Etc/GMT-10, because otherwise we won't find Etc/GMT-12.
+                        // We *can* stop when we get to Etc/GMT-13, because by then our longest match so far will
+                        // be Etc/GMT-12, and we know that anything beyond Etc/GMT-13 won't match that.
+                        // We can also stop when we hit upperBound, without any more comparisons.
+
+                        string longestSoFar = ids[guess];
+                        for (int i = guess + 1; i < upperBound; i++)
                         {
-                            guess++;
+                            string candidate = ids[i];
+                            if (candidate.Length < longestSoFar.Length)
+                            {
+                                break;
+                            }
+                            if (string.CompareOrdinal(longestSoFar, 0, candidate, 0, longestSoFar.Length) != 0)
+                            {
+                                break;
+                            }
+                            if (value.CompareOrdinal(candidate) == 0)
+                            {
+                                longestSoFar = candidate;
+                            }
                         }
-                        string id = ids[guess];
-                        value.Move(value.Index + id.Length);
-                        return zoneProvider[id];
+                        value.Move(value.Index + longestSoFar.Length);
+                        return zoneProvider[longestSoFar];
                     }
                 }
                 return null;

@@ -197,6 +197,9 @@ namespace NodaTime.Test.Text
             // Standard patterns with a time zone provider
             new Data(2013, 01, 13, 15, 44, 30, 0, TestZone1) { Pattern = "G", Text = "2013-01-13T15:44:30 ab (+02)", Culture = Cultures.FrFr },
             new Data(2013, 01, 13, 15, 44, 30, 90, TestZone1) { Pattern = "F", Text = "2013-01-13T15:44:30.09 ab (+02)", Culture = Cultures.FrFr },
+
+            // Issue981
+            new Data(1906, 8, 29, 20, 58, 32, 0, DateTimeZoneProviders.Tzdb["Etc/GMT-12"]) { Text = "1906-08-29T20:58:32 Etc/GMT-12 (+12)", Pattern = "yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFF z '('o<g>')'", ZoneProvider = DateTimeZoneProviders.Tzdb },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
