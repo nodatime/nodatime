@@ -61,7 +61,7 @@ namespace NodaTime.Text
         internal const string TimeFieldAndEmbeddedTime = "Custom time specifiers cannot be specified in the same pattern as an embedded time specifier";
         internal const string TimeSeparatorMismatch = "The value string does not match a time separator in the format string.";
         internal const string UnexpectedNegative = "The value string includes a negative value where only a non-negative one is allowed.";
-        internal const string UnknownStandardFormat = "The standard format \"{0}\" is not valid for the {1} type.";
+        internal const string UnknownStandardFormat = "The standard format \"{0}\" is not valid for the {1} type. If the pattern was intended to be a custom format, escape it with a percent sign: \"%{0}\".";
         internal const string UnparsableValue = "{0} Value being parsed: '{1}'. (^ indicates error position.)";
         internal const string UnparsableValuePostParse = "{0} Value being parsed: '{1}'.";
         internal const string UnquotedLiteral = "The character {0} is not a format specifier, and should be quoted to act as a literal.";
