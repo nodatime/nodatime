@@ -666,7 +666,7 @@ namespace NodaTime.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; is not valid for the {1} type..
+        ///   Looks up a localized string similar to The standard format &quot;{0}&quot; is not valid for the {1} type. If the pattern was intended to be a custom format, escape it with a percent sign: &quot;%{0}&quot;.
         /// </summary>
         internal static string Parse_UnknownStandardFormat {
             get {

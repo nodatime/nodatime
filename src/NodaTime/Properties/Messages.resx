@@ -319,7 +319,7 @@
     <value>Internal Error: The specified ParseFailureKind is unknown [{0}].</value>
   </data>
   <data name="Parse_UnknownStandardFormat" xml:space="preserve">
-    <value>The standard format "{0}" is not valid for the {1} type.</value>
+    <value>The standard format "{0}" is not valid for the {1} type. If the pattern was intended to be a custom format, escape it with a percent sign: "%{0}".</value>
   </data>
   <data name="Parse_UnparsableValue" xml:space="preserve">
     <value>{0} Value being parsed: '{1}'. (^ indicates error position.)</value>
