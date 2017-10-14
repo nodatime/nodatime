@@ -110,8 +110,8 @@ namespace NodaTime.Test.Text
                 ShortTimePattern = "h:mm tt"
             }
         });
-        // Specify fr-FR patterns explicitly, as .NET Core on Linux gives a different answer. We
-        // don't need it to be French really, just an example...
+        // Specify fr-FR patterns explicitly, as .NET Core on Linux has different information.
+        // We don't need it to be French really, just an example...
         internal static readonly CultureInfo FrFr = CultureInfo.ReadOnly(new CultureInfo("fr-FR")
         {
             DateTimeFormat =
@@ -119,7 +119,12 @@ namespace NodaTime.Test.Text
                 LongDatePattern = "dddd d MMMM yyyy",
                 LongTimePattern = "HH:mm:ss",
                 ShortDatePattern = "dd/MM/yyyy",
-                ShortTimePattern = "HH:mm"
+                ShortTimePattern = "HH:mm",
+                AbbreviatedDayNames = LowerCaseFrench(dtf => dtf.AbbreviatedDayNames),
+                AbbreviatedMonthNames = LowerCaseFrench(dtf => dtf.AbbreviatedMonthNames),
+                DayNames = LowerCaseFrench(dtf => dtf.DayNames),
+                MonthNames = LowerCaseFrench(dtf => dtf.MonthNames),
+                MonthGenitiveNames = LowerCaseFrench(dtf => dtf.MonthGenitiveNames),
             }
         });
         internal static readonly CultureInfo FrCa = CultureInfo.ReadOnly(new CultureInfo("fr-CA")
@@ -132,6 +137,9 @@ namespace NodaTime.Test.Text
                 ShortTimePattern = "HH:mm"
             }
         });
+
+        private static string[] LowerCaseFrench(Func<DateTimeFormatInfo, string[]> propertySelector) =>
+            propertySelector(new CultureInfo("fr-FR").DateTimeFormat).Select(x => x?.ToLowerInvariant()).ToArray();
 
         // We need a culture with a non-colon time separator. On .NET Core we can't specify this explicitly,
         // so we just rely on Finland doing the right thing. On platforms where we can set this explicitly,
