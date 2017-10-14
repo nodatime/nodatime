@@ -4,6 +4,25 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
+## 2.2.1, released 2017-10-14 with tzdb 2017b
+
+Bug-fix release:
+
+- Fixes [issue 957]: Incorrect time zone calculations near the start/end of time
+- Fixes [issue 971]: Clarify exception for unknown standard patterns to point to %
+- Fixes [issue 979]: `Instant` bounds checking bypassed when subtracting a `Duration`
+- Fixes [issue 981]: Failure to parse time zones with IDs like
+  "Etc/GMT-12". (Zones where another zone has an ID with common prefix *and*
+  there's at least one zone between the two, lexically.)
+
+## 1.4.1, released 2017-10-14 with tzdb 2017b
+
+Bug-fix release:
+
+- Fixes [issue 981]: Failure to parse time zones with IDs like
+  "Etc/GMT-12" (Zones where another zone has an ID with common prefix *and*
+  there's at least one zone between the two, lexically.)
+
 ## 2.2.0, released 2017-07-09 and 2017-07-14 with tzdb 2017b
 
 This was an accidental release, immediately delisted on nuget.org but later relisted due to issues with
