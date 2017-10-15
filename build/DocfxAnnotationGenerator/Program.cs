@@ -139,6 +139,7 @@ namespace DocfxAnnotationGenerator
                 {
                     using (var writer = File.CreateText(pair.Key))
                     {
+                        writer.WriteLine("### YamlMime:ManagedReference");
                         pair.Value.Save(writer, false);
                     }
                 }

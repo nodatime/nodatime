@@ -34,6 +34,9 @@
 
 set -e
 
+source docfx_functions.sh
+install_docfx
+
 echo "Removing old history directory"
 rm -rf history
 
@@ -132,7 +135,7 @@ cp packages/NodaTime.Serialization.JsonNet-2.0.x.nupkg packages/NodaTime.Seriali
 for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x 2.1.x 2.2.x; do
   echo "Building docfx metadata for $version"
   cp ../docfx/docfx-$version.json $version/docfx.json
-  docfx metadata $version/docfx.json -f
+  "$DOCFX" metadata $version/docfx.json -f
 done
 
 # We don't need TZDB/CLDR/versionXML, or docs, or
