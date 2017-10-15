@@ -274,7 +274,7 @@ namespace NodaTime.Text
         /// Note: current usage means this never has to cope with negative numbers.
         /// </summary>
         /// <example>
-        /// <code>AppendFraction(1200, 4, 5, builder)</code> will result in "0120" being
+        /// <c>AppendFraction(1200, 4, 5, builder)</c> will result in "0120" being
         /// appended to the builder. The value is treated as effectively 0.01200 because
         /// the scale is 5, but only 4 digits are formatted.
         /// </example>
@@ -307,7 +307,7 @@ namespace NodaTime.Text
         /// Note: current usage means this never has to cope with negative numbers.
         /// </summary>
         /// <example>
-        /// <code>AppendFractionTruncate(1200, 4, 5, builder)</code> will result in "001" being
+        /// <c>AppendFractionTruncate(1200, 4, 5, builder)</c> will result in "001" being
         /// appended to the builder. The value is treated as effectively 0.01200 because
         /// the scale is 5; only 4 digits are formatted (leaving "0120") and then the rightmost
         /// 0 digit is truncated.

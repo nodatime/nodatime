@@ -78,12 +78,12 @@ namespace NodaTime
 
         /// <summary>
         /// Checks whether the specified year forms a valid date with the month/day in this
-        /// value, without any truncation. This will always return <code>true</code> except
+        /// value, without any truncation. This will always return <c>true</c> except
         /// for values representing February 29th, where the specified year is a non leap year.
         /// </summary>
         /// <param name="year">The year to test for validity</param>
-        /// <returns><code>true</code> if the current value occurs within the given year;
-        /// <code>false</code> otherwise.</returns>
+        /// <returns><c>true</c> if the current value occurs within the given year;
+        /// <c>false</c> otherwise.</returns>
         [Pure]
         public bool IsValidYear(int year)
         {
