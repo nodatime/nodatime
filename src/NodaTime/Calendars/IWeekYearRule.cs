@@ -58,9 +58,9 @@ namespace NodaTime.Calendars
         /// <remarks>
         /// <para>
         /// Wherever reasonable, implementations should ensure that all valid dates
-        /// can be constructed via this method. In other words, given a <see cref="LocalDate"/> <code>date</code>,
-        /// <code>rule.GetLocalDate(rule.GetWeekYear(date), rule.GetWeekOfWeekYear(date), date.IsoDayOfWeek, date.Calendar)</code>
-        /// should always return <code>date</code>. This is true for all rules within Noda Time, but third party
+        /// can be constructed via this method. In other words, given a <see cref="LocalDate"/> <c>date</c>,
+        /// <c>rule.GetLocalDate(rule.GetWeekYear(date), rule.GetWeekOfWeekYear(date), date.IsoDayOfWeek, date.Calendar)</c>
+        /// should always return <c>date</c>. This is true for all rules within Noda Time, but third party
         /// implementations may choose to simplify their implementations by restricting them to appropriate portions
         /// of time.
         /// </para>

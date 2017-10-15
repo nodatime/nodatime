@@ -667,7 +667,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
-        /// BCL <code>PersianCalendar</code> before .NET 4.6, and the sole Persian calendar in Noda Time 1.3.
+        /// BCL <c>PersianCalendar</c> before .NET 4.6, and the sole Persian calendar in Noda Time 1.3.
         /// </summary>
         /// <remarks>
         /// This implementation uses a simple 33-year leap cycle, where years  1, 5, 9, 13, 17, 22, 26, and 30
@@ -678,7 +678,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
-        /// BCL <code>PersianCalendar</code> from .NET 4.6 onwards (and Windows 10), and the astronomical
+        /// BCL <c>PersianCalendar</c> from .NET 4.6 onwards (and Windows 10), and the astronomical
         /// system described in Wikipedia and Calendrical Calculations.
         /// </summary>
         /// <remarks>
