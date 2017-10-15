@@ -2,6 +2,9 @@
 
 set -e
 
+source docfx_functions.sh
+install_docfx
+
 if [[ ! -d history ]]
 then
   echo "Cloning history branch"
@@ -36,7 +39,7 @@ cd ../../../..
 
 cp -r docfx/template tmp/docfx
 cp docfx/docfx-unstable.json tmp/docfx/docfx.json
-docfx metadata tmp/docfx/docfx.json -f 
+"$DOCFX" metadata tmp/docfx/docfx.json -f 
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
 # Create diffs between versions and other annotations
@@ -63,5 +66,5 @@ dotnet build ../src/NodaTime-All.sln
 dotnet run -p SnippetExtractor -- ../src/NodaTime.Demo/NodaTime.Demo.csproj tmp/docfx/obj/unstable/overwrite
 
 echo "Running main docfx build"
-docfx build tmp/docfx/docfx.json
+"$DOCFX" build tmp/docfx/docfx.json
 cp docfx/logo.svg tmp/docfx/_site
