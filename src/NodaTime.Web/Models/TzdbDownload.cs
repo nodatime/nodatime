@@ -19,7 +19,7 @@ namespace NodaTime.Web.Models
         public TzdbDownload(string storageUrl)
         {
             Name = Path.GetFileName(new Uri(storageUrl).LocalPath);
-            NodaTimeOrgUrl = $"http://nodatime.org/tzdb/{Name}";
+            NodaTimeOrgUrl = $"https://nodatime.org/tzdb/{Name}";
             data = new Lazy<byte[]>(
                 () => httpClient.GetByteArrayAsync(storageUrl).Result,
                 LazyThreadSafetyMode.ExecutionAndPublication);

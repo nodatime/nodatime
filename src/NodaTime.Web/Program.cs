@@ -85,7 +85,7 @@ namespace NodaTime.Web
             await ExpectPageText("downloads", "NodaTime-1.0.0.zip");
             await ExpectPageText("1.0.x/userguide/text", "There are two options for text handling");
             await ExpectPageText("1.0.x/api/NodaTime.DateTimeZone.html", "The mapping is unambiguous");
-            await ExpectPageText("tzdb/index.txt", "http://nodatime.org/tzdb/tzdb2013h.nzd");
+            await ExpectPageText("tzdb/index.txt", "https://nodatime.org/tzdb/tzdb2013h.nzd");
             await ExpectBinarySize("tzdb/tzdb2013h.nzd", 125962);
         }
 
