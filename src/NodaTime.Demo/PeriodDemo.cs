@@ -97,5 +97,15 @@ namespace NodaTime.Demo
             Assert.AreEqual(1, period.Days);
             Assert.AreEqual("P1D", period.ToString());
         }
+
+        [Test]
+        public void CalculatingNegativePeriodBetweenTooLocalDates()
+        {
+            Period period = Snippet.For(Period.Between(
+                new LocalDate(2017, 10, 31),
+                new LocalDate(2017, 10, 30)));
+            Assert.AreEqual(-1, period.Days);
+            Assert.AreEqual("P-1D", period.ToString());
+        }
     }
 }
