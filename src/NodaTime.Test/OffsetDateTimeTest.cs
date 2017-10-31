@@ -487,5 +487,20 @@ namespace NodaTime.Test
             OffsetDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8).PlusNanoseconds(123456789).WithOffset(offset);
             Assert.AreEqual(expected, start.With(DateAdjusters.EndOfMonth));
         }
+
+        [Test]
+        public void InZone()
+        {
+            Offset offset = Offset.FromHours(-7);
+            OffsetDateTime start = new LocalDateTime(2017, 10, 31, 18, 12, 0).WithOffset(offset);
+            var zone = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var zoned = start.InZone(zone);
+
+            // On October 31st, the UK had already gone back, so the offset is 0.
+            // Importantly, it's not the offset of the original OffsetDateTime: we're testing
+            // that InZone *doesn't* require that.
+            var expected = new ZonedDateTime(new LocalDateTime(2017, 11, 1, 1, 12, 0).WithOffset(Offset.Zero), zone);
+            Assert.AreEqual(expected, zoned);
+        }
     }
 }

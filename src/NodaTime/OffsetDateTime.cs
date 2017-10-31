@@ -351,6 +351,21 @@ namespace NodaTime
         public ZonedDateTime InFixedZone() => new ZonedDateTime(this, DateTimeZone.ForOffset(Offset));
 
         /// <summary>
+        /// Returns this value in ths specified time zone. This method does not expect
+        /// the offset in the zone to be the same as for the current value; it simply converts
+        /// this value into an <see cref="Instant"/> and finds the <see cref="ZonedDateTime"/>
+        /// for that instant in the specified zone.
+        /// </summary>
+        /// <param name="zone">The time zone of the new value.</param>
+        /// <returns>The instant represented by this value, in the specified time zone.</returns>
+        [Pure]
+        public ZonedDateTime InZone([NotNull] DateTimeZone zone)
+        {
+            Preconditions.CheckNotNull(zone, nameof(zone));
+            return ToInstant().InZone(zone);
+        }
+
+        /// <summary>
         /// Returns the BCL <see cref="DateTimeOffset"/> corresponding to this offset date and time.
         /// </summary>
         /// <remarks>
