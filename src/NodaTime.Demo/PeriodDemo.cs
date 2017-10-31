@@ -13,6 +13,7 @@ namespace NodaTime.Demo
         {
             Period period = Snippet.For(Period.FromDays(3));
             Assert.AreEqual(3, period.Days);
+            Assert.AreEqual("P3D", period.ToString());
         }
     }
 }
