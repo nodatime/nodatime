@@ -9,6 +9,14 @@ namespace NodaTime.Demo
     public class PeriodDemo
     {
         [Test]
+        public void ConstructionFromWeeks()
+        {
+            Period period = Snippet.For(Period.FromWeeks(1));
+            Assert.AreEqual(1, period.Weeks);
+            Assert.AreEqual("P1W", period.ToString());
+        }
+
+        [Test]
         public void ConstructionFromDays()
         {
             Period period = Snippet.For(Period.FromDays(3));
