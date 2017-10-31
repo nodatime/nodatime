@@ -86,26 +86,6 @@ namespace NodaTime.Demo
             Period period = Snippet.For(Period.FromNanoseconds(42));
             Assert.AreEqual(42, period.Nanoseconds);
             Assert.AreEqual("PT42n", period.ToString());
-        }
-
-        [Test]
-        public void CalculatingPeriodBetweenTooLocalDates()
-        {
-            Period period = Snippet.For(Period.Between(
-                new LocalDate(2017, 10, 30),
-                new LocalDate(2017, 10, 31)));
-            Assert.AreEqual(1, period.Days);
-            Assert.AreEqual("P1D", period.ToString());
-        }
-
-        [Test]
-        public void CalculatingNegativePeriodBetweenTooLocalDates()
-        {
-            Period period = Snippet.For(Period.Between(
-                new LocalDate(2017, 10, 31),
-                new LocalDate(2017, 10, 30)));
-            Assert.AreEqual(-1, period.Days);
-            Assert.AreEqual("P-1D", period.ToString());
-        }
+        }        
     }
 }
