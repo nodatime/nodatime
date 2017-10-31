@@ -47,5 +47,13 @@ namespace NodaTime.Demo
             Assert.AreEqual(1500, period.Milliseconds);
             Assert.AreEqual("PT1500s", period.ToString());
         }
+
+        [Test]
+        public void ConstructionFromTicks()
+        {
+            Period period = Snippet.For(Period.FromTicks(42));
+            Assert.AreEqual(42, period.Ticks);
+            Assert.AreEqual("PT42t", period.ToString());
+        }
     }
 }
