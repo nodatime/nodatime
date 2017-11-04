@@ -661,7 +661,7 @@ namespace NodaTime
         /// <param name="end">End date</param>
         /// <returns>The period between the two dates, using year, month and day units.</returns>
         /// <exception cref="ArgumentException">
-        /// When <paramref name="start"/> and <paramref name="end"/> don't have the same calendar system.
+        /// <paramref name="start"/> and <paramref name="end"/> are not in the same calendar system.
         /// </exception>
         [Pure]
         [NotNull]
