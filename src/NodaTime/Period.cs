@@ -655,10 +655,14 @@ namespace NodaTime
         /// <remarks>
         /// If <paramref name="end"/> is before <paramref name="start" />, each property in the returned period
         /// will be negative.
+        /// The calendar systems of the two dates must be the same; an exception will be thrown otherwise.
         /// </remarks>
         /// <param name="start">Start date</param>
         /// <param name="end">End date</param>
         /// <returns>The period between the two dates, using year, month and day units.</returns>
+        /// <exception cref="ArgumentException">
+        /// When <paramref name="start"/> and <paramref name="end"/> don't have the same calendar system.
+        /// </exception>
         [Pure]
         [NotNull]
         public static Period Between(LocalDate start, LocalDate end) => Between(start, end, PeriodUnits.YearMonthDay);
