@@ -368,7 +368,7 @@ namespace NodaTime
         /// <param name="rhs">The date to subtract</param>
         /// <returns>The result of subtracting one date from another.</returns>
         /// <exception cref="ArgumentException">
-        /// <paramref name="lhs"/> and <paramref name="rhs"/> don't have the same calendar system.
+        /// <paramref name="lhs"/> and <paramref name="rhs"/> are not in the same calendar system.
         /// </exception>
         [NotNull] public static Period operator -(LocalDate lhs, LocalDate rhs) => Period.Between(rhs, lhs);
 
