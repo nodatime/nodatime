@@ -28,6 +28,15 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void WithOffset()
+        {
+            var date = new LocalDate(2011, 6, 29);
+            var offset = Offset.FromHours(5);
+            var expected = new OffsetDate(date, offset);
+            Assert.AreEqual(expected, date.WithOffset(offset));
+        }
+
+        [Test]
         public void ToDateTimeUnspecified()
         {
             LocalDate noda = new LocalDate(2015, 4, 2);

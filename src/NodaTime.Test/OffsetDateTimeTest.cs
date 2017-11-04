@@ -502,5 +502,23 @@ namespace NodaTime.Test
             var expected = new ZonedDateTime(new LocalDateTime(2017, 11, 1, 1, 12, 0).WithOffset(Offset.Zero), zone);
             Assert.AreEqual(expected, zoned);
         }
+
+        [Test]
+        public void ToOffsetDate()
+        {
+            var offset = Offset.FromHoursAndMinutes(2, 30);
+            var odt = new LocalDateTime(2014, 6, 27, 12, 15, 8).PlusNanoseconds(123456789).WithOffset(offset);
+            var expected = new OffsetDate(new LocalDate(2014, 6, 27), offset);
+            Assert.AreEqual(expected, odt.ToOffsetDate());
+        }
+
+        [Test]
+        public void ToOffsetTime()
+        {
+            var offset = Offset.FromHoursAndMinutes(2, 30);
+            var odt = new LocalDateTime(2014, 6, 27, 12, 15, 8).PlusNanoseconds(123456789).WithOffset(offset);
+            var expected = new OffsetTime(new LocalTime(12, 15, 8).PlusNanoseconds(123456789), offset);
+            Assert.AreEqual(expected, odt.ToOffsetTime());
+        }
     }
 }

@@ -99,5 +99,14 @@ namespace NodaTime.Test
             Assert.AreEqual(x, LocalTime.Min(LocalTime.MaxValue, x));
             Assert.AreEqual(x, LocalTime.Min(x, LocalTime.MaxValue));
         }
+
+        [Test]
+        public void WithOffset()
+        {
+            var time = new LocalTime(3, 45, 12, 34);
+            var offset = Offset.FromHours(5);
+            var expected = new OffsetTime(time, offset);
+            Assert.AreEqual(expected, time.WithOffset(offset));
+        }
     }
 }

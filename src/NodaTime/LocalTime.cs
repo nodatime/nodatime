@@ -681,6 +681,15 @@ namespace NodaTime
             Preconditions.CheckNotNull(adjuster, nameof(adjuster)).Invoke(this);
 
         /// <summary>
+        /// Returns an <see cref="OffsetTime"/> for this time-of-day with the given offset.
+        /// </summary>
+        /// <remarks>This method is purely a convenient alternative to calling the <see cref="OffsetTime"/> constructor directly.</remarks>
+        /// <param name="offset">The offset to apply.</param>
+        /// <returns>The result of this time-of-day offset by the given amount.</returns>
+        [Pure]
+        public OffsetTime WithOffset(Offset offset) => new OffsetTime(this, offset);
+
+        /// <summary>
         /// Combines this <see cref="LocalTime"/> with the given <see cref="LocalDate"/>
         /// into a single <see cref="LocalDateTime"/>.
         /// Fluent alternative to <c>operator+()</c>.

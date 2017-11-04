@@ -493,6 +493,22 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Constructs a new <see cref="OffsetDate"/> from the date and offset of this value,
+        /// but omitting the time-of-day.
+        /// </summary>
+        /// <returns>A value representing the date and offset aspects of this value.</returns>
+        [Pure]
+        public OffsetDate ToOffsetDate() => new OffsetDate(Date, Offset);
+
+        /// <summary>
+        /// Constructs a new <see cref="OffsetTime"/> from the time and offset of this value,
+        /// but omitting the date.
+        /// </summary>
+        /// <returns>A value representing the time and offset aspects of this value.</returns>
+        [Pure]
+        public OffsetTime ToOffsetTime() => new OffsetTime(TimeOfDay, Offset);
+
+        /// <summary>
         /// Returns a hash code for this offset date and time.
         /// </summary>
         /// <returns>A hash code for this offset date and time.</returns>

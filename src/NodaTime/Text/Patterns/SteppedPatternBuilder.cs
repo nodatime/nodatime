@@ -471,66 +471,88 @@ namespace NodaTime.Text.Patterns
                 pattern.MoveNext();
             }
             string embeddedPatternText = pattern.GetEmbeddedPattern();
-            var sampleBucket = CreateSampleBucket();
-            var templateTime = timeBucketExtractor(sampleBucket).TemplateValue;
-            var templateDate = dateBucketExtractor(sampleBucket).TemplateValue;
             switch (patternType)
             {
                 case '<':
-                    if (dateTimeExtractor == null)
                     {
-                        throw new InvalidPatternException(TextErrorMessages.InvalidEmbeddedPatternType);
+                        var sampleBucket = CreateSampleBucket();
+                        var templateTime = timeBucketExtractor(sampleBucket).TemplateValue;
+                        var templateDate = dateBucketExtractor(sampleBucket).TemplateValue;
+                        if (dateTimeExtractor == null)
+                        {
+                            throw new InvalidPatternException(TextErrorMessages.InvalidEmbeddedPatternType);
+                        }
+                        AddField(PatternFields.EmbeddedDate, 'l');
+                        AddField(PatternFields.EmbeddedTime, 'l');
+                        AddEmbeddedPattern(
+                            LocalDateTimePattern.Create(embeddedPatternText, FormatInfo, templateDate + templateTime).UnderlyingPattern,
+                            (bucket, value) =>
+                            {
+                                var dateBucket = dateBucketExtractor(bucket);
+                                var timeBucket = timeBucketExtractor(bucket);
+                                dateBucket.Calendar = value.Calendar;
+                                dateBucket.Year = value.Year;
+                                dateBucket.MonthOfYearNumeric = value.Month;
+                                dateBucket.DayOfMonth = value.Day;
+                                timeBucket.Hours24 = value.Hour;
+                                timeBucket.Minutes = value.Minute;
+                                timeBucket.Seconds = value.Second;
+                                timeBucket.FractionalSeconds = value.NanosecondOfSecond;
+                            },
+                            dateTimeExtractor);
+                        break;
                     }
-                    AddField(PatternFields.EmbeddedDate, 'l');
-                    AddField(PatternFields.EmbeddedTime, 'l');
-                    AddEmbeddedPattern(
-                        LocalDateTimePattern.Create(embeddedPatternText, FormatInfo, templateDate + templateTime).UnderlyingPattern,
-                        (bucket, value) =>
-                        {
-                            var dateBucket = dateBucketExtractor(bucket);
-                            var timeBucket = timeBucketExtractor(bucket);
-                            dateBucket.Calendar = value.Calendar;
-                            dateBucket.Year = value.Year;
-                            dateBucket.MonthOfYearNumeric = value.Month;
-                            dateBucket.DayOfMonth = value.Day;
-                            timeBucket.Hours24 = value.Hour;
-                            timeBucket.Minutes = value.Minute;
-                            timeBucket.Seconds = value.Second;
-                            timeBucket.FractionalSeconds = value.NanosecondOfSecond;
-                        },
-                        dateTimeExtractor);
-                    break;
                 case 'd':
-                    AddField(PatternFields.EmbeddedDate, 'l');
-                    AddEmbeddedPattern(
-                        LocalDatePattern.Create(embeddedPatternText, FormatInfo, templateDate).UnderlyingPattern,
-                        (bucket, value) =>
-                        {
-                            var dateBucket = dateBucketExtractor(bucket);
-                            dateBucket.Calendar = value.Calendar;
-                            dateBucket.Year = value.Year;
-                            dateBucket.MonthOfYearNumeric = value.Month;
-                            dateBucket.DayOfMonth = value.Day;
-                        },
-                        dateExtractor);
+                    AddEmbeddedDatePattern('l', embeddedPatternText, dateBucketExtractor, dateExtractor);
                     break;
                 case 't':
-                    AddField(PatternFields.EmbeddedTime, 'l');
-                    AddEmbeddedPattern(
-                        LocalTimePattern.Create(embeddedPatternText, FormatInfo, templateTime).UnderlyingPattern,
-                        (bucket, value) =>
-                        {
-                            var timeBucket = timeBucketExtractor(bucket);
-                            timeBucket.Hours24 = value.Hour;
-                            timeBucket.Minutes = value.Minute;
-                            timeBucket.Seconds = value.Second;
-                            timeBucket.FractionalSeconds = value.NanosecondOfSecond;
-                        },
-                        timeExtractor);
+                    AddEmbeddedTimePattern('l', embeddedPatternText, timeBucketExtractor, timeExtractor);
                     break;
                 default:
                     throw new InvalidOperationException("Bug in Noda Time: embedded pattern type wasn't date, time, or date+time");
             }
+        }
+
+        internal void AddEmbeddedDatePattern(
+            char characterInPattern,
+            string embeddedPatternText,
+            Func<TBucket, LocalDatePatternParser.LocalDateParseBucket> dateBucketExtractor,
+            Func<TResult, LocalDate> dateExtractor)
+        {
+            var templateDate = dateBucketExtractor(CreateSampleBucket()).TemplateValue;
+            AddField(PatternFields.EmbeddedDate, characterInPattern);
+            AddEmbeddedPattern(
+                LocalDatePattern.Create(embeddedPatternText, FormatInfo, templateDate).UnderlyingPattern,
+                (bucket, value) =>
+                {
+                    var dateBucket = dateBucketExtractor(bucket);
+                    dateBucket.Calendar = value.Calendar;
+                    dateBucket.Year = value.Year;
+                    dateBucket.MonthOfYearNumeric = value.Month;
+                    dateBucket.DayOfMonth = value.Day;
+                },
+                dateExtractor);
+        }
+
+        internal void AddEmbeddedTimePattern(
+            char characterInPattern,
+            string embeddedPatternText,
+            Func<TBucket, LocalTimePatternParser.LocalTimeParseBucket> timeBucketExtractor,
+            Func<TResult, LocalTime> timeExtractor)
+        {
+            var templateTime = timeBucketExtractor(CreateSampleBucket()).TemplateValue;
+            AddField(PatternFields.EmbeddedTime, characterInPattern);
+            AddEmbeddedPattern(
+                LocalTimePattern.Create(embeddedPatternText, FormatInfo, templateTime).UnderlyingPattern,
+                (bucket, value) =>
+                {
+                    var timeBucket = timeBucketExtractor(bucket);
+                    timeBucket.Hours24 = value.Hour;
+                    timeBucket.Minutes = value.Minute;
+                    timeBucket.Seconds = value.Second;
+                    timeBucket.FractionalSeconds = value.NanosecondOfSecond;
+                },
+                timeExtractor);
         }
 
         /// <summary>

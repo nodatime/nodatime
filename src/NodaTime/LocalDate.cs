@@ -723,6 +723,15 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns an <see cref="OffsetDate"/> for this local date with the given offset.
+        /// </summary>
+        /// <remarks>This method is purely a convenient alternative to calling the <see cref="OffsetDate"/> constructor directly.</remarks>
+        /// <param name="offset">The offset to apply.</param>
+        /// <returns>The result of this date offset by the given amount.</returns>
+        [Pure]
+        public OffsetDate WithOffset(Offset offset) => new OffsetDate(this, offset);
+
+        /// <summary>
         /// Combines this <see cref="LocalDate"/> with the given <see cref="LocalTime"/>
         /// into a single <see cref="LocalDateTime"/>.
         /// Fluent alternative to <c>operator+()</c>.
