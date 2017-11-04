@@ -40,7 +40,7 @@ namespace NodaTime.Test.Text
         {
             Instant expected = Instant.FromUtc(2012, 1, 1, 0, 0) + Duration.Epsilon;
             Instant actual = InstantPattern.ExtendedIso.Parse("2012-01-01T00:00:00,000000001Z").Value;
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
