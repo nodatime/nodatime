@@ -154,7 +154,7 @@ namespace NodaTime
         /// <value>The day of this offset date and time within the month.</value>
         public int Day => yearMonthDayCalendar.Day;
 
-        internal YearMonthDay YearMonthDay=> yearMonthDayCalendar.ToYearMonthDay();
+        internal YearMonthDay YearMonthDay => yearMonthDayCalendar.ToYearMonthDay();
 
         /// <summary>
         /// Gets the week day of this offset date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value.
