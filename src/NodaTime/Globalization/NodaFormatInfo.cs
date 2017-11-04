@@ -47,6 +47,8 @@ namespace NodaTime.Globalization
         private FixedFormatInfoPatternParser<LocalDate> localDatePatternParser;
         private FixedFormatInfoPatternParser<LocalDateTime> localDateTimePatternParser;
         private FixedFormatInfoPatternParser<OffsetDateTime> offsetDateTimePatternParser;
+        private FixedFormatInfoPatternParser<OffsetDate> offsetDatePatternParser;
+        private FixedFormatInfoPatternParser<OffsetTime> offsetTimePatternParser;
         private FixedFormatInfoPatternParser<ZonedDateTime> zonedDateTimePatternParser;
         #endregion
 
@@ -211,6 +213,8 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser => EnsureFixedFormatInitialized(ref localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue));
         internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser => EnsureFixedFormatInitialized(ref localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue));
         internal FixedFormatInfoPatternParser<OffsetDateTime> OffsetDateTimePatternParser => EnsureFixedFormatInitialized(ref offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue));
+        internal FixedFormatInfoPatternParser<OffsetDate> OffsetDatePatternParser => EnsureFixedFormatInitialized(ref offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePattern.DefaultTemplateValue));
+        internal FixedFormatInfoPatternParser<OffsetTime> OffsetTimePatternParser => EnsureFixedFormatInitialized(ref offsetTimePatternParser, () => new OffsetTimePatternParser(OffsetTimePattern.DefaultTemplateValue));
         internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser => EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
 
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T> field,
