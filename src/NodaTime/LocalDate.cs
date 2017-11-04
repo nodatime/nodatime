@@ -362,11 +362,14 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// This is simply a convenience operator for calling <see cref="Period.Between(NodaTime.LocalDate,NodaTime.LocalDate)"/>.
-        /// The calendar systems of the two dates must be the same.
+        /// The calendar systems of the two dates must be the same; an exception will be thrown otherwise.
         /// </remarks>
         /// <param name="lhs">The date to subtract from</param>
         /// <param name="rhs">The date to subtract</param>
         /// <returns>The result of subtracting one date from another.</returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="lhs"/> and <paramref name="rhs"/> are not in the same calendar system.
+        /// </exception>
         [NotNull] public static Period operator -(LocalDate lhs, LocalDate rhs) => Period.Between(rhs, lhs);
 
         /// <summary>

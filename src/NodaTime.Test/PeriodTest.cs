@@ -111,6 +111,14 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BetweenLocalDates_DifferentCalendarSystems_Throws()
+        {
+            LocalDate start = new LocalDate(2017, 11, 1, CalendarSystem.Coptic);
+            LocalDate end = new LocalDate(2017, 11, 5, CalendarSystem.Gregorian);    
+            Assert.Throws<ArgumentException>(() => Period.Between(start, end));
+        }
+
+        [Test]
         [TestCase("2016-05-16", "2019-03-13", PeriodUnits.Years, 2)]
         [TestCase("2016-05-16", "2017-07-13", PeriodUnits.Months, 13)]
         [TestCase("2016-05-16", "2016-07-13", PeriodUnits.Weeks, 8)]
