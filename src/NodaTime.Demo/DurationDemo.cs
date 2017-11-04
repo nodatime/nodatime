@@ -76,14 +76,6 @@ namespace NodaTime.Demo
             Duration duration = Snippet.For(Duration.FromTimeSpan(TimeSpan.FromHours(3)));
             Assert.AreEqual(3, duration.Hours);
             Assert.AreEqual("0:03:00:00", duration.ToString());
-        }
-
-        [Test]
-        public void Construction()
-        {
-            Duration duration = new Duration();
-            Assert.AreEqual(Duration.Zero, duration);
-            Assert.AreEqual("0:00:00:00", duration.ToString());
-        }
+        }        
     }
 }
