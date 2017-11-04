@@ -24,11 +24,11 @@ namespace NodaTime.Text
     public sealed class LocalTimePattern : IPattern<LocalTime>
     {
         /// <summary>
-        /// Gets an invariant local time pattern which is ISO-8601 compatible, providing up to 7 decimal places.
+        /// Gets an invariant local time pattern which is ISO-8601 compatible, providing up to 9 decimal places.
         /// (These digits are omitted when unnecessary.)
-        /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFF".
+        /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFFFF".
         /// </summary>
-        /// <value>An invariant local time pattern which is ISO-8601 compatible, providing up to 7 decimal places.</value>
+        /// <value>An invariant local time pattern which is ISO-8601 compatible, providing up to 9 decimal places.</value>
         [NotNull] public static LocalTimePattern ExtendedIso => Patterns.ExtendedIsoPatternImpl;
 
         private const string DefaultFormatPattern = "T"; // Long
