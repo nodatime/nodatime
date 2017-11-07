@@ -82,5 +82,22 @@ namespace NodaTime.Test
             Assert.AreEqual(CalendarSystem.Iso, value.Calendar);
             Assert.Throws<OverflowException>(() => value.PlusDays(-1));
         }
+
+        [Test]
+        public void Deconstruction()
+        {
+            var value = new LocalDate(2017, 11, 7);
+            var expectedYear = 2017;
+            var expectedMonth = 11;
+            var expectedDay = 7;
+            value.Deconstruct(out int actualYear, out int actualMonth, out int actualDay);
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedYear, actualYear, "Year comparison failed.");
+                Assert.AreEqual(expectedMonth, actualMonth, "Month comparison failed.");
+                Assert.AreEqual(expectedDay, actualDay, "Day comparison failed.");
+            });
+        }
     }
 }
