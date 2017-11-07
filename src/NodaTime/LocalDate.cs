@@ -746,6 +746,20 @@ namespace NodaTime
         public LocalDate With([NotNull] Func<LocalDate, LocalDate> adjuster) =>
             Preconditions.CheckNotNull(adjuster, nameof(adjuster)).Invoke(this);
 
+        /// <summary>
+        /// Deconstructs the current instance into its components.
+        /// </summary>
+        /// <param name="year">The year component of the date.</param>
+        /// <param name="month">The month component of the date.</param>
+        /// <param name="day">The day component of the date.</param>
+        [Pure]
+        public void Deconstruct(out int year, out int month, out int day)
+        {
+            year = Year;
+            month = Month;
+            day = Day;
+        }
+
         #region Formatting
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
