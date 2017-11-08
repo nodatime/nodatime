@@ -90,7 +90,7 @@ namespace DocfxAnnotationGenerator
         {
             DocfxUid = GetUid(method);
             NotNullReturn = HasNotNullAttribute(method);
-            NotNullParameters = method.Parameters.Where(p => HasNotNullAttribute(p)).Select(p => p.Name).ToList();
+            NotNullParameters = method.Parameters.Where(p => HasNotNullAttribute(p) && !p.IsOut).Select(p => p.Name).ToList();
         }
 
         private ReflectionMember(FieldDefinition field)
