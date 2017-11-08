@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using NodaTime.Calendars;
 using NodaTime.Text;
 using NUnit.Framework;
 
@@ -54,6 +55,16 @@ namespace NodaTime.Test
         public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
         {
             TestHelper.AssertXmlInvalid<LocalDate>(xml, expectedExceptionType);
+        }
+
+        [Test]
+        public void Construction_NullCalendar_Throws()
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.Throws<ArgumentNullException>(() => new LocalDate(2017, 11, 7, calendar: null), "Basic construction.");
+                Assert.Throws<ArgumentNullException>(() => new LocalDate(Era.Common, 2017, 11, 7, calendar: null), "Construction including era.");
+            });
         }
 
         [Test]
