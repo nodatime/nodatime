@@ -700,6 +700,20 @@ namespace NodaTime
         public LocalDateTime On(LocalDate date) => date + this;
 
         /// <summary>
+        /// Deconstruct this time into its components.
+        /// </summary>
+        /// <param name="hour">The hour of the time.</param>
+        /// <param name="minute">The minute of the hour.</param>
+        /// <param name="second">The second of the hour.</param>
+        [Pure]
+        public void Deconstruct(out int hour, out int minute, out int second)
+        {
+            hour = Hour;
+            minute = Minute;
+            second = Second;
+        }
+        
+        /// <summary>
         /// Returns the later time of the given two.
         /// </summary>
         /// <param name="x">The first time to compare.</param>
