@@ -79,13 +79,32 @@ namespace NodaTime.Test
             var expectedYear = 2017;
             var expectedMonth = 11;
             var expectedDay = 7;
-            value.Deconstruct(out int actualYear, out int actualMonth, out int actualDay);
+            var (actualYear, actualMonth, actualDay) = value;
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(expectedYear, actualYear, "Year comparison failed.");
-                Assert.AreEqual(expectedMonth, actualMonth, "Month comparison failed.");
-                Assert.AreEqual(expectedDay, actualDay, "Day comparison failed.");
+                Assert.AreEqual(expectedYear, actualYear);
+                Assert.AreEqual(expectedMonth, actualMonth);
+                Assert.AreEqual(expectedDay, actualDay);
+            });
+        }
+
+        [Test]
+        public void Deconstruction_IncludingCalendar()
+        {
+            var value = new LocalDate(2017, 11, 7, CalendarSystem.Gregorian);
+            var expectedYear = 2017;
+            var expectedMonth = 11;
+            var expectedDay = 7;
+            var expectedCalendar = CalendarSystem.Gregorian;
+            var (actualYear, actualMonth, actualDay, actualCalendar) = value;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedYear, actualYear);
+                Assert.AreEqual(expectedMonth, actualMonth);
+                Assert.AreEqual(expectedDay, actualDay);
+                Assert.AreEqual(expectedCalendar, actualCalendar);
             });
         }
     }
