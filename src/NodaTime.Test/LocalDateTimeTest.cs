@@ -456,5 +456,21 @@ namespace NodaTime.Test
             Assert.AreEqual(ldt2, LocalDateTime.Min(ldt1, ldt2));
             Assert.AreEqual(ldt2, LocalDateTime.Min(ldt2, ldt1));
         }
+
+        [Test]
+        public void Deconstruction()
+        {
+            var value = new LocalDateTime(2017, 10, 15, 21, 30, 0);
+            var expectedDate = new LocalDate(2017, 10, 15);
+            var expectedTime = new LocalTime(21, 30, 0);
+
+            var (actualDate, actualTime) = value;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedDate, actualDate);
+                Assert.AreEqual(expectedTime, actualTime);
+            });
+        }
     }
 }
