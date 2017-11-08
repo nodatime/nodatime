@@ -51,6 +51,7 @@
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.8.0" />
     <PackageReference Include="NUnitLite" Version="3.8.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">

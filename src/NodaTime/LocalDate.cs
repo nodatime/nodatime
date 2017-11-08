@@ -769,6 +769,22 @@ namespace NodaTime
             day = Day;
         }
 
+        /// <summary>
+        /// Deconstructs the current instance into its components.
+        /// </summary>
+        /// <param name="year">The year component of the date.</param>
+        /// <param name="month">The month component of the date.</param>
+        /// <param name="day">The day component of the date.</param>
+        /// <param name="calendar">The <see cref="CalendarSystem"/> associated with the date.</param>
+        [Pure]
+        public void Deconstruct(out int year, out int month, out int day, out CalendarSystem calendar)
+        {
+            year = Year;
+            month = Month;
+            day = Day;
+            calendar = Calendar;
+        }
+
         #region Formatting
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
