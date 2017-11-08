@@ -628,6 +628,20 @@ namespace NodaTime
         [Pure]
         public OffsetDateTime ToOffsetDateTime() => offsetDateTime;
 
+        /// <summary>
+        /// Deconstruct this <see cref="ZonedDateTime"/> into its components.
+        /// </summary>
+        /// <param name="localDateTime">The <see cref="LocalDateTime"/> component.</param>
+        /// <param name="dateTimeZone">The <see cref="DateTimeZone"/> component.</param>
+        /// <param name="offset">The <see cref="Offset"/> component.</param>
+        [Pure]
+        public void Deconstruct(out LocalDateTime localDateTime, [NotNull]out DateTimeZone dateTimeZone, out Offset offset)
+        {
+            localDateTime = LocalDateTime;
+            dateTimeZone = Zone;
+            offset = Offset;
+        }
+
         #region Comparers
         /// <summary>
         /// Base class for <see cref="ZonedDateTime"/> comparers.
