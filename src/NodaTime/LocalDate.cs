@@ -105,7 +105,6 @@ namespace NodaTime
         /// <param name="calendar">Calendar system in which to create the date.</param>
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
         public LocalDate(int year, int month, int day, [NotNull] CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, nameof(calendar));
@@ -137,7 +136,6 @@ namespace NodaTime
         /// <param name="calendar">Calendar system in which to create the date.</param>
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
         public LocalDate([NotNull] Era era, int yearOfEra, int month, int day, [NotNull] CalendarSystem calendar)
             : this(Preconditions.CheckNotNull(calendar, nameof(calendar)).GetAbsoluteYear(yearOfEra, era), month, day, calendar)
         {
