@@ -578,5 +578,24 @@ namespace NodaTime.Test
             Assert.IsFalse(comparer.Equals(losAngelesAfternoon, londonEvening));
             Assert.AreNotEqual(comparer.GetHashCode(losAngelesAfternoon), comparer.GetHashCode(londonEvening));
         }
+
+        [Test]
+        public void Deconstruction()
+        {
+            var saoPaulo = DateTimeZoneProviders.Tzdb["America/Sao_Paulo"];
+            ZonedDateTime value = new LocalDateTime(2017, 10, 15, 21, 30, 15).InZoneStrictly(saoPaulo);
+            var expectedDateTime = new LocalDateTime(2017, 10, 15, 21, 30, 15);
+            var expectedZone = saoPaulo;
+            var expectedOffset = Offset.FromHours(-2);
+
+            var (actualDateTime, actualZone, actualOffset) = value;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedDateTime, actualDateTime);
+                Assert.AreEqual(expectedZone, actualZone);
+                Assert.AreEqual(expectedOffset, actualOffset);
+            });
+        }
     }
 }
