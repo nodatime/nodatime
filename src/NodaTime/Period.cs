@@ -816,6 +816,19 @@ namespace NodaTime
             return new Period(this.Years, this.Months, 0 /* weeks */, days, hours, minutes, seconds, milliseconds, 0 /* ticks */, nanoseconds);
         }
 
+        /// <summary>
+        /// Returns the <see cref="Period"/> resulting from adding a number of days
+        /// to this <see cref="Period"/>.
+        /// </summary>
+        /// <param name="days">
+        /// The number of days to add to the current <see cref="Period"/>. It can be a negative number.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="Period"/> resulting from adding the specified number of days
+        /// to this <see cref="Period"/>.
+        /// </returns>
+        [Pure] [NotNull] public Period PlusDays(int days) => this + Period.FromDays(days);
+
         #region Object overrides
 
         /// <summary>

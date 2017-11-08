@@ -926,6 +926,68 @@ namespace NodaTime.Test
             Assert.AreEqual(1234567890L, period.Nanoseconds);
         }
 
+        [Test]
+        public void PlusDays_AddingZero()
+        {
+            var value = new PeriodBuilder
+            {
+                Months = 3,
+                Days = 2,
+                Hours = 15
+            }.Build();
+
+            var expected = new PeriodBuilder
+            {
+                Months = 3,
+                Days = 2,
+                Hours = 15
+            }.Build();
+
+            Assert.AreEqual(expected, value.PlusDays(0));
+        }
+
+        [Test]
+        public void PlusDays_AddingANegativeNumber()
+        {
+            var value = new PeriodBuilder
+            {
+                Months = 3,
+                Days = 3,
+                Hours = 15
+            }.Build();
+
+            var expected = new PeriodBuilder
+            {
+                Months = 3,
+                Days = 1,
+                Hours = 15
+            }.Build();
+
+            Assert.AreEqual(expected, value.PlusDays(-2));
+        }
+
+        [Test]
+        public void PlusDays_AddingPositiveNumber()
+        {
+            var value = new PeriodBuilder
+            {
+                Years = 1,
+                Months = 3,
+                Days = 3,
+                Hours = 15
+            }.Build();
+
+            var expected = new PeriodBuilder
+            {
+                Years = 1,
+                Months = 3,
+                Days = 8,
+                Hours = 15
+            }.Build();
+
+            Assert.AreEqual(expected, value.PlusDays(5));
+        }
+        
         /// <summary>
         /// Just a simple way of parsing a period string. It's a more compact period representation.
         /// </summary>
