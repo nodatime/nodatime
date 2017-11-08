@@ -768,7 +768,7 @@ namespace NodaTime
         /// <param name="day">The day component of the date.</param>
         /// <param name="calendar">The <see cref="CalendarSystem"/> associated with the date.</param>
         [Pure]
-        public void Deconstruct(out int year, out int month, out int day, out CalendarSystem calendar)
+        public void Deconstruct(out int year, out int month, out int day, [NotNull]out CalendarSystem calendar)
         {
             year = Year;
             month = Month;
