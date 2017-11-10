@@ -531,6 +531,32 @@ namespace NodaTime
         public bool Equals(OffsetDateTime other) =>
             this.yearMonthDayCalendar == other.yearMonthDayCalendar && this.nanosecondsAndOffset == other.nanosecondsAndOffset;
 
+        /// <summary>
+        /// Deconstruct this <see cref="OffsetDateTime"/> into its components.
+        /// </summary>
+        /// <param name="localDateTime">The <see cref="LocalDateTime"/> component.</param>
+        /// <param name="offset">The <see cref="Offset"/> component.</param>
+        [Pure]
+        public void Deconstruct(out LocalDateTime localDateTime, out Offset offset)
+        {
+            localDateTime = LocalDateTime;
+            offset = Offset;
+        }
+
+        /// <summary>
+        /// Deconstruct this <see cref="OffsetDateTime"/> into its components.
+        /// </summary>
+        /// <param name="localDate">The <see cref="LocalDate"/> component.</param>
+        /// <param name="localTime">The <see cref="LocalTime"/> component.</param>
+        /// <param name="offset">The <see cref="Offset"/> component.</param>
+        [Pure]
+        public void Deconstruct(out LocalDate localDate, out LocalTime localTime, out Offset offset)
+        {
+            localDate = LocalDateTime.Date;
+            localTime = LocalDateTime.TimeOfDay;
+            offset = Offset;
+        }
+
         #region Formatting
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
