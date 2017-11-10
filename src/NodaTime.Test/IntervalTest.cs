@@ -271,5 +271,43 @@ namespace NodaTime.Test
             // This would have been true under Noda Time 1.x
             Assert.IsFalse(interval.Contains(instant));
         }
+
+        [Test]
+        public void Deconstruction()
+        {
+            var start = new Instant();
+            var end = start.PlusTicks(1_000_000);
+            var value = new Interval(start, end);
+
+            (Instant? actualStart, Instant? actualEnd) = value;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(start, actualStart);
+                Assert.AreEqual(end, actualEnd);
+            });
+        }
+
+        [Test]
+        public void Deconstruction_NullStart_Throws()
+        {
+            Instant? start = null;
+            var end = new Instant(1000, 1500);
+            var value = new Interval(start, end);
+
+            Assert.That(
+                () => value.Deconstruct(out Instant actualStart, out Instant actualEnd),
+                Throws.TypeOf<InvalidOperationException>());
+        }
+
+        [Test]
+        public void Deconstruction_NullEnding_Throws()
+        {
+            var value = new Interval(new Instant(1500, 2000), null);
+
+            Assert.That(
+                () => value.Deconstruct(out Instant actualStart, out Instant actualEnd),
+                Throws.TypeOf<InvalidOperationException>());
+        }
     }
 }
