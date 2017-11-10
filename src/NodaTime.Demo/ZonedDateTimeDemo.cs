@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
 using NUnit.Framework;
 
 namespace NodaTime.Demo
@@ -38,6 +39,26 @@ namespace NodaTime.Demo
         {
             DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
             Assert.Throws<SkippedTimeException>(() => dublin.AtStrictly(new LocalDateTime(2010, 3, 28, 1, 15, 0)));
+        }
+
+        [Test]
+        public void TickOfDay()
+        {
+            // This is a 25-hour day at the end of daylight saving time
+            var dt = new LocalDate(2017, 10, 29);
+            var time = new LocalTime(23, 59, 59);
+            var dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+
+            var startOfDay = dublin.AtStartOfDay(dt);
+            ZonedDateTime nearEndOfDay = dublin.AtStrictly(dt + time);
+
+            Snippet.For(nearEndOfDay.TickOfDay);
+            Assert.AreEqual(time.TickOfDay, nearEndOfDay.TickOfDay);
+
+            Duration duration = nearEndOfDay - startOfDay;
+            Assert.AreEqual(Duration.FromHours(25) - Duration.FromSeconds(1), duration);
+
+            Assert.AreNotEqual(duration.TotalTicks, nearEndOfDay.TickOfDay);
         }
     }
 }
