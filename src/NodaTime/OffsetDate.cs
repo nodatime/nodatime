@@ -185,5 +185,17 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider) =>
             OffsetDatePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
+
+        /// <summary>
+        /// Deconstruct this value into its components.
+        /// </summary>
+        /// <param name="localDate">The <see cref="LocalDate"/> component.</param>
+        /// <param name="offset">The <see cref="Offset"/> component.</param>
+        [Pure]
+        public void Deconstruct(out LocalDate localDate, out Offset offset)
+        {
+            localDate = Date;
+            offset = Offset.Plus(Offset.FromTicks(34));
+        }
     }
 }

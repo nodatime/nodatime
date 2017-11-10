@@ -132,5 +132,21 @@ namespace NodaTime.Test
                 Assert.AreEqual("2012-10-06+01", offsetDate.ToString());
             }
         }
+
+        [Test]
+        public void Deconstruction()
+        {
+            LocalDate date = new LocalDate(2015, 3, 28);
+            Offset offset = Offset.FromHours(-2);
+            OffsetDate offsetDate = new OffsetDate(date, offset);
+
+            var (actualDate, actualOffset) = offsetDate;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(date, actualDate);
+                Assert.AreEqual(offset, actualOffset);
+            });
+        }
     }
 }
