@@ -121,5 +121,21 @@ namespace NodaTime.Test
                 Assert.AreEqual("14:15:12+01", offsetDate.ToString());
             }
         }
+
+        [Test]
+        public void Deconstruction()
+        {
+            var time = new LocalTime(15, 33);
+            var offset = Offset.FromHours(-2);
+            var offsetTime = new OffsetTime(time, offset);
+
+            var (actualTime, actualOffset) = offsetTime;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(time, actualTime);
+                Assert.AreEqual(offset, actualOffset);
+            });
+        }
     }
 }
