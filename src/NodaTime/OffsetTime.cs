@@ -200,5 +200,22 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string patternText, IFormatProvider formatProvider) =>
             OffsetTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
+
+
+        ///<summary>
+        ///Deconstruct this value into its components.
+        /// </summary>
+        /// <param name="localTime">
+        /// The <see cref="LocalTime"/> component.
+        /// </param>
+        /// <param name="offset">
+        /// The <see cref="Offset"/> component.
+        /// </param>
+        [Pure]
+        public void Deconstruct(out LocalTime localTime, out Offset offset)
+        {
+            localTime = TimeOfDay;
+            offset = Offset;
+        }
     }
 }
