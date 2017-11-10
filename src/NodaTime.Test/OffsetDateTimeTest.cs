@@ -504,6 +504,41 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Deconstruction()
+        {
+            var dateTime = new LocalDateTime(2017, 10, 15, 21, 30);
+            var offset = Offset.FromHours(-2);
+            var value = new OffsetDateTime(dateTime, offset);
+
+            var (actualDateTime, actualOffset) = value;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(dateTime, actualDateTime);
+                Assert.AreEqual(offset, actualOffset);
+            });
+        }
+
+        [Test]
+        public void MoreGranularDeconstruction()
+        {
+            var date = new LocalDate(2017, 10, 15);
+            var time = new LocalTime(21, 30, 15);
+            var offset = Offset.FromHours(-2);
+
+            var value = new OffsetDateTime(date.At(time), offset);
+
+            var (actualDate, actualTime, actualOffset) = value;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(date, actualDate);
+                Assert.AreEqual(time, actualTime);
+                Assert.AreEqual(offset, actualOffset);
+            });
+        }
+
+        [Test]
         public void ToOffsetDate()
         {
             var offset = Offset.FromHoursAndMinutes(2, 30);
