@@ -155,6 +155,18 @@ namespace NodaTime
         [Pure]
         public bool Contains(Instant instant) => instant >= start && instant < end;
 
+        /// <summary>
+        /// Deconstruct this value into its components.
+        /// </summary>
+        /// <param name="start">The start of the interval.</param>
+        /// <param name="end">The end of the interval.</param>
+        [Pure]
+        public void Deconstruct(out Instant start, out Instant end)
+        {
+            start = Start;
+            end = End;
+        }
+
         #region Implementation of IEquatable<Interval>
         /// <summary>
         /// Indicates whether the value of this interval is equal to the value of the specified interval.
