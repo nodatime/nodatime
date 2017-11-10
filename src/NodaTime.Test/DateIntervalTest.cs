@@ -192,5 +192,21 @@ namespace NodaTime.Test
             var candidate = new LocalDate(2000, 1, 1, JulianCalendar);
             Assert.Throws<ArgumentException>(() => interval.Contains(candidate));
         }
+
+        [Test]
+        public void Deconstruction()
+        {
+            var start = new LocalDate(2017, 11, 6);
+            var end = new LocalDate(2017, 11, 10);
+            var value = new DateInterval(start, end);
+
+            var (actualStart, actualEnd) = value;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(start, actualStart);
+                Assert.AreEqual(end, actualEnd);
+            });
+        }
     }
 }

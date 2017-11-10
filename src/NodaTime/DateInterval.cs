@@ -156,5 +156,16 @@ namespace NodaTime
             string end = LocalDatePattern.Iso.Format(End);
             return $"[{start}, {end}]";
         }
+
+        /// <summary>
+        /// Deconstruct the current instance into is components.
+        /// </summary>
+        /// <param name="start">The <see cref="LocalDate"/> representing the start of the range.</param>
+        /// <param name="end">The <see cref="LocalDate"/> representing the end of the range.</param>
+        public void Deconstruct(out LocalDate start, out LocalDate end)
+        {
+            start = Start;
+            end = End;
+        }
     }
 }
