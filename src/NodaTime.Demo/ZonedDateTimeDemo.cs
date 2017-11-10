@@ -60,5 +60,26 @@ namespace NodaTime.Demo
 
             Assert.AreNotEqual(duration.TotalTicks, nearEndOfDay.TickOfDay);
         }
+
+        [Test]
+        public void NanosecondOfDay()
+        {
+            // This is a 25-hour day at the end of daylight saving time
+            var dt = new LocalDate(2017, 10, 29);
+            var time = new LocalTime(23, 59, 59);
+            var dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+
+            var startOfDay = dublin.AtStartOfDay(dt);
+            ZonedDateTime nearEndOfDay = dublin.AtStrictly(dt + time);
+
+            Snippet.For(nearEndOfDay.NanosecondOfDay);
+            Assert.AreEqual(time.NanosecondOfDay, nearEndOfDay.NanosecondOfDay);
+
+            Duration duration = nearEndOfDay - startOfDay;
+            Assert.AreEqual(Duration.FromHours(25) - Duration.FromSeconds(1), duration);
+
+            Assert.AreNotEqual(duration.TotalNanoseconds, nearEndOfDay.NanosecondOfDay);
+        }
+
     }
 }
