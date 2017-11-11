@@ -6,7 +6,7 @@ Standard Patterns
 -----------------
 
 - `G`: General invariant ISO-8601 pattern, down to the second. This corresponds to the custom pattern `uuuu'-'MM'-'dd'T'HH':'mm':'sso<G>`. This is the default format pattern.
-- `o`: Extended invariant ISO-8601 pattern, down to the tick. This will round-trip values except for the calendar system. This corresponds to the custom pattern `uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G>`.
+- `o`: Extended invariant ISO-8601 pattern, down to the nanosecond. This will round-trip values except for the calendar system. This corresponds to the custom pattern `uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G>`.
 - `r`: Full round-trip pattern including calendar system. This corresponds to the custom pattern `uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFo<G> '('c')'`.
 
 Custom Patterns
