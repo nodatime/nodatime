@@ -635,7 +635,7 @@ namespace NodaTime
         /// <param name="dateTimeZone">The <see cref="DateTimeZone"/> component.</param>
         /// <param name="offset">The <see cref="Offset"/> component.</param>
         [Pure]
-        public void Deconstruct(out LocalDateTime localDateTime, [NotNull]out DateTimeZone dateTimeZone, out Offset offset)
+        public void Deconstruct(out LocalDateTime localDateTime, [NotNull] out DateTimeZone dateTimeZone, out Offset offset)
         {
             localDateTime = LocalDateTime;
             dateTimeZone = Zone;
