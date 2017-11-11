@@ -162,7 +162,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="start">The <see cref="LocalDate"/> representing the start of the interval.</param>
         /// <param name="end">The <see cref="LocalDate"/> representing the end of the interval.</param>
-        public void Deconstruct(out LocalDate? start, out LocalDate? end)
+        public void Deconstruct(out LocalDate start, out LocalDate end)
         {
             start = Start;
             end = End;
