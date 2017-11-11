@@ -126,23 +126,5 @@ namespace NodaTime.Test
             var expected = new OffsetTime(time, offset);
             Assert.AreEqual(expected, time.WithOffset(offset));
         }
-
-        [Test]
-        public void Deconstruction()
-        {
-            var value = new LocalTime(15, 8, 20);
-            var expectedHour = 15;
-            var expectedMinute = 8;
-            var expectedSecond = 20;
-
-            var (actualHour, actualMinute, actualSecond) = value;
-
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedHour, actualHour);
-                Assert.AreEqual(expectedMinute, actualMinute);
-                Assert.AreEqual(expectedSecond, actualSecond);
-            });
-        }
     }
 }
