@@ -161,11 +161,16 @@ namespace NodaTime
         /// <param name="start">The start of the interval.</param>
         /// <param name="end">The end of the interval.</param>
         [Pure]
-        public void Deconstruct(out Instant start, out Instant end)
+        public void Deconstruct(out Instant? start, out Instant? end)
         {
-            start = Start;
-            end = End;
-        }
+            start = this.start.IsValid
+                ? Start
+                : (Instant?)null;
+
+            end = this.end.IsValid
+                ? End
+                : (Instant?)null;
+          }
 
         #region Implementation of IEquatable<Interval>
         /// <summary>

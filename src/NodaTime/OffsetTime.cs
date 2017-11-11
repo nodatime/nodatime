@@ -203,7 +203,7 @@ namespace NodaTime
 
 
         ///<summary>
-        ///Deconstruct this value into its components.
+        /// Deconstruct this value into its components.
         /// </summary>
         /// <param name="localTime">
         /// The <see cref="LocalTime"/> component.

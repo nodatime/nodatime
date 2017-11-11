@@ -704,7 +704,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="hour">The hour of the time.</param>
         /// <param name="minute">The minute of the hour.</param>
-        /// <param name="second">The second of the hour.</param>
+        /// <param name="second">The second within the minute.</param>
         [Pure]
         public void Deconstruct(out int hour, out int minute, out int second)
         {

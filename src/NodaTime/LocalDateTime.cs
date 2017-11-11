@@ -869,10 +869,10 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Deconstruct this <see cref="LocalDate"/> into its components.
+        /// Deconstruct this <see cref="LocalDateTime"/> into its components.
         /// </summary>
         /// <param name="date">The date portion of the value.</param>
-        /// <param name="time">The time portion of the value</param>
+        /// <param name="time">The time portion of the value.</param>
         [Pure]
         public void Deconstruct(out LocalDate date, out LocalTime time)
         {

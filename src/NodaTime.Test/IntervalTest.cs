@@ -287,27 +287,37 @@ namespace NodaTime.Test
                 Assert.AreEqual(end, actualEnd);
             });
         }
-
+        
         [Test]
-        public void Deconstruction_NullStart_Throws()
+        public void Deconstruction_IntervalWithoutStart()
         {
             Instant? start = null;
-            var end = new Instant(1000, 1500);
+            var end = new Instant(1500, 1_000_000);
             var value = new Interval(start, end);
 
-            Assert.That(
-                () => value.Deconstruct(out Instant actualStart, out Instant actualEnd),
-                Throws.TypeOf<InvalidOperationException>());
+            (Instant? actualStart, Instant? actualEnd) = value;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(start, actualStart);
+                Assert.AreEqual(end, actualEnd);
+            });
         }
 
         [Test]
-        public void Deconstruction_NullEnding_Throws()
+        public void Deconstruction_IntervalWithoutEnd()
         {
-            var value = new Interval(new Instant(1500, 2000), null);
+            var start = new Instant(1500, 1_000_000);
+            Instant? end = null;
+            var value = new Interval(start, end);
 
-            Assert.That(
-                () => value.Deconstruct(out Instant actualStart, out Instant actualEnd),
-                Throws.TypeOf<InvalidOperationException>());
+            (Instant? actualStart, Instant? actualEnd) = value;
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(start, actualStart);
+                Assert.AreEqual(end, actualEnd);
+            });
         }
     }
 }
