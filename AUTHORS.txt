@@ -1,6 +1,7 @@
 Noda Time contains code contributed by:
 
 Andrey Akinshin <andrey.akinshin@gmail.com>
+Carlos Schults <carlos.schults@gmail.com>
 David Nelson <commongenius@hotmail.com>
 Dmitry Bulavin <dmitry.bulavin@gmail.com>
 Dor "The Configurator" Kleiman <configurator@gmail.com>
