@@ -229,6 +229,10 @@ namespace NodaTime
         /// <summary>
         /// Gets the tick of this zoned date and time within the day, in the range 0 to 863,999,999,999 inclusive.
         /// </summary>
+        /// <remarks>
+        /// This is the TickOfDay portion of the contained <see cref="OffsetDateTime"/>.
+        /// On daylight saving time transition dates, it may not be the same as the number of ticks elapsed since the beginning of the day.
+        /// </remarks>
         /// <value>The tick of this zoned date and time within the day, in the range 0 to 863,999,999,999 inclusive.</value>
         public long TickOfDay => offsetDateTime.TickOfDay;
 
@@ -241,6 +245,10 @@ namespace NodaTime
         /// <summary>
         /// Gets the nanosecond of this zoned date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
         /// </summary>
+        /// <remarks>
+        /// This is the NanosecondOfDay portion of the contained <see cref="OffsetDateTime"/>.
+        /// On daylight saving time transition dates, it may not be the same as the number of nanoseconds elapsed since the beginning of the day.
+        /// </remarks>
         /// <value>The nanosecond of this zoned date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.</value>
         public long NanosecondOfDay => offsetDateTime.NanosecondOfDay;
 
