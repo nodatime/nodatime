@@ -64,7 +64,7 @@ dotnet build -c Release src/NodaTime-All.sln
 
 echo "Packaging..."
 # NuGet packages
-dotnet pack -o "$OUTPUT" src/NodaTime-All.sln
+dotnet pack -o "$OUTPUT" -c Release --no-build src/NodaTime-All.sln
 
 # Source zip file
 git archive ${NEW_RELEASE} -o "$OUTPUT"/NodaTime-${NEW_RELEASE}-src.zip --prefix=NodaTime-${NEW_RELEASE}-src/
