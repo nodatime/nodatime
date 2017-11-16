@@ -4,6 +4,13 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
+## 2.0.5, 2.1.2, 2.2.3, released 2017-10-23/2017-11-16 with tzdb 2017c
+
+This set of patch releases simply rebuilds the previous set of
+releases, but in release mode instead of debug.
+
+Fixes [issue 1027].
+
 ## 1.3.5, 1.4.2, 2.0.4, 2.1.1, 2.2.2, released 2017-10-23/2017-10-24 with tzdb 2017c
 
 This set of patch releases simply updates the built-in TZDB time
