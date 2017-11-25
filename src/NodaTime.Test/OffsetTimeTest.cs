@@ -2,7 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Text;
 using NUnit.Framework;
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -136,6 +138,37 @@ namespace NodaTime.Test
                 Assert.AreEqual(time, actualTime);
                 Assert.AreEqual(offset, actualOffset);
             });
+        }
+
+        [Test]
+        public void BinarySerialization()
+        {
+            var time = new LocalTime(5, 6, 7).PlusNanoseconds(123456789L);
+            var offset = Offset.FromHoursAndMinutes(5, 30);
+            var value = new OffsetTime(time, offset);
+            TestHelper.AssertBinaryRoundtrip(value);
+        }
+
+        [Test]
+        [TestCase(5, 6, 7, 123456789, 5, 30, "05:06:07.123456789+05:30")]
+        [TestCase(5, 6, 7, 123456789, -5, -30, "05:06:07.123456789-05:30")]
+        [TestCase(5, 6, 7, 0, 0, 0, "05:06:07Z")]
+        public void XmlSerialization(
+            int hour, int minute, int second, long nanoseconds,
+            int offsetHours, int offsetMinutes,
+            string expected)
+        {
+            var time = new LocalTime(hour, minute, second).PlusNanoseconds(nanoseconds);
+            var offset = Offset.FromHoursAndMinutes(offsetHours, offsetMinutes);
+            var value = new OffsetTime(time, offset);
+            TestHelper.AssertXmlRoundtrip(value, $"<value>{expected}</value>");
+        }        
+
+        [Test]
+        [TestCase("<value>05:24:00Z</value>", typeof(UnparsableValueException), Description = "Invalid hour")]
+        public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
+        {
+            TestHelper.AssertXmlInvalid<LocalDateTime>(xml, expectedExceptionType);
         }
     }
 }

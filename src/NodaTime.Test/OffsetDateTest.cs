@@ -2,7 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Calendars;
+using NodaTime.Text;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -147,6 +151,58 @@ namespace NodaTime.Test
                 Assert.AreEqual(date, actualDate);
                 Assert.AreEqual(offset, actualOffset);
             });
+        }
+
+        [Test]
+        public void BinarySerialization()
+        {
+            var date = new LocalDate(2013, 4, 12);
+            var offset = Offset.FromHoursAndMinutes(5, 30);
+            var value = new OffsetDate(date, offset);
+            TestHelper.AssertBinaryRoundtrip(value);
+        }
+
+        [Test]
+        [TestCase(2013, 4, 12, "2013-04-12+05:30")]
+        [TestCase(123, 4, 12, "0123-04-12+05:30")]
+        public void XmlSerialization_Iso(int year, int month, int day, string expectedText)
+        {
+            var date = new LocalDate(year, month, day);
+            var offset = Offset.FromHoursAndMinutes(5, 30);
+            var value = new OffsetDate(date, offset);
+            TestHelper.AssertXmlRoundtrip(value, $"<value>{expectedText}</value>");
+        }
+
+        // 1BC is absolute year 0, so 2BC is absolute year -1.
+        // https://www.w3.org/TR/xmlschema-2/#dateTime recommends that for xs:date,
+        // -0001 is used for 1BC... but that a later version would move to 0000 to be in line
+        // with ISO-8601. We stick with ISO-8601.
+        [Test]
+        [TestCase(1, 4, 12, "0000-04-12+05:30")]
+        [TestCase(2, 4, 12, "-0001-04-12+05:30")]
+        [TestCase(3, 4, 12, "-0002-04-12+05:30")]
+        public void XmlSerialization_Bce(int year, int month, int day, string expectedText)
+        {
+            var date = new LocalDate(Era.BeforeCommon, year, month, day);
+            var offset = Offset.FromHoursAndMinutes(5, 30);
+            var value = new OffsetDate(date, offset);
+            TestHelper.AssertXmlRoundtrip(value, $"<value>{expectedText}</value>");
+        }
+
+        [Test]
+        public void XmlSerialization_NonIso()
+        {
+            var date = new LocalDate(2013, 4, 12, CalendarSystem.Julian);
+            var value = new OffsetDate(date, Offset.Zero);
+            TestHelper.AssertXmlRoundtrip(value, "<value calendar=\"Julian\">2013-04-12Z</value>");
+        }
+
+        [Test]
+        [TestCase("<value calendar=\"Rubbish\">2013-06-12</value>", typeof(KeyNotFoundException), Description = "Unknown calendar system")]
+        [TestCase("<value>2013-15-12</value>", typeof(UnparsableValueException), Description = "Invalid month")]
+        public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
+        {
+            TestHelper.AssertXmlInvalid<LocalDateTime>(xml, expectedExceptionType);
         }
     }
 }

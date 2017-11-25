@@ -9,6 +9,10 @@ using NodaTime.Text;
 using NodaTime.Utility;
 using System;
 using System.Globalization;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -17,7 +21,13 @@ namespace NodaTime
     /// a date at a specific offset from UTC but without any time-of-day information.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct OffsetDate : IEquatable<OffsetDate>
+#if !NETSTANDARD1_3
+    [Serializable]
+#endif
+    public struct OffsetDate : IEquatable<OffsetDate>, IXmlSerializable
+#if !NETSTANDARD1_3
+        , ISerializable
+#endif
     {
         [ReadWriteForEfficiency] private LocalDate date;
         [ReadWriteForEfficiency] private Offset offset;
@@ -197,5 +207,66 @@ namespace NodaTime
             localDate = Date;
             offset = Offset.Plus(Offset.FromTicks(34));
         }
+
+
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema() => null;
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, nameof(reader));
+            var pattern = OffsetDatePattern.GeneralIso;
+            if (reader.MoveToAttribute("calendar"))
+            {
+                string newCalendarId = reader.Value;
+                CalendarSystem newCalendar = CalendarSystem.ForId(newCalendarId);
+                var newTemplateValue = pattern.TemplateValue.WithCalendar(newCalendar);
+                pattern = pattern.WithTemplateValue(newTemplateValue);
+                reader.MoveToElement();
+            }
+            string text = reader.ReadElementContentAsString();
+            this = pattern.Parse(text).Value;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, nameof(writer));
+            if (Calendar != CalendarSystem.Iso)
+            {
+                writer.WriteAttributeString("calendar", Calendar.Id);
+            }
+            writer.WriteString(OffsetDatePattern.GeneralIso.Format(this));
+        }
+        #endregion
+
+#if !NETSTANDARD1_3
+        #region Binary serialization
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private OffsetDate([NotNull] SerializationInfo info, StreamingContext context)
+            : this(new LocalDate(info), new Offset(info))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        [System.Security.SecurityCritical]
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
+        {
+            Preconditions.CheckNotNull(info, nameof(info));
+            date.Serialize(info);
+            offset.Serialize(info);
+        }
+        #endregion
+#endif
     }
 }

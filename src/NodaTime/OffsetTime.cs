@@ -8,6 +8,10 @@ using NodaTime.Text;
 using NodaTime.Utility;
 using System;
 using System.Globalization;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -16,7 +20,13 @@ namespace NodaTime
     /// a time-of-day at a specific offset from UTC but without any date information.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct OffsetTime : IEquatable<OffsetTime>
+#if !NETSTANDARD1_3
+    [Serializable]
+#endif
+    public struct OffsetTime : IEquatable<OffsetTime>, IXmlSerializable
+#if !NETSTANDARD1_3
+        , ISerializable
+#endif
     {
         [ReadWriteForEfficiency] private LocalTime time;
         [ReadWriteForEfficiency] private Offset offset;
@@ -217,5 +227,51 @@ namespace NodaTime
             localTime = TimeOfDay;
             offset = Offset;
         }
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema() => null;
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, nameof(reader));
+            string text = reader.ReadElementContentAsString();
+            this = OffsetTimePattern.ExtendedIso.Parse(text).Value;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, nameof(writer));
+            writer.WriteString(OffsetTimePattern.ExtendedIso.Format(this));
+        }
+        #endregion
+
+#if !NETSTANDARD1_3
+        #region Binary serialization
+        /// <summary>
+        /// Private constructor only present for serialization.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
+        /// <param name="context">The source for this deserialization.</param>
+        private OffsetTime([NotNull] SerializationInfo info, StreamingContext context)
+            : this(new LocalTime(info), new Offset(info))
+        {
+        }
+
+        /// <summary>
+        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination for this serialization.</param>
+        [System.Security.SecurityCritical]
+        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
+        {
+            Preconditions.CheckNotNull(info, nameof(info));
+            time.Serialize(info);
+            offset.Serialize(info);
+        }
+        #endregion
+#endif
     }
 }
