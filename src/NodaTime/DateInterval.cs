@@ -247,9 +247,9 @@ namespace NodaTime
             return null;
         }
 
-        private bool ContainsExtreme(DateInterval dateInterval)
+        private bool ContainsExtreme(DateInterval interval)
         {
-            return dateInterval.Contains(Start) || dateInterval.Contains(End);
+            return Contains(interval.Start) || Contains(interval.End);
         }
     }
 }
