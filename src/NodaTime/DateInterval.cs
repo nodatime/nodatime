@@ -208,7 +208,31 @@ namespace NodaTime
 
             return ContainsExtreme(interval) || interval.ContainsExtreme(this);
         }
-        
+
+        [CanBeNull]
+        public DateInterval Intersection([NotNull]DateInterval interval)
+        {
+            Preconditions.CheckNotNull(interval, nameof(interval));
+
+            Preconditions.CheckArgument(
+                interval.Start.Calendar.Equals(Start.Calendar), nameof(interval),
+                "The start and end dates of the interval to check must be in the same calendar as the start and end dates of this interval.");
+
+            if (interval == this || Contains(interval))
+                return interval;
+
+            if (interval.Contains(this))
+                return this;
+
+            if (Contains(interval.Start))
+                return new DateInterval(interval.Start, End);
+
+            if (Contains(interval.End))
+                return new DateInterval(Start, interval.End);
+
+            return null;
+        }
+
         private bool ContainsExtreme(DateInterval dateInterval)
         {
             return dateInterval.Contains(Start) || dateInterval.Contains(End);
