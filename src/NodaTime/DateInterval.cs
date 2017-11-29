@@ -195,8 +195,8 @@ namespace NodaTime
         /// <c>true</c> if <paramref name="interval"/> has days in common with this interval; <c>false</c> otherwise.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// The start and end dates of <paramref name="interval" /> are not in the same calendar as this calendar's
-        /// start and end dates.
+        /// The start and end dates of <paramref name="interval" /> are not in the same calendar
+        /// as the start and end date of this interval.
         /// </exception>
         public bool Intersects([NotNull]DateInterval interval)
         {
@@ -209,6 +209,20 @@ namespace NodaTime
             return ContainsExtreme(interval) || interval.ContainsExtreme(this);
         }
 
+        /// <summary>
+        /// Returns the intersection between the given interval and this interval.
+        /// </summary>
+        /// <param name="interval">
+        /// The specified interval to which return the intersection with.
+        /// </param>
+        /// <returns>
+        /// A <see cref="DateInterval"/> corresponding to the intersection between the given interval and the current
+        /// instance. If there is no intersection, a null reference is returned.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// The start and end dates of <paramref name="interval" /> are not in the same calendar
+        /// as the start and end date of this interval.
+        /// </exception>
         [CanBeNull]
         public DateInterval Intersection([NotNull]DateInterval interval)
         {
