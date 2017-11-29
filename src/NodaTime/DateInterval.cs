@@ -135,6 +135,25 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Checks whether the given interval is within this interval. This requires that the start date of the specified
+        /// interval is not earlier than the start date of this interval, and the end date of the specified interval is not
+        /// later than the end date of this interval.
+        /// </summary>
+        /// <param name="interval">The interval to check for containment within this interval.</param>
+        /// <exception cref="ArgumentException">Start and end dates of <paramref name="interval"/> are not in the same
+        /// calendar as the start and end date of this interval.</exception>
+        /// <returns><c>true</c> if <paramref name="interval"/> is within this interval; <c>false</c> otherwise.</returns>
+        public bool Contains([NotNull] DateInterval interval)
+        {
+            Preconditions.CheckNotNull(interval, nameof(interval));
+            Preconditions.CheckArgument(
+                interval.Start.Calendar.Equals(Start.Calendar), nameof(interval),
+                "The start and end dates of the interval to check must be in the same calendar as the start and end dates of this interval.");
+
+            return Contains(interval.Start) && Contains(interval.End);
+        }
+
+        /// <summary>
         /// Gets the length of this date interval in days. This will always be at least 1.
         /// </summary>
         /// <value>The length of this date interval in days.</value>
@@ -167,5 +186,7 @@ namespace NodaTime
             start = Start;
             end = End;
         }
+
+        
     }
 }

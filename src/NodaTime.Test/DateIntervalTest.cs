@@ -208,5 +208,112 @@ namespace NodaTime.Test
                 Assert.AreEqual(end, actualEnd);
             });
         }
+
+        [Test]
+        public void Contains_NullInterval_Throws()
+        {
+            var start = new LocalDate(2017, 11, 6);
+            var end = new LocalDate(2017, 11, 10);
+            var value = new DateInterval(start, end);
+
+            Assert.That(() => value.Contains(null), Throws.TypeOf<ArgumentNullException>());
+        }
+
+        [Test]
+        public void Contains_IntervalWithinAnotherCalendar_Throws()
+        {
+            var value = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
+                new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
+
+            var other = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
+                new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
+
+            Assert.That(() => value.Contains(other), Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void Contains_EqualInterval()
+        {
+            var start = new LocalDate(2014, 3, 7);
+            var end = new LocalDate(2014, 3, 7);
+            var value = new DateInterval(start, end);
+            var same = new DateInterval(start, end);
+
+            Assert.True(value.Contains(same));
+        }
+
+        [Test]
+        public void Contains_LaterInterval()
+        {
+            var value = new DateInterval(new LocalDate(2014, 3, 7), new LocalDate(2014, 3, 31));
+            var other = new DateInterval(new LocalDate(2015, 1, 1), new LocalDate(2015, 4, 1));
+
+            Assert.False(value.Contains(other));
+        }
+
+        [Test]
+        public void Contains_EarlierInterval()
+        {
+            var value = new DateInterval(new LocalDate(2014, 3, 7), new LocalDate(2014, 3, 31));
+            var other = new DateInterval(new LocalDate(2013, 6, 26), new LocalDate(2013, 7, 25));
+
+            Assert.False(value.Contains(other));
+        }
+
+        [Test]
+        public void Contains_IntervalWithSameStartDate()
+        {
+            var value = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 29));
+            var other = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 15));
+
+            Assert.True(value.Contains(other));
+        }
+
+        [Test]
+        public void Contains_IntervalWithSameEndDate()
+        {
+            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 29));
+            var other = new DateInterval(new LocalDate(2017, 11, 8), new LocalDate(2017, 11, 29));
+
+            Assert.True(value.Contains(other));
+        }
+
+        [Test]
+        public void Contains_IntervalFullyWithin()
+        {
+            var year2016 = new DateInterval(new LocalDate(2016, 1, 1), new LocalDate(2016, 12, 31));
+            var june2016 = new DateInterval(new LocalDate(2016, 6, 1), new LocalDate(2016, 6, 30));
+
+            Assert.True(year2016.Contains(june2016));
+        }
+
+        [Test]
+        public void Contains_IntersectingAtTheStart()
+        {
+            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 29));
+            var other = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 15));
+
+            Assert.False(value.Contains(other));
+        }
+
+        [Test]
+        public void Contains_IntersectingAtTheEnd()
+        {
+            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 29));
+            var other = new DateInterval(new LocalDate(2017, 11, 10), new LocalDate(2017, 11, 30));
+
+            Assert.False(value.Contains(other));
+        }
+
+        [Test]
+        public void Contains_Superset()
+        {
+            var november2017 = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 30));
+            var year2017 = new DateInterval(new LocalDate(2017, 1, 1), new LocalDate(2017, 12, 31));
+
+            Assert.False(november2017.Contains(year2017));
+        }
     }
 }
