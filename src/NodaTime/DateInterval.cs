@@ -145,11 +145,7 @@ namespace NodaTime
         /// <returns><c>true</c> if <paramref name="interval"/> is within this interval; <c>false</c> otherwise.</returns>
         public bool Contains([NotNull] DateInterval interval)
         {
-            Preconditions.CheckNotNull(interval, nameof(interval));
-            Preconditions.CheckArgument(
-                interval.Start.Calendar.Equals(Start.Calendar), nameof(interval),
-                "The start and end dates of the interval to check must be in the same calendar as the start and end dates of this interval.");
-
+            ValidateInterval(interval);
             return Contains(interval.Start) && Contains(interval.End);
         }
 
@@ -161,6 +157,14 @@ namespace NodaTime
             // Period.Between will give us the exclusive result, so we need to add 1
             // to include the end date.
             Period.Between(Start, End, PeriodUnits.Days).Days + 1;
+
+        /// <summary>
+        /// Gets the calendar system in which the dates of this interval are.
+        /// </summary>
+        /// <value>Instance of <see cref="CalendarSystem"/>, corresponding to the calendar system
+        /// of the start date of this interval.</value>
+        [NotNull]
+        public CalendarSystem Calendar => Start.Calendar;
 
         /// <summary>
         /// Returns a string representation of this interval.
@@ -188,28 +192,6 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Checks whether the given interval has days in common with the current interval.
-        /// </summary>
-        /// <param name="interval">The <see cref="DateInterval"/> to check for intersection with this interval.</param>
-        /// <returns>
-        /// <c>true</c> if <paramref name="interval"/> has days in common with this interval; <c>false</c> otherwise.
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// The start and end dates of <paramref name="interval" /> are not in the same calendar
-        /// as the start and end date of this interval.
-        /// </exception>
-        public bool Intersects([NotNull]DateInterval interval)
-        {
-            Preconditions.CheckNotNull(interval, nameof(interval));
-
-            Preconditions.CheckArgument(
-                interval.Start.Calendar.Equals(Start.Calendar), nameof(interval),
-                "The start and end dates of the interval to check must be in the same calendar as the start and end dates of this interval.");
-
-            return ContainsExtreme(interval) || interval.ContainsExtreme(this);
-        }
-
-        /// <summary>
         /// Returns the intersection between the given interval and this interval.
         /// </summary>
         /// <param name="interval">
@@ -226,11 +208,7 @@ namespace NodaTime
         [CanBeNull]
         public DateInterval Intersection([NotNull]DateInterval interval)
         {
-            Preconditions.CheckNotNull(interval, nameof(interval));
-
-            Preconditions.CheckArgument(
-                interval.Start.Calendar.Equals(Start.Calendar), nameof(interval),
-                "The start and end dates of the interval to check must be in the same calendar as the start and end dates of this interval.");
+            ValidateInterval(interval);
 
             if (interval == this || Contains(interval))
                 return interval;
@@ -247,9 +225,16 @@ namespace NodaTime
             return null;
         }
 
-        private bool ContainsExtreme(DateInterval interval)
+        private void ValidateInterval(DateInterval interval)
         {
-            return Contains(interval.Start) || Contains(interval.End);
+            var msg = "The start and end dates of the interval to check " +
+                "must be in the same calendar as the start and end dates of this interval.";
+
+            Preconditions.CheckNotNull(interval, nameof(interval));
+            Preconditions.CheckArgument(interval.Calendar.Equals(Start.Calendar), nameof(interval), msg);
         }
+
+        private bool ContainsExtreme(DateInterval interval) =>
+            Contains(interval.Start) || Contains(interval.End);
     }
 }

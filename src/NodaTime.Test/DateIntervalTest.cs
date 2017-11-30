@@ -169,6 +169,16 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Calendar()
+        {
+            var calendar = CalendarSystem.Julian;
+            LocalDate start = new LocalDate(2000, 1, 1, calendar);
+            LocalDate end = new LocalDate(2000, 2, 10, calendar);
+            var interval = new DateInterval(start, end);
+            Assert.AreEqual(calendar, interval.Calendar);
+        }
+
+        [Test]
         [TestCase("1999-12-31", false, TestName = "Before start")]
         [TestCase("2000-01-01", true, TestName = "On start")]
         [TestCase("2005-06-06", true, TestName = "In middle")]
@@ -216,7 +226,7 @@ namespace NodaTime.Test
             var end = new LocalDate(2017, 11, 10);
             var value = new DateInterval(start, end);
 
-            Assert.That(() => value.Contains(null), Throws.TypeOf<ArgumentNullException>());
+            Assert.Throws<ArgumentNullException>(() => value.Contains(null));
         }
 
         [Test]
@@ -230,181 +240,30 @@ namespace NodaTime.Test
                 new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
                 new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
 
-            Assert.That(() => value.Contains(other), Throws.TypeOf<ArgumentException>());
+            Assert.Throws<ArgumentException>(() => value.Contains(other));
         }
 
-        [Test]
-        public void Contains_EqualInterval()
+        [TestCase("2014-03-07,2014-03-07", "2014-03-07,2014-03-07", true)]
+        [TestCase("2014-03-07,2014-03-10", "2015-01-01,2015-04-01", false)]
+        [TestCase("2015-01-01,2015-04-01", "2014-03-07,2014-03-10", false)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-07,2014-03-15", true)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-10,2014-03-31", true)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-10,2014-03-15", true)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-05,2014-03-09", false)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-20,2014-04-07", false)]
+        [TestCase("2014-11-01,2014-11-30", "2014-01-01,2014-12-31", false)]
+        public void Contains_IntervalOverload(string firstInterval, string secondInterval, bool expectedResult)
         {
-            var start = new LocalDate(2014, 3, 7);
-            var end = new LocalDate(2014, 3, 7);
-            var value = new DateInterval(start, end);
-            var same = new DateInterval(start, end);
-
-            Assert.True(value.Contains(same));
-        }
-
-        [Test]
-        public void Contains_LaterInterval()
-        {
-            var value = new DateInterval(new LocalDate(2014, 3, 7), new LocalDate(2014, 3, 31));
-            var other = new DateInterval(new LocalDate(2015, 1, 1), new LocalDate(2015, 4, 1));
-
-            Assert.False(value.Contains(other));
-        }
-
-        [Test]
-        public void Contains_EarlierInterval()
-        {
-            var value = new DateInterval(new LocalDate(2014, 3, 7), new LocalDate(2014, 3, 31));
-            var other = new DateInterval(new LocalDate(2013, 6, 26), new LocalDate(2013, 7, 25));
-
-            Assert.False(value.Contains(other));
-        }
-
-        [Test]
-        public void Contains_IntervalWithSameStartDate()
-        {
-            var value = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 29));
-            var other = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 15));
-
-            Assert.True(value.Contains(other));
-        }
-
-        [Test]
-        public void Contains_IntervalWithSameEndDate()
-        {
-            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 29));
-            var other = new DateInterval(new LocalDate(2017, 11, 8), new LocalDate(2017, 11, 29));
-
-            Assert.True(value.Contains(other));
-        }
-
-        [Test]
-        public void Contains_IntervalFullyWithin()
-        {
-            var year2016 = new DateInterval(new LocalDate(2016, 1, 1), new LocalDate(2016, 12, 31));
-            var june2016 = new DateInterval(new LocalDate(2016, 6, 1), new LocalDate(2016, 6, 30));
-
-            Assert.True(year2016.Contains(june2016));
-        }
-
-        [Test]
-        public void Contains_IntersectingAtTheStart()
-        {
-            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 29));
-            var other = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 15));
-
-            Assert.False(value.Contains(other));
-        }
-
-        [Test]
-        public void Contains_IntersectingAtTheEnd()
-        {
-            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 29));
-            var other = new DateInterval(new LocalDate(2017, 11, 10), new LocalDate(2017, 11, 30));
-
-            Assert.False(value.Contains(other));
-        }
-
-        [Test]
-        public void Contains_Superset()
-        {
-            var november2017 = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 30));
-            var year2017 = new DateInterval(new LocalDate(2017, 1, 1), new LocalDate(2017, 12, 31));
-
-            Assert.False(november2017.Contains(year2017));
-        }
-
-        [Test]
-        public void Intersects_NullInterval_Throws()
-        {
-            var value = new DateInterval(new LocalDate(100), new LocalDate(200));
-            Assert.That(() => value.Intersects(null), Throws.TypeOf<ArgumentNullException>());
-        }
-
-        [Test]
-        public void Intersects_IntervalInDifferentCalendar_Throws()
-        {
-            var value = new DateInterval(
-                new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
-                new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
-
-            var other = new DateInterval(
-                new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
-                new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
-
-            Assert.That(() => value.Intersects(other), Throws.TypeOf<ArgumentException>());
-        }
-
-        [Test]
-        public void Intersects_EarlierInterval()
-        {
-            var value = new DateInterval(new LocalDate(2014, 3, 7), new LocalDate(2014, 3, 31));
-            var other = new DateInterval(new LocalDate(2013, 6, 26), new LocalDate(2013, 7, 25));
-
-            Assert.False(value.Intersects(other));
-        }
-
-        [Test]
-        public void Intersects_LaterInterval()
-        {
-            var value = new DateInterval(new LocalDate(2013, 6, 26), new LocalDate(2013, 7, 25));
-            var other = new DateInterval(new LocalDate(2014, 3, 7), new LocalDate(2014, 3, 31));
-
-            Assert.False(value.Intersects(other));
-        }
-
-        [Test]
-        public void Intersects_EqualInterval()
-        {
-            var value = new DateInterval(new LocalDate(2013, 6, 26), new LocalDate(2013, 7, 25));
-            var equal = new DateInterval(new LocalDate(2013, 6, 26), new LocalDate(2013, 7, 25));
-
-            Assert.True(value.Intersects(equal));
-        }
-
-        [Test]
-        public void Intersects_IntersectingAtTheStart()
-        {
-            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 29));
-            var other = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 5));
-
-            Assert.True(value.Intersects(other));
-        }
-
-        [Test]
-        public void Intersects_IntersectingAtTheEnd()
-        {
-            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 25));
-            var other = new DateInterval(new LocalDate(2017, 11, 18), new LocalDate(2017, 11, 30));
-
-            Assert.True(value.Intersects(other));
-        }
-
-        [Test]
-        public void Intersects_Superset()
-        {
-            var november2017 = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 30));
-            var year2017 = new DateInterval(new LocalDate(2017, 1, 1), new LocalDate(2017, 12, 31));
-
-            Assert.True(november2017.Intersects(year2017));
-        }
-
-        [Test]
-        public void Intersects_Subset()
-        {
-            var year2017 = new DateInterval(new LocalDate(2017, 1, 1), new LocalDate(2017, 12, 31));
-            var november2017 = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 30));
-
-            Assert.True(year2017.Intersects(november2017));
+            DateInterval value = ParseInterval(firstInterval);
+            DateInterval other = ParseInterval(secondInterval);
+            Assert.AreEqual(expectedResult, value.Contains(other));
         }
 
         [Test]
         public void Intersection_NullInterval_Throws()
         {
             var value = new DateInterval(new LocalDate(100), new LocalDate(200));
-            Assert.That(() => value.Intersection(null), Throws.TypeOf<ArgumentNullException>());
+            Assert.Throws<ArgumentNullException>(() => value.Intersection(null));
         }
 
         [Test]
@@ -418,64 +277,36 @@ namespace NodaTime.Test
                 new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
                 new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
 
-            Assert.That(() => value.Intersection(other), Throws.TypeOf<ArgumentException>());
+            Assert.Throws<ArgumentException>(() => value.Intersection(other));
         }
 
-        [Test]
-        public void Intersection_EqualIntervals()
+        [TestCase("2014-03-07,2014-03-07", "2014-03-07,2014-03-07", "2014-03-07,2014-03-07")]
+        [TestCase("2014-03-07,2014-03-10", "2015-01-01,2015-04-01", null)]
+        [TestCase("2015-01-01,2015-04-01", "2014-03-07,2014-03-10", null)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-07,2014-03-15", "2014-03-07,2014-03-15")]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-10,2014-03-31", "2014-03-10,2014-03-31")]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-10,2014-03-15", "2014-03-10,2014-03-15")]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-05,2014-03-09", "2014-03-07,2014-03-09")]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-20,2014-04-07", "2014-03-20,2014-03-31")]
+        [TestCase("2014-11-01,2014-11-30", "2014-01-01,2014-12-31", "2014-11-01,2014-11-30")]
+        public void Intersection(string firstInterval, string secondInterval, string expectedInterval)
         {
-            var value = new DateInterval(new LocalDate(100), new LocalDate(200));
-            var other = new DateInterval(new LocalDate(100), new LocalDate(200));
-
-            Assert.AreEqual(value, value.Intersection(other));
+            var value = ParseInterval(firstInterval);
+            var other = ParseInterval(secondInterval);
+            var expectedResult = ParseInterval(expectedInterval);
+            Assert.AreEqual(expectedResult, value.Intersection(other));
         }
-
-        [Test]
-        public void Intersection_EarlierInterval()
+        
+        private DateInterval ParseInterval(string textualInterval)
         {
-            var value = new DateInterval(new LocalDate(2014, 3, 7), new LocalDate(2014, 3, 31));
-            var other = new DateInterval(new LocalDate(2013, 6, 26), new LocalDate(2013, 7, 25));
+            if (textualInterval == null)
+                return null;
 
-            Assert.Null(value.Intersection(other));
-        }
+            var parts = textualInterval.Split(new char[] { ',' });
+            var start = LocalDatePattern.Iso.Parse(parts[0]).Value;
+            var end = LocalDatePattern.Iso.Parse(parts[1]).Value;
 
-        [Test]
-        public void Intersection_LaterInterval()
-        {
-            var value = new DateInterval(new LocalDate(2013, 6, 26), new LocalDate(2013, 7, 25));
-            var other = new DateInterval(new LocalDate(2014, 12, 7), new LocalDate(2015, 1, 1));
-
-            Assert.Null(value.Intersection(other));
-        }
-
-        [Test]
-        public void Intersection_IntersectingAtTheStart()
-        {
-            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 29));
-            var other = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 12));
-            var expected = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 12));
-
-            Assert.AreEqual(expected, value.Intersection(other));
-        }
-
-        [Test]
-        public void Intersection_IntersectingAtTheEnd()
-        {
-            var value = new DateInterval(new LocalDate(2017, 11, 3), new LocalDate(2017, 11, 25));
-            var other = new DateInterval(new LocalDate(2017, 11, 18), new LocalDate(2017, 11, 30));
-            var expected = new DateInterval(new LocalDate(2017, 11, 18), new LocalDate(2017, 11, 25));
-
-            Assert.AreEqual(expected, value.Intersection(other));
-        }
-
-        [Test]
-        public void Intersection_Subset()
-        {
-            var year2017 = new DateInterval(new LocalDate(2017, 1, 1), new LocalDate(2017, 12, 31));
-            var november2017 = new DateInterval(new LocalDate(2017, 11, 1), new LocalDate(2017, 11, 30));
-            var expected = november2017;
-
-            Assert.AreEqual(expected, year2017.Intersection(november2017));
+            return new DateInterval(start, end);
         }
     }
 }
