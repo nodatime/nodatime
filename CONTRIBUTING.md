@@ -73,7 +73,7 @@ git push origin -u MY-BRANCH-NAME
 
 When your work is finished, [open a pull request](https://help.github.com/articles/using-pull-requests) against your changes.
 
-If you're pull request fixes an issue, add a comment with the word "Fixes", "Resolves" or "Closes", followed by the issue's number:
+If your pull request fixes an issue, add a comment with the word "Fixes", "Resolves" or "Closes", followed by the issue's number:
 
 >   Fixes #1145
 
