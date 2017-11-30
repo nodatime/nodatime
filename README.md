@@ -17,3 +17,6 @@ are better handled on Stack Overflow, the mailing list, or as a GitHub issue.
 
 * [Public chat room](https://gitter.im/nodatime/nodatime) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nodatime/nodatime?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+## Contributing
+
+We appreciate your interest in contributing to Noda Time. See the [contribution guidelines](https://github.com/nodatime/nodatime/blob/master/CONTRIBUTING.md) for more details.
