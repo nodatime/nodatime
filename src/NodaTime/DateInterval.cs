@@ -139,6 +139,9 @@ namespace NodaTime
         /// interval is not earlier than the start date of this interval, and the end date of the specified interval is not
         /// later than the end date of this interval.
         /// </summary>
+        /// <remarks>
+        /// An interval contains another interval with same start and end dates, or itself.
+        /// </remarks>
         /// <param name="interval">The interval to check for containment within this interval.</param>
         /// <exception cref="ArgumentException">Start and end dates of <paramref name="interval"/> are not in the same
         /// calendar as the start and end date of this interval.</exception>
