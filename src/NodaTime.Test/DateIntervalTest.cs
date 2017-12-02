@@ -169,6 +169,16 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Calendar()
+        {
+            var calendar = CalendarSystem.Julian;
+            LocalDate start = new LocalDate(2000, 1, 1, calendar);
+            LocalDate end = new LocalDate(2000, 2, 10, calendar);
+            var interval = new DateInterval(start, end);
+            Assert.AreEqual(calendar, interval.Calendar);
+        }
+
+        [Test]
         [TestCase("1999-12-31", false, TestName = "Before start")]
         [TestCase("2000-01-01", true, TestName = "On start")]
         [TestCase("2005-06-06", true, TestName = "In middle")]
@@ -207,6 +217,96 @@ namespace NodaTime.Test
                 Assert.AreEqual(start, actualStart);
                 Assert.AreEqual(end, actualEnd);
             });
+        }
+
+        [Test]
+        public void Contains_NullInterval_Throws()
+        {
+            var start = new LocalDate(2017, 11, 6);
+            var end = new LocalDate(2017, 11, 10);
+            var value = new DateInterval(start, end);
+
+            Assert.Throws<ArgumentNullException>(() => value.Contains(null));
+        }
+
+        [Test]
+        public void Contains_IntervalWithinAnotherCalendar_Throws()
+        {
+            var value = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
+                new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
+
+            var other = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
+                new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
+
+            Assert.Throws<ArgumentException>(() => value.Contains(other));
+        }
+
+        [TestCase("2014-03-07,2014-03-07", "2014-03-07,2014-03-07", true)]
+        [TestCase("2014-03-07,2014-03-10", "2015-01-01,2015-04-01", false)]
+        [TestCase("2015-01-01,2015-04-01", "2014-03-07,2014-03-10", false)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-07,2014-03-15", true)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-10,2014-03-31", true)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-10,2014-03-15", true)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-05,2014-03-09", false)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-20,2014-04-07", false)]
+        [TestCase("2014-11-01,2014-11-30", "2014-01-01,2014-12-31", false)]
+        public void Contains_IntervalOverload(string firstInterval, string secondInterval, bool expectedResult)
+        {
+            DateInterval value = ParseInterval(firstInterval);
+            DateInterval other = ParseInterval(secondInterval);
+            Assert.AreEqual(expectedResult, value.Contains(other));
+        }
+
+        [Test]
+        public void Intersection_NullInterval_Throws()
+        {
+            var value = new DateInterval(new LocalDate(100), new LocalDate(200));
+            Assert.Throws<ArgumentNullException>(() => value.Intersection(null));
+        }
+
+        [Test]
+        public void Intersection_IntervalInDifferentCalendar_Throws()
+        {
+            var value = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
+                new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
+
+            var other = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
+                new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
+
+            Assert.Throws<ArgumentException>(() => value.Intersection(other));
+        }
+
+        [TestCase("2014-03-07,2014-03-07", "2014-03-07,2014-03-07", "2014-03-07,2014-03-07")]
+        [TestCase("2014-03-07,2014-03-10", "2015-01-01,2015-04-01", null)]
+        [TestCase("2015-01-01,2015-04-01", "2014-03-07,2014-03-10", null)]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-07,2014-03-15", "2014-03-07,2014-03-15")]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-10,2014-03-31", "2014-03-10,2014-03-31")]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-10,2014-03-15", "2014-03-10,2014-03-15")]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-05,2014-03-09", "2014-03-07,2014-03-09")]
+        [TestCase("2014-03-07,2014-03-31", "2014-03-20,2014-04-07", "2014-03-20,2014-03-31")]
+        [TestCase("2014-11-01,2014-11-30", "2014-01-01,2014-12-31", "2014-11-01,2014-11-30")]
+        public void Intersection(string firstInterval, string secondInterval, string expectedInterval)
+        {
+            var value = ParseInterval(firstInterval);
+            var other = ParseInterval(secondInterval);
+            var expectedResult = ParseInterval(expectedInterval);
+            Assert.AreEqual(expectedResult, value.Intersection(other));
+        }
+        
+        private DateInterval ParseInterval(string textualInterval)
+        {
+            if (textualInterval == null)
+                return null;
+
+            var parts = textualInterval.Split(new char[] { ',' });
+            var start = LocalDatePattern.Iso.Parse(parts[0]).Value;
+            var end = LocalDatePattern.Iso.Parse(parts[1]).Value;
+
+            return new DateInterval(start, end);
         }
     }
 }

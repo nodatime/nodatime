@@ -135,6 +135,24 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Checks whether the given interval is within this interval. This requires that the start date of the specified
+        /// interval is not earlier than the start date of this interval, and the end date of the specified interval is not
+        /// later than the end date of this interval.
+        /// </summary>
+        /// <remarks>
+        /// An interval contains another interval with same start and end dates, or itself.
+        /// </remarks>
+        /// <param name="interval">The interval to check for containment within this interval.</param>
+        /// <exception cref="ArgumentException">Start and end dates of <paramref name="interval"/> are not in the same
+        /// calendar as the start and end date of this interval.</exception>
+        /// <returns><c>true</c> if <paramref name="interval"/> is within this interval; <c>false</c> otherwise.</returns>
+        public bool Contains([NotNull] DateInterval interval)
+        {
+            ValidateInterval(interval);
+            return interval == this || Contains(interval.Start) && Contains(interval.End);
+        }
+
+        /// <summary>
         /// Gets the length of this date interval in days. This will always be at least 1.
         /// </summary>
         /// <value>The length of this date interval in days.</value>
@@ -142,6 +160,14 @@ namespace NodaTime
             // Period.Between will give us the exclusive result, so we need to add 1
             // to include the end date.
             Period.Between(Start, End, PeriodUnits.Days).Days + 1;
+
+        /// <summary>
+        /// Gets the calendar system in which the dates of this interval are.
+        /// </summary>
+        /// <value>Instance of <see cref="CalendarSystem"/>, corresponding to the calendar system
+        /// of the start date of this interval.</value>
+        [NotNull]
+        public CalendarSystem Calendar => Start.Calendar;
 
         /// <summary>
         /// Returns a string representation of this interval.
@@ -166,6 +192,39 @@ namespace NodaTime
         {
             start = Start;
             end = End;
+        }
+
+        /// <summary>
+        /// Returns the intersection between the given interval and this interval.
+        /// </summary>
+        /// <param name="interval">
+        /// The specified interval to which return the intersection with.
+        /// </param>
+        /// <returns>
+        /// A <see cref="DateInterval"/> corresponding to the intersection between the given interval and the current
+        /// instance. If there is no intersection, a null reference is returned.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// The start and end dates of <paramref name="interval" /> are not in the same calendar
+        /// as the start and end date of this interval.
+        /// </exception>
+        [CanBeNull]
+        public DateInterval Intersection([NotNull]DateInterval interval)
+        {
+            return Contains(interval) ? interval
+            : interval.Contains(this) ? this
+            : interval.Contains(Start) ? new DateInterval(Start, interval.End)
+            : interval.Contains(End) ? new DateInterval(interval.Start, End)
+            : null;
+        }
+
+        private void ValidateInterval(DateInterval interval)
+        {
+            var msg = "The start and end dates of the interval to check " +
+                "must be in the same calendar as the start and end dates of this interval.";
+
+            Preconditions.CheckNotNull(interval, nameof(interval));
+            Preconditions.CheckArgument(interval.Calendar.Equals(Start.Calendar), nameof(interval), msg);
         }
     }
 }
