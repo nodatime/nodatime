@@ -149,7 +149,7 @@ namespace NodaTime
         public bool Contains([NotNull] DateInterval interval)
         {
             ValidateInterval(interval);
-            return Contains(interval.Start) && Contains(interval.End);
+            return interval == this || Contains(interval.Start) && Contains(interval.End);
         }
 
         /// <summary>
@@ -211,21 +211,11 @@ namespace NodaTime
         [CanBeNull]
         public DateInterval Intersection([NotNull]DateInterval interval)
         {
-            ValidateInterval(interval);
-
-            if (interval == this || Contains(interval))
-                return interval;
-
-            if (interval.Contains(this))
-                return this;
-
-            if (Contains(interval.Start))
-                return new DateInterval(interval.Start, End);
-
-            if (Contains(interval.End))
-                return new DateInterval(Start, interval.End);
-
-            return null;
+            return Contains(interval) ? interval
+            : interval.Contains(this) ? this
+            : interval.Contains(Start) ? new DateInterval(Start, interval.End)
+            : interval.Contains(End) ? new DateInterval(interval.Start, End)
+            : null;
         }
 
         private void ValidateInterval(DateInterval interval)
@@ -236,8 +226,5 @@ namespace NodaTime
             Preconditions.CheckNotNull(interval, nameof(interval));
             Preconditions.CheckArgument(interval.Calendar.Equals(Start.Calendar), nameof(interval), msg);
         }
-
-        private bool ContainsExtreme(DateInterval interval) =>
-            Contains(interval.Start) || Contains(interval.End);
     }
 }
