@@ -1,12 +1,11 @@
 ﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
-using System;
-using System.Collections.Generic;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime
 {
@@ -143,13 +142,13 @@ namespace NodaTime
         /// An interval contains another interval with same start and end dates, or itself.
         /// </remarks>
         /// <param name="interval">The interval to check for containment within this interval.</param>
-        /// <exception cref="ArgumentException">Start and end dates of <paramref name="interval"/> are not in the same
-        /// calendar as the start and end date of this interval.</exception>
+        /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different
+        /// calendar to this date interval.</exception>
         /// <returns><c>true</c> if <paramref name="interval"/> is within this interval; <c>false</c> otherwise.</returns>
         public bool Contains([NotNull] DateInterval interval)
         {
             ValidateInterval(interval);
-            return interval == this || Contains(interval.Start) && Contains(interval.End);
+            return Contains(interval.Start) && Contains(interval.End);
         }
 
         /// <summary>
@@ -162,10 +161,9 @@ namespace NodaTime
             Period.Between(Start, End, PeriodUnits.Days).Days + 1;
 
         /// <summary>
-        /// Gets the calendar system in which the dates of this interval are.
+        /// Gets the calendar system of the dates in this interval.
         /// </summary>
-        /// <value>Instance of <see cref="CalendarSystem"/>, corresponding to the calendar system
-        /// of the start date of this interval.</value>
+        /// <value>The calendar system of the dates in this interval.</value>
         [NotNull]
         public CalendarSystem Calendar => Start.Calendar;
 
@@ -198,33 +196,29 @@ namespace NodaTime
         /// Returns the intersection between the given interval and this interval.
         /// </summary>
         /// <param name="interval">
-        /// The specified interval to which return the intersection with.
+        /// The specified interval to intersect with this one.
         /// </param>
         /// <returns>
         /// A <see cref="DateInterval"/> corresponding to the intersection between the given interval and the current
         /// instance. If there is no intersection, a null reference is returned.
         /// </returns>
-        /// <exception cref="ArgumentException">
-        /// The start and end dates of <paramref name="interval" /> are not in the same calendar
-        /// as the start and end date of this interval.
-        /// </exception>
+        /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different
+        /// calendar to this date interval.</exception>
         [CanBeNull]
         public DateInterval Intersection([NotNull]DateInterval interval)
         {
             return Contains(interval) ? interval
-            : interval.Contains(this) ? this
-            : interval.Contains(Start) ? new DateInterval(Start, interval.End)
-            : interval.Contains(End) ? new DateInterval(interval.Start, End)
-            : null;
+                : interval.Contains(this) ? this
+                : interval.Contains(Start) ? new DateInterval(Start, interval.End)
+                : interval.Contains(End) ? new DateInterval(interval.Start, End)
+                : null;
         }
 
         private void ValidateInterval(DateInterval interval)
         {
-            var msg = "The start and end dates of the interval to check " +
-                "must be in the same calendar as the start and end dates of this interval.";
-
             Preconditions.CheckNotNull(interval, nameof(interval));
-            Preconditions.CheckArgument(interval.Calendar.Equals(Start.Calendar), nameof(interval), msg);
+            Preconditions.CheckArgument(interval.Calendar.Equals(Start.Calendar), nameof(interval),
+                "The specified interval uses a different calendar system to this one");
         }
     }
 }
