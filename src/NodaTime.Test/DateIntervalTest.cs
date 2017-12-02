@@ -300,7 +300,9 @@ namespace NodaTime.Test
         private DateInterval ParseInterval(string textualInterval)
         {
             if (textualInterval == null)
+            {
                 return null;
+            }
 
             var parts = textualInterval.Split(new char[] { ',' });
             var start = LocalDatePattern.Iso.Parse(parts[0]).Value;
