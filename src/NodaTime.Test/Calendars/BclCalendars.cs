@@ -74,7 +74,6 @@ namespace NodaTime.Test.Calendars
                 case "HebrewCalendar": return CalendarSystem.HebrewCivil;
                 case "PersianCalendar": return bcl.IsLeapYear(1) ? CalendarSystem.PersianSimple : CalendarSystem.PersianAstronomical;
                 case "UmAlQuraCalendar": return CalendarSystem.UmAlQura;
-                case "WondrousCalendar": return CalendarSystem.Wondrous;
                 case "JulianCalendar":
                     return CalendarSystem.Julian;
                 default:

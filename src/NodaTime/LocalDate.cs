@@ -14,7 +14,6 @@ using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
-using System.Diagnostics;
 
 namespace NodaTime
 {
@@ -36,7 +35,6 @@ namespace NodaTime
 #if !NETSTANDARD1_3
     [Serializable]
 #endif
-    [DebuggerDisplay("{Year}-{Month}-{Day} {Calendar.Name}")]
     public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IComparable, IFormattable, IXmlSerializable
 #if !NETSTANDARD1_3
         , ISerializable
