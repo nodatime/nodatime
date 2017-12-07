@@ -296,7 +296,42 @@ namespace NodaTime.Test
             var expectedResult = ParseInterval(expectedInterval);
             Assert.AreEqual(expectedResult, value.Intersection(other));
         }
-        
+
+        [Test]
+        public void Union_NullInterval_Throws()
+        {
+            var value = new DateInterval(new LocalDate(100), new LocalDate(200));
+            Assert.Throws<ArgumentNullException>(() => value.Union(null));
+        }
+
+        [Test]
+        public void Union_DifferentCalendar_Throws()
+        {
+            var value = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
+                new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
+
+            var other = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
+                new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
+
+            Assert.Throws<ArgumentException>(() => value.Union(other));
+        }
+
+        [TestCase("2014-03-07,2014-03-10", "2014-03-12,2014-03-17", null)]
+        [TestCase("2014-03-07,2014-03-10", "2014-03-11,2014-03-17", "2014-03-07,2014-03-17")]
+        [TestCase("2014-03-07,2014-03-20", "2014-03-07,2014-03-20", "2014-03-07,2014-03-20")]
+        [TestCase("2017-01-01,2017-03-31", "2017-02-15,2017-06-26", "2017-01-01,2017-06-26")]
+        [TestCase("2017-02-15,2017-06-26", "2017-01-01,2017-03-31", "2017-01-01,2017-06-26")]
+        public void Union(string first, string second, string expected)
+        {
+            DateInterval firstInterval = ParseInterval(first);
+            DateInterval secondInterval = ParseInterval(second);
+            DateInterval expectedResult = ParseInterval(expected);
+
+            Assert.AreEqual(expectedResult, firstInterval.Union(secondInterval));
+        }
+
         private DateInterval ParseInterval(string textualInterval)
         {
             if (textualInterval == null)
