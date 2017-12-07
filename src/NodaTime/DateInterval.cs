@@ -215,7 +215,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the union between the given interval and this interval, as long as they're overlaping or contiguous.
+        /// Returns the union between the given interval and this interval, as long as they're overlapping or contiguous.
         /// </summary>
         /// <param name="interval">
         /// The specified interval to unite with this one. 
