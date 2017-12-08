@@ -318,18 +318,22 @@ namespace NodaTime.Test
             Assert.Throws<ArgumentException>(() => value.Union(other));
         }
 
-        [TestCase("2014-03-07,2014-03-10", "2014-03-12,2014-03-17", null)]
-        [TestCase("2014-03-07,2014-03-10", "2014-03-11,2014-03-17", "2014-03-07,2014-03-17")]
-        [TestCase("2014-03-07,2014-03-20", "2014-03-07,2014-03-20", "2014-03-07,2014-03-20")]
-        [TestCase("2017-01-01,2017-03-31", "2017-02-15,2017-06-26", "2017-01-01,2017-06-26")]
-        [TestCase("2017-02-15,2017-06-26", "2017-01-01,2017-03-31", "2017-01-01,2017-06-26")]
+        [TestCase("2014-03-07,2014-03-20", "2015-03-07,2015-03-20", null, Description = "Disjointed intervals")]
+        [TestCase("2014-03-07,2014-03-20", "2014-03-21,2014-03-30", "2014-03-07,2014-03-30", Description = "Abutting intervals")]
+        [TestCase("2014-03-07,2014-03-20", "2014-03-07,2014-03-20", "2014-03-07,2014-03-20", Description = "Equal intervals")]
+        [TestCase("2014-03-07,2014-03-20", "2014-03-15,2014-03-23", "2014-03-07,2014-03-23", Description = "Overlapping intervals")]
+        [TestCase("2014-03-07,2014-03-20", "2014-03-10,2014-03-15", "2014-03-07,2014-03-20", Description = "Interval completely contained in another")]
         public void Union(string first, string second, string expected)
         {
             DateInterval firstInterval = ParseInterval(first);
             DateInterval secondInterval = ParseInterval(second);
             DateInterval expectedResult = ParseInterval(expected);
 
-            Assert.AreEqual(expectedResult, firstInterval.Union(secondInterval));
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedResult, firstInterval.Union(secondInterval), "First union failed.");
+                Assert.AreEqual(expectedResult, secondInterval.Union(firstInterval), "Second union failed.");
+            });
         }
 
         private DateInterval ParseInterval(string textualInterval)
