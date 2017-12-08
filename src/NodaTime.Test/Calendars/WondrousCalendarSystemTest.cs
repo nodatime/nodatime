@@ -9,23 +9,6 @@ using System;
 
 namespace NodaTime.Test.Calendars
 {
-    public static class WondrousCalendarHelper
-    {
-        /// <summary>
-        /// Get a text representation of the date.
-        /// </summary>
-        public static string AsWondrousString(this LocalDate input)
-        {
-            // minimal formatting
-
-            var year = input.Year;
-            var month = WondrousCalendarSystemTest.WondrousMonth(input);
-            var day = WondrousCalendarSystemTest.WondrousDay(input);
-
-            return $"{year}-{month}-{day}";
-        }
-    }
-
     /// <summary>
     /// Tests for the Wondrous calendar system.
     /// </summary>
@@ -35,15 +18,6 @@ namespace NodaTime.Test.Calendars
         // containing Ayyam-i-Ha. The days here are represented in month
         // 18 in LocalDate etc.
         const int AyyamiHaMonth = 0;
-
-        [Test]
-        public void ExtensionMethod()
-        {
-            Assert.AreEqual(CreateWondrousDate(180, 10, 10).AsWondrousString(), "180-10-10");
-            Assert.AreEqual(CreateWondrousDate(180, 18, 19).AsWondrousString(), "180-18-19");
-            Assert.AreEqual(CreateWondrousDate(180, 0, 3).AsWondrousString(), "180-0-3");
-            Assert.AreEqual(CreateWondrousDate(180, 19, 1).AsWondrousString(), "180-19-1");
-        }
 
         [Test]
         public void WondrousEpoch()
@@ -364,7 +338,7 @@ namespace NodaTime.Test.Calendars
         {
             var start = CreateWondrousDate(year, month, day);
             var end = CreateWondrousDate(year, eomMonth, eomDay);
-            Assert.AreEqual(end.AsWondrousString(), DateAdjusters.EndOfMonth(start).AsWondrousString());
+            Assert.AreEqual(AsWondrousString(end), AsWondrousString(DateAdjusters.EndOfMonth(start)));
         }
 
         [Test]
@@ -526,8 +500,8 @@ namespace NodaTime.Test.Calendars
             LocalDate d1 = new LocalDate(2012, 2, 29).WithCalendar(CalendarSystem.Wondrous);
             LocalDate d2 = new LocalDate(2013, 2, 28).WithCalendar(CalendarSystem.Wondrous);
 
-            Assert.AreEqual("168-0-4", d1.AsWondrousString());
-            Assert.AreEqual("169-0-3", d2.AsWondrousString());
+            Assert.AreEqual("168-0-4", AsWondrousString(d1));
+            Assert.AreEqual("169-0-3", AsWondrousString(d2));
 
             Assert.AreEqual(Period.FromMonths(19) + Period.FromDays(18), Period.Between(d1, d2));
         }
@@ -651,5 +625,48 @@ namespace NodaTime.Test.Calendars
             }
             return input.Month;
         }
+
+        /// <summary>
+        /// Get a text representation of the date.
+        /// </summary>
+        internal static string AsWondrousString(LocalDate input)
+        {
+            var year = input.Year;
+            var month = WondrousCalendarSystemTest.WondrousMonth(input);
+            var day = WondrousCalendarSystemTest.WondrousDay(input);
+
+            return $"{year}-{month}-{day}";
+        }
+
+        [Test]
+        public void HelperMethod_WondrousDay()
+        {
+            // ensure that this helper method is working
+            Assert.AreEqual(WondrousDay(CreateWondrousDate(180, 10, 10)), 10);
+            Assert.AreEqual(WondrousDay(CreateWondrousDate(180, 18, 19)), 19);
+            Assert.AreEqual(WondrousDay(CreateWondrousDate(180, 0, 3)), 3);
+            Assert.AreEqual(WondrousDay(CreateWondrousDate(180, 19, 1)), 1);
+        }
+
+        [Test]
+        public void HelperMethod_WondrousMonth()
+        {
+            // ensure that this helper method is working
+            Assert.AreEqual(WondrousMonth(CreateWondrousDate(180, 10, 10)), 10);
+            Assert.AreEqual(WondrousMonth(CreateWondrousDate(180, 18, 19)), 18);
+            Assert.AreEqual(WondrousMonth(CreateWondrousDate(180, 0, 3)), 0);
+            Assert.AreEqual(WondrousMonth(CreateWondrousDate(180, 19, 1)), 19);
+        }
+
+        [Test]
+        public void HelperMethod_AsWondrousString()
+        {
+            // ensure that this helper method is working
+            Assert.AreEqual(AsWondrousString(CreateWondrousDate(180, 10, 10)), "180-10-10");
+            Assert.AreEqual(AsWondrousString(CreateWondrousDate(180, 18, 19)), "180-18-19");
+            Assert.AreEqual(AsWondrousString(CreateWondrousDate(180, 0, 3)), "180-0-3");
+            Assert.AreEqual(AsWondrousString(CreateWondrousDate(180, 19, 1)), "180-19-1");
+        }
+
     }
 }
