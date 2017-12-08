@@ -156,9 +156,9 @@ namespace NodaTime
         /// </summary>
         /// <value>The length of this date interval in days.</value>
         public int Length =>
-            // Period.Between will give us the exclusive result, so we need to add 1
+            // Period.DaysBetween will give us the exclusive result, so we need to add 1
             // to include the end date.
-            Period.Between(Start, End, PeriodUnits.Days).Days + 1;
+            Period.DaysBetween(Start, End) + 1;
 
         /// <summary>
         /// Gets the calendar system of the dates in this interval.
@@ -231,7 +231,12 @@ namespace NodaTime
             var start = LocalDate.Min(Start, interval.Start);
             var end = LocalDate.Max(End, interval.End);
 
-            return Period.Between(start, end, PeriodUnits.Days).Days >= Length + interval.Length
+            // Check whether the length of the interval we *would* construct is greater
+            // than the sum of the lengths - if it is, there's a day in that candidate union
+            // that isn't in either interval. Note the absence of "+ 1" and the use of >=
+            // - it's equivalent to Period.DaysBetween(...) + 1 > Length + interval.Length,
+            // but with fewer operations.
+            return Period.DaysBetween(start, end) >= Length + interval.Length
                 ? null
                 : new DateInterval(start, end);
         }
