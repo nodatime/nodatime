@@ -12,9 +12,6 @@ namespace NodaTime.Test
     public class DateIntervalTest
     {
         private static readonly CalendarSystem JulianCalendar = CalendarSystem.Julian;
-        private static readonly List<CalendarSystem> SupportedCalendars = CalendarSystem.Ids.ToList().Select(CalendarSystem.ForId).ToList();
-        private static readonly LocalDate MinIsoDate = new LocalDate(-9998, 1, 1);
-        private static readonly LocalDate MaxIsoDate = new LocalDate(9999, 12, 31);
 
         [Test]
         public void Construction_DifferentCalendars()
