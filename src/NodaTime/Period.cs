@@ -414,7 +414,7 @@ namespace NodaTime
                 case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.UnitsBetween(start.Date, endDate));
                 case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.Date, endDate));
                 case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.Date, endDate));
-                case PeriodUnits.Days: return FromDays(DatePeriodFields.DaysField.UnitsBetween(start.Date, endDate));
+                case PeriodUnits.Days: return FromDays(DaysBetween(start.Date, endDate));
                 case PeriodUnits.Hours: return FromHours(TimePeriodField.Hours.UnitsBetween(start, end));
                 case PeriodUnits.Minutes: return FromMinutes(TimePeriodField.Minutes.UnitsBetween(start, end));
                 case PeriodUnits.Seconds: return FromSeconds(TimePeriodField.Seconds.UnitsBetween(start, end));
@@ -641,7 +641,7 @@ namespace NodaTime
                 case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.UnitsBetween(start, end));
                 case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.UnitsBetween(start, end));
                 case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start, end));
-                case PeriodUnits.Days: return FromDays(DatePeriodFields.DaysField.UnitsBetween(start, end));
+                case PeriodUnits.Days: return FromDays(DaysBetween(start, end));
             }
 
             // Multiple fields
@@ -725,6 +725,26 @@ namespace NodaTime
         [Pure]
         [NotNull]
         public static Period Between(LocalTime start, LocalTime end) => Between(start, end, PeriodUnits.AllTimeUnits);
+
+        /// <summary>
+        /// Returns the number of days between two dates. This allows optimizations in DateInterval,
+        /// and for date calculations which just use days - we don't need state or a virtual method invocation.
+        /// </summary>
+        internal static int DaysBetween(LocalDate start, LocalDate end)
+        {
+            // We already assume the calendars are the same.
+            if (start.YearMonthDay == end.YearMonthDay)
+            {
+                return 0;
+            }
+            // Note: I've experimented with checking for the dates being in the same year and optimizing that.
+            // It helps a little if they're in the same month, but just that test has a cost for other situations.
+            // Being able to find the day of year if they're in the same year but different months doesn't help,
+            // somewhat surprisingly.
+            int startDays = start.DaysSinceEpoch;
+            int endDays = end.DaysSinceEpoch;
+            return endDays - startDays;
+        }
 
         /// <summary>
         /// Returns whether or not this period contains any non-zero-valued time-based properties (hours or lower).

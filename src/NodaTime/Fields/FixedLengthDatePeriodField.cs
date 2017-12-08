@@ -72,20 +72,7 @@ namespace NodaTime.Fields
             return new LocalDate(days, calendar);
         }
 
-        public int UnitsBetween(LocalDate start, LocalDate end)
-        {
-            // We already assume the calendars are the same.
-            if (start.YearMonthDay == end.YearMonthDay)
-            {
-                return 0;
-            }
-            // Note: I've experimented with checking for the dates being in the same year and optimizing that.
-            // It helps a little if they're in the same month, but just that test has a cost for other situations.
-            // Being able to find the day of year if they're in the same year but different months doesn't help,
-            // somewhat surprisingly.
-            int startDays = start.DaysSinceEpoch;
-            int endDays = end.DaysSinceEpoch;
-            return (endDays - startDays) / unitDays;
-        }
+        public int UnitsBetween(LocalDate start, LocalDate end) =>
+            Period.DaysBetween(start, end) / unitDays;
     }
 }
