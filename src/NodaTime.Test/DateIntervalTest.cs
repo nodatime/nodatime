@@ -296,7 +296,46 @@ namespace NodaTime.Test
             var expectedResult = ParseInterval(expectedInterval);
             Assert.AreEqual(expectedResult, value.Intersection(other));
         }
-        
+
+        [Test]
+        public void Union_NullInterval_Throws()
+        {
+            var value = new DateInterval(new LocalDate(100), new LocalDate(200));
+            Assert.Throws<ArgumentNullException>(() => value.Union(null));
+        }
+
+        [Test]
+        public void Union_DifferentCalendar_Throws()
+        {
+            var value = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
+                new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
+
+            var other = new DateInterval(
+                new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
+                new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
+
+            Assert.Throws<ArgumentException>(() => value.Union(other));
+        }
+
+        [TestCase("2014-03-07,2014-03-20", "2015-03-07,2015-03-20", null, Description = "Disjointed intervals")]
+        [TestCase("2014-03-07,2014-03-20", "2014-03-21,2014-03-30", "2014-03-07,2014-03-30", Description = "Abutting intervals")]
+        [TestCase("2014-03-07,2014-03-20", "2014-03-07,2014-03-20", "2014-03-07,2014-03-20", Description = "Equal intervals")]
+        [TestCase("2014-03-07,2014-03-20", "2014-03-15,2014-03-23", "2014-03-07,2014-03-23", Description = "Overlapping intervals")]
+        [TestCase("2014-03-07,2014-03-20", "2014-03-10,2014-03-15", "2014-03-07,2014-03-20", Description = "Interval completely contained in another")]
+        public void Union(string first, string second, string expected)
+        {
+            DateInterval firstInterval = ParseInterval(first);
+            DateInterval secondInterval = ParseInterval(second);
+            DateInterval expectedResult = ParseInterval(expected);
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedResult, firstInterval.Union(secondInterval), "First union failed.");
+                Assert.AreEqual(expectedResult, secondInterval.Union(firstInterval), "Second union failed.");
+            });
+        }
+
         private DateInterval ParseInterval(string textualInterval)
         {
             if (textualInterval == null)

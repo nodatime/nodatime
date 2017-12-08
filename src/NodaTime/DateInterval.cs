@@ -214,6 +214,28 @@ namespace NodaTime
                 : null;
         }
 
+        /// <summary>
+        /// Returns the union between the given interval and this interval, as long as they're overlapping or contiguous.
+        /// </summary>
+        /// <param name="interval">The specified interval from which to generate the union interval.</param>
+        /// <returns>
+        /// A <see cref="DateInterval"/> corresponding to the union between the given interval and the current
+        /// instance, in the case the intervals overlap or are contiguous; a null reference otherwise.
+        /// </returns>
+        /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different calendar to this date interval.</exception>
+        [CanBeNull]
+        public DateInterval Union([NotNull] DateInterval interval)
+        {
+            ValidateInterval(interval);
+
+            var start = LocalDate.Min(Start, interval.Start);
+            var end = LocalDate.Max(End, interval.End);
+
+            return Period.Between(start, end, PeriodUnits.Days).Days >= Length + interval.Length
+                ? null
+                : new DateInterval(start, end);
+        }
+
         private void ValidateInterval(DateInterval interval)
         {
             Preconditions.CheckNotNull(interval, nameof(interval));
