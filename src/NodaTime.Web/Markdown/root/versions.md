@@ -4,6 +4,18 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
+## 2.3.0 (unreleased)
+
+New features:
+
+- `Deconstruct` methods to support C# 7 deconstruction in many types
+- `Min`/`Max` methods added to `LocalDate`, `LocalTime` and `LocalDateTime`
+- `OffsetDate` and `OffsetTime` structs added to represent dates or times-of-day with offsets,
+  with conversions from other types as approrpiate.
+- `OffsetDateTime.InZone` method added for easier conversion to `ZonedDateTime`
+- New operations on `DateInterval`: `Contains(DateInterval)`, `Union` and `Intersection`
+- New calendar system: the Wondrous calendar
+
 ## 2.0.5, 2.1.2, 2.2.3, released 2017-10-23/2017-11-16 with tzdb 2017c
 
 This set of patch releases simply rebuilds the previous set of
