@@ -51,7 +51,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.AreEqual(19, WondrousMonth(wondrous));
 
-            Assert.AreEqual(Era.BahaiEra, wondrous.Era);
+            Assert.AreEqual(Era.Bahai, wondrous.Era);
             Assert.AreEqual(173, wondrous.YearOfEra);
 
             Assert.AreEqual(173, wondrous.Year);

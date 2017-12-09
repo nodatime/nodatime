@@ -822,7 +822,7 @@ namespace NodaTime
             internal static readonly CalendarSystem UmAlQura =
                 new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraId, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae);
             internal static readonly CalendarSystem Wondrous =
-                new CalendarSystem(CalendarOrdinal.Wondrous, WondrousId, WondrousName, new WondrousYearMonthDayCalculator(), Era.BahaiEra);
+                new CalendarSystem(CalendarOrdinal.Wondrous, WondrousId, WondrousName, new WondrousYearMonthDayCalculator(), Era.Bahai);
 
             // Static constructor to enforce laziness. This used to be important to avoid a Heisenbug.
             // I don't believe it's strictly required now, but it does no harm and I don't want to go
