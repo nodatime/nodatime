@@ -17,6 +17,10 @@ echo "Copying metadata for previous versions"
 for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x 2.1.x 2.2.x; do
   mkdir -p tmp/docfx/obj/$version
   cp -r history/$version/api tmp/docfx/obj/$version
+  if [[ -d history/$version/overwrite ]]
+  then
+    cp -r history/$version/overwrite tmp/docfx/obj/$version
+  fi
   cp docfx/toc.yml tmp/docfx/obj/$version
 done
 
