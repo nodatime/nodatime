@@ -29,6 +29,7 @@
 #   - Clone of the nodatime repo directory + Json.NET src 
 #     from the nodatime.serialization repo
 #   - Docfx metadata in "api" directory
+#   - Docfx snippets for 2.1 onwards
 # - packages
 #   - nupkg files for each minor version, e.g NodaTime-1.0.x.nupkg
 
@@ -65,7 +66,7 @@ echo "Cloning 2.1.x main repo"
 git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.1.x 2.1.x
 rm -rf 2.1.x/.git
 
-echo "Cloning 2.1.x main repo"
+echo "Cloning 2.2.x main repo"
 git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.2.x 2.2.x
 rm -rf 2.2.x/.git
 
@@ -88,15 +89,19 @@ cd ..
 echo "Preparing for docfx of 2.1.x"
 cd 2.1.x
 dotnet restore src/NodaTime
+dotnet restore src/NodaTime.Demo
 dotnet restore src/NodaTime.Testing
 dotnet restore src/NodaTime.Serialization.JsonNet
+dotnet restore build/SnippetExtractor
 cd ..
 
 echo "Preparing for docfx of 2.2.x"
 cd 2.2.x
 dotnet restore src/NodaTime
+dotnet restore src/NodaTime.Demo
 dotnet restore src/NodaTime.Testing
 dotnet restore src/NodaTime.Serialization.JsonNet
+dotnet restore build/SnippetExtractor
 cd ..
 
 echo "Fetching nuget packages"
@@ -132,15 +137,28 @@ cp packages/NodaTime.Serialization.JsonNet-2.0.x.nupkg packages/NodaTime.Seriali
 cp packages/NodaTime.Serialization.JsonNet-2.0.x.nupkg packages/NodaTime.Serialization.JsonNet-2.2.x.nupkg 
 
 # Docfx metadata
-for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x 2.1.x 2.2.x; do
+for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x 2.1.x 2.2.x
+do
   echo "Building docfx metadata for $version"
   cp ../docfx/docfx-$version.json $version/docfx.json
   "$DOCFX" metadata $version/docfx.json -f
 done
 
+# Snippets
+for version in 2.1.x 2.2.x
+do
+  echo "Generating snippets for $version"
+  (cd $version;
+   dotnet restore src/NodaTime-all.sln;
+   dotnet build src/NodaTime-All.sln;
+   mkdir overwrite
+   dotnet run -p build/SnippetExtractor/SnippetExtractor.csproj -- src/NodaTime-All.sln NodaTime.Demo overwrite)
+done
+
 # We don't need TZDB/CLDR/versionXML, or docs, or
 # web site
-for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x; do
+for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x
+do
   rm -rf $version/{data,docs,www}
 done
 
