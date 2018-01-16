@@ -213,9 +213,9 @@ namespace NodaTime.Test.TimeZones
         [TestCaseSource(nameof(SystemTimeZones))]
         public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
         {
-            // As of March 6th 2017, the Windows time zone database hasn't caught up to
-            // 2017a which reflected the change that Mongolia no longer observes DST.
-            if (bclZone.Id == "Ulaanbaatar Standard Time" || bclZone.Id == "W. Mongolia Standard Time")
+            // As of January 16th 2018, the Windows time zone database hasn't caught up
+            // with the Namibia change in TZDB 2017c.
+            if (bclZone.Id == "Namibia Standard Time")
             {
                 return;
             }
