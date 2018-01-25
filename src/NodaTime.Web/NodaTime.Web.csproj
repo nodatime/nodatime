@@ -5,11 +5,13 @@
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
     <LangVersion>latest</LangVersion>
+    <!-- Make the result of publishing more resilient in the face of unexpected environments. -->
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
   </PropertyGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
     <ProjectReference Include="..\NodaTime.TzValidate.NodaDump\NodaTime.TzValidate.NodaDump.csproj" />
     <PackageReference Include="Google.Protobuf" Version="3.5.0" />
