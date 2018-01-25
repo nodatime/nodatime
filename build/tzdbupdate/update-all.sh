@@ -29,7 +29,7 @@ do
 done
 
 echo "Copying files to storage"
-gsutil.cmd cp tmp-gcs/*.zip gs://nodatime/releases
+(cd tmp-gcs; gsutil.cmd cp *.zip gs://nodatime/releases)
 gsutil.cmd cp ../../src/NodaTime/TimeZones/Tzdb.nzd gs://nodatime/tzdb/tzdb$1.nzd
 echo "Hashing files"
 dotnet run -p ../HashStorageFiles
