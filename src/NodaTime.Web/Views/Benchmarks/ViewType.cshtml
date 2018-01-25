@@ -1,13 +1,15 @@
 ﻿@using NodaTime.Benchmarks;
-@model (BenchmarkType type, string previousCommit)
+@* Want: (BenchmarkType type, string previousCommit) *@
+@* This is fixed in some unknown version of Razor; revisit occasionally. *@
+@model ValueTuple<BenchmarkType, string>
 
 @{
     ViewBag.Title = "Benchmark type";
-    var type = Model.type;
+    var type = Model.Item1;
     var run = type.Run;
     var env = type.Environment;
     var benchmarks = type.Benchmarks;
-    var previousCommit = Model.previousCommit;
+    var previousCommit = Model.Item2;
 }
 
 <div class="row">
