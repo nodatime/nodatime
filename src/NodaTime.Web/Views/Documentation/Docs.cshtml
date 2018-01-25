@@ -12,22 +12,22 @@
         <div class="large-3 columns">
             <ul class="accordion" data-accordion>
                 @foreach (var category in Model.Bundle.Categories)
-                {                
+                {
                     <li class="accordion-navigation">@category.Title</li>
                     <div class="content">
                     <ul class="side-nav">
-                    @foreach (var page in category.Pages)
+                    @foreach (var contentPage in category.Pages)
                     {
-                        <li><a href="@page.Id">@page.Title</a></li>
+                        <li><a href="@contentPage.Id">@contentPage.Title</a></li>
                     }
                     </ul>
                     </div>
                 }
-                @if (Model.Bundle.Name != "developer")
-                {
-                  <footer>Version @Model.Bundle.Name</footer>
-                }
             </ul>
+            @if (Model.Bundle.Name != "developer")
+            {
+                <footer>Version @Model.Bundle.Name</footer>
+            }
         </div>
     </div>
 </section>
