@@ -19,5 +19,5 @@ dotnet run --no-build -c Release -f netcoreapp1.0 -p src/NodaTime.Test -- --wher
 dotnet run --no-build -c Release -f netcoreapp2.0 -p src/NodaTime.Test -- --where=cat!=Slow
 
 dotnet build src/NodaTime-Web.sln
-dotnet run -f netcoreapp1.0 -p src/NodaTime.Web.Test
+dotnet run -f netcoreapp2.0 -p src/NodaTime.Web.Test
 

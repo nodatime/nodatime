@@ -44,9 +44,7 @@ namespace NodaTime.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services
-                .AddMvc()
-                .AddRazorOptions(options => options.ParseOptions = new CSharpParseOptions(LanguageVersion.CSharp7)); ;
+            services.AddMvc();
             
             if (UseGoogleCloudStorage)
             {
