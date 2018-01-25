@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.using System;
 
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
@@ -18,29 +19,23 @@ namespace NodaTime.Web
 
         public static void Main(string[] args)
         {
-            if (args.Contains("--smoke-test"))
+            if (args.Contains(SmokeTestArg))
             {
                 RunSmokeTests().GetAwaiter().GetResult();
             }
             else
             {
-                Run(CancellationToken.None);
+                CreateHost().Run();
             }
         }
 
-        private static void Run(CancellationToken cancellationToken)
-        {
-            var host = new WebHostBuilder()
+        private static IWebHost CreateHost() =>
+            WebHost.CreateDefaultBuilder()
+                .UseStartup<Startup>()
                 // Uncomment these lines if startup is failing
                 //.CaptureStartupErrors(true)
                 //.UseSetting("detailedErrors", "true")
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
                 .Build();
-            host.Run(cancellationToken);
-        }
 
         const int TestDurationSeconds = 15;
         const int ServerStartupSeconds = 5;
@@ -51,7 +46,7 @@ namespace NodaTime.Web
         {
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "smoketests");
             var cts = new CancellationTokenSource();
-            Task serverTask = Task.Run(() => Run(cts.Token));
+            Task serverTask = CreateHost().RunAsync(cts.Token);
 
             // Give it 5 seconds to come up. We probably don't need this long, but it's harmless.
             Thread.Sleep(ServerStartupSeconds * 1000);
