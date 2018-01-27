@@ -75,8 +75,9 @@ namespace NodaTime.Web.Models
                 Releases = releases;
                 // "Latest" is in terms of version, not release date. (So if
                 // 1.4 comes out after 2.0, 2.0 is still latest.)
+                // Pre-release versions are excluded.
                 LatestRelease = releases
-                    .Where(r => !r.File.Contains("-src"))
+                    .Where(r => !r.File.Contains("-src") && r.Version?.Prerelease == null)
                     .OrderByDescending(r => r.Version)
                     .First();
             }

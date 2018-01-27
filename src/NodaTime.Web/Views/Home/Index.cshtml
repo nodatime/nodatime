@@ -94,9 +94,9 @@ var before = london.AtStrictly(localDate);
             <ul>
             @{
                 var latest = releases.LatestRelease;
-                <li><a href="@latest.DownloadUrl">@latest.File</a></li>
+                <li>Latest stable binaries: <a href="@latest.DownloadUrl">@latest.File</a></li>
                 @* TODO: Create a Release model that contains multiple files instead. *@
-                <li><a href="@latest.DownloadUrl.Replace(".zip", "-src.zip")">@latest.File.Replace(".zip", "-src.zip")</a></li>
+                <li>Latest stable source: <a href="@latest.DownloadUrl.Replace(".zip", "-src.zip")">@latest.File.Replace(".zip", "-src.zip")</a></li>
                 <li><a href="downloads/">All downloads</a></li>
             }
             </ul>
