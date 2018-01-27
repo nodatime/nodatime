@@ -41,6 +41,7 @@ git clone https://github.com/nodatime/nodatime.org.git --depth 1 $root/$commit/n
 echo "Build and test successful. Pushing."
 
 # Commit and push
-git -C $root/$commit/nodatime.org add --all
+# Ignore anything in .gitignore when adding files
+git -C $root/$commit/nodatime.org add --all -f
 git -C $root/$commit/nodatime.org commit -a -m "Regenerate from main repo commit $commit"
 git -C $root/$commit/nodatime.org push
