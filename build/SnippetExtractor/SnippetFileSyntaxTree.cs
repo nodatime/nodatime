@@ -4,7 +4,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.DocAsCode.Metadata.ManagedReference;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +43,8 @@ namespace SnippetExtractor
                 {
                     throw new Exception($"Couldn't get a symbol for Snippet.For argument: {snippetFor.ToString()}");
                 }
-                var uid = VisitorHelper.GetId(targetSymbol);
+                // docfx UIDs don't have the M: (etc) prefix.
+                var uid = targetSymbol.GetDocumentationCommentId().Substring(2);
                 var block = snippetFor.Ancestors().OfType<BlockSyntax>().First();
                 yield return new SourceSnippet(uid, block.GetLines(), usings);
             }
