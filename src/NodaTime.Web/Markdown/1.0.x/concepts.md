@@ -143,8 +143,8 @@ change occurs - usually for daylight saving changes.
 
 Most of the time when you use a `DateTimeZone` you won't need
 worry about that - the main purpose is usually to convert between a
-[`ZonedDateTime`][ZonedDateTime] and a [`LocalDateTime`][LocalDateTime]
-- where the names mean exactly what you expect them to. There's a slight
+[`ZonedDateTime`][ZonedDateTime] and a [`LocalDateTime`][LocalDateTime], 
+where the names mean exactly what you expect them to. There's a slight
 twist to this: converting from an `Instant` or a `ZonedDateTime` to a
 `LocalDateTime` is unambiguous; at any point in time, all the (accurate)
 clocks in a particular time zone will show the same time... but the
