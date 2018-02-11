@@ -144,18 +144,20 @@ change occurs - usually for daylight saving changes.
 Most of the time when you use a `DateTimeZone` you won't need
 worry about that - the main purpose is usually to convert between a
 [`ZonedDateTime`][ZonedDateTime] and a [`LocalDateTime`][LocalDateTime]
-- where the names mean exactly what you expect them to. There's a slight
+, where the names mean exactly what you expect them to. There's a slight
 twist to this: converting from an `Instant` or a `ZonedDateTime` to a
 `LocalDateTime` is unambiguous; at any point in time, all the (accurate)
 clocks in a particular time zone will show the same time... but the
 reverse isn't true. Any one local time can map to:
 
 - A single instant in time: this is the case for almost all the time.
+
 - Two instants in time: this occurs around a time zone transition
 which goes from one offset to an earlier one, e.g. turning clocks
 back in the fall. If the clocks go back at 2am local time to 1am
 local time, then 1.30am occurs twice... so you need to tell Noda
 Time which of the possibilities you want to account for.
+
 - Zero instants in time: this occurs around a time zone transition
 which goes from one offset to a later one, e.g. turning clocks
 forward in the spring. If the clocks go forward at 1am local time to
