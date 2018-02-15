@@ -16,6 +16,15 @@ New features:
 - New operations on `DateInterval`: `Contains(DateInterval)`, `Union` and `Intersection`
 - New calendar system: the Wondrous calendar
 
+A beta of this version was released on 2017-12-13.
+
+## 2.0.6, 2.1.3, 2.2.4, released 2018-01-24 with tzdb 2018c
+
+This set of patch releases simply updates the built-in TZDB time
+zone data to 2018c. Note that 2018a and 2018b were skipped. 2018a and 2018b used negative
+daylight savings for Ireland in winter - a change that is under significant discussion, and
+is reverted in 2018c.
+
 ## 2.0.5, 2.1.2, 2.2.3, released 2017-10-23/2017-11-16 with tzdb 2017c
 
 This set of patch releases simply rebuilds the previous set of
