@@ -128,20 +128,22 @@ nanosecond less than 2<sup>24</sup> days.
 Period
 ----
 
-TBD. (Depends on the redesign...)
+The `Years`, `Months`, `Weeks`, `Days` properties are 32-bit integers;
+the `Hours`, `Minutes`, `Seconds`, `Milliseconds`, `Ticks`, `Nanoseconds` properties are all 64-bit integers.
+Properties are independent of each other, and can take the full range of values for their respective types. "Extreme" periods
+may have a very limited (or empty) set of `LocalDate`/`LocalDateTime`/`LocalTime` values that they can be added to or
+subtracted from.
 
 Failure modes
 ----
 
 Assuming Noda Time is bug free<sup>1</sup>, we ensure that if you try to create a value outside the valid
-range for that type (via any normal API calls), an exception of one of the following types will be thrown:
+range for that type (via any normal API calls, or deserialization), an exception of one of the following types will be thrown:
 
 - `OverflowException`
 - `ArgumentOutOfRangeException`
 - `ArgumentException`
 - `InvalidOperationException`
-
-(TBD: Serialization? We should probably protect against invalid binary data.)
 
 The "best" exception in each case depends very much on the context - but in the aim of code reuse and
 performance, we may not always have that context available when the exception is thrown. For example, a call
