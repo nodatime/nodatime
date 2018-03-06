@@ -680,6 +680,13 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Normalize_Overflow()
+        {
+            Period period = Period.FromHours(long.MaxValue);
+            Assert.Throws<OverflowException>(() => period.Normalize());
+        }
+
+        [Test]
         public void ToString_SingleUnit()
         {
             var period = Period.FromHours(5);
@@ -924,6 +931,22 @@ namespace NodaTime.Test
         {
             var period = Period.FromNanoseconds(1234567890L);
             Assert.AreEqual(1234567890L, period.Nanoseconds);
+        }
+
+        [Test]
+        public void AddPeriodToPeriod_NoOverflow()
+        {
+            Period p1 = Period.FromHours(long.MaxValue);
+            Period p2 = Period.FromMinutes(60);
+            Assert.AreEqual(new PeriodBuilder { Hours = long.MaxValue, Minutes = 60 }.Build(), p1 + p2);
+        }
+
+        [Test]
+        public void AddPeriodToPeriod_Overflow()
+        {
+            Period p1 = Period.FromHours(long.MaxValue);
+            Period p2 = Period.FromHours(1);
+            Assert.Throws<OverflowException>(() => (p1 + p2).GetHashCode());
         }
 
         /// <summary>
