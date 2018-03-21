@@ -14,7 +14,7 @@ How old is Jon?
 
 Jon was born on June 19th, 1976 (Gregorian). How old is he now, in the UK time zone?
 
-```csharp
+```csharp-trydotnet
 LocalDate birthDate = new LocalDate(1976, 6, 19);
 DateTimeZone zone = DateTimeZoneProviders.Tzdb["Europe/London"];
 ZonedClock clock = SystemClock.Instance.InZone(zone);
@@ -34,16 +34,18 @@ Use the [`DateAdjusters`](noda-type://NodaTime.DateAdjusters) factory class to o
 directly (it's just a `Func<LocalDate, LocalDate>`) or use the `With` method to apply it in a fluent
 style:
 
-```csharp
+```csharp-trydotnet
 LocalDate today = new LocalDate(2014, 6, 27);
-LocalDate endOfMonth = today.With(DateAdjusters.EndOfMonth); // 2014-06-30
+LocalDate endOfMonth = today.With(DateAdjusters.EndOfMonth);
+Console.WriteLine(endOfMonth); // 2014-06-30
 ```
 
 Date adjusters also work with `LocalDateTime` and `OffsetDateTime` values. For example:
 
-```csharp
+```csharp-trydotnet
 LocalDateTime now = new LocalDate(2014, 6, 27, 7, 14, 25);
-LocalDateTime startOfMonth = now.With(DateAdjusters.StartOfMonth); // 2014-06-01T07:14:25
+LocalDateTime startOfMonth = now.With(DateAdjusters.StartOfMonth);
+Console.WriteLine(startOfMonth); // 2014-06-01T07:14:25
 ```
 
 How can I truncate a time to a particular unit?
@@ -52,7 +54,7 @@ How can I truncate a time to a particular unit?
 Use the [`TimeAdjusters`](noda-type://NodaTime.TimeAdjusters) factory class to obtain a suitable adjuster, which can be applied to a
 `LocalTime`, `LocalDateTime` or `OffsetDateTime`:
 
-```csharp
+```csharp-trydotnet
 LocalDateTime now = new LocalDate(2014, 6, 27, 7, 14, 25, 500);
 LocalDateTime now = now.With(TimeAdjusters.TruncateToMinute); // 2014-06-27T07:14:00
 ```

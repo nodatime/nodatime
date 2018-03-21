@@ -424,3 +424,35 @@ td.pattern-example {
 .row {
   max-width: none;
 }
+
+.trydotnetbanner {
+    margin-top: 10px;
+    position: relative;
+    width: 100%;
+    background-image: linear-gradient(to left, #B26F9E, #68217A);
+    overflow: hidden;
+}
+
+.trydotnetbanner > p {
+    margin: 0;
+    padding: 2px 4px;
+    font-size: 1em;
+    font-weight: normal;
+    color: #FFFFFF;
+}
+
+.trydotnetbanner > p > a:link {
+    color: #FFFFFF;
+}
+
+.trydotnetbanner > p > a:visited {
+    color: #FFB8E9;
+}
+
+.trydotnetbanner > p > a:hover {
+    color: #FFFFFF;
+}
+
+.trydotnetbanner > p > a:active {
+    color: blue;
+}
