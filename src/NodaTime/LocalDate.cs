@@ -291,6 +291,7 @@ namespace NodaTime
 
         /// <summary>
         /// Adds the specified period to the date.
+        /// Fields are added in descending order of significance (years first, then months, and so on).
         /// </summary>
         /// <param name="date">The date to add the period to</param>
         /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
@@ -303,7 +304,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Adds the specified period to the date. Friendly alternative to <c>operator+()</c>.
+        /// Adds the specified period to the date.
+        /// Fields are added in descending order of significance (years first, then months, and so on).
+        /// Friendly alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="date">The date to add the period to</param>
         /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
@@ -311,7 +314,9 @@ namespace NodaTime
         public static LocalDate Add(LocalDate date, [NotNull] Period period) => date + period;
 
         /// <summary>
-        /// Adds the specified period to this date. Fluent alternative to <c>operator+()</c>.
+        /// Adds the specified period to this date.
+        /// Fields are added in descending order of significance (years first, then months, and so on).
+        /// Fluent alternative to <c>operator+()</c>.
         /// </summary>
         /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
         /// <returns>The sum of this date and the given period</returns>
@@ -329,6 +334,7 @@ namespace NodaTime
 
         /// <summary>
         /// Subtracts the specified period from the date.
+        /// Fields are subtracted in descending order of significance (years first, then months, and so on).
         /// This is a convenience operator over the <see cref="Minus(Period)"/> method.
         /// </summary>
         /// <param name="date">The date to subtract the period from</param>
@@ -342,7 +348,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Subtracts the specified period from the date. Friendly alternative to <c>operator-()</c>.
+        /// Subtracts the specified period from the date.
+        /// Fields are subtracted in descending order of significance (years first, then months, and so on).
+        /// Friendly alternative to <c>operator-()</c>.
         /// </summary>
         /// <param name="date">The date to subtract the period from</param>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
@@ -350,7 +358,9 @@ namespace NodaTime
         public static LocalDate Subtract(LocalDate date, [NotNull] Period period) => date - period;
 
         /// <summary>
-        /// Subtracts the specified period from this date. Fluent alternative to <c>operator-()</c>.
+        /// Subtracts the specified period from this date.
+        /// Fields are subtracted in descending order of significance (years first, then months, and so on).
+        /// Fluent alternative to <c>operator-()</c>.
         /// </summary>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
         /// <returns>The result of subtracting the given period from this date.</returns>
