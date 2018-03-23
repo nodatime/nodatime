@@ -12,7 +12,10 @@
     },
     {
       "title": "Text",
-      "pageIds": [ "text", "duration-patterns", "offset-patterns", "instant-patterns", "localtime-patterns", "localdate-patterns", "localdatetime-patterns", "offsetdatetime-patterns", "zoneddatetime-patterns", "period-patterns" ]
+      "pageIds": [ "text", "duration-patterns", "offset-patterns", "instant-patterns", "localtime-patterns",
+                   "localdate-patterns", "localdatetime-patterns", "offsetdatetime-patterns",
+                   "zoneddatetime-patterns", "period-patterns",
+                   "offsetdate-patterns", "offsettime-patterns" ]
     },
     {
       "title": "Advanced",
