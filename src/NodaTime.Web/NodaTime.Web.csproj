@@ -24,7 +24,6 @@
     <PackageReference Include="morelinq" Version="2.10.0" />
   
     <!-- Handling of non-code folders -->
-    <Folder Include="Markdown\" />
     <None Update="wwwroot\**\*;docfx\**\*;Markdown\**\*;Views\**\*;Areas\**\Views">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
