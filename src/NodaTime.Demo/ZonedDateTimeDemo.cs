@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using NodaTime.Text;
 using NUnit.Framework;
 
 namespace NodaTime.Demo
@@ -51,107 +52,141 @@ namespace NodaTime.Demo
 
             var startOfDay = dublin.AtStartOfDay(dt);
             ZonedDateTime nearEndOfDay = dublin.AtStrictly(dt + time);
-
-            Snippet.For(nearEndOfDay.TickOfDay);
-            Assert.AreEqual(time.TickOfDay, nearEndOfDay.TickOfDay);
+            Assert.AreEqual(time.TickOfDay, Snippet.For(nearEndOfDay.TickOfDay));
 
             Duration duration = nearEndOfDay - startOfDay;
             Assert.AreEqual(Duration.FromHours(25) - Duration.FromSeconds(1), duration);
-
-            Assert.AreNotEqual(duration.TotalTicks, nearEndOfDay.TickOfDay);
         }
 
         [Test]
-        public void AddDurationAndIsDaylightSavingTime()
+        public void IsDaylightSavingTime()
         {
-            // This is the date when DST ended at 2am in the given time zone.
+            // Europe/Dublin transitions from UTC+1 to UTC+0 at 2am (local) on 2017-10-29
             var dt = new LocalDateTime(2017, 10, 29, 1, 45, 0);
+            DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
 
+            ZonedDateTime beforeTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(1));
+            Assert.AreEqual(true, Snippet.For(beforeTransition.IsDaylightSavingTime()));
+
+            // Same local time, different offset - so a different instant, after the transition.
+            ZonedDateTime afterTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(0));
+            Assert.AreEqual(false, Snippet.For(afterTransition.IsDaylightSavingTime()));
+        }
+
+        [Test]
+        public void AddDuration()
+        {
+            // Europe/Dublin transitions from UTC+1 to UTC+0 at 2am (local) on 2017-10-29
+            var dt = new LocalDateTime(2017, 10, 29, 1, 45, 0);
             DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
 
             ZonedDateTime beforeTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(1));
 
-            Assert.AreEqual(true, Snippet.For(beforeTransition.IsDaylightSavingTime()));
             var result = Snippet.For(ZonedDateTime.Add(beforeTransition, Duration.FromHours(1)));
             Assert.AreEqual(new LocalDate(2017, 10, 29), result.Date);
-            Assert.AreEqual(new LocalTime(1, 45, 0), result.TimeOfDay);
-            Assert.AreEqual(Offset.FromHours(0), result.Offset);
-            Assert.AreEqual(false, result.IsDaylightSavingTime());
+            // Adding an hour of elapsed time takes us across the DST transition, so we have
+            // the same local time (shown on a clock) but a different offset.
+            Assert.AreEqual(new ZonedDateTime(dt, dublin, Offset.FromHours(0)), result);
 
+            // The + operator and Plus instance method are equivalent to the Add static method.
             var result2 = Snippet.For(beforeTransition + Duration.FromHours(1));
+            var result3 = Snippet.For(beforeTransition.Plus(Duration.FromHours(1)));
             Assert.AreEqual(result, result2);
+            Assert.AreEqual(result, result3);
+        }        
 
-            ZonedDateTime afterTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(0));
-            result = ZonedDateTime.Add(afterTransition, Duration.FromDays(1));
-            Assert.AreEqual(new LocalTime(1, 45, 0), result.TimeOfDay);
-            Assert.AreEqual(new LocalDate(2017, 10, 30), result.Date);
+        [Test]
+        public void PlusHours()
+        {
+            DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+            var start = Instant.FromUtc(2017, 7, 20, 5, 30);
+            // Dublin is at UTC+1 in July 2017, so this is 6:30am.
+            ZonedDateTime zoned = new ZonedDateTime(start, dublin);
+            var pattern = ZonedDateTimePattern.ExtendedFormatOnlyIso;
+            Assert.AreEqual("2017-07-20T07:30:00 Europe/Dublin (+01)",
+                pattern.Format(Snippet.For(zoned.PlusHours(1))));
         }
 
         [Test]
-        public void PlusDuration()
+        public void PlusMinutes()
         {
-            // This is the date when DST ended at 2am in the given time zone.
-            var dt = new LocalDateTime(2017, 10, 29, 1, 45, 0);
-
             DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
-
-            ZonedDateTime beforeTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(1));
-
-            var result = Snippet.For(beforeTransition.Plus(Duration.FromHours(1)));
-
-            Assert.AreEqual(new LocalDate(2017, 10, 29), result.Date);
-            Assert.AreEqual(new LocalTime(1, 45, 0), result.TimeOfDay);
-            Assert.AreEqual(Offset.FromHours(0), result.Offset);
-
-            ZonedDateTime afterTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(0));
-            result = afterTransition.Plus(Duration.FromDays(1));
-            Assert.AreEqual(new LocalTime(1, 45, 0), result.TimeOfDay);
-            Assert.AreEqual(new LocalDate(2017, 10, 30), result.Date);
+            var start = Instant.FromUtc(2017, 7, 20, 5, 30);
+            // Dublin is at UTC+1 in July 2017, so this is 6:30am.
+            ZonedDateTime zoned = new ZonedDateTime(start, dublin);
+            var pattern = ZonedDateTimePattern.ExtendedFormatOnlyIso;
+            Assert.AreEqual("2017-07-20T06:31:00 Europe/Dublin (+01)",
+                pattern.Format(Snippet.For(zoned.PlusMinutes(1))));
         }
 
         [Test]
-        public void PlusHoursMinutesEtc()
+        public void PlusSeconds()
         {
             DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
-            var start = Instant.FromUtc(2017, 7, 17, 7, 17);
-            ZonedDateTime subject = new ZonedDateTime(start, dublin);
-            Assert.AreEqual(new ZonedDateTime(start + Duration.FromNanoseconds(1), dublin),
-                Snippet.For(subject.PlusNanoseconds(1)));
-            Assert.AreEqual(new ZonedDateTime(start + Duration.FromTicks(1), dublin),
-                Snippet.For(subject.PlusTicks(1)));
-            Assert.AreEqual(new ZonedDateTime(start + Duration.FromMilliseconds(1), dublin),
-                Snippet.For(subject.PlusMilliseconds(1)));
-            Assert.AreEqual(new ZonedDateTime(start + Duration.FromSeconds(1), dublin),
-                Snippet.For(subject.PlusSeconds(1)));
-            Assert.AreEqual(new ZonedDateTime(start + Duration.FromMinutes(1), dublin),
-                Snippet.For(subject.PlusMinutes(1)));
-            Assert.AreEqual(new ZonedDateTime(start + Duration.FromHours(1), dublin),
-                Snippet.For(subject.PlusHours(1)));
+            var start = Instant.FromUtc(2017, 7, 20, 5, 30);
+            // Dublin is at UTC+1 in July 2017, so this is 6:30am.
+            ZonedDateTime zoned = new ZonedDateTime(start, dublin);
+            var pattern = ZonedDateTimePattern.ExtendedFormatOnlyIso;
+            Assert.AreEqual("2017-07-20T06:30:01 Europe/Dublin (+01)",
+                pattern.Format(Snippet.For(zoned.PlusSeconds(1))));
+        }
+
+        [Test]
+        public void PlusMilliseconds()
+        {
+            DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+            var start = Instant.FromUtc(2017, 7, 20, 5, 30);
+            // Dublin is at UTC+1 in July 2017, so this is 6:30am.
+            ZonedDateTime zoned = new ZonedDateTime(start, dublin);
+            var pattern = ZonedDateTimePattern.ExtendedFormatOnlyIso;
+            Assert.AreEqual("2017-07-20T06:30:00.001 Europe/Dublin (+01)",
+                pattern.Format(Snippet.For(zoned.PlusMilliseconds(1))));
+        }
+
+        [Test]
+        public void PlusTicks()
+        {
+            DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+            var start = Instant.FromUtc(2017, 7, 20, 5, 30);
+            // Dublin is at UTC+1 in July 2017, so this is 6:30am.
+            ZonedDateTime zoned = new ZonedDateTime(start, dublin);
+            var pattern = ZonedDateTimePattern.ExtendedFormatOnlyIso;
+            Assert.AreEqual("2017-07-20T06:30:00.0000001 Europe/Dublin (+01)",
+                pattern.Format(Snippet.For(zoned.PlusTicks(1))));
+        }
+
+        [Test]
+        public void PlusNanoseconds()
+        {
+            DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
+            var start = Instant.FromUtc(2017, 7, 20, 5, 30);
+            // Dublin is at UTC+1 in July 2017, so this is 6:30am.
+            ZonedDateTime zoned = new ZonedDateTime(start, dublin);
+            var pattern = ZonedDateTimePattern.ExtendedFormatOnlyIso;
+            Assert.AreEqual("2017-07-20T06:30:00.000000001 Europe/Dublin (+01)",
+                pattern.Format(Snippet.For(zoned.PlusNanoseconds(1))));
         }
 
         [Test]
         public void SubtractDuration()
         {
-            // This is the date when DST ended at 2am in the given time zone.
+            // Europe/Dublin transitions from UTC+1 to UTC+0 at 2am (local) on 2017-10-29
             var dt = new LocalDateTime(2017, 10, 29, 1, 45, 0);
-
             DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
 
-            ZonedDateTime afterDstTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(0));
+            ZonedDateTime afterTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(0));
 
-            var result = Snippet.For(ZonedDateTime.Subtract(afterDstTransition, Duration.FromHours(1)));
-
+            var result = Snippet.For(ZonedDateTime.Subtract(afterTransition, Duration.FromHours(1)));
             Assert.AreEqual(new LocalDate(2017, 10, 29), result.Date);
-            Assert.AreEqual(new LocalTime(1, 45, 0), result.TimeOfDay);
-            Assert.AreEqual(Offset.FromHours(1), result.Offset);
+            // Adding an hour of elapsed time takes us across the DST transition, so we have
+            // the same local time (shown on a clock) but a different offset.
+            Assert.AreEqual(new ZonedDateTime(dt, dublin, Offset.FromHours(1)), result);
 
-            var result2 = Snippet.For(afterDstTransition - Duration.FromHours(1));
+            // The + operator and Plus instance method are equivalent to the Add static method.
+            var result2 = Snippet.For(afterTransition - Duration.FromHours(1));
+            var result3 = Snippet.For(afterTransition.Minus(Duration.FromHours(1)));
             Assert.AreEqual(result, result2);
-
-            ZonedDateTime beforeTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(1));
-            result = ZonedDateTime.Subtract(beforeTransition, Duration.FromDays(1));
-            Assert.AreEqual(new LocalTime(1, 45, 0), result.TimeOfDay);
-            Assert.AreEqual(new LocalDate(2017, 10, 28), result.Date);
+            Assert.AreEqual(result, result3);            
         }
 
         [Test]
@@ -164,29 +199,7 @@ namespace NodaTime.Demo
             var difference = Snippet.For(ZonedDateTime.Subtract(other, subject));
             Assert.AreEqual(Duration.FromHours(2), difference);
         }
-
-        [Test]
-        public void MinusDuration()
-        {
-            // This is the date when DST ended at 2am in the given time zone.
-            var dt = new LocalDateTime(2017, 10, 29, 1, 45, 0);
-
-            DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
-
-            ZonedDateTime afterDstTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(0));
-
-            var result = Snippet.For(afterDstTransition.Minus(Duration.FromHours(1)));
-
-            Assert.AreEqual(new LocalDate(2017, 10, 29), result.Date);
-            Assert.AreEqual(new LocalTime(1, 45, 0), result.TimeOfDay);
-            Assert.AreEqual(Offset.FromHours(1), result.Offset);
-
-            ZonedDateTime beforeTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(1));
-            result = beforeTransition.Minus(Duration.FromDays(1));
-            Assert.AreEqual(new LocalTime(1, 45, 0), result.TimeOfDay);
-            Assert.AreEqual(new LocalDate(2017, 10, 28), result.Date);
-        }
-
+        
         [Test]
         public void MinusZonedDateTime()
         {
@@ -209,14 +222,10 @@ namespace NodaTime.Demo
             var startOfDay = dublin.AtStartOfDay(dt);
             ZonedDateTime nearEndOfDay = dublin.AtStrictly(dt + time);
 
-            Snippet.For(nearEndOfDay.NanosecondOfDay);
-            Assert.AreEqual(time.NanosecondOfDay, nearEndOfDay.NanosecondOfDay);
+            Assert.AreEqual(time.NanosecondOfDay, Snippet.For(nearEndOfDay.NanosecondOfDay));
 
             Duration duration = nearEndOfDay - startOfDay;
             Assert.AreEqual(Duration.FromHours(25) - Duration.FromSeconds(1), duration);
-
-            Assert.AreNotEqual(duration.TotalNanoseconds, nearEndOfDay.NanosecondOfDay);
         }
-
     }
 }
