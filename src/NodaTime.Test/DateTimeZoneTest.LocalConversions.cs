@@ -261,8 +261,8 @@ namespace NodaTime.Test
         // to 00:00:00 December 31st local time UTC+14
         [Test]
         [TestCase("Pacific/Apia", "2011-12-30")]
-        [TestCase("Pacific/Enderbury", "1995-01-01")]
-        [TestCase("Pacific/Kiritimati", "1995-01-01")]
+        [TestCase("Pacific/Enderbury", "1994-12-31")]
+        [TestCase("Pacific/Kiritimati", "1994-12-31")]
         [TestCase("Pacific/Kwajalein", "1993-08-20")]
         public void AtStartOfDay_DayDoesntExist(string zoneId, string localDate)
         {
