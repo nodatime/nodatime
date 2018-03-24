@@ -2,9 +2,11 @@
 
 ## Visual Studio (Windows)
 
-Noda Time is developed on Visual Studio 2017. All versions of Visual Studio 2017, including
+Noda Time is developed on Visual Studio 2017. All editions of Visual Studio 2017, including
 the community edition, should be able to build Noda Time, so long as you also have the .NET Core
-SDK installed.
+SDK installed. We periodically update the version of the .NET Core SDK that we build with,
+so updating to the latest Visual Studio and the SDK may be required, but that should always
+be sufficient. The master branch should always build with released tools, not pre-releases.
 
 To fetch the source code from the main GitHub repository, you'll need a
 [git][] client. You may also want a Git GUI, such as [SourceTree][].
@@ -39,8 +41,8 @@ The tests are currently console application projects until NUnit supports
 ```
 
 Building under other operating systems is similar, requiring the .NET Core SDK to be installed,
-but unless you have installed suitable support for `net45` etc, you won't be able to just build the solution
-- you'll need to build each project individually specifying the target framework. For example, to
+but unless you have installed suitable support for `net45` etc, you won't be able to just build the
+solution - you'll need to build each project individually specifying the target framework. For example, to
 build the core projects and tests, you could run:
 
 ```sh
