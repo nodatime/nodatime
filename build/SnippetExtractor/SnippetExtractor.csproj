@@ -7,12 +7,12 @@
 
   <ItemGroup>
     <!-- MsBuild dependencies -->
-    <PackageReference Include="Microsoft.Build" Version="15.5.180" />
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.5.180" />
+    <PackageReference Include="Microsoft.Build" Version="15.6.82" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.6.82" />
     
     <!-- Roslyn dependencies -->
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.6.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.7.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.7.0" />
   </ItemGroup>
 
 </Project>
