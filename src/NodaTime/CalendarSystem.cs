@@ -53,8 +53,8 @@ namespace NodaTime
         private const string CopticName = "Coptic";
         private const string CopticId = CopticName;
 
-        private const string WondrousName = "Wondrous";
-        private const string WondrousId = WondrousName;
+        private const string BadiName = "Badi";
+        private const string BadiId = BadiName;
 
         private const string JulianName = "Julian";
         private const string JulianId = JulianName;
@@ -154,8 +154,8 @@ namespace NodaTime
                     return Julian;
                 case CalendarOrdinal.Coptic:
                     return Coptic;
-                case CalendarOrdinal.Wondrous:
-                    return Wondrous;
+                case CalendarOrdinal.Badi:
+                    return Badi;
                 case CalendarOrdinal.HebrewCivil:
                     return HebrewCivil;
                 case CalendarOrdinal.HebrewScriptural:
@@ -205,7 +205,7 @@ namespace NodaTime
             {HebrewScripturalId, () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural)},
             {GregorianId, () => Gregorian},
             {CopticId, () => Coptic},
-            {WondrousId, () => Wondrous},
+            {BadiId, () => Badi},
             {JulianId, () => Julian},
             {UmAlQuraId, () => UmAlQura},
             {GetIslamicId(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil), () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)},
@@ -255,11 +255,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the Wondrous (Badí') calendar, as described at https://en.wikipedia.org/wiki/Badi_calendar. 
+        /// Returns the Badíʿ (meaning "wondrous" or "unique") calendar, as described at https://en.wikipedia.org/wiki/Badi_calendar. 
         /// This is a purely solar calendar with years starting at the vernal equinox.
         /// </summary>
         /// <remarks>
-        /// <para>The Wondrous calendar was developed and defined by the founders of the Bahá'í Faith in the mid to late
+        /// <para>The Badíʿ calendar was developed and defined by the founders of the Bahá'í Faith in the mid to late
         /// 1800's A.D. The first year in the calendar coincides with 1844 A.D. Years are labeled "B.E." for Bahá'í Era.</para>
         /// <para>A year consists of 19 months, each with 19 days. Each day starts at sunset. Years are grouped into sets
         /// of 19 "Unities" (Váḥid) and 19 Unities make up 1 "All Things" (Kull-i-Shay’).</para>
@@ -271,8 +271,8 @@ namespace NodaTime
         /// Ayyám-i-Há is internally modelled as extra days added to the 18th month. As a result, a few functions will
         /// not work as expected for Ayyám-i-Há, such as EndOfMonth.</para>
         /// </remarks>
-        /// <returns>The Wondrous calendar system.</returns>
-        [NotNull] public static CalendarSystem Wondrous => MiscellaneousCalendars.Wondrous;
+        /// <returns>The Badíʿ calendar system.</returns>
+        [NotNull] public static CalendarSystem Badi => MiscellaneousCalendars.Badi;
 
         /// <summary>
         /// Returns an Islamic, or Hijri, calendar system.
@@ -382,7 +382,7 @@ namespace NodaTime
         ///   <item><term>ISO</term><description><see cref="CalendarSystem.Iso"/></description></item>
         ///   <item><term>Gregorian</term><description><see cref="CalendarSystem.Gregorian"/></description></item>
         ///   <item><term>Coptic</term><description><see cref="CalendarSystem.Coptic"/></description></item>
-        ///   <item><term>Wondrous</term><description><see cref="CalendarSystem.Wondrous"/></description></item>
+        ///   <item><term>Badíʿ</term><description><see cref="CalendarSystem.Badi"/></description></item>
         ///   <item><term>Julian</term><description><see cref="CalendarSystem.Julian"/></description></item>
         ///   <item><term>Hijri Civil-Indian</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)</description></item>
         ///   <item><term>Hijri Civil-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)</description></item>
@@ -821,8 +821,8 @@ namespace NodaTime
                 new CalendarSystem(CalendarOrdinal.Coptic, CopticId, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
             internal static readonly CalendarSystem UmAlQura =
                 new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraId, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae);
-            internal static readonly CalendarSystem Wondrous =
-                new CalendarSystem(CalendarOrdinal.Wondrous, WondrousId, WondrousName, new WondrousYearMonthDayCalculator(), Era.Bahai);
+            internal static readonly CalendarSystem Badi =
+                new CalendarSystem(CalendarOrdinal.Badi, BadiId, BadiName, new BadiYearMonthDayCalculator(), Era.Bahai);
 
             // Static constructor to enforce laziness. This used to be important to avoid a Heisenbug.
             // I don't believe it's strictly required now, but it does no harm and I don't want to go
