@@ -128,10 +128,10 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(gDay, gDate.Day);
 
             // convert to the Badíʿ calendar
-            var wDate2 = new LocalDate(gYear, gMonth, gDay).WithCalendar(CalendarSystem.Badi);
-            Assert.AreEqual(bYear, wDate2.Year);
-            Assert.AreEqual(bMonth, BadiMonth(wDate2));
-            Assert.AreEqual(bDay, BadiDay(wDate2));
+            var bDate2 = new LocalDate(gYear, gMonth, gDay).WithCalendar(CalendarSystem.Badi);
+            Assert.AreEqual(bYear, bDate2.Year);
+            Assert.AreEqual(bMonth, BadiMonth(bDate2));
+            Assert.AreEqual(bDay, BadiDay(bDate2));
         }
 
         [Test]
@@ -148,22 +148,22 @@ namespace NodaTime.Test.Calendars
         [TestCase(2018, 3, 1, 174, AyyamiHaMonth, 5)]
         [TestCase(2018, 3, 2, 174, 19, 1)]
         [TestCase(2018, 3, 19, 174, 19, 18)]
-        public void SpecialCases(int gYear, int gMonth, int gDay, int wYear, int wMonth, int wDay)
+        public void SpecialCases(int gYear, int gMonth, int gDay, int bYear, int bMonth, int bDay)
         {
             // create in test calendar
-            var wDate = CreateBadiDate(wYear, wMonth, wDay);
+            var bDate = CreateBadiDate(bYear, bMonth, bDay);
 
             // convert to gregorian
-            var gDate = wDate.WithCalendar(CalendarSystem.Gregorian);
+            var gDate = bDate.WithCalendar(CalendarSystem.Gregorian);
 
             Assert.AreEqual($"{gYear}-{gMonth}-{gDay}", $"{gDate.Year}-{gDate.Month}-{gDate.Day}");
 
             // create in gregorian
             // convert to test calendar
             var gDate2 = new LocalDate(gYear, gMonth, gDay);
-            var wDate2 = gDate2.WithCalendar(CalendarSystem.Badi);
+            var bDate2 = gDate2.WithCalendar(CalendarSystem.Badi);
 
-            Assert.AreEqual($"{wYear}-{wMonth}-{wDay}", $"{wDate2.Year}-{BadiMonth(wDate2)}-{BadiDay(wDate2)}");
+            Assert.AreEqual($"{bYear}-{bMonth}-{bDay}", $"{bDate2.Year}-{BadiMonth(bDate2)}-{BadiDay(bDate2)}");
         }
 
         [Test]
@@ -232,20 +232,20 @@ namespace NodaTime.Test.Calendars
         [TestCase(219, 1, 1, 2062, 3, 20)]
         [TestCase(220, 1, 1, 2063, 3, 20)]
         [TestCase(221, 1, 1, 2064, 3, 20)]
-        public void GeneralWtoG(int wYear, int wMonth, int wDay, int gYear, int gMonth, int gDay)
+        public void GeneralWtoG(int bYear, int bMonth, int bDay, int gYear, int gMonth, int gDay)
         {
             // create in this calendar
-            var wDate = CreateBadiDate(wYear, wMonth, wDay);
-            var gDate = wDate.WithCalendar(CalendarSystem.Gregorian);
+            var bDate = CreateBadiDate(bYear, bMonth, bDay);
+            var gDate = bDate.WithCalendar(CalendarSystem.Gregorian);
             Assert.AreEqual(gYear, gDate.Year);
             Assert.AreEqual(gMonth, gDate.Month);
             Assert.AreEqual(gDay, gDate.Day);
 
             // convert to this calendar
-            var wDate2 = new LocalDate(gYear, gMonth, gDay).WithCalendar(CalendarSystem.Badi);
-            Assert.AreEqual(wYear, wDate2.Year);
-            Assert.AreEqual(wMonth, BadiMonth(wDate2));
-            Assert.AreEqual(wDay, BadiDay(wDate2));
+            var bDate2 = new LocalDate(gYear, gMonth, gDay).WithCalendar(CalendarSystem.Badi);
+            Assert.AreEqual(bYear, bDate2.Year);
+            Assert.AreEqual(bMonth, BadiMonth(bDate2));
+            Assert.AreEqual(bDay, BadiDay(bDate2));
         }
 
         [Test]
@@ -299,9 +299,9 @@ namespace NodaTime.Test.Calendars
         [TestCase(219, 4)]
         [TestCase(220, 5)]
         [TestCase(221, 4)]
-        public void DaysInAyyamiHa(int wYear, int days)
+        public void DaysInAyyamiHa(int bYear, int days)
         {
-            Assert.AreEqual(days, BadiYearMonthDayCalculator.GetDaysInAyyamiHa(wYear));
+            Assert.AreEqual(days, BadiYearMonthDayCalculator.GetDaysInAyyamiHa(bYear));
         }
 
         [Test]
@@ -316,10 +316,10 @@ namespace NodaTime.Test.Calendars
         [TestCase(220, AyyamiHaMonth, 1, 18 * 19 + 1)]
         [TestCase(220, AyyamiHaMonth, 5, 18 * 19 + 5)]
         [TestCase(220, 19, 1, 18 * 19 + 6)]
-        public void DayOfYear(int wYear, int wMonth, int wDay, int dayOfYear)
+        public void DayOfYear(int bYear, int bMonth, int bDay, int dayOfYear)
         {
             var badi = new BadiYearMonthDayCalculator();
-            Assert.AreEqual(dayOfYear, badi.GetDayOfYear(CreateBadiDate(wYear, wMonth, wDay).YearMonthDay));
+            Assert.AreEqual(dayOfYear, badi.GetDayOfYear(CreateBadiDate(bYear, bMonth, bDay).YearMonthDay));
         }
 
         // Cannot use EndOfMonth with Ayyam-i-Ha because they are internally stored as days in month 18.
