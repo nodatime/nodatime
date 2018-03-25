@@ -1,4 +1,4 @@
-// Copyright 2017 The Noda Time Authors. All rights reserved.
+﻿// Copyright 2017 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
@@ -10,23 +10,23 @@ using System;
 namespace NodaTime.Test.Calendars
 {
     /// <summary>
-    /// Tests for the Wondrous calendar system.
+    /// Tests for the Badíʿ calendar system.
     /// </summary>
-    public class WondrousCalendarSystemTest
+    public class BadiCalendarSystemTest
     {
-        // For use with CreateWondrousDate, this is a notional "month"
+        // For use with CreateBadíʿDate, this is a notional "month"
         // containing Ayyam-i-Ha. The days here are represented in month
         // 18 in LocalDate etc.
         const int AyyamiHaMonth = 0;
 
         [Test]
-        public void WondrousEpoch()
+        public void BadiEpoch()
         {
-            CalendarSystem wondrous = CalendarSystem.Wondrous;
-            LocalDate wondrousEpoch = CreateWondrousDate(1, 1, 1);
+            CalendarSystem badi = CalendarSystem.Badi;
+            LocalDate badiEpoch = CreateBadiDate(1, 1, 1);
 
             CalendarSystem gregorian = CalendarSystem.Gregorian;
-            LocalDate converted = wondrousEpoch.WithCalendar(gregorian);
+            LocalDate converted = badiEpoch.WithCalendar(gregorian);
 
             LocalDate expected = new LocalDate(1844, 3, 21);
 
@@ -36,30 +36,30 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void UnixEpoch()
         {
-            CalendarSystem wondrous = CalendarSystem.Wondrous;
-            LocalDate unixEpochInWondrousCalendar = NodaConstants.UnixEpoch.InZone(DateTimeZone.Utc, wondrous).LocalDateTime.Date;
-            LocalDate expected = CreateWondrousDate(126, 16, 2);
-            Assert.AreEqual(expected, unixEpochInWondrousCalendar);
+            CalendarSystem badi = CalendarSystem.Badi;
+            LocalDate unixEpochInBadiCalendar = NodaConstants.UnixEpoch.InZone(DateTimeZone.Utc, badi).LocalDateTime.Date;
+            LocalDate expected = CreateBadiDate(126, 16, 2);
+            Assert.AreEqual(expected, unixEpochInBadiCalendar);
         }
 
         [Test]
         public void SampleDate()
         {
-            CalendarSystem wondrousCalendar = CalendarSystem.Wondrous;
+            CalendarSystem badiCalendar = CalendarSystem.Badi;
             LocalDate iso = new LocalDate(2017, 3, 4);
-            LocalDate wondrous = iso.WithCalendar(wondrousCalendar);
+            LocalDate badi = iso.WithCalendar(badiCalendar);
 
-            Assert.AreEqual(19, WondrousMonth(wondrous));
+            Assert.AreEqual(19, BadiMonth(badi));
 
-            Assert.AreEqual(Era.Bahai, wondrous.Era);
-            Assert.AreEqual(173, wondrous.YearOfEra);
+            Assert.AreEqual(Era.Bahai, badi.Era);
+            Assert.AreEqual(173, badi.YearOfEra);
 
-            Assert.AreEqual(173, wondrous.Year);
-            Assert.IsFalse(wondrousCalendar.IsLeapYear(173));
+            Assert.AreEqual(173, badi.Year);
+            Assert.IsFalse(badiCalendar.IsLeapYear(173));
 
-            Assert.AreEqual(4, WondrousDay(wondrous));
+            Assert.AreEqual(4, BadiDay(badi));
 
-            Assert.AreEqual(IsoDayOfWeek.Saturday, wondrous.DayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Saturday, badi.DayOfWeek);
         }
 
         [Test]
@@ -118,20 +118,20 @@ namespace NodaTime.Test.Calendars
         [TestCase(2062, 3, 20, 219, 1, 1)]
         [TestCase(2063, 3, 20, 220, 1, 1)]
         [TestCase(2064, 3, 20, 221, 1, 1)]
-        public void GeneralConversionNearNawRuz(int gYear, int gMonth, int gDay, int wYear, int wMonth, int wDay)
+        public void GeneralConversionNearNawRuz(int gYear, int gMonth, int gDay, int bYear, int bMonth, int bDay)
         {
-            // create in the Wondrous calendar
-            var wDate = CreateWondrousDate(wYear, wMonth, wDay);
-            var gDate = wDate.WithCalendar(CalendarSystem.Gregorian);
+            // create in the Badíʿ calendar
+            var bDate = CreateBadiDate(bYear, bMonth, bDay);
+            var gDate = bDate.WithCalendar(CalendarSystem.Gregorian);
             Assert.AreEqual(gYear, gDate.Year);
             Assert.AreEqual(gMonth, gDate.Month);
             Assert.AreEqual(gDay, gDate.Day);
 
-            // convert to the Wondrous calendar
-            var wDate2 = new LocalDate(gYear, gMonth, gDay).WithCalendar(CalendarSystem.Wondrous);
-            Assert.AreEqual(wYear, wDate2.Year);
-            Assert.AreEqual(wMonth, WondrousMonth(wDate2));
-            Assert.AreEqual(wDay, WondrousDay(wDate2));
+            // convert to the Badíʿ calendar
+            var wDate2 = new LocalDate(gYear, gMonth, gDay).WithCalendar(CalendarSystem.Badi);
+            Assert.AreEqual(bYear, wDate2.Year);
+            Assert.AreEqual(bMonth, BadiMonth(wDate2));
+            Assert.AreEqual(bDay, BadiDay(wDate2));
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace NodaTime.Test.Calendars
         public void SpecialCases(int gYear, int gMonth, int gDay, int wYear, int wMonth, int wDay)
         {
             // create in test calendar
-            var wDate = CreateWondrousDate(wYear, wMonth, wDay);
+            var wDate = CreateBadiDate(wYear, wMonth, wDay);
 
             // convert to gregorian
             var gDate = wDate.WithCalendar(CalendarSystem.Gregorian);
@@ -161,9 +161,9 @@ namespace NodaTime.Test.Calendars
             // create in gregorian
             // convert to test calendar
             var gDate2 = new LocalDate(gYear, gMonth, gDay);
-            var wDate2 = gDate2.WithCalendar(CalendarSystem.Wondrous);
+            var wDate2 = gDate2.WithCalendar(CalendarSystem.Badi);
 
-            Assert.AreEqual($"{wYear}-{wMonth}-{wDay}", $"{wDate2.Year}-{WondrousMonth(wDate2)}-{WondrousDay(wDate2)}");
+            Assert.AreEqual($"{wYear}-{wMonth}-{wDay}", $"{wDate2.Year}-{BadiMonth(wDate2)}-{BadiDay(wDate2)}");
         }
 
         [Test]
@@ -235,17 +235,17 @@ namespace NodaTime.Test.Calendars
         public void GeneralWtoG(int wYear, int wMonth, int wDay, int gYear, int gMonth, int gDay)
         {
             // create in this calendar
-            var wDate = CreateWondrousDate(wYear, wMonth, wDay);
+            var wDate = CreateBadiDate(wYear, wMonth, wDay);
             var gDate = wDate.WithCalendar(CalendarSystem.Gregorian);
             Assert.AreEqual(gYear, gDate.Year);
             Assert.AreEqual(gMonth, gDate.Month);
             Assert.AreEqual(gDay, gDate.Day);
 
             // convert to this calendar
-            var wDate2 = new LocalDate(gYear, gMonth, gDay).WithCalendar(CalendarSystem.Wondrous);
+            var wDate2 = new LocalDate(gYear, gMonth, gDay).WithCalendar(CalendarSystem.Badi);
             Assert.AreEqual(wYear, wDate2.Year);
-            Assert.AreEqual(wMonth, WondrousMonth(wDate2));
-            Assert.AreEqual(wDay, WondrousDay(wDate2));
+            Assert.AreEqual(wMonth, BadiMonth(wDate2));
+            Assert.AreEqual(wDay, BadiDay(wDate2));
         }
 
         [Test]
@@ -301,7 +301,7 @@ namespace NodaTime.Test.Calendars
         [TestCase(221, 4)]
         public void DaysInAyyamiHa(int wYear, int days)
         {
-            Assert.AreEqual(days, WondrousYearMonthDayCalculator.GetDaysInAyyamiHa(wYear));
+            Assert.AreEqual(days, BadiYearMonthDayCalculator.GetDaysInAyyamiHa(wYear));
         }
 
         [Test]
@@ -318,8 +318,8 @@ namespace NodaTime.Test.Calendars
         [TestCase(220, 19, 1, 18 * 19 + 6)]
         public void DayOfYear(int wYear, int wMonth, int wDay, int dayOfYear)
         {
-            var wondrous = new WondrousYearMonthDayCalculator();
-            Assert.AreEqual(dayOfYear, wondrous.GetDayOfYear(CreateWondrousDate(wYear, wMonth, wDay).YearMonthDay));
+            var badi = new BadiYearMonthDayCalculator();
+            Assert.AreEqual(dayOfYear, badi.GetDayOfYear(CreateBadiDate(wYear, wMonth, wDay).YearMonthDay));
         }
 
         // Cannot use EndOfMonth with Ayyam-i-Ha because they are internally stored as days in month 18.
@@ -336,15 +336,15 @@ namespace NodaTime.Test.Calendars
         [TestCase(220, AyyamiHaMonth, 1, AyyamiHaMonth, 5)]
         public void EndOfMonth(int year, int month, int day, int eomMonth, int eomDay)
         {
-            var start = CreateWondrousDate(year, month, day);
-            var end = CreateWondrousDate(year, eomMonth, eomDay);
-            Assert.AreEqual(AsWondrousString(end), AsWondrousString(DateAdjusters.EndOfMonth(start)));
+            var start = CreateBadiDate(year, month, day);
+            var end = CreateBadiDate(year, eomMonth, eomDay);
+            Assert.AreEqual(AsBadiString(end), AsBadiString(DateAdjusters.EndOfMonth(start)));
         }
 
         [Test]
         public void LeapYear()
         {
-            var calendar = CalendarSystem.Wondrous;
+            var calendar = CalendarSystem.Badi;
             Assert.IsFalse(calendar.IsLeapYear(172));
             Assert.IsFalse(calendar.IsLeapYear(173));
             Assert.IsTrue(calendar.IsLeapYear(207));
@@ -354,7 +354,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void GetMonthsInYear()
         {
-            var calendar = CalendarSystem.Wondrous;
+            var calendar = CalendarSystem.Badi;
             Assert.AreEqual(19, calendar.GetMonthsInYear(180));
         }
 
@@ -363,15 +363,15 @@ namespace NodaTime.Test.Calendars
         [TestCase(180, 18, 23)]
         public void GetDaysInMonth(int year, int month, int expectedDays)
         {
-            var calendar = CalendarSystem.Wondrous;
+            var calendar = CalendarSystem.Badi;
             Assert.AreEqual(expectedDays, calendar.GetDaysInMonth(year, month));
         }
 
         [Test]
         public void CreateDate_InAyyamiHa()
         {
-            var d1 = CreateWondrousDate(180, 0, 3);
-            var d3 = CreateWondrousDate(180, 18, 22);
+            var d1 = CreateBadiDate(180, 0, 3);
+            var d3 = CreateBadiDate(180, 18, 22);
 
             Assert.AreEqual(d1, d3);
         }
@@ -387,14 +387,14 @@ namespace NodaTime.Test.Calendars
         [TestCase(180, 20, 1)]
         public void CreateDate_Invalid(int year, int month, int day)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => CreateWondrousDate(year, month, day));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CreateBadiDate(year, month, day));
         }
 
         // Period related tests
-        private static readonly LocalDate TestDate1_167_5_15 = CreateWondrousDate(167, 5, 15);
-        private static readonly LocalDate TestDate1_167_6_7 = CreateWondrousDate(167, 6, 7);
-        private static readonly LocalDate TestDate2_167_Ayyam_4 = CreateWondrousDate(167, AyyamiHaMonth, 4);
-        private static readonly LocalDate TestDate3_168_Ayyam_5 = CreateWondrousDate(168, AyyamiHaMonth, 5);
+        private static readonly LocalDate TestDate1_167_5_15 = CreateBadiDate(167, 5, 15);
+        private static readonly LocalDate TestDate1_167_6_7 = CreateBadiDate(167, 6, 7);
+        private static readonly LocalDate TestDate2_167_Ayyam_4 = CreateBadiDate(167, AyyamiHaMonth, 4);
+        private static readonly LocalDate TestDate3_168_Ayyam_5 = CreateBadiDate(168, AyyamiHaMonth, 5);
 
         [Test]
         public void BetweenLocalDates_InvalidUnits()
@@ -409,7 +409,7 @@ namespace NodaTime.Test.Calendars
         public void SetYear()
         {
             // crafted to test SetYear with 0 
-            var d1 = CreateWondrousDate(180, 1, 1);
+            var d1 = CreateBadiDate(180, 1, 1);
             LocalDate result = d1 + Period.FromYears(0);
             Assert.AreEqual(180, result.Year);
         }
@@ -477,8 +477,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void BetweenLocalDates_AsymmetricForwardAndBackward()
         {
-            LocalDate d1 = CreateWondrousDate(166, 18, 4);
-            LocalDate d2 = CreateWondrousDate(167, 1, 10);
+            LocalDate d1 = CreateBadiDate(166, 18, 4);
+            LocalDate d2 = CreateBadiDate(167, 1, 10);
 
             // spanning Ayyam-i-Ha - not counted as a month
             Assert.AreEqual(Period.FromMonths(2) + Period.FromDays(6), Period.Between(d1, d2));
@@ -488,8 +488,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void BetweenLocalDates_EndOfMonth()
         {
-            LocalDate d1 = CreateWondrousDate(171, 5, 19);
-            LocalDate d2 = CreateWondrousDate(171, 6, 19);
+            LocalDate d1 = CreateBadiDate(171, 5, 19);
+            LocalDate d2 = CreateBadiDate(171, 6, 19);
             Assert.AreEqual(Period.FromMonths(1), Period.Between(d1, d2));
             Assert.AreEqual(Period.FromMonths(-1), Period.Between(d2, d1));
         }
@@ -497,11 +497,11 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void BetweenLocalDates_OnLeapYear()
         {
-            LocalDate d1 = new LocalDate(2012, 2, 29).WithCalendar(CalendarSystem.Wondrous);
-            LocalDate d2 = new LocalDate(2013, 2, 28).WithCalendar(CalendarSystem.Wondrous);
+            LocalDate d1 = new LocalDate(2012, 2, 29).WithCalendar(CalendarSystem.Badi);
+            LocalDate d2 = new LocalDate(2013, 2, 28).WithCalendar(CalendarSystem.Badi);
 
-            Assert.AreEqual("168-0-4", AsWondrousString(d1));
-            Assert.AreEqual("169-0-3", AsWondrousString(d2));
+            Assert.AreEqual("168-0-4", AsBadiString(d1));
+            Assert.AreEqual("169-0-3", AsBadiString(d2));
 
             Assert.AreEqual(Period.FromMonths(19) + Period.FromDays(18), Period.Between(d1, d2));
         }
@@ -509,8 +509,8 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void BetweenLocalDates_AfterLeapYear()
         {
-            LocalDate d1 = CreateWondrousDate(180, 19, 5);
-            LocalDate d2 = CreateWondrousDate(181, 19, 5);
+            LocalDate d1 = CreateBadiDate(180, 19, 5);
+            LocalDate d2 = CreateBadiDate(181, 19, 5);
             Assert.AreEqual(Period.FromYears(1), Period.Between(d1, d2));
             Assert.AreEqual(Period.FromYears(-1), Period.Between(d2, d1));
         }
@@ -519,48 +519,48 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void Addition_DayCrossingMonthBoundary()
         {
-            LocalDate start = CreateWondrousDate(182, 4, 13);
+            LocalDate start = CreateBadiDate(182, 4, 13);
             LocalDate result = start + Period.FromDays(10);
-            Assert.AreEqual(CreateWondrousDate(182, 5, 4), result);
+            Assert.AreEqual(CreateBadiDate(182, 5, 4), result);
         }
 
         [Test]
         public void Addition()
         {
-            var start = CreateWondrousDate(182, 1, 1);
+            var start = CreateBadiDate(182, 1, 1);
 
             var result = start + Period.FromDays(3);
-            Assert.AreEqual(CreateWondrousDate(182, 1, 4), result);
+            Assert.AreEqual(CreateBadiDate(182, 1, 4), result);
 
             result = start + Period.FromDays(20);
-            Assert.AreEqual(CreateWondrousDate(182, 2, 2), result);
+            Assert.AreEqual(CreateBadiDate(182, 2, 2), result);
         }
 
         [Test]
         public void Addition_DayCrossingMonthBoundaryFromAyyamiHa()
         {
-            var start = CreateWondrousDate(182, AyyamiHaMonth, 3);
+            var start = CreateBadiDate(182, AyyamiHaMonth, 3);
 
             var result = start + Period.FromDays(10);
             // in 182, Ayyam-i-Ha has 5 days
-            Assert.AreEqual(CreateWondrousDate(182, 19, 8), result);
+            Assert.AreEqual(CreateBadiDate(182, 19, 8), result);
         }
 
         [Test]
         public void Addition_OneYearOnLeapDay()
         {
-            LocalDate start = CreateWondrousDate(182, AyyamiHaMonth, 5);
+            LocalDate start = CreateBadiDate(182, AyyamiHaMonth, 5);
             LocalDate result = start + Period.FromYears(1);
             // Ayyam-i-Ha 5 becomes Ayyam-i-Ha 4
-            Assert.AreEqual(CreateWondrousDate(183, AyyamiHaMonth, 4), result);
+            Assert.AreEqual(CreateBadiDate(183, AyyamiHaMonth, 4), result);
         }
 
         [Test]
         public void Addition_FiveYearsOnLeapDay()
         {
-            LocalDate start = CreateWondrousDate(182, AyyamiHaMonth, 5);
+            LocalDate start = CreateBadiDate(182, AyyamiHaMonth, 5);
             LocalDate result = start + Period.FromYears(5);
-            Assert.AreEqual(CreateWondrousDate(187, AyyamiHaMonth, 5), result);
+            Assert.AreEqual(CreateBadiDate(187, AyyamiHaMonth, 5), result);
         }
 
         [Test]
@@ -568,45 +568,45 @@ namespace NodaTime.Test.Calendars
         {
             // One year, one month, two days
             Period period = Period.FromYears(1) + Period.FromMonths(1) + Period.FromDays(2);
-            LocalDate start = CreateWondrousDate(171, 1, 19);
+            LocalDate start = CreateBadiDate(171, 1, 19);
             // Periods are added in order, so this becomes...
             // Add one year: 172.1.19
             // Add one month: 172.2.19
             // Add two days: 172.3.2
             LocalDate result = start + period;
-            Assert.AreEqual(CreateWondrousDate(172, 3, 2), result);
+            Assert.AreEqual(CreateBadiDate(172, 3, 2), result);
         }
 
         /// <summary>
-        /// Create a <see cref="LocalDate"/> in the Wondrous calendar, treating 0
+        /// Create a <see cref="LocalDate"/> in the Badíʿ calendar, treating 0
         /// as the month containing Ayyam-i-Ha.
         /// </summary>
-        /// <param name="year">Year in the Wondrous calendar</param>
+        /// <param name="year">Year in the Badíʿ calendar</param>
         /// <param name="month">Month (use 0 for Ayyam-i-Ha)</param>
         /// <param name="day">Day in month</param>
-        private static LocalDate CreateWondrousDate(int year, int month, int day)
+        private static LocalDate CreateBadiDate(int year, int month, int day)
         {
             if (month == AyyamiHaMonth)
             {
-                Preconditions.CheckArgumentRange(nameof(day), day, 1, WondrousYearMonthDayCalculator.GetDaysInAyyamiHa(year));
+                Preconditions.CheckArgumentRange(nameof(day), day, 1, BadiYearMonthDayCalculator.GetDaysInAyyamiHa(year));
                 // Move Ayyam-i-Ha days to fall after the last day of month 18.
-                month = WondrousYearMonthDayCalculator.Month18;
-                day += WondrousYearMonthDayCalculator.DaysInMonth;
+                month = BadiYearMonthDayCalculator.Month18;
+                day += BadiYearMonthDayCalculator.DaysInMonth;
             }
-            return new LocalDate(year, month, day, CalendarSystem.Wondrous);
+            return new LocalDate(year, month, day, CalendarSystem.Badi);
         }
 
         /// <summary>
         /// Return the day of this month, treating Ayyam-i-Ha as a separate month.
         /// </summary>
-        internal static int WondrousDay(LocalDate input)
+        internal static int BadiDay(LocalDate input)
         {
-            Preconditions.CheckArgument(input.Calendar == CalendarSystem.Wondrous, nameof(input), "Only valid when using the Wondrous calendar");
+            Preconditions.CheckArgument(input.Calendar == CalendarSystem.Badi, nameof(input), "Only valid when using the Badíʿ calendar");
 
-            if (input.Month == WondrousYearMonthDayCalculator.Month18 &&
-                input.Day > WondrousYearMonthDayCalculator.DaysInMonth)
+            if (input.Month == BadiYearMonthDayCalculator.Month18 &&
+                input.Day > BadiYearMonthDayCalculator.DaysInMonth)
             {
-                return input.Day - WondrousYearMonthDayCalculator.DaysInMonth;
+                return input.Day - BadiYearMonthDayCalculator.DaysInMonth;
             }
             return input.Day;
         }
@@ -614,12 +614,12 @@ namespace NodaTime.Test.Calendars
         /// <summary>
         /// Return the month of this date. If in Ayyam-i-Ha, returns 0.
         /// </summary>
-        internal static int WondrousMonth(LocalDate input)
+        internal static int BadiMonth(LocalDate input)
         {
-            Preconditions.CheckArgument(input.Calendar == CalendarSystem.Wondrous, nameof(input), "Only valid when using the Wondrous calendar");
+            Preconditions.CheckArgument(input.Calendar == CalendarSystem.Badi, nameof(input), "Only valid when using the Badíʿ calendar");
 
-            if (input.Month == WondrousYearMonthDayCalculator.Month18 &&
-                input.Day > WondrousYearMonthDayCalculator.DaysInMonth)
+            if (input.Month == BadiYearMonthDayCalculator.Month18 &&
+                input.Day > BadiYearMonthDayCalculator.DaysInMonth)
             {
                 return AyyamiHaMonth;
             }
@@ -629,43 +629,43 @@ namespace NodaTime.Test.Calendars
         /// <summary>
         /// Get a text representation of the date.
         /// </summary>
-        internal static string AsWondrousString(LocalDate input)
+        internal static string AsBadiString(LocalDate input)
         {
             var year = input.Year;
-            var month = WondrousCalendarSystemTest.WondrousMonth(input);
-            var day = WondrousCalendarSystemTest.WondrousDay(input);
+            var month = BadiCalendarSystemTest.BadiMonth(input);
+            var day = BadiCalendarSystemTest.BadiDay(input);
 
             return $"{year}-{month}-{day}";
         }
 
         [Test]
-        public void HelperMethod_WondrousDay()
+        public void HelperMethod_BadiDay()
         {
             // ensure that this helper method is working
-            Assert.AreEqual(WondrousDay(CreateWondrousDate(180, 10, 10)), 10);
-            Assert.AreEqual(WondrousDay(CreateWondrousDate(180, 18, 19)), 19);
-            Assert.AreEqual(WondrousDay(CreateWondrousDate(180, 0, 3)), 3);
-            Assert.AreEqual(WondrousDay(CreateWondrousDate(180, 19, 1)), 1);
+            Assert.AreEqual(BadiDay(CreateBadiDate(180, 10, 10)), 10);
+            Assert.AreEqual(BadiDay(CreateBadiDate(180, 18, 19)), 19);
+            Assert.AreEqual(BadiDay(CreateBadiDate(180, 0, 3)), 3);
+            Assert.AreEqual(BadiDay(CreateBadiDate(180, 19, 1)), 1);
         }
 
         [Test]
-        public void HelperMethod_WondrousMonth()
+        public void HelperMethod_BadiMonth()
         {
             // ensure that this helper method is working
-            Assert.AreEqual(WondrousMonth(CreateWondrousDate(180, 10, 10)), 10);
-            Assert.AreEqual(WondrousMonth(CreateWondrousDate(180, 18, 19)), 18);
-            Assert.AreEqual(WondrousMonth(CreateWondrousDate(180, 0, 3)), 0);
-            Assert.AreEqual(WondrousMonth(CreateWondrousDate(180, 19, 1)), 19);
+            Assert.AreEqual(BadiMonth(CreateBadiDate(180, 10, 10)), 10);
+            Assert.AreEqual(BadiMonth(CreateBadiDate(180, 18, 19)), 18);
+            Assert.AreEqual(BadiMonth(CreateBadiDate(180, 0, 3)), 0);
+            Assert.AreEqual(BadiMonth(CreateBadiDate(180, 19, 1)), 19);
         }
 
         [Test]
-        public void HelperMethod_AsWondrousString()
+        public void HelperMethod_AsBadiString()
         {
             // ensure that this helper method is working
-            Assert.AreEqual(AsWondrousString(CreateWondrousDate(180, 10, 10)), "180-10-10");
-            Assert.AreEqual(AsWondrousString(CreateWondrousDate(180, 18, 19)), "180-18-19");
-            Assert.AreEqual(AsWondrousString(CreateWondrousDate(180, 0, 3)), "180-0-3");
-            Assert.AreEqual(AsWondrousString(CreateWondrousDate(180, 19, 1)), "180-19-1");
+            Assert.AreEqual(AsBadiString(CreateBadiDate(180, 10, 10)), "180-10-10");
+            Assert.AreEqual(AsBadiString(CreateBadiDate(180, 18, 19)), "180-18-19");
+            Assert.AreEqual(AsBadiString(CreateBadiDate(180, 0, 3)), "180-0-3");
+            Assert.AreEqual(AsBadiString(CreateBadiDate(180, 19, 1)), "180-19-1");
         }
 
     }

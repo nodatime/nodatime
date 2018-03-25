@@ -8,9 +8,9 @@ using System;
 namespace NodaTime.Calendars
 {
     /// <summary>
-    /// See <see cref="CalendarSystem.Wondrous" /> for details.
+    /// See <see cref="CalendarSystem.Badi" /> for details about the Badíʿ calendar.
     /// </summary>
-    internal sealed class WondrousYearMonthDayCalculator : YearMonthDayCalculator
+    internal sealed class BadiYearMonthDayCalculator : YearMonthDayCalculator
     {
         // named constants to avoid use of raw numbers in the code
         private const int AverageDaysPer10Years = 3652; // Ideally 365.2425 per year...
@@ -19,7 +19,7 @@ namespace NodaTime.Calendars
 
         internal const int DaysInMonth = 19;
         private const int FirstYearOfStandardizedCalendar = 172;
-        private const int GregorianYearOfFirstWondrousYear = 1844;
+        private const int GregorianYearOfFirstBadiYear = 1844;
 
         /// <remarks>
         /// There are 19 months in a year. Between the 18th and 19th month are the "days of Ha" (Ayyam-i-Ha).
@@ -31,8 +31,8 @@ namespace NodaTime.Calendars
         private const int MonthsInYear = 19;
 
         private const int UnixEpochDayAtStartOfYear1 = -45941;
-        private const int WondrousMaxYear = 1000; // current lookup tables are pre-calculated for a thousand years
-        private const int WondrousMinYear = 1;
+        private const int BadiMaxYear = 1000; // current lookup tables are pre-calculated for a thousand years
+        private const int BadiMinYear = 1;
 
         /// <summary>
         /// This is the base64 representation of information for years 172 to 1000.
@@ -56,16 +56,16 @@ namespace NodaTime.Calendars
             "DAICAgwCAgIMAgICAgsCAgILAgICCwICAgsCAgILAgICCwICAgsCAgILAgICAQsCAgELAgIBCwICAQsC" +
             "AgELAgIBCwICAQsCAgELAgIBAQsCAQELAgEBCwIBAQsCAQELAgEBCwIBAQsCAQELAg==");
 
-        static WondrousYearMonthDayCalculator()
+        static BadiYearMonthDayCalculator()
         {
             Preconditions.DebugCheckState(
-                FirstYearOfStandardizedCalendar + YearInfoRaw.Length == WondrousMaxYear + 1,
+                FirstYearOfStandardizedCalendar + YearInfoRaw.Length == BadiMaxYear + 1,
                 "Invalid compressed data. Length: " + YearInfoRaw.Length);
         }
 
-        internal WondrousYearMonthDayCalculator()
-            : base(WondrousMinYear,
-                WondrousMaxYear - 1,
+        internal BadiYearMonthDayCalculator()
+            : base(BadiMinYear,
+                BadiMaxYear - 1,
                 AverageDaysPer10Years,
                 UnixEpochDayAtStartOfYear1)
         {
@@ -73,10 +73,10 @@ namespace NodaTime.Calendars
 
         internal static int GetDaysInAyyamiHa(int year)
         {
-            Preconditions.CheckArgumentRange(nameof(year), year, WondrousMinYear, WondrousMaxYear);
+            Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear, BadiMaxYear);
             if (year < FirstYearOfStandardizedCalendar)
             {
-                return CalendarSystem.Iso.YearMonthDayCalculator.IsLeapYear(year + GregorianYearOfFirstWondrousYear)
+                return CalendarSystem.Iso.YearMonthDayCalculator.IsLeapYear(year + GregorianYearOfFirstBadiYear)
                     ? DaysInAyyamiHaInLeapYear : DaysInAyyamiHaInNormalYear;
             }
             int num = YearInfoRaw[year - FirstYearOfStandardizedCalendar];
@@ -85,7 +85,7 @@ namespace NodaTime.Calendars
 
         private static int GetNawRuzDayInMarch(int year)
         {
-            Preconditions.CheckArgumentRange(nameof(year), year, WondrousMinYear, WondrousMaxYear);
+            Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear, BadiMaxYear);
             if (year < FirstYearOfStandardizedCalendar)
             {
                 return 21;
@@ -97,12 +97,12 @@ namespace NodaTime.Calendars
 
         protected override int CalculateStartOfYearDays(int year)
         {
-            Preconditions.CheckArgumentRange(nameof(year), year, WondrousMinYear, WondrousMaxYear);
+            Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear, BadiMaxYear);
 
             // The epoch is the same regardless of calendar system, so if we work out when the
-            // start of the Wondrous year is in terms of the Gregorian year, we can just use that
+            // start of the Badíʿ year is in terms of the Gregorian year, we can just use that
             // date's days-since-epoch value.
-            var gregorianYear = year + GregorianYearOfFirstWondrousYear - 1;
+            var gregorianYear = year + GregorianYearOfFirstBadiYear - 1;
             var nawRuz = new LocalDate(gregorianYear, 3, GetNawRuzDayInMarch(year));
             return nawRuz.DaysSinceEpoch;
         }
@@ -159,7 +159,7 @@ namespace NodaTime.Calendars
                 nextMonthNum = MonthsInYear - nextMonthNum % MonthsInYear;
             }
 
-            Preconditions.CheckArgumentRange(nameof(nextYear), nextYear, WondrousMinYear, WondrousMaxYear);
+            Preconditions.CheckArgumentRange(nameof(nextYear), nextYear, BadiMinYear, BadiMaxYear);
 
             var result = new YearMonthDay(nextYear, nextMonthNum, nextDay);
 
@@ -168,7 +168,7 @@ namespace NodaTime.Calendars
 
         internal override int GetDaysInMonth(int year, int month)
         {
-            Preconditions.CheckArgumentRange(nameof(year), year, WondrousMinYear, WondrousMaxYear);
+            Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear, BadiMaxYear);
             return month == Month18 ? DaysInMonth + GetDaysInAyyamiHa(year) : DaysInMonth;
         }
 
@@ -247,7 +247,7 @@ namespace NodaTime.Calendars
 
         internal override YearMonthDay SetYear(YearMonthDay start, int newYear)
         {
-            Preconditions.CheckArgumentRange(nameof(newYear), newYear, WondrousMinYear, WondrousMaxYear);
+            Preconditions.CheckArgumentRange(nameof(newYear), newYear, BadiMinYear, BadiMaxYear);
 
             var month = start.Month;
             var day = start.Day;
@@ -265,7 +265,7 @@ namespace NodaTime.Calendars
 
         internal override void ValidateYearMonthDay(int year, int month, int day)
         {
-            Preconditions.CheckArgumentRange(nameof(year), year, WondrousMinYear, WondrousMaxYear);
+            Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear, BadiMaxYear);
             Preconditions.CheckArgumentRange(nameof(month), month, 1, MonthsInYear);
 
             int daysInMonth = month == Month18 ? DaysInMonth + GetDaysInAyyamiHa(year) : DaysInMonth;
