@@ -16,9 +16,15 @@ New features:
 - New operations on `DateInterval`: `Contains(DateInterval)`, `Union` and `Intersection`
 - New calendar system: the Badíʿ calendar
 
-A beta of this version was released on 2017-12-13.
+2.3.0-beta01 was released on 2017-12-13, and 2.3.0-beta02 was
+released on 2018-03-25.
 
-## 2.0.6, 2.1.3, 2.2.4, released 2018-01-24 with tzdb 2018c
+## 1.3.7, 1.4.4, 2.0.7, 2.1.4, 2.2.5, released 2018-03-24 with tzdb 2018c
+
+This set of patch releases simply updates the built-in TZDB time
+zone data to 2018d.
+
+## 1.3.6, 1.4.3, 2.0.6, 2.1.3, 2.2.4, released 2018-01-24 with tzdb 2018c
 
 This set of patch releases simply updates the built-in TZDB time
 zone data to 2018c. Note that 2018a and 2018b were skipped. 2018a and 2018b used negative
