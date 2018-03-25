@@ -17,12 +17,13 @@ This roadmap was last updated on **2017-08-10**.
 - Min/Max methods for more types
 - Deconstruction methods to work neatly with C# 7
 - More convenience properties
+- OffsetDate and OffsetTime
 
 **Unscheduled features and issues which we hope to address at some point**
 
 - Support month name parsing/formatting for the Hebrew calendar using `CultureInfo`
 - More code analysis using Roslyn (e.g. check that all non-nullable parameters are validated)
-- Possibly more calendars (Ethiopian, Fiscal, Wondrous, 360-day)
+- Possibly more calendars (Ethiopian, Fiscal, 360-day)
 
 **Tooling and web site**
 
