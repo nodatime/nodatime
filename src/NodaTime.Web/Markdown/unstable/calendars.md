@@ -3,7 +3,7 @@
 As described in the [core concepts documentation](concepts), a calendar system is a scheme
 for dividing time into eras, years, months and days and so on. As a matter of simplification,
 Noda Time treats every day as starting and ending at midnight, despite some calendars (such as
-the Islamic, Hebrew and Wondrous calendars) traditionally having days stretching from sunset to sunset.
+the Islamic, Hebrew and Bad√≠ ø calendars) traditionally having days stretching from sunset to sunset.
 
 Additionally, Noda Time only handles calendars that *do* split time into eras, years, months and days - if we ever need to support any calendar which has other subdivisions, that would require specific
 support.
@@ -194,30 +194,30 @@ and retrieving them (such as with `LocalDate.Month`).
 
 The convenience properties `HebrewScriptural` and `HebrewCivil` are just simpler alternatives to the `GetHebrewCalendar` method call.
 
-Wondrous
+Bad√≠ ø
 ===
 
 First supported in v2.3.0
 API access:
 
-- [`CalendarSystem.Wondrous`](noda-property://NodaTime.CalendarSystem.Wondrous)
+- [`CalendarSystem.Badi`](noda-property://NodaTime.CalendarSystem.Badi)
 
-The [Wondrous calendar](https://en.wikipedia.org/wiki/Bah%C3%A1%27%C3%AD_calendar), also called the Bah·'Ì or BadÌë calendar,
-is a solar calendar used by the Bah·'Ì Faith. A year consists of 19 months of 19 days, with 4 or 5 intercalary
-days between months 18 and 19. These intercalary days are called *Ayy·m-i-H·*, and are not regarded as belonging
-to any month. Until 2015, the length of Ayy·m-i-H· was related to the Gregorian calendar: 5 in a Gregorian leap
-year, and 4 otherwise. From 2015 onwards, the length of Ayy·m-i-H· is set to ensure that the new year (Naw-R˙z)
+The [Bad√≠ ø calendar](https://en.wikipedia.org/wiki/Bah%C3%A1%27%C3%AD_calendar), also called the Bah√°'√≠ or Wondrous calendar,
+is a solar calendar used by the Bah√°'√≠ Faith. A year consists of 19 months of 19 days, with 4 or 5 intercalary
+days between months 18 and 19. These intercalary days are called *Ayy√°m-i-H√°*, and are not regarded as belonging
+to any month. Until 2015, the length of Ayy√°m-i-H√° was related to the Gregorian calendar: 5 in a Gregorian leap
+year, and 4 otherwise. From 2015 onwards, the length of Ayy√°m-i-H√° is set to ensure that the new year (Naw-R√∫z)
 coincides with the vernal equinox in Tehran.
 
-The Noda Time implementation of the Wondrous calendar has two aspects which diverge from the
+The Noda Time implementation of the Bad√≠ ø calendar has two aspects which diverge from the
 "correct" calendar:
 
-- Days in the correct Wondrous calendar begin at sunset (so that is when the date changes);
+- Days in the correct Bad√≠ ø calendar begin at sunset (so that is when the date changes);
   in Noda Time the date always changes at midnight.
-- In order to fit in with the rest of the code base, Ayy·m-i-H· is modeled as extra days within
+- In order to fit in with the rest of the code base, Ayy√°m-i-H√° is modeled as extra days within
   month 18. This not only affects the reporting of month numbers and lengths, but additionally, operations
   such as finding "the date at the end of the current month" - in month 18, the end of the month
-  will be reported as being the final day of Ayy·m-i-H·.
+  will be reported as being the final day of Ayy√°m-i-H√°.
 
 It is expected that an additional package will be created to report dates in a more strictly-correct
 fashion, using the Noda Time calendar as the base implementation with a thin wrapper for more idiomatic usage.

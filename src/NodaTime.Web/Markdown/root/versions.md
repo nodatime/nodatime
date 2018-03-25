@@ -14,7 +14,7 @@ New features:
   with conversions from other types as approrpiate.
 - `OffsetDateTime.InZone` method added for easier conversion to `ZonedDateTime`
 - New operations on `DateInterval`: `Contains(DateInterval)`, `Union` and `Intersection`
-- New calendar system: the Wondrous calendar
+- New calendar system: the Badíʿ calendar
 
 A beta of this version was released on 2017-12-13.
 
