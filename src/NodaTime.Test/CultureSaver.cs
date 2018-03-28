@@ -26,7 +26,7 @@ namespace NodaTime.Test
     {
         // Abstractions over Thread.CurrentThread.CurrentCulture / CultureInfo.CurrentCulture etc.
 
-#if NETCORE
+#if NETCOREAPP1_0
         private static CultureInfo CurrentCulture
         {
             get { return CultureInfo.DefaultThreadCurrentCulture; }
