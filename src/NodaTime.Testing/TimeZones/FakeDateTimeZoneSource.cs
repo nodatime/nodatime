@@ -149,6 +149,10 @@ namespace NodaTime.Testing.TimeZones
                 foreach (var entry in bclIdsToZoneIds)
                 {
                     Preconditions.CheckNotNull(entry.Value, "value");
+                    if (!zoneMap.ContainsKey(entry.Value))
+                    {
+                        throw new InvalidOperationException($"Mapping for BCL {entry.Key}/{entry.Value} has no corresponding zone.");
+                    }
                 }
                 var bclIdMapClone = new Dictionary<string, string>(bclIdsToZoneIds);
                 return new FakeDateTimeZoneSource(VersionId, zoneMap, bclIdMapClone);
