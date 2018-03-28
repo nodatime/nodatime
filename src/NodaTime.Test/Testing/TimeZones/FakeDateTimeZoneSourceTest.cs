@@ -129,15 +129,17 @@ namespace NodaTime.Test.Testing.TimeZones
         // Unfortuntely NUnit requires the exact exception type :(
         private static void AssertBuildFails(FakeDateTimeZoneSource.Builder builder)
         {
+            bool success = false;
             try
             {
                 builder.Build();
-                Assert.Fail("Expected exception");
+                success = true;
             }
             catch (Exception)
             {
                 // Expected
             }
+            Assert.IsFalse(success);
         }
     }
 }
