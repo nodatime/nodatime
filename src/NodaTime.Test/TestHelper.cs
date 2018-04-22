@@ -13,8 +13,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NodaTime.Annotations;
-using NodaTime.TimeZones;
-
 #if !NETCORE
 using System.Runtime.Serialization.Formatters.Binary;
 #endif

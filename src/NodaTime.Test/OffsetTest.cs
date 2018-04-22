@@ -7,8 +7,7 @@ using NodaTime.Text;
 using NUnit.Framework;
 
 #if !NETCORE
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+
 #endif
 
 namespace NodaTime.Test

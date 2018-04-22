@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using NodaTime.Calendars;
 using NodaTime.Testing.TimeZones;
 using NodaTime.Text;

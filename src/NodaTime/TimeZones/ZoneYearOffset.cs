@@ -4,7 +4,6 @@
 
 using System;
 using System.Globalization;
-using NodaTime.Calendars;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 using JetBrains.Annotations;

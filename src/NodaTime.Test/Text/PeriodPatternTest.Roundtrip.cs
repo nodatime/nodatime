@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using NodaTime.Text;
-using System;
 
 namespace NodaTime.Test.Text
 {

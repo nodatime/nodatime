@@ -5,8 +5,6 @@
 using System;
 using System.Globalization;
 using NodaTime.Calendars;
-using NodaTime.Test.Text;
-
 using NUnit.Framework;
 
 namespace NodaTime.Test.Calendars

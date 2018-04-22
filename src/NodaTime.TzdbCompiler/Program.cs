@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using CommandLine;
-using NodaTime.Extensions;
 using NodaTime.TimeZones;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.TzdbCompiler.Tzdb;

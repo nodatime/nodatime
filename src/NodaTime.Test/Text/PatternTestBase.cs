@@ -5,9 +5,6 @@
 using NodaTime.Text;
 using NUnit.Framework;
 using System;
-using System.Collections;
-using System.Linq;
-using System.Reflection;
 
 namespace NodaTime.Test.Text
 {

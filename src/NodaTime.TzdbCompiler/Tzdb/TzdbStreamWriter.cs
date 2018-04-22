@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using NodaTime.TimeZones.IO;
 using NodaTime.TimeZones.Cldr;
-using NodaTime.Utility;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
