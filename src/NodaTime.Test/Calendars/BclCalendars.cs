@@ -25,8 +25,7 @@ namespace NodaTime.Test.Calendars
 
         private static Calendar GetCalendar(string name)
         {
-            Calendar calendar;
-            if (calendars.TryGetValue(name, out calendar))
+            if (calendars.TryGetValue(name, out Calendar calendar))
             {
                 return calendar;
             }

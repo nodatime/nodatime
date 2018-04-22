@@ -344,8 +344,7 @@ namespace NodaTime.Globalization
         {
             lock (eraDescriptions)
             {
-                EraDescription ret;
-                if (!eraDescriptions.TryGetValue(era, out ret))
+                if (!eraDescriptions.TryGetValue(era, out EraDescription ret))
                 {
                     ret = EraDescription.ForEra(era, CultureInfo);
                     eraDescriptions[era] = ret;

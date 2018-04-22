@@ -70,8 +70,7 @@ namespace NodaTime.Text.Patterns
             // Now iterate over the pattern.
             while (patternCursor.MoveNext())
             {
-                CharacterHandler<TResult, TBucket> handler;
-                if (characterHandlers.TryGetValue(patternCursor.Current, out handler))
+                if (characterHandlers.TryGetValue(patternCursor.Current, out CharacterHandler<TResult, TBucket> handler))
                 {
                     handler(patternCursor, this);
                 }
@@ -166,8 +165,7 @@ namespace NodaTime.Text.Patterns
             AddParseAction((cursor, bucket) =>
             {
                 int startingIndex = cursor.Index;
-                long value;
-                if (!cursor.ParseInt64Digits(minimumDigits, maximumDigits, out value))
+                if (!cursor.ParseInt64Digits(minimumDigits, maximumDigits, out long value))
                 {
                     cursor.Move(startingIndex);
                     return ParseResult<TResult>.MismatchedNumber(cursor, new string(patternChar, minimumDigits));
@@ -190,14 +188,13 @@ namespace NodaTime.Text.Patterns
             AddParseAction((cursor, bucket) =>
             {
                 int startingIndex = cursor.Index;
-                int value;
                 bool negative = cursor.Match('-');
                 if (negative && minimumValue >= 0)
                 {
                     cursor.Move(startingIndex);
                     return ParseResult<TResult>.UnexpectedNegative(cursor);
                 }
-                if (!cursor.ParseDigits(minimumDigits, maximumDigits, out value))
+                if (!cursor.ParseDigits(minimumDigits, maximumDigits, out int value))
                 {
                     cursor.Move(startingIndex);
                     return ParseResult<TResult>.MismatchedNumber(cursor, new string(patternChar, minimumDigits));

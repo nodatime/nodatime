@@ -145,8 +145,7 @@ namespace NodaTime.TimeZones
             else
             {
                 // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
-                int ignoredDayOfYear;
-                targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
+                targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out int ignoredDayOfYear);
             }
 
             LocalInstant transition = YearOffset.GetOccurrenceForYear(targetYear);
@@ -219,8 +218,7 @@ namespace NodaTime.TimeZones
             else
             {
                 // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
-                int ignoredDayOfYear;
-                targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
+                targetYear = CalendarSystem.Iso.YearMonthDayCalculator.GetYear(safeLocal.DaysSinceEpoch, out int ignoredDayOfYear);
             }
 
             LocalInstant transition = YearOffset.GetOccurrenceForYear(targetYear);

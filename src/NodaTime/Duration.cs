@@ -986,8 +986,7 @@ namespace NodaTime
         public static Duration FromTicks(long ticks)
         {
             // No precondition here, as we cover a wider range than Int64 ticks can handle...
-            long tickOfDay;
-            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
+            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out long tickOfDay);
             return new Duration(days, tickOfDay * NanosecondsPerTick);
         }
 

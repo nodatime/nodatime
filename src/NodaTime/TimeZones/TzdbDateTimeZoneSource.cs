@@ -183,8 +183,7 @@ namespace NodaTime.TimeZones
         /// <inheritdoc />
         [NotNull] public DateTimeZone ForId([NotNull] string id)
         {
-            string canonicalId;
-            if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, nameof(id)), out canonicalId))
+            if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, nameof(id)), out string canonicalId))
             {
                 throw new ArgumentException("Time zone with ID " + id + " not found in source " + version, "id");
             }
@@ -202,9 +201,8 @@ namespace NodaTime.TimeZones
         internal string MapTimeZoneInfoId(TimeZoneInfo timeZone)
         {
             string id = timeZone.Id;
-            string result;
             // First see if it's a Windows time zone ID.
-            if (source.WindowsMapping.PrimaryMapping.TryGetValue(id, out result))
+            if (source.WindowsMapping.PrimaryMapping.TryGetValue(id, out string result))
             {
                 return result;
             }
@@ -226,8 +224,7 @@ namespace NodaTime.TimeZones
             lock (guesses)
             {
                 // FIXME: Stop using StandardName! (We have Id now...)
-                string cached;
-                if (guesses.TryGetValue(zone.StandardName, out cached))
+                if (guesses.TryGetValue(zone.StandardName, out string cached))
                 {
                     return cached;
                 }
@@ -326,8 +323,7 @@ namespace NodaTime.TimeZones
             // should be such that y maps to itself.)
             foreach (var entry in this.CanonicalIdMap)
             {
-                string canonical;
-                if (!CanonicalIdMap.TryGetValue(entry.Value, out canonical))
+                if (!CanonicalIdMap.TryGetValue(entry.Value, out string canonical))
                 {
                     throw new InvalidNodaDataException(
                         "Mapping for entry {entry.Key} ({entry.Value}) is missing");
