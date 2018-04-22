@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using System.Diagnostics;
-using System.Text;
 
 namespace NodaTime.Text
 {

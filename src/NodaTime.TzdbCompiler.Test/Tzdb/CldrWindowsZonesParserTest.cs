@@ -5,7 +5,6 @@
 using NodaTime.TimeZones.Cldr;
 using NodaTime.TzdbCompiler.Tzdb;
 using NUnit.Framework;
-using System.Linq;
 using System.Xml.Linq;
 
 namespace NodaTime.TzdbCompiler.Test.Tzdb

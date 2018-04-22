@@ -5,7 +5,6 @@
 using System.Collections.Generic;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
-using System;
 
 namespace NodaTime.Text
 {

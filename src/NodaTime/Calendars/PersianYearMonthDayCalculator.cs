@@ -5,7 +5,6 @@
 using NodaTime.Utility;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 
 namespace NodaTime.Calendars
 {
