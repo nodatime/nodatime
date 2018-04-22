@@ -154,8 +154,7 @@ namespace NodaTime.Calendars
         /// </summary>
         internal YearMonthDay GetYearMonthDay([Trusted] int daysSinceEpoch)
         {
-            int zeroBasedDay;
-            int year = GetYear(daysSinceEpoch, out zeroBasedDay);
+            int year = GetYear(daysSinceEpoch, out int zeroBasedDay);
             return GetYearMonthDay(year, zeroBasedDay + 1);
         }
 

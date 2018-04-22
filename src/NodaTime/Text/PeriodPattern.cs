@@ -122,13 +122,12 @@ namespace NodaTime.Text
                 PeriodUnits unitsSoFar = 0;
                 while (valueCursor.MoveNext())
                 {
-                    long unitValue;
                     if (inDate && valueCursor.Current == 'T')
                     {
                         inDate = false;
                         continue;
                     }
-                    var failure = valueCursor.ParseInt64<Period>(out unitValue);
+                    var failure = valueCursor.ParseInt64<Period>(out long unitValue);
                     if (failure != null)
                     {
                         return failure;
@@ -232,14 +231,13 @@ namespace NodaTime.Text
                 PeriodUnits unitsSoFar = 0;
                 while (valueCursor.MoveNext())
                 {
-                    long unitValue;
                     if (inDate && valueCursor.Current == 'T')
                     {
                         inDate = false;
                         continue;
                     }
                     bool negative = valueCursor.Current == '-';
-                    var failure = valueCursor.ParseInt64<Period>(out unitValue);
+                    var failure = valueCursor.ParseInt64<Period>(out long unitValue);
                     if (failure != null)
                     {
                         return failure;
@@ -301,9 +299,8 @@ namespace NodaTime.Text
                         {
                             return ParseResult<Period>.MissingNumber(valueCursor);
                         }
-                        int totalNanoseconds;
                         // Can cope with at most 999999999 nanoseconds
-                        if (!valueCursor.ParseFraction(9, 9, out totalNanoseconds, 1))
+                        if (!valueCursor.ParseFraction(9, 9, out int totalNanoseconds, 1))
                         {
                             return ParseResult<Period>.MissingNumber(valueCursor);
                         }

@@ -44,8 +44,7 @@ namespace NodaTime.Testing.TimeZones
         public DateTimeZone ForId(string id)
         {
             Preconditions.CheckNotNull(id, nameof(id));
-            DateTimeZone zone;
-            if (zones.TryGetValue(id, out zone))
+            if (zones.TryGetValue(id, out DateTimeZone zone))
             {
                 return zone;
             }
@@ -64,10 +63,9 @@ namespace NodaTime.Testing.TimeZones
         public string GetSystemDefaultId()
         {
             string id = TimeZoneInfo.Local.Id;
-            string canonicalId;
             // We don't care about the return value of TryGetValue - if it's false,
             // canonicalId will be null, which is what we want.
-            bclToZoneIds.TryGetValue(id, out canonicalId);
+            bclToZoneIds.TryGetValue(id, out string canonicalId);
             return canonicalId;
         }
 

@@ -63,8 +63,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <exception cref="MissingTokenException">Thrown if there is no next token.</exception>
         public string NextToken(string name)
         {
-            string result;
-            if (TryNextToken(out result))
+            if (TryNextToken(out string result))
             {
                 return result;
             }

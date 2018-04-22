@@ -143,8 +143,7 @@ namespace NodaTime.Text
                 {
                     AmPm = TemplateValue.Hour / 12;
                 }
-                int hour;
-                ParseResult<LocalTime> failure = DetermineHour(usedFields, text, out hour);
+                ParseResult<LocalTime> failure = DetermineHour(usedFields, text, out int hour);
                 if (failure != null)
                 {
                     return failure;

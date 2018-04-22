@@ -43,8 +43,7 @@ namespace NodaTime.Utility
             lock (mutex)
             {
                 // First check the cache...
-                TValue value;
-                if (dictionary.TryGetValue(key, out value))
+                if (dictionary.TryGetValue(key, out TValue value))
                 {
                     return value;
                 }

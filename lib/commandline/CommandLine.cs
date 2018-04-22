@@ -329,8 +329,7 @@ namespace CommandLine
 
         internal static IList<string> GetReference(object target)
         {
-            Type concreteType;
-            var property = GetProperty(target, out concreteType);
+            var property = GetProperty(target, out Type concreteType);
 
             if (property == null || concreteType == null)
                 return null;
@@ -1735,8 +1734,7 @@ namespace CommandLine
             {
                 if (ParseHelp(args, pair.Right) || !DoParseArguments(args, options))
                 {
-                    string helpText;
-                    HelpOptionAttribute.InvokeMethod(options, pair, out helpText);
+                    HelpOptionAttribute.InvokeMethod(options, pair, out string helpText);
                     helpWriter.Write(helpText);
                     return false;
                 }

@@ -91,8 +91,7 @@ namespace NodaTime.TimeZones
         /// of the recurrence rules of the zone.</exception>
         public ZoneInterval GetZoneInterval(Instant instant)
         {
-            ZoneRecurrence recurrence;
-            var next = NextTransition(instant, out recurrence);
+            var next = NextTransition(instant, out ZoneRecurrence recurrence);
             // Now we know the recurrence we're in, we can work out when we went into it. (We'll never have
             // two transitions into the same recurrence in a row.)
             Offset previousSavings = ReferenceEquals(recurrence, standardRecurrence) ? dstRecurrence.Savings : Offset.Zero;

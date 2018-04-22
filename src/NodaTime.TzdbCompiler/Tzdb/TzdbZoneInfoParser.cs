@@ -96,8 +96,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         private static int NextYear(Tokens tokens, int defaultValue)
         {
             int result = defaultValue;
-            string text;
-            if (tokens.TryNextToken(out text))
+            if (tokens.TryNextToken(out string text))
             {
                 result = ParserHelper.ParseYear(text, defaultValue);
             }

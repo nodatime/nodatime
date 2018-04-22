@@ -23,17 +23,15 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public void ParseExactIncludingPreparse_Valid()
         {
             var pattern = OffsetPattern.CreateWithInvariantCulture("HH:mm");
-            Offset result;
             ParseResult<Offset> parseResult = pattern.Parse("12:34");
-            parseResult.TryGetValue(default(Offset), out result);
+            parseResult.TryGetValue(default(Offset), out Offset result);
         }
 
         [Benchmark]
         public void PreparsedParseExact_Valid()
         {
-            Offset result;
             ParseResult<Offset> parseResult = offsetPattern.Parse("12:34");
-            parseResult.TryGetValue(default(Offset), out result);
+            parseResult.TryGetValue(default(Offset), out Offset result);
         }
 
         [Benchmark]
@@ -45,9 +43,8 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public void PreparedParseExact_InvalidValue()
         {
-            Offset result;
             ParseResult<Offset> parseResult = offsetPattern.Parse("123:45");
-            parseResult.TryGetValue(default(Offset), out result);
+            parseResult.TryGetValue(default(Offset), out Offset result);
         }
 
         [Benchmark]

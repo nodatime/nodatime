@@ -100,8 +100,7 @@ namespace NodaTime.TimeZones
         {
             lock (accessLock)
             {
-                DateTimeZone zone;
-                if (!timeZoneMap.TryGetValue(id, out zone))
+                if (!timeZoneMap.TryGetValue(id, out DateTimeZone zone))
                 {
                     return null;
                 }

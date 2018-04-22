@@ -22,8 +22,7 @@ namespace NodaTime.Test.Utility
         [TestCase(long.MaxValue)]
         public void TicksToDaysAndTickOfDayAndBack(long ticks)
         {
-            long tickOfDay;
-            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out tickOfDay);
+            int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out long tickOfDay);
 
             Assert.AreEqual(ticks, TickArithmetic.DaysAndTickOfDayToTicks(days, tickOfDay));
         }

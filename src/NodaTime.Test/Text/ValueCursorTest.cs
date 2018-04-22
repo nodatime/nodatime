@@ -107,8 +107,7 @@ namespace NodaTime.Test.Text
             Assert.True(value.MoveNext());
             ValidateCurrentCharacter(value, 0, 'a');
             Assert.True(value.MoveNext());
-            int actual;
-            Assert.False(value.ParseDigits(3, 3, out actual));
+            Assert.False(value.ParseDigits(3, 3, out int actual));
             ValidateCurrentCharacter(value, 1, '1');
         }
 
@@ -117,8 +116,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("abc");
             Assert.True(value.MoveNext());
-            int actual;
-            Assert.False(value.ParseDigits(1, 2, out actual));
+            Assert.False(value.ParseDigits(1, 2, out int actual));
             ValidateCurrentCharacter(value, 0, 'a');
         }
 
@@ -127,8 +125,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("12");
             Assert.True(value.MoveNext());
-            int actual;
-            Assert.True(value.ParseDigits(1, 2, out actual));
+            Assert.True(value.ParseDigits(1, 2, out int actual));
             Assert.AreEqual(12, actual);
         }
 
@@ -137,8 +134,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("1234");
             Assert.True(value.MoveNext());
-            int actual;
-            Assert.True(value.ParseDigits(1, 2, out actual));
+            Assert.True(value.ParseDigits(1, 2, out int actual));
             Assert.AreEqual(12, actual);
             ValidateCurrentCharacter(value, 2, '3');
         }
@@ -148,8 +144,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("1");
             value.MoveNext();
-            int actual;
-            Assert.True(value.ParseDigits(1, 2, out actual));
+            Assert.True(value.ParseDigits(1, 2, out int actual));
             Assert.AreEqual(1, actual);
             ValidateEndOfString(value);
         }
@@ -159,8 +154,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("1abc");
             Assert.True(value.MoveNext());
-            int actual;
-            Assert.True(value.ParseDigits(1, 2, out actual));
+            Assert.True(value.ParseDigits(1, 2, out int actual));
             Assert.AreEqual(1, actual);
             ValidateCurrentCharacter(value, 1, 'a');
         }
@@ -172,8 +166,7 @@ namespace NodaTime.Test.Text
             // http://www.unicode.org/charts/PDF/U0600.pdf
             var value = new ValueCursor("\u0660\u0661");
             Assert.True(value.MoveNext());
-            int actual;
-            Assert.False(value.ParseDigits(1, 2, out actual));
+            Assert.False(value.ParseDigits(1, 2, out int actual));
         }
 
         [Test]
@@ -183,8 +176,7 @@ namespace NodaTime.Test.Text
             Assert.True(value.MoveNext());
             ValidateCurrentCharacter(value, 0, 'a');
             Assert.True(value.MoveNext());
-            long actual;
-            Assert.False(value.ParseInt64Digits(3, 3, out actual));
+            Assert.False(value.ParseInt64Digits(3, 3, out long actual));
             ValidateCurrentCharacter(value, 1, '1');
         }
 
@@ -193,8 +185,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("abc");
             Assert.True(value.MoveNext());
-            long actual;
-            Assert.False(value.ParseInt64Digits(1, 2, out actual));
+            Assert.False(value.ParseInt64Digits(1, 2, out long actual));
             ValidateCurrentCharacter(value, 0, 'a');
         }
 
@@ -203,8 +194,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("12");
             Assert.True(value.MoveNext());
-            long actual;
-            Assert.True(value.ParseInt64Digits(1, 2, out actual));
+            Assert.True(value.ParseInt64Digits(1, 2, out long actual));
             Assert.AreEqual(12, actual);
         }
 
@@ -213,8 +203,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("1234");
             Assert.True(value.MoveNext());
-            long actual;
-            Assert.True(value.ParseInt64Digits(1, 2, out actual));
+            Assert.True(value.ParseInt64Digits(1, 2, out long actual));
             Assert.AreEqual(12, actual);
             ValidateCurrentCharacter(value, 2, '3');
         }
@@ -224,8 +213,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("1");
             value.MoveNext();
-            long actual;
-            Assert.True(value.ParseInt64Digits(1, 2, out actual));
+            Assert.True(value.ParseInt64Digits(1, 2, out long actual));
             Assert.AreEqual(1, actual);
             ValidateEndOfString(value);
         }
@@ -235,8 +223,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("1abc");
             Assert.True(value.MoveNext());
-            long actual;
-            Assert.True(value.ParseInt64Digits(1, 2, out actual));
+            Assert.True(value.ParseInt64Digits(1, 2, out long actual));
             Assert.AreEqual(1, actual);
             ValidateCurrentCharacter(value, 1, 'a');
         }
@@ -248,8 +235,7 @@ namespace NodaTime.Test.Text
             // http://www.unicode.org/charts/PDF/U0600.pdf
             var value = new ValueCursor("\u0660\u0661");
             Assert.True(value.MoveNext());
-            long actual;
-            Assert.False(value.ParseInt64Digits(1, 2, out actual));
+            Assert.False(value.ParseInt64Digits(1, 2, out long actual));
         }
 
         [Test]
@@ -257,8 +243,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("9999999999999");
             Assert.True(value.MoveNext());
-            long actual;
-            Assert.True(value.ParseInt64Digits(1, 13, out actual));
+            Assert.True(value.ParseInt64Digits(1, 13, out long actual));
             Assert.AreEqual(actual, 9999999999999L);
             Assert.Greater(9999999999999L, int.MaxValue);
         }
@@ -270,8 +255,7 @@ namespace NodaTime.Test.Text
             // http://www.unicode.org/charts/PDF/U0600.pdf
             var value = new ValueCursor("\u0660\u0661");
             Assert.True(value.MoveNext());
-            int actual;
-            Assert.False(value.ParseFraction(2, 2, out actual, 2));
+            Assert.False(value.ParseFraction(2, 2, out int actual, 2));
         }
 
         [Test]
@@ -279,8 +263,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("56x");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNull(value.ParseInt64<string>(out result));
+            Assert.IsNull(value.ParseInt64<string>(out long result));
             Assert.AreEqual(56L, result);
             // Cursor ends up post-number
             Assert.AreEqual(2, value.Index);
@@ -291,8 +274,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("-56x");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNull(value.ParseInt64<string>(out result));
+            Assert.IsNull(value.ParseInt64<string>(out long result));
             Assert.AreEqual(-56L, result);
         }
 
@@ -301,8 +283,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("xyz");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            Assert.IsNotNull(value.ParseInt64<string>(out long result));
             // Cursor has not moved
             Assert.AreEqual(0, value.Index);
         }
@@ -312,8 +293,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("--10xyz");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            Assert.IsNotNull(value.ParseInt64<string>(out long result));
             // Cursor has not moved
             Assert.AreEqual(0, value.Index);
         }
@@ -323,8 +303,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("-x");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            Assert.IsNotNull(value.ParseInt64<string>(out long result));
             // Cursor has not moved
             Assert.AreEqual(0, value.Index);
         }
@@ -334,8 +313,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("1000000000000000000000000");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            Assert.IsNotNull(value.ParseInt64<string>(out long result));
             // Cursor has not moved
             Assert.AreEqual(0, value.Index);
         }
@@ -345,8 +323,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("999999999999999999999999");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            Assert.IsNotNull(value.ParseInt64<string>(out long result));
             // Cursor has not moved
             Assert.AreEqual(0, value.Index);
         }
@@ -356,8 +333,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("9223372036854775808");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            Assert.IsNotNull(value.ParseInt64<string>(out long result));
             // Cursor has not moved
             Assert.AreEqual(0, value.Index);
         }
@@ -367,8 +343,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("-9223372036854775809");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNotNull(value.ParseInt64<string>(out result));
+            Assert.IsNotNull(value.ParseInt64<string>(out long result));
             // Cursor has not moved
             Assert.AreEqual(0, value.Index);
         }
@@ -378,8 +353,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("9223372036854775807");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNull(value.ParseInt64<string>(out result));
+            Assert.IsNull(value.ParseInt64<string>(out long result));
             Assert.AreEqual(long.MaxValue, result);
         }
 
@@ -388,8 +362,7 @@ namespace NodaTime.Test.Text
         {
             var value = new ValueCursor("-9223372036854775808");
             Assert.True(value.MoveNext());
-            long result;
-            Assert.IsNull(value.ParseInt64<string>(out result));
+            Assert.IsNull(value.ParseInt64<string>(out long result));
             Assert.AreEqual(long.MinValue, result);
         }
 
