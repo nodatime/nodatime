@@ -5,9 +5,9 @@
 using CommandLine;
 using NodaTime.TimeZones;
 using NodaTime.TzdbCompiler.Tzdb;
+using NodaTime.Utility;
 using System;
 using System.IO;
-using System.Net.Http;
 
 namespace NodaTime.TzValidate.NodaDump
 {
@@ -43,7 +43,7 @@ namespace NodaTime.TzValidate.NodaDump
             }
 
             return 0;
-        }        
+        }
 
         private static TzdbDateTimeZoneSource LoadSource(string source)
         {
@@ -53,7 +53,7 @@ namespace NodaTime.TzValidate.NodaDump
             }
             if (source.EndsWith(".nzd"))
             {
-                var data = LoadFileOrUrl(source);
+                var data = FileLoader.LoadFileOrUrl(source);
                 return TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
             }
             else
@@ -62,20 +62,6 @@ namespace NodaTime.TzValidate.NodaDump
                 var database = compiler.Compile(source);
                 return database.ToTzdbDateTimeZoneSource();
             }
-        }
-
-        private static byte[] LoadFileOrUrl(string source)
-        {
-            if (source.StartsWith("http://") || source.StartsWith("https://") || source.StartsWith("ftp://"))
-            {
-                using (var client = new HttpClient())
-                {
-                    // I know using .Result is nasty, but we're in a console app, and nothing is
-                    // going to deadlock...
-                    return client.GetAsync(source).Result.EnsureSuccessStatusCode().Content.ReadAsByteArrayAsync().Result;
-                }
-            }
-            return File.ReadAllBytes(source);
         }
     }
 }
