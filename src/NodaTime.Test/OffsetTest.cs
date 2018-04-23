@@ -6,10 +6,6 @@ using System;
 using NodaTime.Text;
 using NUnit.Framework;
 
-#if !NETCORE
-
-#endif
-
 namespace NodaTime.Test
 {
     public partial class OffsetTest
