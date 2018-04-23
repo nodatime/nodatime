@@ -4,9 +4,9 @@
 
 using CommandLine;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 using System;
 using System.IO;
-using System.Net.Http;
 
 namespace NodaTime.TzValidate.NzdCompatibility
 {
@@ -24,7 +24,7 @@ namespace NodaTime.TzValidate.NzdCompatibility
             {
                 return 1;
             }
-            var data = LoadFileOrUrl(options.Source);
+            var data = FileLoader.LoadFileOrUrl(options.Source);
             TzdbDateTimeZoneSource source = TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
             var dumper = new ZoneDumper(source, options);
             try
@@ -41,20 +41,6 @@ namespace NodaTime.TzValidate.NzdCompatibility
             }
 
             return 0;
-        }        
-        
-        private static byte[] LoadFileOrUrl(string source)
-        {
-            if (source.StartsWith("http://") || source.StartsWith("https://") || source.StartsWith("ftp://"))
-            {
-                using (var client = new HttpClient())
-                {
-                    // I know using .Result is nasty, but we're in a console app, and nothing is
-                    // going to deadlock...
-                    return client.GetAsync(source).Result.EnsureSuccessStatusCode().Content.ReadAsByteArrayAsync().Result;
-                }
-            }
-            return File.ReadAllBytes(source);
         }
     }
 }
