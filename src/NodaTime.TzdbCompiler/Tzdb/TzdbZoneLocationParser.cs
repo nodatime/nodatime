@@ -19,7 +19,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal static TzdbZoneLocation ParseLocation(string line, Dictionary<string, string> countryMapping)
         {
             string[] bits = line.Split('\t');
-            Preconditions.CheckArgument(bits.Length == 3 || bits.Length == 4, "line", "Line must have 3 or 4 tab-separated values");
+            Preconditions.CheckArgument(bits.Length == 3 || bits.Length == 4, nameof(line), "Line must have 3 or 4 tab-separated values");
             string countryCode = bits[0];
             string countryName = countryMapping[countryCode];
             int[] latLong = ParseCoordinates(bits[1]);
@@ -31,7 +31,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal static TzdbZone1970Location ParseEnhancedLocation(string line, Dictionary<string, TzdbZone1970Location.Country> countryMapping)
         {
             string[] bits = line.Split('\t');
-            Preconditions.CheckArgument(bits.Length == 3 || bits.Length == 4, "line", "Line must have 3 or 4 tab-separated values");
+            Preconditions.CheckArgument(bits.Length == 3 || bits.Length == 4, nameof(line), "Line must have 3 or 4 tab-separated values");
             string countryCodes = bits[0];
             var countries = countryCodes.Split(',').Select(code => countryMapping[code]).ToList();
             int[] latLong = ParseCoordinates(bits[1]);

@@ -2,11 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.TimeZones;
+using NodaTime.Utility;
 using System;
 using System.Globalization;
 using System.IO;
-using NodaTime.TimeZones;
-using NodaTime.Utility;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -223,7 +223,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="text">The text.</param>
         private static int ParseDayOfWeek(string text)
         {
-            Preconditions.CheckArgument(!string.IsNullOrEmpty(text), "text", "Value must not be empty or null");
+            Preconditions.CheckArgument(!string.IsNullOrEmpty(text), nameof(text), "Value must not be empty or null");
             int index = Array.IndexOf(DaysOfWeek, text, 1);
             if (index == -1)
             {
@@ -306,7 +306,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     else
                     {
                         throw new InvalidDataException($"Unexpected zone database keyword: {keyword}");
-                    }                    
+                    }
             }
         }
 
@@ -330,7 +330,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <exception cref="InvalidDataException">The month name can't be parsed</exception>
         internal static int ParseMonth(String text)
         {
-            Preconditions.CheckArgument(!string.IsNullOrEmpty(text), "text", "Value must not be empty or null");
+            Preconditions.CheckArgument(!string.IsNullOrEmpty(text), nameof(text), "Value must not be empty or null");
             int index = Array.IndexOf(ShortMonths, text, 1);
             if (index == -1)
             {
@@ -361,7 +361,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             // zic behaviour in the only cases of this that we've seen, e.g. the systemv rules
             // prior to 2001a.
             if (fromYear == int.MinValue)
-            { 
+            {
                 fromYear = 1900;
             }
 
@@ -395,7 +395,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             var rules = NextOptional(tokens, "Rules");
             var format = NextString(tokens, "Format");
             int year = NextYear(tokens, Int32.MaxValue);
-            
+
             if (tokens.HasNextToken)
             {
                 var until = ParseDateTimeOfYear(tokens, false);

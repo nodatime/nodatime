@@ -2,12 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
-
-using System.Text;
+using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Utility;
-using JetBrains.Annotations;
+using System.Text;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime.Text
 {
@@ -98,7 +97,7 @@ namespace NodaTime.Text
         private static ParseResult<Period> MisplacedUnit(ValueCursor cursor, char unitCharacter) => ParseResult<Period>.ForInvalidValue(cursor, TextErrorMessages.MisplacedUnitSpecifier, unitCharacter);
 
         private sealed class RoundtripPatternImpl : IPattern<Period>
-        {            
+        {
             public ParseResult<Period> Parse(string text)
             {
                 if (text == null)
@@ -111,7 +110,7 @@ namespace NodaTime.Text
                 }
 
                 ValueCursor valueCursor = new ValueCursor(text);
-                
+
                 valueCursor.MoveNext();
                 if (valueCursor.Current != 'P')
                 {
