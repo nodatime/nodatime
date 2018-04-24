@@ -5,7 +5,6 @@
     <OutputType>Exe</OutputType>
     <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
     <DefineConstants Condition="$(TargetFramework.Contains('netcore'))">NETCORE</DefineConstants>
