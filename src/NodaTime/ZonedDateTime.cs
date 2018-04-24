@@ -2,6 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
+using NodaTime.Annotations;
+using NodaTime.Calendars;
+using NodaTime.Text;
+using NodaTime.TimeZones;
+using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,12 +15,6 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using JetBrains.Annotations;
-using NodaTime.Annotations;
-using NodaTime.Calendars;
-using NodaTime.Text;
-using NodaTime.TimeZones;
-using NodaTime.Utility;
 
 namespace NodaTime
 {
@@ -104,7 +104,7 @@ namespace NodaTime
             if (correctOffset != offset)
             {
                 throw new ArgumentException("Offset " + offset + " is invalid for local date and time " + localDateTime
-                    + " in time zone " + zone.Id, "offset");
+                    + " in time zone " + zone.Id, nameof(offset));
 
             }
             offsetDateTime = new OffsetDateTime(localDateTime, offset);
@@ -860,7 +860,7 @@ namespace NodaTime
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             LocalDateTime.Serialize(info);
-            Offset.Serialize(info);            
+            Offset.Serialize(info);
             info.AddValue(BinaryFormattingConstants.ZoneIdSerializationName, Zone.Id);
         }
         #endregion

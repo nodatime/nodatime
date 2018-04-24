@@ -2,13 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
+using NodaTime.Text;
+using NodaTime.Utility;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using JetBrains.Annotations;
-using NodaTime.Text;
-using NodaTime.Utility;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -34,7 +34,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <exception cref="FormatException">If the text is not a valid integer in the range [-23, 23].</exception>
         internal static long ConvertHourToTicks([NotNull] string text)
         {
-            Preconditions.CheckNotNull(text, "text");
+            Preconditions.CheckNotNull(text, nameof(text));
             int value = Int32.Parse(text, NumberStyles.Integer, CultureInfo.InvariantCulture);
             if (value < -23 || value > 23)
             {
@@ -51,7 +51,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 59].</exception>
         internal static long ConvertMinuteToTicks([NotNull] string text)
         {
-            Preconditions.CheckNotNull(text, "text");
+            Preconditions.CheckNotNull(text, nameof(text));
             int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture);
             if (value < 0 || value > 59)
             {
@@ -68,7 +68,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 60).</exception>
         internal static long ConvertSecondsWithFractionalToTicks([NotNull] string text)
         {
-            Preconditions.CheckNotNull(text, "text");
+            Preconditions.CheckNotNull(text, nameof(text));
             double number = Double.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowDecimalPoint,
                                          CultureInfo.InvariantCulture);
             if (number < 0.0 || number >= 60.0)
@@ -119,7 +119,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 return Offset.Zero;
             }
             // TODO(2.0): Use normal parsers!
-            Preconditions.CheckNotNull(text, "text");
+            Preconditions.CheckNotNull(text, nameof(text));
             int sign = 1;
             if (text.StartsWith("-", StringComparison.Ordinal))
             {
@@ -165,7 +165,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <returns>The input string or null.</returns>
         public static string ParseOptional([NotNull] String text)
         {
-            Preconditions.CheckNotNull(text, "text");
+            Preconditions.CheckNotNull(text, nameof(text));
             return text == "-" ? null : text;
         }
 

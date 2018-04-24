@@ -2,11 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
 using JetBrains.Annotations;
 using NodaTime.Utility;
-using System.Text;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -78,7 +78,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <returns>The tokenized text.</returns>
         public static Tokens Tokenize([NotNull] string text)
         {
-            Preconditions.CheckNotNull(text, "text");
+            Preconditions.CheckNotNull(text, nameof(text));
             text = text.TrimEnd();
             if (text == "")
             {
