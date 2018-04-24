@@ -4,9 +4,9 @@
 using NodaTime.TimeZones;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.TimeZones.IO;
+using NodaTime.Tools.Common;
 using System;
 using System.IO;
-using System.Net.Http;
 using System.Text;
 using static NodaTime.TimeZones.IO.TzdbStreamFieldId;
 using static System.FormattableString;
@@ -27,7 +27,7 @@ namespace NodaTime.NzdPrinter
                 Console.WriteLine("Usage: NodaTime.NzdPrinter <path/url to nzd file>");
                 return 1;
             }
-            var stream = new MemoryStream(LoadFileOrUrl(args[0]));
+            var stream = new MemoryStream(FileUtility.LoadFileOrUrl(args[0]));
             int version = new BinaryReader(stream).ReadInt32();
             Console.WriteLine($"File format version: {version}");
             string[] stringPool = null; // Will be populated before it's used...
@@ -204,26 +204,6 @@ namespace NodaTime.NzdPrinter
                 string value = reader.ReadString();
                 Console.WriteLine($"    {key} -> {value}");
             }
-        }
-
-        private static string ReadString()
-        {
-            throw new NotImplementedException();
-        }
-
-        // TODO: Put this into a utility class somewhere. We now have it in four places!
-        private static byte[] LoadFileOrUrl(string source)
-        {
-            if (source.StartsWith("http://") || source.StartsWith("https://") || source.StartsWith("ftp://"))
-            {
-                using (var client = new HttpClient())
-                {
-                    // I know using .Result is nasty, but we're in a console app, and nothing is
-                    // going to deadlock...
-                    return client.GetAsync(source).Result.EnsureSuccessStatusCode().Content.ReadAsByteArrayAsync().Result;
-                }
-            }
-            return File.ReadAllBytes(source);
         }
     }
 }
