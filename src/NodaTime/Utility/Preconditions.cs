@@ -99,7 +99,7 @@ namespace NodaTime.Utility
         /// </summary>
         [Conditional("DEBUG")]
         internal static void DebugCheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
-        {            
+        {
 #if DEBUG
             if (value < minInclusive || value > maxInclusive)
             {

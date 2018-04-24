@@ -138,7 +138,7 @@ namespace NodaTime
             // unusual and hard-to-provoke situation.
             return ForOrdinalUncached(ordinal);
         }
-        
+
         [VisibleForTesting]
         internal static CalendarSystem ForOrdinalUncached([Trusted] CalendarOrdinal ordinal)
         {
@@ -489,7 +489,7 @@ namespace NodaTime
         #endregion
 
         internal YearMonthDayCalculator YearMonthDayCalculator { get; }
-        
+
         internal YearMonthDayCalendar GetYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch)
         {
             Preconditions.CheckArgumentRange(nameof(daysSinceEpoch), daysSinceEpoch, MinDays, MaxDays);
@@ -609,7 +609,7 @@ namespace NodaTime
             DebugValidateYearMonthDay(yearMonthDay);
             return YearMonthDayCalculator.GetDayOfYear(yearMonthDay);
         }
-       
+
         internal int GetYearOfEra([Trusted] int absoluteYear)
         {
             Preconditions.DebugCheckArgumentRange(nameof(absoluteYear), absoluteYear, MinYear, MaxYear);

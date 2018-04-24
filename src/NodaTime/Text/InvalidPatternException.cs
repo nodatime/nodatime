@@ -47,7 +47,7 @@ namespace NodaTime.Text
         /// <param name="parameters">Format string parameters</param>
         internal InvalidPatternException(string formatString, params object[] parameters)
             : this(string.Format(CultureInfo.CurrentCulture, formatString, parameters))
-        {            
+        {
         }
 
 
