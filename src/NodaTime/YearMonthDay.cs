@@ -52,7 +52,7 @@ namespace NodaTime
         internal int Year => unchecked((value >> (YearMonthDayCalendar.DayBits + YearMonthDayCalendar.MonthBits)) + 1);
         internal int Month => unchecked(((value & MonthMask) >> YearMonthDayCalendar.DayBits) + 1);
         internal int Day => unchecked((value & DayMask) + 1);
-        
+
         // Just for testing purposes...
         internal static YearMonthDay Parse(string text)
         {

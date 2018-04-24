@@ -49,9 +49,9 @@ namespace NodaTime.Test
             actual = value.ToString("g", CultureInfo.InvariantCulture);
             Assert.AreEqual(gvalue, actual);
 
-            actual = string.Format("{0}", value);
+            actual = $"{value}";
             Assert.AreEqual(gvalue, actual);
-            actual = string.Format("{0:g}", value);
+            actual = $"{value:g}";
             Assert.AreEqual(gvalue, actual);
         }
     }
