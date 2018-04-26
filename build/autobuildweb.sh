@@ -41,12 +41,7 @@ git clone https://github.com/nodatime/nodatime.org.git --depth 1 $root/$commit/n
 echo "Build and test successful. Pushing."
 
 # Commit and push
-# Ignore anything in .gitignore when adding files.
-# We shouldn't need to explicitly list the tools files, but
-# they've been ignored for some reason in previous builds...
-(cd $root/$commit/nodatime.org; \
- git add --all -f; \
- git add -f NodaTime.Tools.Common.dll; \
- git add -f NodaTime.Tools.Common.pdb; \
- git commit -a -m "Regenerate from main repo commit $commit"; \
- git push)
+# Ignore anything in .gitignore when adding files
+git -C $root/$commit/nodatime.org add --all -f
+git -C $root/$commit/nodatime.org commit -a -m "Regenerate from main repo commit $commit"
+git -C $root/$commit/nodatime.org push
