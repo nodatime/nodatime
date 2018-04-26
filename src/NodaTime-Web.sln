@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.TzValidate.NodaDum
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.TzdbCompiler", "NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj", "{9280052D-FB49-46CD-A27F-74E7B86DC0A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Web.Test", "NodaTime.Web.Test\NodaTime.Web.Test.csproj", "{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Web.Test", "NodaTime.Web.Test\NodaTime.Web.Test.csproj", "{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Tools.Common", "NodaTime.Tools.Common\NodaTime.Tools.Common.csproj", "{10A658FA-6FF2-4B6E-8190-66C333F72ADE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +41,15 @@ Global
 		{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5711CF58-D41C-4522-A1B8-EC8FB7893ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10A658FA-6FF2-4B6E-8190-66C333F72ADE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10A658FA-6FF2-4B6E-8190-66C333F72ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10A658FA-6FF2-4B6E-8190-66C333F72ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10A658FA-6FF2-4B6E-8190-66C333F72ADE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0748778D-B9EE-4CA8-9915-86EE58135A9A}
 	EndGlobalSection
 EndGlobal
