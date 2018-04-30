@@ -244,8 +244,13 @@ pre > code {
 
 footer {
   background-color: #3d3d3d;
-  color: #888;
+  color: #bbb;
   padding: 20px;
+}
+
+footer.version {
+  background-color: #FFE76B;
+  color: #000;
 }
 
 footer .row {
@@ -260,29 +265,27 @@ footer .design {
   font-style: italic;
 }
 
-.accordion footer {
-  background-color: #fff;
-  padding: 10px 16px;
-  font-size: 12px;
-  border: 0px none;
+.side-nav {
+  padding-bottom: 0;
 }
 
-.accordion-navigation {
+.side-nav > .heading {
   background-color: #FFE76B;
   padding: 10px;
+  margin-bottom: 0;
 }
 
-.accordion > .content {
-  background-color: #B17250;
+.side-nav > .content {
+  background-color: #5c72db;
+  margin-bottom: 0;
 }
 
-.accordion .side-nav > li > a,
-.accordion .side-nav > li > a:visited,
-.accordion .side-nav > li > a:hover,
-.accordion .side-nav > li > a:focus {
-  color: #FFF;
-  padding-top: 0;
-  padding-bottom: 0;
+.side-nav > li > a,
+.side-nav > li > a:not(.button),
+.side-nav > li > a:visited,
+.side-nav > li > a:hover,
+.side-nav > li > a:focus {
+    color: #FFF;
 }
 
 /* Responsive layout for smaller screens. */
@@ -410,4 +413,9 @@ td.pattern-example {
 .benchmark-important > td, .benchmark-important td {
   color: red;
   font-weight: bold
+}
+
+/* Override Foundation wanting to waste space. */
+.row {
+  max-width: none;
 }
