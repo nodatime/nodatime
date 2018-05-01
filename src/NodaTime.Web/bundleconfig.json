@@ -18,7 +18,6 @@
       "wwwroot/js/vendor/modernizr.js",
       "wwwroot/js/vendor/jquery.js",
       "wwwroot/js/foundation/foundation.js",
-      "wwwroot/js/foundation/foundation.accordion.js",
       "wwwroot/js/foundation/foundation.topbar.js",
       "wwwroot/js/highlight.pack.js",
       "wwwroot/js/nuget-button.js",
