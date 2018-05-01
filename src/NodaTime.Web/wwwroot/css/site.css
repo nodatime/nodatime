@@ -269,8 +269,9 @@ footer .design {
   padding-bottom: 0;
 }
 
-.side-nav > .heading {
+.side-nav > li.heading {
   background-color: #FFE76B;
+  color: #006b8f;
   padding: 10px;
   margin-bottom: 0;
 }
@@ -285,7 +286,11 @@ footer .design {
 .side-nav > li > a:visited,
 .side-nav > li > a:hover,
 .side-nav > li > a:focus {
-    color: #FFF;
+  color: #FFF;
+}
+
+.side-nav > li > a:not(.button):focus {
+  color: #FF8;
 }
 
 /* Responsive layout for smaller screens. */
