@@ -6,7 +6,7 @@
 }
 
 <div class="row">
-    <div>
+    <div class="large-12 columns">
         <h1>Benchmarks</h1>
 
         <p>
@@ -30,10 +30,10 @@
                 <th>Run count</th>
             </tr>
             @foreach (var env in Model
-                .OrderByDescending(e => e.Runs?.FirstOrDefault()?.Start?.ToInstant())
-                .ThenBy(e => e.Machine)
-                .ThenBy(e => e.TargetFramework))
-            {
+           .OrderByDescending(e => e.Runs?.FirstOrDefault()?.Start?.ToInstant())
+           .ThenBy(e => e.Machine)
+           .ThenBy(e => e.TargetFramework))
+        {
             <tr>
                 <td><a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">View</a></td>
                 <td>@env.Machine</td>
@@ -45,7 +45,7 @@
                 <td>@Html.RenderTimestampAsUtcDate(env.Runs.FirstOrDefault()?.Start)</td>
                 <td>@env.Runs.Count</td>
             </tr>
-            }
+    }
         </table>
     </div>
 </div>
