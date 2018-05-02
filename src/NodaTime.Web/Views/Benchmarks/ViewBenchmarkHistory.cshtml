@@ -7,10 +7,8 @@
 }
 
 <div class="row">
-    <div>
+    <div class="large-12 columns">
         <h1>Benchmark history</h1>
-    </div>
-    <div>
         <p>
             History of @startBenchmark.FullMethodName from <a href="/benchmarks/benchmarks/@startBenchmark.BenchmarkId">@startBenchmark.BenchmarkId.TruncateGuid()</a>
         </p>
@@ -22,14 +20,14 @@
                 <th>Standard deviation</th>
             </tr>
             @foreach (var benchmark in Model)
-            {
-                <tr>
-                    <td><a href="/benchmarks/runs/@benchmark.Run.BenchmarkRunId">@Html.RenderTimestamp(@benchmark.Run.Start)</a> (<a href="https://github.com/nodatime/nodatime/commit/@benchmark.Run.Commit">@benchmark.Run.Commit.TruncateCommit()</a>)</td>
-                    <td>@Html.RenderTime(benchmark.Statistics?.Mean)</td>
-                    <td>@Html.RenderTime(benchmark.Statistics?.StandardError)</td>
-                    <td>@Html.RenderTime(benchmark.Statistics?.StandardDeviation)</td>
-                </tr>
-            }
+        {
+            <tr>
+                <td><a href="/benchmarks/runs/@benchmark.Run.BenchmarkRunId">@Html.RenderTimestamp(@benchmark.Run.Start)</a> (<a href="https://github.com/nodatime/nodatime/commit/@benchmark.Run.Commit">@benchmark.Run.Commit.TruncateCommit()</a>)</td>
+                <td>@Html.RenderTime(benchmark.Statistics?.Mean)</td>
+                <td>@Html.RenderTime(benchmark.Statistics?.StandardError)</td>
+                <td>@Html.RenderTime(benchmark.Statistics?.StandardDeviation)</td>
+            </tr>
+    }
         </table>
     </div>
     @* Work out how to style the above to leave some padding instead... *@

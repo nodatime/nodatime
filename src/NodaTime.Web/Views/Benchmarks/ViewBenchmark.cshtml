@@ -10,10 +10,8 @@
 }
 
 <div class="row">
-    <div>
+    <div class="large-12 columns">
         <h1>Benchmark</h1>
-    </div>
-    <div>
         <p>
             Type: <a href="/benchmarks/types/@type.BenchmarkTypeId">@type.FullTypeName</a><br />
             Method: @benchmark.Method<br />
@@ -22,8 +20,8 @@
             <a href="/benchmarks/benchmarks/@benchmark.BenchmarkId/history">View history (from here back)</a>
         </p>
         @if (benchmark.Statistics != null)
-        {
-            var stats = benchmark.Statistics;
+    {
+        var stats = benchmark.Statistics;
         <p>
             N: @stats.TestCount <br />
             @* TODO: Check these are all actually times! Variance is the square of a time...*@
@@ -53,7 +51,7 @@
             P95: @Html.RenderTime(@stats.P95)<br />
             P100: @Html.RenderTime(@stats.P100)<br />
         </p>
-        }
+}
     </div>
     @* Work out how to style the above to leave some padding instead... *@
     <p />

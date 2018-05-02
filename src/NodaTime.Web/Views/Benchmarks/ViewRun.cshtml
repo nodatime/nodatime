@@ -9,10 +9,8 @@
 }
 
 <div class="row">
-    <div>
+    <div class="large-12 columns">
         <h1>Benchmark run</h1>
-    </div>
-    <div>
         <p>
             Commit: <a href="https://github.com/nodatime/nodatime/commit/@run.Commit">@run.Commit.TruncateCommit()</a><br />
             Environment: <a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">@env.Machine, @env.TargetFramework</a><br />
@@ -20,11 +18,7 @@
             End time: @Html.RenderTimestamp(run.End)<br />
             BenchmarkDotNet version: @run.BenchmarkDotNetVersion
         </p>
-    </div>
-    <div>
         <h2>Types (by namespace)</h2>
-    </div>
-    <div>
         @* TODO: Present in a single table with a different style for a namespace row? *@
         @foreach (var groupByNs in types.GroupBy(t => t.Namespace).OrderBy(g => g.Key))
         {
