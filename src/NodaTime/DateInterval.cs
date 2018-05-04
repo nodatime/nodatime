@@ -6,6 +6,8 @@ using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace NodaTime
 {
@@ -24,7 +26,7 @@ namespace NodaTime
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
-    public sealed class DateInterval : IEquatable<DateInterval>
+    public sealed class DateInterval : IEquatable<DateInterval>, IEnumerable<LocalDate>
     {
         /// <summary>
         /// Gets the start date of the interval.
@@ -247,5 +249,27 @@ namespace NodaTime
             Preconditions.CheckArgument(interval.Calendar.Equals(Start.Calendar), nameof(interval),
                 "The specified interval uses a different calendar system to this one");
         }
+
+        /// <summary>
+        /// Returns an enumerator for the dates in the interval, including both <see cref="Start"/> and <see cref="End"/>.
+        /// </summary>
+        /// <returns>An enumerator for the interval.</returns>
+        [NotNull]
+        public IEnumerator<LocalDate> GetEnumerator()
+        {
+            // Stop when we know we've reach End, and then yield that.
+            // We can't use a <= condition, as otherwise we'd try to create a date past End, which may be invalid.
+            // We could use < but that's significantly less efficient than !=
+            // We know that adding a day at a time we'll eventually reach End (because they're validated to be in the same calendar
+            // system, with Start <= End), so that's the simplest way to go.
+            for (var date = Start; date != End; date = date.PlusDays(1))
+            {
+                yield return date;
+            }
+            yield return End;
+        }
+
+        /// <inheritdoc />
+        [NotNull] IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
