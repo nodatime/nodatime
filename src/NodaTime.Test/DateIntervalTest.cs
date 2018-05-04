@@ -4,6 +4,7 @@
 using NodaTime.Text;
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace NodaTime.Test
 {
@@ -329,6 +330,17 @@ namespace NodaTime.Test
                 Assert.AreEqual(expectedResult, firstInterval.Union(secondInterval), "First union failed.");
                 Assert.AreEqual(expectedResult, secondInterval.Union(firstInterval), "Second union failed.");
             });
+        }
+
+        [TestCase("2018-05-04,2018-05-06", "2018-05-04", "2018-05-05", "2018-05-06", Description = "Multi-day")]
+        [TestCase("2018-05-04,2018-05-04", "2018-05-04", Description = "Single date")]
+        [TestCase("9999-12-29,9999-12-31", "9999-12-29", "9999-12-30", "9999-12-31", Description = "Max dates")]
+        public void Iteration(string intervalText, params string[] expectedDatesText)
+        {
+            var interval = ParseInterval(intervalText);
+            var expected = expectedDatesText.Select(x => LocalDatePattern.Iso.Parse(x).Value).ToList();
+            var actual = interval.ToList();
+            Assert.AreEqual(expected, actual);
         }
 
         private DateInterval ParseInterval(string textualInterval)
