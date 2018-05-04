@@ -19,7 +19,15 @@ New features:
 2.3.0-beta01 was released on 2017-12-13, and 2.3.0-beta02 was
 released on 2018-03-25.
 
-## 1.3.7, 1.4.4, 2.0.7, 2.1.4, 2.2.5, released 2018-03-24 with tzdb 2018c
+## 1.3.8, 1.4.5, 2.0.8, 2.1.5, 2.2.6, released 2018-05-04 with tzdb 2018e
+
+This set of patch releases simply updates the built-in TZDB time
+zone data to 2018e. Note that this is the first release using
+negative DST. For example, Ireland observes standard time in the
+summer, and DST of -1 hour in the winter. This does not change any
+local times, just the standard/savings components.
+
+## 1.3.7, 1.4.4, 2.0.7, 2.1.4, 2.2.5, released 2018-03-24 with tzdb 2018d
 
 This set of patch releases simply updates the built-in TZDB time
 zone data to 2018d.
