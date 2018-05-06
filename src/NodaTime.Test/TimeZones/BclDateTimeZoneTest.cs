@@ -209,6 +209,16 @@ namespace NodaTime.Test.TimeZones
                 zoneIntervalAfter);
         }
 
+        [Test]
+        public void LocalZoneIsNull()
+        {
+            var systemZone = TimeZoneInfo.CreateCustomTimeZone("Normal zone", TimeSpan.Zero, "Display", "Standard");
+            using (TimeZoneInfoReplacer.Replace(null, systemZone))
+            {
+                Assert.Throws<InvalidOperationException>(() => BclDateTimeZone.ForSystemDefault());
+            }
+        }
+
 #if NET451
         [Test]
         public void FakeDaylightSavingTime()
