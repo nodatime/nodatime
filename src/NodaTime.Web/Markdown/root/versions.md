@@ -13,7 +13,8 @@ New features:
 - `OffsetDate` and `OffsetTime` structs added to represent dates or times-of-day with offsets,
   with conversions from other types as approrpiate.
 - `OffsetDateTime.InZone` method added for easier conversion to `ZonedDateTime`
-- New operations on `DateInterval`: `Contains(DateInterval)`, `Union` and `Intersection`
+- New operations on `DateInterval`: `Contains(DateInterval)`, `Union`,
+  `Intersection` and iteration (it implements `IEnumerable<LocalDate>`)
 - New calendar system: the Badíʿ calendar
 
 2.3.0-beta01 was released on 2017-12-13, and 2.3.0-beta02 was
