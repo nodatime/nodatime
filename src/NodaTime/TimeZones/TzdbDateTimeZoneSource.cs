@@ -197,9 +197,14 @@ namespace NodaTime.TimeZones
         /// <inheritdoc />
         [CanBeNull] public string GetSystemDefaultId() => MapTimeZoneInfoId(TimeZoneInfoInterceptor.Local);
 
-        [VisibleForTesting]
-        internal string MapTimeZoneInfoId(TimeZoneInfo timeZone)
+        [VisibleForTesting, CanBeNull]
+        internal string MapTimeZoneInfoId([CanBeNull] TimeZoneInfo timeZone)
         {
+            // Unusual, but can happen in some Mono installations.
+            if (timeZone == null)
+            {
+                return null;
+            }
             string id = timeZone.Id;
             // First see if it's a Windows time zone ID.
             if (source.WindowsMapping.PrimaryMapping.TryGetValue(id, out string result))

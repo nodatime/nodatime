@@ -276,6 +276,17 @@ namespace NodaTime.Test.TimeZones
                 lastIncorrectDate, lastIncorrectBclOffset, lastIncorrectTzdbOffset);
         }
 
+        [Test]
+        public void LocalZoneIsNull()
+        {
+            // Use the existing system time zones, but just make TimeZoneInfo.Local return null.
+            using (TimeZoneInfoReplacer.Replace(null, TimeZoneInfo.GetSystemTimeZones().ToArray()))
+            {
+                // If we have no system time zone, we have no ID to map it to.
+                Assert.Null(TzdbDateTimeZoneSource.Default.GetSystemDefaultId());
+            }
+        }
+
 #if !NETCORE // CreateCustomTimeZone isn't available :(
         [Test]
         [TestCase("Pacific Standard Time", 0, "America/Los_Angeles", Description = "Windows ID")]

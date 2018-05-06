@@ -300,11 +300,16 @@ namespace NodaTime.TimeZones
         /// though this behaviour is not guaranteed.
         /// </para>
         /// </remarks>
+        /// <exception cref="InvalidOperationException">The system does not provide a time zone.</exception>
         /// <returns>A <see cref="BclDateTimeZone"/> wrapping the "local" (system) time zone as returned by
         /// <see cref="TimeZoneInfo.Local"/>.</returns>
         [NotNull] public static BclDateTimeZone ForSystemDefault()
         {
             TimeZoneInfo local = TimeZoneInfoInterceptor.Local;
+            if (local == null)
+            {
+                throw new InvalidOperationException("No system default time zone is available");
+            }
             BclDateTimeZone currentSystemDefault = systemDefault;
 
             // Cached copy is out of date - wrap a new one
