@@ -10,14 +10,17 @@ If there's something not mentioned here that you feel should be on this
 roadmap, then *please* either raise an issue or post on the
 [mailing list](https://groups.google.com/group/noda-time).
 
-This roadmap was last updated on **2017-08-10**.
+This roadmap was last updated on **2018-05-06**.
 
-**2.3**
+**3.0**
 
-- Min/Max methods for more types
-- Deconstruction methods to work neatly with C# 7
-- More convenience properties
-- OffsetDate and OffsetTime
+- Removal of any obsolete methods
+- Move to target netstandard2.0 only, removing all conditional code (if possible)
+- Complete removal of binary serialization
+- Make all structs readonly and try using `in` parameters in internal API (not public)
+- Add parsing of `ReadOnlySpan<char>`
+- Express nullability via C# 8
+- Implement C# 8 range functionality (if that happens)
 
 **Unscheduled features and issues which we hope to address at some point**
 

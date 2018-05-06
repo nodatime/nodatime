@@ -9,8 +9,6 @@ These examples typically use explicitly-typed local variables so that you can te
 all the types involved easily. You can use implicitly-typed local variables (`var`)
 in your own code, of course. All examples assume a `using` directive of `using NodaTime;`.
 
-TODO: more examples, and use C# Pad...
-
 How old is Jon?
 ====
 
