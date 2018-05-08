@@ -85,10 +85,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the current value occurs within the given year;
         /// <c>false</c> otherwise.</returns>
         [Pure]
-        public bool IsValidYear(int year)
-        {
-            return Month != 2 || Day != 29 || CalendarSystem.Iso.IsLeapYear(year);
-        }
+        public bool IsValidYear(int year) => Month != 2 || Day != 29 || CalendarSystem.Iso.IsLeapYear(year);
 
         /// <summary>
         /// Compares this annual date with the specified reference. An annual date is
@@ -121,10 +118,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="other">The other annual date to compare this one with</param>
         /// <returns>True if the specified annual date is equal to this one; false otherwise</returns>
-        public bool Equals(AnnualDate other)
-        {
-            return value == other.value;
-        }
+        public bool Equals(AnnualDate other) => value == other.value;
 
         /// <summary>
         /// Indicates whether this annual date is earlier, later or the same as another one.
@@ -133,10 +127,7 @@ namespace NodaTime
         /// <returns>A value less than zero if this annual date is earlier than <paramref name="other"/>;
         /// zero if this time is the same as <paramref name="other"/>; a value greater than zero if this annual date is
         /// later than <paramref name="other"/>.</returns>
-        public int CompareTo(AnnualDate other)
-        {
-            return value.CompareTo(other.value);
-        }
+        public int CompareTo(AnnualDate other) => value.CompareTo(other.value);
 
         /// <summary>
         /// Compares two <see cref="AnnualDate" /> values for equality.
@@ -163,10 +154,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
         /// as the calendar of <paramref name="lhs"/>.</exception>
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator <(AnnualDate lhs, AnnualDate rhs)
-        {
-            return lhs.CompareTo(rhs) < 0;
-        }
+        public static bool operator <(AnnualDate lhs, AnnualDate rhs) => lhs.CompareTo(rhs) < 0;
 
         /// <summary>
         /// Compares two annual dates to see if the left one is earlier than or equal to the right
@@ -175,10 +163,7 @@ namespace NodaTime
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator <=(AnnualDate lhs, AnnualDate rhs)
-        {
-            return lhs.CompareTo(rhs) <= 0;
-        }
+        public static bool operator <=(AnnualDate lhs, AnnualDate rhs) => lhs.CompareTo(rhs) <= 0;
 
         /// <summary>
         /// Compares two annual dates to see if the left one is strictly later than the right
@@ -187,10 +172,7 @@ namespace NodaTime
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator >(AnnualDate lhs, AnnualDate rhs)
-        {
-            return lhs.CompareTo(rhs) > 0;
-        }
+        public static bool operator >(AnnualDate lhs, AnnualDate rhs) => lhs.CompareTo(rhs) > 0;
 
         /// <summary>
         /// Compares two annual dates to see if the left one is later than or equal to the right
@@ -199,9 +181,6 @@ namespace NodaTime
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
-        public static bool operator >=(AnnualDate lhs, AnnualDate rhs)
-        {
-            return lhs.CompareTo(rhs) >= 0;
-        }
+        public static bool operator >=(AnnualDate lhs, AnnualDate rhs) => lhs.CompareTo(rhs) >= 0;
     }
 }
