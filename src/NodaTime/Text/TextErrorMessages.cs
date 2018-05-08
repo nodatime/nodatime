@@ -14,6 +14,7 @@ namespace NodaTime.Text
         internal const string DateFieldAndEmbeddedDate = "Custom date specifiers cannot be specified in the same pattern as an embedded date specifier";
         internal const string DateSeparatorMismatch = "The value string does not match a date separator in the format string.";
         internal const string DayOfMonthOutOfRange = "The day {0} is out of range in month {1} of year {2}.";
+        internal const string DayOfMonthOutOfRangeNoYear = "The day {0} is out of range in month {1}.";
         internal const string EmptyPeriod = "The specified period was empty.";
         internal const string EmptyZPrefixedOffsetPattern = "The Z prefix for an Offset pattern must be followed by a custom pattern.";
         internal const string EndOfString = "Input string ended unexpectedly early.";
@@ -34,6 +35,7 @@ namespace NodaTime.Text
         internal const string InvalidOffset = "The specified offset is invalid for the given date/time.";
         internal const string InvalidRepeatCount = "The number of consecutive copies of the pattern character \"{0}\" in the format string ({1}) is invalid.";
         internal const string InvalidUnitSpecifier = "The period unit specifier '{0}' is invalid.";
+        internal const string IsoMonthOutOfRange = "The month {0} is out of range in the ISO calendar.";
         internal const string MismatchedCharacter = "The value string does not match a simple character in the format string \"{0}\".";
         internal const string MismatchedNumber = "The value string does not match the required number from the format string \"{0}\".";
         internal const string MismatchedText = "The value string does not match the text-based field '{0}'.";

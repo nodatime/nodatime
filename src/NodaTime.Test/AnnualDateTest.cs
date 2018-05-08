@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Test.Text;
 using NUnit.Framework;
 using System;
 
@@ -75,6 +76,15 @@ namespace NodaTime.Test
             Assert.AreEqual("02-10", new AnnualDate(2, 10).ToString());
             Assert.AreEqual("12-01", new AnnualDate(12, 1).ToString());
             Assert.AreEqual("12-20", new AnnualDate(12, 20).ToString());
+        }
+
+        [Test]
+        public void ToString_WithFormat()
+        {
+            Assert.AreEqual("02-01", new AnnualDate(2, 1).ToString("G", Cultures.FrFr));
+            Assert.AreEqual("02-01", new AnnualDate(2, 1).ToString(null, Cultures.FrFr));
+            Assert.AreEqual("02/01", new AnnualDate(2, 1).ToString("MM/dd", Cultures.FrFr));
+            Assert.AreEqual("02-01", new AnnualDate(2, 1).ToString("MM/dd", Cultures.FrCa));
         }
     }
 }

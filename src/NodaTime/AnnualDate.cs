@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 using JetBrains.Annotations;
 using NodaTime.Calendars;
+using NodaTime.Text;
 using NodaTime.Utility;
 using System;
 using System.Globalization;
@@ -16,7 +17,7 @@ namespace NodaTime
     /// <remarks>In the future, this struct may be expanded to support other calendar systems,
     /// but this does not generalize terribly cleanly, particularly to the Hebrew calendar system
     /// with its leap month.</remarks>
-    public struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>
+    public struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IFormattable
     {
         // The underlying value. We only care about the month and day, but for the sake of
         // compatibility with the default value, this ends up being in year 1. This would
@@ -105,12 +106,25 @@ namespace NodaTime
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// The value of the current instance, in the form MM-dd.
+        /// The value of the current instance in the default format pattern ("G").
         /// </returns>
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.InvariantCulture, "{0:00}-{1:00}", value.Month, value.Day);
-        }
+        public override string ToString() => AnnualDatePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+
+        /// <summary>
+        /// Formats the value of the current instance using the specified pattern.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
+        /// or null to use the default format pattern ("G").
+        /// </param>
+        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
+        /// or null to use the current thread's culture to obtain a format provider.
+        /// </param>
+        /// <filterpriority>2</filterpriority>
+        public string ToString(string patternText, IFormatProvider formatProvider) =>
+            AnnualDatePattern.BclSupport.Format(this, patternText, formatProvider);
 
         /// <summary>
         /// Compares this annual date with the specified one for equality,

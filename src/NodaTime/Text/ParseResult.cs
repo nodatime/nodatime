@@ -267,7 +267,11 @@ namespace NodaTime.Text
 
         internal static ParseResult<T> MonthOutOfRange(string text, int month, int year) => ForInvalidValuePostParse(text, TextErrorMessages.MonthOutOfRange, month, year);
 
+        internal static ParseResult<T> IsoMonthOutOfRange(string text, int month) => ForInvalidValuePostParse(text, TextErrorMessages.IsoMonthOutOfRange, month);
+
         internal static ParseResult<T> DayOfMonthOutOfRange(string text, int day, int month, int year) => ForInvalidValuePostParse(text, TextErrorMessages.DayOfMonthOutOfRange, day, month, year);
+
+        internal static ParseResult<T> DayOfMonthOutOfRangeNoYear(string text, int day, int month) => ForInvalidValuePostParse(text, TextErrorMessages.DayOfMonthOutOfRangeNoYear, day, month);
 
         internal static ParseResult<T> InvalidOffset(string text) => ForInvalidValuePostParse(text, TextErrorMessages.InvalidOffset);
 
