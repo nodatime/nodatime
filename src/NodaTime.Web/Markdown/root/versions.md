@@ -16,6 +16,7 @@ New features:
 - New operations on `DateInterval`: `Contains(DateInterval)`, `Union`,
   `Intersection` and iteration (it implements `IEnumerable<LocalDate>`)
 - New calendar system: the Badíʿ calendar
+- Text handling for `AnnualDate`
 
 2.3.0-beta01 was released on 2017-12-13, and 2.3.0-beta02 was
 released on 2018-03-25.
