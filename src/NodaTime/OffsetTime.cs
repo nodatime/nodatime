@@ -23,7 +23,7 @@ namespace NodaTime
 #if !NETSTANDARD1_3
     [Serializable]
 #endif
-    public struct OffsetTime : IEquatable<OffsetTime>, IXmlSerializable
+    public struct OffsetTime : IEquatable<OffsetTime>, IXmlSerializable, IFormattable
 #if !NETSTANDARD1_3
         , ISerializable
 #endif
