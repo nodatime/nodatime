@@ -11,7 +11,7 @@ New features:
 - `Deconstruct` methods to support C# 7 deconstruction in many types
 - `Min`/`Max` methods added to `LocalDate`, `LocalTime` and `LocalDateTime`
 - `OffsetDate` and `OffsetTime` structs added to represent dates or times-of-day with offsets,
-  with conversions from other types as approrpiate.
+  with conversions from other types as appropriate.
 - `OffsetDateTime.InZone` method added for easier conversion to `ZonedDateTime`
 - New operations on `DateInterval`: `Contains(DateInterval)`, `Union`,
   `Intersection` and iteration (it implements `IEnumerable<LocalDate>`)
@@ -161,7 +161,7 @@ Breaking changes:
   support for the legacy resource-based time zone data format.
 - Removed `Instant(long)` constructor from the public API.
 - Removed `LocalTime.LocalDateTime` property.
-- Changed the behavior of the `LenientResolver` to more closely match real-world usage.
+- Changed the behaviour of the `LenientResolver` to more closely match real-world usage.
   This also affects `DateTimeZone.AtLeniently` and `LocalDateTime.InZoneLeniently`.
    - For ambiguous values, the lenient resolver used to return the later of the two possible instants.
      It now returns the *earlier* of the two possible instants.  For example, if 01:00 is ambiguous, it used to return
@@ -208,7 +208,7 @@ Bug fixes:
 Other:
 
 - Added a `ReturnForwardShifted` resolver, which shifts values in the daylight saving time "gap" forward by the duration of the gap,
-  effectively returning the instant that would have occurred had the gap not existed.  This was added to support the new behavior of
+  effectively returning the instant that would have occurred had the gap not existed.  This was added to support the new behaviour of
   the "lenient" resolver (see above), but can also be used separately.
 - When an `IDateTimeZoneSource` advertises a zone with an ID corresponding to a fixed-offset
   zone, `DateTimeZoneCache` now consults the source first. This fixes [issue 332].
