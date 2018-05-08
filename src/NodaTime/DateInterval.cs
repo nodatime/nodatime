@@ -270,6 +270,6 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        [NotNull] IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
