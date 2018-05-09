@@ -21,13 +21,8 @@ namespace NodaTime
     /// a date at a specific offset from UTC but without any time-of-day information.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
-    public struct OffsetDate : IEquatable<OffsetDate>, IXmlSerializable, IFormattable
-#if !NETSTANDARD1_3
-        , ISerializable
-#endif
+    public struct OffsetDate : IEquatable<OffsetDate>, IXmlSerializable, IFormattable, ISerializable
     {
         [ReadWriteForEfficiency] private LocalDate date;
         [ReadWriteForEfficiency] private Offset offset;
@@ -242,7 +237,6 @@ namespace NodaTime
         }
         #endregion
 
-#if !NETSTANDARD1_3
         #region Binary serialization
         /// <summary>
         /// Private constructor only present for serialization.
@@ -267,6 +261,5 @@ namespace NodaTime
             offset.Serialize(info);
         }
         #endregion
-#endif
     }
 }

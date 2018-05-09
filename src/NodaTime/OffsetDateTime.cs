@@ -32,13 +32,8 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
-    public struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
-#if !NETSTANDARD1_3
-        , ISerializable
-#endif
+    public struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable, ISerializable
     {
         private const int NanosecondsBits = 47;
         private const long NanosecondsMask = (1L << NanosecondsBits) - 1;
@@ -938,7 +933,6 @@ namespace NodaTime
         }
         #endregion
 
-#if !NETSTANDARD1_3
         #region Binary serialization
         /// <summary>
         /// Private constructor only present for serialization.
@@ -963,6 +957,5 @@ namespace NodaTime
             Offset.Serialize(info);
         }
         #endregion
-#endif
     }
 }

@@ -47,27 +47,6 @@ namespace NodaTime
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
         [NotNull] ReadOnlyCollection<string> Ids { get; }
 
-#if NETSTANDARD1_3
-        /// <summary>
-        /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
-        /// available.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Callers should be aware that this method will throw <see cref="DateTimeZoneNotFoundException"/> if no matching
-        /// time zone is found. For the built-in Noda Time providers, this is unlikely to occur in practice (assuming
-        /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found. The TZDB
-        /// source contains mappings for almost all Windows system time zones, but a few (such as "Mid-Atlantic Standard Time")
-        /// are unmappable.
-        /// </para>
-        /// </remarks>
-        /// <exception cref="DateTimeZoneNotFoundException">The system default time zone is not mapped by
-        /// this provider.</exception>
-        /// <returns>
-        /// The provider-specific representation of the system default time zone.
-        /// </returns>
-        [NotNull] DateTimeZone GetSystemDefault();
-#else
         /// <summary>
         /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
         /// available.
@@ -94,7 +73,6 @@ namespace NodaTime
         /// The provider-specific representation of the system default time zone.
         /// </returns>
         [NotNull] DateTimeZone GetSystemDefault();
-#endif
 
         /// <summary>
         /// Returns the time zone for the given ID, if it's available.

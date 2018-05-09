@@ -243,8 +243,6 @@ namespace NodaTime.Test
             Assert.AreEqual(Duration.FromNanoseconds(largeInt64Value) * 8, Duration.FromNanoseconds(largeDoubleValue * 8d));
         }
 
-#if !NETCORE
-
         [Test]
         [TestCase(typeof(ArgumentException), Duration.MinDays - 1, 0)]
         [TestCase(typeof(ArgumentException), Duration.MaxDays + 1, 0)]
@@ -256,7 +254,6 @@ namespace NodaTime.Test
                 info.AddValue(BinaryFormattingConstants.DurationDefaultDaysSerializationName, days);
                 info.AddValue(BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName, nanoOfDay);
             });
-#endif
 
         [Test]
         public void FactoryMethods_OutOfRange()

@@ -14,8 +14,8 @@ namespace NodaTime.Test.Globalization
 {
     public class NodaFormatInfoTest
     {
-        private static readonly CultureInfo enUs = Cultures.GetCultureInfo("en-US");
-        private static readonly CultureInfo enGb = Cultures.GetCultureInfo("en-GB");
+        private static readonly CultureInfo enUs = CultureInfo.GetCultureInfo("en-US");
+        private static readonly CultureInfo enGb = CultureInfo.GetCultureInfo("en-GB");
 
         // Just check we can actually build a NodaFormatInfo for every culture, outside
         // text-specific tests.

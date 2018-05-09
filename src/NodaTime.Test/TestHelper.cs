@@ -13,9 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NodaTime.Annotations;
-#if !NETCORE
 using System.Runtime.Serialization.Formatters.Binary;
-#endif
 
 namespace NodaTime.Test
 {
@@ -494,19 +492,13 @@ namespace NodaTime.Test
         /// </remarks>
         internal static void AssertBinaryRoundtrip<T>(T value)
         {
-            // Can't use [Conditional("!NETCORE")] as ConditionalAttribute is only positive.
-            // This approach seems to confuse the build system less, too.
-#if !NETCORE
             var stream = new MemoryStream();
             new BinaryFormatter().Serialize(stream, value);
-
             stream.Position = 0;
             var rehydrated = (T)new BinaryFormatter().Deserialize(stream);
             Assert.AreEqual(value, rehydrated);
-#endif
         }
 
-#if !NETCORE
         internal static void AssertBinaryDeserializationFailure<T>(Type expectedExceptionType, Action<SerializationInfo> fillInfoAction)
         {
             var info = new SerializationInfo(typeof(T), new FormatterConverter());
@@ -518,7 +510,6 @@ namespace NodaTime.Test
             var exception = Assert.Throws<TargetInvocationException>(() => ctor.Invoke(new object[] { info, context }));
             Assert.IsInstanceOf(expectedExceptionType, exception.InnerException);
         }
-#endif
 
         /// <summary>
         /// Validates that a value can be serialized to the expected XML, deserialized to an equal

@@ -629,9 +629,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="yearMonthDay">The value to validate.</param>
         [Conditional("DEBUG")]
-#if NET45
         [ExcludeFromCodeCoverage]
-#endif
         internal void DebugValidateYearMonthDay(YearMonthDay yearMonthDay)
         {
             // Avoid the line even being compiled in a release build...

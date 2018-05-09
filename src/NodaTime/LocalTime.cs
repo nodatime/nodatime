@@ -26,13 +26,8 @@ namespace NodaTime
     /// to a particular calendar, time zone or date.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
-    public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
-#if !NETSTANDARD1_3
-        , ISerializable
-#endif
+    public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable, ISerializable
     {
         /// <summary>
         /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
@@ -783,7 +778,6 @@ namespace NodaTime
         }
         #endregion
 
-#if !NETSTANDARD1_3
         #region Binary serialization
         /// <summary>
         /// Private constructor only present for serialization.
@@ -826,6 +820,5 @@ namespace NodaTime
             info.AddValue(BinaryFormattingConstants.NanoOfDaySerializationName, nanoseconds);
         }
         #endregion
-#endif
     }
 }

@@ -66,10 +66,6 @@ namespace NodaTime.Globalization
         private static readonly Cache<CultureInfo, NodaFormatInfo> Cache = new Cache<CultureInfo, NodaFormatInfo>
             (500, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
 
-#if NETSTANDARD1_3
-        private readonly string dateSeparator;
-        private readonly string timeSeparator;
-#endif
         private IList<string> longMonthNames;
         private IList<string> longMonthGenitiveNames;
         private IList<string> longDayNames;
@@ -105,11 +101,6 @@ namespace NodaTime.Globalization
             CultureInfo = cultureInfo;
             DateTimeFormat = dateTimeFormat;
             eraDescriptions = new Dictionary<Era, EraDescription>();
-#if NETSTANDARD1_3
-            // Horrible, but it does the job...
-            dateSeparator = DateTime.MinValue.ToString("%/", cultureInfo);
-            timeSeparator = DateTime.MinValue.ToString("%:", cultureInfo);
-#endif
         }
 
         private void EnsureMonthsInitialized()
@@ -288,17 +279,6 @@ namespace NodaTime.Globalization
         /// </remarks>
         public DateTimeFormatInfo DateTimeFormat { get; }
         
-#if NETSTANDARD1_3
-        /// <summary>
-        /// Gets the time separator.
-        /// </summary>
-        public string TimeSeparator => timeSeparator;
-
-        /// <summary>
-        /// Gets the date separator.
-        /// </summary>
-        public string DateSeparator => dateSeparator;
-#else
         /// <summary>
         /// Gets the time separator.
         /// </summary>
@@ -308,7 +288,7 @@ namespace NodaTime.Globalization
         /// Gets the date separator.
         /// </summary>
         public string DateSeparator => DateTimeFormat.DateSeparator;
-#endif
+
         /// <summary>
         /// Gets the AM designator.
         /// </summary>
@@ -497,18 +477,10 @@ namespace NodaTime.Globalization
             private static string GetEraNameFromBcl(Era era, CultureInfo culture)
             {
                 var calendar = culture.DateTimeFormat.Calendar;
-#if NETSTANDARD1_3
-                var calendarTypeName = calendar.GetType().FullName;
-                bool getEraFromCalendar =
-                    (era == Era.Common && calendarTypeName == "System.Globalization.GregorianCalendar") ||
-                    (era == Era.AnnoPersico && calendarTypeName == "System.Globalization.PersianCalendar") ||
-                    (era == Era.AnnoHegirae && (calendarTypeName == "System.Globalization.HijriCalendar" || calendarTypeName == "System.Globalization.UmAlQuraCalendar"));
-#else
                 bool getEraFromCalendar =
                     (era == Era.Common && calendar is GregorianCalendar) ||
                     (era == Era.AnnoPersico && calendar is PersianCalendar) ||
                     (era == Era.AnnoHegirae && (calendar is HijriCalendar || calendar is UmAlQuraCalendar));
-#endif
                 return getEraFromCalendar ? culture.DateTimeFormat.GetEraName(1) : null;
             }
         }

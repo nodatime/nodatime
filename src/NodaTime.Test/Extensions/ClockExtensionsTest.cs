@@ -41,7 +41,6 @@ namespace NodaTime.Test.Extensions
             Assert.AreEqual(zonedEpoch, zoned.GetCurrentZonedDateTime());
         }
 
-#if !NETCOREAPP1_0
         [Test]
         public void InTzdbSystemDefaultZone()
         {
@@ -54,9 +53,7 @@ namespace NodaTime.Test.Extensions
                 Assert.AreEqual(expected, zonedClock.GetCurrentZonedDateTime());
             }
         }
-#endif
 
-#if NET451
         [Test]
         public void InBclSystemDefaultZone()
         {
@@ -69,6 +66,5 @@ namespace NodaTime.Test.Extensions
             var expected = NodaConstants.UnixEpoch.InZone(zone);
             Assert.AreEqual(expected, zonedClock.GetCurrentZonedDateTime());
         }
-#endif
     }
 }

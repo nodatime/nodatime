@@ -6,9 +6,7 @@ using NodaTime.Text;
 using NUnit.Framework;
 using System;
 using System.IO;
-#if !NETCORE
 using System.Runtime.Serialization.Formatters.Binary;
-#endif
 
 namespace NodaTime.Test
 {
@@ -41,7 +39,6 @@ namespace NodaTime.Test
         [TestCase(typeof(UnparsableValueException))]
         public void BinaryFormat(Type type)
         {
-#if !NETCORE
             var value = type.GetConstructor(new[] { typeof(string) }).Invoke(new object[] { "Message" });
             var stream = new MemoryStream();
             new BinaryFormatter().Serialize(stream, value);
@@ -49,7 +46,6 @@ namespace NodaTime.Test
             stream.Position = 0;
             var rehydrated = new BinaryFormatter().Deserialize(stream);
             Assert.IsInstanceOf(type, rehydrated);
-#endif
         }
     }
 }

@@ -18,11 +18,7 @@ namespace NodaTime.Benchmarks.BclTests
             {
                 return TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
             }
-#if NETCORE
-            catch (Exception) // TimeZoneNotFoundException doesn't exist in netstandard :(
-#else
             catch (TimeZoneNotFoundException)
-#endif
             {
                 // Maybe we're running on Mono on a system that uses TZDB natively.
                 return TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
@@ -57,7 +53,6 @@ namespace NodaTime.Benchmarks.BclTests
             PacificZone.GetUtcOffset(WinterOffset);
         }
 
-#if !NETCORE
         [Benchmark]
         public void ConvertLocalToUtc()
         {
@@ -69,6 +64,5 @@ namespace NodaTime.Benchmarks.BclTests
         {
             TimeZoneInfo.ConvertTimeFromUtc(SummerUtc, PacificZone);
         }
-#endif
     }
 }

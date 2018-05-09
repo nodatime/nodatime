@@ -59,13 +59,8 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
-    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable, IFormattable
-#if !NETSTANDARD1_3
-        , ISerializable
-#endif
+    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable, IFormattable, ISerializable
     {
         // This is one more bit than we really need, but it allows Instant.BeforeMinValue and Instant.AfterMaxValue
         // to be easily 
@@ -1190,7 +1185,6 @@ namespace NodaTime
         /// <returns>The smaller duration of <paramref name="x"/> or <paramref name="y"/>.</returns>
         public static Duration Min(Duration x, Duration y) => x < y ? x : y;
 
-#if !NETSTANDARD1_3
         #region Binary serialization
         /// <summary>
         /// Private constructor only present for serialization.
@@ -1263,6 +1257,5 @@ namespace NodaTime
             info.AddValue(daysSerializationName, days);
             info.AddValue(nanosecondOfDaySerializationName, nanoOfDay);
         }
-#endif
     }
 }

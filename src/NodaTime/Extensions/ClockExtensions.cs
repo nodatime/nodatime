@@ -64,7 +64,6 @@ namespace NodaTime.Extensions
             return new ZonedClock(clock, zone, CalendarSystem.Iso);
         }
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Constructs a <see cref="ZonedClock"/> from a clock (the target of the method), in the wrapper for the
         /// BCL system default time zone time zone and the ISO calendar system.
@@ -80,7 +79,5 @@ namespace NodaTime.Extensions
             var zone = DateTimeZoneProviders.Bcl.GetSystemDefault();
             return new ZonedClock(clock, zone, CalendarSystem.Iso);
         }
-#endif
-
     }
 }

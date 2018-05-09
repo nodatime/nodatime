@@ -2,8 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-#if !NETCORE
-
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -219,7 +217,6 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
-#if NET451
         [Test]
         public void FakeDaylightSavingTime()
         {
@@ -244,7 +241,6 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(expectedWinter, winterInterval);
             Assert.AreEqual(expectedSummer, summerInterval);
         }
-#endif
 
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
@@ -279,5 +275,3 @@ namespace NodaTime.Test.TimeZones
         }
     }
 }
-
-#endif

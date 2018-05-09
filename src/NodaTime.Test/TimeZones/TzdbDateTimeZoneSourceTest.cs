@@ -287,7 +287,6 @@ namespace NodaTime.Test.TimeZones
             }
         }
 
-#if !NETCORE // CreateCustomTimeZone isn't available :(
         [Test]
         [TestCase("Pacific Standard Time", 0, "America/Los_Angeles", Description = "Windows ID")]
         [TestCase("America/Los_Angeles", 0, "America/Los_Angeles", Description = "TZDB ID")]
@@ -304,6 +303,5 @@ namespace NodaTime.Test.TimeZones
             // via transitions again.
             Assert.AreEqual(mappedId, TzdbDateTimeZoneSource.Default.MapTimeZoneInfoId(zoneInfo));
         }
-#endif
     }
 }
