@@ -2,18 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
-
-using System;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
+using System.Globalization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime
 {
@@ -35,8 +33,7 @@ namespace NodaTime
     /// but only in very rare historical cases (or fictional ones).</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
-    public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable, IXmlSerializable, ISerializable
+    public struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable, IXmlSerializable
     {
         /// <summary>
         /// An offset of zero seconds - effectively the permanent offset for UTC.
@@ -509,50 +506,6 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(OffsetPattern.GeneralInvariant.Format(this));
-        }
-        #endregion
-
-        #region Binary serialization
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private Offset([NotNull] SerializationInfo info, StreamingContext context)
-            : this(info)
-        {
-        }
-
-        /// <summary>
-        /// Constructor for serialization, internal to allow deserialization as part of
-        /// a larger value (e.g. OffsetDateTime).
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        internal Offset([NotNull] SerializationInfo info)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            int seconds = info.GetInt32(BinaryFormattingConstants.OffsetSecondsSerializationName);
-
-            Preconditions.CheckArgument(seconds >= MinSeconds && seconds <= MaxSeconds, nameof(info),
-                "Serialized offset value is outside the range of +/- 18 hours");
-            this.seconds = seconds;
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            Serialize(info);
-        }
-
-        internal void Serialize([NotNull] SerializationInfo info)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            info.AddValue(BinaryFormattingConstants.OffsetSecondsSerializationName, Seconds);
         }
         #endregion
     }

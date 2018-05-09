@@ -400,15 +400,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void BinarySerialization_Iso()
-        {
-            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
-            var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23).WithOffset(Offset.FromHours(-4)), zone);
-            TestHelper.AssertBinaryRoundtrip(value);
-        }
-
-        [Test]
         public void XmlSerialization_Iso()
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
@@ -432,20 +423,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void BinarySerialization_Bcl()
-        {
-            // Skip this on Mono, which will have different BCL time zones. We can't easily
-            // guess which will be available :(
-            if (!TestHelper.IsRunningOnMono)
-            {
-                DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Bcl;
-                var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
-                var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23).WithOffset(Offset.FromHours(-4)), zone);
-                TestHelper.AssertBinaryRoundtrip(value);
-            }
-        }
-
-        [Test]
         public void XmlSerialization_NonIso()
         {
             DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
@@ -454,40 +431,6 @@ namespace NodaTime.Test
             var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertXmlRoundtrip(value,
                 "<value zone=\"America/New_York\" calendar=\"Julian\">2013-06-12T17:53:23-04</value>");
-        }
-
-        [Test]
-        public void BinarySerialization_NonIso()
-        {
-            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
-            var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
-            var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.Julian);
-            var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
-            TestHelper.AssertBinaryRoundtrip(value);
-        }
-
-        [Test]
-        [TestCase(typeof(ArgumentException), 10000, 8, 25, 0L, 0, 60, "Europe/London")]
-        [TestCase(typeof(ArgumentException), 2017, 8, 25, 0L, 0, 60, "Europe/London")]
-        [TestCase(typeof(ArgumentException), 2017, 13, 25, 0L, 0, 60, "Europe/London")]
-        [TestCase(typeof(ArgumentException), 2017, 8, 32, 0L, 0, 60, "Europe/London")]
-        [TestCase(typeof(ArgumentException), 2017, 8, 25, -1L, 0, 60, "Europe/London")]
-        [TestCase(typeof(ArgumentException), 2017, 8, 25, 0L, -1, 60, "Europe/London", Description = "Invalid calendar ordinal")]
-        [TestCase(typeof(ArgumentException), 2017, 8, 25, 0L, 0, 120, "Europe/London", Description = "Wrong offset")]
-        [TestCase(typeof(TimeZoneNotFoundException), 2017, 8, 25, 0L, 0, 120, "Europe/NotLondon", Description = "Unknown zone ID")]
-        public void InvalidBinaryData(Type expectedExceptionType, int year, int month, int day, long nanosecondOfDay, int calendarOrdinal, int offsetSeconds, string zoneId)
-        {
-            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
-            TestHelper.AssertBinaryDeserializationFailure<ZonedDateTime>(expectedExceptionType, info =>
-            {
-                info.AddValue(BinaryFormattingConstants.YearSerializationName, year);
-                info.AddValue(BinaryFormattingConstants.MonthSerializationName, month);
-                info.AddValue(BinaryFormattingConstants.DaySerializationName, day);
-                info.AddValue(BinaryFormattingConstants.NanoOfDaySerializationName, nanosecondOfDay);
-                info.AddValue(BinaryFormattingConstants.CalendarSerializationName, calendarOrdinal);
-                info.AddValue(BinaryFormattingConstants.OffsetSecondsSerializationName, offsetSeconds);
-                info.AddValue(BinaryFormattingConstants.ZoneIdSerializationName, zoneId);
-            });
         }
 
         [Test]

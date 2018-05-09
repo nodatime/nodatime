@@ -5,7 +5,7 @@
  -->
 <CoverageParams>
   <TargetExecutable>/Program Files/dotnet/dotnet.exe</TargetExecutable>
-  <TargetArguments>run -f net451 -c Release -- --where=cat!=Slow</TargetArguments>
+  <TargetArguments>run -c Release -- --where=cat!=Slow</TargetArguments>
   <TargetWorkingDir>.</TargetWorkingDir>
   <Filters>
     <IncludeFilters>

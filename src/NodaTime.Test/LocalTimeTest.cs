@@ -43,21 +43,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void BinarySerialization()
-        {
-            TestHelper.AssertBinaryRoundtrip(LocalTime.FromHourMinuteSecondNanosecond(12, 34, 56, 123456789));
-        }
-
-        [Test]
-        [TestCase(typeof(ArgumentException), -1L)]
-        [TestCase(typeof(ArgumentException), NodaConstants.NanosecondsPerDay)]
-        public void InvalidBinaryData(Type expectedExceptionType, long nanoOfDay) =>
-            TestHelper.AssertBinaryDeserializationFailure<LocalTime>(expectedExceptionType, info =>
-            {
-                info.AddValue(BinaryFormattingConstants.NanoOfDaySerializationName, nanoOfDay);
-            });
-
-        [Test]
         public void XmlSerialization()
         {
             var value = LocalTime.FromHourMinuteSecondNanosecond(17, 53, 23, 123456789);

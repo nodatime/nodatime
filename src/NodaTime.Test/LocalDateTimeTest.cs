@@ -413,13 +413,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void BinarySerialization()
-        {
-            TestHelper.AssertBinaryRoundtrip(new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.Julian));
-            TestHelper.AssertBinaryRoundtrip(new LocalDateTime(2013, 4, 12, 17, 53, 23).PlusNanoseconds(123456789));
-        }
-
-        [Test]
         public void XmlSerialization_NonIso()
         {
             var value = new LocalDateTime(2013, 4, 12, 17, 53, 23, CalendarSystem.Julian);

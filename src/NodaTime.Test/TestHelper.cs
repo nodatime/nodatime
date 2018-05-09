@@ -2,18 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
-using NUnit.Framework;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using NodaTime.Annotations;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace NodaTime.Test
 {
@@ -480,35 +478,6 @@ namespace NodaTime.Test
                 Assert.False((bool)inequality.Invoke(null, new object[] { equalValue, value }), "equalValue != value");
                 Assert.True((bool)inequality.Invoke(null, new object[] { value, unequalValue }), "value != unequalValue");
             }
-        }
-        
-        /// <summary>
-        /// Validates that the given value can be serialized, and that deserializing the same data
-        /// returns an equal value.
-        /// </summary>
-        /// <remarks>
-        /// This method is effectively ignored in the .NET Core tests - that means all the binary serialization tests 
-        /// do nothing on .NET Core, but it's simpler than conditionalizing each one of them.
-        /// </remarks>
-        internal static void AssertBinaryRoundtrip<T>(T value)
-        {
-            var stream = new MemoryStream();
-            new BinaryFormatter().Serialize(stream, value);
-            stream.Position = 0;
-            var rehydrated = (T)new BinaryFormatter().Deserialize(stream);
-            Assert.AreEqual(value, rehydrated);
-        }
-
-        internal static void AssertBinaryDeserializationFailure<T>(Type expectedExceptionType, Action<SerializationInfo> fillInfoAction)
-        {
-            var info = new SerializationInfo(typeof(T), new FormatterConverter());
-            fillInfoAction(info);
-            var ctor = typeof(T).GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null,
-                new Type[] { typeof(SerializationInfo), typeof(StreamingContext) }, null);
-            Assert.NotNull(ctor);
-            var context = new StreamingContext();
-            var exception = Assert.Throws<TargetInvocationException>(() => ctor.Invoke(new object[] { info, context }));
-            Assert.IsInstanceOf(expectedExceptionType, exception.InnerException);
         }
 
         /// <summary>

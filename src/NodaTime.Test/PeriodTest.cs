@@ -912,19 +912,7 @@ namespace NodaTime.Test
             Period actual = Period.Between(start, end, PeriodUnits.YearMonthDay | PeriodUnits.AllTimeUnits);
             Period expected = new PeriodBuilder { Years = 1, Months = 1, Days = 1, Hours = 16 }.Build();
             Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void BinaryRoundTrip()
-        {
-            TestHelper.AssertBinaryRoundtrip(Period.Zero);
-            // Check each field is distinct
-            TestHelper.AssertBinaryRoundtrip(new Period(1, 2, 3, 4, 5L, 6L, 7L, 8L, 9L, 10L));
-            // Check we're not truncating to Int32... (except for date values)
-            TestHelper.AssertBinaryRoundtrip(new Period(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue, long.MaxValue,
-                                                        long.MinValue, long.MinValue, long.MinValue, long.MinValue,
-                                                        long.MinValue));
-        }
+        }        
 
         [Test]
         public void FromNanoseconds()

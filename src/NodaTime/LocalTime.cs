@@ -2,19 +2,17 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
-
-using System;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
+using System.Globalization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime
 {
@@ -26,8 +24,7 @@ namespace NodaTime
     /// to a particular calendar, time zone or date.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
-    public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable, ISerializable
+    public struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
     {
         /// <summary>
         /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
@@ -775,49 +772,6 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(LocalTimePattern.ExtendedIso.Format(this));
-        }
-        #endregion
-
-        #region Binary serialization
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private LocalTime([NotNull] SerializationInfo info, StreamingContext context)
-            : this(info)
-        {
-        }
-
-        /// <summary>
-        /// Constructor only present for serialization; internal to allow
-        /// construction as part of deserialization of larger types such as LocalDateTime.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        internal LocalTime([NotNull] SerializationInfo info)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            long nanoOfDay = info.GetInt64(BinaryFormattingConstants.NanoOfDaySerializationName);
-            Preconditions.CheckArgument(nanoOfDay >= 0 && nanoOfDay < NanosecondsPerDay, nameof(info),
-                "Serialized offset value is outside the range of +/- 18 hours");
-            this.nanoseconds = nanoOfDay;
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            Serialize(info);
-        }
-
-        internal void Serialize([NotNull] SerializationInfo info)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            info.AddValue(BinaryFormattingConstants.NanoOfDaySerializationName, nanoseconds);
         }
         #endregion
     }

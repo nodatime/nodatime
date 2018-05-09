@@ -2,9 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Annotations;
-using System.Runtime.Serialization;
+using System;
 
 namespace NodaTime.Text
 {
@@ -14,7 +13,6 @@ namespace NodaTime.Text
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
-    [Serializable]
     [Mutable] // Exception is Mutable
     public sealed class UnparsableValueException : FormatException
     {
@@ -31,16 +29,6 @@ namespace NodaTime.Text
         /// <param name="message">The failure message</param>
         public UnparsableValueException(string message)
             : base(message)
-        {
-        }
-
-        /// <summary>
-        /// Creates a new UnparsableValueException from the given serialization information.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-        /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
-        private UnparsableValueException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

@@ -22,12 +22,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void BinarySerialization()
-        {
-            TestHelper.AssertBinaryRoundtrip(Duration.FromNanoseconds(123456789L));
-        }
-
-        [Test]
         public void XmlSerialization()
         {
             Duration value = new PeriodBuilder { Days = 5, Hours = 3, Minutes = 20, Seconds = 35, Ticks = 1234500 }.Build().ToDuration();

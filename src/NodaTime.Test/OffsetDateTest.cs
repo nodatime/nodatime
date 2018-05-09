@@ -154,15 +154,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void BinarySerialization()
-        {
-            var date = new LocalDate(2013, 4, 12);
-            var offset = Offset.FromHoursAndMinutes(5, 30);
-            var value = new OffsetDate(date, offset);
-            TestHelper.AssertBinaryRoundtrip(value);
-        }
-
-        [Test]
         [TestCase(2013, 4, 12, "2013-04-12+05:30")]
         [TestCase(123, 4, 12, "0123-04-12+05:30")]
         public void XmlSerialization_Iso(int year, int month, int day, string expectedText)

@@ -11,7 +11,6 @@ using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -40,8 +39,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
-    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IFormattable, IXmlSerializable, ISerializable
+    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IFormattable, IXmlSerializable
     {
         [ReadWriteForEfficiency] private OffsetDateTime offsetDateTime;
         private readonly DateTimeZone zone;
@@ -827,35 +825,6 @@ namespace NodaTime
                 writer.WriteAttributeString("calendar", Calendar.Id);
             }
             writer.WriteString(OffsetDateTimePattern.ExtendedIso.Format(ToOffsetDateTime()));
-        }
-        #endregion
-
-        #region Binary serialization
-
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private ZonedDateTime(SerializationInfo info, StreamingContext context)
-            // Note: this uses the constructor which explicitly validates that the offset is reasonable.
-            : this(new LocalDateTime(info),
-                   DateTimeZoneProviders.Serialization[info.GetString(BinaryFormattingConstants.ZoneIdSerializationName)],
-                   new Offset(info))
-        {
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            LocalDateTime.Serialize(info);
-            Offset.Serialize(info);
-            info.AddValue(BinaryFormattingConstants.ZoneIdSerializationName, Zone.Id);
         }
         #endregion
     }

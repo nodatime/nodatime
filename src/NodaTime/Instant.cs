@@ -2,19 +2,17 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
-
-using System;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
+using System.Globalization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime
 {
@@ -28,8 +26,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
-    public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable, ISerializable
+    public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable
     {
         // These correspond to -9998-01-01 and 9999-12-31 respectively.
         internal const int MinDays = -4371222;
@@ -748,36 +745,6 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(InstantPattern.ExtendedIso.Format(this));
-        }
-        #endregion
-
-        #region Binary serialization
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private Instant([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            duration = new Duration(info);
-            // Duplication of code in Instant.FromUntrustedDuration,
-            // because we can't chain to a static method...
-            int days = duration.FloorDays;
-            if (days < MinDays || days > MaxDays)
-            {
-                throw new OverflowException("Operation would overflow range of Instant");
-            }
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            duration.Serialize(info);
         }
         #endregion
     }

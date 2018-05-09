@@ -2,16 +2,14 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
-
-using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
+using System.Collections.Generic;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime
 {
@@ -43,9 +41,8 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
     [Immutable]
-    public sealed class Period : IEquatable<Period>, ISerializable
+    public sealed class Period : IEquatable<Period>
     {
         // General implementation note: operations such as normalization work out the total number of nanoseconds as an Int64
         // value. This can handle +/- 106,751 days, or 292 years. We could move to using BigInteger if we feel that's required,
@@ -875,47 +872,6 @@ namespace NodaTime
             Milliseconds == other.Milliseconds &&
             Ticks == other.Ticks &&
             Nanoseconds == other.Nanoseconds;
-        #endregion
-
-        #region Binary serialization
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private Period(SerializationInfo info, StreamingContext context)
-            : this((int) info.GetInt64(BinaryFormattingConstants.YearsSerializationName),
-                   (int) info.GetInt64(BinaryFormattingConstants.MonthsSerializationName),
-                   (int) info.GetInt64(BinaryFormattingConstants.WeeksSerializationName),
-                   (int) info.GetInt64(BinaryFormattingConstants.DaysSerializationName),
-                   info.GetInt64(BinaryFormattingConstants.HoursSerializationName),
-                   info.GetInt64(BinaryFormattingConstants.MinutesSerializationName),
-                   info.GetInt64(BinaryFormattingConstants.SecondsSerializationName),
-                   info.GetInt64(BinaryFormattingConstants.MillisecondsSerializationName),
-                   info.GetInt64(BinaryFormattingConstants.TicksSerializationName),
-                   info.GetInt64(BinaryFormattingConstants.NanosecondsSerializationName))
-        {
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(BinaryFormattingConstants.YearsSerializationName, (long) Years);
-            info.AddValue(BinaryFormattingConstants.MonthsSerializationName, (long) Months);
-            info.AddValue(BinaryFormattingConstants.WeeksSerializationName, (long) Weeks);
-            info.AddValue(BinaryFormattingConstants.DaysSerializationName, (long) Days);
-            info.AddValue(BinaryFormattingConstants.HoursSerializationName, Hours);
-            info.AddValue(BinaryFormattingConstants.MinutesSerializationName, Minutes);
-            info.AddValue(BinaryFormattingConstants.SecondsSerializationName, Seconds);
-            info.AddValue(BinaryFormattingConstants.MillisecondsSerializationName, Milliseconds);
-            info.AddValue(BinaryFormattingConstants.TicksSerializationName, Ticks);
-            info.AddValue(BinaryFormattingConstants.NanosecondsSerializationName, Nanoseconds);
-        }
         #endregion
 
         /// <summary>
