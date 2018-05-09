@@ -48,8 +48,6 @@ namespace NodaTime.Test
             TestHelper.AssertBinaryRoundtrip(LocalTime.FromHourMinuteSecondNanosecond(12, 34, 56, 123456789));
         }
 
-#if !NETCORE
-
         [Test]
         [TestCase(typeof(ArgumentException), -1L)]
         [TestCase(typeof(ArgumentException), NodaConstants.NanosecondsPerDay)]
@@ -58,7 +56,6 @@ namespace NodaTime.Test
             {
                 info.AddValue(BinaryFormattingConstants.NanoOfDaySerializationName, nanoOfDay);
             });
-#endif
 
         [Test]
         public void XmlSerialization()

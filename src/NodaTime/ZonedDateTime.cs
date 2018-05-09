@@ -40,13 +40,8 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
-    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IFormattable, IXmlSerializable
-#if !NETSTANDARD1_3
-        , ISerializable
-#endif
+    public struct ZonedDateTime : IEquatable<ZonedDateTime>, IFormattable, IXmlSerializable, ISerializable
     {
         [ReadWriteForEfficiency] private OffsetDateTime offsetDateTime;
         private readonly DateTimeZone zone;
@@ -835,7 +830,6 @@ namespace NodaTime
         }
         #endregion
 
-#if !NETSTANDARD1_3
         #region Binary serialization
 
         /// <summary>
@@ -864,6 +858,5 @@ namespace NodaTime
             info.AddValue(BinaryFormattingConstants.ZoneIdSerializationName, Zone.Id);
         }
         #endregion
-#endif
     }
 }

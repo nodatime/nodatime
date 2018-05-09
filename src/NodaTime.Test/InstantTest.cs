@@ -327,8 +327,6 @@ namespace NodaTime.Test
             TestHelper.AssertBinaryRoundtrip(Instant.MaxValue);
         }
 
-#if !NETCORE
-
         [Test]
         [TestCase(typeof(OverflowException), Instant.MinDays - 1, 0L)]
         [TestCase(typeof(OverflowException), Instant.MaxDays + 1, 0L)]
@@ -340,7 +338,6 @@ namespace NodaTime.Test
                 info.AddValue(BinaryFormattingConstants.DurationDefaultDaysSerializationName, days);
                 info.AddValue(BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName, nanoOfDay);
             });
-#endif
 
         [Test]
         [TestCase(-101L, -2L)]

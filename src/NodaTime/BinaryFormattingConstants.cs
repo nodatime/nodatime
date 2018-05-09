@@ -4,7 +4,6 @@
 
 namespace NodaTime
 {
-#if !NETSTANDARD1_3
     /// <summary>
     /// Names used by binary formatting, to make it easier to avoid any collisions.
     /// </summary>
@@ -51,5 +50,4 @@ namespace NodaTime
         // ZonedDateTime
         internal const string ZoneIdSerializationName = "zone";
     }
-#endif
 }

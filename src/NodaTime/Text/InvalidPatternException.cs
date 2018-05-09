@@ -5,9 +5,7 @@
 using System;
 using System.Globalization;
 using NodaTime.Annotations;
-#if !NETSTANDARD1_3
 using System.Runtime.Serialization;
-#endif
 
 namespace NodaTime.Text
 {
@@ -17,9 +15,7 @@ namespace NodaTime.Text
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
     [Mutable] // Exception is mutable
     public sealed class InvalidPatternException : FormatException
     {
@@ -51,7 +47,6 @@ namespace NodaTime.Text
         }
 
 
-#if !NETSTANDARD1_3
         /// <summary>
         /// Creates a new InvalidPatternException from the given serialization information.
         /// </summary>
@@ -61,6 +56,5 @@ namespace NodaTime.Text
             : base(info, context)
         {
         }
-#endif
     }
 }

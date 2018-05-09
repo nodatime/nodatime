@@ -417,7 +417,6 @@ namespace NodaTime.Test
             TestHelper.AssertXmlRoundtrip(value, "<value zone=\"America/New_York\">2013-04-12T17:53:23-04</value>");
         }
 
-#if !NETCORE
         [Test]
         public void XmlSerialization_Bcl()
         {
@@ -445,7 +444,6 @@ namespace NodaTime.Test
                 TestHelper.AssertBinaryRoundtrip(value);
             }
         }
-#endif
 
         [Test]
         public void XmlSerialization_NonIso()
@@ -467,8 +465,6 @@ namespace NodaTime.Test
             var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertBinaryRoundtrip(value);
         }
-
-#if !NETCORE
 
         [Test]
         [TestCase(typeof(ArgumentException), 10000, 8, 25, 0L, 0, 60, "Europe/London")]
@@ -493,7 +489,6 @@ namespace NodaTime.Test
                 info.AddValue(BinaryFormattingConstants.ZoneIdSerializationName, zoneId);
             });
         }
-#endif
 
         [Test]
         [TestCase("<value zone=\"America/New_York\" calendar=\"Rubbish\">2013-06-12T17:53:23-04</value>", typeof(KeyNotFoundException), Description = "Unknown calendar system")]

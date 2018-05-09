@@ -6,12 +6,8 @@ using System;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-#if !NETSTANDARD1_3
-// We *could* support this in netstandard, but we never did with the PCL
-// build, and we haven't had any reports of problems. We'll leave it in for
-// net45 for backwards compatibility, and can reintroduce it if necessary.
+// TODO: Check whether this is still a good idea
 [assembly: System.Security.AllowPartiallyTrustedCallers]
-#endif
 
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguage("en")]

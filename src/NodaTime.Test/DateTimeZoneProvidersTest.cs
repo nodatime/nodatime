@@ -26,12 +26,10 @@ namespace NodaTime.Test
             Assert.IsTrue(allZones.Count > 50);
         }
 
-#if !NETCORE
         [Test]
         public void BclProviderUsesTimeZoneInfoSource()
         {
             Assert.IsTrue(DateTimeZoneProviders.Bcl.VersionId.StartsWith("TimeZoneInfo: "));
         }
-#endif
     }
 }

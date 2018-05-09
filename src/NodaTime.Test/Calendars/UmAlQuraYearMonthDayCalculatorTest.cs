@@ -94,7 +94,7 @@ namespace NodaTime.Test.Calendars
             Assert.Throws<ArgumentOutOfRangeException>(() => calculator.GetYearMonthDay(calculator.MinYear, 1000));
         }
 
-#if DEBUG && !NETCORE
+#if DEBUG
         [Test, Explicit]
         public void GenerateData()
         {

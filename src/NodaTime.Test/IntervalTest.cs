@@ -179,8 +179,6 @@ namespace NodaTime.Test
             TestHelper.AssertXmlInvalid<Interval>(xml, expectedExceptionType);
         }
 
-#if !NETCORE
-
         [Test]
         [TestCase(typeof(OverflowException), Instant.MinDays - 1, 0L, 0, 0L)]
         [TestCase(typeof(OverflowException), Instant.MaxDays + 1, 0L, 0, 0L)]
@@ -200,7 +198,6 @@ namespace NodaTime.Test
                 info.AddValue(BinaryFormattingConstants.EndDaysSerializationName, endDays);
                 info.AddValue(BinaryFormattingConstants.EndNanosecondOfDaySerializationName, endNanoOfDay);
             });
-#endif
 
         [Test]
         [TestCase("1990-01-01T00:00:00Z", false, Description = "Before interval")]

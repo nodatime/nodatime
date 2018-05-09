@@ -20,16 +20,9 @@ namespace NodaTime.TimeZones
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
     [Mutable] // Exception itself is mutable
-    public sealed class DateTimeZoneNotFoundException
-#if NETSTANDARD1_3
-        : Exception
-#else
-        : TimeZoneNotFoundException
-#endif
+    public sealed class DateTimeZoneNotFoundException : TimeZoneNotFoundException
     {
         /// <summary>
         /// Creates an instance with the given message.

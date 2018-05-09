@@ -39,13 +39,7 @@ namespace NodaTime.Test.TimeZones
             {
                 return zone;
             }
-#if NETCORE
-            // TimeZoneNotFoundException doesn't exist in netstandard. We're unlikely to use
-            // this method in non-NET45 tests anyway, as it's only used in BclDateTimeZoneSource.
-            throw new Exception($"No such time zone: {id}");
-#else
             throw new TimeZoneNotFoundException($"No such time zone: {id}");
-#endif
         }
 
         public ReadOnlyCollection<TimeZoneInfo> GetSystemTimeZones() => zones;

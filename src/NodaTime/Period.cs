@@ -43,14 +43,9 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
     [Immutable]
-    public sealed class Period : IEquatable<Period>
-#if !NETSTANDARD1_3
-        , ISerializable
-#endif
+    public sealed class Period : IEquatable<Period>, ISerializable
     {
         // General implementation note: operations such as normalization work out the total number of nanoseconds as an Int64
         // value. This can handle +/- 106,751 days, or 292 years. We could move to using BigInteger if we feel that's required,
@@ -532,17 +527,7 @@ namespace NodaTime
                 {
                     return 0;
                 }
-#if NET45
                 return Math.DivRem(totalNanoseconds, nanosecondsPerUnit, out totalNanoseconds);
-#else
-                unchecked
-                {
-                    long value = totalNanoseconds / nanosecondsPerUnit;
-                    // This has been tested and found to be faster than using totalNanoseconds %= nanosecondsPerUnit
-                    totalNanoseconds -= value * nanosecondsPerUnit;
-                    return value;
-                }
-#endif
             }
         }
 
@@ -892,7 +877,6 @@ namespace NodaTime
             Nanoseconds == other.Nanoseconds;
         #endregion
 
-#if !NETSTANDARD1_3
         #region Binary serialization
         /// <summary>
         /// Private constructor only present for serialization.
@@ -933,8 +917,6 @@ namespace NodaTime
             info.AddValue(BinaryFormattingConstants.NanosecondsSerializationName, Nanoseconds);
         }
         #endregion
-#endif
-
 
         /// <summary>
         /// Equality comparer which simply normalizes periods before comparing them.

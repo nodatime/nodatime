@@ -7,9 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
-#if NET45
 using System.Diagnostics.CodeAnalysis;
-#endif
 
 namespace NodaTime.Text.Patterns
 {
@@ -116,9 +114,7 @@ namespace NodaTime.Text.Patterns
                 this.getter = getter;
             }
 
-#if NET45
             [ExcludeFromCodeCoverage]
-#endif
             internal void DummyMethod(TResult value, StringBuilder builder)
             {
                 // This method is never called. We use it to create a delegate with a target that implements

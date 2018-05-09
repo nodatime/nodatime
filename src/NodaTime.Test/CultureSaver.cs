@@ -25,20 +25,8 @@ namespace NodaTime.Test
     public static class CultureSaver
     {
         // Abstractions over Thread.CurrentThread.CurrentCulture / CultureInfo.CurrentCulture etc.
+        // (Previously present for the sake of .NET Core 1.0; we may want to remove them now.)
 
-#if NETCOREAPP1_0
-        private static CultureInfo CurrentCulture
-        {
-            get { return CultureInfo.DefaultThreadCurrentCulture; }
-            set { CultureInfo.DefaultThreadCurrentCulture = value; }
-        }
-
-        private static CultureInfo CurrentUICulture
-        {
-            get { return CultureInfo.DefaultThreadCurrentUICulture; }
-            set { CultureInfo.DefaultThreadCurrentUICulture = value; }
-        }
-#else
         private static CultureInfo CurrentCulture
         {
             get { return Thread.CurrentThread.CurrentCulture; }
@@ -50,7 +38,6 @@ namespace NodaTime.Test
             get { return Thread.CurrentThread.CurrentUICulture; }
             set { Thread.CurrentThread.CurrentUICulture = value; }
         }
-#endif
 
         /// <summary>
         /// Sets the basic culture.

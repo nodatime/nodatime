@@ -31,7 +31,6 @@ namespace NodaTime
             internal static readonly DateTimeZoneCache TzdbImpl = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
         }
 
-#if !NETSTANDARD1_3
         // As per TzDbHolder above, this exists to defer construction of a BCL provider until needed.
         // While BclDateTimeZoneSource itself is lightweight, DateTimeZoneCache still does a non-trivial amount of work
         // on initialisation.
@@ -50,7 +49,6 @@ namespace NodaTime
         /// </remarks>
         /// <value>A time zone provider which uses a <c>BclDateTimeZoneSource</c>.</value>
         [NotNull] public static IDateTimeZoneProvider Bcl => BclHolder.BclImpl;
-#endif
 
         private static readonly object SerializationProviderLock = new object();
         private static IDateTimeZoneProvider serializationProvider;

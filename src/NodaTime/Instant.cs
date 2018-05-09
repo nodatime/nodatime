@@ -28,13 +28,8 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
-    public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable
-#if !NETSTANDARD1_3
-        , ISerializable
-#endif
+    public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable, ISerializable
     {
         // These correspond to -9998-01-01 and 9999-12-31 respectively.
         internal const int MinDays = -4371222;
@@ -756,7 +751,6 @@ namespace NodaTime
         }
         #endregion
 
-#if !NETSTANDARD1_3
         #region Binary serialization
         /// <summary>
         /// Private constructor only present for serialization.
@@ -786,6 +780,5 @@ namespace NodaTime
             duration.Serialize(info);
         }
         #endregion
-#endif
     }
 }

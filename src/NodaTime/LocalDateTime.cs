@@ -38,13 +38,8 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !NETSTANDARD1_3
     [Serializable]
-#endif
-    public struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
-#if !NETSTANDARD1_3
-        , ISerializable
-#endif
+    public struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable, ISerializable
     {
         [ReadWriteForEfficiency] private LocalDate date;
         [ReadWriteForEfficiency] private LocalTime time;
@@ -971,7 +966,6 @@ namespace NodaTime
         }
         #endregion
 
-#if !NETSTANDARD1_3
         #region Binary serialization
 
         /// <summary>
@@ -1011,6 +1005,5 @@ namespace NodaTime
             time.Serialize(info);
         }
         #endregion
-#endif
     }
 }

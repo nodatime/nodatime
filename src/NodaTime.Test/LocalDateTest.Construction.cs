@@ -18,8 +18,6 @@ namespace NodaTime.Test
             TestHelper.AssertBinaryRoundtrip(new LocalDate(284, 13, 1, CalendarSystem.Coptic));
         }
 
-#if !NETCORE
-
         [Test]
         [TestCase(typeof(ArgumentException), 0, 1, 1, -1)]
         [TestCase(typeof(ArgumentException), -9999, 1, 1, 0)]
@@ -37,7 +35,6 @@ namespace NodaTime.Test
                 info.AddValue(BinaryFormattingConstants.DaySerializationName, day);
                 info.AddValue(BinaryFormattingConstants.CalendarSerializationName, calendarOrdinal);
             });
-#endif
 
         [Test]
         [TestCase(1620)] // Leap year in non-optimized period
