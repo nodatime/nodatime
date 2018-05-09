@@ -15,7 +15,7 @@ declare -r DOTCOVER=$ROOT/packages/JetBrains.dotCover.CommandLineTools.$DOTCOVER
 rm -rf $ROOT/coverage
 mkdir $ROOT/coverage
 
-# Run just the net451 tests under dotCover
+# Run the tests under dotCover
 (cd $ROOT/src/NodaTime.Test; 
  $DOTCOVER cover coverageparams.xml /ReturnTargetExitCode)
 
