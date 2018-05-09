@@ -19,16 +19,6 @@ namespace NodaTime.Extensions
         /// <remarks>This is a convenience method which calls <see cref="BclConversions.ToDayOfWeek"/>.</remarks>        
         /// <param name="isoDayOfWeek">The <c>IsoDayOfWeek</c> to convert.</param>
         /// <returns>The <c>DayOfWeek</c> equivalent to <paramref name="isoDayOfWeek"/></returns>
-        [Obsolete("This method was incorrectly named. Use ToDayOfWeek instead")]
-        [TestExemption(TestExemptionCategory.ConversionName, "Released in 2.0 :(")]
-        public static DayOfWeek ToIsoDayOfWeek(this IsoDayOfWeek isoDayOfWeek) => ToDayOfWeek(isoDayOfWeek);
-
-        /// <summary>
-        /// Converts a <see cref="IsoDayOfWeek"/> into the corresponding <see cref="DayOfWeek"/>.
-        /// </summary>
-        /// <remarks>This is a convenience method which calls <see cref="BclConversions.ToDayOfWeek"/>.</remarks>        
-        /// <param name="isoDayOfWeek">The <c>IsoDayOfWeek</c> to convert.</param>
-        /// <returns>The <c>DayOfWeek</c> equivalent to <paramref name="isoDayOfWeek"/></returns>
         public static DayOfWeek ToDayOfWeek(this IsoDayOfWeek isoDayOfWeek) => BclConversions.ToDayOfWeek(isoDayOfWeek);
     }
 }
