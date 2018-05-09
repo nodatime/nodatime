@@ -141,15 +141,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void BinarySerialization()
-        {
-            var time = new LocalTime(5, 6, 7).PlusNanoseconds(123456789L);
-            var offset = Offset.FromHoursAndMinutes(5, 30);
-            var value = new OffsetTime(time, offset);
-            TestHelper.AssertBinaryRoundtrip(value);
-        }
-
-        [Test]
         [TestCase(5, 6, 7, 123456789, 5, 30, "05:06:07.123456789+05:30")]
         [TestCase(5, 6, 7, 123456789, -5, -30, "05:06:07.123456789-05:30")]
         [TestCase(5, 6, 7, 0, 0, 0, "05:06:07Z")]

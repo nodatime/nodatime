@@ -2,20 +2,18 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime
 {
@@ -32,8 +30,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
-    public struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable, ISerializable
+    public struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
     {
         private const int NanosecondsBits = 47;
         private const long NanosecondsMask = (1L << NanosecondsBits) - 1;
@@ -930,31 +927,6 @@ namespace NodaTime
                 writer.WriteAttributeString("calendar", Calendar.Id);
             }
             writer.WriteString(OffsetDateTimePattern.Rfc3339.Format(this));
-        }
-        #endregion
-
-        #region Binary serialization
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private OffsetDateTime([NotNull] SerializationInfo info, StreamingContext context)
-            : this(new LocalDateTime(info), new Offset(info))
-        {
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            LocalDateTime.Serialize(info);
-            Offset.Serialize(info);
         }
         #endregion
     }

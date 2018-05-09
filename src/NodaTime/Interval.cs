@@ -2,14 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -27,8 +26,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
-    public struct Interval : IEquatable<Interval>, IXmlSerializable, ISerializable
+    public struct Interval : IEquatable<Interval>, IXmlSerializable
     {
         /// <summary>The start of the interval.</summary>
         private readonly Instant start;
@@ -254,60 +252,6 @@ namespace NodaTime
             if (HasEnd)
             {
                 writer.WriteAttributeString("end", pattern.Format(end));
-            }
-        }
-        #endregion
-
-        #region Binary serialization
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private Interval([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            var presence = info.GetByte(BinaryFormattingConstants.PresenceName);
-            start = (presence & 1) == 0 ?
-                Instant.BeforeMinValue
-                : Instant.FromUntrustedDuration(
-                    new Duration(info,
-                        BinaryFormattingConstants.StartDaysSerializationName,
-                        BinaryFormattingConstants.StartNanosecondOfDaySerializationName));
-            end = (presence & 2) == 0 ?
-                Instant.AfterMaxValue
-                : Instant.FromUntrustedDuration(
-                    new Duration(info,
-                        BinaryFormattingConstants.EndDaysSerializationName,
-                        BinaryFormattingConstants.EndNanosecondOfDaySerializationName));
-            if (end < start)
-            {
-                throw new ArgumentException("Serialization data contains end before start");
-            }
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            // We can't easily tell which fields are present based on SerializationInfo (other than by iterating),
-            // so we add one extra value to say which other values to include. We may wish to generalize this
-            // at some point...
-            info.AddValue(BinaryFormattingConstants.PresenceName, (byte) ((HasStart ? 1 : 0) | (HasEnd ? 2 : 0)));
-            if (HasStart)
-            {
-                start.TimeSinceEpoch.Serialize(info,
-                    BinaryFormattingConstants.StartDaysSerializationName,
-                    BinaryFormattingConstants.StartNanosecondOfDaySerializationName);
-            }
-            if (HasEnd)
-            {
-                end.TimeSinceEpoch.Serialize(info,
-                    BinaryFormattingConstants.EndDaysSerializationName,
-                    BinaryFormattingConstants.EndNanosecondOfDaySerializationName);
             }
         }
         #endregion

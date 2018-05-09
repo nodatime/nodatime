@@ -77,22 +77,6 @@ namespace NodaTime.Test
             var actual = new Offset();
             Assert.AreEqual(Offset.Zero, actual);
         }
-
-        [Test]
-        public void BinarySerialization()
-        {
-            TestHelper.AssertBinaryRoundtrip(Offset.FromSeconds(12345));
-            TestHelper.AssertBinaryRoundtrip(Offset.FromSeconds(-12345));
-        }
-
-        [Test]
-        [TestCase(typeof(ArgumentException), Offset.MinSeconds - 1)]
-        [TestCase(typeof(ArgumentException), Offset.MaxSeconds + 1)]
-        public void InvalidBinaryData(Type expectedExceptionType, int seconds) =>
-            TestHelper.AssertBinaryDeserializationFailure<Offset>(expectedExceptionType, info =>
-            {
-                info.AddValue(BinaryFormattingConstants.OffsetSecondsSerializationName, seconds);
-            });
          
         [Test]
         public void XmlSerialization()

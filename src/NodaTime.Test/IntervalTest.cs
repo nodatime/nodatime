@@ -83,16 +83,7 @@ namespace NodaTime.Test
             var actual = new Interval();
             Assert.AreEqual(NodaTime.Duration.Zero, actual.Duration);
         }
-
-        [Test]
-        public void BinarySerialization()
-        {
-            TestHelper.AssertBinaryRoundtrip(new Interval(SampleStart, SampleEnd));
-            TestHelper.AssertBinaryRoundtrip(new Interval(null, SampleEnd));
-            TestHelper.AssertBinaryRoundtrip(new Interval(SampleStart, null));
-            TestHelper.AssertBinaryRoundtrip(new Interval(null, null));
-        }
-
+        
         [Test]
         public void ToStringUsesExtendedIsoFormat()
         {
@@ -178,26 +169,6 @@ namespace NodaTime.Test
         {
             TestHelper.AssertXmlInvalid<Interval>(xml, expectedExceptionType);
         }
-
-        [Test]
-        [TestCase(typeof(OverflowException), Instant.MinDays - 1, 0L, 0, 0L)]
-        [TestCase(typeof(OverflowException), Instant.MaxDays + 1, 0L, 0, 0L)]
-        [TestCase(typeof(ArgumentException), 0, -1L, 0, 0L)]
-        [TestCase(typeof(ArgumentException), 0, NodaConstants.NanosecondsPerDay, 0, 0L)]
-        [TestCase(typeof(OverflowException), 0, 0L, Instant.MinDays - 1, 0L)]
-        [TestCase(typeof(OverflowException), 0, 0L, Instant.MaxDays + 1, 0L)]
-        [TestCase(typeof(ArgumentException), 0, 0L, 0, -1L)]
-        [TestCase(typeof(ArgumentException), 0, 0L, 0, NodaConstants.NanosecondsPerDay)]
-        [TestCase(typeof(ArgumentException), 0, 0L, -1, 0L)] // End before start
-        public void InvalidBinaryData(Type expectedExceptionType, int startDays, long startNanoOfDay, int endDays, long endNanoOfDay) =>
-            TestHelper.AssertBinaryDeserializationFailure<Interval>(expectedExceptionType, info =>
-            {
-                info.AddValue(BinaryFormattingConstants.PresenceName, 3);
-                info.AddValue(BinaryFormattingConstants.StartDaysSerializationName, startDays);
-                info.AddValue(BinaryFormattingConstants.StartNanosecondOfDaySerializationName, startNanoOfDay);
-                info.AddValue(BinaryFormattingConstants.EndDaysSerializationName, endDays);
-                info.AddValue(BinaryFormattingConstants.EndNanosecondOfDaySerializationName, endNanoOfDay);
-            });
 
         [Test]
         [TestCase("1990-01-01T00:00:00Z", false, Description = "Before interval")]

@@ -2,10 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using System;
 using System.Globalization;
-using NodaTime.Annotations;
-using System.Runtime.Serialization;
 
 namespace NodaTime.Text
 {
@@ -15,7 +14,6 @@ namespace NodaTime.Text
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
-    [Serializable]
     [Mutable] // Exception is mutable
     public sealed class InvalidPatternException : FormatException
     {
@@ -43,17 +41,6 @@ namespace NodaTime.Text
         /// <param name="parameters">Format string parameters</param>
         internal InvalidPatternException(string formatString, params object[] parameters)
             : this(string.Format(CultureInfo.CurrentCulture, formatString, parameters))
-        {
-        }
-
-
-        /// <summary>
-        /// Creates a new InvalidPatternException from the given serialization information.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-        /// <param name="context">The <see cref="StreamingContext"/> that contains contextual information about the source or destination.</param>
-        private InvalidPatternException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

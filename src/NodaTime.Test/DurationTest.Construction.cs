@@ -244,18 +244,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        [TestCase(typeof(ArgumentException), Duration.MinDays - 1, 0)]
-        [TestCase(typeof(ArgumentException), Duration.MaxDays + 1, 0)]
-        [TestCase(typeof(ArgumentException), 0, -1)]
-        [TestCase(typeof(ArgumentException), 0, NodaConstants.NanosecondsPerDay)]
-        public void InvalidBinaryData(Type expectedExceptionType, int days, long nanoOfDay) =>
-            TestHelper.AssertBinaryDeserializationFailure<Duration>(expectedExceptionType, info =>
-            {
-                info.AddValue(BinaryFormattingConstants.DurationDefaultDaysSerializationName, days);
-                info.AddValue(BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName, nanoOfDay);
-            });
-
-        [Test]
         public void FactoryMethods_OutOfRange()
         {
             // Each set of cases starts with the minimum and ends with the maximum, so we can test just beyond the limits easily.

@@ -11,32 +11,6 @@ namespace NodaTime.Test
     public partial class LocalDateTest
     {
         [Test]
-        public void BinarySerialization()
-        {
-            TestHelper.AssertBinaryRoundtrip(new LocalDate(2013, 4, 12, CalendarSystem.Julian));
-            TestHelper.AssertBinaryRoundtrip(new LocalDate(2013, 4, 12));
-            TestHelper.AssertBinaryRoundtrip(new LocalDate(284, 13, 1, CalendarSystem.Coptic));
-        }
-
-        [Test]
-        [TestCase(typeof(ArgumentException), 0, 1, 1, -1)]
-        [TestCase(typeof(ArgumentException), -9999, 1, 1, 0)]
-        [TestCase(typeof(ArgumentException), 10000, 1, 1, 0)]
-        [TestCase(typeof(ArgumentException), 1, 13, 1, 0)]
-        [TestCase(typeof(ArgumentException), 1, 0, 1, 0)]
-        [TestCase(typeof(ArgumentException), 1, 1, 0, 0)]
-        [TestCase(typeof(ArgumentException), 1, 1, 32, 0)]
-        [TestCase(typeof(ArgumentException), 284, 13, 6, (int) CalendarOrdinal.Coptic)]
-        public void InvalidBinaryData(Type expectedExceptionType, int year, int month, int day, int calendarOrdinal) =>
-            TestHelper.AssertBinaryDeserializationFailure<LocalDate>(expectedExceptionType, info =>
-            {
-                info.AddValue(BinaryFormattingConstants.YearSerializationName, year);
-                info.AddValue(BinaryFormattingConstants.MonthSerializationName, month);
-                info.AddValue(BinaryFormattingConstants.DaySerializationName, day);
-                info.AddValue(BinaryFormattingConstants.CalendarSerializationName, calendarOrdinal);
-            });
-
-        [Test]
         [TestCase(1620)] // Leap year in non-optimized period
         [TestCase(1621)] // Non-leap year in non-optimized period
         [TestCase(1980)] // Leap year in optimized period

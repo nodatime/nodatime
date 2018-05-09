@@ -2,18 +2,17 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
+using System.Globalization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -32,8 +31,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
-    public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IComparable, IFormattable, IXmlSerializable, ISerializable
+    public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IComparable, IFormattable, IXmlSerializable
     {
         [ReadWriteForEfficiency] private YearMonthDayCalendar yearMonthDayCalendar;
 
@@ -847,63 +845,6 @@ namespace NodaTime
                 writer.WriteAttributeString("calendar", Calendar.Id);
             }
             writer.WriteString(LocalDatePattern.Iso.Format(this));
-        }
-        #endregion
-
-        #region Binary serialization
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private LocalDate([NotNull] SerializationInfo info, StreamingContext context)
-            : this(info)
-        {
-        }
-
-        /// <summary>
-        /// Constructor only present for serialization; internal to allow construction from LocalDateTime
-        /// as part of deserialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        internal LocalDate([NotNull] SerializationInfo info)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            int year = info.GetInt32(BinaryFormattingConstants.YearSerializationName);
-            int month = info.GetInt32(BinaryFormattingConstants.MonthSerializationName);
-            int day = info.GetInt32(BinaryFormattingConstants.DaySerializationName);
-            CalendarOrdinal ordinal = (CalendarOrdinal) info.GetInt32(BinaryFormattingConstants.CalendarSerializationName);
-            try
-            {
-                Preconditions.CheckArgument(ordinal >= 0 && ordinal < CalendarOrdinal.Size, nameof(ordinal), "Calendar ordinal out of range");
-                var calendar = CalendarSystem.ForOrdinal(ordinal);
-                calendar.ValidateYearMonthDay(year, month, day);
-            }
-            catch (Exception e)
-            {
-                throw new ArgumentException("Invalid serialized data, details in InnerException", nameof(info), e);
-            }
-            yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, ordinal);
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            Serialize(info);
-        }
-
-        internal void Serialize([NotNull] SerializationInfo info)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            info.AddValue(BinaryFormattingConstants.YearSerializationName, Year);
-            info.AddValue(BinaryFormattingConstants.MonthSerializationName, Month);
-            info.AddValue(BinaryFormattingConstants.DaySerializationName, Day);
-            info.AddValue(BinaryFormattingConstants.CalendarSerializationName, yearMonthDayCalendar.CalendarOrdinal);
         }
         #endregion
     }

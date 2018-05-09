@@ -5,8 +5,6 @@
 using NodaTime.Text;
 using NUnit.Framework;
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace NodaTime.Test
 {
@@ -29,23 +27,6 @@ namespace NodaTime.Test
         {
             var exception = new UnparsableValueException();
             Assert.AreEqual(new FormatException().Message, exception.Message);
-        }
-
-        // Only two of our constructors actually have a private constructor for serialization.
-        // Others have the serializable attribute without the constructor - which may or may not be bad,
-        // but I'm not going to investigate it...
-        [Test]
-        [TestCase(typeof(InvalidPatternException))]
-        [TestCase(typeof(UnparsableValueException))]
-        public void BinaryFormat(Type type)
-        {
-            var value = type.GetConstructor(new[] { typeof(string) }).Invoke(new object[] { "Message" });
-            var stream = new MemoryStream();
-            new BinaryFormatter().Serialize(stream, value);
-
-            stream.Position = 0;
-            var rehydrated = new BinaryFormatter().Deserialize(stream);
-            Assert.IsInstanceOf(type, rehydrated);
         }
     }
 }

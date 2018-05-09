@@ -2,12 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
@@ -15,6 +9,11 @@ using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using System;
+using System.Globalization;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -38,8 +37,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
-    public struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable, ISerializable
+    public struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
     {
         [ReadWriteForEfficiency] private LocalDate date;
         [ReadWriteForEfficiency] private LocalTime time;
@@ -963,46 +961,6 @@ namespace NodaTime
                 writer.WriteAttributeString("calendar", Calendar.Id);
             }
             writer.WriteString(LocalDateTimePattern.ExtendedIso.Format(this));
-        }
-        #endregion
-
-        #region Binary serialization
-
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private LocalDateTime([NotNull] SerializationInfo info, StreamingContext context)
-            : this(info)
-        {
-        }
-
-        /// <summary>
-        /// Internal constructor used for deserialization, for cases where this is part of
-        /// a larger value.
-        /// </summary>
-        internal LocalDateTime([NotNull] SerializationInfo info)
-            : this(new LocalDate(info), new LocalTime(info))
-        {
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            Serialize(info);
-        }
-
-        internal void Serialize([NotNull] SerializationInfo info)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            date.Serialize(info);
-            time.Serialize(info);
         }
         #endregion
     }

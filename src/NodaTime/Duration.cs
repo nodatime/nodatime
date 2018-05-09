@@ -2,19 +2,17 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
-
-using System;
-using System.Globalization;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
+using System;
+using System.Globalization;
 using System.Numerics;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime
 {
@@ -59,8 +57,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [Serializable]
-    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable, IFormattable, ISerializable
+    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable, IFormattable
     {
         // This is one more bit than we really need, but it allows Instant.BeforeMinValue and Instant.AfterMaxValue
         // to be easily 
@@ -1184,78 +1181,5 @@ namespace NodaTime
         /// <param name="y">The second duration to compare.</param>
         /// <returns>The smaller duration of <paramref name="x"/> or <paramref name="y"/>.</returns>
         public static Duration Min(Duration x, Duration y) => x < y ? x : y;
-
-        #region Binary serialization
-        /// <summary>
-        /// Private constructor only present for serialization.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to fetch data from.</param>
-        /// <param name="context">The source for this deserialization.</param>
-        private Duration([NotNull] SerializationInfo info, StreamingContext context)
-            : this(info)
-        {
-        }
-
-        /// <summary>
-        /// Internal constructor used for deserialization, for cases where this is part of
-        /// a larger value, but the duration part has been serialized with the default keys.
-        /// </summary>
-        internal Duration([NotNull] SerializationInfo info)
-            : this(info,
-                  BinaryFormattingConstants.DurationDefaultDaysSerializationName,
-                  BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName)
-        {
-        }
-
-        /// <summary>
-        /// Internal constructor used for deserialization, for cases where the
-        /// names in the serialization info aren't the default ones.
-        /// </summary>
-        internal Duration([NotNull] SerializationInfo info,
-            [Trusted] [NotNull] string daysSerializationName, [Trusted] [NotNull] string nanosecondOfDaySerializationName)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            Preconditions.DebugCheckNotNull(daysSerializationName, nameof(daysSerializationName));
-            Preconditions.DebugCheckNotNull(nanosecondOfDaySerializationName, nameof(nanosecondOfDaySerializationName));
-            days = info.GetInt32(daysSerializationName);
-            nanoOfDay = info.GetInt64(nanosecondOfDaySerializationName);
-            if (days < MinDays || days > MaxDays)
-            {
-                throw new ArgumentException("Serialized value contains a 'days' value which is out of range");
-            }
-            if (nanoOfDay < 0 || nanoOfDay >= NanosecondsPerDay)
-            {
-                throw new ArgumentException("Serialized value contains a 'nanosecond-of-day' value which is out of range");
-            }
-        }
-
-        /// <summary>
-        /// Implementation of <see cref="ISerializable.GetObjectData"/>.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
-        /// <param name="context">The destination for this serialization.</param>
-        [System.Security.SecurityCritical]
-        void ISerializable.GetObjectData([NotNull] SerializationInfo info, StreamingContext context)
-        {
-            Serialize(info);
-        }
-        #endregion
-
-        internal void Serialize([NotNull] SerializationInfo info)
-        {
-            Serialize(info,
-                BinaryFormattingConstants.DurationDefaultDaysSerializationName, 
-                BinaryFormattingConstants.DurationDefaultNanosecondOfDaySerializationName);
-        }
-
-        internal void Serialize([NotNull] SerializationInfo info,
-            [Trusted] [NotNull] string daysSerializationName, [Trusted] [NotNull] string nanosecondOfDaySerializationName)
-        {
-            Preconditions.CheckNotNull(info, nameof(info));
-            Preconditions.DebugCheckNotNull(daysSerializationName, nameof(daysSerializationName));
-            Preconditions.DebugCheckNotNull(nanosecondOfDaySerializationName, nameof(nanosecondOfDaySerializationName));
-            info.AddValue(daysSerializationName, days);
-            info.AddValue(nanosecondOfDaySerializationName, nanoOfDay);
-        }
     }
 }
