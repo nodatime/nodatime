@@ -151,16 +151,13 @@ namespace NodaTime.TimeZones
             Preconditions.CheckNotNull(ambiguousTimeResolver, nameof(ambiguousTimeResolver));
             Preconditions.CheckNotNull(skippedTimeResolver, nameof(skippedTimeResolver));
             return mapping =>
-            {
-                Preconditions.CheckNotNull(mapping, nameof(mapping));
-                switch (mapping.Count)
+                Preconditions.CheckNotNull(mapping, nameof(mapping)).Count switch
                 {
-                    case 0: return skippedTimeResolver(mapping.LocalDateTime, mapping.Zone, mapping.EarlyInterval, mapping.LateInterval);
-                    case 1: return mapping.First();
-                    case 2: return ambiguousTimeResolver(mapping.First(), mapping.Last());
-                    default: throw new InvalidOperationException("Mapping has count outside range 0-2; should not happen.");
-                }
-            };
+                    0 => skippedTimeResolver(mapping.LocalDateTime, mapping.Zone, mapping.EarlyInterval, mapping.LateInterval),
+                    1 => mapping.First(),
+                    2 => ambiguousTimeResolver(mapping.First(), mapping.Last()),
+                    _ => throw new InvalidOperationException("Mapping has count outside range 0-2; should not happen.")
+                };
         }
     }
 }

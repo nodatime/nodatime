@@ -34,14 +34,12 @@ namespace NodaTime.Text
             }
             if (patternText.Length == 1)
             {
-                switch (patternText[0])
+                patternText = patternText[0] switch
                 {
-                    case 'g': // Simplest way of handling the general pattern...
-                        patternText = GeneralPatternText;
-                        break;
-                    default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(Instant));
-                }
+                    // Simplest way of handling the general pattern...
+                    'g' => GeneralPatternText,
+                    _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(Instant))
+                };
             }
 
             IPattern<LocalDateTime> localResult = formatInfo.LocalDateTimePatternParser.ParsePattern(patternText);

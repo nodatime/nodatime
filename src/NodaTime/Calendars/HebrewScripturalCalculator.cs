@@ -132,69 +132,58 @@ namespace NodaTime.Calendars
                 bool isLeap = IsLeapYear(year);
                 int firstAdarLength = isLeap ? 30 : 29;
                 int secondAdarLength = isLeap ? 29 : 0;
-                switch (month)
+                return month switch
                 {
                     // Note: this could be made slightly faster (at least in terms of the apparent IL) by
                     // putting all the additions of compile-time constants in one place. Indeed, we could
                     // go further by only using isLeap at most once per case. However, this code is clearer
                     // and there's no evidence that this is a bottleneck.
-                    case 1: // Nisan
-                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength;
-                    case 2: // Iyar
-                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + 30;
-                    case 3: // Sivan
-                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29);
-                    case 4: // Tamuz
-                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29 + 30);
-                    case 5: // Av
-                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29 + 30 + 29);
-                    case 6: // Elul
-                        return 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29 + 30 + 29 + 30);
-                    case 7: // Tishri
-                        return 0;
-                    case 8: // Heshvan
-                        return 30;
-                    case 9: // Kislev
-                        return 30 + heshvanLength;
-                    case 10: // Tevet
-                        return 30 + heshvanLength + kislevLength;
-                    case 11: // Shevat
-                        return 30 + heshvanLength + kislevLength + 29;
-                    case 12: // Adar / Adar I
-                        return 30 + heshvanLength + kislevLength + 29 + 30;
-                    case 13: // Adar II
-                        return 30 + heshvanLength + kislevLength + 29 + 30 + firstAdarLength;
-                    default:
-                        // Just shorthand for using the right exception across netstandard and desktop
-                        Preconditions.CheckArgumentRange(nameof(month), month, 1, 13);
-                        throw new InvalidOperationException("CheckArgumentRange should have thrown...");
-                }
+                    // Nisan
+                    1 => 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength,
+                    // Iyar
+                    2 => 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + 30,
+                    // Sivan
+                    3 => 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29),
+                    // Tamuz
+                    4 => 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29 + 30),
+                    // Av
+                    5 => 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29 + 30 + 29),
+                    // Elul
+                    6 => 30 + heshvanLength + kislevLength + (29 + 30) + firstAdarLength + secondAdarLength + (30 + 29 + 30 + 29 + 30),
+                    // Tishri
+                    7 => 0,
+                    // Heshvan
+                    8 => 30,
+                    // Kislev
+                    9 => 30 + heshvanLength,
+                    // Tevet
+                    10 => 30 + heshvanLength + kislevLength,
+                    // Shevat
+                    11 => 30 + heshvanLength + kislevLength + 29,
+                    // Adar / Adar I
+                    12 => 30 + heshvanLength + kislevLength + 29 + 30,
+                    // Adar II
+                    13 => 30 + heshvanLength + kislevLength + 29 + 30 + firstAdarLength,
+                    // TODO: It would be nice for this to be simple via Preconditions
+                    _ => throw new ArgumentOutOfRangeException(nameof(month), month, $"Value should be in range [1-13]")
+                };
             }
         }
 
-        internal static int DaysInMonth(int year, int month)
+        internal static int DaysInMonth(int year, int month) => month switch
         {
-            switch (month)
-            {
-                case 2:
-                case 4:
-                case 6:
-                case 10:
-                case 13:
-                    return 29;
-                case 8:
-                    // Is Heshvan long in this year?
-                    return IsHeshvanLong(year) ? 30 : 29;
-                case 9:
-                    // Is Kislev short in this year?
-                    return IsKislevShort(year) ?  29 : 30;
-                case 12:
-                    return IsLeapYear(year) ? 30 : 29;
-                // 1, 3, 5, 7, 11, 13
-                default:
-                    return 30;
-            }
-        }
+            // FIXME: How do we express multiple cases in a switch expression?
+            // We want: (2, 4, 6, 10, 13) => 29,
+            2 => 29,
+            4 => 29,
+            6 => 29,
+            10 => 29,
+            13 => 29,
+            8 => IsHeshvanLong(year) ? 30 : 29,
+            9 => IsKislevShort(year) ? 29 : 30,
+            12 => IsLeapYear(year) ? 30 : 29,
+            _ => 30 // 1, 3, 5, 7, 11, 13
+        };
 
         private static bool IsHeshvanLong(int year)
         {
