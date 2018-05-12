@@ -277,18 +277,12 @@ namespace NodaTime.TimeZones
         /// <param name="standardOffset">The standard offset.</param>
         /// <param name="savings">The daylight savings adjustment.</param>
         /// <returns>The base time offset as a <see cref="Duration"/>.</returns>
-        internal Offset GetRuleOffset(Offset standardOffset, Offset savings)
-        {
-            switch (Mode)
+        internal Offset GetRuleOffset(Offset standardOffset, Offset savings) => Mode switch
             {
-                case TransitionMode.Wall:
-                    return standardOffset + savings;
-                case TransitionMode.Standard:
-                    return standardOffset;
-                default:
-                    return Offset.Zero;
-            }
-        }
+                TransitionMode.Wall => standardOffset + savings,
+                TransitionMode.Standard => standardOffset,
+                _ => Offset.Zero
+            };
 
         #region Object overrides
 

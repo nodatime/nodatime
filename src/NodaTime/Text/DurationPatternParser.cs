@@ -52,13 +52,11 @@ namespace NodaTime.Text
             // The sole standard pattern...
             if (patternText.Length == 1)
             {
-                switch (patternText[0])
+                return patternText[0] switch
                 {
-                    case 'o':
-                        return DurationPattern.Patterns.RoundtripPatternImpl;
-                    default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(Duration));
-                }
+                    'o' => DurationPattern.Patterns.RoundtripPatternImpl,
+                    _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(Duration))
+                };
             }
 
             var patternBuilder = new SteppedPatternBuilder<Duration, DurationParseBucket>(formatInfo,

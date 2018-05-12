@@ -55,20 +55,13 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                switch (patternText[0])
+                patternText = patternText[0] switch
                 {
-                    case 't':
-                        patternText = formatInfo.DateTimeFormat.ShortTimePattern;
-                        break;
-                    case 'T':
-                        patternText = formatInfo.DateTimeFormat.LongTimePattern;
-                        break;
-                    case 'r':
-                        patternText = "HH:mm:ss.FFFFFFFFF";
-                        break;
-                    default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalTime));
-                }
+                    't' => formatInfo.DateTimeFormat.ShortTimePattern,
+                    'T' => formatInfo.DateTimeFormat.LongTimePattern,
+                    'r' => "HH:mm:ss.FFFFFFFFF",
+                    _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalTime))
+                };
             }
 
             var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo,

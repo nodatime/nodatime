@@ -204,17 +204,13 @@ namespace NodaTime.TimeZones.IO
                 int value = ReadCount();
                 if (value < DateTimeZoneWriter.ZoneIntervalConstants.MinValueForHoursSincePrevious)
                 {
-                    switch (value)
+                    return value switch
                     {
-                        case DateTimeZoneWriter.ZoneIntervalConstants.MarkerMinValue:
-                            return Instant.BeforeMinValue;
-                        case DateTimeZoneWriter.ZoneIntervalConstants.MarkerMaxValue:
-                            return Instant.AfterMaxValue;
-                        case DateTimeZoneWriter.ZoneIntervalConstants.MarkerRaw:
-                            return Instant.FromUnixTimeTicks(ReadInt64());
-                        default: 
-                            throw new InvalidNodaDataException("Unrecognised marker value: " + value);
-                    }
+                        DateTimeZoneWriter.ZoneIntervalConstants.MarkerMinValue => Instant.BeforeMinValue,
+                        DateTimeZoneWriter.ZoneIntervalConstants.MarkerMaxValue => Instant.AfterMaxValue,
+                        DateTimeZoneWriter.ZoneIntervalConstants.MarkerRaw => Instant.FromUnixTimeTicks(ReadInt64()),
+                        _ => throw new InvalidNodaDataException("Unrecognised marker value: " + value)
+                    };
                 }
                 if (value < DateTimeZoneWriter.ZoneIntervalConstants.MinValueForMinutesSinceEpoch)
                 {

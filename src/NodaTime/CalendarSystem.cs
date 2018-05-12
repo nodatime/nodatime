@@ -140,53 +140,30 @@ namespace NodaTime
         }
 
         [VisibleForTesting]
-        internal static CalendarSystem ForOrdinalUncached([Trusted] CalendarOrdinal ordinal)
-        {
-            switch (ordinal)
+        internal static CalendarSystem ForOrdinalUncached([Trusted] CalendarOrdinal ordinal) => ordinal switch
             {
                 // This entry is really just for completeness. We'd never get called with this.
-                case CalendarOrdinal.Iso:
-                    return Iso;
-                case CalendarOrdinal.Gregorian:
-                    return Gregorian;
-                case CalendarOrdinal.Julian:
-                    return Julian;
-                case CalendarOrdinal.Coptic:
-                    return Coptic;
-                case CalendarOrdinal.Badi:
-                    return Badi;
-                case CalendarOrdinal.HebrewCivil:
-                    return HebrewCivil;
-                case CalendarOrdinal.HebrewScriptural:
-                    return HebrewScriptural;
-                case CalendarOrdinal.PersianSimple:
-                    return PersianSimple;
-                case CalendarOrdinal.PersianArithmetic:
-                    return PersianArithmetic;
-                case CalendarOrdinal.PersianAstronomical:
-                    return PersianAstronomical;
-                case CalendarOrdinal.IslamicAstronomicalBase15:
-                    return GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
-                case CalendarOrdinal.IslamicAstronomicalBase16:
-                    return GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
-                case CalendarOrdinal.IslamicAstronomicalIndian:
-                    return GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical);
-                case CalendarOrdinal.IslamicAstronomicalHabashAlHasib:
-                    return GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical);
-                case CalendarOrdinal.IslamicCivilBase15:
-                    return GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
-                case CalendarOrdinal.IslamicCivilBase16:
-                    return GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil);
-                case CalendarOrdinal.IslamicCivilIndian:
-                    return GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil);
-                case CalendarOrdinal.IslamicCivilHabashAlHasib:
-                    return GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil);
-                case CalendarOrdinal.UmAlQura:
-                    return UmAlQura;
-                default:
-                    throw new InvalidOperationException($"Bug in Noda Time: calendar ordinal {ordinal} missing from switch in CalendarSystem.ForOrdinal.");
-            }
-        }
+                CalendarOrdinal.Iso => Iso,
+                CalendarOrdinal.Gregorian => Gregorian,
+                CalendarOrdinal.Julian => Julian,
+                CalendarOrdinal.Coptic => Coptic,
+                CalendarOrdinal.Badi => Badi,
+                CalendarOrdinal.HebrewCivil => HebrewCivil,
+                CalendarOrdinal.HebrewScriptural => HebrewScriptural,
+                CalendarOrdinal.PersianSimple => PersianSimple,
+                CalendarOrdinal.PersianArithmetic => PersianArithmetic,
+                CalendarOrdinal.PersianAstronomical => PersianAstronomical,
+                CalendarOrdinal.IslamicAstronomicalBase15 => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical),
+                CalendarOrdinal.IslamicAstronomicalBase16 => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical),
+                CalendarOrdinal.IslamicAstronomicalIndian => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical),
+                CalendarOrdinal.IslamicAstronomicalHabashAlHasib => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical),
+                CalendarOrdinal.IslamicCivilBase15 => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil),
+                CalendarOrdinal.IslamicCivilBase16 => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil),
+                CalendarOrdinal.IslamicCivilIndian => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil),
+                CalendarOrdinal.IslamicCivilHabashAlHasib => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil),
+                CalendarOrdinal.UmAlQura => UmAlQura,
+                _ => throw new InvalidOperationException($"Bug in Noda Time: calendar ordinal {ordinal} missing from switch in CalendarSystem.ForOrdinal.")
+            };
 
         /// <summary>
         /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.

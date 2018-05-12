@@ -101,22 +101,14 @@ namespace NodaTime.Calendars
         /// <see cref="Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)"/>
         /// method.</returns>
         [NotNull] public static IWeekYearRule FromCalendarWeekRule(CalendarWeekRule calendarWeekRule, DayOfWeek firstDayOfWeek)
-        {
-            int minDaysInFirstWeek;
-            switch (calendarWeekRule)
+        {            
+            int minDaysInFirstWeek = calendarWeekRule switch
             {
-                case FirstDay:
-                    minDaysInFirstWeek = 1;
-                    break;
-                case FirstFourDayWeek:
-                    minDaysInFirstWeek = 4;
-                    break;
-                case FirstFullWeek:
-                    minDaysInFirstWeek = 7;
-                    break;
-                default:
-                    throw new ArgumentException($"Unsupported CalendarWeekRule: {calendarWeekRule}", nameof(calendarWeekRule));
-            }
+                FirstDay => 1,
+                FirstFourDayWeek => 4,
+                FirstFullWeek => 7,
+                _ => throw new ArgumentException($"Unsupported CalendarWeekRule: {calendarWeekRule}", nameof(calendarWeekRule))
+            };
             return new SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek.ToIsoDayOfWeek(), true);
         }
     }

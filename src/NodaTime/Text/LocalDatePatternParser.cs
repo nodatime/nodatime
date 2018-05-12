@@ -59,17 +59,12 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                switch (patternText[0])
+                patternText = patternText[0] switch
                 {
-                    case 'd':
-                        patternText = formatInfo.DateTimeFormat.ShortDatePattern;
-                        break;
-                    case 'D':
-                        patternText = formatInfo.DateTimeFormat.LongDatePattern;
-                        break;
-                    default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalDate));
-                }                
+                    'd' => formatInfo.DateTimeFormat.ShortDatePattern,
+                    'D' => formatInfo.DateTimeFormat.LongDatePattern,
+                    _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalDate))
+                };
             }
 
             var patternBuilder = new SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo,

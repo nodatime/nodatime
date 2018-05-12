@@ -114,18 +114,15 @@ namespace NodaTime.TimeZones
         /// <exception cref="SkippedTimeException">The local date/time was skipped in the time zone.</exception>
         /// <exception cref="AmbiguousTimeException">The local date/time was ambiguous in the time zone.</exception>
         /// <returns>The unambiguous result of mapping the local date/time in the time zone.</returns>
-        public ZonedDateTime Single()
-        {
-            switch (Count)
+        public ZonedDateTime Single() => Count switch
             {
-                case 0: throw new SkippedTimeException(LocalDateTime, Zone);
-                case 1: return BuildZonedDateTime(EarlyInterval);
-                case 2: throw new AmbiguousTimeException(
+                0 => throw new SkippedTimeException(LocalDateTime, Zone),
+                1 => BuildZonedDateTime(EarlyInterval),
+                2 => throw new AmbiguousTimeException(
                             BuildZonedDateTime(EarlyInterval),
-                            BuildZonedDateTime(LateInterval));
-                default: throw new InvalidOperationException("Can't happen");
-            }
-        }
+                            BuildZonedDateTime(LateInterval)),
+                _ => throw new InvalidOperationException("Can't happen")
+            };
 
         /// <summary>
         /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="T:NodaTime.LocalDateTime" />
@@ -135,16 +132,14 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <exception cref="SkippedTimeException">The local date/time was skipped in the time zone.</exception>
         /// <returns>The unambiguous result of mapping a local date/time in a time zone.</returns>
-        public ZonedDateTime First()
-        {
-            switch (Count)
+        public ZonedDateTime First() => Count switch
             {
-                case 0: throw new SkippedTimeException(LocalDateTime, Zone);
-                case 1: 
-                case 2: return BuildZonedDateTime(EarlyInterval);
-                default: throw new InvalidOperationException("Can't happen");
-            }
-        }
+                0 => throw new SkippedTimeException(LocalDateTime, Zone),
+                // FIXME: Remove the duplication here (if there's syntax)
+                1 => BuildZonedDateTime(EarlyInterval),
+                2 => BuildZonedDateTime(EarlyInterval),
+                _ => throw new InvalidOperationException("Can't happen")
+            };
 
         /// <summary>
         /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="T:NodaTime.LocalDateTime" />
@@ -154,16 +149,14 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <exception cref="SkippedTimeException">The local date/time was skipped in the time zone.</exception>
         /// <returns>The unambiguous result of mapping a local date/time in a time zone.</returns>
-        public ZonedDateTime Last()
-        {
-            switch (Count)
+        public ZonedDateTime Last() => Count switch
             {
-                case 0: throw new SkippedTimeException(LocalDateTime, Zone);
-                case 1: return BuildZonedDateTime(EarlyInterval);
-                case 2: return BuildZonedDateTime(LateInterval);
-                default: throw new InvalidOperationException("Can't happen");
-            }
-        }
+                0 => throw new SkippedTimeException(LocalDateTime, Zone),
+                // FIXME: Remove the duplication here (if there's syntax)
+                1 => BuildZonedDateTime(LateInterval),
+                2 => BuildZonedDateTime(LateInterval),
+                _ => throw new InvalidOperationException("Can't happen")
+            };
 
         private ZonedDateTime BuildZonedDateTime(ZoneInterval interval) =>
             new ZonedDateTime(LocalDateTime.WithOffset(interval.WallOffset), Zone);

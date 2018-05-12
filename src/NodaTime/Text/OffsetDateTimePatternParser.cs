@@ -66,17 +66,13 @@ namespace NodaTime.Text
             // Handle standard patterns
             if (patternText.Length == 1)
             {
-                switch (patternText[0])
+                return patternText[0] switch
                 {
-                    case 'G':
-                        return OffsetDateTimePattern.Patterns.GeneralIsoPatternImpl;
-                    case 'o':
-                        return OffsetDateTimePattern.Patterns.ExtendedIsoPatternImpl;
-                    case 'r':
-                        return OffsetDateTimePattern.Patterns.FullRoundtripPatternImpl;
-                    default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(OffsetDateTime));
-                }
+                    'G' => OffsetDateTimePattern.Patterns.GeneralIsoPatternImpl,
+                    'o' => OffsetDateTimePattern.Patterns.ExtendedIsoPatternImpl,
+                    'r' => OffsetDateTimePattern.Patterns.FullRoundtripPatternImpl,
+                    _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(OffsetDateTime))
+                };
             }
 
             var patternBuilder = new SteppedPatternBuilder<OffsetDateTime, OffsetDateTimeParseBucket>(formatInfo, () => new OffsetDateTimeParseBucket(templateValue));

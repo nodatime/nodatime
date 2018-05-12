@@ -74,19 +74,16 @@ namespace NodaTime.Text
             // Handle standard patterns
             if (patternText.Length == 1)
             {
-                switch (patternText[0])
+                return patternText[0] switch
                 {
-                    case 'G':
-                        return ZonedDateTimePattern.Patterns.GeneralFormatOnlyPatternImpl
+                    'G' => ZonedDateTimePattern.Patterns.GeneralFormatOnlyPatternImpl
                             .WithZoneProvider(zoneProvider)
-                            .WithResolver(resolver);
-                    case 'F':
-                        return ZonedDateTimePattern.Patterns.ExtendedFormatOnlyPatternImpl
+                            .WithResolver(resolver),
+                    'F' => ZonedDateTimePattern.Patterns.ExtendedFormatOnlyPatternImpl
                             .WithZoneProvider(zoneProvider)
-                            .WithResolver(resolver);
-                    default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(ZonedDateTime));
-                }
+                            .WithResolver(resolver),
+                    _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(ZonedDateTime))
+                };
             }
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,

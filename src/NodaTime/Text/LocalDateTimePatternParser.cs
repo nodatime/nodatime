@@ -70,43 +70,36 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                switch (patternText[0])
+                return patternText[0] switch
                 {
                     // Invariant standard patterns return cached implementations.
-                    case 'o':
-                    case 'O':
-                        return LocalDateTimePattern.Patterns.BclRoundtripPatternImpl;
-                    case 'r':
-                        return LocalDateTimePattern.Patterns.FullRoundtripPatternImpl;
-                    case 'R':
-                        return LocalDateTimePattern.Patterns.FullRoundtripWithoutCalendarImpl;
-                    case 's':
-                        return LocalDateTimePattern.Patterns.GeneralIsoPatternImpl;
+                    'o' => LocalDateTimePattern.Patterns.BclRoundtripPatternImpl,
+                    'O' => LocalDateTimePattern.Patterns.BclRoundtripPatternImpl,
+                    'r' => LocalDateTimePattern.Patterns.FullRoundtripPatternImpl,
+                    'R' => LocalDateTimePattern.Patterns.FullRoundtripWithoutCalendarImpl,
+                    's' => LocalDateTimePattern.Patterns.GeneralIsoPatternImpl,
                     // Other standard patterns expand the pattern text to the appropriate custom pattern.
-                    case 'f':
-                        patternText = formatInfo.DateTimeFormat.LongDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern;
-                        break;
-                    case 'F':
-                        patternText = formatInfo.DateTimeFormat.FullDateTimePattern;
-                        break;
-                    case 'g':
-                        patternText = formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern;
-                        break;
-                    case 'G':
-                        patternText = formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.LongTimePattern;
-                        break;
+                    // Note: we don't just recurse, as otherwise a FullDateTimePattern of 'F' would cause a stack overflow.
+                    'f' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.LongDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern),
+                    'F' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.FullDateTimePattern),
+                    'g' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern),
+                    'G' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.LongTimePattern),
                     // Unknown standard patterns fail.
-                    default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalDateTime));
-                }
+                    _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalDateTime))
+                };
             }
+            return ParseNoStandardExpansion(patternText);
 
-            var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo,
-                () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
-            patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-            patternBuilder.ValidateUsedFields();
-            return patternBuilder.Build(templateValueDate.At(templateValueTime));
+            IPattern<LocalDateTime> ParseNoStandardExpansion(string patternTextLocal)
+            {
+                var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo,
+                    () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
+                patternBuilder.ParseCustomPattern(patternTextLocal, PatternCharacterHandlers);
+                patternBuilder.ValidateUsedFields();
+                return patternBuilder.Build(templateValueDate.At(templateValueTime));
+            }
         }
+
         
         internal sealed class LocalDateTimeParseBucket : ParseBucket<LocalDateTime>
         {

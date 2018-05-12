@@ -134,23 +134,20 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="unit"/> is not a single unit, or a value is provided for a date unit which is outside the range of <see cref="System.Int32"/>.</exception>
         public long this[PeriodUnits unit]
         {
-            get
-            {
-                switch (unit)
+            get => unit switch
                 {
-                    case PeriodUnits.Years: return Years;
-                    case PeriodUnits.Months: return Months;
-                    case PeriodUnits.Weeks: return Weeks;
-                    case PeriodUnits.Days: return Days;
-                    case PeriodUnits.Hours: return Hours;
-                    case PeriodUnits.Minutes: return Minutes;
-                    case PeriodUnits.Seconds: return Seconds;
-                    case PeriodUnits.Milliseconds: return Milliseconds;
-                    case PeriodUnits.Ticks: return Ticks;
-                    case PeriodUnits.Nanoseconds: return Nanoseconds;
-                    default: throw new ArgumentOutOfRangeException(nameof(unit), "Indexer for PeriodBuilder only takes a single unit");
-                }
-            }
+                    PeriodUnits.Years => Years,
+                    PeriodUnits.Months => Months,
+                    PeriodUnits.Weeks => Weeks,
+                    PeriodUnits.Days => Days,
+                    PeriodUnits.Hours => Hours,
+                    PeriodUnits.Minutes => Minutes,
+                    PeriodUnits.Seconds => Seconds,
+                    PeriodUnits.Milliseconds => Milliseconds,
+                    PeriodUnits.Ticks => Ticks,
+                    PeriodUnits.Nanoseconds => Nanoseconds,
+                    _ => throw new ArgumentOutOfRangeException(nameof(unit), "Indexer for PeriodBuilder only takes a single unit")
+                };
             set
             {
                 if ((unit & PeriodUnits.AllDateUnits) != 0)

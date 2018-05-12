@@ -7,6 +7,7 @@
     <SignAssembly>true</SignAssembly>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

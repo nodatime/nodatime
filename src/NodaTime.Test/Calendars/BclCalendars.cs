@@ -62,23 +62,18 @@ namespace NodaTime.Test.Calendars
         /// get day/month/year values to match without getting the calendar right, the calendar
         /// affects the day of week.
         /// </summary>
-        internal static CalendarSystem CalendarSystemForCalendar(Calendar bcl)
-        {
+        internal static CalendarSystem CalendarSystemForCalendar(Calendar bcl) =>
             // Yes, this is horrible... but the specific calendars aren't available to test
             // against in netstandard
-            switch (bcl.GetType().Name)
+            bcl.GetType().Name switch
             {
-                case "GregorianCalendar": return CalendarSystem.Iso;
-                case "HijriCalendar": return CalendarSystem.IslamicBcl;
-                case "HebrewCalendar": return CalendarSystem.HebrewCivil;
-                case "PersianCalendar": return bcl.IsLeapYear(1) ? CalendarSystem.PersianSimple : CalendarSystem.PersianAstronomical;
-                case "UmAlQuraCalendar": return CalendarSystem.UmAlQura;
-                case "JulianCalendar":
-                    return CalendarSystem.Julian;
-                default:
-                    // No idea - we can't test with this calendar...
-                    return null;
-            }
-        }
+                "GregorianCalendar" => CalendarSystem.Iso,
+                "HijriCalendar" => CalendarSystem.IslamicBcl,
+                "HebrewCalendar" => CalendarSystem.HebrewCivil,
+                "PersianCalendar" => bcl.IsLeapYear(1) ? CalendarSystem.PersianSimple : CalendarSystem.PersianAstronomical,
+                "UmAlQuraCalendar" => CalendarSystem.UmAlQura,
+                "JulianCalendar" => CalendarSystem.Julian,
+                _ => null // No idea - we can't test with this calendar...
+            };
     }
 }
