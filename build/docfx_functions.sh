@@ -2,7 +2,7 @@
 # any scripts that use tools.
 
 declare -r BUILD_ROOT=$(realpath $(dirname ${BASH_SOURCE}))
-declare -r DOCFX_VERSION=2.32.1
+declare -r DOCFX_VERSION=2.35.4
 
 # Path to the version of docfx to use
 declare -r DOCFX="$BUILD_ROOT/packages/docfx-$DOCFX_VERSION/docfx.exe"
