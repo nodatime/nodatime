@@ -1,7 +1,6 @@
 {{!Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE file in the project root for full license information.}}
 
-<h1 id="{{id}}" data-uid="{{uid}}">{{>partials/title}}</h1>
-
+<h1 id="{{id}}" data-uid="{{uid}}" class="text-break">{{>partials/title}}</h1>
 <div class="markdown level0 summary">{{{summary}}}</div>
 <div class="markdown level0 conceptual">{{{conceptual}}}</div>
 {{#since}}
@@ -14,22 +13,28 @@
 <strong>Availability</strong> {{availability}}
 </div>
 {{/availability}}
-{{#inheritance.0}}
+{{#inClass}}
 <div class="inheritance">
   <h5>{{__global.inheritance}}</h5>
-{{/inheritance.0}}
-{{#inheritance}}
+  {{#inheritance}}
+  <div class="level{{index}}">{{{specName.0.value}}}</div>
+  {{/inheritance}}
+  <div class="level{{level}}"><span class="xref">{{name.0.value}}</span></div>
+  {{#derivedClasses}}
     <div class="level{{index}}">{{{specName.0.value}}}</div>
-{{/inheritance}}
-{{#inheritance.0}}
-    <div class="level{{item.level}}"><span class="xref">{{item.name.0.value}}</span></div>
-{{/inheritance.0}}
-{{#derivedClasses}}
-    <div class="level{{index}}">{{{specName.0.value}}}</div>
-{{/derivedClasses}}
-{{#inheritance.0}}
+  {{/derivedClasses}}
 </div>
-{{/inheritance.0}}
+{{/inClass}}
+{{#implements.0}}
+<div classs="implements">
+  <h5>{{__global.implements}}</h5>
+{{/implements.0}}
+{{#implements}}
+  <div>{{{specName.0.value}}}</div>
+{{/implements}}
+{{#implements.0}}
+</div>
+{{/implements.0}}
 {{#inheritedMembers.0}}
 <div class="inheritedMembers">
   <h5>{{__global.inheritedMembers}}</h5>
@@ -47,8 +52,8 @@
 {{#inheritedMembers.0}}
 </div>
 {{/inheritedMembers.0}}
-<h6><strong>{{__global.namespace}}</strong>:{{namespace}}</h6>
-<h6><strong>{{__global.assembly}}</strong>:{{assemblies.0}}.dll</h6>
+<h6><strong>{{__global.namespace}}</strong>: {{{namespace.specName.0.value}}}</h6>
+<h6><strong>{{__global.assembly}}</strong>: {{assemblies.0}}.dll</h6>
 <h5 id="{{id}}_syntax">{{__global.syntax}}</h5>
 <div class="codewrapper">
   <pre><code class="lang-{{_lang}} hljs">{{syntax.content.0.value}}</code></pre>
