@@ -163,6 +163,12 @@
 {{#example}}
 {{{.}}}
 {{/example}}
+{{#snippet}}
+<div>
+<h5 id="{{id}}_snippet">Sample snippet</h5>
+<div class="markdown level1">{{{snippet}}}</div>
+</div>
+{{/snippet}}
 {{#exceptions.0}}
 <h5 class="exceptions">{{__global.exceptions}}</h5>
 <table class="table table-bordered table-striped table-condensed">
