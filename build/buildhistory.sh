@@ -25,7 +25,7 @@
 # - 1.0.x / 1.1.x / 1.2.x / 1.3.x / 1.4.x
 #   - Clone of the nodatime repo
 #   - Docfx metadata in "api" directory
-# - 2.0.x, 2.1.x, 2.2.x
+# - 2.0.x, 2.1.x, 2.2.x, 2.3.x
 #   - Clone of the nodatime repo directory + Json.NET src 
 #     from the nodatime.serialization repo
 #   - Docfx metadata in "api" directory
@@ -57,26 +57,20 @@ do
   rm -rf $version/.git
 done
 
-# 2.0, which has split repositories
-echo "Cloning 2.0.x main repo"
-git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.0.x 2.0.x
-rm -rf 2.0.x/.git
-
-echo "Cloning 2.1.x main repo"
-git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.1.x 2.1.x
-rm -rf 2.1.x/.git
-
-echo "Cloning 2.2.x main repo"
-git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b 2.2.x 2.2.x
-rm -rf 2.2.x/.git
-
 echo "Cloning serialization (for NodaTime.Serialization.JsonNet)"
 # Not: not depth 1 as we want to check out specific tags
 git clone https://github.com/nodatime/nodatime.serialization.git -q serialization
 git -C serialization checkout NodaTime.Serialization.JsonNet-2.0.0
-cp -r serialization/src/NodaTime.Serialization.JsonNet 2.0.x/src
-cp -r serialization/src/NodaTime.Serialization.JsonNet 2.1.x/src
-cp -r serialization/src/NodaTime.Serialization.JsonNet 2.2.x/src
+
+# 2.x, which has split repositories
+for version in 2.0.x 2.1.x 2.2.x 2.3.x
+do 
+  echo "Cloning $version main repo"
+  git clone https://github.com/nodatime/nodatime.git -q --depth 1 -b $version $version
+  rm -rf $version/.git
+  cp -r serialization/src/NodaTime.Serialization.JsonNet $version/src
+done
+
 rm -rf serialization
 
 echo "Preparing for docfx of 2.0.x"
@@ -104,6 +98,15 @@ dotnet restore src/NodaTime.Serialization.JsonNet
 dotnet restore build/SnippetExtractor
 cd ..
 
+echo "Preparing for docfx of 2.3.x"
+cd 2.3.x
+dotnet restore src/NodaTime
+dotnet restore src/NodaTime.Demo
+dotnet restore src/NodaTime.Testing
+dotnet restore src/NodaTime.Serialization.JsonNet
+dotnet restore build/SnippetExtractor
+cd ..
+
 echo "Fetching nuget packages"
 mkdir packages
 # NodaTime
@@ -115,6 +118,7 @@ wget --quiet -Opackages/NodaTime-1.4.x.nupkg https://www.nuget.org/api/v2/packag
 wget --quiet -Opackages/NodaTime-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/2.0.0
 wget --quiet -Opackages/NodaTime-2.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/2.1.0
 wget --quiet -Opackages/NodaTime-2.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/2.2.0
+wget --quiet -Opackages/NodaTime-2.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime/2.3.0
 
 # NodaTime.Testing
 wget --quiet -Opackages/NodaTime.Testing-1.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/1.0.0
@@ -125,19 +129,21 @@ wget --quiet -Opackages/NodaTime.Testing-1.4.x.nupkg https://www.nuget.org/api/v
 wget --quiet -Opackages/NodaTime.Testing-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/2.0.0
 wget --quiet -Opackages/NodaTime.Testing-2.1.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/2.1.0
 wget --quiet -Opackages/NodaTime.Testing-2.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/2.2.0
+wget --quiet -Opackages/NodaTime.Testing-2.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Testing/2.3.0
 
 # NodaTime.Serialization.JsonNet
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.2.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.2.0
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.3.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.3.2
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-1.4.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/1.4.0
 wget --quiet -Opackages/NodaTime.Serialization.JsonNet-2.0.x.nupkg https://www.nuget.org/api/v2/package/NodaTime.Serialization.JsonNet/2.0.0
-# TODO: Fix this grotty hack. It's basically pretending that we have a 2.1 serialization package,
+# TODO: Fix this grotty hack. It's basically pretending that we have a 2.1 (etc) serialization package,
 # for the sake of later tools.
 cp packages/NodaTime.Serialization.JsonNet-2.0.x.nupkg packages/NodaTime.Serialization.JsonNet-2.1.x.nupkg 
 cp packages/NodaTime.Serialization.JsonNet-2.0.x.nupkg packages/NodaTime.Serialization.JsonNet-2.2.x.nupkg 
+cp packages/NodaTime.Serialization.JsonNet-2.0.x.nupkg packages/NodaTime.Serialization.JsonNet-2.3.x.nupkg 
 
 # Docfx metadata
-for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x 2.1.x 2.2.x
+for version in 1.0.x 1.1.x 1.2.x 1.3.x 1.4.x 2.0.x 2.1.x 2.2.x 2.3.x
 do
   echo "Building docfx metadata for $version"
   cp ../docfx/docfx-$version.json $version/docfx.json
@@ -145,7 +151,9 @@ do
 done
 
 # Snippets
-for version in 2.1.x 2.2.x
+# FIXME: snippets in 2.1.x and 2.2.x don't build at the moment
+# for version in 2.1.x 2.2.x 2.3.x
+for version in 2.3.x
 do
   echo "Generating snippets for $version"
   (cd $version;
