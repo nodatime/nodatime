@@ -4,7 +4,7 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
-## 2.3.0 (unreleased)
+## 2.3.0, released 2018-05-19 with tzdb 2018e
 
 New features:
 
