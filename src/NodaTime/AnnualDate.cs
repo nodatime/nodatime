@@ -17,7 +17,7 @@ namespace NodaTime
     /// <remarks>In the future, this struct may be expanded to support other calendar systems,
     /// but this does not generalize terribly cleanly, particularly to the Hebrew calendar system
     /// with its leap month.</remarks>
-    public struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IFormattable
+    public readonly struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IFormattable
     {
         // The underlying value. We only care about the month and day, but for the sake of
         // compatibility with the default value, this ends up being in year 1. This would

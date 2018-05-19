@@ -8,6 +8,7 @@ using NodaTime.Text;
 using NodaTime.Utility;
 using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -19,10 +20,10 @@ namespace NodaTime
     /// a time-of-day at a specific offset from UTC but without any date information.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct OffsetTime : IEquatable<OffsetTime>, IXmlSerializable, IFormattable
+    public readonly struct OffsetTime : IEquatable<OffsetTime>, IXmlSerializable, IFormattable
     {
-        [ReadWriteForEfficiency] private LocalTime time;
-        [ReadWriteForEfficiency] private Offset offset;
+        private readonly LocalTime time;
+        private readonly Offset offset;
 
         /// <summary>
         /// Constructs an instance of the specified time and offset.
@@ -229,7 +230,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             string text = reader.ReadElementContentAsString();
-            this = OffsetTimePattern.ExtendedIso.Parse(text).Value;
+            Unsafe.AsRef(this) = OffsetTimePattern.ExtendedIso.Parse(text).Value;
         }
 
         /// <inheritdoc />

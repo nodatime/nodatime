@@ -16,7 +16,7 @@ namespace NodaTime.Utility
     /// </code>
     /// </example>
     /// </remarks>
-    internal struct HashCodeHelper
+    internal readonly struct HashCodeHelper
     {
         /// <summary>
         /// The multiplier for each value.

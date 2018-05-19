@@ -30,7 +30,7 @@ namespace NodaTime
     /// supported calendars.
     /// </para>
     /// </remarks>
-    internal struct YearMonthDayCalendar : IEquatable<YearMonthDayCalendar>
+    internal readonly struct YearMonthDayCalendar : IEquatable<YearMonthDayCalendar>
     {
         // These constants are internal so they can be used in YearMonthDay
         internal const int CalendarBits = 6; // Up to 64 calendars.

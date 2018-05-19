@@ -12,7 +12,7 @@ namespace NodaTime.TimeZones
     /// </summary>
     /// 
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    internal struct Transition : IEquatable<Transition>
+    internal readonly struct Transition : IEquatable<Transition>
     {
         internal Instant Instant { get; }
 
