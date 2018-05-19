@@ -151,9 +151,7 @@ do
 done
 
 # Snippets
-# FIXME: snippets in 2.1.x and 2.2.x don't build at the moment
-# for version in 2.1.x 2.2.x 2.3.x
-for version in 2.3.x
+for version in 2.1.x 2.2.x 2.3.x
 do
   echo "Generating snippets for $version"
   (cd $version;
