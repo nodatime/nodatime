@@ -24,7 +24,7 @@ namespace NodaTime
     /// supported calendars.
     /// </para>
     /// </remarks>
-    internal struct YearMonthDay : IComparable<YearMonthDay>, IEquatable<YearMonthDay>
+    internal readonly struct YearMonthDay : IComparable<YearMonthDay>, IEquatable<YearMonthDay>
     {
         private const int DayMask = (1 << YearMonthDayCalendar.DayBits) - 1;
         private const int MonthMask = ((1 << YearMonthDayCalendar.MonthBits) - 1) << YearMonthDayCalendar.DayBits;

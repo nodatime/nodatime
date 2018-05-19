@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -26,7 +27,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct Interval : IEquatable<Interval>, IXmlSerializable
+    public readonly struct Interval : IEquatable<Interval>, IXmlSerializable
     {
         /// <summary>The start of the interval.</summary>
         private readonly Instant start;
@@ -235,7 +236,7 @@ namespace NodaTime
             var pattern = InstantPattern.ExtendedIso;
             Instant newStart = reader.MoveToAttribute("start") ? pattern.Parse(reader.Value).Value : Instant.BeforeMinValue;
             Instant newEnd = reader.MoveToAttribute("end") ? pattern.Parse(reader.Value).Value : Instant.AfterMaxValue;
-            this = new Interval(newStart, newEnd);
+            Unsafe.AsRef(this) = new Interval(newStart, newEnd);
             // Consume the rest of this element, as per IXmlSerializable.ReadXml contract.
             reader.Skip();
         }

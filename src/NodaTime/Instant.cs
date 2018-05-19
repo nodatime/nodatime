@@ -9,6 +9,7 @@ using NodaTime.Text;
 using NodaTime.Utility;
 using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -26,7 +27,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable
+    public readonly struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable
     {
         // These correspond to -9998-01-01 and 9999-12-31 respectively.
         internal const int MinDays = -4371222;
@@ -64,7 +65,7 @@ namespace NodaTime
         /// <summary>
         /// Time elapsed since the Unix epoch.
         /// </summary>
-        [ReadWriteForEfficiency] private Duration duration;
+        private readonly Duration duration;
 
         /// <summary>
         /// Constructor which should *only* be used to construct the invalid instances.
@@ -737,7 +738,7 @@ namespace NodaTime
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = InstantPattern.ExtendedIso;
             string text = reader.ReadElementContentAsString();
-            this = pattern.Parse(text).Value;
+            Unsafe.AsRef(this) = pattern.Parse(text).Value;
         }
 
         /// <inheritdoc />

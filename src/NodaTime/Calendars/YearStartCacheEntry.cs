@@ -30,7 +30,7 @@
     /// never get the value for one year with the validation bits for another, for example.
     /// </para>
     /// </remarks>
-    internal struct YearStartCacheEntry
+    internal readonly struct YearStartCacheEntry
     {
         private const int CacheIndexBits = 10;
         private const int CacheIndexMask = CacheSize - 1;

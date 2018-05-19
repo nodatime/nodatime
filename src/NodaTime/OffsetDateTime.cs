@@ -10,6 +10,7 @@ using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -30,7 +31,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
+    public readonly struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
     {
         private const int NanosecondsBits = 47;
         private const long NanosecondsMask = (1L << NanosecondsBits) - 1;
@@ -41,7 +42,7 @@ namespace NodaTime
         // These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
         // we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
         // should allow us to optimize memory usage too.
-        [ReadWriteForEfficiency] private YearMonthDayCalendar yearMonthDayCalendar;
+        private readonly YearMonthDayCalendar yearMonthDayCalendar;
         // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
         // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
         // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
@@ -915,7 +916,7 @@ namespace NodaTime
                 reader.MoveToElement();
             }
             string text = reader.ReadElementContentAsString();
-            this = pattern.Parse(text).Value;
+            Unsafe.AsRef(this) = pattern.Parse(text).Value;
         }
 
         /// <inheritdoc />

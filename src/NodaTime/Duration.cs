@@ -9,6 +9,7 @@ using NodaTime.Utility;
 using System;
 using System.Globalization;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -57,7 +58,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    public struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable, IFormattable
+    public readonly struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable, IFormattable
     {
         // This is one more bit than we really need, but it allows Instant.BeforeMinValue and Instant.AfterMaxValue
         // to be easily 
@@ -1099,7 +1100,7 @@ namespace NodaTime
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = DurationPattern.Roundtrip;
             string text = reader.ReadElementContentAsString();
-            this = pattern.Parse(text).Value;
+            Unsafe.AsRef(this) = pattern.Parse(text).Value;
         }
 
         /// <inheritdoc />
