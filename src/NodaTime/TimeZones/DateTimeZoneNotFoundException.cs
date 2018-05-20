@@ -12,10 +12,10 @@ namespace NodaTime.TimeZones
     /// but the specified ID is invalid for that provider.
     /// </summary>
     /// <remarks>
-    /// This type only exists as <c>TimeZoneNotFoundException</c> doesn't exist in netstandard1.x.
-    /// By creating an exception which derives from <c>TimeZoneNotFoundException</c> on the desktop version
-    /// and <c>Exception</c> on the .NET Standard 1.3 version, we achieve reasonable consistency while remaining
-    /// backwardly compatible with Noda Time v1 (which was desktop-only, and threw <c>TimeZoneNotFoundException</c>).
+    /// This type originally existed as <c>TimeZoneNotFoundException</c> doesn't exist in framework versions
+    /// targeted by earlier versions of Noda Time. It is present now solely to avoid unnecessary
+    /// backward incompatibility. While it could be used to distinguish between exceptions thrown by
+    /// Noda Time and those thrown by <c>TimeZoneInfo</c>, we recommend that you don't use it that way.
     /// </remarks>
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
