@@ -88,9 +88,9 @@ namespace BenchmarkUploader
             var environment = new BenchmarkEnvironment
             {
                 Machine = Environment.MachineName.ToLowerInvariant(),
-                OperatingSystem = hostEnvironment.OsVersion?.GetValue() ?? "",
-                Processor = hostEnvironment.ProcessorName?.GetValue() ?? "",
-                ProcessorCount = hostEnvironment.ProcessorCount,
+                OperatingSystem = hostEnvironment.OsVersion ?? "",
+                Processor = hostEnvironment.ProcessorName ?? "",
+                ProcessorCount = hostEnvironment.LogicalCoreCount,
                 TargetFramework = tfm,
                 JitModules = hostEnvironment.JitModules,
                 HasRyuJit = hostEnvironment.HasRyuJit,

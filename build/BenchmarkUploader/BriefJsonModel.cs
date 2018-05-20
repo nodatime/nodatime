@@ -28,9 +28,9 @@ namespace BenchmarkUploader
             public bool HasRyuJit { get; set; }
             public string BenchmarkDotNetVersion { get; set; }
             public string JitModules { get; set; }
-            public OptionalString OsVersion { get; set; }
-            public OptionalString ProcessorName { get; set; }
-            public int ProcessorCount { get; set; }
+            public string OsVersion { get; set; }
+            public string ProcessorName { get; set; }
+            public int LogicalCoreCount { get; set; }
         }
 
         public class JsonBenchmark
