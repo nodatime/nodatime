@@ -16,14 +16,25 @@ namespace NodaTime.Web.Providers
     {
         public static GoogleCredential FetchCredential(IConfiguration configuration)
         {
+            string foo = configuration["foo"];
             // Use the default credentials if the environment variable is set.
             if (Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS") != null)
             {
-                return GoogleCredential.GetApplicationDefaultAsync().Result;
+                return GoogleCredential.GetApplicationDefault();
             }
+
+            // If we've got an Azure KeyVault configuration, we'll use that
             string secretUri = configuration["APPSETTING_SecretUri"];
             string clientId = configuration["APPSETTING_ClientId"];
             string clientSecret = configuration["APPSETTING_ClientSecret"];
+
+            // But if none of the environment variables has been specified, expect that
+            // we're running on Google Cloud Platform with implicit credentials.
+            if (secretUri == null && clientId == null && clientSecret == null)
+            {
+                return GoogleCredential.GetApplicationDefault();
+            }
+
             ClientCredential credential = new ClientCredential(clientId, clientSecret);
             var secret = GetKeyVaultSecret(credential, secretUri);
             return GoogleCredential.FromStream(new MemoryStream(Encoding.UTF8.GetBytes(secret)));
