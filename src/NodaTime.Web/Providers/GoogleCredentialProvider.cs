@@ -16,7 +16,6 @@ namespace NodaTime.Web.Providers
     {
         public static GoogleCredential FetchCredential(IConfiguration configuration)
         {
-            string foo = configuration["foo"];
             // Use the default credentials if the environment variable is set.
             if (Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS") != null)
             {
@@ -30,6 +29,7 @@ namespace NodaTime.Web.Providers
 
             // But if none of the environment variables has been specified, expect that
             // we're running on Google Cloud Platform with implicit credentials.
+            // TODO: Autodetect if we're on GCP and only use the default credentials then.
             if (secretUri == null && clientId == null && clientSecret == null)
             {
                 return GoogleCredential.GetApplicationDefault();
