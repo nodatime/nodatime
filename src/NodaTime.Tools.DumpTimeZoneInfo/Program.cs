@@ -31,7 +31,7 @@ namespace NodaTime.Tools.DumpTimeZoneInfo
         {
             foreach (var zone in TimeZoneInfo.GetSystemTimeZones().OrderBy(x => x.Id))
             {
-                Console.WriteLine(zone.Id);
+                Console.WriteLine($"{zone.Id} ({zone.DisplayName})");
             }
         }
 
@@ -60,21 +60,10 @@ namespace NodaTime.Tools.DumpTimeZoneInfo
         {
             var start = rule.DateStart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
             var end = rule.DateEnd.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
-            var stdOffset = FormatOffset(DetectStandardOffset(zone, rule));
             var delta = FormatOffset(rule.DaylightDelta);
             var startTransition = FormatTransition(rule.DaylightTransitionStart);
             var endTransition = FormatTransition(rule.DaylightTransitionEnd);
-            Console.WriteLine($"{start} - {end}: Standard offset: {stdOffset}; Daylight delta: {delta}; DST starts {startTransition} and ends {endTransition}");
-        }
-
-        private static TimeSpan DetectStandardOffset(TimeZoneInfo zone, TimeZoneInfo.AdjustmentRule rule)
-        {
-            var offset = zone.GetUtcOffset(rule.DateStart);
-            if (zone.IsDaylightSavingTime(rule.DateStart))
-            {
-                offset -= rule.DaylightDelta;
-            }
-            return offset;
+            Console.WriteLine($"{start} - {end}: Daylight delta: {delta}; DST starts {startTransition} and ends {endTransition}");
         }
 
         private static string FormatOffset(TimeSpan offset)
@@ -95,8 +84,8 @@ namespace NodaTime.Tools.DumpTimeZoneInfo
         private static string FormatTransition(TimeZoneInfo.TransitionTime transition)
         {
             return transition.IsFixedDateRule ?
-                string.Format("{0:MMMM dd} at {1:HH:mm}", new DateTime(2000, transition.Month, transition.Day), transition.TimeOfDay) :
-                string.Format("{0} {1} of {2:MMMM}; {3:HH:mm}", OrdinalWeeks[transition.Week], transition.DayOfWeek, new DateTime(2000, transition.Month, 1), transition.TimeOfDay);
+                string.Format("{0:MMMM dd} at {1:HH:mm:ss}", new DateTime(2000, transition.Month, transition.Day), transition.TimeOfDay) :
+                string.Format("{0} {1} of {2:MMMM}; {3:HH:mm:ss}", OrdinalWeeks[transition.Week], transition.DayOfWeek, new DateTime(2000, transition.Month, 1), transition.TimeOfDay);
         }
     }
 }
