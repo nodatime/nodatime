@@ -20,7 +20,8 @@ namespace NodaTime.Test
     /// </summary>
     public static class TestHelper
     {
-        public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
+        public static bool IsRunningOnMono => Type.GetType("Mono.Runtime") != null;
+        public static bool IsRunningOnDotNetCoreUnix => !Environment.OSVersion.VersionString.Contains("Windows") && !IsRunningOnMono;
 
         /// <summary>
         /// Does nothing other than let us prove method or constructor calls don't throw.
