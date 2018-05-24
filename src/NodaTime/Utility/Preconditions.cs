@@ -184,7 +184,7 @@ namespace NodaTime.Utility
     /// </summary>
     internal class DebugPreconditionException : Exception
     {
-        internal DebugPreconditionException(string message)
+        internal DebugPreconditionException(string message) : base(message)
         {
         }
     }
