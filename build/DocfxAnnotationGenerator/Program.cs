@@ -12,7 +12,7 @@ namespace DocfxAnnotationGenerator
     class Program
     {
         private static readonly string[] packages = { "NodaTime", "NodaTime.Testing", "NodaTime.Serialization.JsonNet" };
-        private static readonly string[] unstableFrameworks = { "net45", "netstandard1.3" };
+        private static readonly string[] unstableFrameworks = { "net45", "netstandard1.3", "netstandard2.0" };
 
         private readonly IEnumerable<Release> releases;
         private readonly Dictionary<string, List<BuildAssembly>> reflectionDataByVersion;
@@ -285,7 +285,9 @@ namespace DocfxAnnotationGenerator
                 return from package in packages
                        from framework in unstableFrameworks
                        let file = $"{package}.dll"
-                       select BuildAssembly.Load(framework, file, Path.Combine(srcRoot, package, "bin", "Debug", framework, file));
+                       let fullFile = Path.Combine(srcRoot, package, "bin", "Debug", framework, file)
+                       where File.Exists(fullFile)
+                       select BuildAssembly.Load(framework, file, fullFile);
             }
             else
             {
