@@ -12,9 +12,6 @@
           "cwd": "unstable/src"
         }
       ],
-      "properties": {
-        "TargetFramework": "net45"
-      },
       "dest": "obj/unstable/api",
       "shouldSkipMarkup": true
     }
