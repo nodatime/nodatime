@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace SnippetExtractor
@@ -61,20 +62,17 @@ namespace SnippetExtractor
             var workspace = MSBuildWorkspace.Create();
             var solution = await workspace.OpenSolutionAsync(solutionFile);
             var project = solution.Projects.Single(p => p.Name == projectName);
-            // TODO: Work out why we need to do this, and fix it. This is horrible.
-            if (project.MetadataReferences.Count == 0)
-            {
-                var nodaTimeProject = project.Solution.GetProject(project.ProjectReferences.Single().ProjectId);
-                var mscorlib = nodaTimeProject.MetadataReferences.Cast<PortableExecutableReference>().Single();
-                var frameworkDirectory = Path.GetDirectoryName(mscorlib.FilePath);
-                string[] assemblies = { "mscorlib.dll", "System.Numerics.dll", "System.Linq.dll", "System.Collections.dll", "System.Core.dll" };
-                var frameworkAssemblies = assemblies.Select(lib => MetadataReference.CreateFromFile(Path.Combine(frameworkDirectory, lib)));
-                project = project.AddMetadataReferences(frameworkAssemblies);
-            }
-            project = project.RemoveProjectReference(project.ProjectReferences.Single());
-            var outputDirectory = Path.GetDirectoryName(project.OutputFilePath);
-            var libraries = Directory.GetFiles(outputDirectory, "*.dll").Select(lib => MetadataReference.CreateFromFile(lib));
-            project = project.AddMetadataReferences(libraries);
+            // It's horrible to have this hardcoded here, but it's the simplest thing that works.
+            var netcoreapp20 = @"c:\Program Files\dotnet\shared\Microsoft.NETCore.App\2.0.0";
+            var netcoreapp20Assemblies = Directory.GetFiles(netcoreapp20, "System*.dll")
+                .Concat(Directory.GetFiles(netcoreapp20, "netstandard*.dll"))
+                .Concat(Directory.GetFiles(netcoreapp20, "mscorlib*.dll"));
+            var publishDirectory = Path.Combine(Path.GetDirectoryName(project.OutputFilePath), "publish");
+            var localAssemblies = Directory.GetFiles(publishDirectory, "*.dll").Where(f => Path.GetFileName(f) != "NodaTime.Demo.dll");
+            var allReferences = localAssemblies.Concat(netcoreapp20Assemblies).Select(f => MetadataReference.CreateFromFile(f));
+            project = project
+                .WithProjectReferences(new ProjectReference[0])
+                .WithMetadataReferences(allReferences);
             var compilation = await project.GetCompilationAsync();
             compilation.CheckSuccessful();
             return project;
