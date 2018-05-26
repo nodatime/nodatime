@@ -46,7 +46,8 @@ namespace SnippetExtractor
             compilation = RewriteInvocations(compilation).CheckSuccessful();
             compilation = RemoveUnusedImports(compilation).CheckSuccessful();
             var script = CSharpScript.Create(compilation.SyntaxTrees.Single().ToString(), options);
-            var output = await RunScriptAsync(script);
+            //var output = await RunScriptAsync(script);
+            var output = "FIXME";
             return new RewrittenSnippet(script.Code, output, snippet.Uid);
         }
 
