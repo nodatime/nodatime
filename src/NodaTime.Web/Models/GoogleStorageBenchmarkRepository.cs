@@ -28,7 +28,7 @@ namespace NodaTime.Web.Models
             GoogleCredential credential)
         {
             StorageClient client = StorageClient.Create(credential);
-            cache = new TimerCache<CacheValue>(lifetime, CacheRefreshTime, () => CacheValue.Refresh(cache.Value, client), loggerFactory,
+            cache = new TimerCache<CacheValue>(lifetime, CacheRefreshTime, () => CacheValue.Refresh(cache?.Value ?? CacheValue.Empty, client), loggerFactory,
                 CacheValue.Empty);
         }
         
