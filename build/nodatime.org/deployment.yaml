@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nodatime
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: nodatime
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: nodatime
+    spec:
+      # Use the nginx config map to provide nginx configuration
+      # instead of having it in the image
+      volumes:
+      - name: nginx
+        configMap:
+          name: nginx
+      containers:
+      - image: nginx:1.14.0
+        name: nginx
+        ports:
+        - name: http
+          containerPort: 80
+        volumeMounts:
+        - name: nginx
+          mountPath: /etc/nginx
+          readOnly: true        
+      - image: gcr.io/jonskeet-uberproject/nodatime.org:test3
+        imagePullPolicy: IfNotPresent
+        name: nodatime
+        ports:
+        - containerPort: 8080
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
