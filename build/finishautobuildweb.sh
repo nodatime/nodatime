@@ -14,7 +14,7 @@ echo "Build and test successful. Pushing."
  git commit -a -m "Regenerate from main repo commit $commit";
  git push)
 
-echo "Building container on Google Container Builder"
+echo "Building container on Google Cloud Container Builder."
 
 (cd $root/$commit/nodatime;
  cp build/nodatime.org/Dockerfile src/NodaTime.Web/bin/Release/netcoreapp2.0/publish
