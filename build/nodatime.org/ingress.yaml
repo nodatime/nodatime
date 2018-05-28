@@ -1,0 +1,10 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nodatime
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "nodatime"
+spec:
+  backend:
+    serviceName: nodatime
+    servicePort: 80
