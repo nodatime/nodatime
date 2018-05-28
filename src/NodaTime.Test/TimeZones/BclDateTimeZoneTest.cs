@@ -166,10 +166,8 @@ namespace NodaTime.Test.TimeZones
         {
             // .NET Core on Unix loses data from rules provided to CreateCustomTimeZone :(
             // (It assumes the rules have been created from tzif files, which isn't the case here.)
-            if (TestHelper.IsRunningOnDotNetCoreUnix)
-            {
-                Assert.Ignore("Test skipped on .NET Core");
-            }
+            // See https://github.com/dotnet/corefx/issues/29912
+            Ignore.When(TestHelper.IsRunningOnDotNetCoreUnix, ".NET Core on Unix mangles custom time zones");
 
             var rules = new[]
             {
@@ -205,18 +203,11 @@ namespace NodaTime.Test.TimeZones
             // Amusingly, trying to reproduce the test on Mono with a custom time zone causes Mono to throw -
             // quite possibly due to the same root cause that we're testing we've fixed in Noda Time.
             // See https://bugzilla.xamarin.com/attachment.cgi?id=21192&action=edit
-            if (TestHelper.IsRunningOnMono)
-            {
-                Assert.Ignore("Test skipped on Mono");
-            }
+            Ignore.When(TestHelper.IsRunningOnMono, "Mono throws an exception with awkward leap years");
 
             // .NET Core on Unix loses data from rules provided to CreateCustomTimeZone :(
             // (It assumes the rules have been created from tzif files, which isn't the case here.)
-            // See https://github.com/dotnet/corefx/issues/29912
-            if (TestHelper.IsRunningOnDotNetCoreUnix)
-            {
-                Assert.Ignore("Test skipped on .NET Core");
-            }
+            Ignore.When(TestHelper.IsRunningOnDotNetCoreUnix, ".NET Core on Unix mangles custom time zones");
 
             var rules = new[]
             {
@@ -265,10 +256,7 @@ namespace NodaTime.Test.TimeZones
         {
             // .NET Core on Unix loses data from rules provided to CreateCustomTimeZone :(
             // (It assumes the rules have been created from tzif files, which isn't the case here.)
-            if (TestHelper.IsRunningOnDotNetCoreUnix)
-            {
-                Assert.Ignore("Test skipped on .NET Core");
-            }
+            Ignore.When(TestHelper.IsRunningOnDotNetCoreUnix, ".NET Core on Unix mangles custom time zones");
 
             // Linux time zones on Mono can have a strange situation with a "0 savings" adjustment rule to represent
             // "we want to change standard time but we can't".
