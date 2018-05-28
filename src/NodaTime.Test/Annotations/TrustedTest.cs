@@ -34,15 +34,12 @@ namespace NodaTime.Test.Annotations
 
         private static IEnumerable<ParameterInfo> GetParameters(MemberInfo member)
         {
-            if (member is MethodInfo || member is ConstructorInfo)
+            switch (member)
             {
-                return ((dynamic) member).GetParameters();
+                case MethodBase method: return method.GetParameters();
+                case PropertyInfo property: return property.GetIndexParameters();
+                default: return Enumerable.Empty<ParameterInfo>();
             }
-            if (member is PropertyInfo)
-            {
-                return ((PropertyInfo) member).GetIndexParameters();
-            }
-            return Enumerable.Empty<ParameterInfo>();
         }
     }
 }
