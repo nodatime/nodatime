@@ -8,10 +8,9 @@
 # - If $root/$commit exists, assume there have been no changes, and abort
 # - Make a shallow clone (--depth 1) of the main repo to $root/$commit/nodatime
 # - Make a shallow clone (--depth 1) of the nodatime.org repo to $root/$commit/nodatime.org
-# - Run $root/$commit/build/buildweb.sh $root/$commit/nodatime.org
-# - In $root/$commit/nodatime.org
-#   - Create a new commit
-#   - Push to nodatime.org repo
+# - Run the fetched finishautobuildweb.sh to complete the remainder of the build
+#
+# It is anticipated that this file will not need to change often; it's effectively bootstrapping.
 
 set -e
 
@@ -35,13 +34,5 @@ fi
 git clone https://github.com/nodatime/nodatime.git --depth 1 $root/$commit/nodatime
 git clone https://github.com/nodatime/nodatime.org.git --depth 1 $root/$commit/nodatime.org
 
-# Build site and run smoke tests
-(cd $root/$commit/nodatime/build; ./buildweb.sh ../../nodatime.org &> buildweb.log)
-
-echo "Build and test successful. Pushing."
-
-# Commit and push
-# Ignore anything in .gitignore when adding files
-git -C $root/$commit/nodatime.org add --all -f
-git -C $root/$commit/nodatime.org commit -a -m "Regenerate from main repo commit $commit"
-git -C $root/$commit/nodatime.org push
+# Hand off to the second part of the build
+source $root/commit/nodatime/finishautobuildweb.sh
