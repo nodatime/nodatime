@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.CodeAnalysis.CSharp;
@@ -46,6 +47,9 @@ namespace NodaTime.Web
             // Add framework services.
             services.AddMvc();
             
+            services.Configure<ForwardedHeadersOptions>(
+                options => options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);
+            
             if (UseGoogleCloudStorage)
             {
                 // Eagerly fetch the GoogleCredential so that we're not using Task.Result in
@@ -70,6 +74,7 @@ namespace NodaTime.Web
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
