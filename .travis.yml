@@ -3,7 +3,7 @@
 # TODO: Test against Mono as well, using matrix.include
 language: csharp
 mono: none
-dotnet: 2.1.101
+dotnet: 2.1.300
 dist: trusty
 
 # We need to install the .NET Core 1.0 runtime to run netcoreapp1.0
