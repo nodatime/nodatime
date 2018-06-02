@@ -35,14 +35,13 @@ namespace SnippetExtractor
             writer.WriteLine(Script);
             writer.WriteLine("```");
             writer.WriteLine();
-            /* FIXME: Reinstate when we have output again
+
             writer.WriteLine("Output:");
             writer.WriteLine();
             writer.WriteLine("```text");
             writer.WriteLine(Output);
             writer.WriteLine("```");
             writer.WriteLine();
-            */
         }
     }
 }
