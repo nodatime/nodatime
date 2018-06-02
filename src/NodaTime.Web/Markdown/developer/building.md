@@ -36,7 +36,7 @@ The tests are currently console application projects until NUnit supports
 
 ```bat
 > cd src\NodaTime.Test
-> dotnet run -f netcoreapp2.0
+> dotnet run
 ```
 
 Building under other operating systems is similar, requiring the .NET Core SDK to be installed,

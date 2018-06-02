@@ -59,7 +59,7 @@ The tests are currently console application projects. Simply run the following c
 
 ```Text
 cd src/NodaTime.Test
-dotnet run -f netcoreapp2.0
+dotnet run
 ```
 
 ### Submitting Changes
