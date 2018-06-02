@@ -4,7 +4,7 @@ Thanks for your interest in Noda Time. We appreciate all kinds of contributions,
 
 ## Basic Requirements
 
-If you want to contribute to the codebase, you're going to need a text editor or IDE. We recommend [Visual Studio Community 2017](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx)(Windows) or [Visual Studio Code](https://code.visualstudio.com/)(Windows/Linux/macOS).
+If you want to contribute to the codebase, you're going to need a text editor or IDE. We recommend [Visual Studio Community 2017](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx) (Windows) or [Visual Studio Code](https://code.visualstudio.com/) (Windows/Linux/macOS).
 
 You're also going to need .NET Core SDK installed - you can download it from [here.](https://www.microsoft.com/net/download/)
 
