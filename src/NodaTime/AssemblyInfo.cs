@@ -6,9 +6,6 @@ using System;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-// TODO: Check whether this is still a good idea
-[assembly: System.Security.AllowPartiallyTrustedCallers]
-
 [assembly: CLSCompliant(true)]
 [assembly: NeutralResourcesLanguage("en")]
 
