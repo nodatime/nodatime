@@ -205,7 +205,7 @@ namespace NodaTime
         public void Deconstruct(out LocalDate localDate, out Offset offset)
         {
             localDate = Date;
-            offset = Offset.Plus(Offset.FromTicks(34));
+            offset = Offset;
         }
 
 
