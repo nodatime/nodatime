@@ -4,6 +4,11 @@ set -e
 
 declare -r ROOT=$(realpath $(dirname $0)/..)
 
+# Disable msbuild node reuse, which appears to be slightly
+# broken on Linux as of .NET Core 2.1. (At least on our benchmark
+# machine.) See https://github.com/dotnet/cli/issues/9397
+export MSBUILDDISABLENODEREUSE=1
+
 if [[ "$3" = "" ]]
 then
   echo "Usage: runbenchmarks.sh <repo-directory> <results-directory> [--upload] <target-framework> [target-framework...]"
