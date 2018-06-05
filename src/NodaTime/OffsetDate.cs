@@ -51,39 +51,39 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this offset date.</summary>
         /// <value>The calendar system associated with this offset date.</value>
-        [NotNull] public CalendarSystem Calendar => Date.Calendar;
+        [NotNull] public CalendarSystem Calendar => date.Calendar;
 
         /// <summary>Gets the year of this offset date.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
         /// a value of 0 means 1 BC, for example.</remarks>
         /// <value>The year of this offset date.</value>
-        public int Year => Date.Year;
+        public int Year => date.Year;
 
         /// <summary>Gets the month of this offset date within the year.</summary>
         /// <value>The month of this offset date within the year.</value>
-        public int Month => Date.Month;
+        public int Month => date.Month;
 
         /// <summary>Gets the day of this offset date within the month.</summary>
         /// <value>The day of this offset date within the month.</value>
-        public int Day => Date.Day;
+        public int Day => date.Day;
 
         /// <summary>
         /// Gets the week day of this offset date expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value.
         /// </summary>
         /// <value>The week day of this offset date expressed as an <c>IsoDayOfWeek</c>.</value>
-        public IsoDayOfWeek DayOfWeek => Date.DayOfWeek;
+        public IsoDayOfWeek DayOfWeek => date.DayOfWeek;
 
         /// <summary>Gets the year of this offset date within the era.</summary>
         /// <value>The year of this offset date within the era.</value>
-        public int YearOfEra => Date.YearOfEra;
+        public int YearOfEra => date.YearOfEra;
 
         /// <summary>Gets the era of this offset date.</summary>
         /// <value>The era of this offset date.</value>
-        [NotNull] public Era Era => Date.Era;
+        [NotNull] public Era Era => date.Era;
 
         /// <summary>Gets the day of this offset date within the year.</summary>
         /// <value>The day of this offset date within the year.</value>
-        public int DayOfYear => Date.DayOfYear;
+        public int DayOfYear => date.DayOfYear;
 
         /// <summary>
         /// Creates a new <see cref="OffsetDate"/> for the same date, but with the specified UTC offset.
@@ -91,7 +91,7 @@ namespace NodaTime
         /// <param name="offset">The new UTC offset.</param>
         /// <returns>A new <c>OffsetDate</c> for the same date, but with the specified UTC offset.</returns>
         [Pure]
-        public OffsetDate WithOffset(Offset offset) => new OffsetDate(this.date, offset);
+        public OffsetDate WithOffset(Offset offset) => new OffsetDate(date, offset);
 
         /// <summary>
         /// Returns this offset date, with the given date adjuster applied to it, maintaining the existing offset.
@@ -105,7 +105,7 @@ namespace NodaTime
         /// <returns>The adjusted offset date.</returns>
         [Pure]
         public OffsetDate With([NotNull] Func<LocalDate, LocalDate> adjuster) =>
-            new OffsetDate(Date.With(adjuster), offset);
+            new OffsetDate(date.With(adjuster), offset);
 
         /// <summary>
         /// Creates a new <see cref="OffsetDate"/> representing the same physical date and offset, but in a different calendar.
@@ -116,7 +116,7 @@ namespace NodaTime
         /// <returns>The converted <c>OffsetDate</c>.</returns>
         [Pure]
         public OffsetDate WithCalendar([NotNull] CalendarSystem calendar) =>
-            new OffsetDate(Date.WithCalendar(calendar), offset);
+            new OffsetDate(date.WithCalendar(calendar), offset);
 
         /// <summary>
         /// Combines this <see cref="OffsetDate"/> with the given <see cref="LocalTime"/>
@@ -125,13 +125,13 @@ namespace NodaTime
         /// <param name="time">The time to combine with this date.</param>
         /// <returns>The <see cref="OffsetDateTime"/> representation of the given time on this date.</returns>
         [Pure]
-        public OffsetDateTime At(LocalTime time) => new OffsetDateTime(Date.At(time), Offset);
+        public OffsetDateTime At(LocalTime time) => new OffsetDateTime(date.At(time), offset);
 
         /// <summary>
         /// Returns a hash code for this offset date.
         /// </summary>
         /// <returns>A hash code for this offset date.</returns>
-        public override int GetHashCode() => HashCodeHelper.Hash(Date, Offset);
+        public override int GetHashCode() => HashCodeHelper.Hash(date, offset);
 
         /// <summary>
         /// Compares two <see cref="OffsetDate"/> values for equality. This requires
@@ -147,7 +147,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="other">The value to compare this offset date with.</param>
         /// <returns>True if the given value is another offset date equal to this one; false otherwise.</returns>
-        public bool Equals(OffsetDate other) => Date == other.Date && Offset == other.Offset;
+        public bool Equals(OffsetDate other) => date == other.date && offset == other.offset;
 
         /// <summary>
         /// Implements the operator == (equality).
@@ -198,10 +198,9 @@ namespace NodaTime
         [Pure]
         public void Deconstruct(out LocalDate localDate, out Offset offset)
         {
-            localDate = Date;
-            offset = Offset.Plus(Offset.FromTicks(34));
+            localDate = this.date;
+            offset = this.offset;
         }
-
 
         #region XML serialization
         /// <inheritdoc />
