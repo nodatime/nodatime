@@ -126,11 +126,11 @@ namespace NodaTime.Calendars
                 int year = yearMonthDay.Year;
                 int monthOfYear = yearMonthDay.Month;
                 int dayOfMonth = yearMonthDay.Day;
-                int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
                 if (year < FirstOptimizedYear || year > LastOptimizedYear - 1)
                 {
                     return base.GetDaysSinceEpoch(yearMonthDay);
                 }
+                int yearMonthIndex = (year - FirstOptimizedYear) * 12 + monthOfYear;
                 return MonthStartDays[yearMonthIndex] + dayOfMonth;
             }
         }
