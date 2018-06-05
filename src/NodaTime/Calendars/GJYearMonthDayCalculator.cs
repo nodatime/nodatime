@@ -71,8 +71,11 @@ namespace NodaTime.Calendars
         internal override int GetDaysInYear([Trusted] int year) => IsLeapYear(year) ? 366 : 365;
 
         internal sealed override int GetDaysInMonth([Trusted] int year, [Trusted] int month) =>
-            // We know that only February differs, so avoid the virtual call for other months.
-            month == 2 && IsLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
+            // February is awkward
+            month == 2 ? IsLeapYear(year) ? 29 : 28
+            // The lengths of months alternate between 30 and 31, but skip a beat for August.
+            // By dividing the month by 8, we effectively handle that skip.
+            : 30 + ((month + (month >> 3)) & 1);
 
         protected override int GetDaysFromStartOfYearToStartOfMonth([Trusted] int year, [Trusted] int month) =>
             IsLeapYear(year) ? MaxTotalDaysByMonth[month - 1] : MinTotalDaysByMonth[month - 1];
