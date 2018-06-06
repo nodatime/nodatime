@@ -726,14 +726,43 @@ namespace NodaTime
         public static LocalTime Min(LocalTime x, LocalTime y) => x < y ? x : y;
 
         #region Formatting
+        private static Func<LocalTime, string> defaultToStringFormatter = localTime => LocalTimePattern.BclSupport.Format(localTime, null, CultureInfo.CurrentCulture);
+        private static Func<LocalTime, string, IFormatProvider, string> defaultIFormattableFormatter = 
+            (localTime, patternText, formatProvider) => LocalTimePattern.BclSupport.Format(localTime, patternText, formatProvider);
+        /// <summary>
+        /// Provides the option to override the default ToString behavior
+        /// </summary>
+        public static Func<LocalTime, string> DefaultToStringFormatter {
+            get => defaultToStringFormatter;
+            set {
+                if (value == null)
+                    throw new ArgumentNullException("Default formatter cannot be null");
+                else
+                    defaultToStringFormatter = value;
+            }
+        }
+        
+        /// <summary>
+        /// Provides the option to override the default IFormattable behavior
+        /// </summary>
+        public static Func<LocalTime, string, IFormatProvider, string> DefaultIFormattableFormatter {
+            get => defaultIFormattableFormatter;
+            set {
+                if (value == null)
+                    throw new ArgumentNullException("Default formatter cannot be null");
+                else
+                    defaultIFormattableFormatter = value;
+            }
+        }
+
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// The value of the current instance in the default format pattern ("T"), using the current thread's
+        /// The value of the current instance in the default format pattern ("D"), using the current thread's
         /// culture to obtain a format provider.
         /// </returns>
-        public override string ToString() => LocalTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+        public override string ToString() => DefaultToStringFormatter(this);
 
         /// <summary>
         /// Formats the value of the current instance using the specified pattern.
@@ -748,8 +777,7 @@ namespace NodaTime
         /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
-        public string ToString(string patternText, IFormatProvider formatProvider) =>
-            LocalTimePattern.BclSupport.Format(this, patternText, formatProvider);
+        public string ToString(string patternText, IFormatProvider formatProvider) => DefaultIFormattableFormatter(this, patternText, formatProvider);
         #endregion Formatting
 
         #region XML serialization
