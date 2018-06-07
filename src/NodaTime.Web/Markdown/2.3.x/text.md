@@ -68,8 +68,11 @@ specifiers being available for some types but not others.
 - [LocalDate patterns](localdate-patterns)
 - [LocalDateTime patterns](localdatetime-patterns)
 - [OffsetDateTime patterns](offsetdatetime-patterns)
+- [OffsetDate patterns](offsetdate-patterns)
+- [OffsetTime patterns](offsettime-patterns)
 - [ZonedDateTime patterns](zoneddatetime-patterns)
 - [Period patterns](period-patterns)
+- [AnnualDate patterns](annualdate-patterns)
 
 Standard and custom patterns
 ---------------
