@@ -24,6 +24,9 @@ Console.WriteLine("Jon is: {0} years, {1} months, {2} days old.",
                   age.Years, age.Months, age.Days);
 ```
 
+Note that a `using` directive for `NodaTime.Extensions` is required for this,
+as `InZone` is an extension method in `NodaTime.Extensions.ClockExtensions`.
+
 How can I get to the start or end of a month?
 ====
 
