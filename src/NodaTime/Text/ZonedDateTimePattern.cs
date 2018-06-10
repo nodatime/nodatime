@@ -74,7 +74,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Gets the localization information used in this pattern.
         /// </summary>
-        internal NodaFormatInfo FormatInfo { get; }
+        private NodaFormatInfo FormatInfo { get; }
 
         /// <summary>
         /// Gets the value used as a template for parsing: any field values unspecified
