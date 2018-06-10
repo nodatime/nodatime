@@ -33,6 +33,8 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] FormatOnlyData = {
+            // Custom template with "wrong" year; this won't roundtrip
+            new Data(1970, 6, 19, 12, 0, 0) { Template = Instant.FromUtc(1950, 1, 1, 0, 0), Text = "06-19 12:00", Pattern = "MM-dd HH:mm" }
         };
 
         [Test]
@@ -80,6 +82,9 @@ namespace NodaTime.Test.Text
 
             // General pattern has no standard single character.
             new Data(2012, 1, 31, 17, 36, 45) { StandardPattern = InstantPattern.General, Text = "2012-01-31T17:36:45Z", Pattern = "uuuu-MM-ddTHH:mm:ss'Z'" },
+
+            // Custom template
+            new Data(1950, 6, 19, 12, 0, 0) { Template = Instant.FromUtc(1950, 1, 1, 0, 0), Text = "06-19 12:00", Pattern = "MM-dd HH:mm" }
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
@@ -106,7 +111,7 @@ namespace NodaTime.Test.Text
             }
 
             internal override IPattern<Instant> CreatePattern() =>
-                InstantPattern.CreateWithInvariantCulture(Pattern!).WithCulture(Culture);
+                InstantPattern.CreateWithInvariantCulture(Pattern!).WithTemplateValue(Template).WithCulture(Culture);
         }
     }
 }
