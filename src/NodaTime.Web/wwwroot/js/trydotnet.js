@@ -1,4 +1,5 @@
 ﻿// TODO: Create a trydotnet object to call functions on, like hljs.
+// TODO: Hopefully remove this entirely from this repo, and use something provided by Try .NET directly :)
 
 // Define somewhere the origin
 const editorOrigin = "https://try.dot.net";
@@ -19,7 +20,7 @@ function setupWorkspace() {
             }],
             "buffers": [{
                 "id": "Program.cs@fragment",
-                "content": "// Try code here, live!\nvar zone = DateTimeZoneProviders.Tzdb[\"Europe/London\"];\nvar clock = SystemClock.Instance.InZone(zone);\nvar now = clock.GetCurrentZonedDateTime();\nvar pattern = ZonedDateTimePattern.ExtendedFormatOnlyIso;\nConsole.WriteLine(pattern.Format(now));",
+                "content": "var zone = DateTimeZoneProviders.Tzdb[\"Europe/London\"];\nvar clock = SystemClock.Instance.InZone(zone);\nvar now = clock.GetCurrentZonedDateTime();\nvar pattern = ZonedDateTimePattern.ExtendedFormatOnlyIso;\nConsole.WriteLine(pattern.Format(now));",
                 "position": 0
             }]
         },
@@ -78,6 +79,7 @@ for (codeElement of document.getElementsByTagName("code")) {
         var runDiv = document.createElement("div");
         var runButton = document.createElement("button");
         runButton.textContent = "Copy to editor";
+        runButton.className = "trydotnetbutton";
         runDiv.appendChild(runButton);
         var createListener = code => () => setCode(code);
         runButton.addEventListener('click', createListener(codeElement.textContent));

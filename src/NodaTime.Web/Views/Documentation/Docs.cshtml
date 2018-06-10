@@ -19,35 +19,8 @@
             <footer class="version">Version @Model.Bundle.Name</footer>
         }
     </div>
-
-    @if (@Model.Title == "Recipes")
-    {
-        <div class="large-5 columns">
-            <h1>@Model.Title</h1>
-            @Model.Content
-        </div>
-        <div class="large-4 columns">
-            <div style="margin: 8px">
-                <div style="height:300px; padding:8px 0px">
-                    <iframe style="position:relative;top:0px;width:100%;height:100%"
-                            src="https://try.dot.net/v2/editor?hostOrigin=http:%2F%2Fjonskeet.microsoft.com:5000&waitForConfiguration=true"
-                            id="trydotnet-editor"></iframe>
-                </div>
-                <div><button id="trydotnet-run">Run!</button></div>
-                <div>
-                    <pre><code id="trydotnet-output"></code></pre>
-                </div>
-                <div class="trydotnetbanner">
-                    <p>Powered by <a href="https://github.com/dotnet/try/wiki">Try .NET</a> currently in select preview</p>
-                </div>
-            </div>
-        </div>
-    }
-    else
-    {
     <div class="large-9 columns">
         <h1>@Model.Title</h1>
         @Model.Content
     </div>
-    }
 </div>

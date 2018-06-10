@@ -429,7 +429,6 @@ td.pattern-example {
     margin-top: 10px;
     position: relative;
     width: 100%;
-    background-image: linear-gradient(to left, #B26F9E, #68217A);
     overflow: hidden;
 }
 
@@ -439,6 +438,8 @@ td.pattern-example {
     font-size: 1em;
     font-weight: normal;
     color: #FFFFFF;
+    display: inline-block;
+    background-image: linear-gradient(to left, #B26F9E, #68217A);
 }
 
 .trydotnetbanner > p > a:link {
@@ -455,4 +456,14 @@ td.pattern-example {
 
 .trydotnetbanner > p > a:active {
     color: blue;
+}
+
+.trydotnetbutton {
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.trydotnet-outputlabel {
+    margin-bottom: 10px;
 }
