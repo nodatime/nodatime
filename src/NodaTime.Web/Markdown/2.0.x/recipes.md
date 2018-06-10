@@ -7,7 +7,28 @@ that... but it can still be tricky finding that if you're new to the API.
 
 These examples typically use explicitly-typed local variables so that you can tell
 all the types involved easily. You can use implicitly-typed local variables (`var`)
-in your own code, of course. All examples assume a `using` directive of `using NodaTime;`.
+in your own code, of course.
+
+Try it live!
+====
+
+To run any recipe immediately, just hit the "Copy to editor" button and then the "Run" button.
+You can then modify the code - including using Intellisense to explore the API, by pressing Ctrl-Space -
+and rerun it to see the results.
+
+<div style="height:250px; padding:8px 0px">
+    <iframe style="position:relative;top:0px;width:100%;height:100%"
+            src="https://try.dot.net/v2/editor?hostOrigin=https:%2F%2Fnodatime.org&waitForConfiguration=true"
+            id="trydotnet-editor"></iframe>
+</div>
+<div><button id="trydotnet-run" class="trydotnetbutton">Run!</button></div>
+<div>
+    <p class="trydotnet-outputlabel">Output:</p>
+    <pre><code id="trydotnet-output"></code></pre>
+</div>
+<div class="trydotnetbanner">
+    <p>Powered by <a href="https://github.com/dotnet/try/wiki">Try .NET</a> currently in select preview</p>
+</div>
 
 How old is Jon?
 ====
