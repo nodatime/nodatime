@@ -97,6 +97,7 @@ namespace NodaTime.Text
         /// <value>The pattern text for this pattern, as supplied on creation.</value>
         [NotNull] public string PatternText { get; }
 
+        // Visible for testing
         /// <summary>
         /// Gets the localization information used in this pattern.
         /// </summary>
