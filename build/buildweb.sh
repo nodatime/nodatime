@@ -34,7 +34,7 @@ mkdir $WEB_DIR
 mv tmp/old_nodatime.org/.git $WEB_DIR
 
 # Copy the new site into place
-cp -r ../src/NodaTime.Web/bin/Release/netcoreapp2.0/publish/* $WEB_DIR
+cp -r ../src/NodaTime.Web/bin/Release/netcoreapp2.1/publish/* $WEB_DIR
 
 # Run a smoke test to check it still works
 (cd $WEB_DIR; dotnet NodaTime.Web.dll --smoke-test)

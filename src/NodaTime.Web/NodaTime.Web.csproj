@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
@@ -10,8 +10,8 @@
   <ItemGroup>
     <!-- ASP.NET Core dependencies -->
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-    <PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />
+    <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     
     <!-- Local NodaTime dependencies -->
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />

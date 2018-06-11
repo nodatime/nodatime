@@ -17,5 +17,5 @@ echo "Build and test successful. Pushing."
 echo "Building container on Google Cloud Container Builder."
 
 (cd $root/$commit/nodatime;
- cp build/nodatime.org/Dockerfile src/NodaTime.Web/bin/Release/netcoreapp2.0/publish;
- gcloud.cmd container builds submit --tag gcr.io/jonskeet-uberproject/nodatime.org:$commit src/NodaTime.Web/bin/Release/netcoreapp2.0/publish)
+ cp build/nodatime.org/Dockerfile src/NodaTime.Web/bin/Release/netcoreapp2.1/publish;
+ gcloud.cmd container builds submit --tag gcr.io/jonskeet-uberproject/nodatime.org:$commit src/NodaTime.Web/bin/Release/netcoreapp2.1/publish)
