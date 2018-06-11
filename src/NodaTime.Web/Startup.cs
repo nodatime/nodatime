@@ -2,14 +2,15 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -20,6 +21,8 @@ using NodaTime.Web.Models;
 using NodaTime.Web.Providers;
 using System;
 using System.IO;
+using System.Linq;
+using System.Net.Mime;
 
 namespace NodaTime.Web
 {
@@ -49,7 +52,16 @@ namespace NodaTime.Web
             
             services.Configure<ForwardedHeadersOptions>(
                 options => options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);
-            
+
+            services.AddResponseCompression(options =>
+            {
+                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+                {
+                    MediaTypeNames.Application.Octet,
+                    WasmMediaTypeNames.Application.Wasm,
+                });
+            });
+
             if (UseGoogleCloudStorage)
             {
                 // Eagerly fetch the GoogleCredential so that we're not using Task.Result in
@@ -153,6 +165,8 @@ namespace NodaTime.Web
             app.ApplicationServices.GetRequiredService<IBenchmarkRepository>().ListEnvironments();
             // Force the set of TZDB data to be first loaded on startup.
             app.ApplicationServices.GetRequiredService<ITzdbRepository>().GetReleases();
+
+            app.Map("/blazor", child => child.UseBlazor<NodaTime.Web.Blazor.Program>());
         }
 
         /// Sets the Cache-Control header for static content, conditionally allowing the browser to use the content
