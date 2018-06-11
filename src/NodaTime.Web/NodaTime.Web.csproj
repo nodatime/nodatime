@@ -11,11 +11,13 @@
     <!-- ASP.NET Core dependencies -->
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.4.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     
     <!-- Local NodaTime dependencies -->
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
     <ProjectReference Include="..\NodaTime.TzValidate.NodaDump\NodaTime.TzValidate.NodaDump.csproj" />
+    <ProjectReference Include="..\NodaTime.Web.Blazor\NodaTime.Web.Blazor.csproj" />
     
     <!-- Other dependencies -->
     <PackageReference Include="Google.Cloud.Storage.V1" Version="2.1.0" />

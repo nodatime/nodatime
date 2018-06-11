@@ -1,0 +1,70 @@
+﻿@page "/arithmetic"
+
+<h1>Period arithmetic</h1>
+
+<p>This page allows you to experiment with period arithmetic, albeit in a crude fashion at the moment.</p>
+
+<h2>Date difference</h2>
+
+(Express dates as <code>yyyy-MM-dd</code>.)
+
+<p>Start date: <input type="text" bind="dateDiffStart" /> <span style="color:red">@dateDiffStartError</span></p>
+<p>End date: <input type="text" bind="dateDiffEnd" /> <span style="color:red">@dateDiffEndError</span></p>
+<p>(Currently, arithmetic in this page is always performed in years, months and days.)</p>
+
+<button class="btn btn-primary" onclick="@ExecuteDifference">Find difference</button>
+
+@if (dateDiffResult != null)
+{
+    <p>Result:</p>
+    <ul>
+        <li>Years: @dateDiffResult.Years</li>
+        <li>Months: @dateDiffResult.Months</li>
+        <li>Days: @dateDiffResult.Days</li>
+    </ul>
+}
+
+<h2>Period addition/subtraction</h2>
+
+(Express the start date as <code>yyyy-MM-dd</code> and the period as <code>P10Y5M3D</code> etc.)
+
+<p>Start date: <input type="text" bind="dateAddStart" /> <span style="color:red">@dateAddStartError</span></p>
+<p>Period: <input type="text" bind="dateAddPeriod" /> <span style="color:red">@dateAddPeriodError</span></p>
+
+<button class="btn btn-primary" onclick="@ExecuteAdd">Add</button>
+
+@if (dateAddResult != null)
+{
+    <p>Result: @LocalDatePattern.Iso.Format(dateAddResult.Value)</p>
+}
+
+@functions
+{
+    // TODO: Custom binding so we can make these more pleasant?
+    private string dateDiffStart;
+    private string dateDiffEnd;
+    private Period dateDiffResult;
+
+    private string dateAddStart;
+    private string dateAddPeriod;
+    private LocalDate? dateAddResult;
+
+    private string dateDiffStartError = null;
+    private string dateDiffEndError = null;
+    private string dateAddStartError = null;
+    private string dateAddPeriodError = null;
+
+    private void ExecuteDifference()
+    {
+        LocalDate? start = ParseDate(dateDiffStart, out dateDiffStartError);
+        LocalDate? end = ParseDate(dateDiffEnd, out dateDiffEndError);
+        dateDiffResult = start == null || end == null ? null : Period.Between(start.Value, end.Value);
+    }
+
+    private void ExecuteAdd()
+    {
+        LocalDate? start = ParseDate(dateAddStart, out dateAddStartError);
+        Period period = ParsePeriod(dateAddPeriod, out dateAddPeriodError);
+        dateAddResult = start == null || period == null ? (LocalDate?)null : start.Value + period;
+    }
+}

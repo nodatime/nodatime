@@ -1,0 +1,111 @@
+﻿@page "/timezones"
+@using NodaTime.TimeZones
+
+<h1>Time zones</h1>
+
+<p>This page allows you to explore the IANA time zone data represented in Noda Time</p>
+
+<h3>Source information</h3>
+
+<p>
+    TZDB version: @source.TzdbVersion<br />
+    Noda Time Version ID: @source.VersionId<br />
+</p>
+
+<div>
+    <select bind="selectedId">
+        @foreach (var id in provider.Ids)
+        {
+            <option value="@id">@id</option>
+        }
+    </select>
+</div>
+
+<button onclick="@Refresh">Refresh!</button>
+
+<h3>Basic information</h3>
+<div>
+    ID: @selectedId<br />
+    Canonical ID: @canonicalId<br />
+    Aliases: @aliases<br />
+    Windows ID: @windowsId<br />
+    Zone location:
+    @if (zoneLocation == null)
+    {
+        <text>None</text><br />
+    }
+    else
+    {
+        <br />
+        <text>&nbsp;&nbsp;Country: </text>@zoneLocation.CountryName <br />
+        <text>&nbsp;&nbsp;Country code: </text>@zoneLocation.CountryCode <br />
+        <text>&nbsp;&nbsp;Lat/Lng: </text>@zoneLocation.Latitude.ToString("0.##")<text>/</text>@zoneLocation.Longitude.ToString("0.##")<br />
+        <text>&nbsp;&nbsp;Comment: </text>@zoneLocation.Comment<br />
+    }
+</div>
+
+<h3>Changes</h3>
+
+<p>
+    From year: <input bind="fromYear" onchange="@Refresh" /> <br />
+    To year: <input bind="toYear" onchange="@Refresh" />
+</p>
+
+<table>
+    <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Name</th>
+        <th>Wall offset</th>
+        <th>Standard offset</th>
+        <th>Savings</th>
+    </tr>
+    @foreach (ZoneInterval interval in intervals ?? Enumerable.Empty<ZoneInterval>())
+    {
+        <tr>
+            <td>@(interval.HasStart ? interval.Start.ToString() : "-")</td>
+            <td>@(interval.HasEnd ? interval.End.ToString() : "-")</td>
+            <td>@interval.Name</td>
+            <td>@interval.WallOffset</td>
+            <td>@interval.StandardOffset</td>
+            <td>@interval.Savings</td>
+        </tr>
+    }
+</table>
+
+
+@functions
+{
+static readonly IDateTimeZoneProvider provider = DateTimeZoneProviders.Tzdb;
+static readonly TzdbDateTimeZoneSource source = TzdbDateTimeZoneSource.Default;
+
+string selectedId;
+string canonicalId;
+int fromYear = 2000;
+int toYear = 2010;
+IEnumerable<ZoneInterval> intervals;
+string aliases;
+string windowsId;
+TzdbZoneLocation zoneLocation;
+
+void Refresh()
+{
+    if (fromYear < 1)
+    {
+        fromYear = 1;
+    }
+    if (toYear > 9999)
+    {
+        toYear = 9999;
+    }
+    canonicalId = source.CanonicalIdMap[selectedId];
+    var zone = provider[selectedId];
+    var start = Instant.FromUtc(fromYear, 1, 1, 0, 0);
+    var end = Instant.FromUtc(toYear, 12, 31, 23, 59);
+    intervals = zone.GetZoneIntervals(start, end);
+    aliases = string.Join(", ", source.Aliases[selectedId]);
+    windowsId = source.WindowsMapping.MapZones.FirstOrDefault(mz => mz.TzdbIds.Contains(selectedId))?.WindowsId;
+
+    zoneLocation = source.ZoneLocations.FirstOrDefault(zl => zl.ZoneId == canonicalId);
+}
+}

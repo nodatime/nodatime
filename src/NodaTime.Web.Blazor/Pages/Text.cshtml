@@ -1,0 +1,69 @@
+﻿@page "/text"
+
+<h1>Text handling</h1>
+
+<p>This page allows you to experiment with text formatting and parsing patterns in Noda Time</p>
+
+<h2>Dates and times</h2>
+
+<p>Instant to format: @InstantPattern.ExtendedIso.Format(currentValue)</p>
+
+<p><button class="btn btn-primary" onclick="@FormatAll">Format all</button></p>
+
+@foreach (var value in values)
+{
+    <h3>@value.Type</h3>
+    <p>
+        Format: <input type="text" bind="@value.PatternText" />
+        Value: <input type="text" bind="@value.Value" />
+        <button class="btn btn-primary" onclick="@(args => ParseInstant(value))">Parse</button>
+    </p>
+    <p>@value.Error</p>
+}
+
+<h2>Periods, intervals and durations</h2>
+
+TBD
+
+@functions
+{
+Instant currentValue = SystemClock.Instance.GetCurrentInstant();
+
+List<ConversionValueBase> values = new List<ConversionValueBase>
+{
+new ConversionValue<Instant>(
+    "yyyyMMdd HH:mm:ss",
+    x => x, x => x,
+    InstantPattern.CreateWithInvariantCulture),
+new ConversionValue<LocalDateTime>(
+    "yyyyMMdd HH:mm:ss",
+    x => x.InUtc().LocalDateTime, x => x.InUtc().ToInstant(),
+    LocalDateTimePattern.CreateWithInvariantCulture),
+new ConversionValue<LocalDate>(
+    "yyyyMMdd",
+    x => x.InUtc().Date, x => x.AtMidnight().InUtc().ToInstant(),
+    LocalDatePattern.CreateWithInvariantCulture),
+new ConversionValue<LocalTime>(
+    "HH:mm:ss",
+    x => x.InUtc().TimeOfDay, x => new LocalDate(2000, 1, 1).At(x).InUtc().ToInstant(),
+    LocalTimePattern.CreateWithInvariantCulture),
+};
+
+private void FormatAll()
+{
+    foreach (var value in values)
+    {
+        value.Format(currentValue);
+    }
+}
+
+private void ParseInstant(ConversionValueBase values)
+{
+    var maybeNewInstant = values.Parse();
+    if (maybeNewInstant != null)
+    {
+        currentValue = maybeNewInstant.Value;
+        FormatAll();
+    }
+}
+}
