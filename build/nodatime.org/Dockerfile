@@ -1,4 +1,4 @@
-FROM gcr.io/google-appengine/aspnetcore:2.1
+FROM microsoft/dotnet:2.1-aspnetcore-runtime
 COPY . /app
 WORKDIR /app
 ENTRYPOINT ["dotnet", "NodaTime.Web.dll"]
