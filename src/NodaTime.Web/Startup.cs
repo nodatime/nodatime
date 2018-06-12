@@ -2,14 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+#if BLAZOR
 using Microsoft.AspNetCore.Blazor.Server;
+using Microsoft.AspNetCore.ResponseCompression;
+#endif
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
@@ -54,6 +56,7 @@ namespace NodaTime.Web
             services.Configure<ForwardedHeadersOptions>(
                 options => options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);
 
+#if BLAZOR
             services.AddResponseCompression(options =>
             {
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
@@ -62,6 +65,7 @@ namespace NodaTime.Web
                     WasmMediaTypeNames.Application.Wasm,
                 });
             });
+#endif
 
             if (UseGoogleCloudStorage)
             {
@@ -167,7 +171,9 @@ namespace NodaTime.Web
             // Force the set of TZDB data to be first loaded on startup.
             app.ApplicationServices.GetRequiredService<ITzdbRepository>().GetReleases();
 
+#if BLAZOR
             app.Map("/blazor", child => child.UseBlazor<NodaTime.Web.Blazor.Program>());
+#endif
         }
 
         /// Sets the Cache-Control header for static content, conditionally allowing the browser to use the content

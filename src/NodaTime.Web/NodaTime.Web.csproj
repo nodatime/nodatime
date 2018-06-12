@@ -12,13 +12,11 @@
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.4.0" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     
     <!-- Local NodaTime dependencies -->
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
     <ProjectReference Include="..\NodaTime.TzValidate.NodaDump\NodaTime.TzValidate.NodaDump.csproj" />
-    <ProjectReference Include="..\NodaTime.Web.Blazor\NodaTime.Web.Blazor.csproj" />
     
     <!-- Other dependencies -->
     <PackageReference Include="Google.Cloud.Storage.V1" Version="2.1.0" />
@@ -31,4 +29,10 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup Condition="false">
+    <ProjectReference Include="..\NodaTime.Web.Blazor\NodaTime.Web.Blazor.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.4.0" />
+  </ItemGroup>
+  
 </Project>
