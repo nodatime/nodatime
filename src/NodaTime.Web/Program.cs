@@ -25,17 +25,17 @@ namespace NodaTime.Web
             }
             else
             {
-                CreateHost().Run();
+                CreateWebHostBuilder(args).Build().Run();
             }
         }
 
-        private static IWebHost CreateHost() =>
-            WebHost.CreateDefaultBuilder()
+        private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 // Uncomment these lines if startup is failing
                 //.CaptureStartupErrors(true)
                 //.UseSetting("detailedErrors", "true")
-                .Build();
+                ;
 
         const int TestDurationSeconds = 15;
         const int ServerStartupSeconds = 5;
@@ -46,7 +46,7 @@ namespace NodaTime.Web
         {
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "smoketests");
             var cts = new CancellationTokenSource();
-            Task serverTask = CreateHost().RunAsync(cts.Token);
+            Task serverTask = CreateWebHostBuilder(new string[0]).Build().RunAsync(cts.Token);
 
             // Give it 5 seconds to come up. We probably don't need this long, but it's harmless.
             Thread.Sleep(ServerStartupSeconds * 1000);
