@@ -9,10 +9,11 @@ echo "Build and test successful. Pushing."
 
 # Commit and push
 # Ignore anything in .gitignore when adding files
-(cd $root/$commit/nodatime.org;
- git add --all -f
- git commit -a -m "Regenerate from main repo commit $commit";
- git push)
+# Temporarily disabled...
+#(cd $root/$commit/nodatime.org;
+# git add --all -f
+# git commit -a -m "Regenerate from main repo commit $commit";
+# git push)
 
 echo "Building container on Google Cloud Container Builder."
 
