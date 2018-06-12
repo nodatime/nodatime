@@ -7,6 +7,8 @@
 
 echo "Build and test successful. Pushing."
 
+echo $commit > $root/$commit/nodatime.org/wwwroot/commit.txt
+
 # Commit and push
 # Ignore anything in .gitignore when adding files
 (cd $root/$commit/nodatime.org;
