@@ -36,5 +36,8 @@ mv tmp/old_nodatime.org/.git $WEB_DIR
 # Copy the new site into place
 cp -r ../src/NodaTime.Web/bin/Release/netcoreapp2.1/publish/* $WEB_DIR
 
+# Fix up blazor.config to work in Unix
+sed -i 's/\\/\n/g' $WEB_DIR/NodaTime.Web.Blazor.blazor.config
+
 # Run a smoke test to check it still works
 (cd $WEB_DIR; dotnet NodaTime.Web.dll --smoke-test)
