@@ -13,6 +13,12 @@ fi
 
 WEB_DIR="$1"
 
+
+# Disable msbuild node reuse, in an attempt to stabilize the build.
+# The bundler/minimizer seems to have problems which *may* be related
+# to node reuse.
+export MSBUILDDISABLENODEREUSE=1
+
 # Build the API docs with docfx
 if [[ "$2" != "--skip-api" ]]
 then
