@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net461</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RootNamespace></RootNamespace>
+    <IsPackable>False</IsPackable>
+    <NoWarn>CS0649;CS0169</NoWarn>
+    
+    <!-- NUKE CONFIGURATION -->
+    <NukeVersion>0.5.3</NukeVersion>
+    <NukeCodeGeneration>False</NukeCodeGeneration>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="docfx.console" Version="2.36.2">
+      <ExcludeAssets>build</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Nuke.Common" Version="$(NukeVersion)" />
+    <PackageReference Include="Nuke.CodeGeneration" Version="$(NukeVersion)" Condition="'$(NukeCodeGeneration)' == 'True'" />
+    <PackageReference Include="GitVersion.CommandLine" Version="3.6.5" />
+    <PackageReference Include="JetBrains.dotCover.CommandLineTools" Version="2017.1.20170613.162720" />
+    <PackageReference Include="ReportGenerator" Version="2.5.10" />
+
+    <!-- MsBuild dependencies -->
+    <PackageReference Include="Microsoft.Build" Version="15.7.179" />
+    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="15.7.179" />
+
+    <!-- Roslyn dependencies -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.8.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.8.2" />
+
+    <PackageReference Include="Mono.Cecil" Version="0.10.0" />
+    <PackageReference Include="MoreLinq" Version="2.3.0" />
+    <PackageReference Include="SharpCompress" Version="0.15.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <NukeMetadata Include="**/*.json" Exclude="bin/**;obj/**" />
+    <None Remove="*.csproj.DotSettings;*.ref.*.txt" />
+  </ItemGroup>
+
+</Project>
