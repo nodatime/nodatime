@@ -39,14 +39,18 @@ Jon was born on June 19th, 1976 (Gregorian). How old is he now, in the UK time z
 LocalDate birthDate = new LocalDate(1976, 6, 19);
 DateTimeZone zone = DateTimeZoneProviders.Tzdb["Europe/London"];
 ZonedClock clock = SystemClock.Instance.InZone(zone);
-LocalDate today = clock.GetCurrentLocalDateTime().Date;
+LocalDate today = clock.GetCurrentDate();
+Console.WriteLine($"Today's date: {today:yyyy-MM-dd}");
 Period age = Period.Between(birthDate, today);
-Console.WriteLine("Jon is: {0} years, {1} months, {2} days old.",
-                  age.Years, age.Months, age.Days);
+Console.WriteLine(
+    $"Jon is: {age.Years} years, {age.Months} months, {age.Days} days old.");
 ```
 
 Note that a `using` directive for `NodaTime.Extensions` is required for this,
 as `InZone` is an extension method in `NodaTime.Extensions.ClockExtensions`.
+
+(Also note that running this recipe in Try .NET may show an old date, if the
+result is cached from a previous run. We're working on it!)
 
 How can I get to the start or end of a month?
 ====
