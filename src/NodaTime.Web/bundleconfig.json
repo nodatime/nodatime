@@ -21,7 +21,8 @@
       "wwwroot/js/foundation/foundation.topbar.js",
       "wwwroot/js/highlight.pack.js",
       "wwwroot/js/nuget-button.js",
-      "wwwroot/js/site.js"
+      "wwwroot/js/site.js",
+      "wwwroot/js/trydotnet.js"
     ],
     
     "minify": {
