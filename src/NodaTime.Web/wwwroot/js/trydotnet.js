@@ -97,14 +97,12 @@ if (document.addEventListener) {
 if (window.addEventListener) {
     window.addEventListener('message', (m) => {
         if (m.origin === editorOrigin) {
-            console.log(m);
             if (m.data.type === "RunCompleted") {
                 processRunResults(m.data);
             }
             if (m.data.type === "HostListenerReady") {
                 setupWorkspace();
                 showEditor();
-                //setCode("Console.WriteLine(SystemClock.Instance.GetCurrentInstant());");
             }
         }
     });
