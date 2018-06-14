@@ -68,7 +68,7 @@ Console.WriteLine(endOfMonth); // 2014-06-30
 Date adjusters also work with `LocalDateTime` and `OffsetDateTime` values. For example:
 
 ```csharp-trydotnet
-LocalDateTime now = new LocalDate(2014, 6, 27, 7, 14, 25);
+LocalDateTime now = new LocalDateTime(2014, 6, 27, 7, 14, 25);
 LocalDateTime startOfMonth = now.With(DateAdjusters.StartOfMonth);
 Console.WriteLine(startOfMonth); // 2014-06-01T07:14:25
 ```
@@ -80,6 +80,6 @@ Use the [`TimeAdjusters`](noda-type://NodaTime.TimeAdjusters) factory class to o
 `LocalTime`, `LocalDateTime` or `OffsetDateTime`:
 
 ```csharp-trydotnet
-LocalDateTime now = new LocalDate(2014, 6, 27, 7, 14, 25, 500);
-LocalDateTime now = now.With(TimeAdjusters.TruncateToMinute); // 2014-06-27T07:14:00
+LocalDateTime now = new LocalDateTime(2014, 6, 27, 7, 14, 25, 500);
+LocalDateTime truncated = now.With(TimeAdjusters.TruncateToMinute); // 2014-06-27T07:14:00
 ```
