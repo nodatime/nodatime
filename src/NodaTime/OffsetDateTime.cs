@@ -42,10 +42,12 @@ namespace NodaTime
         // These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
         // we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
         // should allow us to optimize memory usage too.
+        // TODO: Check that it *still* makes a surprising difference in speed.
         private readonly YearMonthDayCalendar yearMonthDayCalendar;
         // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
         // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
         // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
+        // TODO: Try composing with OffsetTime instead.
         private readonly long nanosecondsAndOffset;
 
         internal OffsetDateTime([Trusted] YearMonthDayCalendar yearMonthDayCalendar, [Trusted] long nanosecondsAndOffset)
