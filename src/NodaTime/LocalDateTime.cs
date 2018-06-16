@@ -789,7 +789,7 @@ namespace NodaTime
         /// <param name="offset">The offset to apply.</param>
         /// <returns>The result of this local date/time offset by the given amount.</returns>
         [Pure]
-        public OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime(date.YearMonthDayCalendar, time, offset);
+        public OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime(date, time, offset);
 
         /// <summary>
         /// Returns the mapping of this local date/time within <see cref="DateTimeZone.Utc"/>.
@@ -799,7 +799,7 @@ namespace NodaTime
         [Pure]
         public ZonedDateTime InUtc() =>
             // Use the internal constructors to avoid validation. We know it will be fine.
-            new ZonedDateTime(new OffsetDateTime(date.YearMonthDayCalendar, time.NanosecondOfDay), DateTimeZone.Utc);
+            new ZonedDateTime(new OffsetDateTime(date, time.NanosecondOfDay), DateTimeZone.Utc);
 
         /// <summary>
         /// Returns the mapping of this local date/time within the given <see cref="DateTimeZone" />,

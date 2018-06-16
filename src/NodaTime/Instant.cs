@@ -670,8 +670,7 @@ namespace NodaTime
         public ZonedDateTime InUtc()
         {
             // Bypass any determination of offset and arithmetic, as we know the offset is zero.
-            var ymdc = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(duration.FloorDays);
-            var offsetDateTime = new OffsetDateTime(ymdc, duration.NanosecondOfFloorDay);
+            var offsetDateTime = new OffsetDateTime(new LocalDate(duration.FloorDays), duration.NanosecondOfFloorDay);
             return new ZonedDateTime(offsetDateTime, DateTimeZone.Utc);
         }
 
