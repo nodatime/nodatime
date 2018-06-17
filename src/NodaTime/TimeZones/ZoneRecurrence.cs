@@ -88,7 +88,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public bool Equals(ZoneRecurrence other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -248,7 +248,7 @@ namespace NodaTime.TimeZones
         internal Transition NextOrFail(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             Transition? next = Next(instant, standardOffset, previousSavings);
-            if (next == null)
+            if (next is null)
             {
                 throw new InvalidOperationException(
                     $"Noda Time bug or bad data: Expected a transition later than {instant}; standard offset = {standardOffset}; previousSavings = {previousSavings}; recurrence = {this}");
@@ -262,7 +262,7 @@ namespace NodaTime.TimeZones
         internal Transition PreviousOrSameOrFail(Instant instant, Offset standardOffset, Offset previousSavings)
         {
             Transition? previous = PreviousOrSame(instant, standardOffset, previousSavings);
-            if (previous == null)
+            if (previous is null)
             {
                 throw new InvalidOperationException(
                     $"Noda Time bug or bad data: Expected a transition earlier than {instant}; standard offset = {standardOffset}; previousSavings = {previousSavings}; recurrence = {this}");

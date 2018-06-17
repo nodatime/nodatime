@@ -75,7 +75,7 @@ namespace NodaTime.TimeZones
                 int period = instant.DaysSinceEpoch >> PeriodShift;
                 int index = period & CachePeriodMask;
                 var node = instantCache[index];
-                if (node == null || node.Period != period)
+                if (node is null || node.Period != period)
                 {
                     node = HashCacheNode.CreateNode(period, map);
                     instantCache[index] = node;

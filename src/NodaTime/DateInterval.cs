@@ -84,7 +84,7 @@ namespace NodaTime
             {
                 return true;
             }
-            if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+            if (lhs is null || rhs is null)
             {
                 return false;
             }

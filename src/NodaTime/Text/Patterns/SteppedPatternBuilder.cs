@@ -131,7 +131,7 @@ namespace NodaTime.Text.Patterns
             foreach (Action<TResult, StringBuilder> formatAction in formatActions)
             {
                 IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
-                formatDelegate += postAction == null ? formatAction : postAction.BuildFormatAction(usedFields);
+                formatDelegate += postAction is null ? formatAction : postAction.BuildFormatAction(usedFields);
             }
             return new SteppedPattern(formatDelegate, formatOnly ? null : parseActions.ToArray(), bucketProvider, usedFields, sample);
         }
@@ -348,7 +348,7 @@ namespace NodaTime.Text.Patterns
             for (int i = 0; i < values.Count; i++)
             {
                 string candidate = values[i];
-                if (candidate == null || candidate.Length <= longestMatch)
+                if (candidate is null || candidate.Length <= longestMatch)
                 {
                     continue;
                 }
@@ -475,7 +475,7 @@ namespace NodaTime.Text.Patterns
                         var sampleBucket = CreateSampleBucket();
                         var templateTime = timeBucketExtractor(sampleBucket).TemplateValue;
                         var templateDate = dateBucketExtractor(sampleBucket).TemplateValue;
-                        if (dateTimeExtractor == null)
+                        if (dateTimeExtractor is null)
                         {
                             throw new InvalidPatternException(TextErrorMessages.InvalidEmbeddedPatternType);
                         }
@@ -611,11 +611,11 @@ namespace NodaTime.Text.Patterns
 
             public ParseResult<TResult> Parse(string text)
             {
-                if (parseActions == null)
+                if (parseActions is null)
                 {
                     return ParseResult<TResult>.FormatOnlyPattern;
                 }
-                if (text == null)
+                if (text is null)
                 {
                     return ParseResult<TResult>.ArgumentNull("text");
                 }

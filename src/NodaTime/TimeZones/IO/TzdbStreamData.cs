@@ -110,7 +110,7 @@ namespace NodaTime.TimeZones.IO
         // Like Preconditions.CheckNotNull, but specifically for incomplete data.
         private static T CheckNotNull<T>(T input, string name) where T : class
         {
-            if (input == null)
+            if (input is null)
             {
                 throw new InvalidNodaDataException("Incomplete TZDB data. Missing field: " + name);
             }
@@ -244,7 +244,7 @@ namespace NodaTime.TimeZones.IO
 
             private void CheckStringPoolPresence(TzdbStreamField field)
             {
-                if (stringPool == null)
+                if (stringPool is null)
                 {
                     throw new InvalidNodaDataException("String pool must be present before field " + field.Id);
                 }

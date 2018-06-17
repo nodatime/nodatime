@@ -218,7 +218,7 @@ namespace NodaTime.TimeZones.IO
                 }
                 if (value < DateTimeZoneWriter.ZoneIntervalConstants.MinValueForMinutesSinceEpoch)
                 {
-                    if (previous == null)
+                    if (previous is null)
                     {
                         throw new InvalidNodaDataException(
                             "No previous value, so can't interpret value encoded as delta-since-previous: " + value);
@@ -238,7 +238,7 @@ namespace NodaTime.TimeZones.IO
         /// <returns>The string value from the stream.</returns>
         public string ReadString()
         {
-            if (stringPool == null)
+            if (stringPool is null)
             {
                 // This will flush the buffered byte if there is one, so we don't need to worry about that
                 // when reading the actual data.

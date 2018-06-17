@@ -88,7 +88,7 @@ namespace NodaTime.Text
                     return LocalDateTimePattern.Patterns.GeneralIsoPatternImpl;
                 }
                 patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
-                if (patternText == null)
+                if (patternText is null)
                 {
                     throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternCharacter, typeof(LocalDateTime));
                 }

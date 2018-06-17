@@ -100,7 +100,7 @@ namespace NodaTime.Text
         {
             public ParseResult<Period> Parse(string text)
             {
-                if (text == null)
+                if (text is null)
                 {
                     return ParseResult<Period>.ArgumentNull("text");
                 }
@@ -209,7 +209,7 @@ namespace NodaTime.Text
             // TODO(misc): Tidy this up a *lot*.
             public ParseResult<Period> Parse(string text)
             {
-                if (text == null)
+                if (text is null)
                 {
                     return ParseResult<Period>.ArgumentNull("text");
                 }

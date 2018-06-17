@@ -15,6 +15,6 @@ namespace NodaTime.Utility
     {
         public bool Equals(T first, T second) => ReferenceEquals(first, second);
 
-        public int GetHashCode(T value) => ReferenceEquals(value, null) ? 0 : RuntimeHelpers.GetHashCode(value);
+        public int GetHashCode(T value) => value is null ? 0 : RuntimeHelpers.GetHashCode(value);
     }
 }

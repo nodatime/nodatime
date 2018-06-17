@@ -55,7 +55,7 @@ namespace NodaTime.Text
         {
             get
             {
-                if (exceptionProvider == null)
+                if (exceptionProvider is null)
                 {
                     throw new InvalidOperationException("Parse operation succeeded, so no exception is available");
                 }
@@ -74,7 +74,7 @@ namespace NodaTime.Text
         /// <returns>The result of the parsing operation if it was successful.</returns>
         public T GetValueOrThrow()
         {
-            if (exceptionProvider == null)
+            if (exceptionProvider is null)
             {
                 return value;
             }
@@ -90,7 +90,7 @@ namespace NodaTime.Text
         /// <returns>True if this parse result was successful, or false otherwise.</returns>
         public bool TryGetValue(T failureValue, out T result)
         {
-            bool success = exceptionProvider == null;
+            bool success = exceptionProvider is null;
             result = success ? value : failureValue;
             return success;
         }
@@ -102,7 +102,7 @@ namespace NodaTime.Text
         /// This returns True if and only if fetching the value with the <see cref="Value"/> property will return with no exception.
         /// </remarks>
         /// <value>true if the parse operation was successful; otherwise false.</value>
-        public bool Success => exceptionProvider == null;
+        public bool Success => exceptionProvider is null;
 
         /// <summary>
         /// Converts this result to a new target type, either by executing the given projection

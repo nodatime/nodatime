@@ -186,7 +186,7 @@ namespace NodaTime.TimeZones
             {
                 return true;
             }
-            if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+            if (x is null || y is null)
             {
                 return false;
             }
@@ -242,7 +242,7 @@ namespace NodaTime.TimeZones
                 ZoneInterval current = null;
                 foreach (var zoneInterval in zoneIntervals)
                 {
-                    if (current == null)
+                    if (current is null)
                     {
                         current = zoneInterval;
                         continue;

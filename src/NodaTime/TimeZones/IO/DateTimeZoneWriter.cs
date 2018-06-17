@@ -253,7 +253,7 @@ namespace NodaTime.TimeZones.IO
         /// <param name="value">The value to write.</param>
         public void WriteString(string value)
         {
-            if (stringPool == null)
+            if (stringPool is null)
             {
                 byte[] data = Encoding.UTF8.GetBytes(value);
                 int length = data.Length;

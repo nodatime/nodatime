@@ -61,7 +61,7 @@ namespace NodaTime.Text
             {
                 char patternCharacter = patternText[0];
                 patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
-                if (patternText == null)
+                if (patternText is null)
                 {
                     throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternCharacter, typeof(LocalDate));
                 }
