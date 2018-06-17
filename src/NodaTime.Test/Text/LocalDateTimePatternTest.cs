@@ -193,7 +193,7 @@ namespace NodaTime.Test.Text
         public void ParseFormattedStandardPattern(CultureInfo culture, string patternText)
         {
             var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime(2000, 1, 1, 0, 0));
-            if (pattern == null)
+            if (pattern is null)
             {
                 return;
             }
@@ -237,7 +237,7 @@ namespace NodaTime.Test.Text
             }
 
             var pattern = CreatePatternOrNull(patternText, culture, LocalDateTimePattern.DefaultTemplateValue);
-            if (pattern == null)
+            if (pattern is null)
             {
                 return;
             }
@@ -259,7 +259,7 @@ namespace NodaTime.Test.Text
             Calendar calendar = alwaysInvariantPattern ? CultureInfo.InvariantCulture.Calendar : culture.Calendar;
 
             var calendarSystem = BclCalendars.CalendarSystemForCalendar(calendar);
-            if (calendarSystem == null)
+            if (calendarSystem is null)
             {
                 // We can't map this calendar system correctly yet; the test would be invalid.
                 return;

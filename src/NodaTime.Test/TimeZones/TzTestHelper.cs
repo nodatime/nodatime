@@ -18,7 +18,7 @@ namespace NodaTime.Test.TimeZones
         internal static DateTimeZone Uncached(this DateTimeZone zone)
         {
             var cached = zone as CachedDateTimeZone;
-            return cached == null ? zone : cached.TimeZone;
+            return cached is null ? zone : cached.TimeZone;
         }
     }
 }

@@ -345,7 +345,7 @@ namespace NodaTime.Test
 
         private DateInterval ParseInterval(string textualInterval)
         {
-            if (textualInterval == null)
+            if (textualInterval is null)
             {
                 return null;
             }

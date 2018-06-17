@@ -264,7 +264,7 @@ namespace NodaTime.Test.Text
 
             var pattern = LocalDatePattern.Create(patternText, culture);
             var calendarSystem = BclCalendars.CalendarSystemForCalendar(culture.Calendar);
-            if (calendarSystem == null)
+            if (calendarSystem is null)
             {
                 // We can't map this calendar system correctly yet; the test would be invalid.
                 return;

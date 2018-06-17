@@ -155,8 +155,8 @@ namespace NodaTime.Test
             [EditorBrowsable(EditorBrowsableState.Never)]
             public PeriodBuilder PeriodBuilder
             {
-                get { return Period == null ? null : Period.ToBuilder(); }
-                set { Period = value == null ? null : value.Build(); }
+                get { return Period is null ? null : Period.ToBuilder(); }
+                set { Period = value is null ? null : value.Build(); }
             }
         }
 
