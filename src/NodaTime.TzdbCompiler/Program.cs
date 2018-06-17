@@ -99,7 +99,7 @@ namespace NodaTime.TzdbCompiler
                 .Where(zones => StringComparer.Ordinal.Compare(zones.TzdbVersion, targetTzdbVersion) <= 0)
                 .FirstOrDefault();
 
-            if (bestFile == null)
+            if (bestFile is null)
             {
                 throw new Exception($"No zones files suitable for version {targetTzdbVersion}. Found versions targeting: [{versions}]");
             }
@@ -121,7 +121,7 @@ namespace NodaTime.TzdbCompiler
         {
             // If we don't have an actual file, just write to an empty stream.
             // That way, while debugging, we still get to see all the data written etc.
-            if (options.OutputFileName == null)
+            if (options.OutputFileName is null)
             {
                 return new MemoryStream();
             }

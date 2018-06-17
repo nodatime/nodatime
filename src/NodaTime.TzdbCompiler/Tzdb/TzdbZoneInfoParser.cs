@@ -296,7 +296,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 default:
                     if (string.IsNullOrEmpty(keyword))
                     {
-                        if (previousZone == null)
+                        if (previousZone is null)
                         {
                             throw new InvalidDataException("Zone continuation provided with no previous zone line");
                         }

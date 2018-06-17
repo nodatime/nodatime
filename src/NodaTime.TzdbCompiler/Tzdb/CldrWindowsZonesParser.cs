@@ -42,7 +42,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         private static string FindVersion(XDocument document)
         {
             string revision = (string)document.Root.Element("version")?.Attribute("number");
-            if (revision == null)
+            if (revision is null)
             {
                 return "";
             }

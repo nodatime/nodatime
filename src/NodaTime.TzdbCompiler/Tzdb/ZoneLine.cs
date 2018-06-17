@@ -77,7 +77,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </returns>
         public bool Equals(ZoneLine other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -149,7 +149,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
         public ZoneRuleSet ResolveRules(IDictionary<string, IList<RuleLine>> allRules)
         {
-            if (Rules == null)
+            if (Rules is null)
             {
                 var name = FormatName(Offset.Zero, "");
                 return new ZoneRuleSet(name, StandardOffset, Offset.Zero, UntilYear, UntilYearOffset);
