@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
@@ -30,13 +31,25 @@ namespace NodaTime
         // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
         private readonly long nanosecondsAndOffset;
 
+        // Constructor only used in specialist cases where we know the offset will be 0.
+        internal OffsetTime([Trusted] long nanosecondOfDayZeroOffset)
+        {
+            Preconditions.DebugCheckArgument((nanosecondOfDayZeroOffset & ~NanosecondsMask) == 0, nameof(nanosecondsAndOffset),
+                "Constructor with zero offset called with non-zero offset");
+            nanosecondsAndOffset = nanosecondOfDayZeroOffset;
+        }
+
+        internal OffsetTime([Trusted] long nanosecondOfDay, [Trusted] int offsetSeconds) =>
+            nanosecondsAndOffset = nanosecondOfDay | (((long)offsetSeconds) << NanosecondsBits);
+
         /// <summary>
         /// Constructs an instance of the specified time and offset.
         /// </summary>
         /// <param name="time">The time part of the value.</param>
         /// <param name="offset">The offset part of the value.</param>
-        public OffsetTime(LocalTime time, Offset offset) =>
-            nanosecondsAndOffset = time.NanosecondOfDay | (((long)offset.Seconds) << NanosecondsBits);
+        public OffsetTime(LocalTime time, Offset offset) : this(time.NanosecondOfDay, offset.Seconds)
+        {
+        }
 
         /// <summary>
         /// Gets the time-of-day represented by this value.
@@ -49,6 +62,16 @@ namespace NodaTime
         /// <value>The offset from UTC of this value.</value>
         /// </summary>
         public Offset Offset => new Offset((int)(nanosecondsAndOffset >> NanosecondsBits));
+
+        /// <summary>
+        /// Returns the number of seconds in the offset, without going via an Offset.
+        /// </summary>
+        internal int OffsetSeconds => (int)(nanosecondsAndOffset >> NanosecondsBits);
+
+        /// <summary>
+        /// Returns the number of nanoseconds in the offset, without going via an Offset.
+        /// </summary>
+        internal long OffsetNanoseconds => unchecked(nanosecondsAndOffset >> NanosecondsBits) * NanosecondsPerSecond;
 
         /// <summary>
         /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.

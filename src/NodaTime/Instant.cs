@@ -670,7 +670,9 @@ namespace NodaTime
         public ZonedDateTime InUtc()
         {
             // Bypass any determination of offset and arithmetic, as we know the offset is zero.
-            var offsetDateTime = new OffsetDateTime(new LocalDate(duration.FloorDays), duration.NanosecondOfFloorDay);
+            var offsetDateTime = new OffsetDateTime(
+                new LocalDate(duration.FloorDays),
+                new OffsetTime(nanosecondOfDayZeroOffset: duration.NanosecondOfFloorDay));
             return new ZonedDateTime(offsetDateTime, DateTimeZone.Utc);
         }
 
