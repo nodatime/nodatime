@@ -83,7 +83,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </returns>
         internal bool IsTransitionFrom(ZoneTransition other)
         {
-            if (other == null)
+            if (other is null)
             {
                 return true;
             }

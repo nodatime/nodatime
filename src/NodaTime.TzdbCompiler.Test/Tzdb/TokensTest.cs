@@ -61,7 +61,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             {
                 Assert.True(tokens.HasNextToken, "Not enough items in enumeration");
                 var actual = tokens.NextToken(i.ToString());
-                if (actual == null)
+                if (actual is null)
                 {
                     Assert.Fail("The enumeration item at index [" + i + "] is null");
                 }

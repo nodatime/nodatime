@@ -63,7 +63,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
         /// </returns>
-        public bool Equals(RuleLine other) => other != null && Equals(recurrence, other.recurrence) && Equals(daylightSavingsIndicator, other.daylightSavingsIndicator);
+        public bool Equals(RuleLine other) => !(other is null) && Equals(recurrence, other.recurrence) && Equals(daylightSavingsIndicator, other.daylightSavingsIndicator);
         #endregion
 
         #region Operator overloads
@@ -74,7 +74,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
         public static bool operator ==(RuleLine left, RuleLine right) =>        
-            ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.Equals(right);
+            left is null ? right is null : left.Equals(right);
 
         /// <summary>
         ///   Implements the operator !=.
@@ -96,7 +96,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         public IEnumerable<ZoneRecurrence> GetRecurrences(ZoneLine zone)
         {
             string name = zone.FormatName(recurrence.Savings, daylightSavingsIndicator);
-            if (Type == null)
+            if (Type is null)
             {
                 yield return recurrence.WithName(name);
             }

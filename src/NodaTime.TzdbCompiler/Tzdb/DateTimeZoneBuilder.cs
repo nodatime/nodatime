@@ -48,7 +48,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
             // Finally, construct the time zone itself. Usually, we'll end up with a
             // PrecalculatedDateTimeZone here. 
-            if (zoneIntervals.Count == 1 && tailZone == null)
+            if (zoneIntervals.Count == 1 && tailZone is null)
             {
                 return new FixedDateTimeZone(id, zoneIntervals[0].WallOffset, zoneIntervals[0].Name);
             }
@@ -101,7 +101,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             //
             // If we don't have a zone interval at all, we're starting at the start of
             // time, so there definitely aren't any preceding rules.
-            var firstRule = lastZoneInterval == null ? null :
+            var firstRule = lastZoneInterval is null ? null :
                 activeRules
                     .Select(rule => new { rule, prev = rule.PreviousOrSame(start, lastZoneInterval.StandardOffset, lastZoneInterval.Savings) })
                     .Where(pair => pair.prev != null)
@@ -143,7 +143,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     var nextTransition = rule.Next(previousTransition.Instant, standardOffset, previousTransition.Savings);
                     // Once a rule is no longer active, remove it from the list. That way we can tell
                     // when we can create a tail zone.
-                    if (nextTransition == null)
+                    if (nextTransition is null)
                     {
                         activeRules.RemoveAt(i);
                         i--;
@@ -154,13 +154,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     {
                         continue;
                     }
-                    if (bestTransition == null || zoneTransition.Instant <= bestTransition.Instant)
+                    if (bestTransition is null || zoneTransition.Instant <= bestTransition.Instant)
                     {
                         bestTransition = zoneTransition;
                     }
                 }
                 Instant currentUpperBound = ruleSet.GetUpperLimit(previousTransition.Savings);
-                if (bestTransition == null || bestTransition.Instant >= currentUpperBound)
+                if (bestTransition is null || bestTransition.Instant >= currentUpperBound)
                 {
                     // No more transitions to find. (We may have run out of rules, or they may be beyond where this rule set expires.)
                     // Add a final interval leading up to the upper bound of the rule set, unless the previous transition took us up to
