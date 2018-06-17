@@ -31,7 +31,7 @@ namespace NodaTime.Test.Calendars
             }
             // Try to initialize by reflection instead...
             Type type = typeof(Calendar).GetTypeInfo().Assembly.GetType($"System.Globalization.{name}");
-            if (type == null)
+            if (type is null)
             {
                 // We can start being defensive if/when we try to test on a platform where
                 // this becomes a problem.

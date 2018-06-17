@@ -59,7 +59,7 @@ namespace NodaTime.Test.TimeZones
                 // See https://bugzilla.xamarin.com/show_bug.cgi?id=11817
                 Assert.Ignore("Test requires ability to fetch BCL local time zone");
             }
-            if (local == null)
+            if (local is null)
             {
                 // https://github.com/nodatime/nodatime/issues/235#issuecomment-80932079
                 Assert.Ignore("Test requires ability to fetch BCL local time zone (was null)");

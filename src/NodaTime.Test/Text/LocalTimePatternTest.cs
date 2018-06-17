@@ -325,7 +325,7 @@ namespace NodaTime.Test.Text
         [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclLongTimePatternIsValidNodaPattern(CultureInfo culture)
         {
-            if (culture == null)
+            if (culture is null)
             {
                 return;
             }

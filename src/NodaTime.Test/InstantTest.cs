@@ -433,10 +433,10 @@ namespace NodaTime.Test
         [TestCase(2, 1, 3)]
         public void SafePlus_NearStartOfTime(int? initialOffset, int offsetToAdd, int? finalOffset)
         {
-            var start = initialOffset == null
+            var start = initialOffset is null
                 ? Instant.BeforeMinValue
                 : Instant.MinValue + Duration.FromHours(initialOffset.Value);
-            var expected = finalOffset == null
+            var expected = finalOffset is null
                 ? LocalInstant.BeforeMinValue
                 : Instant.MinValue.Plus(Offset.FromHours(finalOffset.Value));
             var actual = start.SafePlus(Offset.FromHours(offsetToAdd));
@@ -453,10 +453,10 @@ namespace NodaTime.Test
         [TestCase(-2, -1, -3)]
         public void SafePlus_NearEndOfTime(int? initialOffset, int offsetToAdd, int? finalOffset)
         {
-            var start = initialOffset == null
+            var start = initialOffset is null
                 ? Instant.AfterMaxValue
                 : Instant.MaxValue + Duration.FromHours(initialOffset.Value);
-            var expected = finalOffset == null
+            var expected = finalOffset is null
                 ? LocalInstant.AfterMaxValue
                 : Instant.MaxValue.Plus(Offset.FromHours(finalOffset.Value));
             var actual = start.SafePlus(Offset.FromHours(offsetToAdd));

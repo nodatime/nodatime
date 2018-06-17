@@ -48,7 +48,7 @@ namespace NodaTime.Test.TimeZones
         {
             var expected = !TestHelper.IsRunningOnDotNetCoreUnix;
             var rules = zone.GetAdjustmentRules();
-            if (rules == null || rules.Length == 0)
+            if (rules is null || rules.Length == 0)
             {
                 return;
             }
