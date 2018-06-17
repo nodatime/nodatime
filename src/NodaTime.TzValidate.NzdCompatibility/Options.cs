@@ -37,7 +37,7 @@ namespace NodaTime.TzValidate.NzdCompatibility
         [Option(null, "noabbr", Required = false, HelpText = "Disable output of abbreviations")]
         public bool DisableAbbreviations { get; set; }
 
-        internal Instant Start => FromYear == null ? Instant.FromUtc(1, 1, 1, 0, 0) : Instant.FromUtc(FromYear.Value, 1, 1, 0, 0);
+        internal Instant Start => FromYear is null ? Instant.FromUtc(1, 1, 1, 0, 0) : Instant.FromUtc(FromYear.Value, 1, 1, 0, 0);
         internal Instant End => Instant.FromUtc(ToYear, 1, 1, 0, 0);
 
         [HelpOption(HelpText = "Display this help screen.")]
