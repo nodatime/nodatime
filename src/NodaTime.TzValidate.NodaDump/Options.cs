@@ -40,7 +40,7 @@ namespace NodaTime.TzValidate.NodaDump
         [Option(null, "wallchangeonly", Required = false, HelpText = "Only include changes which affect the wall offset")]
         public bool WallChangeOnly { get; set; }
 
-        internal Instant Start => FromYear == null ? Instant.MinValue : Instant.FromUtc(FromYear.Value, 1, 1, 0, 0);
+        internal Instant Start => FromYear is null ? Instant.MinValue : Instant.FromUtc(FromYear.Value, 1, 1, 0, 0);
         internal Instant End => Instant.FromUtc(ToYear, 1, 1, 0, 0);
 
         [HelpOption(HelpText = "Display this help screen.")]
