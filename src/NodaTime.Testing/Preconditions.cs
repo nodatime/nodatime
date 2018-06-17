@@ -19,7 +19,7 @@ namespace NodaTime.Testing
         /// </summary>
         internal static T CheckNotNull<T>(T argument, string paramName) where T : class
         {
-            if (argument == null)
+            if (argument is null)
             {
                 throw new ArgumentNullException(paramName);
             }
