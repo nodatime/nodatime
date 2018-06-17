@@ -30,7 +30,7 @@ namespace NodaTime.TzValidate.NzdCompatibility
             var dumper = new ZoneDumper(source, options);
             try
             {
-                using (var writer = options.OutputFile == null ? Console.Out : File.CreateText(options.OutputFile))
+                using (var writer = options.OutputFile is null ? Console.Out : File.CreateText(options.OutputFile))
                 {
                     dumper.Dump(writer);
                 }
