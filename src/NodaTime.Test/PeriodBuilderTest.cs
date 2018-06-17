@@ -155,22 +155,16 @@ namespace NodaTime.Test
             [EditorBrowsable(EditorBrowsableState.Never)]
             public PeriodBuilder PeriodBuilder
             {
-                get { return Period is null ? null : Period.ToBuilder(); }
-                set { Period = value is null ? null : value.Build(); }
+                get => Period?.ToBuilder();
+                set => Period = value?.Build();
             }
         }
 
         private class BuilderEqualityComparer : IEqualityComparer<PeriodBuilder>
         {
-            public bool Equals(PeriodBuilder x, PeriodBuilder y)
-            {
-                return x.Build().Equals(y.Build());
-            }
+            public bool Equals(PeriodBuilder x, PeriodBuilder y) => x.Build().Equals(y.Build());
 
-            public int GetHashCode(PeriodBuilder obj)
-            {
-                return obj.Build().GetHashCode();
-            }
+            public int GetHashCode(PeriodBuilder obj) => obj.Build().GetHashCode();
         }
 
         private static void Call(object ignored) {}

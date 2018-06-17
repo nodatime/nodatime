@@ -74,7 +74,7 @@ namespace NodaTime
             string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}", Year, Month, Day);
 
         internal YearMonthDayCalendar WithCalendar([CanBeNull] CalendarSystem calendar) =>
-            new YearMonthDayCalendar(value, calendar is null ? 0 : calendar.Ordinal);
+            new YearMonthDayCalendar(value, calendar?.Ordinal ?? 0);
 
         internal YearMonthDayCalendar WithCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
             new YearMonthDayCalendar(value, calendarOrdinal);
