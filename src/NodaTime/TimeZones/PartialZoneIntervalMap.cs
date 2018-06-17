@@ -102,7 +102,7 @@ namespace NodaTime.TimeZones
             PartialZoneIntervalMap current = null;
             foreach (var next in maps)
             {
-                if (current == null)
+                if (current is null)
                 {
                     current = next;
                     Preconditions.DebugCheckArgument(current.Start == Instant.BeforeMinValue, nameof(maps), "First partial map must start at the beginning of time");

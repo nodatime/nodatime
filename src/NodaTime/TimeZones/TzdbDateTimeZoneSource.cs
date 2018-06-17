@@ -175,9 +175,9 @@ namespace NodaTime.TimeZones
                 .ToLookup(pair => pair.Value, pair => pair.Key);
             version = source.TzdbVersion + " (mapping: " + source.WindowsMapping.Version + ")";
             var originalZoneLocations = source.ZoneLocations;
-            ZoneLocations = originalZoneLocations == null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
+            ZoneLocations = originalZoneLocations is null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
             var originalZone1970Locations = source.Zone1970Locations;
-            Zone1970Locations = originalZone1970Locations == null ? null : new ReadOnlyCollection<TzdbZone1970Location>(originalZone1970Locations);
+            Zone1970Locations = originalZone1970Locations is null ? null : new ReadOnlyCollection<TzdbZone1970Location>(originalZone1970Locations);
         }
 
         /// <inheritdoc />
@@ -201,7 +201,7 @@ namespace NodaTime.TimeZones
         internal string MapTimeZoneInfoId([CanBeNull] TimeZoneInfo timeZone)
         {
             // Unusual, but can happen in some Mono installations.
-            if (timeZone == null)
+            if (timeZone is null)
             {
                 return null;
             }

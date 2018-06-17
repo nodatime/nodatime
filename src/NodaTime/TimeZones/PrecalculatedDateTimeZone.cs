@@ -134,7 +134,7 @@ namespace NodaTime.TimeZones
             writer.WriteZoneIntervalTransition(previous, tailZoneStart);
             // We could just check whether we've got to the end of the stream, but this
             // feels slightly safer.
-            writer.WriteByte((byte) (tailZone == null ? 0 : 1));
+            writer.WriteByte((byte) (tailZone is null ? 0 : 1));
             if (tailZone != null)
             {
                 // This is the only kind of zone we support in the new format. Enforce that...

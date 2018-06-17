@@ -264,7 +264,7 @@ namespace NodaTime.TimeZones
         [DebuggerStepThrough]
         public bool Equals(ZoneInterval other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }

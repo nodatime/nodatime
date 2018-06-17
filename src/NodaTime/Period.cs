@@ -891,7 +891,7 @@ namespace NodaTime
                 {
                     return true;
                 }
-                if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+                if (x is null || y is null)
                 {
                     return false;
                 }
@@ -917,11 +917,11 @@ namespace NodaTime
                 {
                     return 0;
                 }
-                if (x == null)
+                if (x is null)
                 {
                     return -1;
                 }
-                if (y == null)
+                if (y is null)
                 {
                     return 1;
                 }

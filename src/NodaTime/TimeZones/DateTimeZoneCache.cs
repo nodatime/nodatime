@@ -54,12 +54,12 @@ namespace NodaTime.TimeZones
         {
             this.source = Preconditions.CheckNotNull(source, nameof(source));
             this.VersionId = source.VersionId;
-            if (VersionId == null)
+            if (VersionId is null)
             {
                 throw new InvalidDateTimeZoneSourceException("Source-returned version ID was null");
             }
             var providerIds = source.GetIds();
-            if (providerIds == null)
+            if (providerIds is null)
             {
                 throw new InvalidDateTimeZoneSourceException("Source-returned ID sequence was null");
             }
@@ -69,7 +69,7 @@ namespace NodaTime.TimeZones
             // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
             foreach (string id in Ids)
             {
-                if (id == null)
+                if (id is null)
                 {
                     throw new InvalidDateTimeZoneSourceException("Source-returned ID sequence contained a null reference");
                 }
@@ -82,7 +82,7 @@ namespace NodaTime.TimeZones
         public DateTimeZone GetSystemDefault()
         {
             string id = source.GetSystemDefaultId();
-            if (id == null)
+            if (id is null)
             {
                 throw new DateTimeZoneNotFoundException($"System default time zone is unknown to source {VersionId}");
             }
@@ -104,10 +104,10 @@ namespace NodaTime.TimeZones
                 {
                     return null;
                 }
-                if (zone == null)
+                if (zone is null)
                 {
                     zone = source.ForId(id);
-                    if (zone == null)
+                    if (zone is null)
                     {
                         throw new InvalidDateTimeZoneSourceException(
                             $"Time zone {id} is supported by source {VersionId} but not returned");
@@ -124,7 +124,7 @@ namespace NodaTime.TimeZones
             get
             {
                 var zone = GetZoneOrNull(id);
-                if (zone == null)
+                if (zone is null)
                 {
                     throw new DateTimeZoneNotFoundException($"Time zone {id} is unknown to source {VersionId}");
                 }

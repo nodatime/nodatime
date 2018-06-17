@@ -91,7 +91,7 @@ namespace NodaTime.Text
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,
                 () => new ZonedDateTimeParseBucket(templateValue, resolver, zoneProvider));
-            if (zoneProvider == null || resolver == null)
+            if (zoneProvider is null || resolver is null)
             {
                 patternBuilder.SetFormatOnly();
             }
@@ -149,7 +149,7 @@ namespace NodaTime.Text
             {
                 DateTimeZone zone = TryParseFixedZone(value) ?? TryParseProviderZone(value);
 
-                if (zone == null)
+                if (zone is null)
                 {
                     return ParseResult<ZonedDateTime>.NoMatchingZoneId(value);
                 }

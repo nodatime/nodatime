@@ -20,7 +20,7 @@ namespace NodaTime.Utility
         [ContractAnnotation("argument:null => halt")]
         internal static T CheckNotNull<T>(T argument, [InvokerParameterName] string paramName) where T : class
         {
-            if (argument == null)
+            if (argument is null)
             {
                 throw new ArgumentNullException(paramName);
             }
@@ -36,7 +36,7 @@ namespace NodaTime.Utility
         internal static void DebugCheckNotNull<T>(T argument, [InvokerParameterName] string paramName) where T : class
         {
 #if DEBUG
-            if (argument == null)
+            if (argument is null)
             {
                 throw new DebugPreconditionException($"{paramName} is null");
             }

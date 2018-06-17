@@ -152,7 +152,7 @@ namespace NodaTime.TimeZones
         /// </returns>
         public bool Equals(ZoneYearOffset other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }

@@ -215,7 +215,7 @@ namespace NodaTime.Globalization
         {
             lock (fieldLock)
             {
-                if (field == null)
+                if (field is null)
                 {
                     field = new FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
                 }
@@ -449,7 +449,7 @@ namespace NodaTime.Globalization
                 string pipeDelimited = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, cultureInfo);
                 string primaryName;
                 string[] allNames;
-                if (pipeDelimited == null)
+                if (pipeDelimited is null)
                 {
                     allNames = new string[0];
                     primaryName = "";
