@@ -32,7 +32,7 @@ namespace NodaTime.TzValidate.NodaDump
             var dumper = new ZoneDumper(source, options);
             try
             {
-                using (var writer = options.OutputFile == null ? Console.Out : File.CreateText(options.OutputFile))
+                using (var writer = options.OutputFile is null ? Console.Out : File.CreateText(options.OutputFile))
                 {
                     dumper.Dump(writer);
                 }
@@ -48,7 +48,7 @@ namespace NodaTime.TzValidate.NodaDump
 
         private static TzdbDateTimeZoneSource LoadSource(string source)
         {
-            if (source == null)
+            if (source is null)
             {
                 return TzdbDateTimeZoneSource.Default;
             }

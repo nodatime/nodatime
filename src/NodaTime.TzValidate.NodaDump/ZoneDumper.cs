@@ -48,7 +48,7 @@ namespace NodaTime.TzValidate.NodaDump
                     throw new UserErrorException("Cannot use hash option with a single zone ID");
                 }
                 var zone = zones.FirstOrDefault(z => z.Id == options.ZoneId);
-                if (zone == null)
+                if (zone is null)
                 {
                     throw new UserErrorException($"Unknown zone ID: {options.ZoneId}");
                 }
