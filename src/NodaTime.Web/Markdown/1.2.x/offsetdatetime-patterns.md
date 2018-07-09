@@ -14,4 +14,4 @@ Custom Patterns
 
 The custom format patterns for the local date and time parts of the value are the same as the [custom patterns for `LocalDateTime`](localdatetime-patterns). There is an additional specifier for the offset.
 
-The "o" specifier must always be followed by a [pattern for `Offset`](offset-patterns) within angle brackets. The pattern may be a standard pattern or a custom pattern. For example, a pattern of "yyyy-MM-dd HH:mm:ss o&lt;G&gt;" might produce output of "2013-07-17 06:20:35 Z" or "2013-07-17 07:20:35 +01:00".
+The "o" specifier must always be followed by a [pattern for `Offset`](offset-patterns) within angle brackets. The pattern may be a standard pattern or a custom pattern. For example, a pattern of "yyyy-MM-dd HH:mm:ss o&lt;G&gt;" might produce output of "2013-07-17 06:20:35 Z" or "2013-07-17 07:20:35 +01".
