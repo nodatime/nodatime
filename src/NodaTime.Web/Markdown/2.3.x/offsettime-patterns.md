@@ -16,6 +16,6 @@ Custom Patterns
 The custom format patterns for the local time part of the value are the same as the [custom patterns for `LocalTime`](localtime-patterns).
 
 There is an additional specifier for the offset.
-The "o" specifier must always be followed by a [pattern for `Offset`](offset-patterns) within angle brackets. The pattern may be a standard pattern or a custom pattern. For example, a pattern of `HH:mm o<G>` might produce output of "16:23 Z" or "16:23 +01:00".
+The "o" specifier must always be followed by a [pattern for `Offset`](offset-patterns) within angle brackets. The pattern may be a standard pattern or a custom pattern. For example, a pattern of `HH:mm o<G>` might produce output of "16:23 Z" or "16:23 +01".
 
 To use culture-specific standard time patterns in a custom `OffsetTime` pattern, use the "l" specifier, followed by a [pattern for `LocalTime`](localtime-patterns) within angle brackets. The pattern may be a standard pattern or a custom pattern. For example, a pattern of `l<T> o<+HH:mm>` might produce output of "16:23:52 +01:00".
