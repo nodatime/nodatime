@@ -4,6 +4,7 @@ metadata:
   name: nodatime
   annotations:
     kubernetes.io/ingress.global-static-ip-name: "nodatime"
+    ingress.gcp.kubernetes.io/pre-shared-cert: "gke-nodatime-org"
 spec:
   backend:
     serviceName: nodatime
