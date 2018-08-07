@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
+    <UseBlazor>false</UseBlazor>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
     <LangVersion>latest</LangVersion>
+    <DefineConstants Condition="$(UseBlazor)">BLAZOR</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,9 +32,9 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition="false">
+  <ItemGroup Condition="$(UseBlazor)">
     <ProjectReference Include="..\NodaTime.Web.Blazor\NodaTime.Web.Blazor.csproj" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.5.1" />
   </ItemGroup>
   
 </Project>
