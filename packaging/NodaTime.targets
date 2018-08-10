@@ -9,7 +9,7 @@
             this .targets file is installed next to the assembly,
             so we do not have to figure out any versions or paths here ourselves
           -->
-          <HintPath>$(MSBuildThisFileDirectory)..\lib\net45\NodaTime.dll</HintPath>
+          <HintPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\NodaTime.dll</HintPath>
         </Reference>
         <Reference Include="System.Xml" />
         <Reference Include="System.Numerics" />
