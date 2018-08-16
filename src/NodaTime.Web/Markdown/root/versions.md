@@ -4,6 +4,9 @@ User-visible changes from 1.0.0-beta1 onwards. See the
 [project repository](https://github.com/nodatime/nodatime) for more
 details.
 
+See the [end of this page](#tzdb-updates) for the policy on which
+versions receive patch updates for TZDB releases.
+
 ## 2.3.0, released 2018-05-19 with tzdb 2018e
 
 New features:
@@ -708,3 +711,16 @@ Bug fixes:
 ## 1.0.0-beta1, released 2012-04-12 with tzdb 2012c
 
 - Initial beta release
+
+# <a id="tzdb-updates"></a>Update policy for time zone data
+
+New time zone data is released by IANA as required. The latest data
+is always available via the Noda Time web site as described in the
+[user guide](/userguide/tzdb). Additionally, NuGet packages are
+updated with a patch release to include the latest data.
+
+The latest minor release for each major release is always updated.
+Additionally, if the latest minor release is less than 6 months old, the
+previous minor release is also updated. In other words, if you check
+once every 6 months to make sure you're on the latest minor release,
+you should always get patch releases containing TZDB updates.
