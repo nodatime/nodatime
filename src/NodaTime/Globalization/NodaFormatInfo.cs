@@ -13,6 +13,8 @@ using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
 using NodaTime.Annotations;
+using System.Threading;
+using System.Collections.Concurrent;
 
 namespace NodaTime.Globalization
 {
@@ -38,8 +40,9 @@ namespace NodaTime.Globalization
         private static readonly string[] ShortInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.Clone();
         private static readonly string[] LongInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Clone();
 
-        #region Patterns
         private readonly object fieldLock = new object();
+
+        #region Patterns
         private FixedFormatInfoPatternParser<Duration> durationPatternParser;
         private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
         private FixedFormatInfoPatternParser<Instant> instantPatternParser;
@@ -73,7 +76,7 @@ namespace NodaTime.Globalization
         private IList<string> shortMonthGenitiveNames;
         private IList<string> shortDayNames;
 
-        private readonly Dictionary<Era, EraDescription> eraDescriptions;
+        private readonly ConcurrentDictionary<Era, EraDescription> eraDescriptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class based solely
@@ -100,7 +103,7 @@ namespace NodaTime.Globalization
             Preconditions.CheckNotNull(dateTimeFormat, nameof(dateTimeFormat));
             CultureInfo = cultureInfo;
             DateTimeFormat = dateTimeFormat;
-            eraDescriptions = new Dictionary<Era, EraDescription>();
+            eraDescriptions = new ConcurrentDictionary<Era, EraDescription>();
         }
 
         private void EnsureMonthsInitialized()
@@ -215,9 +218,20 @@ namespace NodaTime.Globalization
         {
             lock (fieldLock)
             {
-                if (field is null)
+                if (field != null)
                 {
-                    field = new FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
+                    return field;
+                }
+            }
+            // Construct the cache outside the lock to avoid possible deadlocks. The locally constructed
+            // version is ignored if another thread has set the field in-between: this returns a consistent result,
+            // but can occasionally perform redundant work.
+            var localConstruction = new FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
+            lock (fieldLock)
+            {
+                if (field == null)
+                {
+                    field = localConstruction;
                 }
                 return field;
             }
@@ -322,18 +336,7 @@ namespace NodaTime.Globalization
             return GetEraDescription(era).PrimaryName;
         }
 
-        private EraDescription GetEraDescription(Era era)
-        {
-            lock (eraDescriptions)
-            {
-                if (!eraDescriptions.TryGetValue(era, out EraDescription ret))
-                {
-                    ret = EraDescription.ForEra(era, CultureInfo);
-                    eraDescriptions[era] = ret;
-                }
-                return ret;
-            }
-        }
+        private EraDescription GetEraDescription(Era era) => eraDescriptions.GetOrAdd(era, key => EraDescription.ForEra(key, CultureInfo));
 
         /// <summary>
         /// Gets the <see cref="NodaFormatInfo" /> object for the current thread.
