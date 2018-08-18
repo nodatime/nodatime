@@ -8,6 +8,7 @@ using NodaTime.TimeZones.Cldr;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -221,25 +222,19 @@ namespace NodaTime.TimeZones
             return GuessZoneIdByTransitions(timeZone);
         }
 
-        private readonly Dictionary<string, string> guesses = new Dictionary<string, string>();
+        private readonly ConcurrentDictionary<string, string> guesses = new ConcurrentDictionary<string, string>();
 
         // Cache around GuessZoneIdByTransitionsUncached
         private string GuessZoneIdByTransitions(TimeZoneInfo zone)
         {
-            lock (guesses)
+            // FIXME: Stop using StandardName! (We have Id now...)
+            return guesses.GetOrAdd(zone.StandardName, _ =>
             {
-                // FIXME: Stop using StandardName! (We have Id now...)
-                if (guesses.TryGetValue(zone.StandardName, out string cached))
-                {
-                    return cached;
-                }
                 // Build the list of candidates here instead of within the method, so that
                 // tests can pass in the same list on each iteration.
                 var candidates = CanonicalIdMap.Values.Select(ForId).ToList();
-                string guess = GuessZoneIdByTransitionsUncached(zone, candidates);
-                guesses[zone.StandardName] = guess;
-                return guess;
-            }
+                return GuessZoneIdByTransitionsUncached(zone, candidates);
+            });
         }
 
         /// <summary>
