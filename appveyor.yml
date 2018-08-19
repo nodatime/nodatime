@@ -15,7 +15,6 @@ environment:
 
 # Perform the build.
 build_script:
-  - dotnet --info
   - bash build/appveyor.sh
   - choco install codecov
   - codecov -f coverage/coverage.xml

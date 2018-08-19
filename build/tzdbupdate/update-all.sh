@@ -19,7 +19,7 @@ rm -rf tmp-nuget
 mkdir tmp-gcs
 mkdir tmp-nuget
 
-for version in 1.3 1.4 2.0 2.1 2.2 2.3
+for version in 1.3 1.4 2.0 2.1 2.2 2.3 2.4
 do
   echo "Updating ${version}"
   ./update-${version}.sh $1

@@ -7,6 +7,14 @@ details.
 See the [end of this page](#tzdb-updates) for the policy on which
 versions receive patch updates for TZDB releases.
 
+## 2.4.0, released 2018-08-19 with tzdb 2018e
+
+- The NuGet package explicitly supports .NET Standard 2.0 now. This
+  uses the same build as for .NET Standard 1.3 (no support for BclDateTimeZone)
+  but gives a better installation experience when using a platform supporting it.
+  When targeting the full .NET Framework, the .NET 4.5 build will still be picked up.
+- Fixed [issue 1193], a rare but nasty deadlock due to type initialization
+
 ## 2.3.0, released 2018-05-19 with tzdb 2018e
 
 New features:

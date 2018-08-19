@@ -1,0 +1,30 @@
+﻿{
+  "name": "2.4.x",
+  "parent": "2.3.x",
+  "categories": [
+    {
+      "title": "Introduction",
+      "pageIds": [ "index", "rationale", "installation" ]
+    },
+    {
+      "title": "Core",
+      "pageIds": [ "concepts", "type-choices", "core-types", "recipes", "design", "migration-to-2" ]
+    },
+    {
+      "title": "Text",
+      "pageIds": [ "text", "duration-patterns", "offset-patterns", "instant-patterns", "localtime-patterns",
+                   "localdate-patterns", "localdatetime-patterns", "offsetdatetime-patterns",
+                   "zoneddatetime-patterns", "period-patterns",
+                   "offsetdate-patterns", "offsettime-patterns", "annualdate-patterns" ]
+    },
+    {
+      "title": "Advanced",
+      "pageIds": [ "arithmetic", "range", "bcl-conversions", "serialization", "calendars", "weekyears", "threading", "trivia" ]
+    },
+    {
+      "title": "Library",
+      "pageIds": [ "testing", "tzdb", "mono", "limitations", "roadmap" ]
+    }
+  ],
+  "resources": [ "conversions.png" ]
+}
