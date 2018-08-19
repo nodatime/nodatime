@@ -1,0 +1,22 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "NodaTime/*.csproj",
+            "NodaTime.Serialization.JsonNet/*.csproj",
+            "NodaTime.Testing/*.csproj"
+          ],
+          "cwd": "src",
+          "exclude": [ "**/bin/**", "**/obj/**" ]
+        }
+      ],
+      "properties": {
+        "TargetFramework": "net45"
+      },
+      "dest": "api",
+      "shouldSkipMarkup": true
+    }
+  ]
+}

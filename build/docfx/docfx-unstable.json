@@ -19,6 +19,7 @@
   "build": {
     "content": [
       { "version": "unstable", "files": [ "**/*.yml", "api/*.md" ], "src": "obj/unstable", "dest": "unstable" },
+      { "version": "2.4.x", "files": [ "**/*.yml", "api/*.md" ], "src": "obj/2.4.x", "dest": "2.4.x" },
       { "version": "2.3.x", "files": [ "**/*.yml", "api/*.md" ], "src": "obj/2.3.x", "dest": "2.3.x" },
       { "version": "2.2.x", "files": [ "**/*.yml", "api/*.md" ], "src": "obj/2.2.x", "dest": "2.2.x" },
       { "version": "2.1.x", "files": [ "**/*.yml", "api/*.md" ], "src": "obj/2.1.x", "dest": "2.1.x" },
@@ -41,6 +42,7 @@
     ],
     "overwrite": [
       { "version": "unstable", "files": [ "obj/unstable/overwrite/*.md" ] },
+      { "version": "2.4.x", "files": [ "obj/2.4.x/overwrite/*.md" ] },
       { "version": "2.3.x", "files": [ "obj/2.3.x/overwrite/*.md" ] },
       { "version": "2.2.x", "files": [ "obj/2.2.x/overwrite/*.md" ] },
       { "version": "2.1.x", "files": [ "obj/2.1.x/overwrite/*.md" ] },
