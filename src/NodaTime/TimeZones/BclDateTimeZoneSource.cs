@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
 using JetBrains.Annotations;
 using NodaTime.Annotations;
 using System;
