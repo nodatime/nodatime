@@ -6,7 +6,7 @@ using System;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
 // We *could* support this in netstandard, but we never did with the PCL
 // build, and we haven't had any reports of problems. We'll leave it in for
 // net45 for backwards compatibility, and can reintroduce it if necessary.

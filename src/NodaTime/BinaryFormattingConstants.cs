@@ -4,7 +4,7 @@
 
 namespace NodaTime
 {
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
     /// <summary>
     /// Names used by binary formatting, to make it easier to avoid any collisions.
     /// </summary>

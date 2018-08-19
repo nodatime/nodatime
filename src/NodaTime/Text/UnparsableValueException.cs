@@ -4,7 +4,7 @@
 
 using System;
 using NodaTime.Annotations;
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
 using System.Runtime.Serialization;
 #endif
 
@@ -16,7 +16,7 @@ namespace NodaTime.Text
     /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
     /// See the thread safety section of the user guide for more information.
     /// </threadsafety>
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
     [Serializable]
 #endif
     [Mutable] // Exception is Mutable
@@ -37,7 +37,7 @@ namespace NodaTime.Text
             : base(message)
         {
         }
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
         /// <summary>
         /// Creates a new UnparsableValueException from the given serialization information.
         /// </summary>

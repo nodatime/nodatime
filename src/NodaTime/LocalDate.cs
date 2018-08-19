@@ -32,11 +32,11 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
     [Serializable]
 #endif
     public struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IComparable, IFormattable, IXmlSerializable
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
         , ISerializable
 #endif
     {
@@ -855,7 +855,7 @@ namespace NodaTime
         }
         #endregion
 
-#if !NETSTANDARD1_3
+#if !NETSTANDARD
         #region Binary serialization
         /// <summary>
         /// Private constructor only present for serialization.
