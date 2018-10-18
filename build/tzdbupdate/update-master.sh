@@ -22,7 +22,7 @@ declare -r WWWDIR=$SRCDIR/NodaTime.Web/wwwroot
 dotnet restore -v quiet $SRCDIR/NodaTime-All.sln
 dotnet build $SRCDIR/NodaTime-All.sln
 
-dotnet run -p $SRCDIR/NodaTime.TzdbCompiler/*.csproj -- \
+dotnet run -p $SRCDIR/NodaTime.TzdbCompiler -- \
   -o $OUTPUT \
   -s http://www.iana.org/time-zones/repository/releases/tzdata$1.tar.gz \
   -w $DATADIR/cldr \
@@ -30,16 +30,16 @@ dotnet run -p $SRCDIR/NodaTime.TzdbCompiler/*.csproj -- \
   
 echo ""
 
-dotnet run -f netcoreapp1.0 -p ../../src/NodaTime.Test -- --where=cat!=Slow
+dotnet run -f netcoreapp2.0 -p ../../src/NodaTime.Test -- --where=cat!=Slow
 
 echo Hash on github pages:
 wget -q -O - http://nodatime.github.io/tzvalidate/tzdata$1-sha256.txt 2> /dev/null
 echo Hash from new file:
-dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump/*.csproj -- -s $OUTPUT --hash | grep -v "Skipping"
+dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash | grep -v "Skipping"
 echo Hash from new file without abbreviations:
-dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump/*.csproj -- -s $OUTPUT --hash --noabbr | grep -v "Skipping"
+dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash --noabbr | grep -v "Skipping"
 echo Hash from new file without abbreviations, using Noda Time 1.1:
-dotnet run -p $SRCDIR/NodaTime.TzValidate.NzdCompatibility/*.csproj -- -s $OUTPUT --hash --noabbr | grep -v "Skipping"
+dotnet run -p $SRCDIR/NodaTime.TzValidate.NzdCompatibility -- -s $OUTPUT --hash --noabbr | grep -v "Skipping"
 
 echo ""
 echo "When you're ready, update Google Cloud Storage:"
