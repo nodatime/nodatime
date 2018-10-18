@@ -67,5 +67,17 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(new LocalDateTime(1996, 3, 31, 1, 0), interval.IsoLocalStart);
             Assert.AreEqual(new LocalDateTime(1997, 10, 26, 0, 0), interval.IsoLocalEnd);
         }
+
+        // As of 2018f, Japan's fallback transitions 1948-1951 are at "25:00" on the relevant Saturday.
+        // We represent that as 1am on the relevant Sunday instead, because we don't support HourOfDay=24.
+        [Test]
+        public void Japan()
+        {
+            var zone = DateTimeZoneProviders.Tzdb["Asia/Tokyo"];
+            Instant summer1951 = Instant.FromUtc(1951, 8, 1, 0, 0);
+            var interval = zone.GetZoneInterval(summer1951);
+            Assert.AreEqual(new LocalDateTime(1951, 5, 6, 1, 0), interval.IsoLocalStart);
+            Assert.AreEqual(new LocalDateTime(1951, 9, 9, 1, 0), interval.IsoLocalEnd);
+        }
     }
 }

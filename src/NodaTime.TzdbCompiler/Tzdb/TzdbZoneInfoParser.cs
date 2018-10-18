@@ -207,6 +207,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
                             timeOfDay = LocalTime.Midnight;
                             addDay = true;
                         }
+                        // As of TZDB 2018f, Japan's fallback transitions occur at 25:00. We can't
+                        // represent this entirely accurately, but this is as close as we can approximate it.
+                        else if (atTime == "25:00")
+                        {
+                            timeOfDay = new LocalTime(1, 0);
+                            addDay = true;
+                        }
                         else
                         {
                             timeOfDay = ParserHelper.ParseTime(atTime);

@@ -310,3 +310,37 @@ typically deploys changes to the *Windows* time zone database...
 - [Libya (October
   2013)](https://www.timeanddate.com/news/time/libya-cancels-dst-switch-2013.html)
 - [Turkey (March 2011)](https://www.timeanddate.com/news/time/turkey-starts-dst-2011.html)
+
+Days of 25 hours don't have to repeat any local times...
+---
+
+TZDB 2018f contained an [interesting change](https://github.com/eggert/tz/commit/40ab5979c3226dcd1f52d6012d8ee5fe53ab148b)
+which caused (brief) problems for Noda Time. Japan observed daylight saving time in 1948-1951.
+Until 2018f, the "fall back" transition was deemed to occur at midnight (local time) on Sunday morning.
+In 2018f, the data was corrected to record that the transition took place at 25:00 on Saturday night.
+That means the local time would officially be observed as:
+
+- Saturday 23:58
+- Saturday 23:59
+- Saturday 24:00 (no change of date!)
+- Saturday 24:01
+- ...
+- Saturday 24:58
+- Saturday 24:59
+- Sunday 00:00 (fall back one hour and change date)
+- Sunday 00:01
+
+Yikes!
+
+**Noda Time support:** Noda Time doesn't allow an hour-of-day value of 24, so we can't represent these local
+times. Instead, we treat this as a transition at the correct UTC instant, considered as 1am on Sunday:
+
+- Saturday 23:58
+- Saturday 23:59
+- Sunday 00:00 (change date)
+- Sunday 00:01
+- ...
+- Sunday 00:58
+- Sunday 00:59
+- Sunday 00:00 (fall back one hour)
+- Sunday 00:01

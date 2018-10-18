@@ -412,6 +412,19 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             Assert.AreEqual(2, database.Zones["EST"].Count);
         }
 
+        // 2018f uses 25:00 for Japan's fallback transitions 1948-1951
+        [Test]
+        public void Parse_2500_FromDay_AtLeast_Sunday()
+        {
+            var parser = new TzdbZoneInfoParser();
+            const string text = "Apr Sun>=1  25:00";
+            var tokens = Tokens.Tokenize(text);
+            var rule = parser.ParseDateTimeOfYear(tokens, true);
+            var actual = rule.GetOccurrenceForYear(2012);
+            var expected = new LocalDateTime(2012, 4, 2, 1, 0).ToLocalInstant();
+            Assert.AreEqual(expected, actual);
+        }
+
         [Test]
         public void Parse_2400_FromDay_AtLeast_Sunday()
         {
