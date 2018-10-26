@@ -223,15 +223,15 @@ The `ConfigureForNodaTime` extension methods described above both disable automa
 
 All default patterns use the invariant culture.
 
-- `Instant`: an ISO-8601 pattern extended to handle fractional seconds: `uuuu'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFFF'Z'`
-- `LocalDate`: ISO-8601 date pattern: `uuuu'-'MM'-'dd`
+- `Instant`: an ISO-8601 pattern extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFFF'Z'`
+- `LocalDate`: ISO-8601 date pattern: `yyyy'-'MM'-'dd`
 - `LocalTime`: ISO-8601 time pattern, extended to handle fractional seconds: `HH':'mm':'ss.FFFFFFFFF`
-- `LocalDateTime`: ISO-8601 date/time pattern with no time zone specifier, extended to handle fractional seconds: `uuuu'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFFF`
+- `LocalDateTime`: ISO-8601 date/time pattern with no time zone specifier, extended to handle fractional seconds: `yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFFF`
 - `OffsetDateTime`: RFC3339 pattern:
- `uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>`; note that the
+ `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>`; note that the
  offset always includes hours and minutes, to conform with ECMA-262.
  It does not support round-tripping offsets with sub-minute components.
-- `ZonedDateTime`: As `OffsetDateTime`, but with a time zone ID at the end: `uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> z`
+- `ZonedDateTime`: As `OffsetDateTime`, but with a time zone ID at the end: `yyyy'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> z`
 - `Interval`: A compound object of the form `{ Start: xxx, End: yyy }` where `xxx` and `yyy` are represented however the serializer
   sees fit. (Typically using the default representation above.) An alternative form can be specified using the `WithIsoIntervalConverter`
   extension method on `JsonSerializer`/`JsonSerializerSettings`. If an interval is infinite in either direction, the corresponding
