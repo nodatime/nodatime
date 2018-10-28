@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using NodaTime.Benchmarks;
 using NodaTime.Web.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -109,6 +110,13 @@ namespace NodaTime.Web.Models
                         runToAdd = LoadContainer(client, runStorageName);
                     }
                     runToAdd.Environment = environments.FirstOrDefault(env => env.BenchmarkEnvironmentId == runToAdd.BenchmarkEnvironmentId);
+                    // If we don't have an environment, that's a bit worrying - skip and move on.
+                    if (runToAdd.Environment == null)
+                    {
+                        // TODO: Use a proper logger
+                        Console.WriteLine($"Run {runStorageName} has no environment. Skipping.");
+                        continue;
+                    }
                     runToAdd.PopulateLinks();
                     runsByStorageName[runStorageName] = runToAdd;
                 }
