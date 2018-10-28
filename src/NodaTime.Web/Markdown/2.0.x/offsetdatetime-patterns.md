@@ -20,7 +20,7 @@ To use culture-specific standard date or time patterns in a custom `OffsetDateTi
 
 - `ld<...>`: The `LocalDate` pattern within angle brackets
 - `lt<...>`: The `LocalTime` pattern within angle brackets
-- `ldt<...>`: The `LocalDateTime` pattern within angle brackets
+- `l<...>`: The `LocalDateTime` pattern within angle brackets
 
 For example, to use a culture-specific short date format, but a fixed time format,
 followed by the offset in general form, you might use a pattern of `ld<d> HH:mm:ss o<G>`
