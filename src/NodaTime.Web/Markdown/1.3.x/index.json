@@ -23,5 +23,5 @@
       "pageIds": [ "testing", "tzdb", "mono", "limitations", "roadmap", "versions" ]
     }
   ],
-  "resources": [ "conversions.png" ]
+  "resources": [ "conversions.svg" ]
 }
