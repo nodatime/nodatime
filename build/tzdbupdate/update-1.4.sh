@@ -26,7 +26,7 @@ cd tmp-1.4
 # - nodatime: git repo
 # - old: previous zip and nupkg files
 # - output: final zip and nupkg files
-git clone https://github.com/nodatime/nodatime.git -b 1.4.x
+git clone https://github.com/nodatime/nodatime.git -b 1.4.x --depth 1
 mkdir old
 mkdir output
 declare -r OUTPUT="$(realpath $PWD/output)"
