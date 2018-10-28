@@ -62,7 +62,7 @@ namespace NodaTime.Text
                     case 'o':
                         return OffsetTimePattern.Patterns.ExtendedIsoPatternImpl;
                     default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText[0], typeof(OffsetTime));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(OffsetTime));
                 }
             }
 

@@ -58,42 +58,42 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                switch (patternText)
+                switch (patternText[0])
                 {
-                    case "g":
+                    case 'g':
                         return new CompositePatternBuilder<Offset>
                         {
                             { ParsePartialPattern(formatInfo.OffsetPatternLong, formatInfo), offset => true },
                             { ParsePartialPattern(formatInfo.OffsetPatternMedium, formatInfo), HasZeroSeconds },
                             { ParsePartialPattern(formatInfo.OffsetPatternShort, formatInfo), HasZeroSecondsAndMinutes },
                         }.BuildAsPartial();
-                    case "G":
+                    case 'G':
                         return new ZPrefixPattern(ParsePartialPattern("g", formatInfo));
-                    case "i":
+                    case 'i':
                         return new CompositePatternBuilder<Offset>
                         {
                             { ParsePartialPattern(formatInfo.OffsetPatternLongNoPunctuation, formatInfo), offset => true },
                             { ParsePartialPattern(formatInfo.OffsetPatternMediumNoPunctuation, formatInfo), HasZeroSeconds },
                             { ParsePartialPattern(formatInfo.OffsetPatternShortNoPunctuation, formatInfo), HasZeroSecondsAndMinutes },
                         }.BuildAsPartial();
-                    case "I":
+                    case 'I':
                         return new ZPrefixPattern(ParsePartialPattern("i", formatInfo));
-                    case "l":
+                    case 'l':
                         patternText = formatInfo.OffsetPatternLong;
                         break;
-                    case "m":
+                    case 'm':
                         patternText = formatInfo.OffsetPatternMedium;
                         break;
-                    case "s":
+                    case 's':
                         patternText = formatInfo.OffsetPatternShort;
                         break;
-                    case "L":
+                    case 'L':
                         patternText = formatInfo.OffsetPatternLongNoPunctuation;
                         break;
-                    case "M":
+                    case 'M':
                         patternText = formatInfo.OffsetPatternMediumNoPunctuation;
                         break;
-                    case "S":
+                    case 'S':
                         patternText = formatInfo.OffsetPatternShortNoPunctuation;
                         break;
                     default:

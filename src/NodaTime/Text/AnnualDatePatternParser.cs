@@ -51,7 +51,7 @@ namespace NodaTime.Text
                     case 'G':
                         return AnnualDatePattern.Iso;
                     default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText[0], typeof(AnnualDate));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(AnnualDate));
                 }
             }
 

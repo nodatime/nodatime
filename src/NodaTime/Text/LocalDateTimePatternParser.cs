@@ -70,27 +70,34 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                char patternCharacter = patternText[0];
-                if (patternCharacter == 'o' || patternCharacter == 'O')
+                switch (patternText[0])
                 {
-                    return LocalDateTimePattern.Patterns.BclRoundtripPatternImpl;
-                }
-                if (patternCharacter == 'r')
-                {
-                    return LocalDateTimePattern.Patterns.FullRoundtripPatternImpl;
-                }
-                if (patternCharacter == 'R')
-                {
-                    return LocalDateTimePattern.Patterns.FullRoundtripWithoutCalendarImpl;
-                }
-                if (patternCharacter == 's')
-                {
-                    return LocalDateTimePattern.Patterns.GeneralIsoPatternImpl;
-                }
-                patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
-                if (patternText is null)
-                {
-                    throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternCharacter, typeof(LocalDateTime));
+                    // Invariant standard patterns return cached implementations.
+                    case 'o':
+                    case 'O':
+                        return LocalDateTimePattern.Patterns.BclRoundtripPatternImpl;
+                    case 'r':
+                        return LocalDateTimePattern.Patterns.FullRoundtripPatternImpl;
+                    case 'R':
+                        return LocalDateTimePattern.Patterns.FullRoundtripWithoutCalendarImpl;
+                    case 's':
+                        return LocalDateTimePattern.Patterns.GeneralIsoPatternImpl;
+                    // Other standard patterns expand the pattern text to the appropriate custom pattern.
+                    case 'f':
+                        patternText = formatInfo.DateTimeFormat.LongDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern;
+                        break;
+                    case 'F':
+                        patternText = formatInfo.DateTimeFormat.FullDateTimePattern;
+                        break;
+                    case 'g':
+                        patternText = formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern;
+                        break;
+                    case 'G':
+                        patternText = formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.LongTimePattern;
+                        break;
+                    // Unknown standard patterns fail.
+                    default:
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalDateTime));
                 }
             }
 
@@ -99,24 +106,6 @@ namespace NodaTime.Text
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
             patternBuilder.ValidateUsedFields();
             return patternBuilder.Build(templateValueDate.At(templateValueTime));
-        }
-
-        private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
-        {
-            switch (patternCharacter)
-            {
-                case 'f':
-                    return formatInfo.DateTimeFormat.LongDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern;
-                case 'F':
-                    return formatInfo.DateTimeFormat.FullDateTimePattern;
-                case 'g':
-                    return formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern;
-                case 'G':
-                    return formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.LongTimePattern;
-                default:
-                    // Will be turned into an exception.
-                    return null;
-            }
         }
         
         internal sealed class LocalDateTimeParseBucket : ParseBucket<LocalDateTime>

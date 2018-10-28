@@ -55,11 +55,19 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                char patternCharacter = patternText[0];
-                patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
-                if (patternText is null)
+                switch (patternText[0])
                 {
-                    throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternCharacter, typeof(LocalTime));
+                    case 't':
+                        patternText = formatInfo.DateTimeFormat.ShortTimePattern;
+                        break;
+                    case 'T':
+                        patternText = formatInfo.DateTimeFormat.LongTimePattern;
+                        break;
+                    case 'r':
+                        patternText = "HH:mm:ss.FFFFFFFFF";
+                        break;
+                    default:
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalTime));
                 }
             }
 
@@ -68,22 +76,6 @@ namespace NodaTime.Text
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
             patternBuilder.ValidateUsedFields();
             return patternBuilder.Build(templateValue);
-        }
-
-        private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
-        {
-            switch (patternCharacter)
-            {
-                case 't':
-                    return formatInfo.DateTimeFormat.ShortTimePattern;
-                case 'T':
-                    return formatInfo.DateTimeFormat.LongTimePattern;
-                case 'r':
-                    return "HH:mm:ss.FFFFFFFFF";
-                default:
-                    // Will be turned into an exception.
-                    return null;
-            }
         }
 
         /// <summary>
