@@ -57,7 +57,7 @@ namespace NodaTime.Text
                     case 'o':
                         return DurationPattern.Patterns.RoundtripPatternImpl;
                     default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText[0], typeof(Duration));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(Duration));
                 }
             }
 

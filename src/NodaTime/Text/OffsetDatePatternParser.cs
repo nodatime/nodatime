@@ -58,7 +58,7 @@ namespace NodaTime.Text
                     case 'r':
                         return OffsetDatePattern.Patterns.FullRoundtripPatternImpl;
                     default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText[0], typeof(OffsetDate));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(OffsetDate));
                 }
             }
 

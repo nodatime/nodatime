@@ -34,9 +34,9 @@ namespace NodaTime.Text
             }
             if (patternText.Length == 1)
             {
-                switch (patternText)
+                switch (patternText[0])
                 {
-                    case "g": // Simplest way of handling the general pattern...
+                    case 'g': // Simplest way of handling the general pattern...
                         patternText = GeneralPatternText;
                         break;
                     default:

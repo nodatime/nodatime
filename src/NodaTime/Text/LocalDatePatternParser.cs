@@ -59,12 +59,17 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                char patternCharacter = patternText[0];
-                patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
-                if (patternText is null)
+                switch (patternText[0])
                 {
-                    throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternCharacter, typeof(LocalDate));
-                }
+                    case 'd':
+                        patternText = formatInfo.DateTimeFormat.ShortDatePattern;
+                        break;
+                    case 'D':
+                        patternText = formatInfo.DateTimeFormat.LongDatePattern;
+                        break;
+                    default:
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalDate));
+                }                
             }
 
             var patternBuilder = new SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo,
@@ -72,20 +77,6 @@ namespace NodaTime.Text
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
             patternBuilder.ValidateUsedFields();
             return patternBuilder.Build(templateValue);
-        }
-
-        private string ExpandStandardFormatPattern(char patternCharacter, NodaFormatInfo formatInfo)
-        {
-            switch (patternCharacter)
-            {
-                case 'd':
-                    return formatInfo.DateTimeFormat.ShortDatePattern;
-                case 'D':
-                    return formatInfo.DateTimeFormat.LongDatePattern;
-                default:
-                    // Will be turned into an exception.
-                    return null;
-            }
         }
         
         /// <summary>

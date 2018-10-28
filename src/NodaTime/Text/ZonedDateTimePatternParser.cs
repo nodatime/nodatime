@@ -85,7 +85,7 @@ namespace NodaTime.Text
                             .WithZoneProvider(zoneProvider)
                             .WithResolver(resolver);
                     default:
-                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText[0], typeof(ZonedDateTime));
+                        throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(ZonedDateTime));
                 }
             }
 
