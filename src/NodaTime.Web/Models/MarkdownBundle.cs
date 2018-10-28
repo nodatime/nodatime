@@ -13,6 +13,12 @@ namespace NodaTime.Web.Models
 {
     public class MarkdownBundle
     {
+        private static readonly Dictionary<string, string> ExtensionToMimeType = new Dictionary<string, string>
+        {
+            { ".png", "image/png" },
+            { ".svg", "image/svg+xml" }
+        };
+
         private Dictionary<string, MarkdownPage> pagesById;
         private Dictionary<string, MarkdownResource> resourcesById;
 
@@ -111,11 +117,12 @@ namespace NodaTime.Web.Models
             {
                 var memoryStream = new MemoryStream();
                 stream.CopyTo(memoryStream);
-                if (!resourceName.EndsWith(".png"))
+                var extension = Path.GetExtension(resourceName);
+                if (!ExtensionToMimeType.TryGetValue(extension, out string mimeType))
                 {
-                    throw new InvalidOperationException("We only know how to deal with .png at the moment!");
+                    throw new InvalidOperationException($"Unhandled resource extension: {extension}");
                 }
-                return new MarkdownResource(resourceName, memoryStream.ToArray(), "image/png");
+                return new MarkdownResource(resourceName, memoryStream.ToArray(), mimeType);
             }
         }
     }

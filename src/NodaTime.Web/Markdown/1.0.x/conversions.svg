@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="155.8663mm"
+   height="114.50674mm"
+   viewBox="8 122 589.10098 432.78143"
+   version="1.1"
+   id="svg170"
+   sodipodi:docname="conversions.svg"
+   inkscape:export-filename="C:\Users\jon\Test\Projects\nodatime\src\NodaTime.Web\Markdown\1.0.x\conversions.png"
+   inkscape:export-xdpi="46.098438"
+   inkscape:export-ydpi="46.098438"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata176">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs174">
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker6355"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend">
+      <path
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path6353"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5009"
+       style="overflow:visible"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path5007"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4702"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow2Lend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path4714"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5009-7"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5007-8"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5009-9"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5007-1"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5009-9-2"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5007-1-1"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5009-9-2-8"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5007-1-1-2"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5009-9-2-2"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5007-1-1-24"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5009-9-2-8-7"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5007-1-1-2-1"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-1.1,0,0,-1.1,-1.1,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3000"
+     inkscape:window-height="1875"
+     id="namedview172"
+     showgrid="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     units="mm"
+     inkscape:zoom="2.8284272"
+     inkscape:cx="244.71807"
+     inkscape:cy="179.74633"
+     inkscape:window-x="-13"
+     inkscape:window-y="-13"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg170"
+     inkscape:snap-bbox="true"
+     scale-x="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4686"
+       originx="43.252723"
+       originy="-294.67342" />
+  </sodipodi:namedview>
+  <text
+     font-size="12.8"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000"
+     x="170.51859"
+     y="201.0425"
+     id="text66">
+    <tspan
+       x="170.51859"
+       y="201.0425"
+       id="tspan60"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">InUtc()</tspan>
+    <tspan
+       x="170.51859"
+       y="217.0425"
+       id="tspan62"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">InZone(zone)</tspan>
+    <tspan
+       x="170.51859"
+       y="233.0425"
+       id="tspan64"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">InZone(zone, calendar)</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000"
+     x="405.97632"
+     y="217.0425"
+     id="text78">
+    <tspan
+       x="405.97632"
+       y="217.0425"
+       id="tspan76"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">ToInstant()</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000"
+     x="231.38997"
+     y="342.28842"
+     id="text92">
+    <tspan
+       x="231.38997"
+       y="342.28842"
+       id="tspan88"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">LocalDateTime</tspan>
+    <tspan
+       x="231.38997"
+       y="358.28842"
+       id="tspan90"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">(property)</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000"
+     x="421.06641"
+     y="316.45673"
+     id="text114">
+    <tspan
+       x="421.06641"
+       y="316.45673"
+       id="tspan102"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">zone.AtStrictly(local)</tspan>
+    <tspan
+       x="421.06641"
+       y="332.45673"
+       id="tspan104"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">zone.AtLeniently(local)</tspan>
+    <tspan
+       x="421.06641"
+       y="348.45673"
+       id="tspan106"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">zone.MapLocal(local)</tspan>
+    <tspan
+       x="421.06641"
+       y="364.45673"
+       id="tspan108"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">local.InZoneStrictly(zone)</tspan>
+    <tspan
+       x="421.06641"
+       y="380.45673"
+       id="tspan110"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">local.InZoneLeniently(zone)</tspan>
+    <tspan
+       x="421.06641"
+       y="396.45673"
+       id="tspan112"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">local.InZone(zone, resolver)</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000"
+     x="237.97499"
+     y="455.0014"
+     id="text136">
+    <tspan
+       x="237.97499"
+       y="455.0014"
+       id="tspan132"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">Date</tspan>
+    <tspan
+       x="237.97499"
+       y="471.0014"
+       id="tspan134"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">(property)</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000"
+     x="435.97632"
+     y="459.04251"
+     id="text142">
+    <tspan
+       x="435.97632"
+       y="459.04251"
+       id="tspan138"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">TimeOfDay</tspan>
+    <tspan
+       x="435.97632"
+       y="475.04251"
+       id="tspan140"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">(property)</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#000000"
+     x="366.89474"
+     y="537.04254"
+     id="text154">
+    <tspan
+       x="366.89474"
+       y="537.04254"
+       id="tspan152"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle">date + time</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000"
+     x="7.4337764"
+     y="482.71167"
+     id="text160">
+    <tspan
+       x="7.4337764"
+       y="482.71167"
+       id="tspan156"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">zone.AtStartOfDay(date)</tspan>
+    <tspan
+       x="7.4337764"
+       y="498.71167"
+       id="tspan158"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start">date.AtStartOfDayInZone(zone)</tspan>
+  </text>
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.29886365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5009)"
+     d="m 392.26452,442.29978 51.95455,67.54091"
+     id="path4691"
+     inkscape:connector-curvature="0" />
+  <g
+     id="g5114"
+     transform="translate(-31.149403,-1.0324964)">
+    <rect
+       y="513.47095"
+       x="446.79346"
+       height="41.563637"
+       width="88.322731"
+       id="rect5073"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.55863643;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.75294118" />
+    <text
+       id="text5077"
+       y="537.71674"
+       x="491.16556"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.5195455px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;stroke-width:0.5195455px"
+         y="537.71674"
+         x="491.16556"
+         id="tspan5075"
+         sodipodi:role="line">LocalTime</tspan></text>
+  </g>
+  <rect
+     style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.55863643;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.75294118"
+     id="rect5073-9"
+     width="88.322731"
+     height="41.563637"
+     x="235.9763"
+     y="511.9675" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.51954556px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="280.61133"
+     y="536.94812"
+     id="text5077-4"><tspan
+       sodipodi:role="line"
+       id="tspan5109"
+       x="280.61133"
+       y="536.94812">LocalDate</tspan></text>
+  <g
+     transform="translate(-128.65555,-113.65326)"
+     id="g5114-5">
+    <rect
+       y="514.3894"
+       x="437.79279"
+       height="40.828827"
+       width="110.18152"
+       id="rect5073-8"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.55863643;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.75294118" />
+    <text
+       id="text5077-5"
+       y="537.71674"
+       x="491.16556"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.5195455px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         sodipodi:role="line"
+         id="tspan5140"
+         x="491.16556"
+         y="537.71674">LocalDateTime</tspan></text>
+  </g>
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.29886365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5009-7)"
+     d="m 340.30997,442.29978 -41.56364,67.54091"
+     id="path4691-9"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.29886365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5009-9)"
+     d="M 366.28724,522.82934 V 444.89752"
+     id="path4691-8"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <g
+     transform="translate(-128.65555,-251.33281)"
+     id="g5114-5-9">
+    <rect
+       y="514.3894"
+       x="437.79279"
+       height="40.828827"
+       width="110.18152"
+       id="rect5073-8-5"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.55863643;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.75294118" />
+    <text
+       id="text5077-5-1"
+       y="537.71674"
+       x="491.16556"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.5195455px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         sodipodi:role="line"
+         id="tspan6337"
+         x="491.16556"
+         y="537.71674">ZonedDateTime</tspan></text>
+  </g>
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.29886365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:2;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker6355)"
+     d="M 246.79179,512.43842 C 103.91678,289.03387 306.53952,283.83841 306.53952,283.83841"
+     id="path6339"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <g
+     transform="translate(-123.46009,-391.61009)"
+     id="g5114-5-9-8">
+    <rect
+       y="514.3894"
+       x="432.59732"
+       height="40.828827"
+       width="110.18152"
+       id="rect5073-8-5-5"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.55863643;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.75294118" />
+    <text
+       id="text5077-5-1-5"
+       y="537.71674"
+       x="491.16556"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.46909142px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.5195455px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       xml:space="preserve"><tspan
+         sodipodi:role="line"
+         id="tspan6579"
+         x="491.16556"
+         y="537.71674">Instant</tspan></text>
+  </g>
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.29886365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5009-9-2)"
+     d="M 394.86224,400.73615 V 307.21797"
+     id="path4691-8-3"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.29886365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5009-9-2-8)"
+     d="m 335.11452,304.62024 v 93.51818"
+     id="path4691-8-3-1"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.29886365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5009-9-2-2)"
+     d="M 394.86224,263.0566 V 166.94069"
+     id="path4691-8-3-0"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.29886365;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5009-9-2-8-7)"
+     d="m 335.11452,164.34295 v 96.11591"
+     id="path4691-8-3-1-5"
+     inkscape:connector-curvature="0"
+     sodipodi:nodetypes="cc" />
+</svg>

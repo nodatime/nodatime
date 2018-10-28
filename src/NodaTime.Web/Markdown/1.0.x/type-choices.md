@@ -144,7 +144,7 @@ Converting between types
 The following diagram shows various different ways of converting between
 the types.
 
-![Noda Time Conversions](conversions.png)
+![Noda Time Conversions](conversions.svg)
 
 Note that I haven't shown *every* possible option here - in particular
 you can often use the constructor for the target type as an
