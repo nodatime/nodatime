@@ -290,7 +290,9 @@ namespace NodaTime.Test.TimeZones
         [Test]
         [TestCase("Pacific Standard Time", 0, "America/Los_Angeles", Description = "Windows ID")]
         [TestCase("America/Los_Angeles", 0, "America/Los_Angeles", Description = "TZDB ID")]
-        [TestCase("Lilo and Stitch", -10, "Pacific/Honolulu", Description = "Guess by transitions")]
+        // Both Pacific/Honolulu and Etc/GMT+10 match with the same score; we use Etc/GMT+10
+        // as it comes first lexically.
+        [TestCase("Lilo and Stitch", -10, "Etc/GMT+10", Description = "Guess by transitions")]
         public void MapTimeZoneInfoId(string timeZoneInfoId, int standardUtc, string expectedId)
         {
             var zoneInfo = TimeZoneInfo.CreateCustomTimeZone(timeZoneInfoId, TimeSpan.FromHours(standardUtc),

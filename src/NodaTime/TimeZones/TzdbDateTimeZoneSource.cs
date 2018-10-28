@@ -231,8 +231,10 @@ namespace NodaTime.TimeZones
             return guesses.GetOrAdd(zone.StandardName, _ =>
             {
                 // Build the list of candidates here instead of within the method, so that
-                // tests can pass in the same list on each iteration.
-                var candidates = CanonicalIdMap.Values.Select(ForId).ToList();
+                // tests can pass in the same list on each iteration. We order the time zones
+                // by ID so that if there are multiple zones with the same score, we'll always
+                // pick the same one across multiple runs/platforms.
+                var candidates = CanonicalIdMap.Values.Select(ForId).OrderBy(dtz => dtz.Id).ToList();
                 return GuessZoneIdByTransitionsUncached(zone, candidates);
             });
         }
