@@ -617,7 +617,7 @@ namespace NodaTime.Text.Patterns
                 }
                 if (text is null)
                 {
-                    return ParseResult<TResult>.ArgumentNull("text");
+                    return ParseResult<TResult>.ArgumentNull(nameof(text));
                 }
                 if (text.Length == 0)
                 {

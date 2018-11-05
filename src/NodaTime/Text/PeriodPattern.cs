@@ -102,7 +102,7 @@ namespace NodaTime.Text
             {
                 if (text is null)
                 {
-                    return ParseResult<Period>.ArgumentNull("text");
+                    return ParseResult<Period>.ArgumentNull(nameof(text));
                 }
                 if (text.Length == 0)
                 {
@@ -211,7 +211,7 @@ namespace NodaTime.Text
             {
                 if (text is null)
                 {
-                    return ParseResult<Period>.ArgumentNull("text");
+                    return ParseResult<Period>.ArgumentNull(nameof(text));
                 }
                 if (text.Length == 0)
                 {
