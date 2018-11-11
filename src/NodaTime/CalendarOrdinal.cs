@@ -6,7 +6,7 @@ namespace NodaTime
 {
     /// <summary>
     /// Enumeration of calendar ordinal values. Used for converting between a compact integer representation and a calendar system.
-    /// We use 7 bits to store the calendar ordinal in YearMonthDayCalendar, so we can have up to 128 calendars.
+    /// We use 6 bits to store the calendar ordinal in YearMonthDayCalendar, so we can have up to 64 calendars.
     /// </summary>
     internal enum CalendarOrdinal
     {
