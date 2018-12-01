@@ -100,5 +100,21 @@ namespace NodaTime.Test
             Assert.AreEqual(period, LocalDate.Subtract(end, start));
             Assert.AreEqual(period, end.Minus(start));
         }
+
+        [Test]
+        [TestCase(9999, 12, 31, 1)]
+        [TestCase(9999, 12, 1, 1)]
+        [TestCase(9999, 11, 30, 2)]
+        [TestCase(9999, 11, 1, 2)]
+        [TestCase(9998, 12, 31, 13)]
+        [TestCase(9998, 12, 1, 13)]
+        [TestCase(-9998, 1, 1, -1)]
+        [TestCase(-9998, 2, 1, -2)]
+        [TestCase(-9997, 1, 1, -13)]
+        public void PlusMonths_Overflow(int year, int month, int day, int monthsToAdd)
+        {
+            var start = new LocalDate(year, month, day);
+            Assert.Throws<OverflowException>(() => start.PlusMonths(monthsToAdd));
+        }
     }
 }

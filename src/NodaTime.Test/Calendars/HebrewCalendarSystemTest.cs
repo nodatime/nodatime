@@ -232,6 +232,21 @@ namespace NodaTime.Test.Calendars
             Assert.Throws<ArgumentOutOfRangeException>(() => HebrewScripturalCalculator.GetDaysFromStartOfYearToStartOfMonth(5502, 0));
         }
 
+        [Test]
+        [TestCase(HebrewMonthNumbering.Civil)]
+        [TestCase(HebrewMonthNumbering.Scriptural)]
+        public void PlusMonths_Overflow(HebrewMonthNumbering monthNumbering)
+        {
+            var calendar = CalendarSystem.GetHebrewCalendar(monthNumbering);
+            // TODO: It would be nice to have an easy way of getting the smallest/largest LocalDate for
+            // a calendar. Or possibly FromDayOfYear as well... instead, we'll just add/subtract 8 months instead
+            var earlyDate = new LocalDate(calendar.MinYear, 1, 1, calendar);
+            var lateDate = new LocalDate(calendar.MaxYear, 12, 1, calendar);
+
+            Assert.Throws<OverflowException>(() => earlyDate.PlusMonths(-7));
+            Assert.Throws<OverflowException>(() => lateDate.PlusMonths(7));
+        }
+
         // Cases used for adding months and differences between months.
         // 5501 is not a leap year; 5502 is; 5503 is not; 5505 is.
         // Heshvan (civil 2) is long in 5507 and 5509; it is short in 5506 and 5508

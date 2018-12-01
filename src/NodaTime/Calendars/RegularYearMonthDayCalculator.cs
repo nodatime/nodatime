@@ -86,6 +86,10 @@ namespace NodaTime.Calendars
             int dayToUse = yearMonthDay.Day;
             int maxDay = GetDaysInMonth(yearToUse, monthToUse);
             dayToUse = Math.Min(dayToUse, maxDay);
+            if (yearToUse < MinYear || yearToUse > MaxYear)
+            {
+                throw new OverflowException("Date computation would overflow calendar bounds.");
+            }
             return new YearMonthDay(yearToUse, monthToUse, dayToUse);
         }
 

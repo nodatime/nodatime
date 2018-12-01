@@ -156,6 +156,11 @@ namespace NodaTime.Calendars
             // Convert back to calendar month
             month = CivilToCalendarMonth(year, month);
             int day = Math.Min(GetDaysInMonth(year, month), yearMonthDay.Day);
+            if (year < MinYear || year > MaxYear)
+            {
+                throw new OverflowException("Date computation would overflow calendar bounds.");
+            }
+
             return new YearMonthDay(year, month, day);
         }
 
