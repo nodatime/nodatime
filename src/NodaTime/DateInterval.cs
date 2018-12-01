@@ -150,7 +150,7 @@ namespace NodaTime
         public bool Contains([NotNull] DateInterval interval)
         {
             ValidateInterval(interval);
-            return Contains(interval.Start) && Contains(interval.End);
+            return Start <= interval.Start && interval.End <= End;
         }
 
         /// <summary>
