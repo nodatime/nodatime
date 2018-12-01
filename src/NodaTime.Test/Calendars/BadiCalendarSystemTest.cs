@@ -577,6 +577,17 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(CreateBadiDate(172, 3, 2), result);
         }
 
+        [Test]
+        public void PlusMonths_Overflow()
+        {
+            var calendar = CalendarSystem.Badi;
+            var earlyDate = new LocalDate(calendar.MinYear, 1, 1, calendar);
+            var lateDate = new LocalDate(calendar.MaxYear, 19, 1, calendar);
+
+            Assert.Throws<OverflowException>(() => earlyDate.PlusMonths(-1));
+            Assert.Throws<OverflowException>(() => lateDate.PlusMonths(1));
+        }        
+
         /// <summary>
         /// Create a <see cref="LocalDate"/> in the Badíʿ calendar, treating 0
         /// as the month containing Ayyam-i-Ha.

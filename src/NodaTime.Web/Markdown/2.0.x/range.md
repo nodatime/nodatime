@@ -1,7 +1,5 @@
 @Title="Range of valid values"
 
-(None of this is implemented yet!)
-
 Noda Time can only represent values within a limited range. This is for pragmatic reasons:
 while it would be possible to try to model every instant since some estimate of the big
 bang until some expected "end of time," this would come at a significant cost to the
