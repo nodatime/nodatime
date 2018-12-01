@@ -134,6 +134,8 @@ namespace NodaTime.Calendars
 
             var nextDay = thisDay;
 
+            // TODO: It's not clear that this is correct. If we add 19 months,
+            // it's probably okay to stay in Ayyam-i-Ha.
             if (IsInAyyamiHa(start))
             {
                 nextDay = thisDay - DaysInMonth;
@@ -159,7 +161,10 @@ namespace NodaTime.Calendars
                 nextMonthNum = MonthsInYear - nextMonthNum % MonthsInYear;
             }
 
-            Preconditions.CheckArgumentRange(nameof(nextYear), nextYear, BadiMinYear, BadiMaxYear);
+            if (nextYear < MinYear || nextYear > MaxYear)
+            {
+                throw new OverflowException("Date computation would overflow calendar bounds.");
+            }
 
             var result = new YearMonthDay(nextYear, nextMonthNum, nextDay);
 
