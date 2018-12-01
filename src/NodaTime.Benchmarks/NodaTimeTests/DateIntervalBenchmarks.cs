@@ -12,6 +12,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly DateInterval JanuaryJune2017 = new DateInterval(new LocalDate(2017, 1, 1), new LocalDate(2017, 6, 30));
         private static readonly DateInterval MarchSeptember2017 = new DateInterval(new LocalDate(2017, 3, 1), new LocalDate(2017, 9, 30));
         private static readonly DateInterval AugustDecember2017 = new DateInterval(new LocalDate(2017, 8, 1), new LocalDate(2017, 12, 31));
+        private static readonly DateInterval FebruaryMarch2017 = new DateInterval(new LocalDate(2017, 2, 1), new LocalDate(2017, 3, 31));
 
         [Benchmark]
         public int Length() => JanuaryJune2017.Length;
@@ -27,5 +28,14 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public DateInterval Intersection_Overlapping() => JanuaryJune2017.Intersection(MarchSeptember2017);
+
+        [Benchmark]
+        public bool Contains_Disjoint() => JanuaryJune2017.Contains(AugustDecember2017);
+
+        [Benchmark]
+        public bool Contains_Overlapping() => JanuaryJune2017.Contains(MarchSeptember2017);
+
+        [Benchmark]
+        public bool Contains_Contained() => JanuaryJune2017.Contains(FebruaryMarch2017);
     }
 }
