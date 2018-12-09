@@ -9,6 +9,7 @@ namespace NodaTime.Test
 {
     public class SystemClockTest
     {
+        [Test]
         public void InstanceNow()
         {
             long frameworkNowTicks = NodaConstants.BclEpoch.PlusTicks(DateTime.UtcNow.Ticks).ToUnixTimeTicks();
