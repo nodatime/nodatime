@@ -6,6 +6,7 @@ using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
+using System.ComponentModel;
 using System.Globalization;
 
 namespace NodaTime
@@ -17,6 +18,7 @@ namespace NodaTime
     /// <remarks>In the future, this struct may be expanded to support other calendar systems,
     /// but this does not generalize terribly cleanly, particularly to the Hebrew calendar system
     /// with its leap month.</remarks>
+    [TypeConverter(nameof(AnnualDateTypeConverter))]
     public readonly struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IFormattable
     {
         // The underlying value. We only care about the month and day, but for the sake of

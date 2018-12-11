@@ -9,6 +9,7 @@ using NodaTime.Fields;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Xml;
@@ -32,6 +33,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+    [TypeConverter(nameof(LocalDateTypeConverter))]
     public readonly struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IComparable, IFormattable, IXmlSerializable
     {
         private readonly YearMonthDayCalendar yearMonthDayCalendar;
