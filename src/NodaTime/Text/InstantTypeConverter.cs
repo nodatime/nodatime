@@ -7,7 +7,7 @@ namespace NodaTime.Text
     /// <summary>
     /// Provides <see cref="string"/> for <see cref="T:InstantPattern.ExtendedIso"/>.
     /// </summary>
-    public class InstantTypeConverter : TypeConverter
+    internal sealed class InstantTypeConverter : TypeConverter
     {
         /// <inheritdoc />
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)

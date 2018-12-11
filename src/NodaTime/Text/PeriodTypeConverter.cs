@@ -7,7 +7,7 @@ namespace NodaTime.Text
     /// <summary>
     /// Provides <see cref="string"/> for <see cref="T:PeriodPattern.Roundtrip"/>.
     /// </summary>
-    public class PeriodTypeConverter : TypeConverter
+    internal sealed class PeriodTypeConverter : TypeConverter
     {
         /// <inheritdoc />
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)

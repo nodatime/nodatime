@@ -7,7 +7,7 @@ namespace NodaTime.Text
     /// <summary>
     /// Provides <see cref="string"/> for <see cref="T:AnnualDatePattern.Iso"/>.
     /// </summary>
-    public class AnnualDateTypeConverter : TypeConverter
+    internal sealed class AnnualDateTypeConverter : TypeConverter
     {
         /// <inheritdoc />
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)

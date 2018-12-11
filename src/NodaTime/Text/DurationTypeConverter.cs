@@ -7,7 +7,7 @@ namespace NodaTime.Text
     /// <summary>
     /// Provides <see cref="string"/> for <see cref="T:DurationPattern.Roundtrip"/>.
     /// </summary>
-    public class DurationTypeConverter : TypeConverter
+    internal sealed class DurationTypeConverter : TypeConverter
     {
         /// <inheritdoc />
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
