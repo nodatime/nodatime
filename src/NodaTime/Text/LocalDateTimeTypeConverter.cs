@@ -7,7 +7,7 @@ namespace NodaTime.Text
     /// <summary>
     /// Provides <see cref="string"/> for <see cref="T:LocalDateTimePattern.ExtendedIso"/>.
     /// </summary>
-    public class LocalDateTimeTypeConverter : TypeConverter
+    internal sealed class LocalDateTimeTypeConverter : TypeConverter
     {
         /// <inheritdoc />
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
