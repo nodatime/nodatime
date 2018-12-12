@@ -1,44 +1,15 @@
-using System;
-using System.ComponentModel;
-using System.Globalization;
+// Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 namespace NodaTime.Text
 {
     /// <summary>
-    /// Provides <see cref="string"/> for <see cref="T:DurationPattern.Roundtrip"/>.
+    /// Provides conversion and parsing for <see cref="Duration"/> with the <see cref="DurationPattern.Roundtrip"/> pattern.
     /// </summary>
-    internal sealed class DurationTypeConverter : TypeConverter
+    internal sealed class DurationTypeConverter : TypeConverterBase<Duration>
     {
         /// <inheritdoc />
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-            => sourceType == typeof(string);
-
-        /// <inheritdoc />
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string durationString)
-            {
-                var parseResult = DurationPattern.Roundtrip.Parse(durationString);
-
-                if (parseResult.Success)
-                {
-                    return parseResult.Value;
-                }
-            }
-
-            return base.ConvertFrom(context, culture, value);
-        }
-
-        /// <inheritdoc />
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (destinationType == typeof(string))
-            {
-                Duration duration = (Duration) value;
-                return DurationPattern.Roundtrip.Format(duration);
-            }
-
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
+        private DurationTypeConverter() : base(DurationPattern.Roundtrip) {}
     }
 }

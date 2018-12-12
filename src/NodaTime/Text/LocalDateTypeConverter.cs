@@ -1,44 +1,15 @@
-using System;
-using System.ComponentModel;
-using System.Globalization;
+// Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 namespace NodaTime.Text
 {
     /// <summary>
-    /// Provides <see cref="string"/> for <see cref="T:LocalDatePattern.Iso"/>.
+    /// Provides conversion and parsing for <see cref="LocalDate"/> with the <see cref="LocalDatePattern.Iso"/> pattern.
     /// </summary>
-    internal sealed class LocalDateTypeConverter : TypeConverter
+    internal sealed class LocalDateTypeConverter : TypeConverterBase<LocalDate>
     {
         /// <inheritdoc />
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-            => sourceType == typeof(string);
-
-        /// <inheritdoc />
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string localDateString)
-            {
-                var parseResult = LocalDatePattern.Iso.Parse(localDateString);
-
-                if (parseResult.Success)
-                {
-                    return parseResult.Value;
-                }
-            }
-
-            return base.ConvertFrom(context, culture, value);
-        }
-
-        /// <inheritdoc />
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (destinationType == typeof(string))
-            {
-                LocalDate localDate = (LocalDate) value;
-                return LocalDatePattern.Iso.Format(localDate);
-            }
-
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
+        private LocalDateTypeConverter() : base(LocalDatePattern.Iso) {}
     }
 }

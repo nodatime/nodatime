@@ -1,44 +1,15 @@
-using System;
-using System.ComponentModel;
-using System.Globalization;
+// Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 namespace NodaTime.Text
 {
     /// <summary>
-    /// Provides <see cref="string"/> for <see cref="T:PeriodPattern.Roundtrip"/>.
+    /// Provides conversion and parsing for <see cref="Period"/> with the <see cref="PeriodPattern.Roundtrip"/> pattern.
     /// </summary>
-    internal sealed class PeriodTypeConverter : TypeConverter
+    internal sealed class PeriodTypeConverter : TypeConverterBase<Period>
     {
         /// <inheritdoc />
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-            => sourceType == typeof(string);
-
-        /// <inheritdoc />
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string periodString)
-            {
-                var parseResult = PeriodPattern.Roundtrip.Parse(periodString);
-
-                if (parseResult.Success)
-                {
-                    return parseResult.Value;
-                }
-            }
-
-            return base.ConvertFrom(context, culture, value);
-        }
-
-        /// <inheritdoc />
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (destinationType == typeof(string))
-            {
-                Period period = (Period) value;
-                return PeriodPattern.Roundtrip.Format(period);
-            }
-
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
+        private PeriodTypeConverter() : base(PeriodPattern.Roundtrip) {}
     }
 }

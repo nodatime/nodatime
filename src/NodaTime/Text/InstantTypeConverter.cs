@@ -1,44 +1,15 @@
-using System;
-using System.ComponentModel;
-using System.Globalization;
+// Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 namespace NodaTime.Text
 {
     /// <summary>
-    /// Provides <see cref="string"/> for <see cref="T:InstantPattern.ExtendedIso"/>.
+    /// Provides conversion and parsing for <see cref="Instant"/> with the <see cref="InstantPattern.ExtendedIso"/> pattern.
     /// </summary>
-    internal sealed class InstantTypeConverter : TypeConverter
+    internal sealed class InstantTypeConverter : TypeConverterBase<Instant>
     {
         /// <inheritdoc />
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-            => sourceType == typeof(string);
-
-        /// <inheritdoc />
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string instantString)
-            {
-                var parseResult = InstantPattern.ExtendedIso.Parse(instantString);
-
-                if (parseResult.Success)
-                {
-                    return parseResult.Value;
-                }
-            }
-
-            return base.ConvertFrom(context, culture, value);
-        }
-
-        /// <inheritdoc />
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (destinationType == typeof(string))
-            {
-                Instant instant = (Instant) value;
-                return InstantPattern.ExtendedIso.Format(instant);
-            }
-
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
+        private InstantTypeConverter() : base(InstantPattern.ExtendedIso) {}
     }
 }

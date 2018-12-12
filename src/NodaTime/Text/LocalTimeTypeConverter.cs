@@ -1,44 +1,15 @@
-using System;
-using System.ComponentModel;
-using System.Globalization;
+// Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0,
+// as found in the LICENSE.txt file.
 
 namespace NodaTime.Text
 {
     /// <summary>
-    /// Provides <see cref="string"/> for <see cref="T:LocalTimePattern.ExtendedIso"/>.
+    /// Provides conversion and parsing for <see cref="LocalTime"/> with the <see cref="LocalTimePattern.ExtendedIso"/> pattern.
     /// </summary>
-    internal sealed class LocalTimeTypeConverter : TypeConverter
+    internal sealed class LocalTimeTypeConverter : TypeConverterBase<LocalTime>
     {
         /// <inheritdoc />
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
-            => sourceType == typeof(string);
-
-        /// <inheritdoc />
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
-        {
-            if (value is string localTimeString)
-            {
-                var parseResult = LocalTimePattern.ExtendedIso.Parse(localTimeString);
-
-                if (parseResult.Success)
-                {
-                    return parseResult.Value;
-                }
-            }
-
-            return base.ConvertFrom(context, culture, value);
-        }
-
-        /// <inheritdoc />
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (destinationType == typeof(string))
-            {
-                LocalTime localTime = (LocalTime) value;
-                return LocalTimePattern.ExtendedIso.Format(localTime);
-            }
-
-            return base.ConvertTo(context, culture, value, destinationType);
-        }
+        private LocalTimeTypeConverter() : base(LocalTimePattern.ExtendedIso) {}
     }
 }
