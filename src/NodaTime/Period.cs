@@ -43,7 +43,7 @@ namespace NodaTime
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
-    [TypeConverter(nameof(PeriodTypeConverter))]
+    [TypeConverter(typeof(PeriodTypeConverter))]
     public sealed class Period : IEquatable<Period>
     {
         // General implementation note: operations such as normalization work out the total number of nanoseconds as an Int64

@@ -10,6 +10,6 @@ namespace NodaTime.Text
     internal sealed class LocalDateTypeConverter : TypeConverterBase<LocalDate>
     {
         /// <inheritdoc />
-        private LocalDateTypeConverter() : base(LocalDatePattern.Iso) {}
+        public LocalDateTypeConverter() : base(LocalDatePattern.Iso) {}
     }
 }

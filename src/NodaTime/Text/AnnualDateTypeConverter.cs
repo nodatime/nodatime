@@ -10,6 +10,6 @@ namespace NodaTime.Text
     internal sealed class AnnualDateTypeConverter : TypeConverterBase<AnnualDate>
     {
         /// <inheritdoc />
-        private AnnualDateTypeConverter() : base(AnnualDatePattern.Iso) {}
+        public AnnualDateTypeConverter() : base(AnnualDatePattern.Iso) {}
     }
 }

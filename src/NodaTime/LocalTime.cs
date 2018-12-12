@@ -26,7 +26,7 @@ namespace NodaTime
     /// to a particular calendar, time zone or date.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [TypeConverter(nameof(LocalTimeTypeConverter))]
+    [TypeConverter(typeof(LocalTimeTypeConverter))]
     public readonly struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
     {
         /// <summary>

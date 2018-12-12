@@ -39,7 +39,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [TypeConverter(nameof(LocalDateTimeTypeConverter))]
+    [TypeConverter(typeof(LocalDateTimeTypeConverter))]
     public readonly struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
     {
         private readonly LocalDate date;
