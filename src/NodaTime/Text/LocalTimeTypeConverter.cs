@@ -10,6 +10,6 @@ namespace NodaTime.Text
     internal sealed class LocalTimeTypeConverter : TypeConverterBase<LocalTime>
     {
         /// <inheritdoc />
-        private LocalTimeTypeConverter() : base(LocalTimePattern.ExtendedIso) {}
+        public LocalTimeTypeConverter() : base(LocalTimePattern.ExtendedIso) {}
     }
 }

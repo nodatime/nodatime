@@ -33,7 +33,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [TypeConverter(nameof(LocalDateTypeConverter))]
+    [TypeConverter(typeof(LocalDateTypeConverter))]
     public readonly struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IComparable, IFormattable, IXmlSerializable
     {
         private readonly YearMonthDayCalendar yearMonthDayCalendar;

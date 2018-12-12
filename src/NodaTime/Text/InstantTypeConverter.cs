@@ -10,6 +10,6 @@ namespace NodaTime.Text
     internal sealed class InstantTypeConverter : TypeConverterBase<Instant>
     {
         /// <inheritdoc />
-        private InstantTypeConverter() : base(InstantPattern.ExtendedIso) {}
+        public InstantTypeConverter() : base(InstantPattern.ExtendedIso) {}
     }
 }

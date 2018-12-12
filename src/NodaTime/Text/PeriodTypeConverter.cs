@@ -10,6 +10,6 @@ namespace NodaTime.Text
     internal sealed class PeriodTypeConverter : TypeConverterBase<Period>
     {
         /// <inheritdoc />
-        private PeriodTypeConverter() : base(PeriodPattern.Roundtrip) {}
+        public PeriodTypeConverter() : base(PeriodPattern.Roundtrip) {}
     }
 }

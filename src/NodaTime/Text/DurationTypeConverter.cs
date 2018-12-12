@@ -10,6 +10,6 @@ namespace NodaTime.Text
     internal sealed class DurationTypeConverter : TypeConverterBase<Duration>
     {
         /// <inheritdoc />
-        private DurationTypeConverter() : base(DurationPattern.Roundtrip) {}
+        public DurationTypeConverter() : base(DurationPattern.Roundtrip) {}
     }
 }

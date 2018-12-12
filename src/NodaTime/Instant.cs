@@ -28,7 +28,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-    [TypeConverter(nameof(InstantTypeConverter))]
+    [TypeConverter(typeof(InstantTypeConverter))]
     public readonly struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable
     {
         // These correspond to -9998-01-01 and 9999-12-31 respectively.
