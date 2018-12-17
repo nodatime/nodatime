@@ -25,7 +25,7 @@ namespace NodaTime.TimeZones
     /// Immutable, thread safe.
     /// </para>
     /// </remarks>
-    internal sealed class ZoneRecurrence : IEquatable<ZoneRecurrence>
+    internal sealed class ZoneRecurrence : IEquatable<ZoneRecurrence?>
     {
         private readonly LocalInstant maxLocalInstant;
         private readonly LocalInstant minLocalInstant;
@@ -86,7 +86,7 @@ namespace NodaTime.TimeZones
         /// true if the current object is equal to the <paramref name="other"/> parameter;
         /// otherwise, false.
         /// </returns>
-        public bool Equals(ZoneRecurrence other)
+        public bool Equals(ZoneRecurrence? other)
         {
             if (other is null)
             {
@@ -315,7 +315,7 @@ namespace NodaTime.TimeZones
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => Equals(obj as ZoneRecurrence);
+        public override bool Equals(object? obj) => Equals(obj as ZoneRecurrence);
 
         /// <summary>
         /// Returns a hash code for this instance.

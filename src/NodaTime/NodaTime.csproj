@@ -17,6 +17,7 @@
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <Deterministic>True</Deterministic>
     <LangVersion>8.0</LangVersion>
+    <NullableReferenceTypes>True</NullableReferenceTypes>
   </PropertyGroup>
 
   <ItemGroup>

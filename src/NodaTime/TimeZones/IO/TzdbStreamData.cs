@@ -54,13 +54,13 @@ namespace NodaTime.TimeZones.IO
         /// Returns the zone locations for the source, or null if no location data is available.
         /// This needn't be a read-only collection; it won't be exposed directly.
         /// </summary>
-        public IList<TzdbZoneLocation> ZoneLocations { get; }
+        public IList<TzdbZoneLocation>? ZoneLocations { get; }
 
         /// <summary>
         /// Returns the "zone 1970" locations for the source, or null if no such location data is available.
         /// This needn't be a read-only collection; it won't be exposed directly.
         /// </summary>
-        public IList<TzdbZone1970Location> Zone1970Locations { get; }
+        public IList<TzdbZone1970Location>? Zone1970Locations { get; }
 
         private TzdbStreamData(Builder builder)
         {
@@ -106,7 +106,7 @@ namespace NodaTime.TimeZones.IO
         }
 
         // Like Preconditions.CheckNotNull, but specifically for incomplete data.
-        private static T CheckNotNull<T>(T input, string name) where T : class
+        private static T CheckNotNull<T>(T? input, string name) where T : class
         {
             if (input is null)
             {
@@ -140,12 +140,12 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         private class Builder
         {
-            internal IList<string> stringPool;
-            internal string tzdbVersion;
-            internal IDictionary<string, string> tzdbIdMap;
-            internal IList<TzdbZoneLocation> zoneLocations = null;
-            internal IList<TzdbZone1970Location> zone1970Locations = null;
-            internal WindowsZones windowsMapping;
+            internal IList<string>? stringPool;
+            internal string? tzdbVersion;
+            internal IDictionary<string, string>? tzdbIdMap;
+            internal IList<TzdbZoneLocation>? zoneLocations = null;
+            internal IList<TzdbZone1970Location>? zone1970Locations = null;
+            internal WindowsZones? windowsMapping;
             internal readonly IDictionary<string, TzdbStreamField> zoneFields = new Dictionary<string, TzdbStreamField>();
 
             internal void HandleStringPoolField(TzdbStreamField field)
@@ -232,7 +232,7 @@ namespace NodaTime.TimeZones.IO
                 }
             }
 
-            private void CheckSingleField(TzdbStreamField field, object expectedNullField)
+            private void CheckSingleField(TzdbStreamField field, object? expectedNullField)
             {
                 if (expectedNullField != null)
                 {

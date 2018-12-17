@@ -21,14 +21,19 @@ namespace NodaTime.TimeZones.IO
         /// account of bufferedByte as well.
         /// </summary>
         private readonly Stream input;
-        private readonly IList<string> stringPool;
+
+        /// <summary>
+        /// String pool to use, or null if no string pool is in use.
+        /// </summary>
+        private readonly IList<string>? stringPool;
+
         /// <summary>
         /// Sometimes we need to buffer a byte in memory, e.g. to check if there is any
         /// more data. Anything reading directly from the stream should check here first.
         /// </summary>
         private byte? bufferedByte; 
 
-        internal DateTimeZoneReader(Stream input, IList<string> stringPool)
+        internal DateTimeZoneReader(Stream input, IList<string>? stringPool)
         {
             this.input = input;
             this.stringPool = stringPool;

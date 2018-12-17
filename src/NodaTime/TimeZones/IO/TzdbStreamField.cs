@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         internal Stream CreateStream() => new MemoryStream(data, false);
 
-        internal T ExtractSingleValue<T>(Func<DateTimeZoneReader, T> readerFunction, IList<string> stringPool)
+        internal T ExtractSingleValue<T>(Func<DateTimeZoneReader, T> readerFunction, IList<string>? stringPool)
         {
             using (var stream = CreateStream())
             {

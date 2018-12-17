@@ -94,7 +94,7 @@ namespace NodaTime
         /// <param name="id">The time zone ID to find.</param>
         /// <returns>The <see cref="DateTimeZone" /> for the given ID or null if the provider does not support
         /// the given ID.</returns>
-        [CanBeNull] DateTimeZone GetZoneOrNull([NotNull] string id);
+        [CanBeNull] DateTimeZone? GetZoneOrNull([NotNull] string id);
 
         /// <summary>
         /// Returns the time zone for the given ID.

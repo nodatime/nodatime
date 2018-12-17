@@ -78,7 +78,7 @@ namespace NodaTime
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
         /// <returns>True if the two date intervals have the same properties; false otherwise.</returns>
-        public static bool operator ==(DateInterval lhs, DateInterval rhs)
+        public static bool operator ==(DateInterval? lhs, DateInterval? rhs)
         {
             if (ReferenceEquals(lhs, rhs))
             {
@@ -100,7 +100,7 @@ namespace NodaTime
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
         /// <returns>False if the two date intervals have the same start and end date; true otherwise.</returns>
-        public static bool operator !=(DateInterval lhs, DateInterval rhs) => !(lhs == rhs);
+        public static bool operator !=(DateInterval? lhs, DateInterval? rhs) => !(lhs == rhs);
 
         /// <summary>
         /// Compares the given date interval for equality with this one.
@@ -207,14 +207,12 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different
         /// calendar to this date interval.</exception>
         [CanBeNull]
-        public DateInterval Intersection([NotNull]DateInterval interval)
-        {
-            return Contains(interval) ? interval
+        public DateInterval? Intersection([NotNull]DateInterval interval) =>
+            Contains(interval) ? interval
                 : interval.Contains(this) ? this
                 : interval.Contains(Start) ? new DateInterval(Start, interval.End)
                 : interval.Contains(End) ? new DateInterval(interval.Start, End)
                 : null;
-        }
 
         /// <summary>
         /// Returns the union between the given interval and this interval, as long as they're overlapping or contiguous.
@@ -226,7 +224,7 @@ namespace NodaTime
         /// </returns>
         /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different calendar to this date interval.</exception>
         [CanBeNull]
-        public DateInterval Union([NotNull] DateInterval interval)
+        public DateInterval? Union([NotNull] DateInterval interval)
         {
             ValidateInterval(interval);
 

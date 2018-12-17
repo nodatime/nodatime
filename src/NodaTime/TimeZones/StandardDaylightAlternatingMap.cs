@@ -31,7 +31,7 @@ namespace NodaTime.TimeZones
     /// only be used as part of a zone which will only ask it for values within the right
     /// portion of the timeline.
     /// </remarks>
-    internal sealed class StandardDaylightAlternatingMap : IEquatable<StandardDaylightAlternatingMap>, IZoneIntervalMapWithMinMax
+    internal sealed class StandardDaylightAlternatingMap : IEquatable<StandardDaylightAlternatingMap?>, IZoneIntervalMapWithMinMax
     {
         private readonly Offset standardOffset;
         private readonly ZoneRecurrence standardRecurrence;
@@ -71,9 +71,9 @@ namespace NodaTime.TimeZones
             standardRecurrence = standard;
         }
 
-        public override bool Equals(object other) => Equals(other as StandardDaylightAlternatingMap);
+        public override bool Equals(object? other) => Equals(other as StandardDaylightAlternatingMap);
 
-        public bool Equals(StandardDaylightAlternatingMap other) =>
+        public bool Equals(StandardDaylightAlternatingMap? other) =>
             other != null &&
             standardOffset == other.standardOffset && 
             dstRecurrence.Equals(other.dstRecurrence) &&

@@ -122,6 +122,6 @@ namespace NodaTime.TimeZones
         // We'll let the DateTimeZoneCache do that for us. (We get a DateTimeZoneNotFoundException either way.)
 
         /// <inheritdoc />
-        [NotNull] public string GetSystemDefaultId() => TimeZoneInfoInterceptor.Local?.Id;
+        [NotNull] public string? GetSystemDefaultId() => TimeZoneInfoInterceptor.Local?.Id;
     }
 }

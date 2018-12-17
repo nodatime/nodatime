@@ -75,9 +75,13 @@ namespace NodaTime.Text
             return (IPartialPattern<T>) Build();
         }
 
-        /// <inheritdoc />
+
+        // TODO(nullable): See https://github.com/dotnet/roslyn/issues/31862
+#pragma warning disable CS8616 // Nullability of reference types in return type doesn't match implemented member.
+                              /// <inheritdoc />
         IEnumerator<IPattern<T>> IEnumerable<IPattern<T>>.GetEnumerator() => patterns.GetEnumerator();
-        /// <inheritdoc />
+#pragma warning restore CS8616 // Nullability of reference types in return type doesn't match implemented member.
+                              /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator() => patterns.GetEnumerator();
 
         private sealed class CompositePattern : IPartialPattern<T>

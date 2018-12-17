@@ -18,7 +18,7 @@ namespace NodaTime.Text.Patterns
     /// </summary>
     internal sealed class SteppedPatternBuilder<TResult, TBucket> where TBucket : ParseBucket<TResult>
     {
-        internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
+        internal delegate ParseResult<TResult>? ParseAction(ValueCursor cursor, TBucket bucket);
 
         private readonly List<Action<TResult, StringBuilder>> formatActions;
         private readonly List<ParseAction> parseActions;
@@ -127,13 +127,13 @@ namespace NodaTime.Text.Patterns
                 throw new InvalidPatternException(TextErrorMessages.TimeFieldAndEmbeddedTime);
             }
 
-            Action<TResult, StringBuilder> formatDelegate = null;
+            Action<TResult, StringBuilder>? formatDelegate = null;
             foreach (Action<TResult, StringBuilder> formatAction in formatActions)
             {
-                IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
+                IPostPatternParseFormatAction? postAction = formatAction.Target as IPostPatternParseFormatAction;
                 formatDelegate += postAction is null ? formatAction : postAction.BuildFormatAction(usedFields);
             }
-            return new SteppedPattern(formatDelegate, formatOnly ? null : parseActions.ToArray(), bucketProvider, usedFields, sample);
+            return new SteppedPattern(formatDelegate!, formatOnly ? null : parseActions.ToArray(), bucketProvider, usedFields, sample);
         }
 
         /// <summary>
@@ -585,13 +585,14 @@ namespace NodaTime.Text.Patterns
         {
             private readonly Action<TResult, StringBuilder> formatActions;
             // This will be null if the pattern is only capable of formatting.
-            private readonly ParseAction[] parseActions;
+            private readonly ParseAction[]? parseActions;
             private readonly Func<TBucket> bucketProvider;
             private readonly PatternFields usedFields;
             private readonly int expectedLength;
 
-            public SteppedPattern(Action<TResult, StringBuilder> formatActions,
-                ParseAction[] parseActions,
+            public SteppedPattern
+                (Action<TResult, StringBuilder> formatActions,
+                ParseAction[]? parseActions,
                 Func<TBucket> bucketProvider,
                 PatternFields usedFields,
                 TResult sample)
@@ -651,11 +652,18 @@ namespace NodaTime.Text.Patterns
 
             public ParseResult<TResult> ParsePartial(ValueCursor cursor)
             {
+                // At the moment we shouldn't get a partial parse for a format-only pattern, but
+                // let's guard against it for the future.
+                if (parseActions is null)
+                {
+                    return ParseResult<TResult>.FormatOnlyPattern;
+                }
+
                 TBucket bucket = bucketProvider();
 
                 foreach (var action in parseActions)
                 {
-                    ParseResult<TResult> failure = action(cursor, bucket);
+                    ParseResult<TResult>? failure = action(cursor, bucket);
                     if (failure != null)
                     {
                         return failure;

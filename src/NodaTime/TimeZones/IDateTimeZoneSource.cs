@@ -102,6 +102,6 @@ namespace NodaTime.TimeZones
         /// The ID for the system default time zone for this source,
         /// or null if the system default time zone has no mapping in this source.
         /// </returns>
-        [CanBeNull] string GetSystemDefaultId();
+        [CanBeNull] string? GetSystemDefaultId();
     }
 }

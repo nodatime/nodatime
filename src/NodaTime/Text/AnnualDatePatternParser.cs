@@ -116,7 +116,7 @@ namespace NodaTime.Text
                 return ParseResult<AnnualDate>.ForValue(new AnnualDate(MonthOfYearNumeric, day));
             }
 
-            private ParseResult<AnnualDate> DetermineMonth(PatternFields usedFields, string text)
+            private ParseResult<AnnualDate>? DetermineMonth(PatternFields usedFields, string text)
             {
                 switch (usedFields & (PatternFields.MonthOfYearNumeric | PatternFields.MonthOfYearText))
                 {

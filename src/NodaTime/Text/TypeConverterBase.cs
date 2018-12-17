@@ -35,7 +35,7 @@ namespace NodaTime.Text
         [Pure]
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
             // The ParseResult<>.Value property will throw appropriately if the operation was unsuccessful
-            value is string text ? pattern.Parse(text).Value : base.ConvertFrom(context, culture, value);
+            value is string text ? pattern.Parse(text).Value! : base.ConvertFrom(context, culture, value);
 
         /// <inheritdoc />
         [Pure]

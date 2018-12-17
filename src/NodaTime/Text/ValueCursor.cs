@@ -113,7 +113,7 @@ namespace NodaTime.Text
         /// <param name="result">The result integer value. The value of this is not guaranteed
         /// to be anything specific if the return value is non-null.</param>
         /// <returns>null if the digits were parsed, or the appropriate parse failure</returns>
-        internal ParseResult<T> ParseInt64<T>(out long result)
+        internal ParseResult<T>? ParseInt64<T>(out long result)
         {
             unchecked
             {

@@ -84,7 +84,7 @@ namespace NodaTime.Text
 
             internal CalendarSystem Calendar;
             internal int Year;
-            private Era Era;
+            private Era? Era;
             internal int YearOfEra;
             internal int MonthOfYearNumeric;
             internal int MonthOfYearText;
@@ -98,7 +98,7 @@ namespace NodaTime.Text
                 this.Calendar = templateValue.Calendar;
             }
 
-            internal ParseResult<TResult> ParseEra<TResult>(NodaFormatInfo formatInfo, ValueCursor cursor)
+            internal ParseResult<TResult>? ParseEra<TResult>(NodaFormatInfo formatInfo, ValueCursor cursor)
             {
                 var compareInfo = formatInfo.CompareInfo;
                 foreach (var era in Calendar.Eras)
@@ -122,7 +122,7 @@ namespace NodaTime.Text
                     return ParseResult<LocalDate>.ForValue(new LocalDate(Year, MonthOfYearNumeric, DayOfMonth, Calendar));
                 }
                 // This will set Year if necessary
-                ParseResult<LocalDate> failure = DetermineYear(usedFields, text);
+                ParseResult<LocalDate>? failure = DetermineYear(usedFields, text);
                 if (failure != null)
                 {
                     return failure;
@@ -174,7 +174,7 @@ namespace NodaTime.Text
             /// 
             /// Phew.
             /// </summary>
-            private ParseResult<LocalDate> DetermineYear(PatternFields usedFields, string text)
+            private ParseResult<LocalDate>? DetermineYear(PatternFields usedFields, string text)
             {
                 if (usedFields.HasAny(PatternFields.Year))
                 {
@@ -217,6 +217,8 @@ namespace NodaTime.Text
                     Era = TemplateValue.Era;
                 }
 
+                // After this point, Era is definitely non-null.
+
                 if (usedFields.HasAny(PatternFields.YearTwoDigits))
                 {
                     int century = TemplateValue.YearOfEra / 100;
@@ -227,16 +229,16 @@ namespace NodaTime.Text
                     YearOfEra += century * 100;
                 }
 
-                if (YearOfEra < Calendar.GetMinYearOfEra(Era) ||
-                    YearOfEra > Calendar.GetMaxYearOfEra(Era))
+                if (YearOfEra < Calendar.GetMinYearOfEra(Era!) ||
+                    YearOfEra > Calendar.GetMaxYearOfEra(Era!))
                 {
-                    return ParseResult<LocalDate>.YearOfEraOutOfRange(text, YearOfEra, Era, Calendar);
+                    return ParseResult<LocalDate>.YearOfEraOutOfRange(text, YearOfEra, Era!, Calendar);
                 }
-                Year = Calendar.GetAbsoluteYear(YearOfEra, Era);
+                Year = Calendar.GetAbsoluteYear(YearOfEra, Era!);
                 return null;
             }
 
-            private ParseResult<LocalDate> DetermineMonth(PatternFields usedFields, string text)
+            private ParseResult<LocalDate>? DetermineMonth(PatternFields usedFields, string text)
             {
                 switch (usedFields & (PatternFields.MonthOfYearNumeric | PatternFields.MonthOfYearText))
                 {
