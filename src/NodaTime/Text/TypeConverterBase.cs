@@ -18,15 +18,14 @@ namespace NodaTime.Text
         /// <summary>
         /// The pattern used to parse and serialize values of <typeparamref name="T"/>.
         /// </summary>
-        [NotNull] private readonly IPattern<T> _pattern;
+        [NotNull] private readonly IPattern<T> pattern;
 
         /// <summary>
         /// Constructs a <see cref="TypeConverter"/> for <typeparamref name="T"/> based on the provided <see cref="IPattern{T}"/>.
         /// </summary>
         /// <param name="pattern">The pattern used to parse and serialize <typeparamref name="T"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="pattern"/></exception>
-        protected TypeConverterBase([NotNull] IPattern<T> pattern)
-            => _pattern = Preconditions.CheckNotNull(pattern, nameof(pattern));
+        protected TypeConverterBase([NotNull] IPattern<T> pattern) => this.pattern = Preconditions.CheckNotNull(pattern, nameof(pattern));
 
         /// <inheritdoc />
         [Pure]
@@ -37,14 +36,16 @@ namespace NodaTime.Text
         [Pure]
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            if (value is string instantString)
+            if (value is string text)
             {
-                var parseResult = _pattern.Parse(instantString);
+                var parseResult = pattern.Parse(text);
 
                 if (parseResult.Success)
                 {
                     return parseResult.Value;
                 }
+
+                throw parseResult.Exception;
             }
 
             return base.ConvertFrom(context, culture, value);
@@ -56,7 +57,7 @@ namespace NodaTime.Text
         {
             if (destinationType == typeof(string) && value is T t)
             {
-                return _pattern.Format(t);
+                return pattern.Format(t);
             }
 
             return base.ConvertTo(context, culture, value, destinationType);
