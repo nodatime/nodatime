@@ -13,7 +13,8 @@ dotnet --info
 dotnet build -c Release src/NodaTime-All.sln
 
 # Run the tests under dotCover
-build/coverage.sh
+# Temporarily disabled until we've got this working with C# 8
+# build/coverage.sh
 
 dotnet run --no-build -c Release -p src/NodaTime.Test -- --where=cat!=Slow
 
