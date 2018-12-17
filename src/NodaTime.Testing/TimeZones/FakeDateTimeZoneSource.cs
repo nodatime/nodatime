@@ -60,7 +60,7 @@ namespace NodaTime.Testing.TimeZones
         /// The ID for the system default time zone for this source,
         /// or null if the system default time zone has no mapping in this source.
         /// </returns>
-        public string GetSystemDefaultId()
+        public string? GetSystemDefaultId()
         {
             string id = TimeZoneInfo.Local.Id;
             // We don't care about the return value of TryGetValue - if it's false,
