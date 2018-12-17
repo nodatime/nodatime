@@ -239,7 +239,7 @@ namespace NodaTime.TimeZones
 
             internal IEnumerable<ZoneInterval> CoalesceIntervals(IEnumerable<ZoneInterval> zoneIntervals)
             {
-                ZoneInterval current = null;
+                ZoneInterval? current = null;
                 foreach (var zoneInterval in zoneIntervals)
                 {
                     if (current is null)

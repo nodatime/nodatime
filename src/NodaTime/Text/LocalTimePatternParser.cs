@@ -128,7 +128,7 @@ namespace NodaTime.Text
                 {
                     AmPm = TemplateValue.Hour / 12;
                 }
-                ParseResult<LocalTime> failure = DetermineHour(usedFields, text, out int hour);
+                ParseResult<LocalTime>? failure = DetermineHour(usedFields, text, out int hour);
                 if (failure != null)
                 {
                     return failure;
@@ -139,7 +139,7 @@ namespace NodaTime.Text
                 return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondNanosecond(hour, minutes, seconds, fraction));
             }
 
-            private ParseResult<LocalTime> DetermineHour(PatternFields usedFields, string text, out int hour)
+            private ParseResult<LocalTime>? DetermineHour(PatternFields usedFields, string text, out int hour)
             {
                 hour = 0;
                 if (usedFields.HasAny(PatternFields.Hours24))

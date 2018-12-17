@@ -99,7 +99,7 @@ namespace NodaTime.TimeZones
         /// has been validated).
         /// </remarks>
         /// <value>A read-only list of zone locations known to this source.</value>
-        [CanBeNull] public IList<TzdbZoneLocation> ZoneLocations { get; }
+        [CanBeNull] public IList<TzdbZoneLocation>? ZoneLocations { get; }
 
         /// <summary>
         /// Gets a read-only list of "zone 1970" locations known to this source, or null if the original source data
@@ -125,7 +125,7 @@ namespace NodaTime.TimeZones
         /// </p>
         /// </remarks>
         /// <value>A read-only list of zone locations known to this source.</value>
-        [CanBeNull] public IList<TzdbZone1970Location> Zone1970Locations { get; }
+        [CanBeNull] public IList<TzdbZone1970Location>? Zone1970Locations { get; }
 
         /// <inheritdoc />
         /// <remarks>
@@ -196,10 +196,10 @@ namespace NodaTime.TimeZones
         [NotNull] public IEnumerable<string> GetIds() => CanonicalIdMap.Keys;
 
         /// <inheritdoc />
-        [CanBeNull] public string GetSystemDefaultId() => MapTimeZoneInfoId(TimeZoneInfoInterceptor.Local);
+        [CanBeNull] public string? GetSystemDefaultId() => MapTimeZoneInfoId(TimeZoneInfoInterceptor.Local);
 
         [VisibleForTesting, CanBeNull]
-        internal string MapTimeZoneInfoId([CanBeNull] TimeZoneInfo timeZone)
+        internal string? MapTimeZoneInfoId([CanBeNull] TimeZoneInfo? timeZone)
         {
             // Unusual, but can happen in some Mono installations.
             if (timeZone is null)
@@ -222,10 +222,10 @@ namespace NodaTime.TimeZones
             return GuessZoneIdByTransitions(timeZone);
         }
 
-        private readonly ConcurrentDictionary<string, string> guesses = new ConcurrentDictionary<string, string>();
+        private readonly ConcurrentDictionary<string, string?> guesses = new ConcurrentDictionary<string, string?>();
 
         // Cache around GuessZoneIdByTransitionsUncached
-        private string GuessZoneIdByTransitions(TimeZoneInfo zone)
+        private string? GuessZoneIdByTransitions(TimeZoneInfo zone)
         {
             // FIXME: Stop using StandardName! (We have Id now...)
             return guesses.GetOrAdd(zone.StandardName, _ =>
@@ -253,7 +253,7 @@ namespace NodaTime.TimeZones
         /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
         /// <param name="candidates">All the Noda Time zones to consider - normally a list 
         /// obtained from this source.</param>
-        internal string GuessZoneIdByTransitionsUncached(TimeZoneInfo zone, List<DateTimeZone> candidates)
+        internal string? GuessZoneIdByTransitionsUncached(TimeZoneInfo zone, List<DateTimeZone> candidates)
         {
             // See https://github.com/nodatime/nodatime/issues/686 for performance observations.
             // Very rare use of the system clock! Windows time zone updates sometimes sacrifice past
@@ -270,7 +270,7 @@ namespace NodaTime.TimeZones
             // - so if we get to that number (or whatever our "best" so far is)
             // we know we can stop for any particular zone.
             int lowestFailureScore = (instants.Count * 30) / 100;
-            DateTimeZone bestZone = null;
+            DateTimeZone? bestZone = null;
             foreach (var candidate in candidates)
             {
                 int failureScore = 0;

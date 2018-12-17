@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     public sealed class DateTimeZoneCache : IDateTimeZoneProvider
     {
         private readonly IDateTimeZoneSource source;
-        private readonly ConcurrentDictionary<string, DateTimeZone> timeZoneMap = new ConcurrentDictionary<string, DateTimeZone>();
+        private readonly ConcurrentDictionary<string, DateTimeZone?> timeZoneMap = new ConcurrentDictionary<string, DateTimeZone?>();
 
         /// <summary>
         /// Gets the version ID of this provider. This is simply the <see cref="IDateTimeZoneSource.VersionId"/> returned by
@@ -81,7 +81,7 @@ namespace NodaTime.TimeZones
         [NotNull]
         public DateTimeZone GetSystemDefault()
         {
-            string id = source.GetSystemDefaultId();
+            string? id = source.GetSystemDefaultId();
             if (id is null)
             {
                 throw new DateTimeZoneNotFoundException($"System default time zone is unknown to source {VersionId}");
@@ -90,15 +90,15 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        [CanBeNull] public DateTimeZone GetZoneOrNull([NotNull] string id)
+        [CanBeNull] public DateTimeZone? GetZoneOrNull([NotNull] string id)
         {
             Preconditions.CheckNotNull(id, nameof(id));
             return GetZoneFromSourceOrNull(id) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
         }
 
-        private DateTimeZone GetZoneFromSourceOrNull(string id)
+        private DateTimeZone? GetZoneFromSourceOrNull(string id)
         {
-            if (!timeZoneMap.TryGetValue(id, out DateTimeZone zone))
+            if (!timeZoneMap.TryGetValue(id, out DateTimeZone? zone))
             {
                 return null;
             }

@@ -179,7 +179,7 @@ namespace NodaTime
             new Period(Years, Months, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Ticks, Nanoseconds);
 
         /// <inheritdoc />
-        XmlSchema IXmlSerializable.GetSchema() => null;
+        XmlSchema? IXmlSerializable.GetSchema() => null;
 
         /// <inheritdoc />
         void IXmlSerializable.ReadXml(XmlReader reader)

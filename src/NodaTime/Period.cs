@@ -44,7 +44,7 @@ namespace NodaTime
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
     [TypeConverter(typeof(PeriodTypeConverter))]
-    public sealed class Period : IEquatable<Period>
+    public sealed class Period : IEquatable<Period?>
     {
         // General implementation note: operations such as normalization work out the total number of nanoseconds as an Int64
         // value. This can handle +/- 106,751 days, or 292 years. We could move to using BigInteger if we feel that's required,
@@ -833,7 +833,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="other">The value to compare this one with.</param>
         /// <returns>true if the other object is a period equal to this one, consistent with <see cref="Equals(Period)"/></returns>
-        public override bool Equals(object other) => Equals(other as Period);
+        public override bool Equals(object? other) => Equals(other as Period);
 
         /// <summary>
         /// Returns the hash code for this period, consistent with <see cref="Equals(Period)"/>.
@@ -862,7 +862,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="other">The period to compare this one with.</param>
         /// <returns>True if this period has the same values for the same properties as the one specified.</returns>
-        public bool Equals(Period other) =>
+        public bool Equals(Period? other) =>
             other != null &&
             Years == other.Years &&
             Months == other.Months &&

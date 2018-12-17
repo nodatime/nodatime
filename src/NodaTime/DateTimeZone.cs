@@ -246,12 +246,12 @@ namespace NodaTime
             // are close enough that we've found the right instant.
             if (interval.Contains(localInstant))
             {
-                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                ZoneInterval? earlier = GetEarlierMatchingInterval(interval, localInstant);
                 if (earlier != null)
                 {
                     return new ZoneLocalMapping(this, localDateTime, earlier, interval, 2);
                 }
-                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                ZoneInterval? later = GetLaterMatchingInterval(interval, localInstant);
                 if (later != null)
                 {
                     return new ZoneLocalMapping(this, localDateTime, interval, later, 2);
@@ -262,12 +262,12 @@ namespace NodaTime
             {
                 // Our first guess was wrong. Either we need to change interval by one (either direction)
                 // or we're in a gap.
-                ZoneInterval earlier = GetEarlierMatchingInterval(interval, localInstant);
+                ZoneInterval? earlier = GetEarlierMatchingInterval(interval, localInstant);
                 if (earlier != null)
                 {
                     return new ZoneLocalMapping(this, localDateTime, earlier, earlier, 1);
                 }
-                ZoneInterval later = GetLaterMatchingInterval(interval, localInstant);
+                ZoneInterval? later = GetLaterMatchingInterval(interval, localInstant);
                 if (later != null)
                 {
                     return new ZoneLocalMapping(this, localDateTime, later, later, 1);
@@ -383,7 +383,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the interval before this one, if it contains the given local instant, or null otherwise.
         /// </summary>
-        private ZoneInterval GetEarlierMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
+        private ZoneInterval? GetEarlierMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
         {
             // Micro-optimization to avoid fetching interval.Start multiple times. Seems
             // to give a performance improvement on x86 at least...
@@ -407,7 +407,7 @@ namespace NodaTime
         /// <summary>
         /// Returns the next interval after this one, if it contains the given local instant, or null otherwise.
         /// </summary>
-        private ZoneInterval GetLaterMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
+        private ZoneInterval? GetLaterMatchingInterval(ZoneInterval interval, LocalInstant localInstant)
         {
             // Micro-optimization to avoid fetching interval.End multiple times. Seems
             // to give a performance improvement on x86 at least...

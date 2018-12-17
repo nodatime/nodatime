@@ -144,12 +144,14 @@ namespace NodaTime.TimeZones
             }
         }
 
+        // TODO(nullable): Validate that implementing IEquatable<T?> really is the most appropriate approach
+
         /// <summary>
         /// A country represented within an entry in the "zone1970.tab" file, with the English name
         /// mapped from the "iso3166.tab" file.
         /// </summary>
         [Immutable]
-        public sealed class Country : IEquatable<Country>
+        public sealed class Country : IEquatable<Country?>
         {
             /// <summary>
             /// Gets the English name of the country.
@@ -181,14 +183,14 @@ namespace NodaTime.TimeZones
             /// </summary>
             /// <param name="other">The country to compare with this one.</param>
             /// <returns><c>true</c> if the given country has the same name and code as this one; <c>false</c> otherwise.</returns>
-            public bool Equals(Country other) => other != null && other.Code == Code && other.Name == Name;
+            public bool Equals(Country? other) => other != null && other.Code == Code && other.Name == Name;
 
             /// <summary>
             /// Compares countries for equality, by name and code.
             /// </summary>
             /// <param name="obj">The object to compare this one with.</param>
             /// <returns><c>true</c> if the given object is a country with the same name and code as this one; <c>false</c> otherwise.</returns>
-            public override bool Equals(object obj) => Equals(obj as Country);
+            public override bool Equals(object? obj) => Equals(obj as Country);
 
             /// <summary>
             /// Returns a hash code for this country.

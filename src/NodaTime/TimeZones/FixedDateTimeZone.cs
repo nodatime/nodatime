@@ -13,12 +13,14 @@ namespace NodaTime.TimeZones
     // Implementation note: this implemented IEquatable<FixedDateTimeZone> for the sake of fitting in with our test infrastructure
     // more than anything else...
 
+    // TODO(nullable): Validate that implementing IEquatable<T?> really is the most appropriate approach
+
     /// <summary>
     /// Basic <see cref="DateTimeZone" /> implementation that has a fixed name key and offset i.e.
     /// no daylight savings.
     /// </summary>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
-    internal sealed class FixedDateTimeZone : DateTimeZone, IEquatable<FixedDateTimeZone>
+    internal sealed class FixedDateTimeZone : DateTimeZone, IEquatable<FixedDateTimeZone?>
     {
         private readonly ZoneInterval interval;
 
@@ -73,7 +75,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="id">ID </param>
         /// <returns>The parsed time zone, or null if the ID doesn't match.</returns>
-        internal static DateTimeZone GetFixedZoneOrNull(string id)
+        internal static DateTimeZone? GetFixedZoneOrNull(string id)
         {
             if (!id.StartsWith(UtcId))
             {
@@ -155,9 +157,9 @@ namespace NodaTime.TimeZones
         /// <param name="obj">Another object to compare to.</param> 
         /// <filterpriority>2</filterpriority>
         /// <returns>True if the specified value is a <see cref="FixedDateTimeZone"/> with the same name, ID and offset; otherwise, false.</returns>
-        public override bool Equals(object obj) => Equals(obj as FixedDateTimeZone);
+        public override bool Equals(object? obj) => Equals(obj as FixedDateTimeZone);
 
-        public bool Equals(FixedDateTimeZone other) =>
+        public bool Equals(FixedDateTimeZone? other) =>
             other != null &&
             Offset == other.Offset &&
             Id == other.Id &&

@@ -36,7 +36,7 @@ namespace NodaTime.TimeZones
     /// Immutable, thread safe
     /// </para>
     /// </remarks>
-    internal sealed class ZoneYearOffset : IEquatable<ZoneYearOffset>
+    internal sealed class ZoneYearOffset : IEquatable<ZoneYearOffset?>
     {
         /// <summary>
         /// An offset that specifies the beginning of the year.
@@ -150,7 +150,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
-        public bool Equals(ZoneYearOffset other)
+        public bool Equals(ZoneYearOffset? other)
         {
             if (other is null)
             {
@@ -294,7 +294,7 @@ namespace NodaTime.TimeZones
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => Equals(obj as ZoneYearOffset);
+        public override bool Equals(object? obj) => Equals(obj as ZoneYearOffset);
 
         /// <summary>
         /// Returns a hash code for this instance.

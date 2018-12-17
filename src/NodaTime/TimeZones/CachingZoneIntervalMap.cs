@@ -100,7 +100,7 @@ namespace NodaTime.TimeZones
 
                 internal int Period { get; }
 
-                internal HashCacheNode Previous { get; }
+                internal HashCacheNode? Previous { get; }
 
                 /// <summary>
                 /// Creates a hash table node with all the information for this period.
@@ -138,7 +138,7 @@ namespace NodaTime.TimeZones
                 /// <param name="interval">The zone interval.</param>
                 /// <param name="period"></param>
                 /// <param name="previous">The previous <see cref="HashCacheNode"/> node.</param>
-                private HashCacheNode(ZoneInterval interval, int period, HashCacheNode previous)
+                private HashCacheNode(ZoneInterval interval, int period, HashCacheNode? previous)
                 {
                     this.Period = period;
                     this.Interval = interval;

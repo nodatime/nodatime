@@ -99,7 +99,7 @@ namespace NodaTime.TimeZones
         internal static IZoneIntervalMap ConvertToFullMap(IEnumerable<PartialZoneIntervalMap> maps)
         {
             var coalescedMaps = new List<PartialZoneIntervalMap>();
-            PartialZoneIntervalMap current = null;
+            PartialZoneIntervalMap? current = null;
             foreach (var next in maps)
             {
                 if (current is null)
@@ -160,10 +160,10 @@ namespace NodaTime.TimeZones
                 }
             }
             Preconditions.DebugCheckArgument(current != null, nameof(maps), "Collection of maps must not be empty");
-            Preconditions.DebugCheckArgument(current.End == Instant.AfterMaxValue, nameof(maps), "Collection of maps must end at the end of time");
+            Preconditions.DebugCheckArgument(current!.End == Instant.AfterMaxValue, nameof(maps), "Collection of maps must end at the end of time");
 
             // We're left with a map extending to the end of time, which couldn't have been coalesced with its predecessors.
-            coalescedMaps.Add(current);
+            coalescedMaps.Add(current!);
             return new CombinedPartialZoneIntervalMap(coalescedMaps.ToArray());
         }
 

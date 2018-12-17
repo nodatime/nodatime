@@ -43,17 +43,17 @@ namespace NodaTime.Globalization
         private readonly object fieldLock = new object();
 
         #region Patterns
-        private FixedFormatInfoPatternParser<Duration> durationPatternParser;
-        private FixedFormatInfoPatternParser<Offset> offsetPatternParser;
-        private FixedFormatInfoPatternParser<Instant> instantPatternParser;
-        private FixedFormatInfoPatternParser<LocalTime> localTimePatternParser;
-        private FixedFormatInfoPatternParser<LocalDate> localDatePatternParser;
-        private FixedFormatInfoPatternParser<LocalDateTime> localDateTimePatternParser;
-        private FixedFormatInfoPatternParser<OffsetDateTime> offsetDateTimePatternParser;
-        private FixedFormatInfoPatternParser<OffsetDate> offsetDatePatternParser;
-        private FixedFormatInfoPatternParser<OffsetTime> offsetTimePatternParser;
-        private FixedFormatInfoPatternParser<ZonedDateTime> zonedDateTimePatternParser;
-        private FixedFormatInfoPatternParser<AnnualDate> annualDatePatternParser;
+        private FixedFormatInfoPatternParser<Duration>? durationPatternParser;
+        private FixedFormatInfoPatternParser<Offset>? offsetPatternParser;
+        private FixedFormatInfoPatternParser<Instant>? instantPatternParser;
+        private FixedFormatInfoPatternParser<LocalTime>? localTimePatternParser;
+        private FixedFormatInfoPatternParser<LocalDate>? localDatePatternParser;
+        private FixedFormatInfoPatternParser<LocalDateTime>? localDateTimePatternParser;
+        private FixedFormatInfoPatternParser<OffsetDateTime>? offsetDateTimePatternParser;
+        private FixedFormatInfoPatternParser<OffsetDate>? offsetDatePatternParser;
+        private FixedFormatInfoPatternParser<OffsetTime>? offsetTimePatternParser;
+        private FixedFormatInfoPatternParser<ZonedDateTime>? zonedDateTimePatternParser;
+        private FixedFormatInfoPatternParser<AnnualDate>? annualDatePatternParser;
         #endregion
 
         /// <summary>
@@ -69,12 +69,12 @@ namespace NodaTime.Globalization
         private static readonly Cache<CultureInfo, NodaFormatInfo> Cache = new Cache<CultureInfo, NodaFormatInfo>
             (500, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
 
-        private IList<string> longMonthNames;
-        private IList<string> longMonthGenitiveNames;
-        private IList<string> longDayNames;
-        private IList<string> shortMonthNames;
-        private IList<string> shortMonthGenitiveNames;
-        private IList<string> shortDayNames;
+        private IList<string>? longMonthNames;
+        private IList<string>? longMonthGenitiveNames;
+        private IList<string>? longDayNames;
+        private IList<string>? shortMonthNames;
+        private IList<string>? shortMonthGenitiveNames;
+        private IList<string>? shortDayNames;
 
         private readonly ConcurrentDictionary<Era, EraDescription> eraDescriptions;
 
@@ -123,12 +123,12 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        /// The BCL returns arrays of month names starting at 0; we want a read-only list starting at 1 (with 0 as null).
+        /// The BCL returns arrays of month names starting at 0; we want a read-only list starting at 1 (with 0 as an empty string).
         /// </summary>
         private static IList<string> ConvertMonthArray(string[] monthNames)
         {
             List<string> list = new List<string>(monthNames);
-            list.Insert(0, null);
+            list.Insert(0, "");
             return new ReadOnlyCollection<string>(list);
         }
 
@@ -146,14 +146,14 @@ namespace NodaTime.Globalization
         }
 
         /// <summary>
-        /// The BCL returns arrays of week names starting at 0 as Sunday; we want a read-only list starting at 1 (with 0 as null)
+        /// The BCL returns arrays of week names starting at 0 as Sunday; we want a read-only list starting at 1 (with 0 as an empty string)
         /// and with 7 as Sunday.
         /// </summary>
         private static IList<string> ConvertDayArray(string[] dayNames)
         {
             List<string> list = new List<string>(dayNames);
             list.Add(dayNames[0]);
-            list[0] = null;
+            list[0] = "";
             return new ReadOnlyCollection<string>(list);
         }
 
@@ -213,7 +213,7 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser => EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
         internal FixedFormatInfoPatternParser<AnnualDate> AnnualDatePatternParser => EnsureFixedFormatInitialized(ref annualDatePatternParser, () => new AnnualDatePatternParser(AnnualDatePattern.DefaultTemplateValue));
 
-        private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T> field,
+        private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T>? field,
             Func<IPatternParser<T>> patternParserFactory)
         {
             lock (fieldLock)
@@ -229,11 +229,11 @@ namespace NodaTime.Globalization
             var localConstruction = new FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
             lock (fieldLock)
             {
-                if (field == null)
+                if (field is null)
                 {
                     field = localConstruction;
                 }
-                return field;
+                return field!;
             }
         }
 
@@ -242,13 +242,13 @@ namespace NodaTime.Globalization
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
         /// </summary>
-        public IList<string> LongMonthNames { get { EnsureMonthsInitialized();  return longMonthNames; } }
+        public IList<string> LongMonthNames { get { EnsureMonthsInitialized();  return longMonthNames!; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
         /// </summary>
-        public IList<string> ShortMonthNames { get { EnsureMonthsInitialized(); return shortMonthNames; } }
+        public IList<string> ShortMonthNames { get { EnsureMonthsInitialized(); return shortMonthNames!; } }
         /// <summary>
         /// Returns a read-only list of the names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
@@ -257,7 +257,7 @@ namespace NodaTime.Globalization
         /// If the culture does not use genitive month names, this property will return the same reference as
         /// <see cref="LongMonthNames"/>.
         /// </summary>
-        public IList<string> LongMonthGenitiveNames { get { EnsureMonthsInitialized(); return longMonthGenitiveNames; } }
+        public IList<string> LongMonthGenitiveNames { get { EnsureMonthsInitialized(); return longMonthGenitiveNames!; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
@@ -266,21 +266,21 @@ namespace NodaTime.Globalization
         /// If the culture does not use genitive month names, this property will return the same reference as
         /// <see cref="ShortMonthNames"/>.
         /// </summary>
-        public IList<string> ShortMonthGenitiveNames { get { EnsureMonthsInitialized(); return shortMonthGenitiveNames; } }
+        public IList<string> ShortMonthGenitiveNames { get { EnsureMonthsInitialized(); return shortMonthGenitiveNames!; } }
         /// <summary>
         /// Returns a read-only list of the names of the days of the week for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, and the other elements correspond with the index values returned from
         /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
         /// </summary>
-        public IList<string> LongDayNames { get { EnsureDaysInitialized(); return longDayNames; } }
+        public IList<string> LongDayNames { get { EnsureDaysInitialized(); return longDayNames!; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the days of the week for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, and the other elements correspond with the index values returned from
         /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
         /// </summary>
-        public IList<string> ShortDayNames { get { EnsureDaysInitialized(); return shortDayNames; } }
+        public IList<string> ShortDayNames { get { EnsureDaysInitialized(); return shortDayNames!; } }
 
         /// <summary>
         /// Gets the BCL date time format associated with this formatting information.
@@ -452,7 +452,7 @@ namespace NodaTime.Globalization
                 }
                 else
                 {
-                    string eraNameFromCulture = GetEraNameFromBcl(era, cultureInfo);
+                    string? eraNameFromCulture = GetEraNameFromBcl(era, cultureInfo);
                     if (eraNameFromCulture != null && !pipeDelimited.StartsWith(eraNameFromCulture + "|"))
                     {
                         pipeDelimited = eraNameFromCulture + "|" + pipeDelimited;
@@ -470,7 +470,7 @@ namespace NodaTime.Globalization
             /// it's correct. (The selection here seems small, but it covers most cases.) This isn't ideal, but it's better
             /// than nothing, and fixes an issue where non-English BCL cultures have "gg" in their patterns.
             /// </summary>
-            private static string GetEraNameFromBcl(Era era, CultureInfo culture)
+            private static string? GetEraNameFromBcl(Era era, CultureInfo culture)
             {
                 var calendar = culture.DateTimeFormat.Calendar;
                 bool getEraFromCalendar =
