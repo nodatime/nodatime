@@ -86,11 +86,8 @@ namespace NodaTime.Web
             services.AddMemoryCache();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {
