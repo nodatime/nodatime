@@ -3,15 +3,15 @@
 # TODO: Test against Mono as well, using matrix.include
 language: csharp
 mono: none
-dotnet: 3.0.100-preview-009812
-dist: trusty
+dotnet: 2.2
+dist: xenial
 
 # We need to install the .NET Core 1.0 runtime to run netcoreapp1.0
 # tests.
 addons:
   apt:
     sources:
-    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
+    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-xenial-prod xenial main'
       key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
     packages:
     - dotnet-sharedframework-microsoft.netcore.app-1.0.5
