@@ -4,6 +4,8 @@
 
 namespace NodaTime.Text
 {
+    // All the specific type converters in one place, as they contain no code other than a constructor chaining to the base class.
+
     internal sealed class AnnualDateTypeConverter : TypeConverterBase<AnnualDate>
     {
         public AnnualDateTypeConverter() : base(AnnualDatePattern.Iso) {}
