@@ -2,7 +2,7 @@
 # any scripts that use tools.
 
 declare -r BUILD_ROOT=$(realpath $(dirname ${BASH_SOURCE}))
-declare -r DOCFX_VERSION=2.38.1
+declare -r DOCFX_VERSION=2.40.6
 
 # Path to the version of docfx to use
 declare -r DOCFX="$BUILD_ROOT/packages/docfx-$DOCFX_VERSION/docfx.exe"
@@ -18,8 +18,6 @@ install_docfx() {
      cd docfx-$DOCFX_VERSION;
      curl -sSL https://github.com/dotnet/docfx/releases/download/v${DOCFX_VERSION}/docfx.zip -o tmp.zip;
      unzip -q tmp.zip;
-     # Workaround for https://github.com/dotnet/docfx/issues/2491
-     cp -f "$VSINSTALLDIR"/MSBuild/15.0/Bin/Microsoft.Build*.dll .;
      rm tmp.zip)
   fi
 }
