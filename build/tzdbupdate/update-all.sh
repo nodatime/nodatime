@@ -19,7 +19,7 @@ rm -rf tmp-nuget
 mkdir tmp-gcs
 mkdir tmp-nuget
 
-for version in 1.4 2.3 2.4
+for version in 2.4
 do
   echo "Updating ${version}"
   ./update-${version}.sh $1
@@ -35,8 +35,8 @@ echo "Hashing files"
 dotnet run -p ../HashStorageFiles
 
 # Symbol packages appear to be ineffective at the moment; best to just
-# remove them
-rm tmp-nuget/*.symbols.nupkg
+# remove them (if any are even created; we don't use them now).
+rm -f tmp-nuget/*.symbols.nupkg
 
 echo "Remaining task - push nuget files:"
 echo "cd tmp-nupkg"
