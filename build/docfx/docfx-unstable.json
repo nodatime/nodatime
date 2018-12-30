@@ -5,13 +5,28 @@
         {
           "files": [
             "NodaTime/*.csproj",
-            "NodaTime.Serialization.JsonNet/*.csproj",
             "NodaTime.Testing/*.csproj"
           ],
           "exclude": [ "**/bin/**", "**/obj/**" ],
           "cwd": "unstable/src"
         }
       ],
+      "dest": "obj/unstable/api",
+      "shouldSkipMarkup": true
+    },
+    {
+      "src": [
+        {
+          "files": [
+            "NodaTime.Serialization.JsonNet/*.csproj",
+          ],
+          "exclude": [ "**/bin/**", "**/obj/**" ],
+          "cwd": "unstable/src"
+        }
+      ],
+      "properties": {
+         "TargetFramework": "net45"
+      },
       "dest": "obj/unstable/api",
       "shouldSkipMarkup": true
     }
