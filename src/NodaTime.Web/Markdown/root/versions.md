@@ -7,6 +7,15 @@ details.
 See the [end of this page](#tzdb-updates) for the policy on which
 versions receive patch updates for TZDB releases.
 
+## 2.4.3, released 2018-12-30 with tzdb 2018h
+
+This set of patch releases mostly updates the built-in TZDB time
+zone data to 2018h. However, it also fixes [issue 1227].
+
+Note that the 2.3.x series no longer receives TZDB updates. The
+1.4.x series has not been included in this update, but may be
+updated later. (See [issue 1243] for discussion.)
+
 ## 1.4.7, 2.3.2, 2.4.2, released 2018-10-28 with tzdb 2018g
 
 This set of patch releases simply updates the built-in TZDB time
