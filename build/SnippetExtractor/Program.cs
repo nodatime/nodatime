@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace SnippetExtractor
     {
         private static int Main(string[] args)
         {
+            // Force System.Collections.Immutable to be deployed
+            ImmutableStack.Create<int>();
+            
             if (args.Length != 3)
             {
                 Console.WriteLine("Arguments: <project file> <output directory>");
