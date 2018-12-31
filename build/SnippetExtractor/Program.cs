@@ -63,7 +63,7 @@ namespace SnippetExtractor
             var solution = await workspace.OpenSolutionAsync(solutionFile);
             var project = solution.Projects.Single(p => p.Name == projectName);
             // It's horrible to have this hardcoded here, but it's the simplest thing that works.
-            var netcoreapp20 = @"c:\Program Files\dotnet\shared\Microsoft.NETCore.App\2.0.0";
+            var netcoreapp20 = @"c:\Program Files\dotnet\shared\Microsoft.NETCore.App\2.0.9";
             var netcoreapp20Assemblies = Directory.GetFiles(netcoreapp20, "System*.dll")
                 .Concat(Directory.GetFiles(netcoreapp20, "netstandard*.dll"))
                 .Concat(Directory.GetFiles(netcoreapp20, "mscorlib*.dll"));
