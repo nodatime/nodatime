@@ -7,6 +7,7 @@
     <IsPackable>False</IsPackable>
     <LangVersion>latest</LangVersion>
     <DefineConstants Condition="$(UseBlazor)">BLAZOR</DefineConstants>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
   <ItemGroup>
