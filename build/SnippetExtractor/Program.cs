@@ -32,6 +32,15 @@ namespace SnippetExtractor
                 Console.WriteLine($"Error: {e.InnerException}");
                 return 1;
             }
+            catch (ReflectionTypeLoadException e)
+            {
+                Console.WriteLine($"Error: {e}");
+                foreach (var ex in e.LoaderExceptions)
+                {
+                    Console.WriteLine($"Loader error: {ex}");
+                }
+                return 1;
+            }
             catch (Exception e)
             {
                 Console.WriteLine($"Error: {e}");
