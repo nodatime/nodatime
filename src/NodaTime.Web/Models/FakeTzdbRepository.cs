@@ -42,7 +42,17 @@ namespace NodaTime.Web.Models
             new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2016i.nzd"),
             new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2016j.nzd"),
             new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2017a.nzd"),
-            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2017b.nzd")
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2017b.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2017c.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018a.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018b.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018c.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018d.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018e.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018f.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018g.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018h.nzd"),
+            new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018i.nzd")
         };
 
         public TzdbDownload GetRelease(string name) => releases.FirstOrDefault(r => r.Name == name);

@@ -12,10 +12,10 @@ namespace NodaTime.Web.Models
     {
         private static readonly IList<ReleaseDownload> releases = new[]
         {
-            new ReleaseDownload(new StructuredVersion("2.0.0"), "NodaTime-2.0.0.zip",
-                "https://storage.cloud.google.com/nodatime/releases/NodaTime-2.0.0.zip",
-                "36c6e7b4c10ba21e39b8652987e5c8c0f46a3f03f83f5265bf2893c8837cf635",
-                new LocalDate(2017, 3, 31))
+            new ReleaseDownload(new StructuredVersion("2.4.3"), "NodaTime-2.4.4.zip",
+                "https://storage.cloud.google.com/nodatime/releases/NodaTime-2.4.4.zip",
+                "5a672e0910353eef53cd3b6a4ff08e1287ec6fe40faf96ca42e626b107c8f8d4",
+                new LocalDate(2018, 12, 31))
         };
 
         public ReleaseDownload LatestRelease => releases[0];
