@@ -43,7 +43,12 @@ cd ../../../..
 
 cp -r docfx/template tmp/docfx
 cp docfx/docfx-unstable.json tmp/docfx/docfx.json
-"$DOCFX" metadata tmp/docfx/docfx.json -f 
+"$DOCFX" metadata tmp/docfx/docfx.json -f
+# The serialization output is in a different directory, as it needs
+# separate properties. Merge them now
+mv tmp/docfx/obj/unstable/serialization-api/*.yml tmp/docfx/obj/unstable/api
+rm -rf tmp/docfx/obj/unstable/serialization-api
+
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
 # Create diffs between versions and other annotations

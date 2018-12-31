@@ -27,7 +27,7 @@
       "properties": {
          "TargetFramework": "net45"
       },
-      "dest": "obj/unstable/api",
+      "dest": "obj/unstable/serialization-api",
       "shouldSkipMarkup": true
     }
   ],
