@@ -12,7 +12,7 @@ namespace NodaTime.Web.Models
     {
         private static readonly IList<ReleaseDownload> releases = new[]
         {
-            new ReleaseDownload(new StructuredVersion("2.4.3"), "NodaTime-2.4.4.zip",
+            new ReleaseDownload(new StructuredVersion("2.4.4"), "NodaTime-2.4.4.zip",
                 "https://storage.cloud.google.com/nodatime/releases/NodaTime-2.4.4.zip",
                 "5a672e0910353eef53cd3b6a4ff08e1287ec6fe40faf96ca42e626b107c8f8d4",
                 new LocalDate(2018, 12, 31))
