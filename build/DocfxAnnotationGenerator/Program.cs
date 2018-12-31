@@ -12,7 +12,7 @@ namespace DocfxAnnotationGenerator
     class Program
     {
         private static readonly string[] packages = { "NodaTime", "NodaTime.Testing", "NodaTime.Serialization.JsonNet" };
-        private static readonly string[] unstableFrameworks = { "net45", "netstandard1.3", "netstandard2.0" };
+        private static readonly string[] unstableFrameworks = { "netstandard2.0" };
 
         private readonly IEnumerable<Release> releases;
         private readonly Dictionary<string, List<BuildAssembly>> reflectionDataByVersion;
