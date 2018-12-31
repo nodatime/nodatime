@@ -13,6 +13,14 @@
     <!-- Roslyn dependencies -->
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.8.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="2.8.2" />
+
+    <!--
+      - Dependencies to avoid MEF getting confused. We shouldn't
+      - really need these, but it's hard to work out why the build
+      - fails on Bagpuss without them...
+      -->
+    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
 </Project>
