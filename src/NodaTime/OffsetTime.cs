@@ -7,6 +7,7 @@ using NodaTime.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Xml;
@@ -21,6 +22,7 @@ namespace NodaTime
     /// a time-of-day at a specific offset from UTC but without any date information.
     /// </summary>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+    [TypeConverter(typeof(OffsetTimeTypeConverter))]
     public readonly struct OffsetTime : IEquatable<OffsetTime>, IXmlSerializable, IFormattable
     {
         private const int NanosecondsBits = 47;

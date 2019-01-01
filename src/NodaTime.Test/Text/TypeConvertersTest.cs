@@ -14,10 +14,14 @@ namespace NodaTime.Test.Text
         [Test]
         [TestCase(typeof(AnnualDate))]
         [TestCase(typeof(Duration))]
-        [TestCase(typeof(LocalDateTime))]
-        [TestCase(typeof(LocalDate))]
-        [TestCase(typeof(LocalTime))]
         [TestCase(typeof(Instant))]
+        [TestCase(typeof(LocalDate))]
+        [TestCase(typeof(LocalDateTime))]
+        [TestCase(typeof(LocalTime))]
+        [TestCase(typeof(Offset))]
+        [TestCase(typeof(OffsetDate))]
+        [TestCase(typeof(OffsetDateTime))]
+        [TestCase(typeof(OffsetTime))]
         [TestCase(typeof(Period))]
         public void HasConverter(Type type)
         {
@@ -79,6 +83,34 @@ namespace NodaTime.Test.Text
             AssertRoundtrip(text, new LocalTime(hour, minute, second, millisecond));
 
         [Test]
+        [TestCase(-25200, "-07")]
+        [TestCase(0, "Z")]
+        [TestCase(20700, "+05:45")]
+        public void Offset_Roundtrip(int seconds, string text) =>
+	        AssertRoundtrip(text, new Offset(seconds));
+
+        [Test]
+        [TestCase(2019, 1, 1, -25200, "2019-01-01-07")]
+        [TestCase(2018, 12, 31, 0, "2018-12-31Z")]
+        [TestCase(2020, 2, 29, 20700, "2020-02-29+05:45")]
+        public void OffsetDate_Roundtrip(int year, int month, int day, int seconds, string text) =>
+	        AssertRoundtrip(text, new OffsetDate(new LocalDate(year, month, day), new Offset(seconds)));
+
+        [Test]
+        [TestCase(2019, 1, 1, 4, 59, -25200, "2019-01-01T04:59:00-07")]
+        [TestCase(2020, 2, 29, 23, 59, 0, "2020-02-29T23:59:00Z")]
+        [TestCase(2018, 12, 31, 13, 30, 20700, "2018-12-31T13:30:00+05:45")]
+        public void OffsetDateTime_Roundtrip(int year, int month, int day, int hour, int minute, int seconds, string text) =>
+	        AssertRoundtrip(text, new OffsetDateTime(new LocalDateTime(year, month, day, hour, minute), new Offset(seconds)));
+
+        [Test]
+        [TestCase(0, 0, 0, 0, -25200, "00:00:00-07")]
+        [TestCase(0, 0, 0, 1, 0, "00:00:00.001Z")]
+        [TestCase(23, 59, 59, 999, 20700, "23:59:59.999+05:45")]
+        public void OffsetTime_Roundtrip(int hour, int minute, int second, int millisecond, int seconds, string text) =>
+	        AssertRoundtrip(text, new OffsetTime(new LocalTime(hour, minute, second, millisecond), new Offset(seconds)));
+
+        [Test]
         [TestCase(00, 00, 00, 00, 00, 00, 00, 00, 00, 00, "P")]
         [TestCase(01, 01, 01, 01, 01, 01, 01, 01, 01, 01, "P1Y1M1W1DT1H1M1S1s1t1n")]
         public void Period_Roundtrip(int years, int months, int weeks, int days, long hours, long minutes, long seconds, long milliseconds, long ticks, long nanoseconds, string text) =>
@@ -87,13 +119,11 @@ namespace NodaTime.Test.Text
         private static void AssertRoundtrip<T>(string input, T expected)
         {
             var converter = TypeDescriptor.GetConverter(typeof(T));
+            var actual = (T)converter.ConvertFrom(input);
+            Assert.NotNull(actual);
+            Assert.AreEqual(expected, actual);
 
-            var parsed = converter.ConvertFrom(input);
-
-            Assert.NotNull(parsed);
-            Assert.AreEqual(expected, parsed);
-
-            var serialized = converter.ConvertTo((T) parsed, typeof(string));
+            var serialized = converter.ConvertTo(actual, typeof(string));
 
             Assert.NotNull(serialized);
             Assert.AreEqual(input, serialized);
