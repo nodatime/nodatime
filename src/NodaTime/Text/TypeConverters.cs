@@ -38,22 +38,22 @@ namespace NodaTime.Text
 
     internal sealed class OffsetTypeConverter : TypeConverterBase<Offset>
     {
-	    public OffsetTypeConverter() : base(OffsetPattern.GeneralInvariantWithZ) { }
+        public OffsetTypeConverter() : base(OffsetPattern.GeneralInvariantWithZ) {}
     }
 
     internal sealed class OffsetDateTimeTypeConverter : TypeConverterBase<OffsetDateTime>
     {
-	    public OffsetDateTimeTypeConverter() : base(OffsetDateTimePattern.ExtendedIso) { }
+        public OffsetDateTimeTypeConverter() : base(OffsetDateTimePattern.ExtendedIso) {}
     }
 
     internal sealed class OffsetDateTypeConverter : TypeConverterBase<OffsetDate>
     {
-	    public OffsetDateTypeConverter() : base(OffsetDatePattern.GeneralIso) { }
+        public OffsetDateTypeConverter() : base(OffsetDatePattern.GeneralIso) {}
     }
 
     internal sealed class OffsetTimeTypeConverter : TypeConverterBase<OffsetTime>
     {
-	    public OffsetTimeTypeConverter() : base(OffsetTimePattern.ExtendedIso) { }
+        public OffsetTimeTypeConverter() : base(OffsetTimePattern.ExtendedIso) {}
     }
 
     internal sealed class PeriodTypeConverter : TypeConverterBase<Period>
