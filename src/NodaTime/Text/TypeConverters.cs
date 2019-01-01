@@ -36,6 +36,26 @@ namespace NodaTime.Text
         public LocalTimeTypeConverter() : base(LocalTimePattern.ExtendedIso) {}
     }
 
+    internal sealed class OffsetTypeConverter : TypeConverterBase<Offset>
+    {
+	    public OffsetTypeConverter() : base(OffsetPattern.GeneralInvariantWithZ) { }
+    }
+
+    internal sealed class OffsetDateTimeTypeConverter : TypeConverterBase<OffsetDateTime>
+    {
+	    public OffsetDateTimeTypeConverter() : base(OffsetDateTimePattern.ExtendedIso) { }
+    }
+
+    internal sealed class OffsetDateTypeConverter : TypeConverterBase<OffsetDate>
+    {
+	    public OffsetDateTypeConverter() : base(OffsetDatePattern.GeneralIso) { }
+    }
+
+    internal sealed class OffsetTimeTypeConverter : TypeConverterBase<OffsetTime>
+    {
+	    public OffsetTimeTypeConverter() : base(OffsetTimePattern.ExtendedIso) { }
+    }
+
     internal sealed class PeriodTypeConverter : TypeConverterBase<Period>
     {
         public PeriodTypeConverter() : base(PeriodPattern.Roundtrip) {}
