@@ -71,6 +71,11 @@ do
   cp -r serialization/src/NodaTime.Serialization.JsonNet $version/src
 done
 
+# Preserve previous snippets for 2.1-2.3
+git checkout HEAD -- 2.1.x/overwrite/snippets.md
+git checkout HEAD -- 2.2.x/overwrite/snippets.md
+git checkout HEAD -- 2.3.x/overwrite/snippets.md
+
 rm -rf serialization
 
 echo "Preparing for docfx of 2.0.x"
@@ -163,14 +168,16 @@ do
 done
 
 # Snippets
-for version in 2.1.x 2.2.x 2.3.x 2.4.x
+# Note that we skip 2.1-2.3, as we can't build those easily now.
+# We build using the master SnippetExtractor, so that as things change
+# we only need to change that rather than all branches
+for version in 2.4.x
 do
   echo "Generating snippets for $version"
   (cd $version;
-   dotnet restore src/NodaTime-all.sln;
-   dotnet build src/NodaTime-All.sln;
+   dotnet publish src/NodaTime.Demo;
    mkdir overwrite;
-   dotnet run -p build/SnippetExtractor/SnippetExtractor.csproj -- src/NodaTime-All.sln NodaTime.Demo overwrite)
+   dotnet run -p ../../SnippetExtractor -- src/NodaTime-All.sln NodaTime.Demo overwrite)
 done
 
 # We don't need TZDB/CLDR/versionXML, or docs, or
