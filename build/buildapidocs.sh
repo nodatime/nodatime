@@ -45,7 +45,10 @@ cp -r docfx/template tmp/docfx
 cp docfx/docfx-unstable.json tmp/docfx/docfx.json
 "$DOCFX" metadata tmp/docfx/docfx.json -f
 # The serialization output is in a different directory, as it needs
-# separate properties. Merge them now
+# separate properties. Merge them now, first concatenating the serialization
+# TOC after the main one.
+tail -n +2 tmp/docfx/obj/unstable/serialization-api/toc.yml >> tmp/docfx/obj/unstable/api/toc.yml
+rm tmp/docfx/obj/unstable/serialization-api/toc.yml
 mv tmp/docfx/obj/unstable/serialization-api/*.yml tmp/docfx/obj/unstable/api
 rm -rf tmp/docfx/obj/unstable/serialization-api
 
