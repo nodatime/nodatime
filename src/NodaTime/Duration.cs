@@ -32,7 +32,7 @@ namespace NodaTime
     /// <para>
     /// A duration is a length of time defined by an integral number of nanoseconds.
     /// Although durations are usually used with a positive number of nanoseconds, negative durations are valid, and may occur
-    /// naturally when e.g. subtracting an earlier <see cref="Instant"/> from a later one.
+    /// naturally when e.g. subtracting a later <see cref="Instant"/> from an earlier one.
     /// </para>
     /// <para>
     /// A duration represents a fixed length of elapsed time along the time line that occupies the same amount of
@@ -54,7 +54,7 @@ namespace NodaTime
     /// Various operations accept or return a <see cref="Double"/>, in-keeping with durations often being natural lengths
     /// of time which are imprecisely measured anyway. The implementation of these operations should never result in a not-a-number
     /// or infinite value, nor do any operations accept not-a-number or infinite values. Additionally, operations involving
-    /// <c>Double</c> have initially been implemented fairly naïvely; it's possible that future releases will improve the accuracy
+    /// <c>Double</c> have initially been implemented fairly naÃ¯vely; it's possible that future releases will improve the accuracy
     /// or performance (or both) of various operations.
     /// </para>
     /// </remarks>
