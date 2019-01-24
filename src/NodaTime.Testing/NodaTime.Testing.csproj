@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/nodatime/nodatime</RepositoryUrl>
     <Deterministic>True</Deterministic>
     <LangVersion>8.0</LangVersion>
-    <NullableReferenceTypes>True</NullableReferenceTypes>
+    <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
 
   <ItemGroup>
