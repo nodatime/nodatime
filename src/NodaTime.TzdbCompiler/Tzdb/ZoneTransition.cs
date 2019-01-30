@@ -83,10 +83,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </returns>
         internal bool IsTransitionFrom(ZoneTransition other)
         {
-            if (other is null)
-            {
-                return true;
-            }
+            Preconditions.CheckNotNull(other, nameof(other));
             bool later = Instant > other.Instant;
             bool different = Name != other.Name || StandardOffset != other.StandardOffset || Savings != other.Savings;
             return later && different;
