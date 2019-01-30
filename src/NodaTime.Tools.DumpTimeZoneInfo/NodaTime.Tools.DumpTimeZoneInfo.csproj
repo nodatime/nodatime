@@ -4,5 +4,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
+    <LangVersion>8.0</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
 </Project>
