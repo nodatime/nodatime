@@ -30,7 +30,7 @@ namespace NodaTime.NzdPrinter
             var stream = new MemoryStream(FileUtility.LoadFileOrUrl(args[0]));
             int version = new BinaryReader(stream).ReadInt32();
             Console.WriteLine($"File format version: {version}");
-            string[] stringPool = null; // Will be populated before it's used...
+            string[]? stringPool = null; // In a valid file, this will be non-null before it's used for any non-string-pool field.
             foreach (var field in TzdbStreamField.ReadFields(stream))
             {
                 Console.WriteLine($"Field: {field.Id}");
