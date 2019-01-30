@@ -210,7 +210,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void ParseMonth_nullOrEmpty()
         {
             Assert.Throws<ArgumentException>(() => TzdbZoneInfoParser.ParseMonth(""));
-            Assert.Throws<ArgumentException>(() => TzdbZoneInfoParser.ParseMonth(null));
+            Assert.Throws<ArgumentException>(() => TzdbZoneInfoParser.ParseMonth(null!));
         }
 
         [Test]

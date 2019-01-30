@@ -21,24 +21,30 @@ namespace NodaTime.TzdbCompiler.Tzdb
         private readonly string? name;
         private readonly Offset fixedSavings;
         private readonly int upperYear;
-        private readonly ZoneYearOffset upperYearOffset;
+        private readonly ZoneYearOffset? upperYearOffset;
         internal Offset StandardOffset { get; }
 
-        internal ZoneRuleSet(List<ZoneRecurrence> rules, Offset standardOffset, int upperYear, ZoneYearOffset upperYearOffset)
+        private ZoneRuleSet(Offset standardOffset, int upperYear, ZoneYearOffset? upperYearOffset)
         {
-            this.rules = rules;
             this.StandardOffset = standardOffset;
             this.upperYear = upperYear;
             this.upperYearOffset = upperYearOffset;
+            Preconditions.CheckArgument(upperYear == int.MaxValue || upperYearOffset != null,
+                nameof(upperYearOffset),
+                "Must specify an upperYearOffset unless creating an infinite rule");
         }
 
-        internal ZoneRuleSet(string name, Offset standardOffset, Offset savings, int upperYear, ZoneYearOffset upperYearOffset)
+        internal ZoneRuleSet(List<ZoneRecurrence> rules, Offset standardOffset, int upperYear, ZoneYearOffset? upperYearOffset)
+            : this(standardOffset, upperYear, upperYearOffset)
+        {
+            this.rules = rules;
+        }
+
+        internal ZoneRuleSet(string name, Offset standardOffset, Offset savings, int upperYear, ZoneYearOffset? upperYearOffset)
+            : this(standardOffset, upperYear, upperYearOffset)
         {
             this.name = name;
-            this.StandardOffset = standardOffset;
             this.fixedSavings = savings;
-            this.upperYear = upperYear;
-            this.upperYearOffset = upperYearOffset;
         }
 
         /// <summary>
@@ -69,7 +75,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 return Instant.AfterMaxValue;
             }
-            var localInstant = upperYearOffset.GetOccurrenceForYear(upperYear);
+            var localInstant = upperYearOffset!.GetOccurrenceForYear(upperYear);
             var offset = upperYearOffset.GetRuleOffset(StandardOffset, savings);
             return localInstant.SafeMinus(offset);
         }

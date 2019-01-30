@@ -17,8 +17,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         [Test]
         public void Tokenize_nullArgument_Exception()
         {
-            string line = null;
-            Assert.Throws(typeof(ArgumentNullException), () => Tokens.Tokenize(line));
+            Assert.Throws(typeof(ArgumentNullException), () => Tokens.Tokenize(null!));
         }
 
         [Test]
