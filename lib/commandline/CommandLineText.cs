@@ -170,18 +170,11 @@ namespace CommandLine.Text
     {
         private readonly bool _isSymbolUpper;
         private readonly int[] _years;
-        private readonly string _author;
+        private readonly string? _author;
         private static readonly string _defaultCopyrightWord = "Copyright";
         private static readonly string _symbolLower = "(c)";
         private static readonly string _symbolUpper = "(C)";
         private StringBuilder _builder;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandLine.Text.CopyrightInfo"/> class.
-        /// </summary>
-        protected CopyrightInfo ()
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.Text.CopyrightInfo"/> class
@@ -234,39 +227,19 @@ namespace CommandLine.Text
         /// Returns the copyright informations as a <see cref="System.String"/>.
         /// </summary>
         /// <returns>The <see cref="System.String"/> that contains the copyright informations.</returns>
-        public override string ToString ()
-        {
-            _builder.Append (CopyrightWord);
-            _builder.Append (' ');
-            if (_isSymbolUpper)
-                _builder.Append (_symbolUpper);
-            else
-                _builder.Append (_symbolLower);
-
-            _builder.Append (' ');
-            _builder.Append (FormatYears (_years));
-            _builder.Append (' ');
-            _builder.Append (_author);
-
-            return _builder.ToString ();
-        }
+        public override string ToString() => $"{CopyrightWord} {(_isSymbolUpper ? _symbolUpper : _symbolLower)} {FormatYears(_years)} {_author}";
 
         /// <summary>
         /// Converts the copyright informations to a <see cref="System.String"/>.
         /// </summary>
         /// <param name="info">This <see cref="CommandLine.Text.CopyrightInfo"/> instance.</param>
         /// <returns>The <see cref="System.String"/> that contains the copyright informations.</returns>
-        public static implicit operator string (CopyrightInfo info)
-        {
-            return info.ToString ();
-        }
+        public static implicit operator string(CopyrightInfo info) => info.ToString();
 
         /// <summary>
         /// When overridden in a derived class, allows to specify a different copyright word.
         /// </summary>
-        protected virtual string CopyrightWord {
-            get { return _defaultCopyrightWord; }
-        }
+        protected virtual string CopyrightWord => _defaultCopyrightWord;
 
         /// <summary>
         /// When overridden in a derived class, allows to specify a new algorithm to render copyright years
@@ -274,24 +247,24 @@ namespace CommandLine.Text
         /// </summary>
         /// <param name="years">A <see cref="System.Int32"/> array of years.</param>
         /// <returns>A <see cref="System.String"/> instance with copyright years.</returns>
-        protected virtual string FormatYears (int[] years)
+        protected virtual string FormatYears(int[] years)
         {
             if (years.Length == 1)
-                return years [0].ToString (CultureInfo.InvariantCulture);
+            {
+                return years[0].ToString(CultureInfo.InvariantCulture);
+            }
 
-            var yearsPart = new StringBuilder (years.Length * 6);
+            var yearsPart = new StringBuilder(years.Length * 6);
             for (int i = 0; i < years.Length; i++) {
                 yearsPart.Append (years [i].ToString (CultureInfo.InvariantCulture));
                 int next = i + 1;
-                if (next < years.Length) {
-                    if (years [next] - years [i] > 1)
-                        yearsPart.Append (" - ");
-                    else
-                        yearsPart.Append (", ");
+                if (next < years.Length)
+                {
+                    yearsPart.Append(years[next] - years[i] > 1 ? " - " : ", ");
                 }
             }
 
-            return yearsPart.ToString ();
+            return yearsPart.ToString();
         }
     }
 
@@ -302,7 +275,7 @@ namespace CommandLine.Text
     public class HeadingInfo
     {
         private readonly string _programName;
-        private readonly string _version;
+        private readonly string? _version;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.Text.HeadingInfo"/> class
@@ -310,7 +283,7 @@ namespace CommandLine.Text
         /// </summary>
         /// <param name="programName">The name of the program.</param>
         /// <exception cref="System.ArgumentException">Thrown when parameter <paramref name="programName"/> is null or empty string.</exception>
-        public HeadingInfo (string programName)
+        public HeadingInfo(string programName)
             : this(programName, null)
         {
         }
@@ -322,7 +295,7 @@ namespace CommandLine.Text
         /// <param name="programName">The name of the program.</param>
         /// <param name="version">The version of the program.</param>
         /// <exception cref="System.ArgumentException">Thrown when parameter <paramref name="programName"/> is null or empty string.</exception>
-        public HeadingInfo (string programName, string version)
+        public HeadingInfo(string programName, string? version)
         {
             Assumes.NotNullOrEmpty (programName, "programName");
 
@@ -334,19 +307,15 @@ namespace CommandLine.Text
         /// Returns the heading informations as a <see cref="System.String"/>.
         /// </summary>
         /// <returns>The <see cref="System.String"/> that contains the heading informations.</returns>
-        public override string ToString ()
+        public override string ToString()
         {
-            bool isVersionNull = string.IsNullOrEmpty (_version);
-            var builder = new StringBuilder (_programName.Length +
-                (!isVersionNull ? _version.Length + 1 : 0)
-            );
-            builder.Append (_programName);
-            if (!isVersionNull) {
-                builder.Append (' ');
-                builder.Append (_version);
+            var builder = new StringBuilder(_programName);
+            if (!string.IsNullOrEmpty(_version))
+            {
+                builder.Append(' ');
+                builder.Append(_version);
             }
-
-            return builder.ToString ();
+            return builder.ToString();
         }
 
         /// <summary>
@@ -354,10 +323,7 @@ namespace CommandLine.Text
         /// </summary>
         /// <param name="info">This <see cref="CommandLine.Text.HeadingInfo"/> instance.</param>
         /// <returns>The <see cref="System.String"/> that contains the heading informations.</returns>
-        public static implicit operator string (HeadingInfo info)
-        {
-            return info.ToString ();
-        }
+        public static implicit operator string(HeadingInfo info) => info.ToString();
 
         /// <summary>
         /// Writes out a string and a new line using the program name specified in the constructor
@@ -367,15 +333,15 @@ namespace CommandLine.Text
         /// <param name="writer">The target <see cref="System.IO.TextWriter"/> derived type.</param>
         /// <exception cref="System.ArgumentException">Thrown when parameter <paramref name="message"/> is null or empty string.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="writer"/> is null.</exception>
-        public void WriteMessage (string message, TextWriter writer)
+        public void WriteMessage(string message, TextWriter writer)
         {
-            Assumes.NotNullOrEmpty (message, "message");
-            Assumes.NotNull (writer, "writer");
+            Assumes.NotNullOrEmpty(message, "message");
+            Assumes.NotNull(writer, "writer");
 
             var builder = new StringBuilder (_programName.Length + message.Length + 2);
-            builder.Append (_programName);
-            builder.Append (": ");
-            builder.Append (message);
+            builder.Append(_programName);
+            builder.Append(": ");
+            builder.Append(message);
             writer.WriteLine (builder.ToString ());
         }
 
@@ -434,36 +400,32 @@ namespace CommandLine.Text
     #region Attributes
     public abstract class MultiLineTextAttribute : Attribute
     {
-        //string _fullText;
-        string _line1;
-        string _line2;
-        string _line3;
-        string _line4;
-        string _line5;
+        string? _line1;
+        string? _line2;
+        string? _line3;
+        string? _line4;
+        string? _line5;
 
-        //public MultiLineTextAttribute(object fullText)
-        //{
-        //    var realFullText = fullText as string;
-        //    Assumes.NotNullOrEmpty(realFullText, "fullText");
-        //    _fullText = realFullText;
-        //}
         public MultiLineTextAttribute(string line1)
         {
             Assumes.NotNullOrEmpty(line1, "line1");
             _line1 = line1;
         }
+
         public MultiLineTextAttribute(string line1, string line2)
             : this(line1)
         {
             Assumes.NotNullOrEmpty(line2, "line2");
             _line2 = line2;
         }
-                public MultiLineTextAttribute(string line1, string line2, string line3)
+
+        public MultiLineTextAttribute(string line1, string line2, string line3)
             : this(line1, line2)
         {
             Assumes.NotNullOrEmpty(line3, "line3");
             _line3 = line3;
         }
+
         public MultiLineTextAttribute(string line1, string line2, string line3, string line4)
             : this(line1, line2, line3)
         {
@@ -475,29 +437,7 @@ namespace CommandLine.Text
         {
             Assumes.NotNullOrEmpty(line5, "line5");
             _line5 = line5;
-        }
-
-        /*
-        public string FullText
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_fullText))
-                {
-                    if (!string.IsNullOrEmpty(_line1))
-                    {
-                        var builder = new StringBuilder(_line1);
-                        builder.AppendLineIfNotNullOrEmpty(_line2);
-                        builder.AppendLineIfNotNullOrEmpty(_line3);
-                        builder.AppendLineIfNotNullOrEmpty(_line4);
-                        builder.AppendLineIfNotNullOrEmpty(_line5);
-                        _fullText = builder.ToString();
-                    }
-                }
-                return _fullText;
-            }
-        }
-        */
+        }        
 
         internal void AddToHelpText(HelpText helpText, bool before)
         {
@@ -631,21 +571,16 @@ namespace CommandLine.Text
         private const int _builderCapacity = 128;
         private const int _defaultMaximumLength = 80; // default console width
         private int? _maximumDisplayWidth;
-        private string _heading;
-        private string _copyright;
+        private string? _heading;
+        private string? _copyright;
         private bool _additionalNewLineAfterOption;
         private StringBuilder _preOptionsHelp;
-        private StringBuilder _optionsHelp;
+        private StringBuilder? _optionsHelp;
         private StringBuilder _postOptionsHelp;
         private BaseSentenceBuilder _sentenceBuilder;
         private static readonly string _defaultRequiredWord = "Required.";
         private bool _addDashesToOption = false;
         
-        /// <summary>
-        /// Occurs when an option help text is formatted.
-        /// </summary>
-        public event EventHandler<FormatOptionHelpTextEventArgs> FormatOptionHelpText;
-
         /// <summary>
         /// Message type enumeration.
         /// </summary>
@@ -670,10 +605,9 @@ namespace CommandLine.Text
         /// </summary>
         public HelpText ()
         {
-            _preOptionsHelp = new StringBuilder (_builderCapacity);
-            _postOptionsHelp = new StringBuilder (_builderCapacity);
-            
-            _sentenceBuilder = BaseSentenceBuilder.CreateBuiltIn ();
+            _preOptionsHelp = new StringBuilder(_builderCapacity);
+            _postOptionsHelp = new StringBuilder(_builderCapacity);            
+            _sentenceBuilder = BaseSentenceBuilder.CreateBuiltIn();
         }
         
         /// <summary>
@@ -683,11 +617,9 @@ namespace CommandLine.Text
         /// <param name="sentenceBuilder">
         /// A <see cref="BaseSentenceBuilder"/> instance.
         /// </param>
-        public HelpText (BaseSentenceBuilder sentenceBuilder)
-            : this()
+        public HelpText (BaseSentenceBuilder sentenceBuilder) : this()
         {
-            Assumes.NotNull (sentenceBuilder, "sentenceBuilder");
-            
+            Assumes.NotNull (sentenceBuilder, "sentenceBuilder");            
             _sentenceBuilder = sentenceBuilder;
         }
 
@@ -791,10 +723,7 @@ namespace CommandLine.Text
         /// <param name='options'>
         /// The instance that collected command line arguments parsed with <see cref="CommandLine.CommandLineParser"/> class.
         /// </param>
-        public static HelpText AutoBuild(object options)
-        {
-            return AutoBuild(options, null);
-        }
+        public static HelpText AutoBuild(object options) => AutoBuild(options, null);
 
         /// <summary>
         /// Creates a new instance of the <see cref="CommandLine.Text.HelpText"/> class using common defaults.
@@ -808,7 +737,7 @@ namespace CommandLine.Text
         /// <param name='errDelegate'>
         /// A delegate used to customize the text block for reporting parsing errors.
         /// </param>
-        public static HelpText AutoBuild(object options, HandleParsingErrorsDelegate errDelegate)
+        public static HelpText AutoBuild(object options, HandleParsingErrorsDelegate? errDelegate)
         {
             var title = ReflectionUtil.GetAttribute<AssemblyTitleAttribute>();
             if (title == null) throw new InvalidOperationException("HelpText::AutoBuild() requires that you define AssemblyTitleAttribute.");
@@ -982,7 +911,7 @@ namespace CommandLine.Text
         /// <param name="maximumLength">The maximum length of the help documentation.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="options"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when parameter <paramref name="requiredWord"/> is null or empty string.</exception>
-        public void AddOptions (object options, string requiredWord, int maximumLength)
+        public void AddOptions(object options, string requiredWord, int maximumLength)
         {
             Assumes.NotNull (options, "options");
             Assumes.NotNullOrEmpty (requiredWord, "requiredWord");
@@ -998,11 +927,12 @@ namespace CommandLine.Text
                 return;
             }
 
-            int maxLength = GetMaxLength (optionList);
-            _optionsHelp = new StringBuilder (_builderCapacity);
+            int maxLength = GetMaxLength(optionList);
+            _optionsHelp = new StringBuilder(_builderCapacity);
             int remainingSpace = maximumLength - (maxLength + 6);
-            foreach (BaseOptionAttribute option in optionList) {
-                AddOption (requiredWord, maxLength, option, remainingSpace);
+            foreach (BaseOptionAttribute option in optionList)
+            {
+                AddOption(requiredWord, maxLength, option, remainingSpace);
             }
         }
 
@@ -1062,81 +992,82 @@ namespace CommandLine.Text
 
         private void AddOption (string requiredWord, int maxLength, BaseOptionAttribute option, int widthOfHelpText)
         {
-            _optionsHelp.Append ("  ");
+            // Only called by AddOption, after setting _optionsHelp
+            _optionsHelp!.Append("  ");
             StringBuilder optionName = new StringBuilder (maxLength);
-            if (option.HasShortName) {
-                if (_addDashesToOption) {
+            if (option.HasShortName)
+            {
+                if (_addDashesToOption)
+                {
                     optionName.Append ('-');
-                }
-                
-                optionName.AppendFormat ("{0}", option.ShortName);
-                
-                if (option.HasLongName) {
+                }                
+                optionName.AppendFormat ("{0}", option.ShortName);                
+                if (option.HasLongName)
+                {
                     optionName.Append (", ");
                 }
             }
 
-            if (option.HasLongName) {
-                if (_addDashesToOption) {
+            if (option.HasLongName)
+            {
+                if (_addDashesToOption)
+                {
                     optionName.Append ("--");
-                }
-                
+                }                
                 optionName.AppendFormat ("{0}", option.LongName);
             }
 
-            if (optionName.Length < maxLength) {
-                _optionsHelp.Append (optionName.ToString ().PadRight (maxLength));
-            } else {
-                _optionsHelp.Append (optionName.ToString ());
-            }
+            _optionsHelp.Append(optionName.Length < maxLength ? optionName.ToString().PadRight(maxLength) : optionName.ToString());
 
-            _optionsHelp.Append ("    ");
-            if (option.Required) {
+            _optionsHelp.Append("    ");
+            if (option.Required)
+            {
                 option.HelpText = String.Format ("{0} ", requiredWord) + option.HelpText;
             }
 
-            FormatOptionHelpTextEventArgs e = new FormatOptionHelpTextEventArgs (option);
-            OnFormatOptionHelpText (e);
-            option.HelpText = e.Option.HelpText;
-
-            if (!string.IsNullOrEmpty (option.HelpText)) {
-                do {
+            if (!string.IsNullOrEmpty (option.HelpText))
+            {
+                do
+                {
                     int wordBuffer = 0;
                     var words = option.HelpText.Split (new[] {' '});
-                    for (int i = 0; i < words.Length; i++) {
-                        if (words [i].Length < (widthOfHelpText - wordBuffer)) {
+                    for (int i = 0; i < words.Length; i++)
+                    {
+                        if (words [i].Length < (widthOfHelpText - wordBuffer))
+                        {
                             _optionsHelp.Append (words [i]);
                             wordBuffer += words [i].Length;
-                            if ((widthOfHelpText - wordBuffer) > 1 && i != words.Length - 1) {
+                            if ((widthOfHelpText - wordBuffer) > 1 && i != words.Length - 1)
+                            {
                                 _optionsHelp.Append (" ");
                                 wordBuffer++;
                             }
-                        } else if (words [i].Length >= widthOfHelpText && wordBuffer == 0) {
-                            _optionsHelp.Append (words [i].Substring (
-                                0,
-                                widthOfHelpText
-                            ));
+                        }
+                        else if (words [i].Length >= widthOfHelpText && wordBuffer == 0)
+                        {
+                            _optionsHelp.Append (words[i].Substring(0, widthOfHelpText));
                             wordBuffer = widthOfHelpText;
                             break;
-                        } else {
+                        }
+                        else
+                        {
                             break;
                         }
                     }
-                    option.HelpText = option.HelpText.Substring (Math.Min (
-                        wordBuffer,
-                        option.HelpText.Length
-                    ))
-                        .Trim ();
-                    if (option.HelpText.Length > 0) {
-                        _optionsHelp.Append (Environment.NewLine);
-                        _optionsHelp.Append (new string (' ', maxLength + 6));
+                    option.HelpText = option.HelpText.Substring(Math.Min(wordBuffer, option.HelpText.Length)).Trim();
+                    if (option.HelpText.Length > 0)
+                    {
+                        _optionsHelp.Append(Environment.NewLine);
+                        _optionsHelp.Append(new string (' ', maxLength + 6));
                     }
                 } while (option.HelpText.Length > widthOfHelpText);
             }
-            _optionsHelp.Append (option.HelpText);
-            _optionsHelp.Append (Environment.NewLine);
+            _optionsHelp.Append(option.HelpText);
+            _optionsHelp.Append(Environment.NewLine);
             if (_additionalNewLineAfterOption)
-                _optionsHelp.Append (Environment.NewLine);
+            {
+                _optionsHelp.Append(Environment.NewLine);
+            }
         }
 
         /// <summary>
@@ -1145,31 +1076,32 @@ namespace CommandLine.Text
         /// <returns>The <see cref="System.String"/> that contains the help informations.</returns>
         public override string ToString ()
         {
-            const int extraLength = 10;
-            var builder = new StringBuilder (GetLength (_heading) + GetLength (_copyright) +
-                GetLength (_preOptionsHelp) + GetLength (_optionsHelp) + extraLength
-            );
+            var builder = new StringBuilder();
 
-            builder.Append (_heading);
-            if (!string.IsNullOrEmpty (_copyright)) {
-                builder.Append (Environment.NewLine);
-                builder.Append (_copyright);
+            builder.Append(_heading);
+            if (!string.IsNullOrEmpty(_copyright))
+            {
+                builder.Append(Environment.NewLine);
+                builder.Append(_copyright);
             }
-            if (_preOptionsHelp.Length > 0) {
-                builder.Append (Environment.NewLine);
-                builder.Append (_preOptionsHelp.ToString ());
+            if (_preOptionsHelp.Length > 0)
+            {
+                builder.Append(Environment.NewLine);
+                builder.Append(_preOptionsHelp);
             }
-            if (_optionsHelp != null && _optionsHelp.Length > 0) {
-                builder.Append (Environment.NewLine);
-                builder.Append (Environment.NewLine);
-                builder.Append (_optionsHelp.ToString ());
+            if (_optionsHelp != null && _optionsHelp.Length > 0)
+            {
+                builder.Append(Environment.NewLine);
+                builder.Append(Environment.NewLine);
+                builder.Append(_optionsHelp);
             }
-            if (_postOptionsHelp.Length > 0) {
-                builder.Append (Environment.NewLine);
-                builder.Append (_postOptionsHelp.ToString ());
+            if (_postOptionsHelp.Length > 0)
+            {
+                builder.Append(Environment.NewLine);
+                builder.Append(_postOptionsHelp);
             }
-
-            return builder.ToString ();
+        
+            return builder.ToString();
         }
 
         /// <summary>
@@ -1243,34 +1175,34 @@ namespace CommandLine.Text
         private int GetMaxLength (IList<BaseOptionAttribute> optionList)
         {
             int length = 0;
-            foreach (BaseOptionAttribute option in optionList) {
+            foreach (BaseOptionAttribute option in optionList)
+            {
                 int optionLength = 0;
                 bool hasShort = option.HasShortName;
                 bool hasLong = option.HasLongName;
-                if (hasShort) {
-                    optionLength += option.ShortName.Length;
+                if (hasShort)
+                {
+                    optionLength += option.ShortName!.Length;
                     if (AddDashesToOption)
-                        ++optionLength;
+                    {
+                        optionLength++;
+                    }
                 }
-                if (hasLong) {
-                    optionLength += option.LongName.Length;
+                if (hasLong)
+                {
+                    optionLength += option.LongName!.Length;
                     if (AddDashesToOption)
+                    {
                         optionLength += 2;
+                    }
                 }
-                if (hasShort && hasLong) {
+                if (hasShort && hasLong)
+                {
                     optionLength += 2; // ", "
                 }
                 length = Math.Max (length, optionLength);
             }
             return length;
-        }
-
-        protected virtual void OnFormatOptionHelpText (FormatOptionHelpTextEventArgs e)
-        {
-            EventHandler<FormatOptionHelpTextEventArgs> handler = FormatOptionHelpText;
-
-            if (handler != null)
-                handler (this, e);
         }
     }
     #endregion
