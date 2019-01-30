@@ -16,7 +16,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     internal sealed class DateTimeZoneBuilder
     {
         private readonly List<ZoneInterval> zoneIntervals;
-        private StandardDaylightAlternatingMap tailZone;
+        private StandardDaylightAlternatingMap? tailZone;
 
         private DateTimeZoneBuilder()
         {
@@ -105,7 +105,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 activeRules
                     .Select(rule => new { rule, prev = rule.PreviousOrSame(start, lastZoneInterval.StandardOffset, lastZoneInterval.Savings) })
                     .Where(pair => pair.prev != null)
-                    .OrderBy(pair => pair.prev.Value.Instant)
+                    .OrderBy(pair => pair.prev!.Value.Instant)
                     .Select(pair => pair.rule)
                     .LastOrDefault();
 
@@ -136,7 +136,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             // corresponds with a return statement in the loop.
             while (true)
             {
-                ZoneTransition bestTransition = null;
+                ZoneTransition? bestTransition = null;
                 for (int i = 0; i < activeRules.Count; i++)
                 {
                     var rule = activeRules[i];

@@ -144,8 +144,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         private static List<string> CreateOptimizedStringPool(
             IEnumerable<DateTimeZone> zones,
-            IEnumerable<TzdbZoneLocation> zoneLocations,
-            IEnumerable<TzdbZone1970Location> zone1970Locations,
+            IEnumerable<TzdbZoneLocation>? zoneLocations,
+            IEnumerable<TzdbZone1970Location>? zone1970Locations,
             WindowsZones cldrWindowsZones)
         {
             var optimizingWriter = new StringPoolOptimizingFakeWriter();
@@ -215,7 +215,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             private readonly MemoryStream stream;
 
-            internal FieldData(TzdbStreamFieldId fieldId, IList<string> stringPool)
+            internal FieldData(TzdbStreamFieldId fieldId, IList<string>? stringPool)
             {
                 this.FieldId = fieldId;
                 this.stream = new MemoryStream();
@@ -239,7 +239,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             private readonly List<FieldData> fields = new List<FieldData>();
 
-            internal FieldData AddField(TzdbStreamFieldId fieldNumber, IList<string> stringPool)
+            internal FieldData AddField(TzdbStreamFieldId fieldNumber, IList<string>? stringPool)
             {
                 FieldData ret = new FieldData(fieldNumber, stringPool);
                 fields.Add(ret);

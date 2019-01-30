@@ -80,10 +80,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        /// Formats the optional.
+        /// Formats an optional, converting null input to "-".
         /// </summary>
         /// <param name="value">The value.</param>
-        public static string FormatOptional(string value) => value ?? "-";
+        public static string FormatOptional(string? value) => value ?? "-";
 
         /// <summary>
         ///   Parses the given text for an integer. Leading and trailing white space is ignored.
@@ -163,7 +163,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="text">The value to parse.</param>
         /// <returns>The input string or null.</returns>
-        public static string ParseOptional([NotNull] String text)
+        public static string? ParseOptional([NotNull] String text)
         {
             Preconditions.CheckNotNull(text, nameof(text));
             return text == "-" ? null : text;
