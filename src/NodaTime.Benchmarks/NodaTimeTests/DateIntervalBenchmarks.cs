@@ -18,16 +18,16 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public int Length() => JanuaryJune2017.Length;
 
         [Benchmark]
-        public DateInterval Union_Disjoint() => JanuaryJune2017.Union(AugustDecember2017);
+        public DateInterval? Union_Disjoint() => JanuaryJune2017.Union(AugustDecember2017);
 
         [Benchmark]
-        public DateInterval Union_Overlapping() => JanuaryJune2017.Union(MarchSeptember2017);
+        public DateInterval? Union_Overlapping() => JanuaryJune2017.Union(MarchSeptember2017);
 
         [Benchmark]
-        public DateInterval Intersection_Disjoint() => JanuaryJune2017.Intersection(AugustDecember2017);
+        public DateInterval? Intersection_Disjoint() => JanuaryJune2017.Intersection(AugustDecember2017);
 
         [Benchmark]
-        public DateInterval Intersection_Overlapping() => JanuaryJune2017.Intersection(MarchSeptember2017);
+        public DateInterval? Intersection_Overlapping() => JanuaryJune2017.Intersection(MarchSeptember2017);
 
         [Benchmark]
         public bool Contains_Disjoint() => JanuaryJune2017.Contains(AugustDecember2017);
