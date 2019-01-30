@@ -43,20 +43,22 @@ namespace CommandLine
     /// </summary>
     public abstract class BaseOptionAttribute : Attribute
     {
-        private string _shortName;
-        private object _defaultValue;
+        private string? _shortName;
+        private object? _defaultValue;
         private bool _hasDefaultValue;
 
         /// <summary>
         /// Short name of this command line option. You can use only one character.
         /// </summary>
-        public string ShortName
+        public string? ShortName
         {
-            get { return _shortName; }
+            get => _shortName;
             internal set
             {
                 if (value != null && value.Length > 1)
+                {
                     throw new ArgumentException("shortName");
+                }
 
                 _shortName = value;
             }
@@ -65,7 +67,7 @@ namespace CommandLine
         /// <summary>
         /// Long name of this command line option. This name is usually a single english word.
         /// </summary>
-        public string LongName { get; internal set; }
+        public string? LongName { get; internal set; }
 
         /// <summary>
         /// True if this command line option is required.
@@ -75,8 +77,9 @@ namespace CommandLine
         /// <summary>
         /// Gets or sets mapped property default value.
         /// </summary>
-        public object DefaultValue {
-            get { return _defaultValue; }
+        public object? DefaultValue
+        {
+            get => _defaultValue;
             set
             {
                 _defaultValue = value;
@@ -84,25 +87,16 @@ namespace CommandLine
             }
         }
 
-        internal bool HasShortName
-        {
-            get { return !string.IsNullOrEmpty(_shortName); }
-        }
+        internal bool HasShortName => !string.IsNullOrEmpty(_shortName);
 
-        internal bool HasLongName
-        {
-            get { return !string.IsNullOrEmpty(LongName); }
-        }
+        internal bool HasLongName => !string.IsNullOrEmpty(LongName);
 
-        internal bool HasDefaultValue
-        {
-            get { return _hasDefaultValue; }
-        }
+        internal bool HasDefaultValue => _hasDefaultValue;
 
         /// <summary>
         /// A short description of this command line option. Usually a sentence summary. 
         /// </summary>
-        public string HelpText { get; set; }
+        public string? HelpText { get; set; }
     }
 
     /// <summary>
@@ -132,7 +126,7 @@ namespace CommandLine
         /// </summary>
         /// <param name="shortName">The short name of the option or null if not used.</param>
         /// <param name="longName">The long name of the option or null if not used.</param>
-        public HelpOptionAttribute(string shortName, string longName)
+        public HelpOptionAttribute(string? shortName, string? longName)
         {
             ShortName = shortName;
             LongName = longName;
@@ -150,14 +144,15 @@ namespace CommandLine
             set { throw new InvalidOperationException(); }
         }
 
-        internal static void InvokeMethod(object target,
-                Pair<MethodInfo, HelpOptionAttribute> pair, out string text)
+        internal static void InvokeMethod(object target, Pair<MethodInfo, HelpOptionAttribute> pair, out string? text)
         {
             text = null;
 
             var method = pair.Left;
             if (!CheckMethodSignature(method))
+            {
                 throw new MemberAccessException();
+            }
 
             text = (string)method.Invoke(target, null);
         }
@@ -191,7 +186,7 @@ namespace CommandLine
     public class OptionAttribute : BaseOptionAttribute
     {
         private readonly string _uniqueName;
-        private string _mutuallyExclusiveSet;
+        private string _mutuallyExclusiveSet = OptionAttribute.DefaultMutuallyExclusiveSet;
 
         internal const string DefaultMutuallyExclusiveSet = "Default";
 
@@ -202,13 +197,20 @@ namespace CommandLine
         /// <param name="longName">The long name of the option or null if not used.</param>
         public OptionAttribute(string shortName, string longName)
         {
+            // Always initialized to a non-null value before the constructor returns.
+            _uniqueName = null!;
             if (!string.IsNullOrEmpty(shortName))
+            {
                 _uniqueName = shortName;
+            }
             else if (!string.IsNullOrEmpty(longName))
+            {
                 _uniqueName = longName;
-
+            }
             if (_uniqueName == null)
+            {
                 throw new InvalidOperationException();
+            }
 
             base.ShortName = shortName;
             base.LongName = longName;
@@ -235,9 +237,13 @@ namespace CommandLine
             set
             {
                 if (string.IsNullOrEmpty(value))
+                {
                     _mutuallyExclusiveSet = OptionAttribute.DefaultMutuallyExclusiveSet;
+                }
                 else
+                {
                     _mutuallyExclusiveSet = value;
+                }
             }
         }
     }
@@ -283,34 +289,10 @@ namespace CommandLine
     /// Must be applied to a field compatible with an <see cref="System.Collections.Generic.IList&lt;T&gt;"/> interface
     /// of <see cref="System.String"/> instances.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property,
-            AllowMultiple=false,
-            Inherited=true)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=false, Inherited=true)]
     public sealed class ValueListAttribute : Attribute
     {
-        private readonly Type _concreteType;
-
-        private ValueListAttribute()
-        {
-            MaximumElements = -1;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CommandLine.ValueListAttribute"/> class.
-        /// </summary>
-        /// <param name="concreteType">A type that implements <see cref="System.Collections.Generic.IList&lt;T&gt;"/>.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="concreteType"/> is null.</exception>
-        public ValueListAttribute(Type concreteType)
-            : this()
-        {
-            if (concreteType == null)
-                throw new ArgumentNullException("concreteType");
-
-            if (!typeof(IList<string>).GetTypeInfo().IsAssignableFrom(concreteType.GetTypeInfo()))
-                throw new CommandLineParserException("The types are incompatible.");
-
-            _concreteType = concreteType;
-        }
+        internal Type? ConcreteType { get; }
 
         /// <summary>
         /// Gets or sets the maximum element allow for the list managed by <see cref="CommandLine.ValueListAttribute"/> type.
@@ -319,47 +301,73 @@ namespace CommandLine
         /// </summary>
         public int MaximumElements { get; set; }
 
-        internal Type ConcreteType
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandLine.ValueListAttribute"/> class.
+        /// </summary>
+        /// <param name="concreteType">A type that implements <see cref="System.Collections.Generic.IList&lt;T&gt;"/>.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="concreteType"/> is null.</exception>
+        public ValueListAttribute(Type concreteType)
         {
-            get { return _concreteType; }
+            if (concreteType == null)
+            {
+                throw new ArgumentNullException("concreteType");
+            }
+
+            if (!typeof(IList<string>).GetTypeInfo().IsAssignableFrom(concreteType.GetTypeInfo()))
+            {
+                throw new CommandLineParserException("The types are incompatible.");
+            }
+
+            MaximumElements = -1;
+            ConcreteType = concreteType;
         }
 
-        internal static IList<string> GetReference(object target)
+        internal static IList<string>? GetReference(object target)
         {
-            var property = GetProperty(target, out Type concreteType);
+            var property = GetProperty(target, out Type? concreteType);
 
             if (property == null || concreteType == null)
+            {
                 return null;
+            }
 
             property.SetValue(target, Activator.CreateInstance(concreteType), null);
             
             return (IList<string>)property.GetValue(target, null);
         }
 
-        internal static ValueListAttribute GetAttribute(object target)
+        internal static ValueListAttribute? GetAttribute(object target)
         {
             var list = ReflectionUtil.RetrievePropertyList<ValueListAttribute>(target);
             if (list == null || list.Count == 0)
+            {
                 return null;
+            }
 
             if (list.Count > 1)
+            {
                 throw new InvalidOperationException();
+            }
 
             var pairZero = list[0];
 
             return pairZero.Right;
         }
 
-        private static PropertyInfo GetProperty(object target, out Type concreteType)
+        private static PropertyInfo? GetProperty(object target, out Type? concreteType)
         {
             concreteType = null;
 
             var list = ReflectionUtil.RetrievePropertyList<ValueListAttribute>(target);
             if (list == null || list.Count == 0)
+            {
                 return null;
+            }
 
             if (list.Count > 1)
+            {
                 throw new InvalidOperationException();
+            }
 
             var pairZero = list[0];
             concreteType = pairZero.Right.ConcreteType;
@@ -396,16 +404,22 @@ namespace CommandLine
             this.PostParsingState.Add(new ParsingError(option.ShortName, option.LongName, true));
         }
 
-        public static ArgumentParser Create(string argument, bool ignoreUnknownArguments)
+        public static ArgumentParser? Create(string argument, bool ignoreUnknownArguments)
         {
             if (argument.Equals("-", StringComparison.Ordinal))
+            {
                 return null;
+            }
 
             if (argument[0] == '-' && argument[1] == '-')
+            {
                 return new LongOptionParser(ignoreUnknownArguments);
+            }
 
             if (argument[0] == '-')
+            {
                 return new OptionGroupParser(ignoreUnknownArguments);
+            }
 
             return null;
         }
@@ -413,8 +427,9 @@ namespace CommandLine
         public static bool IsInputValue(string argument)
         {
             if (argument.Length > 0)
+            {
                 return argument.Equals("-", StringComparison.Ordinal) || argument[0] != '-';
-
+            }
             return true;
         }
 
@@ -486,33 +501,26 @@ namespace CommandLine
     /// </summary>
     public sealed class BadOptionInfo
     {
-        internal BadOptionInfo()
-        {
-        }
-        
-        internal BadOptionInfo(string shortName, string longName)
-        {
-            ShortName = shortName;
-            LongName = longName;
-        }
-        
         /// <summary>
         /// The short name of the option
         /// </summary>
         /// <value>Returns the short name of the option.</value>
-        public string ShortName
-        {
-            get;
-            internal set;
-        }
-        
+        public string? ShortName { get; internal set; }
+
         /// <summary>
         /// The long name of the option
         /// </summary>
         /// <value>Returns the long name of the option.</value>
-        public string LongName {
-            get;
-            internal set;
+        public string? LongName { get; internal set; }
+
+        internal BadOptionInfo()
+        {
+        }
+
+        internal BadOptionInfo(string? shortName, string? longName)
+        {
+            ShortName = shortName;
+            LongName = longName;
         }
     }
 
@@ -520,7 +528,7 @@ namespace CommandLine
     {
         string GetRemainingFromNext();
 
-        string Next { get; }
+        string? Next { get; }
         bool IsLast { get; }
 
         bool MoveNext();
@@ -554,8 +562,11 @@ namespace CommandLine
 
             if (!option.IsBoolean)
             {
-                if (parts.Length == 1 && (argumentEnumerator.IsLast || !ArgumentParser.IsInputValue(argumentEnumerator.Next)))
+                // First part of the condition ensures Next is non-null
+                if (parts.Length == 1 && (argumentEnumerator.IsLast || !ArgumentParser.IsInputValue(argumentEnumerator.Next!)))
+                {
                     return ParserState.Failure;
+                }
 
                 if (parts.Length == 2)
                 {
@@ -583,9 +594,11 @@ namespace CommandLine
                 {
                     if (!option.IsArray)
                     {
-                        valueSetting = option.SetValue(argumentEnumerator.Next, options);
+                        valueSetting = option.SetValue(argumentEnumerator.Next!, options);
                         if (!valueSetting)
+                        {
                             this.DefineOptionThatViolatesFormat(option);
+                        }
 
                         return ArgumentParser.BooleanToParserState(valueSetting, true);
                     }
@@ -616,7 +629,7 @@ namespace CommandLine
 
     internal sealed class OneCharStringEnumerator : IArgumentEnumerator
     {
-        private string _currentElement;
+        private string? _currentElement;
         private int _index;
         private readonly string _data;
 
@@ -633,45 +646,33 @@ namespace CommandLine
             get
             {
                 if (_index == -1)
+                {
                     throw new InvalidOperationException();
+                }
 
                 if (_index >= _data.Length)
+                {
                     throw new InvalidOperationException();
+                }
 
-                return _currentElement;
+                // Definitely valid, due to above checks.
+                return _currentElement!;
             }
         }
 
-        public string Next
-        {
-            get
-            {
-                if (_index == -1)
-                    throw new InvalidOperationException();
+        public string? Next =>
+            _index == -1 ? throw new InvalidOperationException()
+            : _index > _data.Length ? throw new InvalidOperationException()
+            : IsLast ? null
+            : _data.Substring(_index + 1, 1);
 
-                if (_index > _data.Length)
-                    throw new InvalidOperationException();
+        public bool IsLast => _index == _data.Length - 1;
 
-                if (IsLast)
-                    return null;
-
-                return _data.Substring(_index + 1, 1);
-            }
-        }
-
-        public bool IsLast
-        {
-            get { return _index == _data.Length - 1; }
-        }
-
-        public void Reset()
-        {
-            _index = -1;
-        }
+        public void Reset() => _index = -1;
 
         public bool MoveNext()
         {
-            if (_index < (_data.Length - 1))
+            if (_index < _data.Length - 1)
             {
                 _index++;
                 _currentElement = _data.Substring(_index, 1);
@@ -719,7 +720,9 @@ namespace CommandLine
             {
                 var option = map[group.Current];
                 if (option == null)
+                {
                     return _ignoreUnkwnownArguments ? ParserState.MoveOnNextElement : ParserState.Failure;
+                }
 
                 option.IsDefined = true;
 
@@ -728,7 +731,9 @@ namespace CommandLine
                 if (!option.IsBoolean)
                 {
                     if (argumentEnumerator.IsLast && group.IsLast)
+                    {
                         return ParserState.Failure;
+                    }
 
                     bool valueSetting;
                     if (!group.IsLast)
@@ -737,7 +742,9 @@ namespace CommandLine
                         {
                             valueSetting = option.SetValue(group.GetRemainingFromNext(), options);
                             if (!valueSetting)
+                            {
                                 this.DefineOptionThatViolatesFormat(option);
+                            }
 
                             return ArgumentParser.BooleanToParserState(valueSetting);
                         }
@@ -754,15 +761,19 @@ namespace CommandLine
                         return ArgumentParser.BooleanToParserState(valueSetting, true);
                     }
 
-                    if (!argumentEnumerator.IsLast && !ArgumentParser.IsInputValue(argumentEnumerator.Next))
+                    if (!argumentEnumerator.IsLast && !ArgumentParser.IsInputValue(argumentEnumerator.Next!))
+                    {
                         return ParserState.Failure;
+                    }
                     else
                     {
                         if (!option.IsArray)
                         {
-                            valueSetting = option.SetValue(argumentEnumerator.Next, options);
+                            valueSetting = option.SetValue(argumentEnumerator.Next!, options);
                             if (!valueSetting)
+                            {
                                 this.DefineOptionThatViolatesFormat(option);
+                            }
 
                             return ArgumentParser.BooleanToParserState(valueSetting, true);
                         }
@@ -779,7 +790,7 @@ namespace CommandLine
                     }
                 }
 
-                if (!@group.IsLast && map[@group.Next] == null)
+                if (!@group.IsLast && map[@group.Next!] == null)
                     return ParserState.Failure;
 
                 if (!option.SetValue(true, options))
@@ -795,34 +806,26 @@ namespace CommandLine
         private readonly OptionAttribute _attribute;
         private readonly PropertyInfo _property;
         private readonly bool _required;
-        private readonly string _helpText;
-        private readonly string _shortName;
-        private readonly string _longName;
+        private readonly string? _helpText;
+        private readonly string? _shortName;
+        private readonly string? _longName;
         private readonly string _mutuallyExclusiveSet;
-        private readonly object _defaultValue;
+        private readonly object? _defaultValue;
         private readonly bool _hasDefaultValue;
         private readonly object _setValueLock = new object();
 
         public OptionInfo(OptionAttribute attribute, PropertyInfo property)
         {
-            if (attribute != null)
-            {
-                _required = attribute.Required;
-                _helpText = attribute.HelpText;
-                _shortName = attribute.ShortName;
-                _longName = attribute.LongName;
-                _mutuallyExclusiveSet = attribute.MutuallyExclusiveSet;
-                _defaultValue = attribute.DefaultValue;
-                _hasDefaultValue = attribute.HasDefaultValue;
-                _attribute = attribute;
-            }
-            else
-                throw new ArgumentNullException("attribute", "The attribute is mandatory");
+            _attribute = attribute ?? throw new ArgumentNullException(nameof(attribute));
+            _property = property ?? throw new ArgumentNullException(nameof(property));
 
-            if (property != null)
-                _property = property;
-            else
-                throw new ArgumentNullException("property", "The property is mandatory");
+            _required = attribute.Required;
+            _helpText = attribute.HelpText;
+            _shortName = attribute.ShortName;
+            _longName = attribute.LongName;
+            _mutuallyExclusiveSet = attribute.MutuallyExclusiveSet;
+            _defaultValue = attribute.DefaultValue;
+            _hasDefaultValue = attribute.HasDefaultValue;
         }
 
         #if UNIT_TESTS
@@ -833,20 +836,20 @@ namespace CommandLine
         }
         #endif
 
-        public static OptionMap CreateMap(object target, CommandLineParserSettings settings)
+        public static OptionMap? CreateMap(object target, CommandLineParserSettings settings)
         {
             var list = ReflectionUtil.RetrievePropertyList<OptionAttribute>(target);
             if (list != null)
             {
-                var map = new OptionMap(list.Count, settings);
+                var map = new OptionMap(list.Count, settings, target);
 
                 foreach (var pair in list)
                 {
-                    if (pair != null && pair.Right != null) 
+                    if (pair != null && pair.Right != null)
+                    {
                         map[pair.Right.UniqueName] = new OptionInfo(pair.Right, pair.Left);
+                    }
                 }
-
-                map.RawOptions = target;
 
                 return map;
             }
@@ -992,63 +995,28 @@ namespace CommandLine
             }
         }
 
-        public string ShortName
-        {
-            get { return _shortName; }
-        }
+        public string? ShortName => _shortName;
 
-        public string LongName
-        {
-            get { return _longName; }
-        }
+        public string? LongName => _longName;
 
-        internal string NameWithSwitch
-        {
-            get
-            {
-                if (_longName != null)
-                    return string.Concat("--", _longName);
+        internal string NameWithSwitch =>
+            _longName != null ? $"--{_longName}" : $"-{_shortName}";
 
-                return string.Concat("-", _shortName);
-            }
-        }
+        public string MutuallyExclusiveSet => _mutuallyExclusiveSet;
 
-        public string MutuallyExclusiveSet
-        {
-            get { return _mutuallyExclusiveSet; }
-        }
+        public bool Required => _required;
 
-        public bool Required
-        {
-            get { return _required; }
-        }
+        public string? HelpText => _helpText;
 
-        public string HelpText
-        {
-            get { return _helpText; }
-        }
+        public bool IsBoolean => _property.PropertyType == typeof(bool);
 
-        public bool IsBoolean
-        {
-            get { return _property.PropertyType == typeof(bool); }
-        }
+        public bool IsArray => _property.PropertyType.IsArray;
 
-        public bool IsArray
-        {
-            get { return _property.PropertyType.IsArray; }
-        }
-
-        public bool IsAttributeArrayCompatible
-        {
-            get { return _attribute is OptionArrayAttribute; }
-        }
+        public bool IsAttributeArrayCompatible => _attribute is OptionArrayAttribute;
 
         public bool IsDefined { get; set; }
 
-        public bool HasBothNames
-        {
-            get { return (_shortName != null && _longName != null); }
-        }
+        public bool HasBothNames => _shortName != null && _longName != null;
     }
 
     internal sealed class OptionMap
@@ -1072,17 +1040,14 @@ namespace CommandLine
         readonly CommandLineParserSettings _settings;
         readonly Dictionary<string, string> _names;
         readonly Dictionary<string, OptionInfo> _map;
-        readonly Dictionary<string, MutuallyExclusiveInfo> _mutuallyExclusiveSetMap;
+        readonly Dictionary<string, MutuallyExclusiveInfo>? _mutuallyExclusiveSetMap;
 
-        public OptionMap(int capacity, CommandLineParserSettings settings)
+        public OptionMap(int capacity, CommandLineParserSettings settings, object rawOptions)
         {
             _settings = settings;
+            RawOptions = rawOptions;
 
-            IEqualityComparer<string> comparer;
-            if (_settings.CaseSensitive)
-                comparer = StringComparer.Ordinal;
-            else
-                comparer = StringComparer.OrdinalIgnoreCase;
+            IEqualityComparer<string> comparer = _settings.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
 
             _names = new Dictionary<string, string>(capacity, comparer);
             _map = new Dictionary<string, OptionInfo>(capacity * 2, comparer);
@@ -1094,14 +1059,16 @@ namespace CommandLine
             }
         }
 
-        public OptionInfo this[string key]
+        public OptionInfo? this[string key]
         {
             get
             {
-                OptionInfo option = null;
+                OptionInfo? option = null;
 
                 if (_map.ContainsKey(key))
+                {
                     option = _map[key];
+                }
                 else
                 {
                     if (_names.ContainsKey(key))
@@ -1115,14 +1082,16 @@ namespace CommandLine
             }
             set
             {
-                _map[key] = value;
+                _map[key] = value ?? throw new ArgumentNullException(nameof(value));
 
-                if (value.HasBothNames)
-                    _names[value.LongName] = value.ShortName;
+                if (value!.HasBothNames)
+                {
+                    _names[value.LongName!] = value.ShortName!;
+                }
             }
         }
 
-        internal object RawOptions { private get; set; }
+        internal object RawOptions { get; }
 
         public bool EnforceRules()
         {
@@ -1133,7 +1102,7 @@ namespace CommandLine
         {
             foreach (OptionInfo option in _map.Values)
             {
-                option.SetDefault(this.RawOptions);
+                option.SetDefault(this.RawOptions!);
             }
         }
 
@@ -1143,7 +1112,7 @@ namespace CommandLine
             {
                 if (option.Required && !option.IsDefined)
                 {
-                    BuildAndSetPostParsingStateIfNeeded(this.RawOptions, option, true, null);
+                    BuildAndSetPostParsingStateIfNeeded(this.RawOptions!, option, true, null);
                     return false;
                 }
             }
@@ -1153,39 +1122,43 @@ namespace CommandLine
         private bool EnforceMutuallyExclusiveMap()
         {
             if (!_settings.MutuallyExclusive)
+            {
                 return true;
+            }
+
+            // Beyond here, _mutuallyExclusiveSetMap is definitely not null.
 
             foreach (OptionInfo option in _map.Values)
             {
                 if (option.IsDefined && option.MutuallyExclusiveSet != null)
+                {
                     BuildMutuallyExclusiveMap(option);
+                }
             }
 
-            //foreach (int occurrence in _mutuallyExclusiveSetMap.Values)
-            foreach (MutuallyExclusiveInfo info in _mutuallyExclusiveSetMap.Values)
+            foreach (MutuallyExclusiveInfo info in _mutuallyExclusiveSetMap!.Values)
             {
-                if (info.Occurrence > 1) //if (occurrence > 1)
+                if (info.Occurrence > 1)
                 {
-                    //BuildAndSetPostParsingStateIfNeeded(this.RawOptions, null, null, true);
                     BuildAndSetPostParsingStateIfNeeded(this.RawOptions, info.BadOption, null, true);
                     return false;
                 }
             }
 
             return true;
-        }
 
-        private void BuildMutuallyExclusiveMap(OptionInfo option)
-        {
-            var setName = option.MutuallyExclusiveSet;
-
-            if (!_mutuallyExclusiveSetMap.ContainsKey(setName))
+            void BuildMutuallyExclusiveMap(OptionInfo option)
             {
-                //_mutuallyExclusiveSetMap.Add(setName, 0);
-                _mutuallyExclusiveSetMap.Add(setName, new MutuallyExclusiveInfo(option));
-            }
+                var setName = option.MutuallyExclusiveSet;
 
-            _mutuallyExclusiveSetMap[setName].IncrementOccurrence();
+                if (!_mutuallyExclusiveSetMap!.ContainsKey(setName))
+                {
+                    //_mutuallyExclusiveSetMap.Add(setName, 0);
+                    _mutuallyExclusiveSetMap.Add(setName, new MutuallyExclusiveInfo(option));
+                }
+
+                _mutuallyExclusiveSetMap[setName].IncrementOccurrence();
+            }
         }
 
         private static void BuildAndSetPostParsingStateIfNeeded(object options, OptionInfo option, bool? required, bool? mutualExclusiveness)
@@ -1258,7 +1231,7 @@ namespace CommandLine
             this.BadOption = new BadOptionInfo();
         }
 
-        internal ParsingError(string shortName, string longName, bool format)
+        internal ParsingError(string? shortName, string? longName, bool format)
         {
             //this.BadOptionShortName = shortName;
             //this.BadOptionLongName = longName;
@@ -1351,35 +1324,15 @@ namespace CommandLine
             }
         }
 
-        public string Next
-        {
-            get
-            {
-                if (_index == -1)
-                {
-                    throw new InvalidOperationException();
-                }
-                if (_index > _endIndex)
-                {
-                    throw new InvalidOperationException();
-                }
-                if (IsLast)
-                {
-                    return null;
-                }
-                return _data[_index + 1];
-            }
-        }
+        public string? Next =>
+            _index == -1 ? throw new InvalidOperationException()
+            : _index > _endIndex ? throw new InvalidOperationException()
+            : IsLast ? null
+            : _data[_index + 1];
 
-        public bool IsLast
-        {
-            get { return _index == _endIndex - 1; }
-        }
+        public bool IsLast => _index == _endIndex - 1;
 
-        public void Reset()
-        {
-            _index = -1;
-        }
+        public void Reset() => _index = -1;
 
         public bool MoveNext()
         {
@@ -1391,10 +1344,7 @@ namespace CommandLine
             return false;
         }
 
-        public string GetRemainingFromNext()
-        {
-            throw new NotSupportedException();
-        }
+        public string GetRemainingFromNext() => throw new NotSupportedException();
 
         public bool MovePrevious()
         {
@@ -1418,23 +1368,29 @@ namespace CommandLine
     internal class TargetWrapper
     {
         private readonly object _target;
-        private readonly IList<string> _valueList;
-        private readonly ValueListAttribute _vla;
+        private readonly IList<string>? _valueList;
+        private readonly ValueListAttribute? _vla;
 
         public TargetWrapper(object target)
         {
             _target = target;
             _vla = ValueListAttribute.GetAttribute(_target);
             if (IsValueListDefined)
+            {
                 _valueList = ValueListAttribute.GetReference(_target);
+            }
         }
 
         public bool IsValueListDefined { get { return _vla != null; } }
 
         public bool AddValueItemIfAllowed(string item)
         {
-            if (_vla.MaximumElements == 0 || _valueList.Count == _vla.MaximumElements)
+            // TODO: Check this at some point. It's not clear why we're assuming that
+            // _vla and _valueList are non-null
+            if (_vla!.MaximumElements == 0 || _valueList!.Count == _vla.MaximumElements)
+            {
                 return false;
+            }
 
             lock (this)
             {
@@ -1477,7 +1433,7 @@ namespace CommandLine
         /// <returns>True if parsing process succeed.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
-        bool ParseArguments(string[] args, object options, TextWriter helpWriter);
+        bool ParseArguments(string[] args, object options, TextWriter? helpWriter);
     }
 
     /// <summary>
@@ -1523,13 +1479,12 @@ namespace CommandLine
     /// </summary>
     public sealed class CommandLineParserSettings
     {
-        private const bool CASE_SENSITIVE_DEFAULT = true;
+        private const bool CaseSensitiveDefault = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.CommandLineParserSettings"/> class.
         /// </summary>
-        public CommandLineParserSettings()
-            : this(CASE_SENSITIVE_DEFAULT)
+        public CommandLineParserSettings() : this(CaseSensitiveDefault)
         {
         }
 
@@ -1549,8 +1504,7 @@ namespace CommandLine
         /// </summary>
         /// <param name="helpWriter">Any instance derived from <see cref="System.IO.TextWriter"/>,
         /// default <see cref="System.Console.Error"/>. Setting this argument to null, will disable help screen.</param>
-        public CommandLineParserSettings(TextWriter helpWriter)
-            : this(CASE_SENSITIVE_DEFAULT)
+        public CommandLineParserSettings(TextWriter helpWriter) : this(CaseSensitiveDefault)
         {
             HelpWriter = helpWriter;
         }
@@ -1628,7 +1582,7 @@ namespace CommandLine
         /// Gets or sets the <see cref="System.IO.TextWriter"/> used for help method output.
         /// Setting this property to null, will disable help screen.
         /// </summary>
-        public TextWriter HelpWriter { internal get; set; }
+        public TextWriter? HelpWriter { internal get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating if the parser shall move on to the next argument and ignore the given argument if it
@@ -1720,7 +1674,7 @@ namespace CommandLine
         /// <returns>True if parsing process succeed.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
-        public virtual bool ParseArguments(string[] args, object options, TextWriter helpWriter)
+        public virtual bool ParseArguments(string[] args, object options, TextWriter? helpWriter)
         {
             Assumes.NotNull(args, "args");
             Assumes.NotNull(options, "options");
@@ -1731,7 +1685,7 @@ namespace CommandLine
             {
                 if (ParseHelp(args, pair.Right) || !DoParseArguments(args, options))
                 {
-                    HelpOptionAttribute.InvokeMethod(options, pair, out string helpText);
+                    HelpOptionAttribute.InvokeMethod(options, pair, out string? helpText);
                     helpWriter.Write(helpText);
                     return false;
                 }
@@ -1745,7 +1699,9 @@ namespace CommandLine
         {
             bool hadError = false;
             var optionMap = OptionInfo.CreateMap(options, _settings);
-            optionMap.SetDefaults();
+            // TODO: This will go bang if CreateMap returns a null reference, which it might.
+            // Unclear how to improve this right now, so leave it as-is.
+            optionMap!.SetDefaults();
             var target = new TargetWrapper(options);
 
             IArgumentEnumerator arguments = new StringArrayEnumerator(args);
@@ -1754,7 +1710,7 @@ namespace CommandLine
                 string argument = arguments.Current;
                 if (!string.IsNullOrEmpty(argument))
                 {
-                    ArgumentParser parser = ArgumentParser.Create(argument, _settings.IgnoreUnknownArguments);
+                    ArgumentParser? parser = ArgumentParser.Create(argument, _settings.IgnoreUnknownArguments);
                     if (parser != null)
                     {
                         ParserState result = parser.Parse(arguments, optionMap, options);
@@ -1766,7 +1722,9 @@ namespace CommandLine
                         }
 
                         if ((result & ParserState.MoveOnNextElement) == ParserState.MoveOnNextElement)
+                        {
                             arguments.MoveNext();
+                        }
                     }
                     else if (target.IsValueListDefined)
                     {
@@ -1867,7 +1825,7 @@ namespace CommandLine
             return list;
         }
 
-        public static Pair<MethodInfo, TAttribute> RetrieveMethod<TAttribute>(object target)
+        public static Pair<MethodInfo, TAttribute>? RetrieveMethod<TAttribute>(object target)
                 where TAttribute : Attribute
         {
             var info = target.GetType().GetTypeInfo().DeclaredMethods;
@@ -1878,14 +1836,16 @@ namespace CommandLine
                 {
                     TAttribute attribute = method.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
                     if (attribute != null)
+                    {
                         return new Pair<MethodInfo, TAttribute>(method, attribute);
+                    }
                 }
             }
 
             return null;
         }
 
-        public static TAttribute RetrieveMethodAttributeOnly<TAttribute>(object target)
+        public static TAttribute? RetrieveMethodAttributeOnly<TAttribute>(object target)
                 where TAttribute : Attribute
         {
             var info = target.GetType().GetTypeInfo().DeclaredMethods;
@@ -1896,7 +1856,9 @@ namespace CommandLine
                 {
                     TAttribute attribute = method.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
                     if (attribute != null)
+                    {
                         return attribute;
+                    }
                 }
             }
 
