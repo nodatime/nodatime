@@ -30,7 +30,7 @@ namespace NodaTime.Test.Text
             {
             }
 
-            internal override IPattern<Period> CreatePattern() => StandardPattern;
+            internal override IPattern<Period> CreatePattern() => StandardPattern!;
         }
     }
 }

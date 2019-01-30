@@ -279,9 +279,8 @@ namespace NodaTime.Test
         public void IComparableCompareTo_Null_Positive()
         {
             var instance = new LocalDateTime(2012, 3, 5, 10, 45);
-            var i_instance = (IComparable)instance;
-            object arg = null;
-            var result = i_instance.CompareTo(arg);
+            var comparable = (IComparable)instance;
+            var result = comparable.CompareTo(null);
             Assert.That(result, Is.GreaterThan(0));
         }
 

@@ -99,18 +99,18 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Constructor_InvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new TzdbZone1970Location(0, 0, null, "Zone", ""));
-            Assert.Throws<ArgumentException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry, null }, "Zone", ""));
-            Assert.Throws<ArgumentNullException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry }, "Zone", null));
-            Assert.Throws<ArgumentNullException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry }, null, ""));
-            Assert.Throws<ArgumentException>(() => new TzdbZone1970Location(0, 0, new Country[] { }, null, ""));
+            Assert.Throws<ArgumentNullException>(() => new TzdbZone1970Location(0, 0, null!, "Zone", ""));
+            Assert.Throws<ArgumentException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry, null! }, "Zone", ""));
+            Assert.Throws<ArgumentNullException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry }, "Zone", null!));
+            Assert.Throws<ArgumentNullException>(() => new TzdbZone1970Location(0, 0, new[] { SampleCountry }, null!, ""));
+            Assert.Throws<ArgumentException>(() => new TzdbZone1970Location(0, 0, new Country[] { }, null!, ""));
         }
 
         [Test]
         public void CountryConstructor_InvalidArguments()
         {
-            Assert.Throws<ArgumentNullException>(() => new Country(code: null, name: "Name"));
-            Assert.Throws<ArgumentNullException>(() => new Country(code: "CO", name: null));
+            Assert.Throws<ArgumentNullException>(() => new Country(code: null!, name: "Name"));
+            Assert.Throws<ArgumentNullException>(() => new Country(code: "CO", name: null!));
             Assert.Throws<ArgumentException>(() => new Country(code: "CO", name: ""));
             Assert.Throws<ArgumentException>(() => new Country(code: "Long code", name: "Name"));
             Assert.Throws<ArgumentException>(() => new Country(code: "S", name: "Name"));

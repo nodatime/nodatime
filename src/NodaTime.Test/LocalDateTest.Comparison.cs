@@ -53,7 +53,7 @@ namespace NodaTime.Test
         public void Equals_DifferentToNull()
         {
             LocalDate date = new LocalDate(2011, 1, 2);
-            Assert.IsFalse(date.Equals(null));
+            Assert.IsFalse(date.Equals(null!));
         }
 
         [Test]
@@ -151,9 +151,8 @@ namespace NodaTime.Test
         public void IComparableCompareTo_Null_Positive()
         {
             var instance = new LocalDate(2012, 3, 5);
-            var i_instance = (IComparable)instance;
-            object arg = null;
-            var result = i_instance.CompareTo(arg);
+            var comparable = (IComparable)instance;
+            var result = comparable.CompareTo(null!);
             Assert.Greater(result, 0);
         }
 

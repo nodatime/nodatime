@@ -436,7 +436,7 @@ namespace NodaTime.Test.Text
             var value = new ValueCursor("92233720368547758071");
             value.Move(0);
             var parseResult = value.ParseInt64<string>(out long result);
-            Assert.IsFalse(parseResult.Success);
+            Assert.IsFalse(parseResult!.Success);
             Assert.IsInstanceOf<UnparsableValueException>(parseResult.Exception);            
             Assert.AreEqual(0, value.Index); // Cursor hasn't moved
         }

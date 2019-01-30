@@ -88,13 +88,13 @@ namespace NodaTime.Test
         [Test]
         public void GetAbsoluteYear_NullEra()
         {
-            TestHelper.AssertArgumentNull(Iso.GetAbsoluteYear, 1, (Era) null);
+            TestHelper.AssertArgumentNull(Iso.GetAbsoluteYear, 1, (Era) null!);
         }
 
         [Test]
         public void GetMinYearOfEra_NullEra()
         {
-            TestHelper.AssertArgumentNull(Iso.GetMinYearOfEra, (Era) null);
+            TestHelper.AssertArgumentNull(Iso.GetMinYearOfEra, (Era) null!);
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace NodaTime.Test
         [Test]
         public void GetMaxYearOfEra_NullEra()
         {
-            TestHelper.AssertArgumentNull(Iso.GetMaxYearOfEra, (Era) null);
+            TestHelper.AssertArgumentNull(Iso.GetMaxYearOfEra, (Era) null!);
         }
 
         [Test]

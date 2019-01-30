@@ -369,7 +369,7 @@ namespace NodaTime.Test.Text
             }
 
             internal override IPattern<ZonedDateTime> CreatePattern() =>
-                ZonedDateTimePattern.Create(Pattern, Culture, Resolver, ZoneProvider, Template);
+                ZonedDateTimePattern.Create(Pattern!, Culture, Resolver, ZoneProvider, Template);
         }
     }
 }

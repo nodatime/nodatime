@@ -20,9 +20,9 @@ namespace NodaTime.Test.TimeZones.IO
     {
         private readonly byte[] buffer = new byte[4096];
         private int readIndex;
-        private Stream readStream;
+        private Stream? readStream;
         private int writeIndex;
-        private Stream writeStream;
+        private Stream? writeStream;
 
         /// <summary>
         ///   Returns the next byte from the stream if there is one.

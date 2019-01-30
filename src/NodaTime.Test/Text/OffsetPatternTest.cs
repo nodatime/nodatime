@@ -267,11 +267,11 @@ namespace NodaTime.Test.Text
             }
 
             internal override IPattern<Offset> CreatePattern() =>
-                OffsetPattern.CreateWithInvariantCulture(Pattern)
+                OffsetPattern.CreateWithInvariantCulture(Pattern!)
                     .WithCulture(Culture);
 
             internal override IPartialPattern<Offset> CreatePartialPattern() =>
-                OffsetPattern.CreateWithInvariantCulture(Pattern).WithCulture(Culture).UnderlyingPattern;
+                OffsetPattern.CreateWithInvariantCulture(Pattern!).WithCulture(Culture).UnderlyingPattern;
         }
 
     }

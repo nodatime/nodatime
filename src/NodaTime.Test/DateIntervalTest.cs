@@ -134,7 +134,7 @@ namespace NodaTime.Test
             LocalDate end = new LocalDate(2001, 6, 19);
             var interval = new DateInterval(start, end);
 
-            Assert.IsFalse(interval.Equals(null));
+            Assert.IsFalse(interval.Equals(null!));
         }
 
         [Test]
@@ -222,7 +222,7 @@ namespace NodaTime.Test
             var end = new LocalDate(2017, 11, 10);
             var value = new DateInterval(start, end);
 
-            Assert.Throws<ArgumentNullException>(() => value.Contains(null));
+            Assert.Throws<ArgumentNullException>(() => value.Contains(null!));
         }
 
         [Test]
@@ -259,7 +259,7 @@ namespace NodaTime.Test
         public void Intersection_NullInterval_Throws()
         {
             var value = new DateInterval(new LocalDate(100), new LocalDate(200));
-            Assert.Throws<ArgumentNullException>(() => value.Intersection(null));
+            Assert.Throws<ArgumentNullException>(() => value.Intersection(null!));
         }
 
         [Test]
@@ -289,7 +289,7 @@ namespace NodaTime.Test
         {
             var value = ParseInterval(firstInterval);
             var other = ParseInterval(secondInterval);
-            var expectedResult = ParseInterval(expectedInterval);
+            var expectedResult = ParseIntervalOrNull(expectedInterval);
             Assert.AreEqual(expectedResult, value.Intersection(other));
         }
 
@@ -297,7 +297,7 @@ namespace NodaTime.Test
         public void Union_NullInterval_Throws()
         {
             var value = new DateInterval(new LocalDate(100), new LocalDate(200));
-            Assert.Throws<ArgumentNullException>(() => value.Union(null));
+            Assert.Throws<ArgumentNullException>(() => value.Union(null!));
         }
 
         [Test]
@@ -323,7 +323,7 @@ namespace NodaTime.Test
         {
             DateInterval firstInterval = ParseInterval(first);
             DateInterval secondInterval = ParseInterval(second);
-            DateInterval expectedResult = ParseInterval(expected);
+            DateInterval? expectedResult = ParseIntervalOrNull(expected);
 
             Assert.Multiple(() =>
             {
@@ -343,13 +343,11 @@ namespace NodaTime.Test
             Assert.AreEqual(expected, actual);
         }
 
+        private DateInterval? ParseIntervalOrNull(string? textualInterval) =>
+            textualInterval is null ? null : ParseInterval(textualInterval);
+
         private DateInterval ParseInterval(string textualInterval)
         {
-            if (textualInterval is null)
-            {
-                return null;
-            }
-
             var parts = textualInterval.Split(new char[] { ',' });
             var start = LocalDatePattern.Iso.Parse(parts[0]).Value;
             var end = LocalDatePattern.Iso.Parse(parts[1]).Value;

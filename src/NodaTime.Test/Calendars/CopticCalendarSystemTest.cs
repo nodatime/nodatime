@@ -65,7 +65,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void InvalidEra()
         {
-            Assert.Throws<ArgumentNullException>(() => CalendarSystem.Coptic.GetAbsoluteYear(1720, null));
+            Assert.Throws<ArgumentNullException>(() => CalendarSystem.Coptic.GetAbsoluteYear(1720, null!));
             Assert.Throws<ArgumentException>(() => CalendarSystem.Coptic.GetAbsoluteYear(1720, Era.AnnoHegirae));
         }
     }

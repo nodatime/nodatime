@@ -21,13 +21,13 @@ namespace NodaTime.TimeZones
         /// </summary>
         internal static ITimeZoneInfoShim Shim { get; set; } = new BclShim();
 
-        internal static TimeZoneInfo Local => Shim.Local;
+        internal static TimeZoneInfo? Local => Shim.Local;
         internal static TimeZoneInfo FindSystemTimeZoneById(string id) => Shim.FindSystemTimeZoneById(id);
         internal static ReadOnlyCollection<TimeZoneInfo> GetSystemTimeZones() => Shim.GetSystemTimeZones();
 
         internal interface ITimeZoneInfoShim
         {
-            TimeZoneInfo Local { get; }
+            TimeZoneInfo? Local { get; }
             TimeZoneInfo FindSystemTimeZoneById(string id);
             ReadOnlyCollection<TimeZoneInfo> GetSystemTimeZones();
         }
@@ -37,7 +37,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         private class BclShim : ITimeZoneInfoShim
         {
-            public TimeZoneInfo Local => TimeZoneInfo.Local;
+            public TimeZoneInfo? Local => TimeZoneInfo.Local;
 
             public TimeZoneInfo FindSystemTimeZoneById(string id) => TimeZoneInfo.FindSystemTimeZoneById(id);
 

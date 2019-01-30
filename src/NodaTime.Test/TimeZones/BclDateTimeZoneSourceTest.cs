@@ -49,7 +49,7 @@ namespace NodaTime.Test.TimeZones
 
             // However, there _are_ cases where we can't fetch the local timezone at all (sigh, Mono), so we'll have to
             // skip this test then.
-            TimeZoneInfo local = null;
+            TimeZoneInfo? local = null;
             try
             {
                 local = TimeZoneInfo.Local;
@@ -68,12 +68,12 @@ namespace NodaTime.Test.TimeZones
             // Now that we have our BCL local time zone, we should be able to look it up in the source.
 
             var source = new BclDateTimeZoneSource();
-            string id = source.GetSystemDefaultId();
+            string? id = source.GetSystemDefaultId();
             Assert.IsNotNull(id);
 
             // These lines replicate how DateTimeZoneCache implements GetSystemDefault().
             Assert.Contains(id, source.GetIds().ToList(), "BCL local time zone ID should be included in the source ID list");
-            var zone = source.ForId(id);
+            var zone = source.ForId(id!);
 
             Assert.IsNotNull(zone);  // though really we only need to test that the call above didn't throw.
         }

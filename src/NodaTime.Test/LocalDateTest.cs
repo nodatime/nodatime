@@ -62,8 +62,8 @@ namespace NodaTime.Test
         {
             Assert.Multiple(() =>
             {
-                Assert.Throws<ArgumentNullException>(() => new LocalDate(2017, 11, 7, calendar: null), "Basic construction.");
-                Assert.Throws<ArgumentNullException>(() => new LocalDate(Era.Common, 2017, 11, 7, calendar: null), "Construction including era.");
+                Assert.Throws<ArgumentNullException>(() => new LocalDate(2017, 11, 7, calendar: null!), "Basic construction.");
+                Assert.Throws<ArgumentNullException>(() => new LocalDate(Era.Common, 2017, 11, 7, calendar: null!), "Construction including era.");
             });
         }
 

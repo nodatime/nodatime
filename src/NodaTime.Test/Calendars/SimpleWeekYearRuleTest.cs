@@ -250,7 +250,7 @@ namespace NodaTime.Test.Calendars
             [ValueSource(nameof(CalendarWeekRules))] CalendarWeekRule bclRule,
             [ValueSource(nameof(BclDaysOfWeek))] DayOfWeek firstDayOfWeek)
         {
-            var nodaCalendar = BclCalendars.CalendarSystemForCalendar(calendar);
+            var nodaCalendar = BclCalendars.CalendarSystemForCalendar(calendar)!;
             var nodaRule = WeekYearRules.FromCalendarWeekRule(bclRule, firstDayOfWeek);
             var startYear = new LocalDate(2016, 1, 1).WithCalendar(nodaCalendar).Year;
 
@@ -287,7 +287,7 @@ namespace NodaTime.Test.Calendars
             [ValueSource(nameof(CalendarWeekRules))] CalendarWeekRule bclRule,
             [ValueSource(nameof(BclDaysOfWeek))] DayOfWeek firstDayOfWeek)
         {
-            var nodaCalendar = BclCalendars.CalendarSystemForCalendar(calendar);
+            var nodaCalendar = BclCalendars.CalendarSystemForCalendar(calendar)!;
             var nodaRule = WeekYearRules.FromCalendarWeekRule(bclRule, firstDayOfWeek);
             var startYear = new LocalDate(2016, 1, 1).WithCalendar(nodaCalendar).Year;
 

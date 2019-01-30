@@ -106,7 +106,7 @@ namespace NodaTime.Test.Text
             }
 
             internal override IPattern<Instant> CreatePattern() =>
-                InstantPattern.CreateWithInvariantCulture(Pattern).WithCulture(Culture);
+                InstantPattern.CreateWithInvariantCulture(Pattern!).WithCulture(Culture);
         }
     }
 }

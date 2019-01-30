@@ -160,7 +160,7 @@ namespace NodaTime.Test.Text
             }
 
             internal override IPattern<AnnualDate> CreatePattern() =>
-                AnnualDatePattern.CreateWithInvariantCulture(Pattern)
+                AnnualDatePattern.CreateWithInvariantCulture(Pattern!)
                     .WithTemplateValue(Template)
                     .WithCulture(Culture);
         }

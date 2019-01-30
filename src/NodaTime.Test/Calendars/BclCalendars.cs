@@ -62,7 +62,7 @@ namespace NodaTime.Test.Calendars
         /// get day/month/year values to match without getting the calendar right, the calendar
         /// affects the day of week.
         /// </summary>
-        internal static CalendarSystem CalendarSystemForCalendar(Calendar bcl) =>
+        internal static CalendarSystem? CalendarSystemForCalendar(Calendar bcl) =>
             // Yes, this is horrible... but the specific calendars aren't available to test
             // against in netstandard
             bcl.GetType().Name switch

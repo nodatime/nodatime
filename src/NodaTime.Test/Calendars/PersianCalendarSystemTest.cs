@@ -19,7 +19,7 @@ namespace NodaTime.Test.Calendars
         public void BclThroughHistory()
         {
             Calendar bcl = BclCalendars.Persian;
-            CalendarSystem noda = BclCalendars.CalendarSystemForCalendar(bcl);
+            CalendarSystem noda = BclCalendars.CalendarSystemForCalendar(bcl)!;
             // Note: Noda Time stops in 9377, whereas the BCL goes into the start of 9378. This is because
             // Noda Time ensures that the whole year is valid.
             BclEquivalenceHelper.AssertEquivalent(bcl, noda);

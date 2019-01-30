@@ -63,7 +63,10 @@ namespace NodaTime.Test.Text
 
         protected void AssertParseNull(IPattern<T> pattern)
         {
-            var result = pattern.Parse(null);
+            // Rare case where we pass a null value to a non-nullable reference type parameter,
+            // but don't expect an immediate exception. The parameter is still correctly non-nullable,
+            // as it's a bug to pass in a null reference, but the handling is slightly different.
+            var result = pattern.Parse(null!);
             Assert.IsFalse(result.Success);
             Assert.IsInstanceOf<ArgumentNullException>(result.Exception);
         }

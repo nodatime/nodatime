@@ -19,21 +19,21 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Construction_NullProvider()
         {
-            Assert.Throws<ArgumentNullException>(() => new DateTimeZoneCache(null));
+            Assert.Throws<ArgumentNullException>(() => new DateTimeZoneCache(null!));
         }
 
         [Test]
         public void InvalidSource_NullVersionId()
         {
-            var source = new TestDateTimeZoneSource("Test1", "Test2") { VersionId = null };
+            var source = new TestDateTimeZoneSource("Test1", "Test2") { VersionId = null! };
             Assert.Throws<InvalidDateTimeZoneSourceException>(() => new DateTimeZoneCache(source));
         }
 
         [Test]
         public void InvalidSource_NullIdSequence()
         {
-            string[] ids = null;
-            var source = new TestDateTimeZoneSource(ids);
+            string[] ids = null!;
+            var source = new TestDateTimeZoneSource(ids!);
             Assert.Throws<InvalidDateTimeZoneSourceException>(() => new DateTimeZoneCache(source));
         }
 
@@ -48,7 +48,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void InvalidProvider_NullIdWithinSequence()
         {
-            var source = new TestDateTimeZoneSource("Test1", null);
+            var source = new TestDateTimeZoneSource("Test1", null!);
             Assert.Throws<InvalidDateTimeZoneSourceException>(() => new DateTimeZoneCache(source));
         }
 
@@ -175,7 +175,7 @@ namespace NodaTime.Test.TimeZones
         {
             var provider = new DateTimeZoneCache(new TestDateTimeZoneSource("Test1", "Test2"));
             // GetType call just to avoid trying to use a property as a statement...
-            Assert.Throws<ArgumentNullException>(() => provider[null].GetType());
+            Assert.Throws<ArgumentNullException>(() => provider[null!].GetType());
         }
 
         [Test]
@@ -253,7 +253,7 @@ namespace NodaTime.Test.TimeZones
 
         private class TestDateTimeZoneSource : IDateTimeZoneSource
         {
-            public string LastRequestedId { get; set; }
+            public string? LastRequestedId { get; set; }
             private readonly string[] ids;
 
             public TestDateTimeZoneSource(params string[] ids)
@@ -272,7 +272,7 @@ namespace NodaTime.Test.TimeZones
 
             public string VersionId { get; set; }
 
-            public virtual string GetSystemDefaultId() => "map";
+            public virtual string? GetSystemDefaultId() => "map";
         }
 
         // A test source that returns null from ForId and GetSystemDefaultId()
@@ -286,10 +286,10 @@ namespace NodaTime.Test.TimeZones
             {
                 // Still remember what was requested.
                 base.ForId(id);
-                return null;
+                return null!;
             }
 
-            public override string GetSystemDefaultId() => null;
+            public override string? GetSystemDefaultId() => null;
         }
     }
 }
