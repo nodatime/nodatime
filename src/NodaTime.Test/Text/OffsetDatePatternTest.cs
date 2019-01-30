@@ -169,7 +169,7 @@ namespace NodaTime.Test.Text
             }
 
             internal override IPattern<OffsetDate> CreatePattern() =>
-                OffsetDatePattern.Create(Pattern, Culture, Template);
+                OffsetDatePattern.Create(Pattern!, Culture, Template);
         }
     }
 }

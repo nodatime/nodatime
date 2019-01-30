@@ -273,7 +273,7 @@ namespace NodaTime.Test.Text
         }
 
         // Helper method to make it slightly easier for tests to skip "bad" cultures.
-        private LocalDateTimePattern CreatePatternOrNull(string patternText, CultureInfo culture, LocalDateTime templateValue)
+        private LocalDateTimePattern? CreatePatternOrNull(string patternText, CultureInfo culture, LocalDateTime templateValue)
         {
             try
             {
@@ -326,7 +326,7 @@ namespace NodaTime.Test.Text
             }
 
             internal override IPattern<LocalDateTime> CreatePattern() =>
-                LocalDateTimePattern.CreateWithInvariantCulture(Pattern)
+                LocalDateTimePattern.CreateWithInvariantCulture(Pattern!)
                     .WithTemplateValue(Template)
                     .WithCulture(Culture);
         }

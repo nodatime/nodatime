@@ -32,7 +32,7 @@ namespace NodaTime.Test
         {
             LocalDate date = new LocalDate(2010, 1, 1);
             // Call to ToString just to make it a valid statement
-            Assert.Throws<ArgumentNullException>(() => (date + (Period)null).ToString());
+            Assert.Throws<ArgumentNullException>(() => (date + (Period)null!).ToString());
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace NodaTime.Test
         {
             LocalDate date = new LocalDate(2010, 1, 1);
             // Call to ToString just to make it a valid statement
-            Assert.Throws<ArgumentNullException>(() => (date - (Period)null).ToString());
+            Assert.Throws<ArgumentNullException>(() => (date - (Period)null!).ToString());
         }
 
         [Test]

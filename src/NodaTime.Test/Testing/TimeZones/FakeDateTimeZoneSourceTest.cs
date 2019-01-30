@@ -74,7 +74,7 @@ namespace NodaTime.Test.Testing.TimeZones
         [Test]
         public void NullZoneViaCollectionInitializer()
         {
-            Assert.Throws<ArgumentNullException>(() => new FakeDateTimeZoneSource.Builder { null });
+            Assert.Throws<ArgumentNullException>(() => new FakeDateTimeZoneSource.Builder { null! });
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace NodaTime.Test.Testing.TimeZones
         {
             var source = new FakeDateTimeZoneSource.Builder
             {
-                Zones = { null }
+                Zones = { null! }
             };
             AssertBuildFails(source);
         }
@@ -92,7 +92,7 @@ namespace NodaTime.Test.Testing.TimeZones
         {
             var source = new FakeDateTimeZoneSource.Builder
             {
-                BclIdsToZoneIds = { { "x", null } },
+                BclIdsToZoneIds = { { "x", null! } },
                 Zones = { CreateZone("z") }
             };
             AssertBuildFails(source);

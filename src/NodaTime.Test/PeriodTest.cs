@@ -434,7 +434,7 @@ namespace NodaTime.Test
             Assert.IsFalse(Period.FromHours(1).Equals(Period.FromMinutes(60)));
             Assert.IsFalse(Period.FromHours(1).Equals(new object()));
             Assert.IsFalse(Period.FromHours(1).Equals(null));
-            Assert.IsFalse(Period.FromHours(1).Equals((object) null));
+            Assert.IsFalse(Period.FromHours(1).Equals((object?) null));
         }
 
         [Test]

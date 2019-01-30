@@ -80,7 +80,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void ForId_Null()
         {
-            Assert.Throws<ArgumentNullException>(() => TzdbDateTimeZoneSource.Default.ForId(null));
+            Assert.Throws<ArgumentNullException>(() => TzdbDateTimeZoneSource.Default.ForId(null!));
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace NodaTime.Test.TimeZones
                 return;
             }
 
-            string id = TzdbDateTimeZoneSource.Default.GuessZoneIdByTransitionsUncached(bclZone,
+            string? id = TzdbDateTimeZoneSource.Default.GuessZoneIdByTransitionsUncached(bclZone,
                 TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached);
 
             // Unmappable zones may not be mapped, or may be mapped to something reasonably accurate.
@@ -238,7 +238,7 @@ namespace NodaTime.Test.TimeZones
             }
 
             Assert.IsNotNull(id, $"Unable to guess time zone for {bclZone.Id}");
-            var tzdbZone = TzdbDateTimeZoneSource.Default.ForId(id);
+            var tzdbZone = TzdbDateTimeZoneSource.Default.ForId(id!);
 
             var thisYear = SystemClock.Instance.GetCurrentInstant().InUtc().Year;
             LocalDate? lastIncorrectDate = null;

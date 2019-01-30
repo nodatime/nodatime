@@ -145,7 +145,7 @@ namespace NodaTime.Test
             /// Use this property!
             /// </summary>
             [XmlIgnore]
-            public Period Period { get; set; }
+            public Period? Period { get; set; }
 
             /// <summary>
             /// Don't use this property! It's only present for the purposes of XML serialization.
@@ -153,7 +153,7 @@ namespace NodaTime.Test
             /// </summary>
             [XmlElement("period")]
             [EditorBrowsable(EditorBrowsableState.Never)]
-            public PeriodBuilder PeriodBuilder
+            public PeriodBuilder? PeriodBuilder
             {
                 get => Period?.ToBuilder();
                 set => Period = value?.Build();

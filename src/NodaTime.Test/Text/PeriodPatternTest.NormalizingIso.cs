@@ -14,7 +14,7 @@ namespace NodaTime.Test.Text
         public class PeriodPatternNormalizingIsoTest : PatternTestBase<Period>
         {
             // Single null value to keep it from being "inconclusive"
-            internal static readonly Data[] InvalidPatternData = { null };
+            internal static readonly Data?[] InvalidPatternData = { null };
 
             internal static readonly Data[] ParseFailureData = {
                 new Data { Text = "X5H", Message = TextErrorMessages.MismatchedCharacter, Parameters = { 'P' } },

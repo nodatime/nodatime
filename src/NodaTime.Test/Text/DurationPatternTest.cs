@@ -178,7 +178,7 @@ namespace NodaTime.Test.Text
             {
             }
 
-            internal override IPattern<Duration> CreatePattern() => DurationPattern.Create(Pattern, Culture);
+            internal override IPattern<Duration> CreatePattern() => DurationPattern.Create(Pattern!, Culture);
         }
     }
 }

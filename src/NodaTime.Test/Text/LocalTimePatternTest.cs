@@ -356,13 +356,13 @@ namespace NodaTime.Test.Text
         [Test]
         public void CreateWithInvariantCulture_NullPatternText()
         {
-            Assert.Throws<ArgumentNullException>(() => LocalTimePattern.CreateWithInvariantCulture(null));
+            Assert.Throws<ArgumentNullException>(() => LocalTimePattern.CreateWithInvariantCulture(null!));
         }
 
         [Test]
         public void Create_NullFormatInfo()
         {
-            Assert.Throws<ArgumentNullException>(() => LocalTimePattern.Create("HH", null));
+            Assert.Throws<ArgumentNullException>(() => LocalTimePattern.Create("HH", null!));
         }
 
         [Test]
@@ -467,7 +467,7 @@ namespace NodaTime.Test.Text
             }
 
             internal override IPattern<LocalTime> CreatePattern() =>
-                LocalTimePattern.CreateWithInvariantCulture(Pattern)
+                LocalTimePattern.CreateWithInvariantCulture(Pattern!)
                     .WithTemplateValue(Template)
                     .WithCulture(Culture);
         }

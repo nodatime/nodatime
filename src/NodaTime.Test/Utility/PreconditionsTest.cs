@@ -41,7 +41,7 @@ namespace NodaTime.Test.Utility
         public void DebugCheckNotNull_Debug()
         {
             Preconditions.DebugCheckNotNull("value", "ignore");
-            Assert.Throws<DebugPreconditionException>(() => Preconditions.DebugCheckNotNull((string) null, "ignore"));
+            Assert.Throws<DebugPreconditionException>(() => Preconditions.DebugCheckNotNull((string) null!, "ignore"));
         }
 #else
         [Test]

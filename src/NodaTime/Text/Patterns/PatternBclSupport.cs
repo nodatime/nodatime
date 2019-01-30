@@ -22,7 +22,7 @@ namespace NodaTime.Text.Patterns
             this.defaultFormatPattern = defaultFormatPattern;
         }
 
-        internal string Format(T value, string? patternText, IFormatProvider formatProvider)
+        internal string Format(T value, string? patternText, IFormatProvider? formatProvider)
         {
             if (string.IsNullOrEmpty(patternText))
             {

@@ -63,7 +63,7 @@ namespace NodaTime
         /// equal 1 year.
         /// </summary>
         /// <value>An equality comparer which compares periods by first normalizing them.</value>
-        [NotNull] public static IEqualityComparer<Period> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
+        [NotNull] public static IEqualityComparer<Period?> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
 
         // The fields that make up this period.
 
@@ -327,7 +327,7 @@ namespace NodaTime
         /// <param name="baseDateTime">The base local date/time to use for comparisons.</param>
         /// <returns>The new comparer.</returns>
         [NotNull]
-        public static IComparer<Period> CreateComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
+        public static IComparer<Period?> CreateComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
 
         /// <summary>
         /// Subtracts one period from another, by simply subtracting each property value.
@@ -879,7 +879,7 @@ namespace NodaTime
         /// <summary>
         /// Equality comparer which simply normalizes periods before comparing them.
         /// </summary>
-        private sealed class NormalizingPeriodEqualityComparer : EqualityComparer<Period>
+        private sealed class NormalizingPeriodEqualityComparer : EqualityComparer<Period?>
         {
             internal static readonly NormalizingPeriodEqualityComparer Instance = new NormalizingPeriodEqualityComparer();
 
@@ -887,7 +887,7 @@ namespace NodaTime
             {
             }
 
-            public override bool Equals(Period x, Period y)
+            public override bool Equals(Period? x, Period? y)
             {
                 if (ReferenceEquals(x, y))
                 {
@@ -900,11 +900,11 @@ namespace NodaTime
                 return x.Normalize().Equals(y.Normalize());
             }
 
-            public override int GetHashCode([NotNull] Period obj) =>
-                Preconditions.CheckNotNull(obj, nameof(obj)).Normalize().GetHashCode();
+            public override int GetHashCode([NotNull] Period? obj) =>
+                Preconditions.CheckNotNull(obj!, nameof(obj)).Normalize().GetHashCode();
         }
 
-        private sealed class PeriodComparer : Comparer<Period>
+        private sealed class PeriodComparer : Comparer<Period?>
         {
             private readonly LocalDateTime baseDateTime;
 
@@ -913,7 +913,7 @@ namespace NodaTime
                 this.baseDateTime = baseDateTime;
             }
 
-            public override int Compare(Period x, Period y)
+            public override int Compare(Period? x, Period? y)
             {
                 if (ReferenceEquals(x, y))
                 {

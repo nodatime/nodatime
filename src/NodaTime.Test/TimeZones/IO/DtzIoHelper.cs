@@ -31,7 +31,7 @@ namespace NodaTime.Test.TimeZones.IO
 
         internal static DtzIoHelper CreateNoStringPool()
         {
-            return new DtzIoHelper(null);
+            return new DtzIoHelper(null!);
         }
 
         internal static DtzIoHelper CreateWithStringPool()

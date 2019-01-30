@@ -2,19 +2,18 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
 using NodaTime.Utility;
-using NodaTime.Annotations;
-using System.Threading;
+using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace NodaTime.Globalization
 {
@@ -411,14 +410,15 @@ namespace NodaTime.Globalization
         /// <param name="provider">The <see cref="IFormatProvider" />.</param>
         /// <exception cref="ArgumentException">The format provider cannot be used for Noda Time.</exception>
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
-        public static NodaFormatInfo GetInstance(IFormatProvider provider) => provider switch
+        public static NodaFormatInfo GetInstance(IFormatProvider? provider) => provider switch
             {
                 null => GetFormatInfo(CurrentInfo.CultureInfo),
                 CultureInfo cultureInfo => GetFormatInfo(cultureInfo),
                 // Note: no caching for this case. It's a corner case anyway... we could add a cache later
                 // if users notice a problem.
                 DateTimeFormatInfo dateTimeFormatInfo => new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo),
-                _ => throw new ArgumentException($"Cannot use provider of type {provider.GetType().FullName} in Noda Time", nameof(provider))
+                // TODO(nullable): File a Roslyn bug, as provider really won't be null here.
+                _ => throw new ArgumentException($"Cannot use provider of type {provider!.GetType().FullName} in Noda Time", nameof(provider))
             };
 
         /// <summary>

@@ -272,7 +272,7 @@ namespace NodaTime
         /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>
-        public string ToString(string patternText, IFormatProvider formatProvider) =>
+        public string ToString(string? patternText, IFormatProvider? formatProvider) =>
             OffsetTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
 
 

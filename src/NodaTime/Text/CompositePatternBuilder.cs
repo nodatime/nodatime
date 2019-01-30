@@ -99,7 +99,7 @@ namespace NodaTime.Text
                         return result;
                     }
                 }
-                return ParseResult<T>.NoMatchingFormat(new ValueCursor(text));
+                return ParseResult<T>.NoMatchingFormat(new ValueCursor(text!));
             }
 
             public ParseResult<T> ParsePartial(ValueCursor cursor)
