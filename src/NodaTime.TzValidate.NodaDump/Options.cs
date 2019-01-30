@@ -23,13 +23,13 @@ namespace NodaTime.TzValidate.NodaDump
         public int ToYear { get; set; }
 
         [Option("s", "source", Required = false, HelpText = "Data source - a single file or URL, or a directory")]
-        public string Source { get; set; }
+        public string? Source { get; set; }
 
         [Option("z", "zone", Required = false, HelpText = "Zone ID, to dump a single time zone")]
-        public string ZoneId { get; set; }
+        public string? ZoneId { get; set; }
 
         [Option("o", "output", Required = false, HelpText = "Output file (defaults to writing to the console")]
-        public string OutputFile { get; set; }
+        public string? OutputFile { get; set; }
 
         [Option(null, "hash", Required = false, HelpText = "Only output the SHA-256 hash")]
         public bool HashOnly { get; set; }
