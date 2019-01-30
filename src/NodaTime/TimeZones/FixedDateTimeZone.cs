@@ -13,8 +13,6 @@ namespace NodaTime.TimeZones
     // Implementation note: this implemented IEquatable<FixedDateTimeZone> for the sake of fitting in with our test infrastructure
     // more than anything else...
 
-    // TODO(nullable): Validate that implementing IEquatable<T?> really is the most appropriate approach
-
     /// <summary>
     /// Basic <see cref="DateTimeZone" /> implementation that has a fixed name key and offset i.e.
     /// no daylight savings.

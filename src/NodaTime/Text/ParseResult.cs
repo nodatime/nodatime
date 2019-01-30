@@ -19,6 +19,7 @@ namespace NodaTime.Text
     [Immutable]
     public sealed class ParseResult<T>
     {
+        // Invariant: exactly one of value or exceptionProvider is null.
         private readonly T value;
         private readonly Func<Exception>? exceptionProvider;
         internal bool ContinueAfterErrorWithMultipleFormats { get; }
@@ -27,7 +28,7 @@ namespace NodaTime.Text
         {
             this.exceptionProvider = exceptionProvider;
             this.ContinueAfterErrorWithMultipleFormats = continueWithMultiple;
-            // TODO(nullable): Work out a better option for this.
+            // Satisfy the compiler around the invariant.
             value = default!;
         }
 

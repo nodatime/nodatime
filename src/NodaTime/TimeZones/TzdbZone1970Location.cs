@@ -144,8 +144,6 @@ namespace NodaTime.TimeZones
             }
         }
 
-        // TODO(nullable): Validate that implementing IEquatable<T?> really is the most appropriate approach
-
         /// <summary>
         /// A country represented within an entry in the "zone1970.tab" file, with the English name
         /// mapped from the "iso3166.tab" file.
