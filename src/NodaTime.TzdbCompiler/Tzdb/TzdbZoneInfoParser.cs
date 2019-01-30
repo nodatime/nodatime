@@ -72,7 +72,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="tokens">The tokens.</param>
         /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
-        private string NextOptional(Tokens tokens, string name) => ParserHelper.ParseOptional(NextString(tokens, name));
+        private string? NextOptional(Tokens tokens, string name) => ParserHelper.ParseOptional(NextString(tokens, name));
 
         /// <summary>
         /// Returns the next string from the token stream.
@@ -122,7 +122,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="database">The database to fill.</param>
         internal void Parse(TextReader reader, TzdbDatabase database)
         {
-            string currentZone = null;
+            string? currentZone = null;
             foreach (var line in reader.ReadLines())
             {
                 currentZone = ParseLine(line, currentZone, database);
@@ -267,9 +267,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </para>
         /// </remarks>
         /// <param name="line">The line to parse.</param>
+        /// <param name="previousZone">The previous zone ID, or null if we don't have one.</param>
         /// <param name="database">The database to fill.</param>
         /// <return>The zone name just parsed, if any - so that it can be passed into the next call.</return>
-        private string ParseLine(string line, string previousZone, TzdbDatabase database)
+        private string? ParseLine(string line, string? previousZone, TzdbDatabase database)
         {
             // Trim end-of-line comments
             int index = line.IndexOf("#", StringComparison.Ordinal);

@@ -19,14 +19,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// <remarks>
     /// Immutable, thread-safe
     /// </remarks>
-    internal class ZoneLine : IEquatable<ZoneLine>
+    internal class ZoneLine : IEquatable<ZoneLine?>
     {
         private static readonly OffsetPattern PercentZPattern = OffsetPattern.CreateWithInvariantCulture("i");
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneLine" /> class.
         /// </summary>
-        public ZoneLine(string name, Offset offset, string rules, string format, int untilYear, ZoneYearOffset untilYearOffset)
+        public ZoneLine(string name, Offset offset, string? rules, string format, int untilYear, ZoneYearOffset untilYearOffset)
         {
             this.Name = name;
             this.StandardOffset = offset;
@@ -64,7 +64,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// null for just standard time, or an offset for a "fixed savings" rule.
         /// </summary>
         /// <value>The name of the rules to apply for this zone line.</value>
-        internal string Rules { get; }
+        internal string? Rules { get; }
 
         #region IEquatable<Zone> Members
         /// <summary>
@@ -75,7 +75,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
         /// </returns>
-        public bool Equals(ZoneLine other)
+        public bool Equals(ZoneLine? other)
         {
             if (other is null)
             {
@@ -102,7 +102,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         ///   otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => Equals(obj as ZoneLine);
+        public override bool Equals(object? obj) => Equals(obj as ZoneLine);
 
         /// <summary>
         ///   Returns a hash code for this instance.
@@ -176,7 +176,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
         }
 
-        internal string FormatName(Offset savings, string daylightSavingsIndicator)
+        internal string FormatName(Offset savings, string? daylightSavingsIndicator)
         {
             int index = Format.IndexOf("/", StringComparison.Ordinal);
             if (index >= 0)

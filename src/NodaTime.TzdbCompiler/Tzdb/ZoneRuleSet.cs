@@ -18,7 +18,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     {
         // Either rules or name+fixedSavings is specified.
         private readonly List<ZoneRecurrence> rules = new List<ZoneRecurrence>();
-        private readonly string name;
+        private readonly string? name;
         private readonly Offset fixedSavings;
         private readonly int upperYear;
         private readonly ZoneYearOffset upperYearOffset;
@@ -55,7 +55,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             Preconditions.CheckState(IsFixed, "Rule set is not fixed");
             var limit = GetUpperLimit(fixedSavings);
-            return new ZoneInterval(name, start, limit, StandardOffset + fixedSavings, fixedSavings);
+            return new ZoneInterval(name!, start, limit, StandardOffset + fixedSavings, fixedSavings);
         }
 
         /// <summary>

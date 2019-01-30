@@ -39,12 +39,12 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <summary>
         /// A list of the zone locations known to this database from zone.tab.
         /// </summary>
-        internal IList<TzdbZoneLocation> ZoneLocations { get; set; }
+        internal IList<TzdbZoneLocation>? ZoneLocations { get; set; }
 
         /// <summary>
         /// A list of the zone locations known to this database from zone1970.tab.
         /// </summary>
-        internal IList<TzdbZone1970Location> Zone1970Locations { get; set; }
+        internal IList<TzdbZone1970Location>? Zone1970Locations { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbDatabase" /> class.

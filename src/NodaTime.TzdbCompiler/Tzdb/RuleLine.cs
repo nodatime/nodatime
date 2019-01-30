@@ -16,14 +16,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// <remarks>
     /// Immutable, threadsafe.
     /// </remarks>
-    internal class RuleLine : IEquatable<RuleLine>
+    internal class RuleLine : IEquatable<RuleLine?>
     {
         /// <summary>
         /// The string to replace "%s" with (if any) when formatting the zone name key.
         /// </summary>
         /// <remarks>This is always used to replace %s, whether or not the recurrence
         /// actually includes savings; it is expected to be appropriate to the recurrence.</remarks>
-        private readonly string daylightSavingsIndicator;
+        private readonly string? daylightSavingsIndicator;
 
         /// <summary>
         /// The recurrence pattern for the rule.
@@ -40,14 +40,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// "odd", "even" etc - usually yearistype.sh is used to determine this; Noda Time only supports
         /// "odd" and "even" (used in Australia for data up to and including 2000e).
         /// </summary>
-        public string Type { get; }
+        public string? Type { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RuleLine" /> class.
         /// </summary>
         /// <param name="recurrence">The recurrence definition of this rule.</param>
         /// <param name="daylightSavingsIndicator">The daylight savings indicator letter for time zone names.</param>
-        public RuleLine(ZoneRecurrence recurrence, string daylightSavingsIndicator, string type)
+        public RuleLine(ZoneRecurrence recurrence, string? daylightSavingsIndicator, string? type)
         {
             this.recurrence = recurrence;
             this.daylightSavingsIndicator = daylightSavingsIndicator;
@@ -63,7 +63,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   true if the current object is equal to the <paramref name = "other" /> parameter;
         ///   otherwise, false.
         /// </returns>
-        public bool Equals(RuleLine other) => !(other is null) && Equals(recurrence, other.recurrence) && Equals(daylightSavingsIndicator, other.daylightSavingsIndicator);
+        public bool Equals(RuleLine? other) =>
+            !(other is null) && Equals(recurrence, other.recurrence) && Equals(daylightSavingsIndicator, other.daylightSavingsIndicator);
         #endregion
 
         #region Operator overloads
@@ -140,7 +141,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => Equals(obj as RuleLine);
+        public override bool Equals(object? obj) => Equals(obj as RuleLine);
 
         /// <summary>
         /// Returns a hash code for this instance.

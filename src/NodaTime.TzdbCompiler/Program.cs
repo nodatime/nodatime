@@ -36,7 +36,7 @@ namespace NodaTime.TzdbCompiler
             }
 
             var tzdbCompiler = new TzdbZoneInfoCompiler();
-            var tzdb = tzdbCompiler.Compile(options.SourceDirectoryName);
+            var tzdb = tzdbCompiler.Compile(options.SourceDirectoryName!);
             tzdb.LogCounts();
             if (options.ZoneId != null)
             {
@@ -74,7 +74,7 @@ namespace NodaTime.TzdbCompiler
         /// </summary>
         private static WindowsZones LoadWindowsZones(CompilerOptions options, string targetTzdbVersion)
         {
-            var mappingPath = options.WindowsMapping;
+            var mappingPath = options.WindowsMapping!;
             if (File.Exists(mappingPath))
             {
                 return CldrWindowsZonesParser.Parse(mappingPath);
