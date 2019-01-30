@@ -32,7 +32,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
         private static readonly Regex VersionRegex = new Regex(@"\d{2,4}[a-z]");
 
-        private readonly TextWriter log;
+        private readonly TextWriter? log;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TzdbZoneInfoCompiler" /> class
@@ -44,7 +44,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// Initializes a new instance of the <see cref="TzdbZoneInfoCompiler" /> class
         /// logging to the given text writer, which may be null.
         /// </summary>
-        public TzdbZoneInfoCompiler(TextWriter log)
+        public TzdbZoneInfoCompiler(TextWriter? log)
         {
             this.log = log;
         }

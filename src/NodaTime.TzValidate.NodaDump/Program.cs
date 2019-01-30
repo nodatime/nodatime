@@ -28,6 +28,7 @@ namespace NodaTime.TzValidate.NodaDump
             {
                 return 1;
             }
+            // Not null after we've parsed the arguments.
             TzdbDateTimeZoneSource source = LoadSource(options.Source);
             var dumper = new ZoneDumper(source, options);
             try
@@ -46,7 +47,7 @@ namespace NodaTime.TzValidate.NodaDump
             return 0;
         }        
 
-        private static TzdbDateTimeZoneSource LoadSource(string source)
+        private static TzdbDateTimeZoneSource LoadSource(string? source)
         {
             if (source is null)
             {
