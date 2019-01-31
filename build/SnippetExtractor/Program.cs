@@ -1,6 +1,7 @@
 ﻿// Copyright 2017 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
+using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using System;
@@ -18,6 +19,8 @@ namespace SnippetExtractor
     {
         private static int Main(string[] args)
         {
+            MSBuildLocator.RegisterDefaults();
+
             // Force System.Collections.Immutable to be deployed
             ImmutableStack.Create<int>();
             
@@ -64,6 +67,7 @@ namespace SnippetExtractor
             {
                 foreach (var snippet in sourceSnippets)
                 {
+                    Console.WriteLine($"Generating snippet for {snippet.Uid}");
                     var rewritten = await rewriter.RewriteSnippetAsync(snippet);
                     rewritten.Write(writer);
                 }
@@ -83,11 +87,13 @@ namespace SnippetExtractor
             var publishDirectory = Path.Combine(Path.GetDirectoryName(project.OutputFilePath), "publish");
             var localAssemblies = Directory.GetFiles(publishDirectory, "*.dll").Where(f => Path.GetFileName(f) != "NodaTime.Demo.dll");
             var allReferences = localAssemblies.Concat(netcoreapp20Assemblies).Select(f => MetadataReference.CreateFromFile(f));
+            Console.WriteLine("Compiling the project");
             project = project
                 .WithProjectReferences(new ProjectReference[0])
                 .WithMetadataReferences(allReferences);
             var compilation = await project.GetCompilationAsync();
             compilation.CheckSuccessful();
+            Console.WriteLine("Compiled the project successfully");
             return project;
         }
 
