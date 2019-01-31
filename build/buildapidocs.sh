@@ -43,7 +43,7 @@ cd ../../../..
 
 cp -r docfx/template tmp/docfx
 cp docfx/docfx-unstable.json tmp/docfx/docfx.json
-"$DOCFX" metadata tmp/docfx/docfx.json -f
+"$DOCFX" metadata tmp/docfx/docfx.json -f --warningsAsErrors
 # The serialization output is in a different directory, as it needs
 # separate properties. Merge them now, first concatenating the serialization
 # TOC after the main one.
