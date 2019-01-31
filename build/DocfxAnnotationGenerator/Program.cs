@@ -33,6 +33,10 @@ namespace DocfxAnnotationGenerator
 
 
             var instance = new Program(args.Skip(3), args[0], args[1], args[2]);
+            if (!instance.CheckMembers())
+            {
+                return 1;
+            }
             instance.CreateDirectories();
             instance.WriteSinceAnnotations();
             instance.WriteAvailabilityAnnotations();
@@ -49,6 +53,39 @@ namespace DocfxAnnotationGenerator
             releases = versions.Select(v => Release.Load(Path.Combine(docfxRoot, "obj", v), v)).ToList();
             Console.WriteLine("Loading assemblies");
             reflectionDataByVersion = versions.ToDictionary(v => v, v => LoadAssemblies(v, packagesDir, srcRoot).ToList());
+        }
+
+        private bool CheckMembers()
+        {
+            // TODO: Either fix these in historical versions, or at least stop ignoring them from now on.
+            var expectedMissingUids = new[]
+            {
+                "NodaTime.TimeZones.BclDateTimeZoneSource.#ctor",
+                "NodaTime.Serialization.JsonNet.NodaConverterBase`1.#ctor",
+                "NodaTime.Text.CompositePatternBuilder`1.#ctor"
+            };
+
+            bool result = true;
+            foreach (var release in releases)
+            {
+                var reflectionData = reflectionDataByVersion[release.Version];
+                var missing = reflectionData
+                    .SelectMany(rd => rd.Members)
+                    .Select(member => member.DocfxUid)
+                    .Where(uid => !release.MembersByUid.ContainsKey(uid))
+                    .Where(uid => !expectedMissingUids.Contains(uid))
+                    .ToList();
+                if (missing.Count != 0)
+                {
+                    Console.WriteLine($"Release {release.Version} is missing members in docfx:");
+                    foreach (var uid in missing)
+                    {
+                        Console.WriteLine($"  {uid}");
+                    }
+                    result = false;
+                }
+            }
+            return result;
         }
 
         private void CreateDirectories()
@@ -129,7 +166,7 @@ namespace DocfxAnnotationGenerator
             // potentially-multiple mutations, then resave. We only load documents as and when we need to.
             foreach (var release in releases)
             {
-                Console.WriteLine($"Modifying YAML files for {release.Version}");
+                Console.WriteLine($"Modifying YAML files for {release.Version} with {release.MembersByUid.Count} members");
                 var files = new Dictionary<string, YamlStream>();
 
                 AnnotateNotNullParameters(release, files);
