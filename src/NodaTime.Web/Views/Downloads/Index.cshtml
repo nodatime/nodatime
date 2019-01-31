@@ -41,7 +41,7 @@
                             <td rowspan="@release.Count()">@LocalDatePattern.Iso.Format(file.ReleaseDate)</td>
                             first = false;
                         }
-                        <td><a href="@file.DownloadUrl">@file.File</a></td>
+                        <td><a href="@file.DownloadUrl" rel="nofollow">@file.File</a></td>
                         <td>@file.Sha256Hash</td>
                     </tr>
                 }
