@@ -25,13 +25,16 @@ namespace SnippetExtractor
              "using NodaTime.Demo;"
         };
 
-        private readonly ScriptOptions options;
+        private readonly ScriptOptions buildOptions;
+        private readonly ScriptOptions executeOptions;
 
         public SnippetRewriter(Project project)
         {
-            options = ScriptOptions.Default
+            buildOptions = ScriptOptions.Default
                 .AddReferences(project.MetadataReferences)
                 .AddReferences(new[] { MetadataReference.CreateFromFile(project.OutputFilePath) });
+            var nodaTimeReference = buildOptions.MetadataReferences.Single(mr => mr.Display.EndsWith("NodaTime.dll"));
+            executeOptions = ScriptOptions.Default.WithReferences(nodaTimeReference);
         }
 
         public async Task<RewrittenSnippet> RewriteSnippetAsync(SourceSnippet snippet)
@@ -40,16 +43,14 @@ namespace SnippetExtractor
             var text = string.Join("\r\n", usings.Concat(new[] { "" }).Concat(Trim(snippet.Lines)));
             var tree = CSharpSyntaxTree.ParseText(text, CSharpParseOptions.Default.WithKind(SourceCodeKind.Script));
 
-            Compilation compilation = CSharpCompilation.Create("Foo", new[] { tree }, options.MetadataReferences)
+            Compilation compilation = CSharpCompilation.Create("Foo", new[] { tree }, buildOptions.MetadataReferences)
                 .CheckSuccessful();
             // TODO: Replace var with explicit declarations?
             compilation = RewriteInvocations(compilation).CheckSuccessful();
             compilation = RemoveUnusedImports(compilation).CheckSuccessful();
 
             // Now we should only need the NodaTime reference.
-            var nodaTimeReference = options.MetadataReferences.Single(mr => mr.Display.EndsWith("NodaTime.dll"));
-            var script = CSharpScript.Create(compilation.SyntaxTrees.Single().ToString(),
-                ScriptOptions.Default.WithReferences(nodaTimeReference));
+            var script = CSharpScript.Create(compilation.SyntaxTrees.Single().ToString(), executeOptions);
             var output = await RunScriptAsync(script);
             return new RewrittenSnippet(script.Code, output, snippet.Uid);
         }

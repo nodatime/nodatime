@@ -70,6 +70,8 @@ namespace SnippetExtractor
                     Console.WriteLine($"Generating snippet for {snippet.Uid}");
                     var rewritten = await rewriter.RewriteSnippetAsync(snippet);
                     rewritten.Write(writer);
+                    // For some reason, we run out of memory without this. Eek.
+                    GC.Collect();
                 }
             }
         }
