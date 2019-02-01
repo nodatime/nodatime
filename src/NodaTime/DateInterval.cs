@@ -60,7 +60,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the hash code for this interval, consistent with <see cref="Equals(DateInterval)"/>.
+        /// Returns the hash code for this interval, consistent with <see cref="Equals(DateInterval?)"/>.
         /// </summary>
         /// <returns>The hash code for this interval.</returns>
         public override int GetHashCode() =>
@@ -113,10 +113,10 @@ namespace NodaTime
         public bool Equals(DateInterval? other) => this == other;
 
         /// <summary>
-        /// Compares the given object for equality with this one, as per <see cref="Equals(DateInterval)"/>.
+        /// Compares the given object for equality with this one, as per <see cref="Equals(DateInterval?)"/>.
         /// </summary>
         /// <param name="obj">The value to compare this one with.</param>
-        /// <returns>true if the other object is a date interval equal to this one, consistent with <see cref="Equals(DateInterval)"/>.</returns>
+        /// <returns>true if the other object is a date interval equal to this one, consistent with <see cref="Equals(DateInterval?)"/>.</returns>
         public override bool Equals(object obj) => this == (obj as DateInterval);
 
         /// <summary>

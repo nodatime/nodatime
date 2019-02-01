@@ -829,14 +829,14 @@ namespace NodaTime
         public override string ToString() => PeriodPattern.Roundtrip.Format(this);
 
         /// <summary>
-        /// Compares the given object for equality with this one, as per <see cref="Equals(Period)"/>.
+        /// Compares the given object for equality with this one, as per <see cref="Equals(Period?)"/>.
         /// </summary>
         /// <param name="other">The value to compare this one with.</param>
-        /// <returns>true if the other object is a period equal to this one, consistent with <see cref="Equals(Period)"/></returns>
+        /// <returns>true if the other object is a period equal to this one, consistent with <see cref="Equals(Period?)"/></returns>
         public override bool Equals(object? other) => Equals(other as Period);
 
         /// <summary>
-        /// Returns the hash code for this period, consistent with <see cref="Equals(Period)"/>.
+        /// Returns the hash code for this period, consistent with <see cref="Equals(Period?)"/>.
         /// </summary>
         /// <returns>The hash code for this period.</returns>
         public override int GetHashCode() =>
