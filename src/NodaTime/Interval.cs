@@ -227,7 +227,7 @@ namespace NodaTime
 
         #region XML serialization
         /// <inheritdoc />
-        XmlSchema? IXmlSerializable.GetSchema() => null;
+        XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
 
         /// <inheritdoc />
         void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
