@@ -54,6 +54,10 @@ rm -rf tmp/docfx/obj/unstable/serialization-api
 
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
+# Awooga! Awooga! Horrible hack! docfx doesn't support C# 8 yet, and refers to nullable
+# references types as if they were nullable value types. Fix this up in a purely textual way for now.
+dotnet run -p DocfxNullableReferenceFixer -- --fix tmp/docfx/obj/unstable/api
+
 # Create diffs between versions and other annotations
 
 dotnet restore Tools.sln

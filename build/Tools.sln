@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28527.54
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportParameterConsistency", "ReportParameterConsistency\ReportParameterConsistency.csproj", "{760B94DA-DDC3-468C-8B19-0C9F22CAFD61}"
 EndProject
@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnippetExtractor", "Snippet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BenchmarkUploader", "BenchmarkUploader\BenchmarkUploader.csproj", "{460CACA6-3B8C-4F65-8616-50E16BC2ED59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruneDuplicateMarkdown", "PruneDuplicateMarkdown\PruneDuplicateMarkdown.csproj", "{C0D6D3DE-0343-41AC-B346-9DD463AED780}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PruneDuplicateMarkdown", "PruneDuplicateMarkdown\PruneDuplicateMarkdown.csproj", "{C0D6D3DE-0343-41AC-B346-9DD463AED780}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocfxNullableReferenceFixer", "DocfxNullableReferenceFixer\DocfxNullableReferenceFixer.csproj", "{1ACA69E6-23B5-4AD3-AFE9-5400E13BB7C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,8 +71,15 @@ Global
 		{C0D6D3DE-0343-41AC-B346-9DD463AED780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0D6D3DE-0343-41AC-B346-9DD463AED780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0D6D3DE-0343-41AC-B346-9DD463AED780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ACA69E6-23B5-4AD3-AFE9-5400E13BB7C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ACA69E6-23B5-4AD3-AFE9-5400E13BB7C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ACA69E6-23B5-4AD3-AFE9-5400E13BB7C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ACA69E6-23B5-4AD3-AFE9-5400E13BB7C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19AF7D45-80B7-438D-BC60-DC568B5270F0}
 	EndGlobalSection
 EndGlobal
