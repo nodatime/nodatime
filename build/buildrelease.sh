@@ -55,22 +55,16 @@ cp build/zip-readme.txt NodaTime-$VERSION/readme.txt
 mkdir NodaTime-$VERSION/Portable
 
 # Doc files
-cp src/NodaTime/bin/Release/net45/NodaTime.xml NodaTime-$VERSION
-cp src/NodaTime.Testing/bin/Release/net45/NodaTime.Testing.xml NodaTime-$VERSION
-cp src/NodaTime/bin/Release/netstandard1.3/NodaTime.xml NodaTime-$VERSION/Portable
-cp src/NodaTime.Testing/bin/Release/netstandard1.3/NodaTime.Testing.xml NodaTime-$VERSION/Portable
+cp src/NodaTime/bin/Release/netstandard2.0/NodaTime.xml NodaTime-$VERSION
+cp src/NodaTime.Testing/bin/Release/netstandard2.0/NodaTime.Testing.xml NodaTime-$VERSION
 
 # Assemblies
-cp src/NodaTime/bin/Release/net45/NodaTime.dll NodaTime-$VERSION
-cp src/NodaTime.Testing/bin/Release/net45/NodaTime.Testing.dll NodaTime-$VERSION
-cp src/NodaTime/bin/Release/netstandard1.3/NodaTime.dll NodaTime-$VERSION/Portable
-cp src/NodaTime.Testing/bin/Release/netstandard1.3/NodaTime.Testing.dll NodaTime-$VERSION/Portable
+cp src/NodaTime/bin/Release/netstandard2.0/NodaTime.dll NodaTime-$VERSION
+cp src/NodaTime.Testing/bin/Release/netstandard2.0/NodaTime.Testing.dll NodaTime-$VERSION
 
 # PDBs
-cp src/NodaTime/bin/Release/net45/NodaTime.pdb NodaTime-$VERSION
-cp src/NodaTime.Testing/bin/Release/net45/NodaTime.Testing.pdb NodaTime-$VERSION
-cp src/NodaTime/bin/Release/netstandard1.3/NodaTime.pdb NodaTime-$VERSION/Portable
-cp src/NodaTime.Testing/bin/Release/netstandard1.3/NodaTime.Testing.pdb NodaTime-$VERSION/Portable
+cp src/NodaTime/bin/Release/netstandard2.0/NodaTime.pdb NodaTime-$VERSION
+cp src/NodaTime.Testing/bin/Release/netstandard.0/NodaTime.Testing.pdb NodaTime-$VERSION
 
 declare -r BUILD_DATE=$(git show -s --format=%cI)
 
