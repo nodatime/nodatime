@@ -7,6 +7,14 @@ details.
 See the [end of this page](#tzdb-updates) for the policy on which
 versions receive patch updates for TZDB releases.
 
+## 3.0.0-alpha01, released 2019-02-05 with tzdb2018i
+
+Initial alpha release to allow users to experiment with:
+
+- Type converter support
+- C# 8 nullable reference type support
+- A single target of .NET Standard 2.0
+
 ## 2.4.4, released 2018-12-31 with tzdb 2018i
 
 This patch release simply updates the built-in TZDB time
