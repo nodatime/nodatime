@@ -57,7 +57,7 @@ namespace NodaTime.Test.Utility
         public void DebugCheckNotNull_NotDebug()
         {
             Preconditions.DebugCheckNotNull("value", "ignore");
-            Preconditions.DebugCheckNotNull((string) null, "ignore");
+            Preconditions.DebugCheckNotNull((string) null!, "ignore");
         }
 #endif
     }

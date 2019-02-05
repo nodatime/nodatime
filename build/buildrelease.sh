@@ -35,8 +35,7 @@ dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime.Testin
 dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime.Test
 
 # Even run the slow tests before a release...
-dotnet run -c Release -p src/NodaTime.Test -f netcoreapp1.0
-dotnet run -c Release -p src/NodaTime.Test -f net451
+dotnet run -c Release -p src/NodaTime.Test
 
 mkdir $OUTPUT
 
@@ -64,7 +63,7 @@ cp src/NodaTime.Testing/bin/Release/netstandard2.0/NodaTime.Testing.dll NodaTime
 
 # PDBs
 cp src/NodaTime/bin/Release/netstandard2.0/NodaTime.pdb NodaTime-$VERSION
-cp src/NodaTime.Testing/bin/Release/netstandard.0/NodaTime.Testing.pdb NodaTime-$VERSION
+cp src/NodaTime.Testing/bin/Release/netstandard2.0/NodaTime.Testing.pdb NodaTime-$VERSION
 
 declare -r BUILD_DATE=$(git show -s --format=%cI)
 
