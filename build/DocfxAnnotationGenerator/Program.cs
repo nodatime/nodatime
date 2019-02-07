@@ -17,8 +17,6 @@ namespace DocfxAnnotationGenerator
         private readonly IEnumerable<Release> releases;
         private readonly Dictionary<string, List<BuildAssembly>> reflectionDataByVersion;
         private readonly string docfxRoot;
-        private readonly string packagesDir;
-        private readonly string srcRoot;
 
         private static int Main(string[] args)
         {
@@ -47,8 +45,6 @@ namespace DocfxAnnotationGenerator
         private Program(IEnumerable<string> versions, string docfxRoot, string packagesDir, string srcRoot)
         {
             this.docfxRoot = docfxRoot;
-            this.packagesDir = packagesDir;
-            this.srcRoot = srcRoot;
             Console.WriteLine("Loading docfx metadata");
             releases = versions.Select(v => Release.Load(Path.Combine(docfxRoot, "obj", v), v)).ToList();
             Console.WriteLine("Loading assemblies");

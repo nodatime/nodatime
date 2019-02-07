@@ -130,7 +130,7 @@ namespace DocfxAnnotationGenerator
                 case GenericParameter gp when useTypeArgumentNames: return gp.Name;
                 case GenericParameter gp when gp.DeclaringType != null: return $"`{gp.Position}";
                 case GenericParameter gp when gp.DeclaringMethod != null: return $"``{gp.Position}";
-                case GenericParameter gp: throw new InvalidOperationException("Unhandled generic parameter");
+                case GenericParameter _: throw new InvalidOperationException("Unhandled generic parameter");
                 case GenericInstanceType git: return $"{RemoveArity(name)}{GetGenericArgumentNames(git.GenericArguments, useTypeArgumentNames)}";
                 default: return name;
             }
@@ -148,12 +148,7 @@ namespace DocfxAnnotationGenerator
             int index = name.IndexOf('`');
             return index == -1 ? name : name.Substring(0, index);
         }
-
-        private ReflectionMember(string uid)
-        {
-            DocfxUid = uid;
-        }
-
+        
         private bool HasNotNullAttribute(ICustomAttributeProvider provider) =>
             provider != null &&
             provider.HasCustomAttributes &&
