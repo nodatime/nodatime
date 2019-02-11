@@ -32,7 +32,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="text">The text to convert.</param>
         /// <returns>The hour in the range [-23, 23].</returns>
         /// <exception cref="FormatException">If the text is not a valid integer in the range [-23, 23].</exception>
-        internal static long ConvertHourToTicks([NotNull] string text)
+        internal static long ConvertHourToTicks(string text)
         {
             Preconditions.CheckNotNull(text, nameof(text));
             int value = Int32.Parse(text, NumberStyles.Integer, CultureInfo.InvariantCulture);
@@ -49,7 +49,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="text">The text to convert.</param>
         /// <returns>The minute in the range [0, 59].</returns>
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 59].</exception>
-        internal static long ConvertMinuteToTicks([NotNull] string text)
+        internal static long ConvertMinuteToTicks(string text)
         {
             Preconditions.CheckNotNull(text, nameof(text));
             int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture);
@@ -66,7 +66,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="text">The text to convert.</param>
         /// <returns>The second in the range [0, 60).</returns>
         /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 60).</exception>
-        internal static long ConvertSecondsWithFractionalToTicks([NotNull] string text)
+        internal static long ConvertSecondsWithFractionalToTicks(string text)
         {
             Preconditions.CheckNotNull(text, nameof(text));
             double number = Double.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowDecimalPoint,
@@ -110,7 +110,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="text">The value to parse.</param>
         /// <returns>an integer number of ticks</returns>
-        public static Offset ParseOffset([NotNull] string text)
+        public static Offset ParseOffset(string text)
         {
             // Some old files use "-" for 0 in a few places.
             // Example: Tonga, 1999f.
@@ -144,7 +144,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             return Offset.FromTicks(ticks);
         }
 
-        public static LocalTime ParseTime([NotNull] string text)
+        public static LocalTime ParseTime(string text)
         {
             foreach (var pattern in TimePatterns)
             {
@@ -163,7 +163,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="text">The value to parse.</param>
         /// <returns>The input string or null.</returns>
-        public static string? ParseOptional([NotNull] String text)
+        public static string? ParseOptional(String text)
         {
             Preconditions.CheckNotNull(text, nameof(text));
             return text == "-" ? null : text;

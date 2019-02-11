@@ -39,7 +39,7 @@ namespace NodaTime.TimeZones
         /// Returns the IDs of all system time zones.
         /// </summary>
         /// <returns>The IDs available from this source.</returns>
-        [NotNull] public IEnumerable<string> GetIds()
+        public IEnumerable<string> GetIds()
         {
             // Always include the local time zone, since Mono may not include it in the list of system time zones, even
             // though it allows the Id to be passed to FindSystemTimeZoneById().
@@ -83,7 +83,7 @@ namespace NodaTime.TimeZones
         /// This source returns a string such as "TimeZoneInfo: 3.5.0.0" corresponding to the version of the assembly
         /// containing <see cref="TimeZoneInfo"/>.
         /// </remarks>
-        [NotNull] public string VersionId => "TimeZoneInfo: " + typeof(TimeZoneInfo).Assembly.GetName().Version;
+        public string VersionId => "TimeZoneInfo: " + typeof(TimeZoneInfo).Assembly.GetName().Version;
 
         /// <summary>
         /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
@@ -95,7 +95,7 @@ namespace NodaTime.TimeZones
         /// zones returned by this implementation are instances of <see cref="BclDateTimeZone"/> (rather than the built-in
         /// fixed offset zones).
         /// </remarks>        
-        DateTimeZone IDateTimeZoneSource.ForId([NotNull] string id) => ForId(id);
+        DateTimeZone IDateTimeZoneSource.ForId(string id) => ForId(id);
 
         /// <summary>
         /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
@@ -104,7 +104,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The ID of the system time zone to convert</param>
         /// <exception cref="ArgumentException">The given zone doesn't exist.</exception>
         /// <returns>The Noda Time representation of the given BCL time zone</returns>
-        [NotNull] public BclDateTimeZone ForId([NotNull] string id)
+        public BclDateTimeZone ForId(string id)
         {
             try
             {
@@ -122,6 +122,6 @@ namespace NodaTime.TimeZones
         // We'll let the DateTimeZoneCache do that for us. (We get a DateTimeZoneNotFoundException either way.)
 
         /// <inheritdoc />
-        [NotNull] public string? GetSystemDefaultId() => TimeZoneInfoInterceptor.Local?.Id;
+        public string? GetSystemDefaultId() => TimeZoneInfoInterceptor.Local?.Id;
     }
 }

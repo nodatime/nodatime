@@ -37,7 +37,7 @@ namespace NodaTime.TimeZones
         /// <remarks>The name (for the <see cref="ZoneInterval"/>) is deemed to be the same as the ID.</remarks>
         /// <param name="id">The id.</param>
         /// <param name="offset">The offset.</param>
-        internal FixedDateTimeZone([NotNull] string id, Offset offset) : this(id, offset, id)
+        internal FixedDateTimeZone(string id, Offset offset) : this(id, offset, id)
         {
         }
 
@@ -48,7 +48,7 @@ namespace NodaTime.TimeZones
         /// <param name="id">The id.</param>
         /// <param name="offset">The offset.</param>
         /// <param name="name">The name to use in the sole <see cref="ZoneInterval"/> in this zone.</param>
-        internal FixedDateTimeZone([NotNull] string id, Offset offset, [NotNull] string name) : base(id, true, offset, offset)
+        internal FixedDateTimeZone(string id, Offset offset, string name) : base(id, true, offset, offset)
         {
             interval = new ZoneInterval(name, Instant.BeforeMinValue, Instant.AfterMaxValue, offset, Offset.Zero);
         }
@@ -124,7 +124,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        internal void Write([NotNull] IDateTimeZoneWriter writer)
+        internal void Write(IDateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteOffset(Offset);
@@ -137,7 +137,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The fixed time zone.</returns>
-        public static DateTimeZone Read([NotNull] IDateTimeZoneReader reader, [NotNull] string id)
+        public static DateTimeZone Read(IDateTimeZoneReader reader, string id)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             Preconditions.CheckNotNull(id, nameof(id));

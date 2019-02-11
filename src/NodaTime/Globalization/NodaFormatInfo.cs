@@ -83,7 +83,7 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name="cultureInfo">The culture info to use.</param>
         [VisibleForTesting]
-        internal NodaFormatInfo([NotNull] CultureInfo cultureInfo)
+        internal NodaFormatInfo(CultureInfo cultureInfo)
             : this(cultureInfo, cultureInfo?.DateTimeFormat)
         {
         }
@@ -96,7 +96,7 @@ namespace NodaTime.Globalization
         /// <param name="cultureInfo">The culture info to use for text comparisons and resource lookups.</param>
         /// <param name="dateTimeFormat">The date/time format to use for format strings etc.</param>
         [VisibleForTesting]
-        internal NodaFormatInfo([NotNull] CultureInfo cultureInfo, [NotNull] DateTimeFormatInfo dateTimeFormat)
+        internal NodaFormatInfo(CultureInfo cultureInfo, DateTimeFormatInfo dateTimeFormat)
         {
             Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
             Preconditions.CheckNotNull(dateTimeFormat, nameof(dateTimeFormat));
@@ -318,7 +318,7 @@ namespace NodaTime.Globalization
         /// <param name="era">The era to find the names of.</param>
         /// <returns>A read-only list of names for the given era, or an empty list if
         /// the era is not known in this culture.</returns>
-        public IList<string> GetEraNames([NotNull] Era era)
+        public IList<string> GetEraNames(Era era)
         {
             Preconditions.CheckNotNull(era, nameof(era));
             return GetEraDescription(era).AllNames;
@@ -329,7 +329,7 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name="era">The era to find the primary name of.</param>
         /// <returns>The primary name for the given era, or an empty string if the era name is not known.</returns>
-        public string GetEraPrimaryName([NotNull] Era era)
+        public string GetEraPrimaryName(Era era)
         {
             Preconditions.CheckNotNull(era, nameof(era));
             return GetEraDescription(era).PrimaryName;
@@ -385,7 +385,7 @@ namespace NodaTime.Globalization
         /// </remarks>
         /// <param name="cultureInfo">The culture info.</param>
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
-        internal static NodaFormatInfo GetFormatInfo([NotNull] CultureInfo cultureInfo)
+        internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
         {
             Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
             if (cultureInfo == CultureInfo.InvariantCulture)

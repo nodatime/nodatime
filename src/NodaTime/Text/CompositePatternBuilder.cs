@@ -51,7 +51,7 @@ namespace NodaTime.Text
         /// <param name="pattern">The component pattern to use as part of the eventual composite pattern.</param>
         /// <param name="formatPredicate">A predicate to determine whether or not this pattern is suitable for
         /// formatting the given value.</param>
-        public void Add([NotNull] IPattern<T> pattern, [NotNull] Func<T, bool> formatPredicate)
+        public void Add(IPattern<T> pattern, Func<T, bool> formatPredicate)
         {
             patterns.Add(Preconditions.CheckNotNull(pattern, nameof(pattern)));
             formatPredicates.Add(Preconditions.CheckNotNull(formatPredicate, nameof(formatPredicate)));
@@ -63,7 +63,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <exception cref="InvalidOperationException">No component patterns have been added.</exception>
         /// <returns>A pattern using the patterns added to this builder.</returns>
-        [NotNull] public IPattern<T> Build()
+        public IPattern<T> Build()
         {
             Preconditions.CheckState(patterns.Count != 0, "A composite pattern must have at least one component pattern.");
             return new CompositePattern(patterns, formatPredicates);
@@ -120,7 +120,7 @@ namespace NodaTime.Text
 
             public string Format(T value) => FindFormatPattern(value).Format(value);
 
-            public StringBuilder AppendFormat(T value, [NotNull] StringBuilder builder) =>
+            public StringBuilder AppendFormat(T value, StringBuilder builder) =>
                 FindFormatPattern(value).AppendFormat(value, builder);
 
             private IPattern<T> FindFormatPattern(T value)

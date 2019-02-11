@@ -55,7 +55,7 @@ namespace NodaTime
         /// A period containing only zero-valued properties.
         /// </summary>
         /// <value>A period containing only zero-valued properties.</value>
-        [NotNull] public static Period Zero { get; } = new Period(0, 0, 0, 0);
+        public static Period Zero { get; } = new Period(0, 0, 0, 0);
 
         /// <summary>
         /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
@@ -63,7 +63,7 @@ namespace NodaTime
         /// equal 1 year.
         /// </summary>
         /// <value>An equality comparer which compares periods by first normalizing them.</value>
-        [NotNull] public static IEqualityComparer<Period?> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
+        public static IEqualityComparer<Period?> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
 
         // The fields that make up this period.
 
@@ -214,7 +214,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="years">The number of years in the new period</param>
         /// <returns>A period consisting of the given number of years.</returns>
-        [NotNull]
         public static Period FromYears(int years) => new Period(years, 0, 0, 0);
 
         /// <summary>
@@ -222,7 +221,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="months">The number of months in the new period</param>
         /// <returns>A period consisting of the given number of months.</returns>
-        [NotNull]
         public static Period FromMonths(int months) => new Period(0, months, 0, 0);
 
         /// <summary>
@@ -230,7 +228,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="weeks">The number of weeks in the new period</param>
         /// <returns>A period consisting of the given number of weeks.</returns>
-        [NotNull]
         public static Period FromWeeks(int weeks) => new Period(0, 0, weeks, 0);
 
         /// <summary>
@@ -238,7 +235,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="days">The number of days in the new period</param>
         /// <returns>A period consisting of the given number of days.</returns>
-        [NotNull]
         public static Period FromDays(int days) => new Period(0, 0, 0, days);
 
         /// <summary>
@@ -246,7 +242,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="hours">The number of hours in the new period</param>
         /// <returns>A period consisting of the given number of hours.</returns>
-        [NotNull]
         public static Period FromHours(long hours) => new Period(hours, 0L, 0L, 0L, 0L, 0L);
 
         /// <summary>
@@ -254,7 +249,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="minutes">The number of minutes in the new period</param>
         /// <returns>A period consisting of the given number of minutes.</returns>
-        [NotNull]
         public static Period FromMinutes(long minutes) => new Period(0L, minutes, 0L, 0L, 0L, 0L);
 
         /// <summary>
@@ -262,7 +256,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="seconds">The number of seconds in the new period</param>
         /// <returns>A period consisting of the given number of seconds.</returns>
-        [NotNull]
         public static Period FromSeconds(long seconds) => new Period(0L, 0L, seconds, 0L, 0L, 0L);
 
         /// <summary>
@@ -270,7 +263,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="milliseconds">The number of milliseconds in the new period</param>
         /// <returns>A period consisting of the given number of milliseconds.</returns>
-        [NotNull]
         public static Period FromMilliseconds(long milliseconds) => new Period(0L, 0L, 0L, milliseconds, 0L, 0L);
 
         /// <summary>
@@ -278,7 +270,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="ticks">The number of ticks in the new period</param>
         /// <returns>A period consisting of the given number of ticks.</returns>
-        [NotNull]
         public static Period FromTicks(long ticks) => new Period(0L, 0L, 0L, 0L, ticks, 0L);
 
         /// <summary>
@@ -286,7 +277,6 @@ namespace NodaTime
         /// </summary>
         /// <param name="nanoseconds">The number of nanoseconds in the new period</param>
         /// <returns>A period consisting of the given number of nanoseconds.</returns>
-        [NotNull]
         public static Period FromNanoseconds(long nanoseconds) => new Period(0L, 0L, 0L, 0L, 0L, nanoseconds);
 
         /// <summary>
@@ -296,8 +286,7 @@ namespace NodaTime
         /// <param name="right">The second period to add</param>
         /// <returns>The sum of the two periods. The units of the result will be the union of those in both
         /// periods.</returns>
-        [NotNull]
-        public static Period operator +([NotNull] Period left, [NotNull] Period right)
+        public static Period operator +(Period left, Period right)
         {
             Preconditions.CheckNotNull(left, nameof(left));
             Preconditions.CheckNotNull(right, nameof(right));
@@ -326,7 +315,6 @@ namespace NodaTime
         /// </remarks>
         /// <param name="baseDateTime">The base local date/time to use for comparisons.</param>
         /// <returns>The new comparer.</returns>
-        [NotNull]
         public static IComparer<Period?> CreateComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
 
         /// <summary>
@@ -337,8 +325,7 @@ namespace NodaTime
         /// <returns>The result of subtracting all the values in the second operand from the values in the first. The
         /// units of the result will be the union of both periods, even if the subtraction caused some properties to
         /// become zero (so "2 weeks, 1 days" minus "2 weeks" is "zero weeks, 1 days", not "1 days").</returns>
-        [NotNull]
-        public static Period operator -([NotNull] Period minuend, [NotNull] Period subtrahend)
+        public static Period operator -(Period minuend, Period subtrahend)
         {
             Preconditions.CheckNotNull(minuend, nameof(minuend));
             Preconditions.CheckNotNull(subtrahend, nameof(subtrahend));
@@ -371,7 +358,6 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="units"/> is empty or contained unknown values.</exception>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
         /// <returns>The period between the given date/times, using the given units.</returns>
-        [NotNull]
         public static Period Between(LocalDateTime start, LocalDateTime end, PeriodUnits units)
         {
             Preconditions.CheckArgument(units != 0, nameof(units), "Units must not be empty");
@@ -585,7 +571,6 @@ namespace NodaTime
         /// <param name="end">End date/time</param>
         /// <returns>The period between the two date and time values, using all units.</returns>
         [Pure]
-        [NotNull]
         public static Period Between(LocalDateTime start, LocalDateTime end) => Between(start, end, PeriodUnits.DateAndTime);
 
         /// <summary>
@@ -605,7 +590,6 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
         /// <returns>The period between the given dates, using the given units.</returns>
         [Pure]
-        [NotNull]
         public static Period Between(LocalDate start, LocalDate end, PeriodUnits units)
         {
             Preconditions.CheckArgument((units & PeriodUnits.AllTimeUnits) == 0, nameof(units), "Units contains time units: {0}", units);
@@ -648,7 +632,6 @@ namespace NodaTime
         /// <paramref name="start"/> and <paramref name="end"/> are not in the same calendar system.
         /// </exception>
         [Pure]
-        [NotNull]
         public static Period Between(LocalDate start, LocalDate end) => Between(start, end, PeriodUnits.YearMonthDay);
 
         /// <summary>
@@ -668,7 +651,6 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
         /// <returns>The period between the given times, using the given units.</returns>
         [Pure]
-        [NotNull]
         public static Period Between(LocalTime start, LocalTime end, PeriodUnits units)
         {
             Preconditions.CheckArgument((units & PeriodUnits.AllDateUnits) == 0, nameof(units), "Units contains date units: {0}", units);
@@ -707,7 +689,6 @@ namespace NodaTime
         /// <param name="end">End time</param>
         /// <returns>The period between the two times, using the time period units.</returns>
         [Pure]
-        [NotNull]
         public static Period Between(LocalTime start, LocalTime end) => Between(start, end, PeriodUnits.AllTimeUnits);
 
         /// <summary>
@@ -782,7 +763,7 @@ namespace NodaTime
         /// changes made to the builder are not reflected in this period.
         /// </summary>
         /// <returns>A builder with the same values and units as this period.</returns>
-        [Pure] [NotNull] [TestExemption(TestExemptionCategory.ConversionName)] public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
+        [Pure] [TestExemption(TestExemptionCategory.ConversionName)] public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
 
         /// <summary>
         /// Returns a normalized version of this period, such that equivalent (but potentially non-equal) periods are
@@ -805,7 +786,7 @@ namespace NodaTime
         /// negative values, but for simplicity there is no attempt to work around this.</exception>
         /// <returns>The normalized period.</returns>
         /// <seealso cref="NormalizingEqualityComparer"/>
-        [Pure] [NotNull] public Period Normalize()
+        [Pure] public Period Normalize()
         {
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
@@ -900,7 +881,7 @@ namespace NodaTime
                 return x.Normalize().Equals(y.Normalize());
             }
 
-            public override int GetHashCode([NotNull] Period? obj) =>
+            public override int GetHashCode(Period? obj) =>
                 Preconditions.CheckNotNull(obj!, nameof(obj)).Normalize().GetHashCode();
         }
 

@@ -25,7 +25,7 @@ namespace NodaTime
         /// <param name="clock">Clock to use to obtain instants.</param>
         /// <param name="zone">Time zone to adjust instants into.</param>
         /// <param name="calendar">Calendar system to use.</param>
-        public ZonedClock([NotNull] IClock clock, [NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
+        public ZonedClock(IClock clock, DateTimeZone zone, CalendarSystem calendar)
         {
             this.clock = Preconditions.CheckNotNull(clock, nameof(clock));
             this.zone = Preconditions.CheckNotNull(zone, nameof(zone));

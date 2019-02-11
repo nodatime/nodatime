@@ -131,7 +131,7 @@ namespace NodaTime.TimeZones
         /// Gets the name of this offset period (e.g. PST or PDT).
         /// </summary>
         /// <value>The name of this offset period (e.g. PST or PDT).</value>
-        [NotNull] public string Name { [DebuggerStepThrough] get; }
+        public string Name { [DebuggerStepThrough] get; }
 
         /// <summary>
         /// Gets the offset from UTC for this period. This includes any daylight savings value.
@@ -170,7 +170,7 @@ namespace NodaTime.TimeZones
         /// <param name="wallOffset">The <see cref="WallOffset" /> from UTC for this period including any daylight savings.</param>
         /// <param name="savings">The <see cref="WallOffset" /> daylight savings contribution to the offset.</param>
         /// <exception cref="ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
-        public ZoneInterval([NotNull] string name, Instant? start, Instant? end, Offset wallOffset, Offset savings)
+        public ZoneInterval(string name, Instant? start, Instant? end, Offset wallOffset, Offset savings)
             : this(name, start ?? Instant.BeforeMinValue, end ?? Instant.AfterMaxValue, wallOffset, savings)
         {
         }
@@ -186,7 +186,7 @@ namespace NodaTime.TimeZones
         /// <param name="wallOffset">The <see cref="WallOffset" /> from UTC for this period including any daylight savings.</param>
         /// <param name="savings">The <see cref="WallOffset" /> daylight savings contribution to the offset.</param>
         /// <exception cref="ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
-        internal ZoneInterval([NotNull] string name, Instant start, Instant end, Offset wallOffset, Offset savings)
+        internal ZoneInterval(string name, Instant start, Instant end, Offset wallOffset, Offset savings)
         {
             Preconditions.CheckNotNull(name, nameof(name));
             Preconditions.CheckArgument(start < end, nameof(start), "The start Instant must be less than the end Instant");
@@ -244,7 +244,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns whether this zone interval has the same offsets and name as another.
         /// </summary>
-        internal bool EqualIgnoreBounds([NotNull] [Trusted] ZoneInterval other)
+        internal bool EqualIgnoreBounds([Trusted] ZoneInterval other)
         {
             Preconditions.DebugCheckNotNull(other, nameof(other));
             return other.WallOffset == WallOffset && other.Savings == Savings && other.Name == Name;

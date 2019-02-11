@@ -36,19 +36,19 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Returns the TZDB version string.
         /// </summary>
-        [NotNull] public string TzdbVersion { get; }
+        public string TzdbVersion { get; }
 
         /// <summary>
         /// Returns the TZDB ID dictionary (alias to canonical ID). This needn't be read-only; it won't be
         /// exposed directly.
         /// </summary>
-        [NotNull] public IDictionary<string, string> TzdbIdMap { get; }
+        public IDictionary<string, string> TzdbIdMap { get; }
 
         /// <summary>
         /// Returns the Windows mapping dictionary. (As the type is immutable, it can be exposed directly
         /// to callers.)
         /// </summary>
-        [NotNull] public WindowsZones WindowsMapping { get; }
+        public WindowsZones WindowsMapping { get; }
 
         /// <summary>
         /// Returns the zone locations for the source, or null if no location data is available.
@@ -85,7 +85,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <param name="id">ID for the returned zone, which may be an alias.</param>
         /// <param name="canonicalId">Canonical ID for zone data</param>
-        public DateTimeZone CreateZone([NotNull] string id, [NotNull] string canonicalId)
+        public DateTimeZone CreateZone(string id, string canonicalId)
         {
             Preconditions.CheckNotNull(id, nameof(id));
             Preconditions.CheckNotNull(canonicalId, nameof(canonicalId));
@@ -115,7 +115,7 @@ namespace NodaTime.TimeZones.IO
             return input;
         }
 
-        internal static TzdbStreamData FromStream([NotNull] Stream stream)
+        internal static TzdbStreamData FromStream(Stream stream)
         {
             Preconditions.CheckNotNull(stream, nameof(stream));
             int version = new BinaryReader(stream).ReadInt32();

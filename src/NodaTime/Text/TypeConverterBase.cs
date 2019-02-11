@@ -18,14 +18,14 @@ namespace NodaTime.Text
         /// <summary>
         /// The pattern used to parse and serialize values of <typeparamref name="T"/>.
         /// </summary>
-        [NotNull] private readonly IPattern<T> pattern;
+        private readonly IPattern<T> pattern;
 
         /// <summary>
         /// Constructs a <see cref="TypeConverter"/> for <typeparamref name="T"/> based on the provided <see cref="IPattern{T}"/>.
         /// </summary>
         /// <param name="pattern">The pattern used to parse and serialize <typeparamref name="T"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="pattern"/></exception>
-        protected TypeConverterBase([NotNull] IPattern<T> pattern) => this.pattern = Preconditions.CheckNotNull(pattern, nameof(pattern));
+        protected TypeConverterBase(IPattern<T> pattern) => this.pattern = Preconditions.CheckNotNull(pattern, nameof(pattern));
 
         /// <inheritdoc />
         [Pure]

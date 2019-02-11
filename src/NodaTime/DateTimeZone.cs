@@ -105,7 +105,7 @@ namespace NodaTime
         /// or may not compare equal to an instance returned by e.g. <c>DateTimeZoneProviders.Tzdb["UTC"]</c>.
         /// </remarks>
         /// <value>A UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
-        [NotNull] public static DateTimeZone Utc { get; } = new FixedDateTimeZone(Offset.Zero);
+        public static DateTimeZone Utc { get; } = new FixedDateTimeZone(Offset.Zero);
         private const int FixedZoneCacheGranularitySeconds = NodaConstants.SecondsPerMinute * 30;
         private const int FixedZoneCacheMinimumSeconds = -FixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
         private const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
@@ -127,7 +127,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="offset">The offset for the returned time zone</param>
         /// <returns>A fixed time zone with the given offset.</returns>
-        [NotNull] public static DateTimeZone ForOffset(Offset offset)
+        public static DateTimeZone ForOffset(Offset offset)
         {
             int seconds = offset.Seconds;
             if (seconds % FixedZoneCacheGranularitySeconds != 0)
@@ -149,7 +149,7 @@ namespace NodaTime
         /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
         /// <param name="minOffset">Minimum offset applied within this zone</param>
         /// <param name="maxOffset">Maximum offset applied within this zone</param>
-        protected DateTimeZone([NotNull] string id, bool isFixed, Offset minOffset, Offset maxOffset)
+        protected DateTimeZone(string id, bool isFixed, Offset minOffset, Offset maxOffset)
         {
             this.Id = Preconditions.CheckNotNull(id, nameof(id));
             this.IsFixed = isFixed;
@@ -167,7 +167,7 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <value>The provider's ID for the time zone.</value>
-        [NotNull] public string Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Indicates whether the time zone is fixed, i.e. contains no transitions.
@@ -218,7 +218,7 @@ namespace NodaTime
         /// <param name="instant">The <see cref="T:NodaTime.Instant" /> to query.</param>
         /// <returns>The defined <see cref="T:NodaTime.TimeZones.ZoneInterval" />.</returns>
         /// <seealso cref="GetZoneIntervals(Interval)"/>
-        [NotNull] public abstract ZoneInterval GetZoneInterval(Instant instant);
+        public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
         /// Returns complete information about how the given <see cref="LocalDateTime" /> is mapped in this time zone.
@@ -236,7 +236,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="localDateTime">The local date and time to map in this time zone.</param>
         /// <returns>A mapping of the given local date and time to zero, one or two zoned date/time values.</returns>
-        [NotNull] public virtual ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
+        public virtual ZoneLocalMapping MapLocal(LocalDateTime localDateTime)
         {
             LocalInstant localInstant = localDateTime.ToLocalInstant();
             Instant firstGuess = localInstant.MinusZeroOffset();
@@ -336,7 +336,7 @@ namespace NodaTime
         /// <param name="localDateTime">The local date and time to map in this time zone.</param>
         /// <param name="resolver">The resolver to apply to the mapping.</param>
         /// <returns>The result of resolving the mapping.</returns>
-        public ZonedDateTime ResolveLocal(LocalDateTime localDateTime, [NotNull] ZoneLocalMappingResolver resolver)
+        public ZonedDateTime ResolveLocal(LocalDateTime localDateTime, ZoneLocalMappingResolver resolver)
         {
             Preconditions.CheckNotNull(resolver, nameof(resolver));
             return resolver(MapLocal(localDateTime));
@@ -479,7 +479,6 @@ namespace NodaTime
         /// Creates a fixed time zone for offsets -12 to +15 at every half hour,
         /// fixing the 0 offset as DateTimeZone.Utc.
         /// </summary>
-        [NotNull]
         private static DateTimeZone[] BuildFixedZoneCache()
         {
             DateTimeZone[] ret = new DateTimeZone[FixedZoneCacheSize];
@@ -505,7 +504,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>.</exception>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
         /// <seealso cref="DateTimeZone.GetZoneInterval"/>
-        [NotNull] public IEnumerable<ZoneInterval> GetZoneIntervals(Instant start, Instant end) =>
+        public IEnumerable<ZoneInterval> GetZoneIntervals(Instant start, Instant end) =>
             // The constructor performs all the validation we need.
             GetZoneIntervals(new Interval(start, end));
 
@@ -524,7 +523,7 @@ namespace NodaTime
         /// infinite in both directions).</param>
         /// <returns>A sequence of zone intervals covering the given interval.</returns>
         /// <seealso cref="DateTimeZone.GetZoneInterval"/>
-        [NotNull] public IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval)
+        public IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval)
         {
             var current = interval.HasStart ? interval.Start : Instant.MinValue;
             var end = interval.RawEnd;
@@ -559,7 +558,7 @@ namespace NodaTime
         /// infinite in both directions).</param>
         /// <param name="options"></param>
         /// <returns></returns>
-        [NotNull] public IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval, ZoneEqualityComparer.Options options)
+        public IEnumerable<ZoneInterval> GetZoneIntervals(Interval interval, ZoneEqualityComparer.Options options)
         {
             if ((options & ~ZoneEqualityComparer.Options.StrictestMatch) != 0)
             {

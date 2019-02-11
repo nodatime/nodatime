@@ -28,7 +28,7 @@ namespace NodaTime
         /// Gets the version ID of this provider.
         /// </summary>
         /// <value>The version ID of this provider.</value>
-        [NotNull] string VersionId { get; }
+        string VersionId { get; }
 
         /// <summary>
         /// Gets the list of valid time zone ids advertised by this provider.
@@ -45,7 +45,7 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <value>The <see cref="IEnumerable{T}" /> of string ids.</value>
-        [NotNull] ReadOnlyCollection<string> Ids { get; }
+        ReadOnlyCollection<string> Ids { get; }
 
         /// <summary>
         /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
@@ -72,7 +72,7 @@ namespace NodaTime
         /// <returns>
         /// The provider-specific representation of the system default time zone.
         /// </returns>
-        [NotNull] DateTimeZone GetSystemDefault();
+        DateTimeZone GetSystemDefault();
 
         /// <summary>
         /// Returns the time zone for the given ID, if it's available.
@@ -94,7 +94,7 @@ namespace NodaTime
         /// <param name="id">The time zone ID to find.</param>
         /// <returns>The <see cref="DateTimeZone" /> for the given ID or null if the provider does not support
         /// the given ID.</returns>
-        [CanBeNull] DateTimeZone? GetZoneOrNull([NotNull] string id);
+        DateTimeZone? GetZoneOrNull(string id);
 
         /// <summary>
         /// Returns the time zone for the given ID.
@@ -120,6 +120,6 @@ namespace NodaTime
         /// <param name="id">The time zone id to find.</param>
         /// <value>The <see cref="DateTimeZone" /> for the given ID.</value>
         /// <exception cref="DateTimeZoneNotFoundException">This provider does not support the given ID.</exception>
-        [NotNull] DateTimeZone this[[NotNull] string id] { get; }
+        DateTimeZone this[string id] { get; }
     }
 }

@@ -103,7 +103,7 @@ namespace NodaTime
         /// <seealso cref="Id"/>
         /// <exception cref="KeyNotFoundException">No calendar system for the specified ID can be found.</exception>
         /// <exception cref="NotSupportedException">The calendar system with the specified ID is known, but not supported on this platform.</exception>
-        [NotNull] public static CalendarSystem ForId([NotNull] string id)
+        public static CalendarSystem ForId(string id)
         {
             Preconditions.CheckNotNull(id, nameof(id));
             if (!IdToFactoryMap.TryGetValue(id, out Func<CalendarSystem> factory))
@@ -116,7 +116,7 @@ namespace NodaTime
         /// <summary>
         /// Fetches a calendar system by its ordinal value, constructing it if necessary.
         /// </summary>
-        [NotNull] internal static CalendarSystem ForOrdinal([Trusted] CalendarOrdinal ordinal)
+        internal static CalendarSystem ForOrdinal([Trusted] CalendarOrdinal ordinal)
         {
             Preconditions.DebugCheckArgument(ordinal >= 0 && ordinal < CalendarOrdinal.Size, nameof(ordinal),
                 "Unknown ordinal value {0}", ordinal);
@@ -143,7 +143,7 @@ namespace NodaTime
         /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.
         /// </summary>
         /// <value>The IDs of all calendar systems available within Noda Time.</value>
-        [NotNull] public static IEnumerable<string> Ids => IdToFactoryMap.Keys;
+        public static IEnumerable<string> Ids => IdToFactoryMap.Keys;
 
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
@@ -180,7 +180,7 @@ namespace NodaTime
         /// and consistency.
         /// </remarks>
         /// <value>The ISO calendar system.</value>
-        [NotNull] public static CalendarSystem Iso => IsoCalendarSystem;
+        public static CalendarSystem Iso => IsoCalendarSystem;
 
         /// <summary>
         /// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
@@ -198,7 +198,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="monthNumbering">The month numbering system to use</param>
         /// <returns>A Hebrew calendar system for the given month numbering.</returns>
-        [NotNull] public static CalendarSystem GetHebrewCalendar(HebrewMonthNumbering monthNumbering)
+        public static CalendarSystem GetHebrewCalendar(HebrewMonthNumbering monthNumbering)
         {
             Preconditions.CheckArgumentRange(nameof(monthNumbering), (int) monthNumbering, 1, 2);
             return HebrewCalendars.ByMonthNumbering[((int) monthNumbering) - 1];
@@ -222,7 +222,7 @@ namespace NodaTime
         /// not work as expected for Ayyám-i-Há, such as EndOfMonth.</para>
         /// </remarks>
         /// <returns>The Badíʿ calendar system.</returns>
-        [NotNull] public static CalendarSystem Badi => MiscellaneousCalendars.Badi;
+        public static CalendarSystem Badi => MiscellaneousCalendars.Badi;
 
         /// <summary>
         /// Returns an Islamic, or Hijri, calendar system.
@@ -281,7 +281,7 @@ namespace NodaTime
         /// <param name="epoch">The kind of epoch to use (astronomical or civil)</param>
         /// <returns>A suitable Islamic calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</returns>
-        [NotNull] public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+        public static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
         {
             Preconditions.CheckArgumentRange(nameof(leapYearPattern), (int) leapYearPattern, 1, 4);
             Preconditions.CheckArgumentRange(nameof(epoch), (int) epoch, 1, 2);
@@ -351,7 +351,7 @@ namespace NodaTime
         /// </list>
         /// </remarks>
         /// <value>The unique identifier for this calendar system.</value>
-        [NotNull] public string Id { get; }
+        public string Id { get; }
 
         /// <summary>
         /// Returns the name of this calendar system. Each kind of calendar system has a unique name, but this
@@ -359,7 +359,7 @@ namespace NodaTime
         /// Islamic calendar system does not indicate which kind of leap cycle it uses.)
         /// </summary>
         /// <value>The name of this calendar system.</value>
-        [NotNull] public string Name { get; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the minimum valid year (inclusive) within this calendar.
@@ -394,7 +394,7 @@ namespace NodaTime
         /// Gets a read-only list of eras used in this calendar system.
         /// </summary>
         /// <value>A read-only list of eras used in this calendar system.</value>
-        [NotNull] public IList<Era> Eras => eraCalculator.Eras;
+        public IList<Era> Eras => eraCalculator.Eras;
 
         /// <summary>
         /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
@@ -411,7 +411,7 @@ namespace NodaTime
         /// <returns>The absolute year represented by the specified year of era.</returns>
         /// <exception cref="ArgumentOutOfRangeException"><paramref name="yearOfEra"/> is out of the range of years for the given era.</exception>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
-        public int GetAbsoluteYear(int yearOfEra, [NotNull] Era era) => eraCalculator.GetAbsoluteYear(yearOfEra, era);
+        public int GetAbsoluteYear(int yearOfEra, Era era) => eraCalculator.GetAbsoluteYear(yearOfEra, era);
 
         /// <summary>
         /// Returns the maximum valid year-of-era in the given era.
@@ -423,7 +423,7 @@ namespace NodaTime
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The maximum valid year in the given era.</returns>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
-        public int GetMaxYearOfEra([NotNull] Era era) => eraCalculator.GetMaxYearOfEra(era);
+        public int GetMaxYearOfEra(Era era) => eraCalculator.GetMaxYearOfEra(era);
 
         /// <summary>
         /// Returns the minimum valid year-of-era in the given era.
@@ -435,7 +435,7 @@ namespace NodaTime
         /// <param name="era">The era in which to find the greatest year</param>
         /// <returns>The minimum valid year in the given eraera.</returns>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
-        public int GetMinYearOfEra([NotNull] Era era) => eraCalculator.GetMinYearOfEra(era);
+        public int GetMinYearOfEra(Era era) => eraCalculator.GetMinYearOfEra(era);
 
         #endregion
 
@@ -607,7 +607,7 @@ namespace NodaTime
         /// </para>
         /// </remarks>
         /// <value>A Gregorian calendar system.</value>
-        [NotNull] public static CalendarSystem Gregorian => GregorianJulianCalendars.Gregorian;
+        public static CalendarSystem Gregorian => GregorianJulianCalendars.Gregorian;
 
         /// <summary>
         /// Returns a pure proleptic Julian calendar system, which defines every
@@ -622,7 +622,7 @@ namespace NodaTime
         /// </remarks>
         /// <value>A suitable Julian calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</value>
-        [NotNull] public static CalendarSystem Julian => GregorianJulianCalendars.Julian;
+        public static CalendarSystem Julian => GregorianJulianCalendars.Julian;
 
         /// <summary>
         /// Returns a Coptic calendar system, which defines every fourth year as
@@ -645,7 +645,7 @@ namespace NodaTime
         /// </remarks>
         /// <value>A suitable Coptic calendar reference; the same reference may be returned by several
         /// calls as the object is immutable and thread-safe.</value>
-        [NotNull] public static CalendarSystem Coptic => MiscellaneousCalendars.Coptic;
+        public static CalendarSystem Coptic => MiscellaneousCalendars.Coptic;
 
         /// <summary>
         /// Returns an Islamic calendar system equivalent to the one used by the BCL HijriCalendar.
@@ -657,7 +657,7 @@ namespace NodaTime
         /// </remarks>
         /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
         /// <value>An Islamic calendar system equivalent to the one used by the BCL.</value>
-        [NotNull] public static CalendarSystem IslamicBcl => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+        public static CalendarSystem IslamicBcl => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
 
         /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
@@ -668,7 +668,7 @@ namespace NodaTime
         /// in each cycle are leap years.
         /// </remarks>
         /// <value>A Persian calendar system using a simple 33-year leap cycle.</value>
-        [NotNull] public static CalendarSystem PersianSimple => PersianCalendars.Simple;
+        public static CalendarSystem PersianSimple => PersianCalendars.Simple;
 
         /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
@@ -681,7 +681,7 @@ namespace NodaTime
         /// is complex.
         /// </remarks>
         /// <value>A Persian calendar system using astronomical calculations to determine leap years.</value>
-        [NotNull] public static CalendarSystem PersianArithmetic => PersianCalendars.Arithmetic;
+        public static CalendarSystem PersianArithmetic => PersianCalendars.Arithmetic;
 
         /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour
@@ -691,7 +691,7 @@ namespace NodaTime
         /// This calendar is also known as the algorithmic Solar Hijri calendar.
         /// </remarks>
         /// <value>A Persian calendar system using cycles-within-cycles of years to determine leap years.</value>
-        [NotNull] public static CalendarSystem PersianAstronomical => PersianCalendars.Astronomical;
+        public static CalendarSystem PersianAstronomical => PersianCalendars.Astronomical;
 
         /// <summary>
         /// Returns a Hebrew calendar system using the civil month numbering,
@@ -700,14 +700,14 @@ namespace NodaTime
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
         /// <value>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
         /// BCL.</value>
-        [NotNull] public static CalendarSystem HebrewCivil => GetHebrewCalendar(HebrewMonthNumbering.Civil);
+        public static CalendarSystem HebrewCivil => GetHebrewCalendar(HebrewMonthNumbering.Civil);
 
         /// <summary>
         /// Returns a Hebrew calendar system using the scriptural month numbering.
         /// </summary>
         /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
         /// <value>A Hebrew calendar system using the scriptural month numbering.</value>
-        [NotNull] public static CalendarSystem HebrewScriptural => GetHebrewCalendar(HebrewMonthNumbering.Scriptural);
+        public static CalendarSystem HebrewScriptural => GetHebrewCalendar(HebrewMonthNumbering.Scriptural);
 
         /// <summary>
         /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
@@ -717,7 +717,7 @@ namespace NodaTime
         /// This is a tabular calendar, relying on pregenerated data.
         /// </remarks>
         /// <value>A calendar system for the Um Al Qura calendar.</value>
-        [NotNull] public static CalendarSystem UmAlQura => MiscellaneousCalendars.UmAlQura;
+        public static CalendarSystem UmAlQura => MiscellaneousCalendars.UmAlQura;
 
         // TODO: Move this after fixing https://github.com/nodatime/nodatime/issues/1269
         [VisibleForTesting]

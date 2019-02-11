@@ -19,7 +19,7 @@ namespace NodaTime.Extensions
         /// </summary>
         /// <param name="provider">The provider to fetch time zones from.</param>
         /// <returns>All the time zones from the provider.</returns>
-        [NotNull] public static IEnumerable<DateTimeZone> GetAllZones([NotNull] this IDateTimeZoneProvider provider)
+        public static IEnumerable<DateTimeZone> GetAllZones(this IDateTimeZoneProvider provider)
         {
             Preconditions.CheckNotNull(provider, nameof(provider));
             return provider.Ids.Select(id => provider[id]);

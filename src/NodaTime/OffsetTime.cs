@@ -200,7 +200,7 @@ namespace NodaTime
         /// <param name="adjuster">The adjuster to apply.</param>
         /// <returns>The adjusted offset date.</returns>
         [Pure]
-        public OffsetTime With([NotNull] Func<LocalTime, LocalTime> adjuster) =>
+        public OffsetTime With(Func<LocalTime, LocalTime> adjuster) =>
             new OffsetTime(TimeOfDay.With(adjuster), Offset);
 
         /// <summary>
@@ -296,7 +296,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             string text = reader.ReadElementContentAsString();
@@ -304,7 +304,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(OffsetTimePattern.ExtendedIso.Format(this));

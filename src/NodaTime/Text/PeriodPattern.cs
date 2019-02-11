@@ -28,7 +28,7 @@ namespace NodaTime.Text
         /// Pattern which uses the normal ISO format for all the supported ISO
         /// fields, but extends the time part with "s" for milliseconds, "t" for ticks and "n" for nanoseconds.
         /// </value>
-        [NotNull] public static PeriodPattern Roundtrip { get; } = new PeriodPattern(new RoundtripPatternImpl());
+        public static PeriodPattern Roundtrip { get; } = new PeriodPattern(new RoundtripPatternImpl());
 
         /// <summary>
         /// A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.
@@ -43,11 +43,11 @@ namespace NodaTime.Text
         /// be useful anyway, however.
         /// </remarks>
         /// <value>A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.</value>
-        [NotNull] public static PeriodPattern NormalizingIso { get; } = new PeriodPattern(new NormalizingIsoPatternImpl());
+        public static PeriodPattern NormalizingIso { get; } = new PeriodPattern(new NormalizingIsoPatternImpl());
 
         private readonly IPattern<Period> pattern;
 
-        private PeriodPattern([NotNull] IPattern<Period> pattern)
+        private PeriodPattern(IPattern<Period> pattern)
         {
             this.pattern = Preconditions.CheckNotNull(pattern, nameof(pattern));
         }
@@ -61,14 +61,14 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        [NotNull] public ParseResult<Period> Parse([SpecialNullHandling] string text) => pattern.Parse(text);
+        public ParseResult<Period> Parse([SpecialNullHandling] string text) => pattern.Parse(text);
 
         /// <summary>
         /// Formats the given period as text according to the rules of this pattern.
         /// </summary>
         /// <param name="value">The period to format.</param>
         /// <returns>The period formatted according to this pattern.</returns>
-        [NotNull] public string Format([NotNull] Period value) => pattern.Format(value);
+        public string Format(Period value) => pattern.Format(value);
 
         /// <summary>
         /// Formats the given value as text according to the rules of this pattern,
@@ -77,7 +77,7 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
         /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
-        [NotNull] public StringBuilder AppendFormat([NotNull] Period value, [NotNull] StringBuilder builder) => pattern.AppendFormat(value, builder);
+        public StringBuilder AppendFormat(Period value, StringBuilder builder) => pattern.AppendFormat(value, builder);
 
         private static void AppendValue(StringBuilder builder, long value, string suffix)
         {
@@ -179,9 +179,9 @@ namespace NodaTime.Text
                 return ParseResult<Period>.ForValue(builder.Build());
             }
 
-            public string Format([NotNull] Period value) => AppendFormat(value, new StringBuilder()).ToString();
+            public string Format(Period value) => AppendFormat(value, new StringBuilder()).ToString();
 
-            public StringBuilder AppendFormat([NotNull] Period value, [NotNull] StringBuilder builder)
+            public StringBuilder AppendFormat(Period value, StringBuilder builder)
             {
                 Preconditions.CheckNotNull(value, nameof(value));
                 Preconditions.CheckNotNull(builder, nameof(builder));
@@ -334,9 +334,9 @@ namespace NodaTime.Text
                 return ParseResult<Period>.ForValue(builder.Build());
             }
 
-            public string Format([NotNull] Period value) => AppendFormat(value, new StringBuilder()).ToString();
+            public string Format(Period value) => AppendFormat(value, new StringBuilder()).ToString();
 
-            public StringBuilder AppendFormat([NotNull] Period value, [NotNull] StringBuilder builder)
+            public StringBuilder AppendFormat(Period value, StringBuilder builder)
             {
                 Preconditions.CheckNotNull(value, nameof(value));
                 Preconditions.CheckNotNull(builder, nameof(builder));

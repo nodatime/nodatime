@@ -80,7 +80,7 @@ namespace NodaTime.Calendars
         /// <param name="calendar">The calendar system for the date.</param>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not combine to form a valid date.</exception>
         /// <returns>A <see cref="LocalDate"/> corresponding to the specified values.</returns>
-        LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, [NotNull] CalendarSystem calendar);
+        LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, CalendarSystem calendar);
 
         /// <summary>
         /// Calculates the week-year in which the given date occurs, according to this rule.
@@ -102,7 +102,7 @@ namespace NodaTime.Calendars
         /// <param name="weekYear">The week-year to find the range of.</param>
         /// <param name="calendar">The calendar system the calculation is relative to.</param>
         /// <returns>The number of weeks in the given week-year within the given calendar.</returns>
-        int GetWeeksInWeekYear(int weekYear, [NotNull] CalendarSystem calendar);
+        int GetWeeksInWeekYear(int weekYear, CalendarSystem calendar);
     }
 
     /// <summary>
@@ -125,7 +125,7 @@ namespace NodaTime.Calendars
         /// depending on <paramref name="weekYear"/> and <paramref name="weekOfWeekYear"/>.</param>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not combine to form a valid date.</exception>
         /// <returns>A <see cref="LocalDate"/> corresponding to the specified values.</returns>
-        public static LocalDate GetLocalDate([NotNull] this IWeekYearRule rule, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek) =>
+        public static LocalDate GetLocalDate(this IWeekYearRule rule, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek) =>
             Preconditions.CheckNotNull(rule, nameof(rule)).GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.Iso);
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace NodaTime.Calendars
         /// <param name="rule">The rule to delegate the call to.</param>
         /// <param name="weekYear">The week year to calculate the number of contained weeks.</param>
         /// <returns>The number of weeks in the given week year.</returns>
-        public static int GetWeeksInWeekYear([NotNull] this IWeekYearRule rule, int weekYear) =>
+        public static int GetWeeksInWeekYear(this IWeekYearRule rule, int weekYear) =>
             Preconditions.CheckNotNull(rule, nameof(rule)).GetWeeksInWeekYear(weekYear, CalendarSystem.Iso);
     }
 }

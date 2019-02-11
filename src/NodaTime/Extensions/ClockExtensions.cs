@@ -20,8 +20,7 @@ namespace NodaTime.Extensions
         /// <param name="clock">Clock to use in the returned object.</param>
         /// <param name="zone">Time zone to use in the returned object.</param>
         /// <returns>A <see cref="ZonedClock"/> with the given clock and time zone, in the ISO calendar system.</returns>
-        [NotNull]
-        public static ZonedClock InZone([NotNull] this IClock clock, [NotNull] DateTimeZone zone) =>
+        public static ZonedClock InZone(this IClock clock, DateTimeZone zone) =>
             InZone(clock, zone, CalendarSystem.Iso);
 
         /// <summary>
@@ -32,10 +31,8 @@ namespace NodaTime.Extensions
         /// <param name="zone">Time zone to use in the returned object.</param>
         /// <param name="calendar">Calendar to use in the returned object.</param>
         /// <returns>A <see cref="ZonedClock"/> with the given clock, time zone and calendar system.</returns>
-        [NotNull]
-        public static ZonedClock InZone([NotNull] this IClock clock,
-            [NotNull] DateTimeZone zone,
-            [NotNull] CalendarSystem calendar) => new ZonedClock(clock, zone, calendar);
+        public static ZonedClock InZone(this IClock clock, DateTimeZone zone, CalendarSystem calendar) =>
+            new ZonedClock(clock, zone, calendar);
 
         /// <summary>
         /// Constructs a <see cref="ZonedClock"/> from a clock (the target of the method),
@@ -43,8 +40,7 @@ namespace NodaTime.Extensions
         /// </summary>
         /// <param name="clock">Clock to use in the returned object.</param>
         /// <returns>A <see cref="ZonedClock"/> with the given clock, in the UTC time zone and ISO calendar system.</returns>
-        [NotNull]
-        public static ZonedClock InUtc([NotNull] this IClock clock) =>
+        public static ZonedClock InUtc(this IClock clock) =>
             new ZonedClock(clock, DateTimeZone.Utc, CalendarSystem.Iso);
 
         /// <summary>
@@ -57,8 +53,7 @@ namespace NodaTime.Extensions
         /// <exception cref="DateTimeZoneNotFoundException">The system default time zone is not mapped by
         /// TZDB.</exception>
         /// <seealso cref="DateTimeZoneProviders.Tzdb"/>
-        [NotNull]
-        public static ZonedClock InTzdbSystemDefaultZone([NotNull] this IClock clock)
+        public static ZonedClock InTzdbSystemDefaultZone(this IClock clock)
         {
             var zone = DateTimeZoneProviders.Tzdb.GetSystemDefault();
             return new ZonedClock(clock, zone, CalendarSystem.Iso);
@@ -73,8 +68,7 @@ namespace NodaTime.Extensions
         /// <returns>A <c>ZonedClock</c> in the system default time zone and the ISO calendar system,
         /// using the system clock.</returns>
         /// <seealso cref="DateTimeZoneProviders.Bcl"/>
-        [NotNull]
-        public static ZonedClock InBclSystemDefaultZone([NotNull] this IClock clock)
+        public static ZonedClock InBclSystemDefaultZone(this IClock clock)
         {
             var zone = DateTimeZoneProviders.Bcl.GetSystemDefault();
             return new ZonedClock(clock, zone, CalendarSystem.Iso);

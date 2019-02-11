@@ -44,7 +44,7 @@ namespace NodaTime.Calendars
         }
 
         /// <inheritdoc />
-        public LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, [NotNull] CalendarSystem calendar)
+        public LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, nameof(calendar));
             ValidateWeekYear(weekYear, calendar);
@@ -112,7 +112,7 @@ namespace NodaTime.Calendars
         }
 
         /// <inheritdoc />
-        public int GetWeeksInWeekYear(int weekYear, [NotNull] CalendarSystem calendar)
+        public int GetWeeksInWeekYear(int weekYear, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, nameof(calendar));
             YearMonthDayCalculator yearMonthDayCalculator = calendar.YearMonthDayCalculator;

@@ -23,10 +23,10 @@ namespace NodaTime.Calendars
             this.Eras = new ReadOnlyCollection<Era>(eras);
         }
 
-        internal abstract int GetMinYearOfEra([NotNull] Era era);
-        internal abstract int GetMaxYearOfEra([NotNull] Era era);
+        internal abstract int GetMinYearOfEra(Era era);
+        internal abstract int GetMaxYearOfEra(Era era);
         internal abstract Era GetEra(int absoluteYear);
         internal abstract int GetYearOfEra(int absoluteYear);
-        internal abstract int GetAbsoluteYear(int yearOfEra, [NotNull] Era era);
+        internal abstract int GetAbsoluteYear(int yearOfEra, Era era);
     }
 }

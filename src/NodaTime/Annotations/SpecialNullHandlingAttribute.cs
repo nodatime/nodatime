@@ -8,7 +8,7 @@ namespace NodaTime.Annotations
     /// <summary>
     /// Indicates that the parameter doesn't conform to simple NotNull/CanBeNull
     /// behaviour, e.g. for IPattern{T}.Parse, where the parameter shouldn't be null,
-    /// but the result will be a failed ParseResult rather than an ArgumentNulLException.
+    /// but the result will be a failed ParseResult rather than an ArgumentNullException.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
     internal sealed class SpecialNullHandlingAttribute : Attribute { }

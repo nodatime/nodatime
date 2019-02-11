@@ -100,7 +100,7 @@ namespace NodaTime
         /// allows object initializers to be used.
         /// </summary>
         /// <param name="period">An existing period to copy values from.</param>
-        public PeriodBuilder([NotNull] Period period)
+        public PeriodBuilder(Period period)
         {
             Preconditions.CheckNotNull(period, nameof(period));
             Years = period.Years;
@@ -175,7 +175,7 @@ namespace NodaTime
         /// Builds a period from the properties in this builder.
         /// </summary>
         /// <returns>A period containing the values from this builder.</returns>
-        [NotNull] public Period Build() =>
+        public Period Build() =>
             new Period(Years, Months, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Ticks, Nanoseconds);
 
         /// <inheritdoc />

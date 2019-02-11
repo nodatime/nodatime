@@ -414,7 +414,7 @@ namespace NodaTime
         /// <param name="time">The time to add the period to</param>
         /// <param name="period">The period to add</param>
         /// <returns>The result of adding the period to the time, wrapping via midnight if necessary</returns>
-        public static LocalTime operator +(LocalTime time, [NotNull] Period period)
+        public static LocalTime operator +(LocalTime time, Period period)
         {
             Preconditions.CheckNotNull(period, nameof(period));
             Preconditions.CheckArgument(!period.HasDateComponent, nameof(period), "Cannot add a period with a date component to a time");
@@ -427,7 +427,7 @@ namespace NodaTime
         /// <param name="time">The time to add the period to</param>
         /// <param name="period">The period to add. Must not contain any (non-zero) date units.</param>
         /// <returns>The sum of the given time and period</returns>
-        public static LocalTime Add(LocalTime time, [NotNull] Period period) => time + period;
+        public static LocalTime Add(LocalTime time, Period period) => time + period;
 
         /// <summary>
         /// Adds the specified period to this time. Fluent alternative to <c>operator+()</c>.
@@ -435,7 +435,7 @@ namespace NodaTime
         /// <param name="period">The period to add. Must not contain any (non-zero) date units.</param>
         /// <returns>The sum of this time and the given period</returns>
         [Pure]
-        public LocalTime Plus([NotNull] Period period) => this + period;
+        public LocalTime Plus(Period period) => this + period;
 
         /// <summary>
         /// Creates a new local time by subtracting a period from an existing time. The period must not contain
@@ -445,7 +445,7 @@ namespace NodaTime
         /// <param name="time">The time to subtract the period from</param>
         /// <param name="period">The period to subtract</param>
         /// <returns>The result of subtract the period from the time, wrapping via midnight if necessary</returns>
-        public static LocalTime operator -(LocalTime time, [NotNull] Period period)
+        public static LocalTime operator -(LocalTime time, Period period)
         {
             Preconditions.CheckNotNull(period, nameof(period));
             Preconditions.CheckArgument(!period.HasDateComponent, nameof(period), "Cannot subtract a period with a date component from a time");
@@ -458,7 +458,7 @@ namespace NodaTime
         /// <param name="time">The time to subtract the period from</param>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
         /// <returns>The result of subtracting the given period from the time.</returns>
-        public static LocalTime Subtract(LocalTime time, [NotNull] Period period) => time - period;
+        public static LocalTime Subtract(LocalTime time, Period period) => time - period;
 
         /// <summary>
         /// Subtracts the specified period from this time. Fluent alternative to <c>operator-()</c>.
@@ -466,7 +466,7 @@ namespace NodaTime
         /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
         /// <returns>The result of subtracting the given period from this time.</returns>
         [Pure]
-        public LocalTime Minus([NotNull] Period period) => this - period;
+        public LocalTime Minus(Period period) => this - period;
 
         /// <summary>
         /// Subtracts one time from another, returning the result as a <see cref="Period"/>.
@@ -477,7 +477,7 @@ namespace NodaTime
         /// <param name="lhs">The time to subtract from</param>
         /// <param name="rhs">The time to subtract</param>
         /// <returns>The result of subtracting one time from another.</returns>
-        [NotNull] public static Period operator -(LocalTime lhs, LocalTime rhs) => Period.Between(rhs, lhs);
+        public static Period operator -(LocalTime lhs, LocalTime rhs) => Period.Between(rhs, lhs);
 
         /// <summary>
         /// Subtracts one time from another, returning the result as a <see cref="Period"/> with units of years, months and days.
@@ -488,7 +488,7 @@ namespace NodaTime
         /// <param name="lhs">The time to subtract from</param>
         /// <param name="rhs">The time to subtract</param>
         /// <returns>The result of subtracting one time from another.</returns>
-        [NotNull] public static Period Subtract(LocalTime lhs, LocalTime rhs) => lhs - rhs;
+        public static Period Subtract(LocalTime lhs, LocalTime rhs) => lhs - rhs;
 
         /// <summary>
         /// Subtracts the specified time from this time, returning the result as a <see cref="Period"/>.
@@ -497,7 +497,6 @@ namespace NodaTime
         /// <param name="time">The time to subtract from this</param>
         /// <returns>The difference between the specified time and this one</returns>
         [Pure]
-        [NotNull]
         public Period Minus(LocalTime time) => this - time;
 
         /// <summary>
@@ -672,7 +671,7 @@ namespace NodaTime
         /// <param name="adjuster">The adjuster to apply.</param>
         /// <returns>The adjusted time.</returns>
         [Pure]
-        public LocalTime With([NotNull] Func<LocalTime, LocalTime> adjuster) =>
+        public LocalTime With(Func<LocalTime, LocalTime> adjuster) =>
             Preconditions.CheckNotNull(adjuster, nameof(adjuster)).Invoke(this);
 
         /// <summary>
@@ -759,7 +758,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = LocalTimePattern.ExtendedIso;
@@ -768,7 +767,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(LocalTimePattern.ExtendedIso.Format(this));

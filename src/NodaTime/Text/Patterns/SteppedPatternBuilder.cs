@@ -672,7 +672,7 @@ namespace NodaTime.Text.Patterns
                 return bucket.CalculateValue(usedFields, cursor.Value);
             }
 
-            public StringBuilder AppendFormat(TResult value, [NotNull] StringBuilder builder)
+            public StringBuilder AppendFormat(TResult value, StringBuilder builder)
             {
                 Preconditions.CheckNotNull(builder, nameof(builder));
                 formatActions(value, builder);

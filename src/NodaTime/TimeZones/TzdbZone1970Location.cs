@@ -48,7 +48,7 @@ namespace NodaTime.TimeZones
         /// is the most populous country in the list. No entry in this list is ever null.
         /// </remarks>
         /// <value>The list of countries associated with this location</value>
-        [NotNull] public IList<Country> Countries { get; }
+        public IList<Country> Countries { get; }
 
         /// <summary>
         /// The ID of the time zone for this location.
@@ -56,7 +56,7 @@ namespace NodaTime.TimeZones
         /// <remarks>If this mapping was fetched from a <see cref="TzdbDateTimeZoneSource"/>, it will always be a valid ID within that source.
         /// </remarks>
         /// <value>The ID of the time zone for this location.</value>
-        [NotNull] public string ZoneId { get; }
+        public string ZoneId { get; }
 
         /// <summary>
         /// Gets the comment (in English) for the mapping, if any.
@@ -66,7 +66,7 @@ namespace NodaTime.TimeZones
         /// This will return an empty string if no comment was provided in the original data.
         /// </remarks>
         /// <value>The comment (in English) for the mapping, if any.</value>
-        [NotNull] public string Comment { get; }
+        public string Comment { get; }
 
         /// <summary>
         /// Creates a new location.
@@ -82,8 +82,8 @@ namespace NodaTime.TimeZones
         /// <param name="comment">Optional comment. Must not be null, but may be empty.</param>
         /// <exception cref="ArgumentOutOfRangeException">The latitude or longitude is invalid.</exception>
         public TzdbZone1970Location(int latitudeSeconds, int longitudeSeconds,
-            [NotNull] IEnumerable<Country> countries,
-            [NotNull] string zoneId, [NotNull] string comment)
+            IEnumerable<Country> countries,
+            string zoneId, string comment)
         {
             Preconditions.CheckArgumentRange(nameof(latitudeSeconds), latitudeSeconds, -90 * 3600, 90 * 3600);
             Preconditions.CheckArgumentRange(nameof(longitudeSeconds), longitudeSeconds, -180 * 3600, 180 * 3600);
@@ -155,20 +155,20 @@ namespace NodaTime.TimeZones
             /// Gets the English name of the country.
             /// </summary>
             /// <value>The English name of the country.</value>
-            [NotNull] public string Name { get; }
+            public string Name { get; }
 
             /// <summary>
             /// Gets the ISO-3166 2-letter country code for the country.
             /// </summary>
             /// <value>The ISO-3166 2-letter country code for the country.</value>
-            [NotNull] public string Code { get; }
+            public string Code { get; }
 
             /// <summary>
             /// Constructs a new country from its name and ISO-3166 2-letter code.
             /// </summary>
             /// <param name="name">Country name; must not be empty.</param>
             /// <param name="code">2-letter code</param>
-            public Country([NotNull] string name, [NotNull] string code)
+            public Country(string name, string code)
             {
                 Name = Preconditions.CheckNotNull(name, nameof(name));
                 Code = Preconditions.CheckNotNull(code, nameof(code));
