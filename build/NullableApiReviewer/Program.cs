@@ -116,7 +116,6 @@ namespace NullableApiReviewer
                 // A single value means "apply to everything in the type", e.g. 1 for Dictionary<string, string>, 2 for Dictionary<string?, string?>?
                 // The simplest way of representing this is just a very long string of bytes all with the same value. 
                 byte b => Enumerable.Repeat(b, 1_000_000),
-                CustomAttributeTypedArgument { Value: byte[] bytes } => bytes,
                 // Not terribly robust, but...
                 IEnumerable<CustomAttributeTypedArgument> arguments => arguments.Select(arg => (byte)arg.Value).ToArray(),
                 _ => throw new InvalidOperationException($"Unexpected argument type: {value.GetType()}")
