@@ -198,7 +198,7 @@ namespace NodaTime.TimeZones
         /// <inheritdoc />
         public string? GetSystemDefaultId() => MapTimeZoneInfoId(TimeZoneInfoInterceptor.Local);
 
-        [VisibleForTesting, CanBeNull]
+        [VisibleForTesting]
         internal string? MapTimeZoneInfoId(TimeZoneInfo? timeZone)
         {
             // Unusual, but can happen in some Mono installations.
