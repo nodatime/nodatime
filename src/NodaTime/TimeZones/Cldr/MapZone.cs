@@ -42,7 +42,7 @@ namespace NodaTime.TimeZones.Cldr
         /// </para>
         /// </remarks>
         /// <value>The Windows system time zone identifier for this mapping, such as "Central Standard Time".</value>
-        [NotNull] public string WindowsId { get; }
+        public string WindowsId { get; }
 
         /// <summary>
         /// Gets the territory code for this mapping.
@@ -53,7 +53,7 @@ namespace NodaTime.TimeZones.Cldr
         /// which indicates the geographical territory.
         /// </remarks>
         /// <value>The territory code for this mapping.</value>
-        [NotNull] public string Territory { get; }
+        public string Territory { get; }
 
         /// <summary>
         /// Gets a read-only non-empty collection of TZDB zone identifiers for this mapping, such as
@@ -65,7 +65,7 @@ namespace NodaTime.TimeZones.Cldr
         /// contains exactly one time zone ID.
         /// </remarks>
         /// <value>A read-only non-empty collection of TZDB zone identifiers for this mapping.</value>
-        [NotNull] public IList<string> TzdbIds { get; }
+        public IList<string> TzdbIds { get; }
 
         /// <summary>
         /// Creates a new mapping entry.
@@ -77,7 +77,7 @@ namespace NodaTime.TimeZones.Cldr
         /// <param name="territory">Territory code. Must not be null.</param>
         /// <param name="tzdbIds">List of territory codes. Must not be null, and must not
         /// contains null values.</param>
-        public MapZone([NotNull] string windowsId, [NotNull] string territory, [NotNull] IList<string> tzdbIds)
+        public MapZone(string windowsId, string territory, IList<string> tzdbIds)
             : this(Preconditions.CheckNotNull(windowsId, nameof(windowsId)),
                    Preconditions.CheckNotNull(territory, nameof(territory)),
                    new ReadOnlyCollection<string>(new List<string>(Preconditions.CheckNotNull(tzdbIds, nameof(tzdbIds)))))
@@ -146,7 +146,12 @@ namespace NodaTime.TimeZones.Cldr
         /// <inheritdoc />
         public override bool Equals(object? obj) => Equals(obj as MapZone);
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// The value of the current instance, for diagnostic purposes.
+        /// </returns>
         public override string ToString()
             => $"Windows ID: {WindowsId}; Territory: {Territory}; TzdbIds: {string.Join(" ", TzdbIds)}";
     }

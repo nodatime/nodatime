@@ -21,7 +21,7 @@ namespace NodaTime.Utility
     {
         private readonly IDictionary<TKey, TValue> original;
 
-        internal NodaReadOnlyDictionary([NotNull] IDictionary<TKey, TValue> original)
+        internal NodaReadOnlyDictionary(IDictionary<TKey, TValue> original)
         {
             this.original = Preconditions.CheckNotNull(original, nameof(original));
         }

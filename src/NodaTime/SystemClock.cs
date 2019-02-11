@@ -22,7 +22,7 @@ namespace NodaTime
         /// The singleton instance of <see cref="SystemClock"/>.
         /// </summary>
         /// <value>The singleton instance of <see cref="SystemClock"/>.</value>
-        [NotNull] public static SystemClock Instance { get; } = new SystemClock();
+        public static SystemClock Instance { get; } = new SystemClock();
 
         /// <summary>
         /// Constructor present to prevent external construction.

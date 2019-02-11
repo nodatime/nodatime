@@ -1097,7 +1097,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = DurationPattern.Roundtrip;
@@ -1106,7 +1106,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(DurationPattern.Roundtrip.Format(this));

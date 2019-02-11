@@ -53,7 +53,7 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this offset date.</summary>
         /// <value>The calendar system associated with this offset date.</value>
-        [NotNull] public CalendarSystem Calendar => date.Calendar;
+        public CalendarSystem Calendar => date.Calendar;
 
         /// <summary>Gets the year of this offset date.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
@@ -81,7 +81,7 @@ namespace NodaTime
 
         /// <summary>Gets the era of this offset date.</summary>
         /// <value>The era of this offset date.</value>
-        [NotNull] public Era Era => date.Era;
+        public Era Era => date.Era;
 
         /// <summary>Gets the day of this offset date within the year.</summary>
         /// <value>The day of this offset date within the year.</value>
@@ -106,7 +106,7 @@ namespace NodaTime
         /// <param name="adjuster">The adjuster to apply.</param>
         /// <returns>The adjusted offset date.</returns>
         [Pure]
-        public OffsetDate With([NotNull] Func<LocalDate, LocalDate> adjuster) =>
+        public OffsetDate With(Func<LocalDate, LocalDate> adjuster) =>
             new OffsetDate(date.With(adjuster), offset);
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar system to convert this offset date to.</param>
         /// <returns>The converted <c>OffsetDate</c>.</returns>
         [Pure]
-        public OffsetDate WithCalendar([NotNull] CalendarSystem calendar) =>
+        public OffsetDate WithCalendar(CalendarSystem calendar) =>
             new OffsetDate(date.WithCalendar(calendar), offset);
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = OffsetDatePattern.GeneralIso;
@@ -226,7 +226,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             if (Calendar != CalendarSystem.Iso)

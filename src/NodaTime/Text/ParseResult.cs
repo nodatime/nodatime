@@ -54,7 +54,7 @@ namespace NodaTime.Text
         /// <remarks>This property is typically used to wrap parse failures in higher level exceptions.</remarks>
         /// <value>The exception indicating the cause of the parse failure.</value>
         /// <exception cref="InvalidOperationException">The parse operation succeeded.</exception>
-        [NotNull] public Exception Exception
+        public Exception Exception
         {
             get
             {
@@ -115,8 +115,7 @@ namespace NodaTime.Text
         /// if it's a success result.</param>
         /// <returns>A ParseResult for the target type, either with a value obtained by applying the specified
         /// projection to the value in this result, or with the same error as this result.</returns>
-        [NotNull]
-        public ParseResult<TTarget> Convert<TTarget>([NotNull] Func<T, TTarget> projection)
+        public ParseResult<TTarget> Convert<TTarget>(Func<T, TTarget> projection)
         {
             Preconditions.CheckNotNull(projection, nameof(projection));
             return Success
@@ -129,7 +128,7 @@ namespace NodaTime.Text
         /// This parse result must already be an error result.
         /// </summary>
         /// <returns>A ParseResult for the target type, with the same error as this result.</returns>
-        [NotNull] public ParseResult<TTarget> ConvertError<TTarget>()
+        public ParseResult<TTarget> ConvertError<TTarget>()
         {
             if (Success)
             {
@@ -147,7 +146,7 @@ namespace NodaTime.Text
         /// but this isn't currently checked.</remarks>
         /// <param name="value">The successfully parsed value.</param>
         /// <returns>A ParseResult representing a successful parsing operation.</returns>
-        [NotNull] public static ParseResult<T> ForValue(T value) => new ParseResult<T>(value);
+        public static ParseResult<T> ForValue(T value) => new ParseResult<T>(value);
 
          /// <summary>
          /// Produces a ParseResult which represents a failed parsing operation.
@@ -158,7 +157,7 @@ namespace NodaTime.Text
          /// <param name="exceptionProvider">A delegate that produces the exception representing the error that
          /// caused the parse to fail.</param>
          /// <returns>A ParseResult representing a failed parsing operation.</returns>
-         [NotNull] public static ParseResult<T> ForException([NotNull] Func<Exception> exceptionProvider) =>
+         public static ParseResult<T> ForException(Func<Exception> exceptionProvider) =>
             new ParseResult<T>(Preconditions.CheckNotNull(exceptionProvider, nameof(exceptionProvider)), false);
 
         internal static ParseResult<T> ForInvalidValue(ValueCursor cursor, string formatString, params object[] parameters) =>

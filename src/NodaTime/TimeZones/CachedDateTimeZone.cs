@@ -54,7 +54,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="timeZone">The time zone to cache.</param>
         /// <returns>The cached time zone.</returns>
-        internal static DateTimeZone ForZone([NotNull] DateTimeZone timeZone)
+        internal static DateTimeZone ForZone(DateTimeZone timeZone)
         {
             Preconditions.CheckNotNull(timeZone, nameof(timeZone));
             if (timeZone is CachedDateTimeZone || timeZone.IsFixed)

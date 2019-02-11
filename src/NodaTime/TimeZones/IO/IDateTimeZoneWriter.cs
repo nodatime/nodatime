@@ -49,7 +49,7 @@ namespace NodaTime.TimeZones.IO
         /// these values will be pooled in some fashion, so should not apply their own pooling.</remarks>
         /// <param name="value">The string to write to the stream.</param>
         /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
-        void WriteString([NotNull] string value);
+        void WriteString(string value);
 
         /// <summary>
         /// Writes a number of milliseconds to the stream, where the number
@@ -86,7 +86,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         /// <param name="dictionary"></param>
         /// <exception cref="IOException">The value couldn't be written to the stream.</exception>
-        void WriteDictionary([NotNull] IDictionary<string, string> dictionary);
+        void WriteDictionary(IDictionary<string, string> dictionary);
 
         /// <summary>
         /// Writes the given 8 bit integer value to the stream.

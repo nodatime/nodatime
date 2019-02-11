@@ -35,10 +35,10 @@ namespace NodaTime.TimeZones
         /// the underlying source.
         /// </summary>
         /// <value>The version ID of this provider.</value>
-        [NotNull] public string VersionId { get; }
+        public string VersionId { get; }
 
         /// <inheritdoc />
-        [NotNull] public ReadOnlyCollection<string> Ids { get; }
+        public ReadOnlyCollection<string> Ids { get; }
 
         /// <summary>
         /// Creates a provider backed by the given <see cref="IDateTimeZoneSource"/>.
@@ -50,7 +50,7 @@ namespace NodaTime.TimeZones
         /// </remarks>
         /// <param name="source">The <see cref="IDateTimeZoneSource"/> for this provider.</param>
         /// <exception cref="InvalidDateTimeZoneSourceException"><paramref name="source"/> violates its contract.</exception>
-        public DateTimeZoneCache([NotNull] IDateTimeZoneSource source)
+        public DateTimeZoneCache(IDateTimeZoneSource source)
         {
             this.source = Preconditions.CheckNotNull(source, nameof(source));
             this.VersionId = source.VersionId;
@@ -78,7 +78,6 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        [NotNull]
         public DateTimeZone GetSystemDefault()
         {
             string? id = source.GetSystemDefaultId();
@@ -90,7 +89,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        [CanBeNull] public DateTimeZone? GetZoneOrNull([NotNull] string id)
+        public DateTimeZone? GetZoneOrNull(string id)
         {
             Preconditions.CheckNotNull(id, nameof(id));
             return GetZoneFromSourceOrNull(id) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
@@ -120,7 +119,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <inheritdoc />
-        [NotNull] public DateTimeZone this[[NotNull] string id]
+        public DateTimeZone this[string id]
         {
             get
             {

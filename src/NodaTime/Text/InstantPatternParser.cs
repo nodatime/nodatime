@@ -25,7 +25,7 @@ namespace NodaTime.Text
         internal const string BeforeMinValueText = "StartOfTime";
         internal const string AfterMaxValueText = "EndOfTime";
 
-        public IPattern<Instant> ParsePattern([NotNull] string patternText, NodaFormatInfo formatInfo)
+        public IPattern<Instant> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             if (patternText.Length == 0)
@@ -63,7 +63,7 @@ namespace NodaTime.Text
                     : value == Instant.BeforeMinValue ? BeforeMinValueText
                     : AfterMaxValueText;
 
-            public StringBuilder AppendFormat(Instant value, [NotNull] StringBuilder builder) =>
+            public StringBuilder AppendFormat(Instant value, StringBuilder builder) =>
                 pattern.AppendFormat(value.InUtc().LocalDateTime, builder);
 
             public ParseResult<Instant> Parse(string text) =>

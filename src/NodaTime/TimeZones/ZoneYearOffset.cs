@@ -254,7 +254,7 @@ namespace NodaTime.TimeZones
             writer.WriteMilliseconds((int) (TimeOfDay.TickOfDay / NodaConstants.TicksPerMillisecond));
         }
 
-        public static ZoneYearOffset Read([NotNull] IDateTimeZoneReader reader)
+        public static ZoneYearOffset Read(IDateTimeZoneReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             int flags = reader.ReadByte();

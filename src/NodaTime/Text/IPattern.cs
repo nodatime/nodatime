@@ -29,14 +29,14 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        [NotNull] ParseResult<T> Parse([SpecialNullHandling] string text);
+        ParseResult<T> Parse([SpecialNullHandling] string text);
 
         /// <summary>
         /// Formats the given value as text according to the rules of this pattern.
         /// </summary>
         /// <param name="value">The value to format.</param>
         /// <returns>The value formatted according to this pattern.</returns>
-        [NotNull] string Format(T value);
+        string Format(T value);
 
         /// <summary>
         /// Formats the given value as text according to the rules of this pattern,
@@ -45,6 +45,6 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
         /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
-        [NotNull] StringBuilder AppendFormat(T value, [NotNull] StringBuilder builder);
+        StringBuilder AppendFormat(T value, StringBuilder builder);
     }
 }

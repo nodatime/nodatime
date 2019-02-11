@@ -38,13 +38,13 @@ namespace NodaTime.TimeZones
         /// Gets the English name of the country containing the location, which is never empty.
         /// </summary>
         /// <value>The English name of the country containing the location.</value>
-        [NotNull] public string CountryName { get; }
+        public string CountryName { get; }
 
         /// <summary>
         /// Gets the ISO-3166 2-letter country code for the country containing the location.
         /// </summary>
         /// <value>The ISO-3166 2-letter country code for the country containing the location.</value>
-        [NotNull] public string CountryCode { get; }
+        public string CountryCode { get; }
 
         /// <summary>
         /// The ID of the time zone for this location.
@@ -52,7 +52,7 @@ namespace NodaTime.TimeZones
         /// <remarks>If this mapping was fetched from a <see cref="TzdbDateTimeZoneSource"/>, it will always be a valid ID within that source.
         /// </remarks>
         /// <value>The ID of the time zone for this location.</value>
-        [NotNull] public string ZoneId { get; }
+        public string ZoneId { get; }
 
         /// <summary>
         /// Gets the comment (in English) for the mapping, if any.
@@ -62,7 +62,7 @@ namespace NodaTime.TimeZones
         /// This will return an empty string if no comment was provided in the original data.
         /// </remarks>
         /// <value>The comment (in English) for the mapping, if any.</value>
-        [NotNull] public string Comment { get; }
+        public string Comment { get; }
 
         /// <summary>
         /// Creates a new location.
@@ -78,8 +78,8 @@ namespace NodaTime.TimeZones
         /// <param name="comment">Optional comment. Must not be null, but may be empty.</param>
         /// <exception cref="ArgumentOutOfRangeException">The latitude or longitude is invalid.</exception>
         public TzdbZoneLocation(int latitudeSeconds, int longitudeSeconds,
-            [NotNull] string countryName, [NotNull] string countryCode,
-            [NotNull] string zoneId, [NotNull] string comment)
+            string countryName, string countryCode,
+            string zoneId, string comment)
         {
             Preconditions.CheckArgumentRange(nameof(latitudeSeconds), latitudeSeconds, -90 * 3600, 90 * 3600);
             Preconditions.CheckArgumentRange(nameof(longitudeSeconds), longitudeSeconds, -180 * 3600, 180 * 3600);

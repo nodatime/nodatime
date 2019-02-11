@@ -19,7 +19,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns a caching map for the given input map.
         /// </summary>
-        internal static IZoneIntervalMap CacheMap([NotNull] IZoneIntervalMap map)
+        internal static IZoneIntervalMap CacheMap(IZoneIntervalMap map)
         {
             return new HashArrayCache(map);
         }
@@ -58,7 +58,7 @@ namespace NodaTime.TimeZones
             private readonly HashCacheNode[] instantCache;
             private readonly IZoneIntervalMap map;
 
-            internal HashArrayCache([NotNull] IZoneIntervalMap map)
+            internal HashArrayCache(IZoneIntervalMap map)
             {
                 this.map = Preconditions.CheckNotNull(map, nameof(map));
                 instantCache = new HashCacheNode[CacheSize];

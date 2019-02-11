@@ -17,21 +17,21 @@ namespace NodaTime
         /// Gets a time adjuster to truncate the time to the second, discarding fractional seconds.
         /// </summary>
         /// <value>A time adjuster to truncate the time to the second, discarding fractional seconds.</value>
-        [NotNull] public static Func<LocalTime, LocalTime> TruncateToSecond { get; }
+        public static Func<LocalTime, LocalTime> TruncateToSecond { get; }
             = time => new LocalTime(time.Hour, time.Minute, time.Second);
 
         /// <summary>
         /// Gets a time adjuster to truncate the time to the minute, discarding fractional minutes.
         /// </summary>
         /// <value>A time adjuster to truncate the time to the minute, discarding fractional minutes.</value>
-        [NotNull] public static Func<LocalTime, LocalTime> TruncateToMinute { get; }
+        public static Func<LocalTime, LocalTime> TruncateToMinute { get; }
             = time => new LocalTime(time.Hour, time.Minute);
 
         /// <summary>
         /// Get a time adjuster to truncate the time to the hour, discarding fractional hours.
         /// </summary>
         /// <value>A time adjuster to truncate the time to the hour, discarding fractional hours.</value>
-        [NotNull] public static Func<LocalTime, LocalTime> TruncateToHour { get; }
+        public static Func<LocalTime, LocalTime> TruncateToHour { get; }
             = time => new LocalTime(time.Hour, 0);
     }
 }

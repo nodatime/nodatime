@@ -112,7 +112,7 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this offset date and time.</summary>
         /// <value>The calendar system associated with this offset date and time.</value>
-        [NotNull] public CalendarSystem Calendar => localDate.Calendar;
+        public CalendarSystem Calendar => localDate.Calendar;
 
         /// <summary>Gets the year of this offset date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
@@ -142,7 +142,7 @@ namespace NodaTime
 
         /// <summary>Gets the era of this offset date and time.</summary>
         /// <value>The era of this offset date and time.</value>
-        [NotNull] public Era Era => localDate.Era;
+        public Era Era => localDate.Era;
 
         /// <summary>Gets the day of this offset date and time within the year.</summary>
         /// <value>The day of this offset date and time within the year.</value>
@@ -284,7 +284,7 @@ namespace NodaTime
         /// <param name="zone">The time zone of the new value.</param>
         /// <returns>The instant represented by this value, in the specified time zone.</returns>
         [Pure]
-        public ZonedDateTime InZone([NotNull] DateTimeZone zone)
+        public ZonedDateTime InZone(DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             return ToInstant().InZone(zone);
@@ -337,7 +337,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar system to convert this offset date and time to.</param>
         /// <returns>The converted OffsetDateTime.</returns>
         [Pure]
-        public OffsetDateTime WithCalendar([NotNull] CalendarSystem calendar)
+        public OffsetDateTime WithCalendar(CalendarSystem calendar)
         {
             LocalDate newDate = Date.WithCalendar(calendar);
             return new OffsetDateTime(newDate, offsetTime);
@@ -354,7 +354,7 @@ namespace NodaTime
         /// <param name="adjuster">The adjuster to apply.</param>
         /// <returns>The adjusted offset date/time.</returns>
         [Pure]
-        public OffsetDateTime With([NotNull] Func<LocalDate, LocalDate> adjuster) =>
+        public OffsetDateTime With(Func<LocalDate, LocalDate> adjuster) =>
             new OffsetDateTime(localDate.With(adjuster), offsetTime);
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace NodaTime
         /// <param name="adjuster">The adjuster to apply.</param>
         /// <returns>The adjusted offset date/time.</returns>
         [Pure]
-        public OffsetDateTime With([NotNull] Func<LocalTime, LocalTime> adjuster)
+        public OffsetDateTime With(Func<LocalTime, LocalTime> adjuster)
         {
             LocalTime newTime = TimeOfDay.With(adjuster);
             return new OffsetDateTime(localDate, new OffsetTime(newTime.NanosecondOfDay, offsetTime.OffsetSeconds));
@@ -704,7 +704,7 @@ namespace NodaTime
             /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             /// <value>A comparer which compares values by their local date/time, without reference to the offset.</value>
-            [NotNull] public static Comparer Local => LocalComparer.Instance;
+            public static Comparer Local => LocalComparer.Instance;
 
             /// <summary>
             /// Returns a comparer which compares <see cref="OffsetDateTime"/> values by the instant values obtained by applying the offset to
@@ -717,7 +717,7 @@ namespace NodaTime
             /// </remarks>
             /// <value>A comparer which compares values by the instant values obtained by applying the offset to
             /// the local date/time, ignoring the calendar system.</value>
-            [NotNull] public static Comparer Instant => InstantComparer.Instance;
+            public static Comparer Instant => InstantComparer.Instance;
 
             /// <summary>
             /// Internal constructor to prevent external classes from deriving from this.
@@ -832,7 +832,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = OffsetDateTimePattern.Rfc3339;
@@ -849,7 +849,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer)); 
             if (Calendar != CalendarSystem.Iso)

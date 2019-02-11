@@ -41,7 +41,7 @@ namespace NodaTime.Text
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
         // interface implementation.
-        public IPattern<Duration> ParsePattern([NotNull] string patternText, NodaFormatInfo formatInfo)
+        public IPattern<Duration> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             if (patternText.Length == 0)

@@ -20,7 +20,7 @@ namespace NodaTime
         /// resources within the NodaTime assembly.
         /// </summary>
         /// <value>A time zone provider using a <c>TzdbDateTimeZoneSource</c>.</value>
-        [NotNull] public static IDateTimeZoneProvider Tzdb => TzdbHolder.TzdbImpl;
+        public static IDateTimeZoneProvider Tzdb => TzdbHolder.TzdbImpl;
 
         // This class exists to force TZDB initialization to be lazy. We don't want using
         // DateTimeZoneProviders.Bcl to force a read/parse of TZDB data.
@@ -48,7 +48,7 @@ namespace NodaTime
         /// <para>See note on <see cref="BclDateTimeZone"/> for details of some incompatibilities with the BCL.</para>
         /// </remarks>
         /// <value>A time zone provider which uses a <c>BclDateTimeZoneSource</c>.</value>
-        [NotNull] public static IDateTimeZoneProvider Bcl => BclHolder.BclImpl;
+        public static IDateTimeZoneProvider Bcl => BclHolder.BclImpl;
 
         private static readonly object SerializationProviderLock = new object();
         private static IDateTimeZoneProvider serializationProvider;
@@ -65,7 +65,7 @@ namespace NodaTime
         /// </remarks>
         /// <value>The <c>IDateTimeZoneProvider</c> to use to interpret a time zone ID read as part of
         /// XML or binary serialization.</value>
-        [NotNull] public static IDateTimeZoneProvider Serialization
+        public static IDateTimeZoneProvider Serialization
         {
             get
             {

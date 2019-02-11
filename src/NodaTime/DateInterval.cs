@@ -147,7 +147,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different
         /// calendar to this date interval.</exception>
         /// <returns><c>true</c> if <paramref name="interval"/> is within this interval; <c>false</c> otherwise.</returns>
-        public bool Contains([NotNull] DateInterval interval)
+        public bool Contains(DateInterval interval)
         {
             ValidateInterval(interval);
             return Start <= interval.Start && interval.End <= End;
@@ -166,7 +166,6 @@ namespace NodaTime
         /// Gets the calendar system of the dates in this interval.
         /// </summary>
         /// <value>The calendar system of the dates in this interval.</value>
-        [NotNull]
         public CalendarSystem Calendar => Start.Calendar;
 
         /// <summary>
@@ -206,8 +205,7 @@ namespace NodaTime
         /// </returns>
         /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different
         /// calendar to this date interval.</exception>
-        [CanBeNull]
-        public DateInterval? Intersection([NotNull]DateInterval interval) =>
+        public DateInterval? Intersection(DateInterval interval) =>
             Contains(interval) ? interval
                 : interval.Contains(this) ? this
                 : interval.Contains(Start) ? new DateInterval(Start, interval.End)
@@ -223,8 +221,7 @@ namespace NodaTime
         /// instance, in the case the intervals overlap or are contiguous; a null reference otherwise.
         /// </returns>
         /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different calendar to this date interval.</exception>
-        [CanBeNull]
-        public DateInterval? Union([NotNull] DateInterval interval)
+        public DateInterval? Union(DateInterval interval)
         {
             ValidateInterval(interval);
 
@@ -252,7 +249,6 @@ namespace NodaTime
         /// Returns an enumerator for the dates in the interval, including both <see cref="Start"/> and <see cref="End"/>.
         /// </summary>
         /// <returns>An enumerator for the interval.</returns>
-        [NotNull]
         public IEnumerator<LocalDate> GetEnumerator()
         {
             // Stop when we know we've reach End, and then yield that.

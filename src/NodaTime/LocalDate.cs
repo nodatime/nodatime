@@ -71,7 +71,7 @@ namespace NodaTime
         /// system. The calendar system is assumed to be non-null, but the days since the epoch are
         /// validated.
         /// </summary>
-        internal LocalDate(int daysSinceEpoch, [Trusted] [NotNull] CalendarSystem calendar)
+        internal LocalDate(int daysSinceEpoch, [Trusted] CalendarSystem calendar)
         {
             Preconditions.DebugCheckNotNull(calendar, nameof(calendar));
             this.yearMonthDayCalendar = calendar.GetYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
@@ -101,7 +101,7 @@ namespace NodaTime
         /// <param name="calendar">Calendar system in which to create the date.</param>
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
-        public LocalDate(int year, int month, int day, [NotNull] CalendarSystem calendar)
+        public LocalDate(int year, int month, int day, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, nameof(calendar));
             calendar.ValidateYearMonthDay(year, month, day);
@@ -117,7 +117,7 @@ namespace NodaTime
         /// <param name="day">The day of month.</param>
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
-        public LocalDate([NotNull] Era era, int yearOfEra, int month, int day)
+        public LocalDate(Era era, int yearOfEra, int month, int day)
             : this(era, yearOfEra, month, day, CalendarSystem.Iso)
         {
         }
@@ -132,14 +132,14 @@ namespace NodaTime
         /// <param name="calendar">Calendar system in which to create the date.</param>
         /// <returns>The resulting date.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.</exception>
-        public LocalDate([NotNull] Era era, int yearOfEra, int month, int day, [NotNull] CalendarSystem calendar)
+        public LocalDate(Era era, int yearOfEra, int month, int day, CalendarSystem calendar)
             : this(Preconditions.CheckNotNull(calendar, nameof(calendar)).GetAbsoluteYear(yearOfEra, era), month, day, calendar)
         {
         }
 
         /// <summary>Gets the calendar system associated with this local date.</summary>
         /// <value>The calendar system associated with this local date.</value>
-        [NotNull] public CalendarSystem Calendar => CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal);
+        public CalendarSystem Calendar => CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal);
 
         /// <summary>Gets the year of this local date.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
@@ -171,7 +171,7 @@ namespace NodaTime
 
         /// <summary>Gets the era of this local date.</summary>
         /// <value>The era of this local date.</value>
-        [NotNull] public Era Era => Calendar.GetEra(yearMonthDayCalendar.Year);
+        public Era Era => Calendar.GetEra(yearMonthDayCalendar.Year);
 
         /// <summary>Gets the day of this local date within the year.</summary>
         /// <value>The day of this local date within the year.</value>
@@ -230,7 +230,7 @@ namespace NodaTime
         /// <param name="dateTime">Value to convert into a Noda Time local date</param>
         /// <param name="calendar">The calendar system to convert into</param>
         /// <returns>A new <see cref="LocalDate"/> with the same values as the specified <c>DateTime</c>.</returns>
-        public static LocalDate FromDateTime(DateTime dateTime, [NotNull] CalendarSystem calendar)
+        public static LocalDate FromDateTime(DateTime dateTime, CalendarSystem calendar)
         {
             int days = NonNegativeTicksToDays(dateTime.Ticks) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDate(days, calendar);
@@ -292,7 +292,7 @@ namespace NodaTime
         /// <param name="date">The date to add the period to</param>
         /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
         /// <returns>The sum of the given date and period</returns>
-        public static LocalDate operator +(LocalDate date, [NotNull] Period period)
+        public static LocalDate operator +(LocalDate date, Period period)
         {
             Preconditions.CheckNotNull(period, nameof(period));
             Preconditions.CheckArgument(!period.HasTimeComponent, nameof(period), "Cannot add a period with a time component to a date");
@@ -307,7 +307,7 @@ namespace NodaTime
         /// <param name="date">The date to add the period to</param>
         /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
         /// <returns>The sum of the given date and period</returns>
-        public static LocalDate Add(LocalDate date, [NotNull] Period period) => date + period;
+        public static LocalDate Add(LocalDate date, Period period) => date + period;
 
         /// <summary>
         /// Adds the specified period to this date.
@@ -317,7 +317,7 @@ namespace NodaTime
         /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
         /// <returns>The sum of this date and the given period</returns>
         [Pure]
-        public LocalDate Plus([NotNull] Period period) => this + period;
+        public LocalDate Plus(Period period) => this + period;
 
         /// <summary>
         /// Combines the given <see cref="LocalDate"/> and <see cref="LocalTime"/> components
@@ -336,7 +336,7 @@ namespace NodaTime
         /// <param name="date">The date to subtract the period from</param>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
         /// <returns>The result of subtracting the given period from the date</returns>
-        public static LocalDate operator -(LocalDate date, [NotNull] Period period)
+        public static LocalDate operator -(LocalDate date, Period period)
         {
             Preconditions.CheckNotNull(period, nameof(period));
             Preconditions.CheckArgument(!period.HasTimeComponent, nameof(period), "Cannot subtract a period with a time component from a date");
@@ -351,7 +351,7 @@ namespace NodaTime
         /// <param name="date">The date to subtract the period from</param>
         /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
         /// <returns>The result of subtracting the given period from the date.</returns>
-        public static LocalDate Subtract(LocalDate date, [NotNull] Period period) => date - period;
+        public static LocalDate Subtract(LocalDate date, Period period) => date - period;
 
         /// <summary>
         /// Subtracts the specified period from this date.
@@ -361,7 +361,7 @@ namespace NodaTime
         /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
         /// <returns>The result of subtracting the given period from this date.</returns>
         [Pure]
-        public LocalDate Minus([NotNull] Period period) => this - period;
+        public LocalDate Minus(Period period) => this - period;
 
         /// <summary>
         /// Subtracts one date from another, returning the result as a <see cref="Period"/> with units of years, months and days.
@@ -376,7 +376,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException">
         /// <paramref name="lhs"/> and <paramref name="rhs"/> are not in the same calendar system.
         /// </exception>
-        [NotNull] public static Period operator -(LocalDate lhs, LocalDate rhs) => Period.Between(rhs, lhs);
+        public static Period operator -(LocalDate lhs, LocalDate rhs) => Period.Between(rhs, lhs);
 
         /// <summary>
         /// Subtracts one date from another, returning the result as a <see cref="Period"/> with units of years, months and days.
@@ -388,7 +388,7 @@ namespace NodaTime
         /// <param name="lhs">The date to subtract from</param>
         /// <param name="rhs">The date to subtract</param>
         /// <returns>The result of subtracting one date from another.</returns>
-        [NotNull] public static Period Subtract(LocalDate lhs, LocalDate rhs) => lhs - rhs;
+        public static Period Subtract(LocalDate lhs, LocalDate rhs) => lhs - rhs;
 
         /// <summary>
         /// Subtracts the specified date from this date, returning the result as a <see cref="Period"/> with units of years, months and days.
@@ -397,7 +397,7 @@ namespace NodaTime
         /// <remarks>The specified date must be in the same calendar system as this.</remarks>
         /// <param name="date">The date to subtract from this</param>
         /// <returns>The difference between the specified date and this one</returns>
-        [Pure] [NotNull] public Period Minus(LocalDate date) => this - date;
+        [Pure] public Period Minus(LocalDate date) => this - date;
 
         /// <summary>
         /// Compares two <see cref="LocalDate" /> values for equality. This requires
@@ -598,7 +598,7 @@ namespace NodaTime
         /// (This is extremely rare.)</exception>
         /// <returns>The <see cref="ZonedDateTime"/> representing the earliest time on this date, in the given time zone.</returns>
         [Pure]
-        public ZonedDateTime AtStartOfDayInZone([NotNull] DateTimeZone zone)
+        public ZonedDateTime AtStartOfDayInZone(DateTimeZone zone)
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             return zone.AtStartOfDay(this);
@@ -612,7 +612,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar system to convert this local date to.</param>
         /// <returns>The converted LocalDate</returns>
         [Pure]
-        public LocalDate WithCalendar([NotNull] CalendarSystem calendar)
+        public LocalDate WithCalendar(CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, nameof(calendar));
             return new LocalDate(DaysSinceEpoch, calendar);
@@ -758,7 +758,7 @@ namespace NodaTime
         /// <param name="adjuster">The adjuster to apply.</param>
         /// <returns>The adjusted date.</returns>
         [Pure]
-        public LocalDate With([NotNull] Func<LocalDate, LocalDate> adjuster) =>
+        public LocalDate With(Func<LocalDate, LocalDate> adjuster) =>
             Preconditions.CheckNotNull(adjuster, nameof(adjuster)).Invoke(this);
 
         /// <summary>
@@ -783,7 +783,7 @@ namespace NodaTime
         /// <param name="day">The day component of the date.</param>
         /// <param name="calendar">The <see cref="CalendarSystem"/> associated with the date.</param>
         [Pure]
-        public void Deconstruct(out int year, out int month, out int day, [NotNull]out CalendarSystem calendar)
+        public void Deconstruct(out int year, out int month, out int day, out CalendarSystem calendar)
         {
             year = Year;
             month = Month;
@@ -823,7 +823,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = LocalDatePattern.Iso;
@@ -840,7 +840,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             if (Calendar != CalendarSystem.Iso)

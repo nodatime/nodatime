@@ -76,7 +76,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <param name="text">The text to break into words.</param>
         /// <returns>The tokenized text.</returns>
-        public static Tokens Tokenize([NotNull] string text)
+        public static Tokens Tokenize(string text)
         {
             Preconditions.CheckNotNull(text, nameof(text));
             text = text.TrimEnd();

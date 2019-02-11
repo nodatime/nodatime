@@ -686,7 +686,7 @@ namespace NodaTime
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
         /// and the ISO-8601 calendar</returns>
         [Pure]
-        public ZonedDateTime InZone([NotNull] DateTimeZone zone) =>
+        public ZonedDateTime InZone(DateTimeZone zone) =>
             // zone is checked for nullity by the constructor.
             new ZonedDateTime(this, zone);
 
@@ -699,7 +699,7 @@ namespace NodaTime
         /// <returns>A <see cref="ZonedDateTime"/> for the same instant, in the given time zone
         /// and calendar</returns>
         [Pure]
-        public ZonedDateTime InZone([NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
+        public ZonedDateTime InZone(DateTimeZone zone, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(zone, nameof(zone));
             Preconditions.CheckNotNull(calendar, nameof(calendar));
@@ -725,7 +725,7 @@ namespace NodaTime
         /// <returns>An <see cref="OffsetDateTime"/> for the same instant, with the given offset
         /// and calendar</returns>
         [Pure]
-        public OffsetDateTime WithOffset(Offset offset, [NotNull] CalendarSystem calendar)
+        public OffsetDateTime WithOffset(Offset offset, CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, nameof(calendar));
             return new OffsetDateTime(this, offset, calendar);
@@ -736,7 +736,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = InstantPattern.ExtendedIso;
@@ -745,7 +745,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteString(InstantPattern.ExtendedIso.Format(this));

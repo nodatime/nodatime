@@ -60,7 +60,7 @@ namespace NodaTime
         /// <param name="instant">The instant.</param>
         /// <param name="zone">The time zone.</param>
         /// <param name="calendar">The calendar system.</param>
-        public ZonedDateTime(Instant instant, [NotNull] DateTimeZone zone, [NotNull] CalendarSystem calendar)
+        public ZonedDateTime(Instant instant, DateTimeZone zone, CalendarSystem calendar)
         {
             this.zone = Preconditions.CheckNotNull(zone, nameof(zone));
             offsetDateTime = new OffsetDateTime(instant, zone.GetUtcOffset(instant), Preconditions.CheckNotNull(calendar, nameof(calendar)));
@@ -72,7 +72,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="instant">The instant.</param>
         /// <param name="zone">The time zone.</param>
-        public ZonedDateTime(Instant instant, [NotNull] DateTimeZone zone)
+        public ZonedDateTime(Instant instant, DateTimeZone zone)
         {
             this.zone = Preconditions.CheckNotNull(zone, nameof(zone));
             offsetDateTime = new OffsetDateTime(instant, zone.GetUtcOffset(instant));
@@ -89,7 +89,7 @@ namespace NodaTime
         /// <param name="offset">The offset between UTC and local time at the desired instant.</param>
         /// <exception cref="ArgumentException"><paramref name="offset"/> is not a valid offset at the given
         /// local date and time.</exception>
-        public ZonedDateTime(LocalDateTime localDateTime, [NotNull] DateTimeZone zone, Offset offset)
+        public ZonedDateTime(LocalDateTime localDateTime, DateTimeZone zone, Offset offset)
         {
             this.zone = Preconditions.CheckNotNull(zone, nameof(zone));
             Instant candidateInstant = localDateTime.ToLocalInstant().Minus(offset);
@@ -110,7 +110,7 @@ namespace NodaTime
 
         /// <summary>Gets the time zone associated with this value.</summary>
         /// <value>The time zone associated with this value.</value>
-        [NotNull] public DateTimeZone Zone => zone ?? DateTimeZone.Utc;
+        public DateTimeZone Zone => zone ?? DateTimeZone.Utc;
 
         /// <summary>
         /// Gets the local date and time represented by this zoned date and time.
@@ -126,7 +126,7 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this zoned date and time.</summary>
         /// <value>The calendar system associated with this zoned date and time.</value>
-        [NotNull] public CalendarSystem Calendar => offsetDateTime.Calendar;
+        public CalendarSystem Calendar => offsetDateTime.Calendar;
 
         /// <summary>
         /// Gets the local date represented by this zoned date and time.
@@ -152,7 +152,7 @@ namespace NodaTime
 
         /// <summary>Gets the era for this zoned date and time.</summary>
         /// <value>The era for this zoned date and time.</value>
-        [NotNull] public Era Era => offsetDateTime.Era;
+        public Era Era => offsetDateTime.Era;
 
         /// <summary>Gets the year of this zoned date and time.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
@@ -266,7 +266,7 @@ namespace NodaTime
         /// <param name="targetZone">The target time zone to convert to.</param>
         /// <returns>A new value in the target time zone.</returns>
         [Pure]
-        public ZonedDateTime WithZone([NotNull] DateTimeZone targetZone)
+        public ZonedDateTime WithZone(DateTimeZone targetZone)
         {
             Preconditions.CheckNotNull(targetZone, nameof(targetZone));
             return new ZonedDateTime(ToInstant(), targetZone, Calendar);
@@ -280,7 +280,7 @@ namespace NodaTime
         /// <param name="calendar">The calendar system to convert this zoned date and time to.</param>
         /// <returns>The converted ZonedDateTime.</returns>
         [Pure]
-        public ZonedDateTime WithCalendar([NotNull] CalendarSystem calendar)
+        public ZonedDateTime WithCalendar(CalendarSystem calendar)
         {
             return new ZonedDateTime(offsetDateTime.WithCalendar(calendar), zone);
         }
@@ -504,7 +504,6 @@ namespace NodaTime
         /// </remarks>
         /// <returns>The <c>ZoneInterval</c> containing this value.</returns>
         [Pure]
-        [NotNull]
         public ZoneInterval GetZoneInterval() => Zone.GetZoneInterval(ToInstant());
 
         /// <summary>
@@ -637,7 +636,7 @@ namespace NodaTime
         /// <param name="dateTimeZone">The <see cref="DateTimeZone"/> component.</param>
         /// <param name="offset">The <see cref="Offset"/> component.</param>
         [Pure]
-        public void Deconstruct(out LocalDateTime localDateTime, [NotNull] out DateTimeZone dateTimeZone, out Offset offset)
+        public void Deconstruct(out LocalDateTime localDateTime, out DateTimeZone dateTimeZone, out Offset offset)
         {
             localDateTime = LocalDateTime;
             dateTimeZone = Zone;
@@ -667,7 +666,7 @@ namespace NodaTime
             /// <para>This property will return a reference to the same instance every time it is called.</para>
             /// </remarks>
             /// <value>A comparer which compares values by their local date/time.</value>
-            [NotNull] public static Comparer Local => LocalComparer.Instance;
+            public static Comparer Local => LocalComparer.Instance;
 
             /// <summary>
             /// Gets a comparer which compares <see cref="ZonedDateTime"/> values by the instants obtained by applying the offset to
@@ -681,7 +680,7 @@ namespace NodaTime
             /// </remarks>
             /// <value>A comparer which compares values by the instants obtained by applying the offset to
             /// the local date/time, ignoring the calendar system.</value>
-            [NotNull] public static Comparer Instant => InstantComparer.Instance;
+            public static Comparer Instant => InstantComparer.Instance;
 
             /// <summary>
             /// Internal constructor to prevent external classes from deriving from this.
@@ -788,7 +787,7 @@ namespace NodaTime
         XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
 
         /// <inheritdoc />
-        void IXmlSerializable.ReadXml([NotNull] XmlReader reader)
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             var pattern = OffsetDateTimePattern.ExtendedIso;
@@ -817,7 +816,7 @@ namespace NodaTime
         }
 
         /// <inheritdoc />
-        void IXmlSerializable.WriteXml([NotNull] XmlWriter writer)
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
             writer.WriteAttributeString("zone", Zone.Id);

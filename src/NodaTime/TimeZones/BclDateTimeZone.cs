@@ -46,13 +46,13 @@ namespace NodaTime.TimeZones
         /// Gets the original <see cref="TimeZoneInfo"/> from which this was created.
         /// </summary>
         /// <value>The original <see cref="TimeZoneInfo"/> from which this was created.</value>
-        [NotNull] public TimeZoneInfo OriginalZone { get; }
+        public TimeZoneInfo OriginalZone { get; }
 
         /// <summary>
         /// Gets the display name associated with the time zone, as provided by the Base Class Library.
         /// </summary>
         /// <value>The display name associated with the time zone, as provided by the Base Class Library.</value>
-        [NotNull] public string DisplayName => OriginalZone.DisplayName;
+        public string DisplayName => OriginalZone.DisplayName;
 
         private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, IZoneIntervalMap map)
             : base(bclZone.Id, bclZone.SupportsDaylightSavingTime, minOffset, maxOffset)
@@ -72,7 +72,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <param name="bclZone">The original time zone to take information from.</param>
         /// <returns>A <see cref="BclDateTimeZone"/> wrapping the given <c>TimeZoneInfo</c>.</returns>
-        [NotNull] public static BclDateTimeZone FromTimeZoneInfo([NotNull] TimeZoneInfo bclZone)
+        public static BclDateTimeZone FromTimeZoneInfo(TimeZoneInfo bclZone)
         {
             Preconditions.CheckNotNull(bclZone, nameof(bclZone));
             Offset standardOffset = bclZone.BaseUtcOffset.ToOffset();
@@ -117,7 +117,7 @@ namespace NodaTime.TimeZones
             rule.DateStart.Month == 1 && rule.DateStart.Day == 1 && rule.DateStart.TimeOfDay.Ticks == 0 &&
             rule.DateEnd.Month == 12 && rule.DateEnd.Day == 31 && rule.DateEnd.TimeOfDay.Ticks == 0;
 
-        private static IZoneIntervalMap BuildMap(BclAdjustmentRule[] rules, Offset standardOffset, [NotNull] string standardName)
+        private static IZoneIntervalMap BuildMap(BclAdjustmentRule[] rules, Offset standardOffset, string standardName)
         {
             Preconditions.CheckNotNull(standardName, nameof(standardName));
 
@@ -391,7 +391,7 @@ namespace NodaTime.TimeZones
         /// <exception cref="InvalidOperationException">The system does not provide a time zone.</exception>
         /// <returns>A <see cref="BclDateTimeZone"/> wrapping the "local" (system) time zone as returned by
         /// <see cref="TimeZoneInfo.Local"/>.</returns>
-        [NotNull] public static BclDateTimeZone ForSystemDefault()
+        public static BclDateTimeZone ForSystemDefault()
         {
             TimeZoneInfo? local = TimeZoneInfoInterceptor.Local;
             if (local is null)

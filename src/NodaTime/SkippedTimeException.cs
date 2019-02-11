@@ -47,7 +47,7 @@ namespace NodaTime
         /// Gets the time zone in which the local date/time is invalid.
         /// </summary>
         /// <value>The time zone in which the local date/time is invalid</value>
-        [NotNull] public DateTimeZone Zone { get; }
+        public DateTimeZone Zone { get; }
 
         /// <summary>
         /// Creates a new instance for the given local date/time and time zone.
@@ -58,7 +58,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="localDateTime">The local date/time which is skipped in the specified time zone.</param>
         /// <param name="zone">The time zone in which the local date/time does not exist.</param>
-        public SkippedTimeException(LocalDateTime localDateTime, [NotNull] DateTimeZone zone)
+        public SkippedTimeException(LocalDateTime localDateTime, DateTimeZone zone)
             : base("Local time " + localDateTime + " is invalid in time zone " + Preconditions.CheckNotNull(zone, nameof(zone)).Id)
         {
             this.LocalDateTime = localDateTime;

@@ -33,7 +33,7 @@ namespace NodaTime.TimeZones.Cldr
         /// assumed in code.
         /// </remarks>
         /// <value>The version of the Windows zones mapping data read from the original file.</value>
-        [NotNull] public string Version { get; }
+        public string Version { get; }
 
         /// <summary>
         /// Gets the TZDB version this Windows zone mapping data was created from.
@@ -45,7 +45,7 @@ namespace NodaTime.TimeZones.Cldr
         /// "2013b" to be supply a <c>WindowsZones</c> object with a <c>TzdbVersion</c> of "2012f".
         /// </remarks>
         /// <value>The TZDB version this Windows zone mapping data was created from.</value>
-        [NotNull] public string TzdbVersion { get; }
+        public string TzdbVersion { get; }
 
         /// <summary>
         /// Gets the Windows time zone database version this Windows zone mapping data was created from.
@@ -56,7 +56,7 @@ namespace NodaTime.TimeZones.Cldr
         /// so "7dc0101" for example.
         /// </remarks>
         /// <value>The Windows time zone database version this Windows zone mapping data was created from.</value>
-        [NotNull] public string WindowsVersion { get; }
+        public string WindowsVersion { get; }
 
         /// <summary>
         /// Gets an immutable collection of mappings from Windows system time zones to
@@ -84,7 +84,7 @@ namespace NodaTime.TimeZones.Cldr
         /// </remarks>
         /// <value>An immutable collection of mappings from Windows system time zones to
         /// TZDB time zones.</value>
-        [NotNull] public IList<MapZone> MapZones { get; }
+        public IList<MapZone> MapZones { get; }
 
         /// <summary>
         /// Gets an immutable dictionary of primary mappings, from Windows system time zone ID
@@ -101,10 +101,10 @@ namespace NodaTime.TimeZones.Cldr
         /// </remarks>
         /// <value>An immutable dictionary of primary mappings, from Windows system time zone ID
         /// to TZDB zone ID.</value>
-        [NotNull] public IDictionary<string, string> PrimaryMapping { get; }
+        public IDictionary<string, string> PrimaryMapping { get; }
 
-        internal WindowsZones([NotNull] string version, [NotNull] string tzdbVersion,
-            [NotNull] string windowsVersion, [NotNull] IList<MapZone> mapZones)
+        internal WindowsZones(string version, string tzdbVersion,
+            string windowsVersion, IList<MapZone> mapZones)
             : this(Preconditions.CheckNotNull(version, nameof(version)),
                    Preconditions.CheckNotNull(tzdbVersion, nameof(tzdbVersion)),
                    Preconditions.CheckNotNull(windowsVersion, nameof(windowsVersion)),

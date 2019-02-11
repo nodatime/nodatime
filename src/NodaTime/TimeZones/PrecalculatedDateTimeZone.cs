@@ -34,7 +34,7 @@ namespace NodaTime.TimeZones
         /// <param name="tailZone">The tail zone - which can be any IZoneIntervalMap for normal operation,
         /// but must be a StandardDaylightAlternatingMap if the result is to be serialized.</param>
         [VisibleForTesting]
-        internal PrecalculatedDateTimeZone([NotNull] string id, [NotNull] ZoneInterval[] intervals, IZoneIntervalMapWithMinMax? tailZone)
+        internal PrecalculatedDateTimeZone(string id, ZoneInterval[] intervals, IZoneIntervalMapWithMinMax? tailZone)
             : base(id, false,
                    ComputeOffset(intervals, tailZone, Offset.Min),
                    ComputeOffset(intervals, tailZone, Offset.Max))
@@ -114,7 +114,7 @@ namespace NodaTime.TimeZones
         /// Writes the time zone to the specified writer.
         /// </summary>
         /// <param name="writer">The writer to write to.</param>
-        internal void Write([NotNull] IDateTimeZoneWriter writer)
+        internal void Write(IDateTimeZoneWriter writer)
         {
             Preconditions.CheckNotNull(writer, nameof(writer));
 
@@ -149,7 +149,7 @@ namespace NodaTime.TimeZones
         /// <param name="reader">The reader.</param>
         /// <param name="id">The id.</param>
         /// <returns>The time zone.</returns>
-        internal static DateTimeZone Read([Trusted] [NotNull] IDateTimeZoneReader reader, [Trusted] [NotNull] string id)
+        internal static DateTimeZone Read([Trusted] IDateTimeZoneReader reader, [Trusted] string id)
         {
             Preconditions.DebugCheckNotNull(reader, nameof(reader));
             Preconditions.DebugCheckNotNull(id, nameof(id));
@@ -179,7 +179,7 @@ namespace NodaTime.TimeZones
 
         // Reasonably simple way of computing the maximum/minimum offset
         // from either periods or transitions, with or without a tail zone.
-        private static Offset ComputeOffset([NotNull] ZoneInterval[] intervals,
+        private static Offset ComputeOffset(ZoneInterval[] intervals,
             IZoneIntervalMapWithMinMax? tailZone,
             OffsetAggregator aggregator)
         {

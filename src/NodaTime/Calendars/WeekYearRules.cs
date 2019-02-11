@@ -34,7 +34,7 @@ namespace NodaTime.Calendars
         /// </para>
         /// </remarks>
         /// <value>A <see cref="IWeekYearRule"/> consistent with ISO-8601.</value>
-        [NotNull] public static IWeekYearRule Iso { get; } = new SimpleWeekYearRule(4, IsoDayOfWeek.Monday, false);
+        public static IWeekYearRule Iso { get; } = new SimpleWeekYearRule(4, IsoDayOfWeek.Monday, false);
 
         /// <summary>
         /// Creates a week year rule where the boundary between one week-year and the next
@@ -56,7 +56,7 @@ namespace NodaTime.Calendars
         /// </param>
         /// <returns>A <see cref="SimpleWeekYearRule"/> with the specified minimum number of days in the first
         /// week.</returns>
-        [NotNull] public static IWeekYearRule ForMinDaysInFirstWeek(int minDaysInFirstWeek)
+        public static IWeekYearRule ForMinDaysInFirstWeek(int minDaysInFirstWeek)
             => ForMinDaysInFirstWeek(minDaysInFirstWeek, IsoDayOfWeek.Monday);
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace NodaTime.Calendars
         /// <param name="firstDayOfWeek">The first day of the week.</param>
         /// <returns>A <see cref="SimpleWeekYearRule"/> with the specified minimum number of days in the first
         /// week and first day of the week.</returns>
-        [NotNull] public static IWeekYearRule ForMinDaysInFirstWeek(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek)
+        public static IWeekYearRule ForMinDaysInFirstWeek(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek)
             => new SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, false);
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace NodaTime.Calendars
         /// <returns>A rule which behaves the same way as the BCL
         /// <see cref="Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)"/>
         /// method.</returns>
-        [NotNull] public static IWeekYearRule FromCalendarWeekRule(CalendarWeekRule calendarWeekRule, DayOfWeek firstDayOfWeek)
+        public static IWeekYearRule FromCalendarWeekRule(CalendarWeekRule calendarWeekRule, DayOfWeek firstDayOfWeek)
         {            
             int minDaysInFirstWeek = calendarWeekRule switch
             {

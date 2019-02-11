@@ -33,7 +33,7 @@ namespace NodaTime.Text
         /// standard pattern (even though it is invariant).
         /// </remarks>
         /// <value>An invariant offset time pattern based on ISO-8601 (down to the second), including offset from UTC.</value>
-        [NotNull] public static OffsetTimePattern GeneralIso => Patterns.GeneralIsoPatternImpl;
+        public static OffsetTimePattern GeneralIso => Patterns.GeneralIsoPatternImpl;
 
         /// <summary>
         /// Gets an invariant offset time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.
@@ -43,7 +43,7 @@ namespace NodaTime.Text
         /// This will round-trip all values, and is available as the "o" standard pattern.
         /// </remarks>
         /// <value>An invariant offset time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.</value>
-        [NotNull] public static OffsetTimePattern ExtendedIso => Patterns.ExtendedIsoPatternImpl;
+        public static OffsetTimePattern ExtendedIso => Patterns.ExtendedIsoPatternImpl;
 
         /// <summary>
         /// Gets an invariant offset time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
@@ -59,7 +59,7 @@ namespace NodaTime.Text
         /// </remarks>
         /// <value>An invariant offset time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
         /// as hours and minutes only.</value>
-        [NotNull] public static OffsetTimePattern Rfc3339 => Patterns.Rfc3339PatternImpl;
+        public static OffsetTimePattern Rfc3339 => Patterns.Rfc3339PatternImpl;
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
@@ -79,7 +79,7 @@ namespace NodaTime.Text
         /// Gets the pattern text for this pattern, as supplied on creation.
         /// </summary>
         /// <value>The pattern text for this pattern, as supplied on creation.</value>
-        [NotNull] public string PatternText { get; }
+        public string PatternText { get; }
 
         // Visible for testing
         /// <summary>
@@ -112,14 +112,14 @@ namespace NodaTime.Text
         /// </remarks>
         /// <param name="text">The text value to parse.</param>
         /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-        [NotNull] public ParseResult<OffsetTime> Parse([SpecialNullHandling] string text) => pattern.Parse(text);
+        public ParseResult<OffsetTime> Parse([SpecialNullHandling] string text) => pattern.Parse(text);
 
         /// <summary>
         /// Formats the given zoned time as text according to the rules of this pattern.
         /// </summary>
         /// <param name="value">The zoned time to format.</param>
         /// <returns>The zoned time formatted according to this pattern.</returns>
-        [NotNull] public string Format(OffsetTime value) => pattern.Format(value);
+        public string Format(OffsetTime value) => pattern.Format(value);
 
         /// <summary>
         /// Formats the given value as text according to the rules of this pattern,
@@ -128,7 +128,7 @@ namespace NodaTime.Text
         /// <param name="value">The value to format.</param>
         /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
         /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
-        [NotNull] public StringBuilder AppendFormat(OffsetTime value, [NotNull] StringBuilder builder) => pattern.AppendFormat(value, builder);
+        public StringBuilder AppendFormat(OffsetTime value, StringBuilder builder) => pattern.AppendFormat(value, builder);
 
         /// <summary>
         /// Creates a pattern for the given pattern text, format info, and template value.
@@ -138,7 +138,7 @@ namespace NodaTime.Text
         /// <param name="templateValue">Template value to use for unspecified fields</param>
         /// <returns>A pattern for parsing and formatting zoned times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        private static OffsetTimePattern Create([NotNull] string patternText, [NotNull] NodaFormatInfo formatInfo,
+        private static OffsetTimePattern Create(string patternText, NodaFormatInfo formatInfo,
             OffsetTime templateValue)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
@@ -158,7 +158,7 @@ namespace NodaTime.Text
         /// <param name="templateValue">Template value to use for unspecified fields</param>
         /// <returns>A pattern for parsing and formatting local times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        [NotNull] public static OffsetTimePattern Create([NotNull] string patternText, [NotNull] CultureInfo cultureInfo, OffsetTime templateValue) =>
+        public static OffsetTimePattern Create(string patternText, CultureInfo cultureInfo, OffsetTime templateValue) =>
             Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting local times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        [NotNull] public static OffsetTimePattern CreateWithInvariantCulture([NotNull] string patternText) =>
+        public static OffsetTimePattern CreateWithInvariantCulture(string patternText) =>
             Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <returns>A pattern for parsing and formatting local times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        [NotNull] public static OffsetTimePattern CreateWithCurrentCulture([NotNull] string patternText) =>
+        public static OffsetTimePattern CreateWithCurrentCulture(string patternText) =>
             Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="patternText">The pattern text to use in the new pattern.</param>
         /// <returns>A new pattern with the given pattern text.</returns>
-        [NotNull] public OffsetTimePattern WithPatternText([NotNull] string patternText) =>
+        public OffsetTimePattern WithPatternText(string patternText) =>
             Create(patternText, FormatInfo, TemplateValue);
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="formatInfo">The localization information to use in the new pattern.</param>
         /// <returns>A new pattern with the given localization information.</returns>
-        private OffsetTimePattern WithFormatInfo([NotNull] NodaFormatInfo formatInfo) =>
+        private OffsetTimePattern WithFormatInfo(NodaFormatInfo formatInfo) =>
             Create(PatternText, formatInfo, TemplateValue);
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="cultureInfo">The culture to use in the new pattern.</param>
         /// <returns>A new pattern with the given culture.</returns>
-        [NotNull] public OffsetTimePattern WithCulture([NotNull] CultureInfo cultureInfo) =>
+        public OffsetTimePattern WithCulture(CultureInfo cultureInfo) =>
             WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="newTemplateValue">The template value to use in the new pattern.</param>
         /// <returns>A new pattern with the given template value.</returns>
-        [NotNull] public OffsetTimePattern WithTemplateValue(OffsetTime newTemplateValue) =>
+        public OffsetTimePattern WithTemplateValue(OffsetTime newTemplateValue) =>
             Create(PatternText, FormatInfo, newTemplateValue);
     }
 }
