@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using ICustomAttributeProvider = Mono.Cecil.ICustomAttributeProvider;
 
 namespace DocfxAnnotationGenerator
 {
@@ -23,6 +25,9 @@ namespace DocfxAnnotationGenerator
 
         // Methods, indexers, properties.
         public bool NotNullReturn { get; }
+
+        // Only relevant for function members.
+        public bool IsOverride { get; }
 
         public static IEnumerable<ReflectionMember> Load(Stream stream) =>
             ModuleDefinition.ReadModule(stream).Types.Where(t => t.IsPublic).SelectMany(GetMembers);
@@ -82,14 +87,24 @@ namespace DocfxAnnotationGenerator
         {
             // property.Name will be Type.Name for explicit interface implementations, e.g. NodaTime.IClock.Now
             DocfxUid = $"{GetUid(property.DeclaringType)}.{property.Name.Replace('.', '#')}{GetParameterNames(property.Parameters)}";
-            NotNullReturn = HasNotNullAttribute(property);
+            NotNullReturn = IsNonNullable(property.PropertyType, property);
+
+            // For indexers...
+            NotNullParameters = property.Parameters
+                .Where(p => IsNonNullable(p.ParameterType, p) && !p.IsOut)
+                .Select(p => p.Name)
+                .ToList();
         }
 
         private ReflectionMember(MethodDefinition method)
         {
             DocfxUid = GetUid(method);
-            NotNullReturn = HasNotNullAttribute(method);
-            NotNullParameters = method.Parameters.Where(p => HasNotNullAttribute(p) && !p.IsOut).Select(p => p.Name).ToList();
+            IsOverride = method.Overrides.Count > 0;
+            NotNullReturn = !method.IsConstructor && IsNonNullable(method.ReturnType, method);
+            NotNullParameters = method.Parameters
+                .Where(p => IsNonNullable(p.ParameterType, p) && !p.IsOut)
+                .Select(p => p.Name)
+                .ToList();
         }
 
         private ReflectionMember(FieldDefinition field)
@@ -148,10 +163,37 @@ namespace DocfxAnnotationGenerator
             int index = name.IndexOf('`');
             return index == -1 ? name : name.Substring(0, index);
         }
-        
-        private bool HasNotNullAttribute(ICustomAttributeProvider provider) =>
+
+        private static bool IsNonNullable(TypeReference type, ICustomAttributeProvider provider)
+        {
+            if (type.IsValueType || type.FullName == "System.Void")
+            {
+                return false;
+            }
+            var nullable = provider.CustomAttributes.FirstOrDefault(ca => ca.AttributeType.FullName == "System.Runtime.CompilerServices.NullableAttribute");
+            if (nullable == null)
+            {
+                return HasAttribute(provider, "JetBrains.Annotations.NotNullAttribute");
+            }
+            // We treat SpecialNullHandling as if it's nullable, because we don't want to add
+            // the ArgumentNullException handling to those parameters.
+            if (HasAttribute(provider, "NodaTime.Annotations.SpecialNullHandlingAttribute"))
+            {
+                return false;
+            }
+            var value = nullable.ConstructorArguments[0].Value;
+            // We only care about the outermost nullability - List<string> and List<string?> are both non-nullable.
+            return value switch
+            {
+                byte b => b == 1,
+                IEnumerable<CustomAttributeArgument> arguments => (byte) (arguments.First().Value) == 1,
+                _ => throw new InvalidOperationException($"Unexpected argument type: {value.GetType()}")
+            };
+        }
+
+        private static bool HasAttribute(ICustomAttributeProvider provider, string name) =>
             provider != null &&
             provider.HasCustomAttributes &&
-            provider.CustomAttributes.Any(attr => attr.AttributeType.FullName == "JetBrains.Annotations.NotNullAttribute");
+            provider.CustomAttributes.Any(attr => attr.AttributeType.FullName == name);
     }
 }

@@ -264,7 +264,11 @@ namespace DocfxAnnotationGenerator
                 var returnElement = (YamlMappingNode) node["syntax"]["return"];
                 if (!returnElement.Children.ContainsKey("description"))
                 {
-                    errors.Add(member.DocfxUid);
+                    // If the method overrides another but we don't have a specific description, that's okay.
+                    if (!member.IsOverride)
+                    {
+                        errors.Add(member.DocfxUid);
+                    }
                     continue;
                 }
                 var description = (YamlScalarNode) returnElement["description"];
