@@ -96,7 +96,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="obj">The object to compare this one with</param>
         /// <returns>True if the specified value is an annual date which is equal to this one; false otherwise</returns>
-        public override bool Equals(object obj) => obj is AnnualDate && Equals((AnnualDate)obj);
+        public override bool Equals(object? obj) => obj is AnnualDate other && Equals(other);
 
         /// <summary>
         /// Returns a hash code for this annual date.

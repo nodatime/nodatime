@@ -111,6 +111,7 @@ namespace NodaTime.Text
         /// Converts this result to a new target type, either by executing the given projection
         /// for a success result, or propagating the exception provider for failure.
         /// </summary>
+        /// <typeparam name="TTarget">The target type of the conversion.</typeparam>
         /// <param name="projection">The projection to apply for the value of this result,
         /// if it's a success result.</param>
         /// <returns>A ParseResult for the target type, either with a value obtained by applying the specified

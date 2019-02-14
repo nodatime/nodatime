@@ -224,7 +224,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="obj">The object to compare this offset time with.</param>
         /// <returns>True if the given value is another offset time equal to this one; false otherwise.</returns>
-        public override bool Equals(object obj) => obj is OffsetTime other && Equals(other);
+        public override bool Equals(object? obj) => obj is OffsetTime other && Equals(other);
 
         /// <summary>
         /// Compares two <see cref="OffsetTime"/> values for equality. This requires

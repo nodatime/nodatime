@@ -287,7 +287,7 @@ namespace NodaTime.TimeZones
         /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />.</param>
         /// <filterpriority>2</filterpriority>
         [DebuggerStepThrough]
-        public override bool Equals(object obj) => Equals(obj as ZoneInterval);
+        public override bool Equals(object? obj) => Equals(obj as ZoneInterval);
 
         /// <summary>
         ///   Serves as a hash function for a particular type.

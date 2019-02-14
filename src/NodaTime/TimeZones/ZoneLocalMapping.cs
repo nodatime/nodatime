@@ -24,7 +24,9 @@ namespace NodaTime.TimeZones
     /// <list type="bullet">
     ///   <item>
     ///     <term>Unambiguous mapping</term>
-    ///     <description>The local time occurs exactly once in the target time zone.</description>
+    ///     <description>
+    ///       The local time occurs exactly once in the target time zone.
+    ///     </description>
     ///   </item>
     ///   <item>
     ///     <term>Ambiguous mapping</term>

@@ -576,7 +576,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="obj">The object to compare this date with.</param>
         /// <returns>True if the given value is another local date equal to this one; false otherwise.</returns>
-        public override bool Equals(object obj) => obj is LocalDate && this == (LocalDate)obj;
+        public override bool Equals(object? obj) => obj is LocalDate other && this == other;
 
         /// <summary>
         /// Compares two <see cref="LocalDate"/> values for equality. This requires

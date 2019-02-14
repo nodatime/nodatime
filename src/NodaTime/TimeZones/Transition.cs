@@ -56,7 +56,7 @@ namespace NodaTime.TimeZones
         /// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
         /// otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => obj is Transition && Equals((Transition)obj);
+        public override bool Equals(object? obj) => obj is Transition other && Equals(other);
 
         /// <summary>
         /// Returns a hash code for this instance.

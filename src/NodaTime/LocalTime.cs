@@ -602,7 +602,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="obj">The object to compare this one with</param>
         /// <returns>True if the specified value is a local time which is equal to this one; false otherwise</returns>
-        public override bool Equals(object obj) => obj is LocalTime && this == (LocalTime)obj;
+        public override bool Equals(object? obj) => obj is LocalTime other && this == other;
 
         /// <summary>
         /// Returns a new LocalTime representing the current value with the given number of hours added.

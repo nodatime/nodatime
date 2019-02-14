@@ -103,7 +103,7 @@ namespace NodaTime
 
         public bool Equals(YearMonthDayCalendar other) => value == other.value;
 
-        public override bool Equals(object other) => other is YearMonthDayCalendar && Equals((YearMonthDayCalendar) other);
+        public override bool Equals(object? obj) => obj is YearMonthDayCalendar other && Equals(other);
 
         public override int GetHashCode() => value;
     }

@@ -335,7 +335,7 @@ namespace NodaTime
         ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
         ///   otherwise, <c>false</c>.
         /// </returns>
-        public override bool Equals(object obj) => obj is Offset && Equals((Offset)obj);
+        public override bool Equals(object? obj) => obj is Offset other && Equals(other);
 
         /// <summary>
         ///   Returns a hash code for this instance.
