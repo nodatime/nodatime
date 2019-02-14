@@ -305,7 +305,7 @@ namespace NodaTime
         /// <param name="obj">Another object to compare to.</param> 
         /// <filterpriority>2</filterpriority>
         /// <returns>True if the specified value is a <see cref="ZonedDateTime"/> representing the same instant in the same time zone; false otherwise.</returns>
-        public override bool Equals(object obj) => obj is ZonedDateTime && Equals((ZonedDateTime)obj);
+        public override bool Equals(object? obj) => obj is ZonedDateTime other && Equals(other);
 
         /// <summary>
         /// Computes the hash code for this instance.

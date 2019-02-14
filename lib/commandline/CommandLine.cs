@@ -1210,7 +1210,7 @@ namespace CommandLine
             return leftHash ^ rightHash;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var other = obj as Pair<TLeft, TRight>;
 
