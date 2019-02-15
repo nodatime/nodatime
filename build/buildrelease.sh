@@ -35,7 +35,7 @@ dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime.Testin
 dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime.Test
 
 # Even run the slow tests before a release...
-dotnet run -c Release -p src/NodaTime.Test
+dotnet test -c Release src/NodaTime.Test
 
 mkdir $OUTPUT
 

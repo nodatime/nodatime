@@ -30,7 +30,7 @@ dotnet run -p $SRCDIR/NodaTime.TzdbCompiler -- \
   
 echo ""
 
-dotnet run -f netcoreapp2.0 -p ../../src/NodaTime.Test -- --where=cat!=Slow
+dotnet test ../../src/NodaTime.Test --filter=TestCategory!=Slow
 
 echo Hash on github pages:
 wget -q -O - http://nodatime.github.io/tzvalidate/tzdata$1-sha256.txt 2> /dev/null

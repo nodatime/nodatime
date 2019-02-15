@@ -55,11 +55,10 @@ dotnet build src/NodaTime-All.sln
 
 ### Running Tests
 
-The tests are currently console application projects. Simply run the following commands:
+Simply run the following command:
 
 ```Text
-cd src/NodaTime.Test
-dotnet run
+dotnet test src/NodaTime.Test
 ```
 
 ### Submitting Changes
