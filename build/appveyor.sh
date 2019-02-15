@@ -16,8 +16,10 @@ dotnet build -c Release src/NodaTime-All.sln
 # Temporarily disabled until we've got this working with C# 8
 # build/coverage.sh
 
-dotnet run --no-build -c Release -p src/NodaTime.Test -- --where=cat!=Slow
+dotnet test -c Release src/NodaTime.Test --filter=TestCategory!=Slow
+
+dotnet build -c Release src/NodaTime.TzdbCompiler
+dotnet test -c Release src/NodaTime.TzdbCompiler.Test
 
 dotnet build src/NodaTime-Web.sln
-dotnet run -p src/NodaTime.Web.Test
-
+dotnet test src/NodaTime.Web.Test
