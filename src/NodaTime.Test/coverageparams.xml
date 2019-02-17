@@ -4,8 +4,8 @@
  - See https://www.jetbrains.com/help/dotcover/dotCover__Console_Runner_Commands.html#cover
  -->
 <CoverageParams>
-  <TargetExecutable>/Program Files/dotnet/dotnet.exe</TargetExecutable>
-  <TargetArguments>run -c Release -- --where=cat!=Slow</TargetArguments>
+  <TargetExecutable>c:/Program Files/dotnet/dotnet.exe</TargetExecutable>
+  <TargetArguments>test --no-build -c Release --filter=TestCategory!=Slow</TargetArguments>
   <TargetWorkingDir>.</TargetWorkingDir>
   <Filters>
     <IncludeFilters>
