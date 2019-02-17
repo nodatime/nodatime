@@ -137,7 +137,7 @@ for general notes on custom patterns, including characters used for escaping and
     <tr>
       <td><code>;</code></td>
       <td>
-        This is always *formatted* as a period, but can *parse* either a period or a comma.
+        This is always <em>formatted</em> as a period, but can <em>parse</em> either a period or a comma.
         In all other respects it behaves as the period custom specifier. The purpose of
         this specifier is to properly parse ISO-8601 times, where a comma is allowed as
         the separator for subsecond values.
