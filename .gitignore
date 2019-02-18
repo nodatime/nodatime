@@ -59,7 +59,10 @@ BenchmarkDotNet.Artifacts
 # Packages installed during the build
 packages
 coverage
+
+# Local files
 src/NodaTime.Web/docfx
+src/NodaTime.Web/benchmarks
 build/history
 
 # If coverage fails, we don't want to add the pinning global.json
