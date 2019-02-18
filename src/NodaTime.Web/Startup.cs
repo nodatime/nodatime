@@ -80,7 +80,7 @@ namespace NodaTime.Web
             {
                 services.AddSingleton<IReleaseRepository, FakeReleaseRepository>();
                 services.AddSingleton<ITzdbRepository, FakeTzdbRepository>();
-                services.AddSingleton<IBenchmarkRepository, FakeBenchmarkRepository>();
+                services.AddSingleton<IBenchmarkRepository, LocalBenchmarkRepository>();
             }
             services.AddSingleton<MarkdownLoader>();
             services.AddMemoryCache();
