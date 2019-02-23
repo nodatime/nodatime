@@ -49,12 +49,12 @@ namespace NodaTime.Text
                 throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);
             }
 
-            // The sole standard pattern...
             if (patternText.Length == 1)
             {
                 return patternText[0] switch
                 {
                     'o' => DurationPattern.Patterns.RoundtripPatternImpl,
+                    'j' => DurationPattern.Patterns.JsonRoundtripPatternImpl,
                     _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(Duration))
                 };
             }

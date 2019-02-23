@@ -111,6 +111,10 @@ namespace NodaTime.Test.Text
             new Data(1, 2, 3, 4, 123456789) { StandardPattern = DurationPattern.Roundtrip, Pattern = "o", Text = "1:02:03:04.123456789", Culture = Cultures.DotTimeSeparator },
             new Data(-1, -2, -3, -4, -123456789) { StandardPattern = DurationPattern.Roundtrip, Pattern = "o", Text = "-1:02:03:04.123456789", Culture = Cultures.DotTimeSeparator },
 
+            // Same tests for the "JSON roundtrip" pattern.
+            new Data(1, 2, 3, 4, 123456789) { StandardPattern = DurationPattern.JsonRoundtrip, Pattern = "j", Text = "26:03:04.123456789", Culture = Cultures.DotTimeSeparator },
+            new Data(-1, -2, -3, -4, -123456789) { StandardPattern = DurationPattern.JsonRoundtrip, Pattern = "j", Text = "-26:03:04.123456789", Culture = Cultures.DotTimeSeparator },
+
             // Extremes...
             new Data(Duration.MinValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "-16777216:00:00:00.000000000" },
             new Data(Duration.MaxValue) { Pattern = "-D:hh:mm:ss.fffffffff", Text = "16777215:23:59:59.999999999" },
