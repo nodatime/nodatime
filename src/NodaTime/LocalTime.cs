@@ -240,11 +240,11 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Factory method for creating a local time from the number of ticks which have elapsed since midnight.
+        /// Factory method for creating a local time from the number of nanoseconds which have elapsed since midnight.
         /// </summary>
-        /// <param name="nanoseconds">The number of ticks, in the range [0, 863,999,999,999]</param>
+        /// <param name="nanoseconds">The number of nanoseconds, in the range [0, 86,399,999,999,999]</param>
         /// <returns>The resulting time.</returns>
-        internal static LocalTime FromNanosecondsSinceMidnight(long nanoseconds)
+        public static LocalTime FromNanosecondsSinceMidnight(long nanoseconds)
         {
             // Avoid the method calls which give a decent exception unless we're actually going to fail.
             if (nanoseconds < 0 || nanoseconds > NanosecondsPerDay - 1)
