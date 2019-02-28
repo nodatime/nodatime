@@ -3,7 +3,7 @@
 # refetching the file for the first phase.
 
 # Build site and run smoke tests
-(cd $root/$commit/nodatime/build; ./buildweb.sh ../../nodatime.org &> buildweb.log)
+(cd $root/$commit/nodatime/build; ./buildweb.sh ../../nodatime.org)
 
 echo "Build and test successful. Pushing."
 
