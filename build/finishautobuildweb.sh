@@ -19,6 +19,6 @@ echo $commit > $root/$commit/nodatime.org/wwwroot/commit.txt
 echo "Building container on Google Cloud Container Builder."
 
 (cd $root/$commit/nodatime;
- cp build/nodatime.org/Dockerfile src/NodaTime.Web/bin/Release/netcoreapp2.1/publish;
- gcloud.cmd container builds submit --config=build/nodatime.org/cloudbuild.yaml src/NodaTime.Web/bin/Release/netcoreapp2.1/publish)
+ cp build/nodatime.org/Dockerfile src/NodaTime.Web/bin/Release/netcoreapp2.2/publish;
+ gcloud.cmd container builds submit --config=build/nodatime.org/cloudbuild.yaml src/NodaTime.Web/bin/Release/netcoreapp2.2/publish)
 
