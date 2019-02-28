@@ -35,4 +35,4 @@ git clone https://github.com/nodatime/nodatime.git --depth 1 $root/$commit/nodat
 git clone https://github.com/nodatime/nodatime.org.git --depth 1 $root/$commit/nodatime.org
 
 # Hand off to the second part of the build
-source $root/$commit/nodatime/build/finishautobuildweb.sh
+source $root/$commit/nodatime/build/finishautobuildweb.sh &> $root/$commit/nodatime/build/buildweb.log
