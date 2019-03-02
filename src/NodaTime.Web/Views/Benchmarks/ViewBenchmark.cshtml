@@ -10,7 +10,15 @@
 }
 
 <div class="row">
-    <div class="large-12 columns">
+	<ul class="breadcrumbs">
+		<li><a href="/">Home</a></li>
+		<li><a href="/benchmarks">Benchmarks</a></li>
+		<li><a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">Environment ( @env.Machine, @env.TargetFramework )</a></li>
+		<li><a href="/benchmarks/runs/@run.BenchmarkRunId">Run Detail</a></li>
+		<li class="current"><a href="#">@type.FullTypeName</a></li>
+	</ul>
+
+    <div class="large-6 columns">
         <h1>Benchmark</h1>
         <p>
             Type: <a href="/benchmarks/types/@type.BenchmarkTypeId">@type.FullTypeName</a><br />
@@ -19,6 +27,9 @@
             Run: <a href="/benchmarks/runs/@run.BenchmarkRunId">@run.BenchmarkRunId.TruncateGuid()</a> <br />
             <a href="/benchmarks/benchmarks/@benchmark.BenchmarkId/history">View history (from here back)</a>
         </p>
+	</div>
+    <div class="large-6 columns">
+
         @if (benchmark.Statistics != null)
     {
         var stats = benchmark.Statistics;

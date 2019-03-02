@@ -6,7 +6,12 @@
 }
 
 <div class="row">
-    <div class="large-12 columns">
+	<ul class="breadcrumbs">
+		<li><a href="/">Home</a></li>
+		<li><a href="/benchmarks">Benchmarks</a></li>
+		<li class="current"><a href="#">Environment ( @Model.Machine, @Model.TargetFramework )</a></li>
+	</ul>
+    <div class="large-6 columns">
         <h1>Benchmark environment for @Model.BenchmarkEnvironmentId.TruncateGuid()</h1>
         <p>
             Machine: @Model.Machine<br />
@@ -19,25 +24,27 @@
             Has RyuJit? @Model.HasRyuJit<br />
             JIT modules: @Model.JitModules<br />
         </p>
+	</div>
+	<div class="large-6 columns">
         <h2>Runs</h2>
         <table>
             <tr>
-                <th></th>
-                <th>Commit</th>
                 <th>Start</th>
                 <th>End</th>
                 <th>Types</th>
                 <th>Benchmarks</th>
+                <th>Commit</th>
+                <th></th>
             </tr>
             @foreach (var run in Model.Runs)
             {
                 <tr>
-                    <td><a href="/benchmarks/runs/@run.BenchmarkRunId">View</a></td>
-                    <td><a href="https://github.com/nodatime/nodatime/commit/@run.Commit">@run.Commit.TruncateCommit()</a></td>
                     <td>@Html.RenderTimestamp(run.Start)</td>
                     <td>@Html.RenderTimestamp(run.End)</td>
                     <td>@run.Types_.Count</td>
                     <td>@run.Types_.Sum(t => t.Benchmarks.Count)</td>
+                    <td><a href="https://github.com/nodatime/nodatime/commit/@run.Commit">@run.Commit.TruncateCommit()</a></td>
+                    <td><a href="/benchmarks/runs/@run.BenchmarkRunId">View</a></td>
                 </tr>
             }
         </table>

@@ -9,7 +9,14 @@
 }
 
 <div class="row">
-    <div class="large-12 columns">
+	<ul class="breadcrumbs">
+		<li><a href="/">Home</a></li>
+		<li><a href="/benchmarks">Benchmarks</a></li>
+		<li><a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">Environment ( @env.Machine, @env.TargetFramework )</a></li>
+		<li class="current"><a href="#">Run Detail</a></li>
+	</ul>
+
+    <div class="large-6 columns">
         <h1>Benchmark run</h1>
         <p>
             Commit: <a href="https://github.com/nodatime/nodatime/commit/@run.Commit">@run.Commit.TruncateCommit()</a><br />
@@ -18,30 +25,30 @@
             End time: @Html.RenderTimestamp(run.End)<br />
             BenchmarkDotNet version: @run.BenchmarkDotNetVersion
         </p>
+	</div>
+    <div class="large-6 columns">
         <h2>Types (by namespace)</h2>
         @* TODO: Present in a single table with a different style for a namespace row? *@
-        @foreach (var groupByNs in types.GroupBy(t => t.Namespace).OrderBy(g => g.Key))
-        {
-        <div>
-            <h2>@groupByNs.Key</h2>
-        </div>
-        <div>
-            <table>
-                
-                <tr>
-                    <th>Type</th>
-                    <th>Count</th>
-                </tr>
-                @foreach (var type in groupByNs)
-                {
-                    <tr>
-                        <td><a href="/benchmarks/types/@type.BenchmarkTypeId">@type.Type</a></td>
-                        <td>@type.Benchmarks.Count</td>
-                    </tr>
-                }
-            </table>
-        </div>
-        }
+		<table>
+			@foreach (var groupByNs in types.GroupBy(t => t.Namespace).OrderBy(g => g.Key))
+			{
+				<tr class="nsType">
+					<th>@groupByNs.Key</th>
+					<th></th>
+				</tr>
+				<tr>
+					<th>Type</th>
+					<th>Count</th>
+				</tr>
+				@foreach (var type in groupByNs)
+				{
+					<tr>
+						<td><a href="/benchmarks/types/@type.BenchmarkTypeId">@type.Type</a></td>
+						<td>@type.Benchmarks.Count</td>
+					</tr>
+				}
+			}
+        </table>
     </div>
     @* Work out how to style the above to leave some padding instead... *@
     <p />
