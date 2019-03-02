@@ -6,6 +6,13 @@
 }
 
 <div class="row">
+	<ul class="breadcrumbs">
+		<li><a href="/">Home</a></li>
+		<li><a href="/benchmarks">Benchmarks</a></li>
+		<li><a href="/benchmarks/environments/@Model.Environment.BenchmarkEnvironmentId">Environment (@Model.Environment.Machine, @Model.Environment.TargetFramework )</a></li>
+		<li><a href="/benchmarks/types/@Model.Left.BenchmarkTypeId">@Model.Left.FullTypeName</a></li>
+		<li class="current"><a href="#">Commit Comparison</a></li>
+	</ul>
     <div>
         <h1>Benchmark type comparison for @Model.Left.FullTypeName</h1>
     </div>

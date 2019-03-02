@@ -6,6 +6,11 @@
 }
 
 <div class="row">
+	<ul class="breadcrumbs">
+		<li><a href="/">Home</a></li>
+		<li class="current"><a href="#">Benchmarks</a></li>
+	</ul>
+
     <div class="large-12 columns">
         <h1>Benchmarks</h1>
 
@@ -19,7 +24,6 @@
         <h2>Benchmark environments</h2>
         <table>
             <tr>
-                <th></th>
                 <th>Machine</th>
                 <th>Target framework</th>
                 <th>Operating system</th>
@@ -28,6 +32,7 @@
                 <th>First run</th>
                 <th>Last run</th>
                 <th>Run count</th>
+                <th></th>
             </tr>
             @foreach (var env in Model
            .OrderByDescending(e => e.Runs?.FirstOrDefault()?.Start?.ToInstant())
@@ -35,7 +40,6 @@
            .ThenBy(e => e.TargetFramework))
         {
             <tr>
-                <td><a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">View</a></td>
                 <td>@env.Machine</td>
                 <td>@env.TargetFramework</td>
                 <td>@env.OperatingSystem</td>
@@ -44,6 +48,7 @@
                 <td>@Html.RenderTimestampAsUtcDate(env.Runs.LastOrDefault()?.Start)</td>
                 <td>@Html.RenderTimestampAsUtcDate(env.Runs.FirstOrDefault()?.Start)</td>
                 <td>@env.Runs.Count</td>
+                <td><a href="/benchmarks/environments/@env.BenchmarkEnvironmentId">View</a></td>
             </tr>
     }
         </table>
