@@ -18,7 +18,7 @@
 		<li class="current"><a href="#">@type.FullTypeName</a></li>
 	</ul>
 
-    <div class="large-6 columns">
+    <div class="large-12 columns">
         <h1>Benchmark</h1>
         <p>
             Type: <a href="/benchmarks/types/@type.BenchmarkTypeId">@type.FullTypeName</a><br />
@@ -27,8 +27,6 @@
             Run: <a href="/benchmarks/runs/@run.BenchmarkRunId">@run.BenchmarkRunId.TruncateGuid()</a> <br />
             <a href="/benchmarks/benchmarks/@benchmark.BenchmarkId/history">View history (from here back)</a>
         </p>
-	</div>
-    <div class="large-6 columns">
 
         @if (benchmark.Statistics != null)
     {

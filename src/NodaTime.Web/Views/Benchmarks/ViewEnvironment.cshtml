@@ -11,7 +11,7 @@
 		<li><a href="/benchmarks">Benchmarks</a></li>
 		<li class="current"><a href="#">Environment ( @Model.Machine, @Model.TargetFramework )</a></li>
 	</ul>
-    <div class="large-6 columns">
+    <div class="large-12 columns">
         <h1>Benchmark environment for @Model.BenchmarkEnvironmentId.TruncateGuid()</h1>
         <p>
             Machine: @Model.Machine<br />
@@ -24,8 +24,6 @@
             Has RyuJit? @Model.HasRyuJit<br />
             JIT modules: @Model.JitModules<br />
         </p>
-	</div>
-	<div class="large-6 columns">
         <h2>Runs</h2>
         <table>
             <tr>
