@@ -3,11 +3,11 @@
 # refetching the file for the first phase.
 
 # Build site and run smoke tests
+echo $commit > $root/$commit/nodatime/src/NodaTime.Web/wwwroot/commit.txt
+
 (cd $root/$commit/nodatime/build; ./buildweb.sh ../../nodatime.org)
 
 echo "Build and test successful. Pushing."
-
-echo $commit > $root/$commit/nodatime.org/wwwroot/commit.txt
 
 # Commit and push
 # Ignore anything in .gitignore when adding files
