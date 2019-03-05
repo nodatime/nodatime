@@ -469,5 +469,6 @@ td.pattern-example {
 }
 
 .nsType {
-	background-color: aliceblue;
+    /* !important is the simplest way to override the color from alternating table rows */
+	background-color: aliceblue !important;
 }
