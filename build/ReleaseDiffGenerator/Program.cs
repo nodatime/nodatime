@@ -11,16 +11,23 @@ namespace ReleaseDiffGenerator
     {
         static int Main(string[] args)
         {
-            if (args.Length != 2)
+            if (args.Length < 2)
             {
-                Console.WriteLine("Usage: ReleaseDiffGenerator <old release directory> <new release directory>");
+                Console.WriteLine("Usage: ReleaseDiffGenerator <old release directory> <new release directory> [...]");
                 return 1;
             }
 
-            var oldRelease = Release.Load(args[0], Path.GetFileName(args[0]));
-            var newRelease = Release.Load(args[1], Path.GetFileName(args[1]));
+            var releases = args.Select(arg => Release.Load(arg, Path.GetFileName(arg))).ToArray();
+            // Generate diffs pair-wise
+            for (int i = 1; i < args.Length; i++)
+            {
+                GenerateDiffs(releases[i - 1], releases[i], args[i]);
+            }
+            return 0;
+        }
 
-
+        static void GenerateDiffs(Release oldRelease, Release newRelease, string destination)
+        {
             var oldMemberUids = new HashSet<string>(oldRelease.MembersByUid.Keys);
             var newMemberUids = new HashSet<string>(newRelease.MembersByUid.Keys);
 
@@ -55,7 +62,7 @@ namespace ReleaseDiffGenerator
 
             // TODO:
             // - Linking of removed items (can't be a normal link, as it has to be to previous version)
-            using (var writer = File.CreateText(Path.Combine(args[1], "api", "changes.md")))
+            using (var writer = File.CreateText(Path.Combine(destination, "api", "changes.md")))
             {
                 writer.WriteLine($"# API changes from {oldRelease.Version} to {newRelease.Version}");
 
@@ -64,7 +71,7 @@ namespace ReleaseDiffGenerator
                 WriteChanges(writer, newlyObsoleteMembers, "Newly obsolete", true, ""); // No need to put "(obsolete)" on everything...
             }
 
-            var tocFile = Path.Combine(args[1], "api", "toc.yml");
+            var tocFile = Path.Combine(destination, "api", "toc.yml");
             var toc = File.ReadAllLines(tocFile).ToList();
             if (!toc[1].StartsWith("- name: Changes"))
             {
@@ -72,8 +79,6 @@ namespace ReleaseDiffGenerator
                 toc.Insert(2, "  href: changes.md");
             }
             File.WriteAllLines(tocFile, toc);
-
-            return 0;
         }
 
         static void WriteChanges(TextWriter writer, IEnumerable<DocfxMember> members, string label, bool link, string obsoleteSuffix)

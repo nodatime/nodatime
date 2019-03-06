@@ -54,23 +54,27 @@ rm -rf tmp/docfx/obj/unstable/serialization-api
 
 cp docfx/toc.yml tmp/docfx/obj/unstable
 
+echo "Building all tools"
+dotnet build Tools.sln
+
 # Awooga! Awooga! Horrible hack! docfx doesn't support C# 8 yet, and refers to nullable
 # references types as if they were nullable value types. Fix this up in a purely textual way for now.
 dotnet run -p DocfxNullableReferenceFixer -- --fix tmp/docfx/obj/unstable/api
 
 # Create diffs between versions and other annotations
 
-dotnet restore Tools.sln
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/1.0.x tmp/docfx/obj/1.1.x
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/1.1.x tmp/docfx/obj/1.2.x
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/1.2.x tmp/docfx/obj/1.3.x
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/1.3.x tmp/docfx/obj/1.4.x
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/1.4.x tmp/docfx/obj/2.0.x
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/2.0.x tmp/docfx/obj/2.1.x
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/2.1.x tmp/docfx/obj/2.2.x
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/2.2.x tmp/docfx/obj/2.3.x
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/2.3.x tmp/docfx/obj/2.4.x
-dotnet run -p ReleaseDiffGenerator -- tmp/docfx/obj/2.4.x tmp/docfx/obj/unstable
+dotnet run -p ReleaseDiffGenerator -- \
+  tmp/docfx/obj/1.0.x \
+  tmp/docfx/obj/1.1.x \
+  tmp/docfx/obj/1.2.x \
+  tmp/docfx/obj/1.3.x \
+  tmp/docfx/obj/1.4.x \
+  tmp/docfx/obj/2.0.x \
+  tmp/docfx/obj/2.1.x \
+  tmp/docfx/obj/2.2.x \
+  tmp/docfx/obj/2.3.x \
+  tmp/docfx/obj/2.4.x \
+  tmp/docfx/obj/unstable
 
 # Extract annotations
 dotnet run -p DocfxAnnotationGenerator -- \
