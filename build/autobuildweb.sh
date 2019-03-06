@@ -7,7 +7,6 @@
 # - Find the latest commit for the main repo
 # - If $root/$commit exists, assume there have been no changes, and abort
 # - Make a shallow clone (--depth 1) of the main repo to $root/$commit/nodatime
-# - Make a shallow clone (--depth 1) of the nodatime.org repo to $root/$commit/nodatime.org
 # - Run the fetched finishautobuildweb.sh to complete the remainder of the build
 #
 # It is anticipated that this file will not need to change often; it's effectively bootstrapping.
@@ -30,9 +29,11 @@ then
   exit 0
 fi
 
-# Clone repos
+# Clone repo
 git clone https://github.com/nodatime/nodatime.git --depth 1 $root/$commit/nodatime
-git clone https://github.com/nodatime/nodatime.org.git --depth 1 $root/$commit/nodatime.org
+
+# We no longer use the nodatime.org repo
+# git clone https://github.com/nodatime/nodatime.org.git --depth 1 $root/$commit/nodatime.org
 
 # Hand off to the second part of the build
 source $root/$commit/nodatime/build/finishautobuildweb.sh &> $root/$commit/nodatime/build/buildweb.log

@@ -5,18 +5,9 @@
 # Build site and run smoke tests
 echo $commit > $root/$commit/nodatime/src/NodaTime.Web/wwwroot/commit.txt
 
-(cd $root/$commit/nodatime/build; ./buildweb.sh ../../nodatime.org)
+(cd $root/$commit/nodatime/build; ./buildweb.sh)
 
 echo "Build and test successful. Pushing."
-
-# Commit and push
-# Ignore anything in .gitignore when adding files
-(cd $root/$commit/nodatime.org;
- git add --all -f
- git commit -a -m "Regenerate from main repo commit $commit";
- git push)
-
-echo "Building container on Google Cloud Container Builder."
 
 (cd $root/$commit/nodatime;
  cp build/nodatime.org/Dockerfile src/NodaTime.Web/bin/Release/netcoreapp2.2/publish;

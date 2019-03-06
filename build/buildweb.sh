@@ -2,17 +2,7 @@
 
 set -e
 
-if [[ "$1" = "" ]]
-then
-  echo "Usage: buildweb.sh output-directory [--skip-api]"
-  echo "e.g. buildweb.sh c:\\users\\jon\\NodaTime\\nodatime.org"
-  echo "It is expected that the output directory already exists and is"
-  echo "set up for git. If --skip-api is set, it is assumed the API docs already exist."
-  exit 1
-fi
-
-WEB_DIR="$1"
-
+# Note: use --skip-api to skip building API docs
 
 # Disable msbuild node reuse, in an attempt to stabilize the build.
 # The bundler/minimizer seems to have problems which *may* be related
@@ -20,7 +10,7 @@ WEB_DIR="$1"
 export MSBUILDDISABLENODEREUSE=1
 
 # Build the API docs with docfx
-if [[ "$2" != "--skip-api" ]]
+if [[ "$1" != "--skip-api" ]]
 then
   ./buildapidocs.sh
   rm -rf ../src/NodaTime.Web/docfx
@@ -33,18 +23,9 @@ rm -rf ../src/NodaTime.Web/bin/Release
 dotnet build -c Release ../src/NodaTime.Web
 dotnet publish -c Release ../src/NodaTime.Web
 
-# Retain just the .git directory, but nuke the rest from orbit.
-rm -rf tmp/old_nodatime.org
-mv $WEB_DIR tmp/old_nodatime.org
-mkdir $WEB_DIR
-mv tmp/old_nodatime.org/.git $WEB_DIR
-
-# Copy the new site into place
-cp -r ../src/NodaTime.Web/bin/Release/netcoreapp2.2/publish/* $WEB_DIR
-
 # Fix up blazor.config to work in Unix
 # (Blazor is currently disabled.)
 # sed -i 's/\\/\//g' $WEB_DIR/NodaTime.Web.Blazor.blazor.config
 
 # Run a smoke test to check it still works
-(cd $WEB_DIR; dotnet NodaTime.Web.dll --smoke-test)
+(cd ../src/NodaTime.Web/bin/Release/netcoreapp2.2/publish; dotnet NodaTime.Web.dll --smoke-test)
