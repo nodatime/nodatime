@@ -8,6 +8,11 @@ namespace DocfxYamlLoader
 {
     public class Release
     {
+        private static readonly IDeserializer deserializer = new DeserializerBuilder()
+            .WithNamingConvention(new CamelCaseNamingConvention())
+            .IgnoreUnmatchedProperties()
+            .Build();
+
         public string Version { get; }
         public List<DocfxMember> Members { get; }
         public Dictionary<string, DocfxMember> MembersByUid { get; }
@@ -28,19 +33,15 @@ namespace DocfxYamlLoader
 
         public static Release Load(string directory, string version)
         {
-            var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(new CamelCaseNamingConvention())
-                .IgnoreUnmatchedProperties()
-                .Build();
             var members =
                 from file in Directory.EnumerateFiles(directory, "*.yml", SearchOption.AllDirectories)
                 where Path.GetFileName(file) != "toc.yml"
-                from item in Load(deserializer, file).Items
+                from item in Load(file).Items
                 select item;
             return new Release(version, members.ToList());
         }
 
-        private static DocfxYamlFile Load(Deserializer deserializer, string file)
+        private static DocfxYamlFile Load(string file)
         {
             string yaml = File.ReadAllText(file);
             var doc = deserializer.Deserialize<DocfxYamlFile>(yaml);
