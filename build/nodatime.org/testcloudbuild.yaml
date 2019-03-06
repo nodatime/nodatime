@@ -1,0 +1,15 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/jonskeet-uberproject/nodatime.org:test-$BUILD_ID', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/jonskeet-uberproject/nodatime.org:test-$BUILD_ID']
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - set
+  - image
+  - deployment
+  - nodatime-test
+  - nodatime-test=gcr.io/jonskeet-uberproject/nodatime.org:test-$BUILD_ID
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=web-cluster'
