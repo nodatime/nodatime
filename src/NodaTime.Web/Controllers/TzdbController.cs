@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NodaTime.Helpers;
 using NodaTime.Web.Models;
 using System.Linq;
 
 namespace NodaTime.Web.Controllers
 {
+    [AddHeader("X-Robots-Tag", "noindex")]
     public class TzdbController : Controller
     {
         private const string ContentType = "application/octet-stream";
@@ -22,6 +24,7 @@ namespace NodaTime.Web.Controllers
             {
                 return NotFound();
             }
+            Response.Headers.Add("X-Robots-Tag", "noindex");
             return File(release.GetContent(), ContentType, release.Name);
         }
 

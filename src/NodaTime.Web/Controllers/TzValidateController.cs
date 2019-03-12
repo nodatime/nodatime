@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 using Microsoft.AspNetCore.Mvc;
+using NodaTime.Helpers;
 using NodaTime.TimeZones;
 using NodaTime.TzValidate.NodaDump;
 using NodaTime.Web.Models;
@@ -11,6 +12,7 @@ using System.Net;
 
 namespace NodaTime.Web.Controllers
 {
+    [AddHeader("X-Robots-Tag", "noindex")]
     public class TzValidateController : Controller
     {
         private readonly ITzdbRepository repository;
