@@ -24,7 +24,6 @@ namespace NodaTime.Web.Controllers
             {
                 return NotFound();
             }
-            Response.Headers.Add("X-Robots-Tag", "noindex");
             return File(release.GetContent(), ContentType, release.Name);
         }
 
