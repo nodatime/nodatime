@@ -76,6 +76,10 @@ namespace NodaTime.Web
             {
                 services.AddHttpsRedirection(options => options.HttpsPort = 443);
             }
+
+            // TODO: Add actual health checks, maybe.
+            services.AddHealthChecks();
+
 #if BLAZOR
             services.AddResponseCompression(options =>
             {
@@ -119,7 +123,8 @@ namespace NodaTime.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            // Note: health checks come before HTTPS redirection so we get a 200 even on HTTP.
+            app.UseHealthChecks("/healthz");
             app.UseHttpsRedirection();
 
             app.UseDefaultFiles();
