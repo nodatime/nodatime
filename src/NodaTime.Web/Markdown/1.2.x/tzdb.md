@@ -28,13 +28,13 @@ Obtaining and using a "NodaZoneData" file (1.1+ format)
 Fetching a NodaZoneData file from nodatime.org
 ----------------------------------------------
 
-The http://nodatime.org/tzdb directory contains NodaZoneData files
+The https://nodatime.org/tzdb directory contains NodaZoneData files
 from 2013h onwards. These can be downloaded and used with any Noda
 Time 1.1+ binary, so you don't need to update to the latest version
 of Noda Time in order to get the latest version of TZDB, and you
 don't have to build the file yourself either.
 
-The http://nodatime.org/tzdb/latest.txt file contains a URL to the
+The https://nodatime.org/tzdb/latest.txt file contains a URL to the
 latest version. This may be used for automation.
 
 Building a NodaZoneData file
