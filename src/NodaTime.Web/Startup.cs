@@ -36,6 +36,9 @@ namespace NodaTime.Web
         // Not const to avoid unreachable code warnings.
         private static readonly bool UseGoogleCloudStorage = Environment.GetEnvironmentVariable("DISABLE_GCS") == null;
 
+        private IConfigurationRoot Configuration { get; set; }
+        private IHostingEnvironment CurrentEnvironment { get; set; }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -44,9 +47,8 @@ namespace NodaTime.Web
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+            CurrentEnvironment = env;
         }
-
-        private static IConfigurationRoot Configuration { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
