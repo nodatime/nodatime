@@ -15,6 +15,7 @@ namespace NodaTime.Web.Models
         private readonly Func<T> provider;
         private readonly ILogger logger;
         private readonly object padlock = new object();
+        private readonly Duration refreshPeriod;
         private T value;
         // TODO: Use Interlocked or similar to ensure proper volatility.
         // It's possible that using volatile would be enough...
@@ -42,10 +43,13 @@ namespace NodaTime.Web.Models
             lifetime.ApplicationStopping.Register(() => timer?.Dispose());
             logger = loggerFactory.CreateLogger(typeof(TimerCache<T>));
             this.provider = provider;
-            // Due time of zero means "immediately"
-            timer = new Timer(Fetch, state: null, dueTime: TimeSpan.Zero, period: refreshPeriod.ToTimeSpan());
+            // Don't start yet; wait for Start() to be called.
+            timer = new Timer(Fetch, state: null, -1, Timeout.Infinite);
+            this.refreshPeriod = refreshPeriod;
             value = initialValue;
         }
+
+        public void Start() => timer.Change(TimeSpan.Zero, refreshPeriod.ToTimeSpan());
 
         private void Fetch(object state)
         {
