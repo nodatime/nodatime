@@ -72,7 +72,7 @@ namespace NodaTime.Web
             // TODO: Put this into appsettings.json?
             // (When hosted on GKE, we don't locally host HTTPS, so we need to specify the port.
             // But in development, we need to stick with 5001.)
-            if (!CurrentEnvironment.IsDevelopment())
+            if (!CurrentEnvironment.IsDevelopment() && CurrentEnvironment.EnvironmentName != "smoketests")
             {
                 services.AddHttpsRedirection(options => options.HttpsPort = 443);
             }
