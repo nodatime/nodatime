@@ -22,6 +22,8 @@ spec:
         env:
         - name: ASPNETCORE_URLS
           value: http://*:80
+        - name: ASPNETCORE_ENVIRONMENT
+          value: Staging
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
