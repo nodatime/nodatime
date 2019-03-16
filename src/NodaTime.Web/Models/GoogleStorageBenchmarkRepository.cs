@@ -31,6 +31,7 @@ namespace NodaTime.Web.Models
             StorageClient client = StorageClient.Create(credential);
             cache = new TimerCache<CacheValue>(lifetime, CacheRefreshTime, () => CacheValue.Refresh(cache?.Value ?? CacheValue.Empty, client), loggerFactory,
                 CacheValue.Empty);
+            cache.Start();
         }
         
         public IList<BenchmarkEnvironment> ListEnvironments() => cache.Value.Environments;

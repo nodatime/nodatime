@@ -31,6 +31,7 @@ namespace NodaTime.Web.Models
         {
             client = StorageClient.Create(credential);
             cache = new TimerCache<CacheValue>(lifetime, CacheRefreshTime, FetchReleases, loggerFactory, CacheValue.Empty);
+            cache.Start();
         }
 
         public IList<ReleaseDownload> GetReleases() => (cache.Value ?? FetchReleases()).Releases;
