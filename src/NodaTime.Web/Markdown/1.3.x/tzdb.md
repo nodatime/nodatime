@@ -49,7 +49,7 @@ Time 1.1+ binary, so you don't need to update to the latest version
 of Noda Time in order to get the latest version of TZDB, and you
 don't have to build the file yourself either.
 
-The URL [http://nodatime.org/tzdb/latest.txt](/tzdb/latest.txt)
+The URL [https://nodatime.org/tzdb/latest.txt](/tzdb/latest.txt)
 returns a plaintext response containing the URL of the latest NZD file.
 This may be used for automation.
 
