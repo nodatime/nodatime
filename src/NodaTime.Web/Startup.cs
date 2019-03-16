@@ -25,6 +25,7 @@ using NodaTime.Web.Providers;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Mime;
 
 namespace NodaTime.Web
@@ -54,10 +55,27 @@ namespace NodaTime.Web
         {
             // Add framework services.
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
-            services.Configure<ForwardedHeadersOptions>(
-                options => options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto);
 
+            // TODO: Put this into appsettings.json.
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.KnownNetworks.Clear();
+                // Google Cloud Platform load balancers
+                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("130.211.0.0"), 22));
+                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("35.191.0.0"), 16));
+                // GKE service which proxies the request as well.
+                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("10.0.0.0"), 8));
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.ForwardLimit = 2;
+            });
+
+            // TODO: Put this into appsettings.json?
+            // (When hosted on GKE, we don't locally host HTTPS, so we need to specify the port.
+            // But in development, we need to stick with 5001.)
+            if (!CurrentEnvironment.IsDevelopment())
+            {
+                services.AddHttpsRedirection(options => options.HttpsPort = 443);
+            }
 #if BLAZOR
             services.AddResponseCompression(options =>
             {
@@ -99,7 +117,10 @@ namespace NodaTime.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
+
+            app.UseHttpsRedirection();
 
             app.UseDefaultFiles();
             // Default content, e.g. CSS.
