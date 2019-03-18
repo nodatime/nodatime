@@ -69,13 +69,17 @@ namespace NodaTime.Web
                 options.ForwardLimit = 2;
             });
 
-            // TODO: Put this into appsettings.json?
-            // (When hosted on GKE, we don't locally host HTTPS, so we need to specify the port.
-            // But in development, we need to stick with 5001.)
-            if (!CurrentEnvironment.IsDevelopment() && CurrentEnvironment.EnvironmentName != "smoketests")
+            services.AddHttpsRedirection(options =>
             {
-                services.AddHttpsRedirection(options => options.HttpsPort = 443);
-            }
+                // TODO: Put this into appsettings.json?
+                // (When hosted on GKE, we don't locally host HTTPS, so we need to specify the port.
+                // But in development, we need to stick with 5001.)            
+                if (!CurrentEnvironment.IsDevelopment() && CurrentEnvironment.EnvironmentName != "smoketests")
+                {
+                    options.HttpsPort = 443;
+                }
+                options.RedirectStatusCode = 301;
+            });
 
             // TODO: Add actual health checks, maybe.
             services.AddHealthChecks();
