@@ -4,8 +4,8 @@
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -32,6 +32,10 @@ namespace NodaTime.Web
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                // Clear all logging here; we'll add back console and debug later. This unfortunately
+                // makes startup harder to diagnose :(
+                // We should probably revisit this. (How much of the configuration is available here in the context?)
+                .ConfigureLogging(logging => logging.ClearProviders())
                 // Uncomment these lines if startup is failing
                 //.CaptureStartupErrors(true)
                 //.UseSetting("detailedErrors", "true")
