@@ -6,6 +6,9 @@
 using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.ResponseCompression;
 #endif
+using Google.Api.Gax;
+using Google.Cloud.Diagnostics.AspNetCore;
+using Google.Cloud.Logging.V2;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using NodaTime.Web.Configuration;
 using NodaTime.Web.Controllers;
 using NodaTime.Web.Models;
 using NodaTime.Web.Providers;
@@ -39,6 +43,7 @@ namespace NodaTime.Web
 
         private IConfigurationRoot Configuration { get; set; }
         private IHostingEnvironment CurrentEnvironment { get; set; }
+        public StackdriverOptions StackdriverOptions { get; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -49,6 +54,7 @@ namespace NodaTime.Web
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             CurrentEnvironment = env;
+            StackdriverOptions = Configuration.GetSection("Stackdriver").Get<StackdriverOptions>();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -95,6 +101,16 @@ namespace NodaTime.Web
             });
 #endif
 
+            if (StackdriverOptions.UseStackdriverErrorReporting)
+            {
+                var platform = Platform.Instance();
+                services.AddGoogleExceptionLogging(options =>
+                {
+                    options.ServiceName = StackdriverOptions.ServiceName ?? platform.GkeDetails?.ContainerName ?? "aspnetcore";
+                    options.Version = StackdriverOptions.ServiceVersion ?? CurrentEnvironment.EnvironmentName;
+                });
+            }
+
             if (UseGoogleCloudStorage)
             {
                 // Eagerly fetch the GoogleCredential so that we're not using Task.Result in
@@ -114,8 +130,36 @@ namespace NodaTime.Web
             services.AddMemoryCache();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            
+
+#pragma warning disable CS0618 // Type or member is obsolete - loggerFactory.AddConsole. We need to work out how to do all this better.
+            if (StackdriverOptions.UseStackdriverLogging)
+            {
+                var platform = Platform.Instance();
+                var loggerOptions = LoggerOptions.Create(
+                    logLevel: StackdriverOptions.LogLevel,
+                    logName: StackdriverOptions.LogId ?? platform.GkeDetails?.ContainerName ?? "aspnetcore");
+                loggerFactory.AddGoogle(app.ApplicationServices, platform.ProjectId, loggerOptions);
+                if (StackdriverOptions.IncludeConsoleLogging)
+                {
+                    loggerFactory.AddConsole();
+                }
+            }
+            else
+            {
+                // If we're not logging to Stackdriver, use console logging instead.
+                loggerFactory.AddConsole();
+                loggerFactory.AddDebug();
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+
+            if (StackdriverOptions.UseStackdriverErrorReporting)
+            {
+                app.UseGoogleExceptionLogging();
+            }
+
             app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {

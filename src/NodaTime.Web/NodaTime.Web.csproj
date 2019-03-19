@@ -23,7 +23,9 @@
     
     <!-- Other dependencies -->
     <PackageReference Include="Google.Cloud.Storage.V1" Version="2.1.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.5.0" />
+    <PackageReference Include="Google.Cloud.Diagnostics.AspNetCore" Version="3.0.0-beta10" />
+    <PackageReference Include="Google.Api.Gax" Version="2.6.0" />
+    <PackageReference Include="Google.Api.Gax.Grpc" Version="2.6.0" />
     <PackageReference Include="CommonMark.NET" Version="0.15.1" />
     <PackageReference Include="morelinq" Version="2.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
