@@ -5,7 +5,7 @@
     <OutputType>Exe</OutputType>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>preview</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
 
