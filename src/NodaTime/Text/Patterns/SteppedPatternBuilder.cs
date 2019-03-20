@@ -246,11 +246,15 @@ namespace NodaTime.Text.Patterns
             builder.AddLiteral(pattern.Current, ParseResult<TResult>.EscapedCharacterMismatch);
         }
 
+#pragma warning disable IDE0060
+        // Note: the builder parameter is unused, but required so that the method fits the delegate signature.
+
         /// <summary>
         /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
         /// "use a custom format string consisting of H instead of a standard pattern H".
         /// </summary>
         internal static void HandlePercent(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
+#pragma warning restore IDE0060
         {
             if (pattern.HasMoreCharacters)
             {
@@ -458,7 +462,7 @@ namespace NodaTime.Text.Patterns
             Func<TResult, LocalDate> dateExtractor,
             Func<TResult, LocalTime> timeExtractor,
             // null if date/time embedded patterns are invalid
-            Func<TResult, LocalDateTime> dateTimeExtractor)
+            Func<TResult, LocalDateTime>? dateTimeExtractor)
         {
             // This will be d (date-only), t (time-only), or < (date and time)
             // If it's anything else, we'll see the problem when we try to get the pattern.
