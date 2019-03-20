@@ -13,7 +13,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/nodatime/nodatime</RepositoryUrl>
     <Deterministic>True</Deterministic>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>preview</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
 
