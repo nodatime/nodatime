@@ -323,8 +323,8 @@ namespace NodaTime.Test.Text
             // Default to the start of the year 2000 UTC
             protected override ZonedDateTime DefaultTemplate => ZonedDateTimePattern.DefaultTemplateValue;
 
-            internal ZoneLocalMappingResolver Resolver { get; set; }
-            internal IDateTimeZoneProvider ZoneProvider { get; set; }
+            internal ZoneLocalMappingResolver? Resolver { get; set; }
+            internal IDateTimeZoneProvider? ZoneProvider { get; set; }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="Data" /> class.
