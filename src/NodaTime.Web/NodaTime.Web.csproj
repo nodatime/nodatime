@@ -5,7 +5,7 @@
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
     <DefineConstants Condition="$(UseBlazor)">BLAZOR</DefineConstants>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
