@@ -34,13 +34,13 @@ namespace NodaTime.Web.Models
             cache.Start();
         }
         
-        public IList<BenchmarkEnvironment> ListEnvironments() => cache.Value.Environments;
+        public IList<BenchmarkEnvironment>? ListEnvironments() => cache.Value.Environments;
         // TODO: Don't throw if asked for an invalid value...
-        public BenchmarkEnvironment GetEnvironment(string environmentId) => cache.Value.EnvironmentsById[environmentId];
-        public BenchmarkType GetType(string benchmarkTypeId) => cache.Value.TypesById[benchmarkTypeId];
-        public BenchmarkRun GetRun(string benchmarkRunId) => cache.Value.RunsById[benchmarkRunId];
-        public Benchmark GetBenchmark(string benchmarkId) => cache.Value.BenchmarksById[benchmarkId];
-        public IList<BenchmarkType> GetTypesByCommitAndType(string commit, string fullTypeName) =>
+        public BenchmarkEnvironment? GetEnvironment(string environmentId) => cache.Value.EnvironmentsById[environmentId];
+        public BenchmarkType? GetType(string benchmarkTypeId) => cache.Value.TypesById[benchmarkTypeId];
+        public BenchmarkRun? GetRun(string benchmarkRunId) => cache.Value.RunsById[benchmarkRunId];
+        public Benchmark? GetBenchmark(string benchmarkId) => cache.Value.BenchmarksById[benchmarkId];
+        public IList<BenchmarkType>? GetTypesByCommitAndType(string commit, string fullTypeName) =>
             cache.Value.TypesByCommitAndFullName[(commit, fullTypeName)].ToList();
 
         private class CacheValue

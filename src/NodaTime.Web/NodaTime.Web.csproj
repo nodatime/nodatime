@@ -8,6 +8,7 @@
     <LangVersion>preview</LangVersion>
     <DefineConstants Condition="$(UseBlazor)">BLAZOR</DefineConstants>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
 
   <ItemGroup>

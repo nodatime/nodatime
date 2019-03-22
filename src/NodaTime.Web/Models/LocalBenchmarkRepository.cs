@@ -18,12 +18,12 @@ namespace NodaTime.Web.Models
     /// </summary>
     public class LocalBenchmarkRepository : IBenchmarkRepository
     {
-        private readonly IList<BenchmarkEnvironment> environments;
-        private readonly IDictionary<string, BenchmarkEnvironment> environmentsById;
-        private readonly IDictionary<string, BenchmarkRun> runsById;
-        private readonly IDictionary<string, BenchmarkType> typesById;
-        private readonly IDictionary<string, Benchmark> benchmarksById;
-        private readonly ILookup<(string, string), BenchmarkType> typesByCommitAndFullName;
+        private readonly IList<BenchmarkEnvironment>? environments;
+        private readonly IDictionary<string, BenchmarkEnvironment>? environmentsById;
+        private readonly IDictionary<string, BenchmarkRun>? runsById;
+        private readonly IDictionary<string, BenchmarkType>? typesById;
+        private readonly IDictionary<string, Benchmark>? benchmarksById;
+        private readonly ILookup<(string, string), BenchmarkType>? typesByCommitAndFullName;
 
         public LocalBenchmarkRepository(IHostingEnvironment environment, ILogger<LocalBenchmarkRepository> logger)
         {
@@ -81,12 +81,12 @@ namespace NodaTime.Web.Models
             return runs;
         }
 
-        public IList<BenchmarkEnvironment> ListEnvironments() => environments;
-        public BenchmarkEnvironment GetEnvironment(string environmentId) => environmentsById?[environmentId];
-        public BenchmarkType GetType(string benchmarkTypeId) => typesById?[benchmarkTypeId];
-        public BenchmarkRun GetRun(string benchmarkRunId) => runsById?[benchmarkRunId];
-        public Benchmark GetBenchmark(string benchmarkId) => benchmarksById?[benchmarkId];
-        public IList<BenchmarkType> GetTypesByCommitAndType(string commit, string fullTypeName) =>
+        public IList<BenchmarkEnvironment>? ListEnvironments() => environments;
+        public BenchmarkEnvironment? GetEnvironment(string environmentId) => environmentsById?[environmentId];
+        public BenchmarkType? GetType(string benchmarkTypeId) => typesById?[benchmarkTypeId];
+        public BenchmarkRun? GetRun(string benchmarkRunId) => runsById?[benchmarkRunId];
+        public Benchmark? GetBenchmark(string benchmarkId) => benchmarksById?[benchmarkId];
+        public IList<BenchmarkType>? GetTypesByCommitAndType(string commit, string fullTypeName) =>
             typesByCommitAndFullName?[(commit, fullTypeName)].ToList();
     }
 }

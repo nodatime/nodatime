@@ -25,7 +25,7 @@ namespace NodaTime.Web.Configuration
         /// The log name is projects/{project_id}/logs/{log_id}. If this property is non-null, it's
         /// used to populate log ID. Otherwise, the container name is used if possible, and "aspnetcore" otherwise.
         /// </summary>
-        public string LogId { get; set; }
+        public string? LogId { get; set; }
 
         /// <summary>
         /// Set to true to add console logging back in, usually to diagnose misconfiguration of Stackdriver.
@@ -36,12 +36,12 @@ namespace NodaTime.Web.Configuration
         /// The service name used for error reporting. If this property is non-null, it's
         /// used to populate log ID. Otherwise, the container name is used if possible, and "aspnetcore" otherwise.
         /// </summary>
-        public string ServiceName { get; set; }
+        public string? ServiceName { get; set; }
 
         /// <summary>
         /// The service version used for error reporting. If this property is null, the environment name is used instead.
         /// </summary>
-        public string ServiceVersion { get; set; }
+        public string? ServiceVersion { get; set; }
 
         /// <summary>
         /// The log level for the Stackdriver logger, or Debug by default. This default is normally fine,

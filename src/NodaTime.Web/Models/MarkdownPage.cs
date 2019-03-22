@@ -17,12 +17,12 @@ namespace NodaTime.Web.Models
     {
         private static readonly Regex DirectiveSplitter = new Regex(@"^@([a-zA-Z]+)\s*=\s*""(.*)""$");
 
-        public string Title { get; }
+        public string? Title { get; }
         public string Id { get; }
-        public IHtmlContent Content { get; }
+        public IHtmlContent? Content { get; }
         public MarkdownBundle Bundle { get; }
 
-        private MarkdownPage(string id, MarkdownBundle bundle, string title, IHtmlContent content)
+        private MarkdownPage(string id, MarkdownBundle bundle, string? title, IHtmlContent? content)
         {
             Id = id;
             Title = title;

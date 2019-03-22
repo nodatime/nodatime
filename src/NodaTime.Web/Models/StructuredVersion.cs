@@ -10,7 +10,7 @@ namespace NodaTime.Web.Models
     /// <summary>
     /// A structured version number: major/minor/patch/pre-release
     /// </summary>
-    public class StructuredVersion : IComparable<StructuredVersion>, IEquatable<StructuredVersion>
+    public class StructuredVersion : IComparable<StructuredVersion>, IEquatable<StructuredVersion?>
     {
         // Allow up to 7 digits per part. That's enough for anything sensible, and will avoid overflow when parsing.
         private static readonly Regex VersionPattern = new Regex(@"^(?<major>\d{1,7})\.(?<minor>\d{1,7})\.(?<patch>\d{1,7})(?:-(?<pre>.+))?$");
@@ -22,7 +22,7 @@ namespace NodaTime.Web.Models
         /// <summary>
         /// Prerelease part of the version, if any, e.g. "beta01". Null for GA versions.
         /// </summary>
-        public string Prerelease { get; }
+        public string? Prerelease { get; }
 
         public override string ToString() => text;
 
@@ -52,19 +52,19 @@ namespace NodaTime.Web.Models
             : ComparePrereleases(Prerelease, other.Prerelease);
 
         // A null prerelease needs to come *before* a non-null one
-        private static int ComparePrereleases(string x, string y) =>
+        private static int ComparePrereleases(string? x, string? y) =>
             x == y ? 0
             : x == null ? 1
             : y == null ? -1
             : string.CompareOrdinal(x, y);
 
-        public bool Equals(StructuredVersion other) => other != null &&
+        public bool Equals(StructuredVersion? other) => other != null &&
             other.Major == Major &&
             other.Minor == Minor &&
             other.Patch == Patch &&
             other.Prerelease == Prerelease;
 
-        public override bool Equals(object obj) => Equals(obj as StructuredVersion);
+        public override bool Equals(object? obj) => Equals(obj as StructuredVersion);
 
         public override int GetHashCode() => (Major * 100 + Minor * 10 + Patch) ^ (Prerelease?.GetHashCode() ?? 0);
     }
