@@ -51,14 +51,14 @@ namespace NodaTime.Web.Models
 
         private static ReleaseDownload ConvertObject(Google.Apis.Storage.v1.Data.Object obj)
         {
-            string sha256Hash = null;
+            string? sha256Hash = null;
             obj.Metadata?.TryGetValue(Sha256Key, out sha256Hash);
-            string releaseDateMetadata = null;
+            string? releaseDateMetadata = null;
             obj.Metadata?.TryGetValue(ReleaseDateKey, out releaseDateMetadata);
             var match = ReleasePattern.Match(obj.Name);
-            StructuredVersion version = match.Success ? new StructuredVersion(match.Groups[1].Value) : null;
+            StructuredVersion? version = match.Success ? new StructuredVersion(match.Groups[1].Value) : null;
             LocalDate releaseDate = releaseDateMetadata == null
-                ? LocalDate.FromDateTime(obj.Updated.Value)
+                ? LocalDate.FromDateTime(obj.Updated!.Value)
                 : LocalDatePattern.Iso.Parse(releaseDateMetadata).Value;
             return new ReleaseDownload(version, obj.Name.Substring(ObjectPrefix.Length), $"https://storage.googleapis.com/{Bucket}/{obj.Name}", sha256Hash, releaseDate);
         }

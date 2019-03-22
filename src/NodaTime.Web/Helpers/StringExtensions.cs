@@ -8,7 +8,7 @@ namespace NodaTime.Web.Helpers
 {
     public static class StringExtensions
     {
-        public static string TruncateGuid(this string guid)
+        public static string? TruncateGuid(this string? guid)
         {
             if (guid == null)
             {
@@ -21,7 +21,7 @@ namespace NodaTime.Web.Helpers
             return guid.Substring(0, 4) + "..." + guid.Substring(guid.Length - 4);
         }
 
-        public static string TruncateCommit(this string commit)
+        public static string? TruncateCommit(this string? commit)
         {
             if (commit == null)
             {

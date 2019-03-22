@@ -11,12 +11,12 @@ namespace NodaTime.Web.Helpers
     {
         private static readonly InstantPattern instantPattern = InstantPattern.CreateWithInvariantCulture("yyyy-MM-dd HH:mm:ss");
 
-        public static string RenderTimestamp(this IHtmlHelper helper, Instant? instant) => instant == null ? null : instantPattern.Format(instant.Value);
-        public static string RenderTimestamp(this IHtmlHelper helper, Timestamp timestamp) => RenderTimestamp(helper, timestamp?.ToInstant());
-        public static string RenderTimestampAsUtcDate(this IHtmlHelper helper, Timestamp timestamp) => RenderTimestamp(helper, timestamp?.ToInstant().InUtc().Date);
-        public static string RenderTimestamp(this IHtmlHelper helper, LocalDate? date) => date == null ? null : LocalDatePattern.Iso.Format(date.Value);
+        public static string? RenderTimestamp(this IHtmlHelper helper, Instant? instant) => instant == null ? null : instantPattern.Format(instant.Value);
+        public static string? RenderTimestamp(this IHtmlHelper helper, Timestamp timestamp) => RenderTimestamp(helper, timestamp?.ToInstant());
+        public static string? RenderTimestampAsUtcDate(this IHtmlHelper helper, Timestamp timestamp) => RenderTimestamp(helper, timestamp?.ToInstant().InUtc().Date);
+        public static string? RenderTimestamp(this IHtmlHelper helper, LocalDate? date) => date == null ? null : LocalDatePattern.Iso.Format(date.Value);
 
-        public static string RenderTime(this IHtmlHelper helper, double? nanos)
+        public static string? RenderTime(this IHtmlHelper helper, double? nanos)
         {
             if (nanos == null)
             {

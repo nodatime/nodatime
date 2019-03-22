@@ -12,6 +12,6 @@ namespace NodaTime.Web.Models
         /// <summary>
         /// Gets the given release, if it exists (or null otherwise).
         /// </summary>
-        TzdbDownload GetRelease(string name);
+        TzdbDownload? GetRelease(string name);
     }
 }

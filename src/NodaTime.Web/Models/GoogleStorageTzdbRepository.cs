@@ -36,7 +36,7 @@ namespace NodaTime.Web.Models
 
         public IList<TzdbDownload> GetReleases() => (cache.Value ?? FetchReleases()).Releases;
 
-        public TzdbDownload GetRelease(string name)
+        public TzdbDownload? GetRelease(string name)
         {
             var releasesByName = (cache.Value ?? FetchReleases()).ReleasesByName;
             if (releasesByName.TryGetValue(name, out var value))

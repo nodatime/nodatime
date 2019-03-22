@@ -34,6 +34,10 @@ namespace NodaTime.Web.Controllers
         public IActionResult ViewType(string typeId)
         {
             var type = repository.GetType(typeId);
+            if (type == null)
+            {
+                return NotFound();
+            }
             var previousCommit = GetPreviousRun(type.Run)?.Commit;
             return View((type, previousCommit));
         }
@@ -60,9 +64,9 @@ namespace NodaTime.Web.Controllers
         public IActionResult CompareTypesByCommit(string leftTypeId, string commit)
         {
             var leftType = repository.GetType(leftTypeId);
-            var environment = leftType.Environment;
-            var run = environment.Runs.FirstOrDefault(r => r.Commit == commit);
-            if (run == null)
+            var environment = leftType?.Environment;
+            var run = environment?.Runs.FirstOrDefault(r => r.Commit == commit);
+            if (run == null || leftType == null)
             {
                 return NotFound();
             }
@@ -82,6 +86,10 @@ namespace NodaTime.Web.Controllers
         {
             // Use the provided benchmark as the latest one to use
             var latest = repository.GetBenchmark(benchmarkId);
+            if (latest == null)
+            {
+                return NotFound();
+            }
             var benchmarks =
                 from run in latest.Environment.Runs.SkipWhile(r => r != latest.Run)
                 from type in run.Types_ where type.FullTypeName == latest.Type.FullTypeName
@@ -91,8 +99,8 @@ namespace NodaTime.Web.Controllers
             return View(benchmarks.ToList());
         }        
 
-        private BenchmarkRun GetPreviousRun(BenchmarkRun run) =>
-            repository.GetEnvironment(run.BenchmarkEnvironmentId).Runs
+        private BenchmarkRun? GetPreviousRun(BenchmarkRun run) =>
+            repository.GetEnvironment(run.BenchmarkEnvironmentId)?.Runs
                 .SkipWhile(r => r.BenchmarkRunId != run.BenchmarkRunId)
                 .Skip(1)
                 .FirstOrDefault();            

@@ -21,7 +21,7 @@ namespace NodaTime.Web.Controllers
             this.repository = repository;
 
         [Route("/tzvalidate/generate")]
-        public IActionResult Generate(int startYear = 1, int endYear = 2035, string zone = null, string version = null)
+        public IActionResult Generate(int startYear = 1, int endYear = 2035, string? zone = null, string? version = null)
         {
             if (startYear < 1 || endYear > 3000 || startYear > endYear)
             {

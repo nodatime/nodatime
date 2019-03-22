@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+// TODO: Work out the best way of sorting this out...
+#nullable disable
+
 namespace NodaTime.Web.Models
 {
     public class MarkdownBundle

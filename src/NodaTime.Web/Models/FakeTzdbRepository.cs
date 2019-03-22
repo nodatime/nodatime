@@ -55,7 +55,7 @@ namespace NodaTime.Web.Models
             new TzdbDownload("https://storage.googleapis.com/nodatime/tzdb/tzdb2018i.nzd")
         };
 
-        public TzdbDownload GetRelease(string name) => releases.FirstOrDefault(r => r.Name == name);
+        public TzdbDownload? GetRelease(string name) => releases.FirstOrDefault(r => r.Name == name);
 
         public IList<TzdbDownload> GetReleases() => releases;
     }
