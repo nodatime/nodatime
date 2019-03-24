@@ -21,5 +21,7 @@ namespace NodaTime.Web.Controllers
         public IActionResult Versions() => View("Docs", markdownBundle.TryGetPage("versions"));
 
         public IActionResult Index() => View();
+
+        public IActionResult Error() => View();
     }
 }
