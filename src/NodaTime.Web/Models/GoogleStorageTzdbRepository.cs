@@ -16,7 +16,7 @@ namespace NodaTime.Web.Models
 {
     public class GoogleStorageTzdbRepository : ITzdbRepository
     {
-        private static readonly Regex PlausibleReleaseName = new Regex(@"^[_-a-zA-Z0-9.]+\.nzd$");
+        private static readonly Regex PlausibleReleaseName = new Regex(@"^[-_a-zA-Z0-9.]+\.nzd$");
 
         private const string Bucket = "nodatime";
         private static readonly Duration CacheRefreshTime = Duration.FromMinutes(7);
