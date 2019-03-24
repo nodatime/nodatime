@@ -2,6 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using Google.Api.Gax;
+using Google.Cloud.Diagnostics.AspNetCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace NodaTime.Web.Configuration
@@ -48,5 +53,47 @@ namespace NodaTime.Web.Configuration
         /// as ASP.NET Core will provide additional filtering.
         /// </summary>
         public LogLevel LogLevel { get; set; } = LogLevel.Debug;
+
+        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
+        {
+            if (UseStackdriverErrorReporting)
+            {
+                var platform = Platform.Instance();
+                services.AddGoogleExceptionLogging(options =>
+                {
+                    options.ServiceName = ServiceName ?? platform.GkeDetails?.ContainerName ?? "aspnetcore";
+                    options.Version = ServiceVersion ?? env.EnvironmentName;
+                });
+            }
+        }
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+#pragma warning disable CS0618 // Type or member is obsolete - loggerFactory.AddConsole. We need to work out how to do all this better.
+            if (UseStackdriverLogging)
+            {
+                var platform = Platform.Instance();
+                var loggerOptions = LoggerOptions.Create(
+                    logLevel: LogLevel,
+                    logName: LogId ?? platform.GkeDetails?.ContainerName ?? "aspnetcore");
+                loggerFactory.AddGoogle(app.ApplicationServices, platform.ProjectId, loggerOptions);
+                if (IncludeConsoleLogging)
+                {
+                    loggerFactory.AddConsole();
+                }
+            }
+            else
+            {
+                // If we're not logging to Stackdriver, use console logging instead.
+                loggerFactory.AddConsole();
+                loggerFactory.AddDebug();
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+
+            if (UseStackdriverErrorReporting)
+            {
+                app.UseGoogleExceptionLogging();
+            }
+        }
     }
 }
