@@ -166,7 +166,7 @@ namespace NodaTime.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
             // Note: health checks come before HTTPS redirection so we get a 200 even on HTTP.
