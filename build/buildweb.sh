@@ -28,4 +28,4 @@ dotnet publish -c Release ../src/NodaTime.Web
 # sed -i 's/\\/\//g' $WEB_DIR/NodaTime.Web.Blazor.blazor.config
 
 # Run a smoke test to check it still works
-(cd ../src/NodaTime.Web/bin/Release/netcoreapp2.2/publish; dotnet NodaTime.Web.dll --smoke-test)
+dotnet test ../src/NodaTime.Web.SmokeTest

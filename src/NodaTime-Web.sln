@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28711.60
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Web", "NodaTime.Web\NodaTime.Web.csproj", "{9554E3CB-ACAF-4BD1-841D-EF97F42DA600}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Tools.Common", "NodaTime.Tools.Common\NodaTime.Tools.Common.csproj", "{10A658FA-6FF2-4B6E-8190-66C333F72ADE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Web.Blazor", "NodaTime.Web.Blazor\NodaTime.Web.Blazor.csproj", "{91FE4288-FFC8-4787-9E1D-061A1651C701}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Web.SmokeTest", "NodaTime.Web.SmokeTest\NodaTime.Web.SmokeTest.csproj", "{E3651F9E-E1E8-409B-8EAB-284A86713221}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{91FE4288-FFC8-4787-9E1D-061A1651C701}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91FE4288-FFC8-4787-9E1D-061A1651C701}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91FE4288-FFC8-4787-9E1D-061A1651C701}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3651F9E-E1E8-409B-8EAB-284A86713221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3651F9E-E1E8-409B-8EAB-284A86713221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3651F9E-E1E8-409B-8EAB-284A86713221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3651F9E-E1E8-409B-8EAB-284A86713221}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

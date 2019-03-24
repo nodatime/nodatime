@@ -36,8 +36,6 @@ namespace NodaTime.Web
 {
     public class Startup
     {
-        internal const string SmokeTestEnvironment = "SmokeTests";
-
         private static readonly MediaTypeHeaderValue TextHtml = new MediaTypeHeaderValue("text/html");
 
         // Not const to avoid unreachable code warnings.
@@ -82,7 +80,7 @@ namespace NodaTime.Web
                 // TODO: Put this into appsettings.json?
                 // (When hosted on GKE, we don't locally host HTTPS, so we need to specify the port.
                 // But in development, we need to stick with 5001.)            
-                if (!CurrentEnvironment.IsDevelopment() && CurrentEnvironment.EnvironmentName != SmokeTestEnvironment)
+                if (!CurrentEnvironment.IsDevelopment() && CurrentEnvironment.EnvironmentName != Program.SmokeTestEnvironment)
                 {
                     options.HttpsPort = 443;
                 }
