@@ -44,6 +44,7 @@ namespace NodaTime.Web
         private IConfigurationRoot Configuration { get; set; }
         private IHostingEnvironment CurrentEnvironment { get; set; }
         public StackdriverOptions StackdriverOptions { get; }
+        public NetworkOptions NetworkOptions { get; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -55,6 +56,7 @@ namespace NodaTime.Web
             Configuration = builder.Build();
             CurrentEnvironment = env;
             StackdriverOptions = Configuration.GetSection("Stackdriver").Get<StackdriverOptions>();
+            NetworkOptions = Configuration.GetSection("Network").Get<NetworkOptions>();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -62,30 +64,8 @@ namespace NodaTime.Web
             // Add framework services.
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // TODO: Put this into appsettings.json.
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.KnownNetworks.Clear();
-                // Google Cloud Platform load balancers
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("130.211.0.0"), 22));
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("35.191.0.0"), 16));
-                // GKE service which proxies the request as well.
-                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("10.0.0.0"), 8));
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-                options.ForwardLimit = 2;
-            });
-
-            services.AddHttpsRedirection(options =>
-            {
-                // TODO: Put this into appsettings.json?
-                // (When hosted on GKE, we don't locally host HTTPS, so we need to specify the port.
-                // But in development, we need to stick with 5001.)            
-                if (!CurrentEnvironment.IsDevelopment() && CurrentEnvironment.EnvironmentName != Program.SmokeTestEnvironment)
-                {
-                    options.HttpsPort = 443;
-                }
-                options.RedirectStatusCode = 301;
-            });
+            StackdriverOptions.ConfigureServices(services, CurrentEnvironment);
+            NetworkOptions.ConfigureServices(services);
 
             // TODO: Add actual health checks, maybe.
             services.AddHealthChecks();
@@ -100,16 +80,6 @@ namespace NodaTime.Web
                 });
             });
 #endif
-
-            if (StackdriverOptions.UseStackdriverErrorReporting)
-            {
-                var platform = Platform.Instance();
-                services.AddGoogleExceptionLogging(options =>
-                {
-                    options.ServiceName = StackdriverOptions.ServiceName ?? platform.GkeDetails?.ContainerName ?? "aspnetcore";
-                    options.Version = StackdriverOptions.ServiceVersion ?? CurrentEnvironment.EnvironmentName;
-                });
-            }
 
             if (UseGoogleCloudStorage)
             {
@@ -132,33 +102,11 @@ namespace NodaTime.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-#pragma warning disable CS0618 // Type or member is obsolete - loggerFactory.AddConsole. We need to work out how to do all this better.
-            if (StackdriverOptions.UseStackdriverLogging)
-            {
-                var platform = Platform.Instance();
-                var loggerOptions = LoggerOptions.Create(
-                    logLevel: StackdriverOptions.LogLevel,
-                    logName: StackdriverOptions.LogId ?? platform.GkeDetails?.ContainerName ?? "aspnetcore");
-                loggerFactory.AddGoogle(app.ApplicationServices, platform.ProjectId, loggerOptions);
-                if (StackdriverOptions.IncludeConsoleLogging)
-                {
-                    loggerFactory.AddConsole();
-                }
-            }
-            else
-            {
-                // If we're not logging to Stackdriver, use console logging instead.
-                loggerFactory.AddConsole();
-                loggerFactory.AddDebug();
-#pragma warning restore CS0618 // Type or member is obsolete
-            }
+            // Note: health checks come before HTTPS redirection so we get a 200 even on HTTP.
+            app.UseHealthChecks("/healthz");
+            StackdriverOptions.Configure(app, env, loggerFactory);
+            NetworkOptions.Configure(app, env);
 
-            if (StackdriverOptions.UseStackdriverErrorReporting)
-            {
-                app.UseGoogleExceptionLogging();
-            }
-
-            app.UseForwardedHeaders();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -169,9 +117,6 @@ namespace NodaTime.Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            // Note: health checks come before HTTPS redirection so we get a 200 even on HTTP.
-            app.UseHealthChecks("/healthz");
-            app.UseHttpsRedirection();
 
             app.UseDefaultFiles();
             // Default content, e.g. CSS.
