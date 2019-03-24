@@ -36,6 +36,8 @@ namespace NodaTime.Web
 {
     public class Startup
     {
+        internal const string SmokeTestEnvironment = "SmokeTests";
+
         private static readonly MediaTypeHeaderValue TextHtml = new MediaTypeHeaderValue("text/html");
 
         // Not const to avoid unreachable code warnings.
@@ -80,7 +82,7 @@ namespace NodaTime.Web
                 // TODO: Put this into appsettings.json?
                 // (When hosted on GKE, we don't locally host HTTPS, so we need to specify the port.
                 // But in development, we need to stick with 5001.)            
-                if (!CurrentEnvironment.IsDevelopment() && CurrentEnvironment.EnvironmentName != "smoketests")
+                if (!CurrentEnvironment.IsDevelopment() && CurrentEnvironment.EnvironmentName != SmokeTestEnvironment)
                 {
                     options.HttpsPort = 443;
                 }
@@ -132,8 +134,6 @@ namespace NodaTime.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            
-
 #pragma warning disable CS0618 // Type or member is obsolete - loggerFactory.AddConsole. We need to work out how to do all this better.
             if (StackdriverOptions.UseStackdriverLogging)
             {

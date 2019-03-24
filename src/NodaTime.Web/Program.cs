@@ -48,9 +48,11 @@ namespace NodaTime.Web
 
         private static async Task RunSmokeTests()
         {
-            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "smoketests");
             var cts = new CancellationTokenSource();
-            Task serverTask = CreateWebHostBuilder(new string[0]).Build().RunAsync(cts.Token);
+            Task serverTask = CreateWebHostBuilder(new string[0])
+                .UseEnvironment(Startup.SmokeTestEnvironment)
+                .Build()
+                .RunAsync(cts.Token);
 
             // Give it 5 seconds to come up. We probably don't need this long, but it's harmless.
             Thread.Sleep(ServerStartupSeconds * 1000);
