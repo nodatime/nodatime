@@ -7,6 +7,11 @@ details.
 See the [end of this page](#tzdb-updates) for the policy on which
 versions receive patch updates for TZDB releases.
 
+## 2.4.5, released 2019-03-26 with tzdb 2019a.
+
+This patch release simply updates the built-in TZDB time
+zone data to 2019a.
+
 ## 3.0.0-alpha01, released 2019-02-05 with tzdb2018i
 
 Initial alpha release to allow users to experiment with:
@@ -759,8 +764,13 @@ is always available via the Noda Time web site as described in the
 [user guide](/userguide/tzdb). Additionally, NuGet packages are
 updated with a patch release to include the latest data.
 
-The latest minor release for each major release is always updated.
+The latest minor release for each supported major version is always updated.
 Additionally, if the latest minor release is less than 6 months old, the
 previous minor release is also updated. In other words, if you check
 once every 6 months to make sure you're on the latest minor release,
 you should always get patch releases containing TZDB updates.
+
+The 1.x series of Noda Time is no longer being updated to include new versions
+of TZDB. However, it is still compatible with the new NZD files: if you fetch
+the NZD file from the web site (as [described in the user guide](/unstable/userguide/tzdb))
+you can use the latest time zone data with old versions of Noda Time.
