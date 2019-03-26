@@ -15,13 +15,13 @@ namespace NodaTime.TzdbCompiler
         [Option("o", "output", Required = false, HelpText = "The name of the output file.", MutuallyExclusiveSet = "Output")]
         public string? OutputFileName { get; set; }
 
-        [Option("s", "source", Required = true, HelpText = "Source directory or archive containing the TZDB input files.")]
+        [Option("s", "source", Required = true, HelpText = "Source directory or archive containing the TZDB input files.", MutuallyExclusiveSet = "Source")]
         public string? SourceDirectoryName { get; set; } = "";
 
-        [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (e.g. windowsZones.xml) or directory")]
+        [Option("w", "windows", Required = true, HelpText = "Windows to TZDB time zone mapping file (e.g. windowsZones.xml) or directory", MutuallyExclusiveSet = "Windows")]
         public string? WindowsMapping { get; set; } = "";
 
-        [Option(null, "windows-override", Required = false, HelpText = "Additional 'override' file providing extra Windows time zone mappings")]
+        [Option(null, "windows-override", Required = false, HelpText = "Additional 'override' file providing extra Windows time zone mappings", MutuallyExclusiveSet = "WindowsOverride")]
         public string? WindowsOverride { get; set; }
 
         [Option("z", "zone",
