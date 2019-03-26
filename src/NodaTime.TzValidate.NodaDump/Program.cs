@@ -23,7 +23,7 @@ namespace NodaTime.TzValidate.NodaDump
         private static int Main(string[] args)
         {
             Options options = new Options();
-            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error) { MutuallyExclusive = true });
+            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
             if (!parser.ParseArguments(args, options))
             {
                 return 1;
