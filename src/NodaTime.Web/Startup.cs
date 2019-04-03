@@ -6,14 +6,10 @@
 using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.ResponseCompression;
 #endif
-using Google.Api.Gax;
-using Google.Cloud.Diagnostics.AspNetCore;
-using Google.Cloud.Logging.V2;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.StaticFiles;
@@ -24,13 +20,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using NodaTime.Web.Configuration;
 using NodaTime.Web.Controllers;
+using NodaTime.Web.Middleware;
 using NodaTime.Web.Models;
 using NodaTime.Web.Providers;
 using System;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Mime;
 
 namespace NodaTime.Web
 {
@@ -106,6 +100,7 @@ namespace NodaTime.Web
             app.UseHealthChecks("/healthz");
             StackdriverOptions.Configure(app, env, loggerFactory);
             NetworkOptions.Configure(app, env);
+            app.UseSingleLineResponseLogging();
 
             if (env.IsDevelopment())
             {
