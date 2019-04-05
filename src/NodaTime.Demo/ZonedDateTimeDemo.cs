@@ -9,9 +9,6 @@ namespace NodaTime.Demo
 {
     internal class ZonedDateTimeDemo
     {
-        // TODO: dublin used to be a static field. We could reintroduce that if the snippet
-        // processor found every static field used in a snippet and added it at the start of the snippet...
-
         [Test]
         public void Construction()
         {
@@ -61,15 +58,18 @@ namespace NodaTime.Demo
         public void IsDaylightSavingTime()
         {
             // Europe/Dublin transitions from UTC+1 to UTC+0 at 2am (local) on 2017-10-29
+            // However, Euopre/Dublin is also odd in terms of having its standard time as *summer* time,
+            // and its winter time as "daylight saving time". The saving offset in winter is -1 hour,
+            // as opposed to the more common "+1 hour in summer".
             var dt = new LocalDateTime(2017, 10, 29, 1, 45, 0);
             DateTimeZone dublin = DateTimeZoneProviders.Tzdb["Europe/Dublin"];
 
             ZonedDateTime beforeTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(1));
-            Assert.AreEqual(true, Snippet.For(beforeTransition.IsDaylightSavingTime()));
+            Assert.AreEqual(false, Snippet.For(beforeTransition.IsDaylightSavingTime()));
 
             // Same local time, different offset - so a different instant, after the transition.
             ZonedDateTime afterTransition = new ZonedDateTime(dt, dublin, Offset.FromHours(0));
-            Assert.AreEqual(false, Snippet.For(afterTransition.IsDaylightSavingTime()));
+            Assert.AreEqual(true, Snippet.For(afterTransition.IsDaylightSavingTime()));
         }
 
         [Test]
