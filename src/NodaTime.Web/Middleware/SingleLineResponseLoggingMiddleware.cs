@@ -40,9 +40,10 @@ namespace NodaTime.Web.Middleware
             {
                 var request = context.Request;
                 var response = context.Response;
-                logger.LogInformation("{0} {1}{2} => {3} {4:0.000}ms",
+                logger.LogInformation("{0} {1}{2} => {3} {4:0.000}ms ({5})",
                     request.Method, request.Path, request.QueryString,
-                    (HttpStatusCode) response.StatusCode, duration.TotalMilliseconds);
+                    (HttpStatusCode) response.StatusCode, duration.TotalMilliseconds,
+                    request.Headers["User-Agent"]);
             }
         }
     }
