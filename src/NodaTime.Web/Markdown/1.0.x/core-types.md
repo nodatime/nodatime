@@ -8,7 +8,7 @@ If you're not familiar with the core concepts, read that page first.
 Instant
 -------
 
-An [`Instant`][Instant] is a point on notional a global time-line, regardless of calendar system and time zone.
+An [`Instant`][Instant] is a point on a notional global time-line, regardless of calendar system and time zone.
 It's simply a number of "ticks" since some arbitrary epoch, where a tick in Noda Time is 100 nanoseconds (a definition
 inherited from the BCL). Noda Time always uses the Unix epoch, which corresponds to midnight on January 1st 1970 UTC.
 (This is merely one way of expressing the epoch - it would be equally valid to express it using other calendar systems
