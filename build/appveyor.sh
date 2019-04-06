@@ -16,6 +16,7 @@ dotnet build -c Release src/NodaTime-All.sln
 build/coverage.sh
 
 dotnet test -c Release src/NodaTime.Test --filter=TestCategory!=Slow
+dotnet test -c Release src/NodaTime.Demo
 
 dotnet build -c Release src/NodaTime.TzdbCompiler
 dotnet test -c Release src/NodaTime.TzdbCompiler.Test
