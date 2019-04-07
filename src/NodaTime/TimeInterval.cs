@@ -43,7 +43,7 @@ namespace NodaTime
         {
             this.start = start;
             this.end = end;
-            IsEndInNextDay = end.NanosecondOfDay - start.NanosecondOfDay < 0;
+            IsEndInNextDay = start > end;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace NodaTime
             this.start = start;
             this.end = end;
             if (start.HasValue && end.HasValue)
-                IsEndInNextDay = start.Value.NanosecondOfDay - end.Value.NanosecondOfDay < 0;
+                IsEndInNextDay = start > end;
             else
                 IsEndInNextDay = false;
         }
