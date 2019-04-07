@@ -263,12 +263,12 @@ namespace NodaTime
 		/// <returns>The result of parsing.</returns>
 		/// <example>3:44:59/4:00:00</example>
 		/// <example>18:00:00.239/23:00:00</example>
-		/// <exception cref="InvalidOperationException"></exception>
+		/// <exception cref="FormatException"></exception>
 		public static TimeInterval Parse(string text)
 		{
 			var separatorIndex = text.IndexOf('/');
-			if (separatorIndex < 5)
-				throw new InvalidOperationException("It's not a TimeInterval value");
+			if (separatorIndex < 5 || separatorIndex > text.Length - 5)
+				throw new FormatException("It's not a TimeInterval value");
 			
 			var pattern = LocalTimePattern.ExtendedIso;
 			var sStart = text.Substring(0, separatorIndex);
