@@ -10,7 +10,7 @@ cd $ROOT
 
 dotnet --info
 
-dotnet build -c Release src/NodaTime-All.sln
+dotnet build -c Release src/NodaTime.sln
 
 # Run the tests under dotCover
 build/coverage.sh
