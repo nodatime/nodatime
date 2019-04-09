@@ -22,6 +22,3 @@ dotnet test -c Release src/NodaTime.Demo
 
 dotnet build -c Release src/NodaTime.TzdbCompiler
 dotnet test -c Release src/NodaTime.TzdbCompiler.Test
-
-dotnet build src/NodaTime.Web
-dotnet test src/NodaTime.Web.Test
