@@ -19,8 +19,8 @@ declare -r OUTPUT=$SRCDIR/NodaTime/TimeZones/Tzdb.nzd
 declare -r DATADIR=$ROOT/data
 declare -r WWWDIR=$SRCDIR/NodaTime.Web/wwwroot
 
-dotnet restore -v quiet $SRCDIR/NodaTime-All.sln
-dotnet build $SRCDIR/NodaTime-All.sln
+dotnet restore -v quiet $SRCDIR/NodaTime.sln
+dotnet build $SRCDIR/NodaTime.sln
 
 dotnet run -p $SRCDIR/NodaTime.TzdbCompiler -- \
   -o $OUTPUT \
