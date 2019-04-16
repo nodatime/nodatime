@@ -34,13 +34,47 @@ namespace NodaTime.Testing.TimeZones
         /// <returns>A provider backed by this source.</returns>
         public IDateTimeZoneProvider ToProvider() => new DateTimeZoneCache(this);
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns an unordered enumeration of the IDs available from this source.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Every value in this enumeration must return a valid time zone from <see cref="ForId"/> for the life of the source.
+        /// The enumeration may be empty, but must not be null, and must not contain any elements which are null.  It
+        /// should not contain duplicates: this is not enforced, and while it may not have a significant impact on
+        /// clients in some cases, it is generally unfriendly.  The built-in implementations never return duplicates.
+        /// </para>
+        /// <para>
+        /// The source is not required to provide the IDs in any particular order, although they should be distinct.
+        /// </para>
+        /// <para>
+        /// Note that this list may optionally contain any of the fixed-offset timezones (with IDs "UTC" and
+        /// "UTC+/-Offset"), but there is no requirement they be included.
+        /// </para>
+        /// </remarks>
+        /// <returns>The IDs available from this source.</returns>
         public IEnumerable<string> GetIds() => zones.Keys;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns an appropriate version ID for diagnostic purposes, which must not be null.
+        /// </summary>
+        /// <remarks>
+        /// This doesn't have any specific format; it's solely for diagnostic purposes.
+        /// The included sources return strings of the format "source identifier: source version" indicating where the
+        /// information comes from and which version of the source information has been loaded.
+        /// </remarks>
+        /// <value>An appropriate version ID for diagnostic purposes.</value>
         public string VersionId { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns the time zone definition associated with the given ID.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="id">The ID of the time zone to return. This must be one of the IDs
+        /// returned by <see cref="GetIds"/>.</param>
+        /// <returns>The <see cref="DateTimeZone"/> for the given ID.</returns>
+        /// <exception cref="ArgumentException"><paramref name="id"/> is not supported by this source.</exception>
         public DateTimeZone ForId(string id)
         {
             Preconditions.CheckNotNull(id, nameof(id));
@@ -50,8 +84,6 @@ namespace NodaTime.Testing.TimeZones
             }
             throw new ArgumentException("Unknown ID: " + id);
         }
-
-        // TODO: Work out why inheritdoc doesn't work here. What's special about this method?
 
         /// <summary>
         /// Returns this source's ID for the system default time zone.
