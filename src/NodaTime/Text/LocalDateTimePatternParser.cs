@@ -78,6 +78,7 @@ namespace NodaTime.Text
                     'r' => LocalDateTimePattern.Patterns.FullRoundtripPatternImpl,
                     'R' => LocalDateTimePattern.Patterns.FullRoundtripWithoutCalendarImpl,
                     's' => LocalDateTimePattern.Patterns.GeneralIsoPatternImpl,
+                    'S' => LocalDateTimePattern.Patterns.ExtendedIsoPatternImpl,
                     // Other standard patterns expand the pattern text to the appropriate custom pattern.
                     // Note: we don't just recurse, as otherwise a FullDateTimePattern of 'F' would cause a stack overflow.
                     'f' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.LongDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern),
