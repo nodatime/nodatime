@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.Annotations;
-using JetBrains.Annotations;
 
 namespace NodaTime.Calendars
 {

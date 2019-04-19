@@ -2,11 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
+using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using JetBrains.Annotations;
-using NodaTime.Utility;
 
 namespace NodaTime.Text
 {

@@ -2,10 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+using System.Collections.Generic;
 
 namespace NodaTime.Text
 {
@@ -73,7 +73,7 @@ namespace NodaTime.Text
             patternBuilder.ValidateUsedFields();
             return patternBuilder.Build(templateValue);
         }
-        
+
         /// <summary>
         /// Bucket to put parsed values in, ready for later result calculation. This type is also used
         /// by LocalDateTimePattern to store and calculate values.

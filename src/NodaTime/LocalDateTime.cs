@@ -489,7 +489,7 @@ namespace NodaTime
                 return 1;
             }
             Preconditions.CheckArgument(obj is LocalDateTime, nameof(obj), "Object must be of type NodaTime.LocalDateTime.");
-            return CompareTo((LocalDateTime)obj);
+            return CompareTo((LocalDateTime) obj);
         }
 
         /// <summary>

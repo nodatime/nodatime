@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Utility;
 using System.Text;
@@ -371,7 +370,7 @@ namespace NodaTime.Text
                         if (nanoseconds != 0)
                         {
                             builder.Append(".");
-                            FormatHelper.AppendFractionTruncate((int)nanoseconds, 9, 9, builder);
+                            FormatHelper.AppendFractionTruncate((int) nanoseconds, 9, 9, builder);
                         }
                         builder.Append("S");
                     }

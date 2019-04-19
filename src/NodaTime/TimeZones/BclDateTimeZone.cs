@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Extensions;
 using NodaTime.Utility;
@@ -86,7 +85,7 @@ namespace NodaTime.TimeZones
             int windowsRules = rules.Count(IsWindowsRule);
             var ruleConverter = AreWindowsStyleRules(rules)
                 ? rule => BclAdjustmentRule.FromWindowsAdjustmentRule(bclZone, rule)
-                : (Converter<TimeZoneInfo.AdjustmentRule, BclAdjustmentRule>)(rule => BclAdjustmentRule.FromUnixAdjustmentRule(bclZone, rule));
+                : (Converter<TimeZoneInfo.AdjustmentRule, BclAdjustmentRule>) (rule => BclAdjustmentRule.FromUnixAdjustmentRule(bclZone, rule));
 
             BclAdjustmentRule[] convertedRules = Array.ConvertAll(rules, ruleConverter);
 
@@ -350,7 +349,7 @@ namespace NodaTime.TimeZones
                 }
 
                 // Floating: 1st Sunday in March etc.
-                int dayOfWeek = (int)BclConversions.ToIsoDayOfWeek(transitionTime.DayOfWeek);
+                int dayOfWeek = (int) BclConversions.ToIsoDayOfWeek(transitionTime.DayOfWeek);
                 int dayOfMonth;
                 bool advance;
                 // "Last"
@@ -369,7 +368,7 @@ namespace NodaTime.TimeZones
                 return new ZoneYearOffset(TransitionMode.Wall, transitionTime.Month, dayOfMonth, dayOfWeek, advance, timeOfDay);
             }
         }
-        
+
         /// <summary>
         /// Returns a time zone converted from the BCL representation of the system local time zone.
         /// </summary>

@@ -42,7 +42,7 @@ namespace NodaTime
         }
 
         internal OffsetTime([Trusted] long nanosecondOfDay, [Trusted] int offsetSeconds) =>
-            nanosecondsAndOffset = nanosecondOfDay | (((long)offsetSeconds) << NanosecondsBits);
+            nanosecondsAndOffset = nanosecondOfDay | (((long) offsetSeconds) << NanosecondsBits);
 
         /// <summary>
         /// Constructs an instance of the specified time and offset.
@@ -63,12 +63,12 @@ namespace NodaTime
         /// Gets the offset from UTC of this value.
         /// <value>The offset from UTC of this value.</value>
         /// </summary>
-        public Offset Offset => new Offset((int)(nanosecondsAndOffset >> NanosecondsBits));
+        public Offset Offset => new Offset((int) (nanosecondsAndOffset >> NanosecondsBits));
 
         /// <summary>
         /// Returns the number of seconds in the offset, without going via an Offset.
         /// </summary>
-        internal int OffsetSeconds => (int)(nanosecondsAndOffset >> NanosecondsBits);
+        internal int OffsetSeconds => (int) (nanosecondsAndOffset >> NanosecondsBits);
 
         /// <summary>
         /// Returns the number of nanoseconds in the offset, without going via an Offset.
@@ -81,7 +81,7 @@ namespace NodaTime
         /// <value>The hour of day of this offset time, in the range 0 to 23 inclusive.</value>
         public int Hour =>
             // Effectively nanoseconds / NanosecondsPerHour, but apparently rather more efficient.
-            (int)((NanosecondOfDay >> 13) / 439453125);
+            (int) ((NanosecondOfDay >> 13) / 439453125);
 
         /// <summary>
         /// Gets the hour of the half-day of this offset time, in the range 1 to 12 inclusive.
@@ -117,7 +117,7 @@ namespace NodaTime
                 unchecked
                 {
                     // Effectively NanosecondOfDay / NanosecondsPerMinute, but apparently rather more efficient.
-                    int minuteOfDay = (int)((NanosecondOfDay >> 11) / 29296875);
+                    int minuteOfDay = (int) ((NanosecondOfDay >> 11) / 29296875);
                     return minuteOfDay % MinutesPerHour;
                 }
             }
@@ -133,7 +133,7 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    int secondOfDay = (int)(NanosecondOfDay / (int)NanosecondsPerSecond);
+                    int secondOfDay = (int) (NanosecondOfDay / (int) NanosecondsPerSecond);
                     return secondOfDay % SecondsPerMinute;
                 }
             }
@@ -149,7 +149,7 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    long milliSecondOfDay = (NanosecondOfDay / (int)NanosecondsPerMillisecond);
+                    long milliSecondOfDay = (NanosecondOfDay / (int) NanosecondsPerMillisecond);
                     return (int) (milliSecondOfDay % MillisecondsPerSecond);
                 }
             }
@@ -159,7 +159,7 @@ namespace NodaTime
         /// Gets the tick of this offset time within the second, in the range 0 to 9,999,999 inclusive.
         /// </summary>
         /// <value>The tick of this offset time within the second, in the range 0 to 9,999,999 inclusive.</value>
-        public int TickOfSecond => unchecked((int)(TickOfDay % (int)TicksPerSecond));
+        public int TickOfSecond => unchecked((int) (TickOfDay % (int) TicksPerSecond));
 
         /// <summary>
         /// Gets the tick of this offset time within the day, in the range 0 to 863,999,999,999 inclusive.

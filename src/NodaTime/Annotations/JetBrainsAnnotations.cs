@@ -126,7 +126,7 @@ namespace JetBrains.Annotations
         public string Contract { get; private set; }
         public bool ForceFullStates { get; private set; }
     }
-    
+
     /// <summary>
     /// Indicates that a method does not make any observable state changes.
     /// The same as <c>System.Diagnostics.Contracts.PureAttribute</c>

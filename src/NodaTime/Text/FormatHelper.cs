@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Text;
 using NodaTime.Annotations;
 using NodaTime.Utility;
+using System.Text;
 
 namespace NodaTime.Text
 {
@@ -33,8 +33,8 @@ namespace NodaTime.Text
             Preconditions.DebugCheckArgumentRange(nameof(value), value, 0, 99);
             unchecked
             {
-                outputBuffer.Append((char)('0' + value / 10));
-                outputBuffer.Append((char)('0' + value % 10));
+                outputBuffer.Append((char) ('0' + value / 10));
+                outputBuffer.Append((char) ('0' + value % 10));
             }
         }
 
@@ -53,10 +53,10 @@ namespace NodaTime.Text
                     value = -value;
                     outputBuffer.Append('-');
                 }
-                outputBuffer.Append((char)('0' + (value / 1000)));
-                outputBuffer.Append((char)('0' + ((value / 100) % 10)));
-                outputBuffer.Append((char)('0' + ((value / 10) % 10)));
-                outputBuffer.Append((char)('0' + (value % 10)));
+                outputBuffer.Append((char) ('0' + (value / 1000)));
+                outputBuffer.Append((char) ('0' + ((value / 100) % 10)));
+                outputBuffer.Append((char) ('0' + ((value / 10) % 10)));
+                outputBuffer.Append((char) ('0' + (value % 10)));
             }
         }
 
@@ -149,7 +149,7 @@ namespace NodaTime.Text
                 if (length == 4 && value < 10000)
                 {
                     char digit1 = (char) ('0' + (value / 1000));
-                    char digit2 = (char) ('0' + ((value / 100)  % 10));
+                    char digit2 = (char) ('0' + ((value / 100) % 10));
                     char digit3 = (char) ('0' + ((value / 10) % 10));
                     char digit4 = (char) ('0' + (value % 10));
                     outputBuffer.Append(digit1).Append(digit2).Append(digit3).Append(digit4);
@@ -205,49 +205,49 @@ namespace NodaTime.Text
                 {
                     if (value < 10)
                     {
-                        outputBuffer.Append((char)('0' + value));
+                        outputBuffer.Append((char) ('0' + value));
                         return;
                     }
                     // Handle overflow by a single character manually
                     if (value < 100)
                     {
-                        char digit1 = (char)('0' + (value / 10));
-                        char digit2 = (char)('0' + (value % 10));
+                        char digit1 = (char) ('0' + (value / 10));
+                        char digit2 = (char) ('0' + (value % 10));
                         outputBuffer.Append(digit1).Append(digit2);
                         return;
                     }
                 }
                 if (length == 2 && value < 100)
                 {
-                    char digit1 = (char)('0' + (value / 10));
-                    char digit2 = (char)('0' + (value % 10));
+                    char digit1 = (char) ('0' + (value / 10));
+                    char digit2 = (char) ('0' + (value % 10));
                     outputBuffer.Append(digit1).Append(digit2);
                     return;
                 }
                 if (length == 3 && value < 1000)
                 {
-                    char digit1 = (char)('0' + ((value / 100) % 10));
-                    char digit2 = (char)('0' + ((value / 10) % 10));
-                    char digit3 = (char)('0' + (value % 10));
+                    char digit1 = (char) ('0' + ((value / 100) % 10));
+                    char digit2 = (char) ('0' + ((value / 10) % 10));
+                    char digit3 = (char) ('0' + (value % 10));
                     outputBuffer.Append(digit1).Append(digit2).Append(digit3);
                     return;
                 }
                 if (length == 4 && value < 10000)
                 {
-                    char digit1 = (char)('0' + (value / 1000));
-                    char digit2 = (char)('0' + ((value / 100) % 10));
-                    char digit3 = (char)('0' + ((value / 10) % 10));
-                    char digit4 = (char)('0' + (value % 10));
+                    char digit1 = (char) ('0' + (value / 1000));
+                    char digit2 = (char) ('0' + ((value / 100) % 10));
+                    char digit3 = (char) ('0' + ((value / 10) % 10));
+                    char digit4 = (char) ('0' + (value % 10));
                     outputBuffer.Append(digit1).Append(digit2).Append(digit3).Append(digit4);
                     return;
                 }
                 if (length == 5 && value < 100000)
                 {
-                    char digit1 = (char)('0' + (value / 10000));
-                    char digit2 = (char)('0' + ((value / 1000) % 10));
-                    char digit3 = (char)('0' + ((value / 100) % 10));
-                    char digit4 = (char)('0' + ((value / 10) % 10));
-                    char digit5 = (char)('0' + (value % 10));
+                    char digit1 = (char) ('0' + (value / 10000));
+                    char digit2 = (char) ('0' + ((value / 1000) % 10));
+                    char digit3 = (char) ('0' + ((value / 100) % 10));
+                    char digit4 = (char) ('0' + ((value / 10) % 10));
+                    char digit5 = (char) ('0' + (value % 10));
                     outputBuffer.Append(digit1).Append(digit2).Append(digit3).Append(digit4).Append(digit5);
                     return;
                 }
@@ -257,7 +257,7 @@ namespace NodaTime.Text
                 int pos = MaximumPaddingLength;
                 do
                 {
-                    digits[--pos] = (char)('0' + (value % 10));
+                    digits[--pos] = (char) ('0' + (value % 10));
                     value /= 10;
                 } while (value != 0 && pos > 0);
                 while ((MaximumPaddingLength - pos) < length)

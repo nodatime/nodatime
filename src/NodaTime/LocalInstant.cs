@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Annotations;
 using NodaTime.Text;
+using System;
 
 namespace NodaTime
 {
@@ -177,7 +177,7 @@ namespace NodaTime
         /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
         public static bool operator >=(LocalInstant left, LocalInstant right) => left.duration >= right.duration;
         #endregion // Operators
-        
+
         #region Object overrides
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.

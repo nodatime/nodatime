@@ -66,7 +66,7 @@ namespace NodaTime
         // to be easily 
         internal const int MaxDays = (1 << 24) - 1;
         internal const int MinDays = ~MaxDays;
-        internal static readonly BigInteger MinNanoseconds = (BigInteger)MinDays * NanosecondsPerDay;
+        internal static readonly BigInteger MinNanoseconds = (BigInteger) MinDays * NanosecondsPerDay;
         internal static readonly BigInteger MaxNanoseconds = (MaxDays + BigInteger.One) * NanosecondsPerDay - BigInteger.One;
         internal static readonly decimal MinDecimalNanoseconds = (decimal) MinNanoseconds;
         internal static readonly decimal MaxDecimalNanoseconds = (decimal) MaxNanoseconds;
@@ -145,7 +145,7 @@ namespace NodaTime
         /// <param name="maxValue">Maximum number of units for a valid duration.</param>
         /// <param name="unitsPerDay">Number of units in a day.</param>
         /// <param name="nanosPerUnit">Number of nanoseconds per unit.</param>
-        private Duration (long units, string paramName, long minValue, long maxValue, long unitsPerDay, long nanosPerUnit)
+        private Duration(long units, string paramName, long minValue, long maxValue, long unitsPerDay, long nanosPerUnit)
         {
             Preconditions.CheckArgumentRange(paramName, units, minValue, maxValue);
             unchecked
@@ -667,7 +667,7 @@ namespace NodaTime
                 const int DaysToOptimize = 100;
                 // Almost every real use case will fit in here, I suspect...
                 if (left.days >= -DaysToOptimize &&
-                    left.days < DaysToOptimize && 
+                    left.days < DaysToOptimize &&
                     right > long.MinValue / (NanosecondsPerDay * DaysToOptimize) &&
                     right < long.MaxValue / (NanosecondsPerDay * DaysToOptimize))
                 {
@@ -841,7 +841,7 @@ namespace NodaTime
                 return 1;
             }
             Preconditions.CheckArgument(obj is Duration, nameof(obj), "Object must be of type NodaTime.Duration.");
-            return CompareTo((Duration)obj);
+            return CompareTo((Duration) obj);
         }
         #endregion
 
@@ -910,7 +910,7 @@ namespace NodaTime
         /// <param name="minutes">The number of minutes.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of minutes.</returns>
         public static Duration FromMinutes(long minutes) =>
-            new Duration(minutes, nameof(minutes), (long)MinDays * MinutesPerDay, ((MaxDays + 1L) * MinutesPerDay) - 1, MinutesPerDay, NanosecondsPerMinute);
+            new Duration(minutes, nameof(minutes), (long) MinDays * MinutesPerDay, ((MaxDays + 1L) * MinutesPerDay) - 1, MinutesPerDay, NanosecondsPerMinute);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of minutes.
@@ -926,14 +926,14 @@ namespace NodaTime
                 (MaxDays + 1L) * MinutesPerDay - 1);
             return FromNanoseconds(minutes * NanosecondsPerMinute);
         }
-        
+
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of seconds.
         /// </summary>
         /// <param name="seconds">The number of seconds.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of seconds.</returns>
         public static Duration FromSeconds(long seconds) =>
-            new Duration(seconds, nameof(seconds), (long)MinDays * SecondsPerDay, ((MaxDays + 1L) * SecondsPerDay) - 1, SecondsPerDay, NanosecondsPerSecond);
+            new Duration(seconds, nameof(seconds), (long) MinDays * SecondsPerDay, ((MaxDays + 1L) * SecondsPerDay) - 1, SecondsPerDay, NanosecondsPerSecond);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of seconds.
@@ -999,7 +999,7 @@ namespace NodaTime
                 (MaxDays + 1d) * TicksPerDay - 1);
             return FromNanoseconds(ticks * NanosecondsPerTick);
         }
-        
+
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of nanoseconds.
         /// </summary>
@@ -1061,10 +1061,10 @@ namespace NodaTime
             }
 
             int days = nanoseconds >= 0
-                ? (int)(nanoseconds / NanosecondsPerDay)
-                : (int)((nanoseconds + 1) / NanosecondsPerDay) - 1;
+                ? (int) (nanoseconds / NanosecondsPerDay)
+                : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
 
-            long nanoOfDay = (long)(nanoseconds - ((decimal)days) * NanosecondsPerDay);
+            long nanoOfDay = (long) (nanoseconds - ((decimal) days) * NanosecondsPerDay);
             return new Duration(days, nanoOfDay);
         }
 
@@ -1127,7 +1127,7 @@ namespace NodaTime
             : days < 0 ? (days + 1) * NanosecondsPerDay + nanoOfDay - NanosecondsPerDay
             // Either the multiplication or the addition could overflow, so we do it in a checked context.
             : days * NanosecondsPerDay + nanoOfDay;
-        
+
         /// <summary>
         /// A quick check to tell whether this duration is within the range of an Int64 value of nanoseconds
         /// (roughly +/- 292 years). This is conservative as it only checks the days field -
@@ -1154,7 +1154,7 @@ namespace NodaTime
         public BigInteger ToBigIntegerNanoseconds() => IsInt64Representable ? ToInt64NanosecondsUnchecked() : ((BigInteger) days) * NanosecondsPerDay + nanoOfDay;
 
         [Pure]
-        internal decimal ToDecimalNanoseconds() => IsInt64Representable ? ToInt64NanosecondsUnchecked() : ((decimal)days) * NanosecondsPerDay + nanoOfDay;
+        internal decimal ToDecimalNanoseconds() => IsInt64Representable ? ToInt64NanosecondsUnchecked() : ((decimal) days) * NanosecondsPerDay + nanoOfDay;
 
         /// <summary>
         /// Returns the larger duration of the given two.

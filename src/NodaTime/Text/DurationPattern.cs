@@ -2,13 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Globalization;
-using System.Text;
 using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
-using JetBrains.Annotations;
+using System.Globalization;
+using System.Text;
 
 namespace NodaTime.Text
 {
@@ -54,7 +53,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <value>The pattern text for this pattern, as supplied on creation.</value>
         public string PatternText { get; }
-        
+
         private DurationPattern(string patternText, IPattern<Duration> pattern)
         {
             this.PatternText = patternText;

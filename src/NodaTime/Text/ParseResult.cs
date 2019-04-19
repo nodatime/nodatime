@@ -2,12 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Globalization;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
-using JetBrains.Annotations;
 using NodaTime.Utility;
+using System;
+using System.Globalization;
 
 namespace NodaTime.Text
 {
@@ -149,17 +148,17 @@ namespace NodaTime.Text
         /// <returns>A ParseResult representing a successful parsing operation.</returns>
         public static ParseResult<T> ForValue(T value) => new ParseResult<T>(value);
 
-         /// <summary>
-         /// Produces a ParseResult which represents a failed parsing operation.
-         /// </summary>
-         /// <remarks>This method accepts a delegate rather than the exception itself, as creating an
-         /// exception can be relatively slow: if the client doesn't need the actual exception, just the information
-         /// that the parse failed, there's no point in creating the exception.</remarks>
-         /// <param name="exceptionProvider">A delegate that produces the exception representing the error that
-         /// caused the parse to fail.</param>
-         /// <returns>A ParseResult representing a failed parsing operation.</returns>
-         public static ParseResult<T> ForException(Func<Exception> exceptionProvider) =>
-            new ParseResult<T>(Preconditions.CheckNotNull(exceptionProvider, nameof(exceptionProvider)), false);
+        /// <summary>
+        /// Produces a ParseResult which represents a failed parsing operation.
+        /// </summary>
+        /// <remarks>This method accepts a delegate rather than the exception itself, as creating an
+        /// exception can be relatively slow: if the client doesn't need the actual exception, just the information
+        /// that the parse failed, there's no point in creating the exception.</remarks>
+        /// <param name="exceptionProvider">A delegate that produces the exception representing the error that
+        /// caused the parse to fail.</param>
+        /// <returns>A ParseResult representing a failed parsing operation.</returns>
+        public static ParseResult<T> ForException(Func<Exception> exceptionProvider) =>
+           new ParseResult<T>(Preconditions.CheckNotNull(exceptionProvider, nameof(exceptionProvider)), false);
 
         internal static ParseResult<T> ForInvalidValue(ValueCursor cursor, string formatString, params object[] parameters) =>
             ForInvalidValue(() =>

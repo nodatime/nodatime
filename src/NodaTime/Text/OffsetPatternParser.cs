@@ -2,20 +2,19 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Globalization;
+using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using NodaTime.Globalization;
-using NodaTime.Text.Patterns;
-using NodaTime.Utility;
-using JetBrains.Annotations;
 
 namespace NodaTime.Text
 {
     internal sealed class OffsetPatternParser : IPatternParser<Offset>
     {
-        private static readonly Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>> PatternCharacterHandlers = 
+        private static readonly Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>> PatternCharacterHandlers =
             new Dictionary<char, CharacterHandler<Offset, OffsetParseBucket>>
         {
             { '%', SteppedPatternBuilder<Offset, OffsetParseBucket>.HandlePercent },

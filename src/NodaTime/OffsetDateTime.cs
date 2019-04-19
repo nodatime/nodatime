@@ -46,7 +46,7 @@ namespace NodaTime
         {
             this.localDate = localDate;
             this.offsetTime = offsetTime;
-        }        
+        }
 
         /// <summary>
         /// Optimized conversion from an Instant to an OffsetDateTime in the ISO calendar.
@@ -108,7 +108,7 @@ namespace NodaTime
         public OffsetDateTime(LocalDateTime localDateTime, Offset offset)
             : this(localDateTime.Date, new OffsetTime(localDateTime.NanosecondOfDay, offset.Seconds))
         {
-        }        
+        }
 
         /// <summary>Gets the calendar system associated with this offset date and time.</summary>
         /// <value>The calendar system associated with this offset date and time.</value>
@@ -310,7 +310,7 @@ namespace NodaTime
         [Pure]
         public DateTimeOffset ToDateTimeOffset()
         {
-            int offsetMinutes  = Offset.Seconds / 60;
+            int offsetMinutes = Offset.Seconds / 60;
             if (offsetMinutes < MinBclOffsetMinutes || offsetMinutes > MaxBclOffsetMinutes)
             {
                 throw new InvalidOperationException("Offset out of range for DateTimeOffset");
@@ -851,7 +851,7 @@ namespace NodaTime
         /// <inheritdoc />
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-            Preconditions.CheckNotNull(writer, nameof(writer)); 
+            Preconditions.CheckNotNull(writer, nameof(writer));
             if (Calendar != CalendarSystem.Iso)
             {
                 writer.WriteAttributeString("calendar", Calendar.Id);

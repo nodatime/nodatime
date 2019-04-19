@@ -41,7 +41,7 @@ namespace NodaTime.Fields
             int extraDays = 0;
             LocalTime time = Add(start.TimeOfDay, units, ref extraDays);
             // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
-            LocalDate date = extraDays == 0 ? start.Date :  start.Date.PlusDays(extraDays);
+            LocalDate date = extraDays == 0 ? start.Date : start.Date.PlusDays(extraDays);
             return new LocalDateTime(date, time);
         }
 
@@ -98,7 +98,7 @@ namespace NodaTime.Fields
                     {
                         long longDays = value / unitsPerDay;
                         // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
-                        days = checked ((int) longDays);
+                        days = checked((int) longDays);
                         value = value % unitsPerDay;
                     }
                     long nanosToAdd = value * unitNanoseconds;
@@ -147,7 +147,7 @@ namespace NodaTime.Fields
         internal long GetUnitsInDuration(Duration duration) =>
             duration.IsInt64Representable
             ? duration.ToInt64Nanoseconds() / unitNanoseconds
-            : (long)(duration.ToDecimalNanoseconds() / unitNanoseconds);
+            : (long) (duration.ToDecimalNanoseconds() / unitNanoseconds);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> representing the given number of units.
@@ -155,6 +155,6 @@ namespace NodaTime.Fields
         internal Duration ToDuration(long units) =>
             units >= -maxLongUnits && units <= maxLongUnits
             ? Duration.FromNanoseconds(units * unitNanoseconds)
-            : Duration.FromNanoseconds(units * (decimal)unitNanoseconds);
+            : Duration.FromNanoseconds(units * (decimal) unitNanoseconds);
     }
 }

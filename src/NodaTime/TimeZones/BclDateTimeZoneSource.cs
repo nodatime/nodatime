@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
 using NodaTime.Annotations;
 using System;
 using System.Collections.Generic;
@@ -112,7 +111,7 @@ namespace NodaTime.TimeZones
                 return BclDateTimeZone.FromTimeZoneInfo(zone);
             }
             catch (TimeZoneNotFoundException)
-            {                
+            {
                 throw new ArgumentException(id + " is not a system time zone ID", nameof(id));
             }
         }

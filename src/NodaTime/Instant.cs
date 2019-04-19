@@ -4,7 +4,6 @@
 
 using JetBrains.Annotations;
 using NodaTime.Annotations;
-using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
@@ -186,7 +185,7 @@ namespace NodaTime
                 return 1;
             }
             Preconditions.CheckArgument(obj is Instant, nameof(obj), "Object must be of type NodaTime.Instant.");
-            return CompareTo((Instant)obj);
+            return CompareTo((Instant) obj);
         }
         #endregion
 

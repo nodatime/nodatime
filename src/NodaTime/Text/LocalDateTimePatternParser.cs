@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+using System.Collections.Generic;
 
 namespace NodaTime.Text
 {
@@ -15,7 +15,7 @@ namespace NodaTime.Text
     {
         // Split the template value into date and time once, to avoid doing it every time we parse.
         private readonly LocalDate templateValueDate;
-        private readonly LocalTime templateValueTime;       
+        private readonly LocalTime templateValueTime;
 
         private static readonly Dictionary<char, CharacterHandler<LocalDateTime, LocalDateTimeParseBucket>> PatternCharacterHandlers =
             new Dictionary<char, CharacterHandler<LocalDateTime, LocalDateTimeParseBucket>>
@@ -100,7 +100,7 @@ namespace NodaTime.Text
             }
         }
 
-        
+
         internal sealed class LocalDateTimeParseBucket : ParseBucket<LocalDateTime>
         {
             internal readonly LocalDatePatternParser.LocalDateParseBucket Date;

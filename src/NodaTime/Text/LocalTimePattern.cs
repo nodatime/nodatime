@@ -2,13 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Globalization;
-using System.Text;
 using NodaTime.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
-using JetBrains.Annotations;
+using System.Globalization;
+using System.Text;
 
 namespace NodaTime.Text
 {
@@ -118,7 +117,7 @@ namespace NodaTime.Text
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
             // Use the "fixed" parser for the common case of the default template value.
-            var pattern = templateValue == LocalTime.Midnight 
+            var pattern = templateValue == LocalTime.Midnight
                 ? formatInfo.LocalTimePatternParser.ParsePattern(patternText)
                 : new LocalTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
             // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.

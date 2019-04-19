@@ -2,10 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.Calendars
 {
@@ -37,7 +36,7 @@ namespace NodaTime.Calendars
         internal SimpleWeekYearRule(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek, bool irregularWeeks)
         {
             Preconditions.DebugCheckArgumentRange(nameof(minDaysInFirstWeek), minDaysInFirstWeek, 1, 7);
-            Preconditions.CheckArgumentRange(nameof(firstDayOfWeek), (int)firstDayOfWeek, 1, 7);
+            Preconditions.CheckArgumentRange(nameof(firstDayOfWeek), (int) firstDayOfWeek, 1, 7);
             this.minDaysInFirstWeek = minDaysInFirstWeek;
             this.firstDayOfWeek = firstDayOfWeek;
             this.irregularWeeks = irregularWeeks;
@@ -50,7 +49,7 @@ namespace NodaTime.Calendars
             ValidateWeekYear(weekYear, calendar);
 
             // The actual message for this won't be ideal, but it's clear enough.
-            Preconditions.CheckArgumentRange(nameof(dayOfWeek), (int)dayOfWeek, 1, 7);
+            Preconditions.CheckArgumentRange(nameof(dayOfWeek), (int) dayOfWeek, 1, 7);
 
             var yearMonthDayCalculator = calendar.YearMonthDayCalculator;
             var maxWeeks = GetWeeksInWeekYear(weekYear, calendar);
@@ -58,7 +57,7 @@ namespace NodaTime.Calendars
             {
                 throw new ArgumentOutOfRangeException(nameof(weekOfWeekYear));
             }
-            
+
             unchecked
             {
                 int startOfWeekYear = GetWeekYearDaysSinceEpoch(yearMonthDayCalculator, weekYear);
@@ -222,7 +221,7 @@ namespace NodaTime.Calendars
                 // in the previous calendar year.
                 // (For example, if the start of the calendar year is Friday and the first day of the week is Monday,
                 // this will be 4.)
-                int daysIntoWeek = ((startOfYearDayOfWeek - (int)firstDayOfWeek) + 7) % 7;
+                int daysIntoWeek = ((startOfYearDayOfWeek - (int) firstDayOfWeek) + 7) % 7;
                 int startOfWeekContainingStartOfCalendarYear = startOfCalendarYear - daysIntoWeek;
 
                 bool startOfYearIsInWeek1 = (7 - daysIntoWeek >= minDaysInFirstWeek);

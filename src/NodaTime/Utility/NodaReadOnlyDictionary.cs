@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,7 +35,7 @@ namespace NodaTime.Utility
 
         public TValue this[TKey key]
         {
-            get { return original[key]; } 
+            get { return original[key]; }
             set
             {
                 throw new NotSupportedException("Cannot set a value in a read-only dictionary");

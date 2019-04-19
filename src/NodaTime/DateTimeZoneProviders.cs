@@ -4,7 +4,6 @@
 
 using NodaTime.TimeZones;
 using NodaTime.Utility;
-using JetBrains.Annotations;
 
 namespace NodaTime
 {

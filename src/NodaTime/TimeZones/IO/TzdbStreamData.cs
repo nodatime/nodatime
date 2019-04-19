@@ -2,12 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.TimeZones.Cldr;
+using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using JetBrains.Annotations;
-using NodaTime.TimeZones.Cldr;
-using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -18,15 +17,15 @@ namespace NodaTime.TimeZones.IO
     {
         private static readonly Dictionary<TzdbStreamFieldId, Action<Builder, TzdbStreamField>> FieldHandlers =
             new Dictionary<TzdbStreamFieldId, Action<Builder, TzdbStreamField>>
-        {
-            [TzdbStreamFieldId.StringPool] = (builder, field) => builder.HandleStringPoolField(field),
-            [TzdbStreamFieldId.TimeZone] = (builder, field) => builder.HandleZoneField(field),
-            [TzdbStreamFieldId.TzdbIdMap] = (builder, field) => builder.HandleTzdbIdMapField(field),
-            [TzdbStreamFieldId.TzdbVersion] = (builder, field) => builder.HandleTzdbVersionField(field),
-            [TzdbStreamFieldId.CldrSupplementalWindowsZones] = (builder, field) => builder.HandleSupplementalWindowsZonesField(field),
-            [TzdbStreamFieldId.ZoneLocations] = (builder, field) => builder.HandleZoneLocationsField(field),
-            [TzdbStreamFieldId.Zone1970Locations] = (builder, field) => builder.HandleZone1970LocationsField(field)
-        };
+            {
+                [TzdbStreamFieldId.StringPool] = (builder, field) => builder.HandleStringPoolField(field),
+                [TzdbStreamFieldId.TimeZone] = (builder, field) => builder.HandleZoneField(field),
+                [TzdbStreamFieldId.TzdbIdMap] = (builder, field) => builder.HandleTzdbIdMapField(field),
+                [TzdbStreamFieldId.TzdbVersion] = (builder, field) => builder.HandleTzdbVersionField(field),
+                [TzdbStreamFieldId.CldrSupplementalWindowsZones] = (builder, field) => builder.HandleSupplementalWindowsZonesField(field),
+                [TzdbStreamFieldId.ZoneLocations] = (builder, field) => builder.HandleZoneLocationsField(field),
+                [TzdbStreamFieldId.Zone1970Locations] = (builder, field) => builder.HandleZone1970LocationsField(field)
+            };
 
         private const int AcceptedVersion = 0;
 
@@ -94,7 +93,7 @@ namespace NodaTime.TimeZones.IO
                 var reader = new DateTimeZoneReader(stream, stringPool);
                 // Skip over the ID before the zone data itself
                 reader.ReadString();
-                var type = (DateTimeZoneWriter.DateTimeZoneType)reader.ReadByte();
+                var type = (DateTimeZoneWriter.DateTimeZoneType) reader.ReadByte();
                 return type switch
                 {
                     DateTimeZoneWriter.DateTimeZoneType.Fixed => FixedDateTimeZone.Read(reader, id),

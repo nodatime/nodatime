@@ -25,7 +25,7 @@ namespace NodaTime.Text
         /// Gets the string being parsed.
         /// </summary>
         internal string Value { get; }
-        
+
         /// <summary>
         /// A nul character. This character is not allowed in any parsable string and is used to
         /// indicate that the current character is not set.

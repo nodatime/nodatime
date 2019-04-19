@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;

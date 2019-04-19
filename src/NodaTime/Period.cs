@@ -116,7 +116,7 @@ namespace NodaTime
         /// </remarks>
         /// <value>The number of minutes within this period.</value>
         public long Minutes { get; }
-        
+
         /// <summary>
         /// Gets the number of hours within this period.
         /// </summary>
@@ -661,7 +661,7 @@ namespace NodaTime
             // number of nanoseconds. All the operations can be done with simple long division/remainder ops,
             // so we don't need to delegate to TimePeriodField.
 
-            long remaining = unchecked (end.NanosecondOfDay - start.NanosecondOfDay);
+            long remaining = unchecked(end.NanosecondOfDay - start.NanosecondOfDay);
 
             // Optimization for a single unit
             switch (units)
@@ -786,7 +786,8 @@ namespace NodaTime
         /// negative values, but for simplicity there is no attempt to work around this.</exception>
         /// <returns>The normalized period.</returns>
         /// <seealso cref="NormalizingEqualityComparer"/>
-        [Pure] public Period Normalize()
+        [Pure]
+        public Period Normalize()
         {
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.

@@ -2,10 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime.Text
 {
@@ -20,7 +20,7 @@ namespace NodaTime.Text
         private readonly Cache<string, IPattern<T>> cache;
 
         internal FixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
-        {                
+        {
             cache = new Cache<string, IPattern<T>>(CacheSize, patternText => patternParser.ParsePattern(patternText, formatInfo),
                 StringComparer.Ordinal);
         }

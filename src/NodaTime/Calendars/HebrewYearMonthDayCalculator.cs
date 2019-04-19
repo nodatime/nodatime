@@ -168,7 +168,7 @@ namespace NodaTime.Calendars
         {
             // First (quite rough) guess... we could probably be more efficient than this, but it's unlikely to be very far off.
             int startCivilMonth = CalendarToCivilMonth(start.Year, start.Month);
-            double startTotalMonths = startCivilMonth + (start.Year * MonthsPerLeapCycle) / (double)YearsPerLeapCycle;
+            double startTotalMonths = startCivilMonth + (start.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle;
             int endCivilMonth = CalendarToCivilMonth(end.Year, end.Month);
             double endTotalMonths = endCivilMonth + (end.Year * MonthsPerLeapCycle) / (double) YearsPerLeapCycle;
             int diff = (int) (endTotalMonths - startTotalMonths);
