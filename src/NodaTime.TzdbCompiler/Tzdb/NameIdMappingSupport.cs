@@ -2,8 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NodaTime.Utility;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -20,8 +20,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// introduce any new or different mappings, but allows this mapping to be a superset
         /// of the detected one.
         /// </summary>
-        internal static NodaReadOnlyDictionary<string, string> StandardNameToIdMap =
-            new NodaReadOnlyDictionary<string, string>(new Dictionary<string, string>
+        internal static ReadOnlyDictionary<string, string> StandardNameToIdMap =
+            new ReadOnlyDictionary<string, string>(new Dictionary<string, string>
             {
                 { "Coordinated Universal Time", "UTC" },
                 { "Co-ordinated Universal Time", "UTC" },
