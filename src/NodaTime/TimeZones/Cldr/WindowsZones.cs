@@ -117,7 +117,7 @@ namespace NodaTime.TimeZones.Cldr
             this.TzdbVersion = tzdbVersion;
             this.WindowsVersion = windowsVersion;
             this.MapZones = mapZones;
-            this.PrimaryMapping = new NodaReadOnlyDictionary<string, string>(
+            this.PrimaryMapping = new ReadOnlyDictionary<string, string>(
                 mapZones.Where(z => z.Territory == MapZone.PrimaryTerritory)
                         .ToDictionary(z => z.WindowsId, z => z.TzdbIds.Single()));
         }

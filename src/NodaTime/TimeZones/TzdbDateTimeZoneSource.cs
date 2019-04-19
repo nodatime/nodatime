@@ -168,7 +168,7 @@ namespace NodaTime.TimeZones
         {
             Preconditions.CheckNotNull(source, nameof(source));
             this.source = source;
-            CanonicalIdMap = new NodaReadOnlyDictionary<string, string>(source.TzdbIdMap);
+            CanonicalIdMap = new ReadOnlyDictionary<string, string>(source.TzdbIdMap);
             Aliases = CanonicalIdMap
                 .Where(pair => pair.Key != pair.Value)
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
