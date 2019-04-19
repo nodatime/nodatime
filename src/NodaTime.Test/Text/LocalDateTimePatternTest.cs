@@ -97,8 +97,11 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { Pattern = "r", Text = "2009-06-15T13:45:30.090000000 (ISO)", Culture = Cultures.EnUs },
             new Data(SampleLocalDateTimeCoptic) { Pattern = "r", Text = "1976-06-19T21:13:34.123456789 (Coptic)", Culture = Cultures.EnUs },
             // Note: No RFC1123, as that requires a time zone.
-            // Sortable / ISO8601
+            // Short Sortable / ISO8601
             new Data(MsdnStandardExampleNoMillis) { Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.EnUs },
+            // Long Sortable / ISO8601-extended
+            new Data(MsdnStandardExample) { Pattern = "S", Text = "2009-06-15T13:45:30.09", Culture = Cultures.EnUs },
+            new Data(MsdnStandardExampleNoMillis) { Pattern = "S", Text = "2009-06-15T13:45:30", Culture = Cultures.EnUs },
 
             // Standard patterns (French)
             new Data(MsdnStandardExampleNoSeconds) { Pattern = "f", Text = "lundi 15 juin 2009 13:45", Culture = Cultures.FrFr },
@@ -111,6 +114,7 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.FullRoundtripWithoutCalendar, Pattern = "R", Text = "2009-06-15T13:45:30.090000000", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.FullRoundtrip, Pattern = "r", Text = "2009-06-15T13:45:30.090000000 (ISO)", Culture = Cultures.FrFr },
             new Data(MsdnStandardExampleNoMillis) { StandardPattern = LocalDateTimePattern.GeneralIso, Pattern = "s", Text = "2009-06-15T13:45:30", Culture = Cultures.FrFr },
+            new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.ExtendedIso, Pattern = "S", Text = "2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
             new Data(SampleLocalDateTime) { StandardPattern = LocalDateTimePattern.FullRoundtripWithoutCalendar, Pattern = "R", Text = "1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
             new Data(SampleLocalDateTime) { StandardPattern = LocalDateTimePattern.FullRoundtrip, Pattern = "r", Text = "1976-06-19T21:13:34.123456789 (ISO)", Culture = Cultures.FrFr },
 

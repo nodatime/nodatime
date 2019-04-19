@@ -32,9 +32,11 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Gets an invariant local date/time pattern which is ISO-8601 compatible, down to the second.
-        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss", and is also used as the "sortable"
-        /// standard pattern.
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss".
         /// </summary>
+        /// <remarks>
+        /// This pattern corresponds to the 's' standard pattern ("shorter sortable").
+        /// </remarks>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, down to the second.</value>
         public static LocalDateTimePattern GeneralIso => Patterns.GeneralIsoPatternImpl;
 
@@ -43,6 +45,9 @@ namespace NodaTime.Text
         /// of sub-second accuracy. (These digits are omitted when unnecessary.)
         /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF".
         /// </summary>
+        /// <remarks>
+        /// This pattern corresponds to the 'S' standard pattern ("longer sortable").
+        /// </remarks>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
         /// of sub-second accuracy.</value>
         public static LocalDateTimePattern ExtendedIso => Patterns.ExtendedIsoPatternImpl;
@@ -55,6 +60,9 @@ namespace NodaTime.Text
         /// round-trip all <c>LocalDateTime</c> values as it will lose sub-tick information. Use
         /// <see cref="FullRoundtripWithoutCalendar"/>
         /// </summary>
+        /// <remarks>
+        /// This pattern corresponds to the 'o' and 'O' standard patterns.
+        /// </remarks>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy which are always present (including trailing zeroes).</value>
         public static LocalDateTimePattern BclRoundtrip => Patterns.BclRoundtripPatternImpl;
@@ -66,6 +74,9 @@ namespace NodaTime.Text
         /// round-trip all <see cref="LocalDateTime"/> values if the calendar system of the template value is the same
         /// as the calendar system of the original value.
         /// </summary>
+        /// <remarks>
+        /// This pattern corresponds to the 'r' standard pattern.
+        /// </remarks>
         /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
         /// of sub-second accuracy which are always present (including trailing zeroes).</value>
         public static LocalDateTimePattern FullRoundtripWithoutCalendar => Patterns.FullRoundtripWithoutCalendarImpl;
@@ -74,6 +85,9 @@ namespace NodaTime.Text
         /// Gets an invariant local date/time pattern which round trips values including the calendar system.
         /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'".
         /// </summary>
+        /// <remarks>
+        /// This pattern corresponds to the 'R' standard pattern.
+        /// </remarks>
         /// <value>An invariant local date/time pattern which round trips values including the calendar system.</value>
         public static LocalDateTimePattern FullRoundtrip => Patterns.FullRoundtripPatternImpl;
 
