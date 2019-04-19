@@ -5,9 +5,11 @@
 using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 
 namespace NodaTime.TimeZones.Cldr
 {
@@ -102,6 +104,8 @@ namespace NodaTime.TimeZones.Cldr
         /// to TZDB zone ID.</value>
         public IDictionary<string, string> PrimaryMapping { get; }
 
+        private readonly Lazy<IReadOnlyDictionary<string, string>> tzdbToWindowsMapping;
+
         internal WindowsZones(string version, string tzdbVersion,
             string windowsVersion, IList<MapZone> mapZones)
             : this(Preconditions.CheckNotNull(version, nameof(version)),
@@ -120,6 +124,78 @@ namespace NodaTime.TimeZones.Cldr
             this.PrimaryMapping = new ReadOnlyDictionary<string, string>(
                 mapZones.Where(z => z.Territory == MapZone.PrimaryTerritory)
                         .ToDictionary(z => z.WindowsId, z => z.TzdbIds.Single()));
+            tzdbToWindowsMapping = new Lazy<IReadOnlyDictionary<string, string>>(BuildTzdbToWindowsMapping, LazyThreadSafetyMode.PublicationOnly);
+        }
+
+        private IReadOnlyDictionary<string, string> BuildTzdbToWindowsMapping()
+        {
+
+            var ret = new Dictionary<string, string>();
+            foreach (var mapZone in MapZones)
+            {
+                foreach (var tzdbId in mapZone.TzdbIds)
+                {
+                    // This is forgiving of duplicate TZDB IDs. That's likely to be more useful than throwing an exception.
+                    ret[tzdbId] = mapZone.WindowsId;
+                }
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Maps the given Windows time zone ID to the corresponding CLDR-canonical TZDB ID for the primary territory,
+        /// throwing <see cref="KeyNotFoundException"/> on failure.
+        /// </summary>
+        /// <remarks>
+        /// This method is equivalent to looking up the ID in <see cref="PrimaryMapping"/>, but provides symmetry
+        /// with <see cref="MapTzdbToWindows(string)"/>.
+        /// </remarks>
+        /// <param name="windowsZoneId">The Windows time zone ID to map.</param>
+        /// <exception cref="KeyNotFoundException">Either <paramref name="windowsZoneId"/> was not known to this mapping object,
+        /// or it had no primary territory.</exception>
+        /// <returns>The corresponding CLDR-canonical time zone ID.</returns>
+        public string MapWindowsToTzdb(string windowsZoneId) =>
+            MapWindowsToTzdbOrNull(windowsZoneId) ?? throw new KeyNotFoundException("Unknown zone ID, or no primary mapping");
+
+        /// <summary>
+        /// Maps the given Windows time zone ID to the corresponding CLDR-canonical TZDB ID for the primary territory,
+        /// returning a null reference if no mapping is available.
+        /// </summary>
+        /// <remarks>
+        /// This method is equivalent to looking up the ID in <see cref="PrimaryMapping"/>, but provides symmetry
+        /// with <see cref="MapTzdbToWindowsOrNull(string)"/>.
+        /// </remarks>
+        /// <param name="windowsZoneId">The Windows time zone ID to map.</param>
+        /// <returns>The corresponding CLDR-canonical time zone ID, or <c>null</c> if there is no mapping available.</returns>
+        public string? MapWindowsToTzdbOrNull(string windowsZoneId)
+        {
+            Preconditions.CheckNotNull(windowsZoneId, nameof(windowsZoneId));
+            PrimaryMapping.TryGetValue(windowsZoneId, out var result);
+            return result;
+        }
+
+        /// <summary>
+        /// Maps the given TZDB time zone ID to the corresponding Windows zone ID,
+        /// throwing <see cref="KeyNotFoundException"/> on failure.
+        /// </summary>
+        /// <param name="tzdbId">The Windows time zone ID to map.</param>
+        /// <exception cref="KeyNotFoundException"><paramref name="tzdbId"/> is not known to this mapping object.</exception>
+        /// <returns>The corresponding CLDR-canonical time zone ID.</returns>
+        public string MapTzdbToWindows(string tzdbId) =>
+            MapTzdbToWindowsOrNull(tzdbId) ?? throw new KeyNotFoundException("Unknown zone ID, or no Windows mapping");
+
+        /// <summary>
+        /// Maps the given TZDB time zone ID to the corresponding Windows zone ID,
+        /// returning a null reference if no mapping is available.
+        /// </summary>
+        /// <param name="tzdbId">The Windows time zone ID to map.</param>
+        /// <exception cref="KeyNotFoundException"><paramref name="tzdbId"/> is not known to this mapping object.</exception>
+        /// <returns>The corresponding CLDR-canonical time zone ID.</returns>
+        public string? MapTzdbToWindowsOrNull(string tzdbId)
+        {
+            Preconditions.CheckNotNull(tzdbId, nameof(tzdbId));
+            tzdbToWindowsMapping.Value.TryGetValue(tzdbId, out var result);
+            return result;
         }
 
         internal static WindowsZones Read(IDateTimeZoneReader reader)
