@@ -141,24 +141,24 @@ namespace NodaTime.Calendars
         /// 30 is represented by bit 0.
         /// </summary>
         private static int GetLeapYearPatternBits(IslamicLeapYearPattern leapYearPattern) => leapYearPattern switch
-            {
-                // When reading bit patterns, don't forget to read right to left...
-                IslamicLeapYearPattern.Base15 => 623158436,        // 0b100101001001001010010010100100
-                IslamicLeapYearPattern.Base16 => 623191204,        // 0b100101001001010010010010100100
-                IslamicLeapYearPattern.Indian => 690562340,        // 0b101001001010010010010100100100
-                IslamicLeapYearPattern.HabashAlHasib => 153692453, // 0b001001001010010010100100100101
-                _ => throw new ArgumentOutOfRangeException(nameof(leapYearPattern))
-            };
+        {
+            // When reading bit patterns, don't forget to read right to left...
+            IslamicLeapYearPattern.Base15 => 623158436,        // 0b100101001001001010010010100100
+            IslamicLeapYearPattern.Base16 => 623191204,        // 0b100101001001010010010010100100
+            IslamicLeapYearPattern.Indian => 690562340,        // 0b101001001010010010010100100100
+            IslamicLeapYearPattern.HabashAlHasib => 153692453, // 0b001001001010010010100100100101
+            _ => throw new ArgumentOutOfRangeException(nameof(leapYearPattern))
+        };
 
         /// <summary>
         /// Returns the days since the Unix epoch at the specified epoch.
         /// </summary>
         private static int GetYear1Days(IslamicEpoch epoch) => epoch switch
-            {
-                // Epoch 1970-01-01 ISO = 1389-10-22 Islamic (civil) or 1389-10-23 Islamic (astronomical)
-                IslamicEpoch.Astronomical => DaysAtAstronomicalEpoch,
-                IslamicEpoch.Civil => DaysAtCivilEpoch,
-                _ => throw new ArgumentOutOfRangeException(nameof(epoch))
-            };
+        {
+            // Epoch 1970-01-01 ISO = 1389-10-22 Islamic (civil) or 1389-10-23 Islamic (astronomical)
+            IslamicEpoch.Astronomical => DaysAtAstronomicalEpoch,
+            IslamicEpoch.Civil => DaysAtCivilEpoch,
+            _ => throw new ArgumentOutOfRangeException(nameof(epoch))
+        };
     }
 }

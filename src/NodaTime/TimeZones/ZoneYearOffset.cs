@@ -2,11 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Globalization;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
-using JetBrains.Annotations;
+using System;
+using System.Globalization;
 
 namespace NodaTime.TimeZones
 {
@@ -278,11 +277,11 @@ namespace NodaTime.TimeZones
         /// <param name="savings">The daylight savings adjustment.</param>
         /// <returns>The base time offset as a <see cref="Duration"/>.</returns>
         internal Offset GetRuleOffset(Offset standardOffset, Offset savings) => Mode switch
-            {
-                TransitionMode.Wall => standardOffset + savings,
-                TransitionMode.Standard => standardOffset,
-                _ => Offset.Zero
-            };
+        {
+            TransitionMode.Wall => standardOffset + savings,
+            TransitionMode.Standard => standardOffset,
+            _ => Offset.Zero
+        };
 
         #region Object overrides
 

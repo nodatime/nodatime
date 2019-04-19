@@ -2,11 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Diagnostics;
-using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Utility;
+using System;
+using System.Diagnostics;
 
 namespace NodaTime.TimeZones
 {
@@ -45,7 +44,8 @@ namespace NodaTime.TimeZones
         /// <value>The base Offset.</value>
         public Offset StandardOffset
         {
-            [DebuggerStepThrough] get { return WallOffset - Savings; }
+            [DebuggerStepThrough]
+            get { return WallOffset - Savings; }
         }
 
         /// <summary>
@@ -58,7 +58,8 @@ namespace NodaTime.TimeZones
         /// <exception cref="InvalidOperationException">This zone extends to the start or end of time.</exception>
         public Duration Duration
         {
-            [DebuggerStepThrough] get { return End - Start; }
+            [DebuggerStepThrough]
+            get { return End - Start; }
         }
 
         /// <summary>
@@ -106,7 +107,8 @@ namespace NodaTime.TimeZones
         {
             // Use the Start property to trigger the appropriate end-of-time exception.
             // Call Plus to trigger an appropriate out-of-range exception.
-            [DebuggerStepThrough] get { return new LocalDateTime(Start.Plus(WallOffset)); }
+            [DebuggerStepThrough]
+            get { return new LocalDateTime(Start.Plus(WallOffset)); }
         }
 
         /// <summary>
@@ -174,7 +176,7 @@ namespace NodaTime.TimeZones
             : this(name, start ?? Instant.BeforeMinValue, end ?? Instant.AfterMaxValue, wallOffset, savings)
         {
         }
-     
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ZoneInterval" /> class.
         /// </summary>

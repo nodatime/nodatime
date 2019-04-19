@@ -2,11 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
-using JetBrains.Annotations;
+using System;
 
 namespace NodaTime.TimeZones
 {
@@ -83,7 +82,7 @@ namespace NodaTime.TimeZones
                 ZoneInterval intervalFromTailZone = tailZone.GetZoneInterval(instant);
                 return intervalFromTailZone.RawStart < tailZoneStart ? firstTailZoneInterval! : intervalFromTailZone;
             }
-            
+
             int lower = 0; // Inclusive
             int upper = periods.Length; // Exclusive
 
@@ -138,7 +137,7 @@ namespace NodaTime.TimeZones
             if (tailZone != null)
             {
                 // This is the only kind of zone we support in the new format. Enforce that...
-                var tailDstZone = (StandardDaylightAlternatingMap)tailZone;
+                var tailDstZone = (StandardDaylightAlternatingMap) tailZone;
                 tailDstZone.Write(writer);
             }
         }

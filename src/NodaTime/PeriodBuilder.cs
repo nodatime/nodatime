@@ -2,14 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
+using NodaTime.Text;
+using NodaTime.Utility;
 using System;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using JetBrains.Annotations;
-using NodaTime.Annotations;
-using NodaTime.Text;
-using NodaTime.Utility;
 
 namespace NodaTime
 {
@@ -135,19 +134,19 @@ namespace NodaTime
         public long this[PeriodUnits unit]
         {
             get => unit switch
-                {
-                    PeriodUnits.Years => Years,
-                    PeriodUnits.Months => Months,
-                    PeriodUnits.Weeks => Weeks,
-                    PeriodUnits.Days => Days,
-                    PeriodUnits.Hours => Hours,
-                    PeriodUnits.Minutes => Minutes,
-                    PeriodUnits.Seconds => Seconds,
-                    PeriodUnits.Milliseconds => Milliseconds,
-                    PeriodUnits.Ticks => Ticks,
-                    PeriodUnits.Nanoseconds => Nanoseconds,
-                    _ => throw new ArgumentOutOfRangeException(nameof(unit), "Indexer for PeriodBuilder only takes a single unit")
-                };
+            {
+                PeriodUnits.Years => Years,
+                PeriodUnits.Months => Months,
+                PeriodUnits.Weeks => Weeks,
+                PeriodUnits.Days => Days,
+                PeriodUnits.Hours => Hours,
+                PeriodUnits.Minutes => Minutes,
+                PeriodUnits.Seconds => Seconds,
+                PeriodUnits.Milliseconds => Milliseconds,
+                PeriodUnits.Ticks => Ticks,
+                PeriodUnits.Nanoseconds => Nanoseconds,
+                _ => throw new ArgumentOutOfRangeException(nameof(unit), "Indexer for PeriodBuilder only takes a single unit")
+            };
             set
             {
                 if ((unit & PeriodUnits.AllDateUnits) != 0)

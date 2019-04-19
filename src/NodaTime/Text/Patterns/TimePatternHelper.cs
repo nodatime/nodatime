@@ -109,8 +109,8 @@ namespace NodaTime.Text.Patterns
                 }
                 else
                 {
-                    builder.AddParseAction((str, bucket) => str.Match('.') || str.Match(',') 
-                                                            ? null 
+                    builder.AddParseAction((str, bucket) => str.Match('.') || str.Match(',')
+                                                            ? null
                                                             : ParseResult<TResult>.MismatchedCharacter(str, ';'));
                     builder.AddFormatAction((value, sb) => sb.Append('.'));
                 }
@@ -129,7 +129,7 @@ namespace NodaTime.Text.Patterns
                 char patternCharacter = pattern.Current;
                 int count = pattern.GetRepeatCount(maxCount);
                 builder.AddField(PatternFields.FractionalSeconds, pattern.Current);
-                
+
                 builder.AddParseAction((str, bucket) =>
                 {
                     // If the pattern is 'f', we need exactly "count" digits. Otherwise ('F') we need

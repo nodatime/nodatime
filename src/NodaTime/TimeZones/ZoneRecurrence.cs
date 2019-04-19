@@ -2,11 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Calendars;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
-using JetBrains.Annotations;
+using System;
 
 namespace NodaTime.TimeZones
 {
@@ -131,7 +130,7 @@ namespace NodaTime.TimeZones
                 // Asked for a transition after our final transition... or both are beyond the end of time (in which case
                 // we can return an infinite transition). This branch will always be taken for transitions beyond the end
                 // of time.
-                return maxLocalInstant == LocalInstant.AfterMaxValue ? new Transition(Instant.AfterMaxValue, newOffset) : (Transition?)null;
+                return maxLocalInstant == LocalInstant.AfterMaxValue ? new Transition(Instant.AfterMaxValue, newOffset) : (Transition?) null;
             }
             else if (safeLocal == LocalInstant.BeforeMinValue)
             {

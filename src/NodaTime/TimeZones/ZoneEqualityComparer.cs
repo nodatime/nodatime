@@ -2,12 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
+using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NodaTime.Annotations;
-using NodaTime.Utility;
-using JetBrains.Annotations;
 
 namespace NodaTime.TimeZones
 {
@@ -124,7 +123,7 @@ namespace NodaTime.TimeZones
         internal Options OptionsForTest => options;
 
         private readonly ZoneIntervalEqualityComparer zoneIntervalComparer;
-        
+
         /// <summary>
         /// Creates a new comparer for the given interval, with the given comparison options.
         /// </summary>

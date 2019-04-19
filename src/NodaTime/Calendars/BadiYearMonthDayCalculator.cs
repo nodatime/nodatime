@@ -93,7 +93,7 @@ namespace NodaTime.Calendars
             const int dayInMarchForOffsetToNawRuz = 19;
             int num = YearInfoRaw[year - FirstYearOfStandardizedCalendar];
             return dayInMarchForOffsetToNawRuz + (num % 10);
-        }        
+        }
 
         protected override int CalculateStartOfYearDays(int year)
         {
@@ -275,6 +275,6 @@ namespace NodaTime.Calendars
 
             int daysInMonth = month == Month18 ? DaysInMonth + GetDaysInAyyamiHa(year) : DaysInMonth;
             Preconditions.CheckArgumentRange(nameof(day), day, 1, daysInMonth);
-        } 
+        }
     }
 }

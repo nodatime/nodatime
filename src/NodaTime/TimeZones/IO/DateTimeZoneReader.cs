@@ -2,10 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Utility;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using NodaTime.Utility;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -31,7 +31,7 @@ namespace NodaTime.TimeZones.IO
         /// Sometimes we need to buffer a byte in memory, e.g. to check if there is any
         /// more data. Anything reading directly from the stream should check here first.
         /// </summary>
-        private byte? bufferedByte; 
+        private byte? bufferedByte;
 
         internal DateTimeZoneReader(Stream input, IList<string>? stringPool)
         {
@@ -192,7 +192,7 @@ namespace NodaTime.TimeZones.IO
             }
             return results;
         }
-        
+
         /// <summary>
         /// Reads an instant representing a zone interval transition from the stream.
         /// </summary>
@@ -325,7 +325,7 @@ namespace NodaTime.TimeZones.IO
             {
                 throw new InvalidNodaDataException("Unexpected end of data stream");
             }
-            return (byte)value;
+            return (byte) value;
         }
     }
 }

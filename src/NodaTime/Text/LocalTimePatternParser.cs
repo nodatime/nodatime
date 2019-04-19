@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Collections.Generic;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+using System.Collections.Generic;
 
 namespace NodaTime.Text
 {
@@ -15,7 +15,7 @@ namespace NodaTime.Text
     {
         private readonly LocalTime templateValue;
 
-        private static readonly Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>> PatternCharacterHandlers = 
+        private static readonly Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>> PatternCharacterHandlers =
             new Dictionary<char, CharacterHandler<LocalTime, LocalTimeParseBucket>>
         {
             { '%', SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>.HandlePercent },

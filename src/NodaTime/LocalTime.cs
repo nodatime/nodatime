@@ -306,7 +306,7 @@ namespace NodaTime
         public int Hour =>
             // Effectively nanoseconds / NanosecondsPerHour, but apparently rather more efficient.
             (int) ((nanoseconds >> 13) / 439453125);
-            
+
         /// <summary>
         /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
         /// </summary>
@@ -706,7 +706,7 @@ namespace NodaTime
             minute = Minute;
             second = Second;
         }
-        
+
         /// <summary>
         /// Returns the later time of the given two.
         /// </summary>

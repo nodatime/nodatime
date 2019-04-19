@@ -55,7 +55,7 @@ namespace NodaTime
         {
             this.yearMonthDayCalendar = yearMonthDayCalendar;
         }
-       
+
         /// <summary>
         /// Constructs an instance from the number of days since the unix epoch, in the ISO
         /// calendar system.
@@ -535,7 +535,7 @@ namespace NodaTime
                 return 1;
             }
             Preconditions.CheckArgument(obj is LocalDate, nameof(obj), "Object must be of type NodaTime.LocalDate.");
-            return CompareTo((LocalDate)obj);
+            return CompareTo((LocalDate) obj);
         }
 
         /// <summary>
@@ -603,7 +603,7 @@ namespace NodaTime
             Preconditions.CheckNotNull(zone, nameof(zone));
             return zone.AtStartOfDay(this);
         }
-        
+
         /// <summary>
         /// Creates a new LocalDate representing the same physical date, but in a different calendar.
         /// The returned LocalDate is likely to have different field values to this one.

@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
 using NodaTime.Extensions;
 using System;
 using System.Globalization;
@@ -101,7 +100,7 @@ namespace NodaTime.Calendars
         /// <see cref="Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)"/>
         /// method.</returns>
         public static IWeekYearRule FromCalendarWeekRule(CalendarWeekRule calendarWeekRule, DayOfWeek firstDayOfWeek)
-        {            
+        {
             int minDaysInFirstWeek = calendarWeekRule switch
             {
                 FirstDay => 1,

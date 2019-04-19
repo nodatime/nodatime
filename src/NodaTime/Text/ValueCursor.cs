@@ -260,7 +260,7 @@ namespace NodaTime.Text
                 {
                     maxIndex = Length;
                 }
-                for (;  localIndex < maxIndex; localIndex++)
+                for (; localIndex < maxIndex; localIndex++)
                 {
                     // Optimized digit handling: rather than checking for the range, returning -1
                     // and then checking whether the result is -1, we can do both checks at once.
@@ -319,7 +319,7 @@ namespace NodaTime.Text
                 }
                 int count = localIndex - Index;
                 // Couldn't parse the minimum number of digits required?
-                if (count  < minimumDigits)
+                if (count < minimumDigits)
                 {
                     return false;
                 }

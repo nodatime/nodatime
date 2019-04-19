@@ -2,16 +2,15 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
+using NodaTime.Globalization;
 
+using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using NodaTime.Globalization;
-using NodaTime.Text.Patterns;
-using NodaTime.Utility;
-using JetBrains.Annotations;
 using System.Numerics;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime.Text
 {
@@ -103,7 +102,7 @@ namespace NodaTime.Text
                 builder.AddField(PatternFields.DayOfMonth, pattern.Current);
                 builder.AddField(PatternFields.TotalDuration, pattern.Current);
                 builder.AddParseValueAction(count, 8, pattern.Current, 0, 16777216, (bucket, value) => bucket.AddDays(value));
-                builder.AddFormatLeftPad(count, duration => 
+                builder.AddFormatLeftPad(count, duration =>
                 {
                     int days = duration.FloorDays;
                     if (days >= 0)

@@ -2,12 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using NodaTime.Calendars;
 using NodaTime.Globalization;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace NodaTime.Text.Patterns
 {
@@ -181,7 +181,7 @@ namespace NodaTime.Text.Patterns
                 builder.AddField(PatternFields.Era, pattern.Current);
                 var formatInfo = builder.FormatInfo;
                 // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just "g".
-                builder.AddParseAction((cursor, bucket) => 
+                builder.AddParseAction((cursor, bucket) =>
                 {
                     var dateBucket = dateBucketFromBucket(bucket);
                     return dateBucket.ParseEra<TResult>(formatInfo, cursor);
@@ -215,6 +215,6 @@ namespace NodaTime.Text.Patterns
                 });
                 builder.AddFormatAction((value, sb) => sb.Append(getter(value).Id));
             };
-        }    
+        }
     }
 }

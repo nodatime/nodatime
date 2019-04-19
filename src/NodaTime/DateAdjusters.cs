@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
 using System;
 
 namespace NodaTime
@@ -28,7 +27,7 @@ namespace NodaTime
         /// <value>
         /// A date adjuster to move to the last day of the current month.
         /// </value>
-        public static Func<LocalDate, LocalDate> EndOfMonth { get; } = 
+        public static Func<LocalDate, LocalDate> EndOfMonth { get; } =
             date => new LocalDate(date.Year, date.Month, date.Calendar.GetDaysInMonth(date.Year, date.Month), date.Calendar);
 
         /// <summary>

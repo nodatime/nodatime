@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
@@ -241,7 +240,7 @@ namespace NodaTime.Globalization
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
         /// </summary>
-        public IList<string> LongMonthNames { get { EnsureMonthsInitialized();  return longMonthNames!; } }
+        public IList<string> LongMonthNames { get { EnsureMonthsInitialized(); return longMonthNames!; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
@@ -291,7 +290,7 @@ namespace NodaTime.Globalization
         /// text comparisons and culture lookups for non-BCL formats (such as Offset) and for error messages.
         /// </remarks>
         public DateTimeFormatInfo DateTimeFormat { get; }
-        
+
         /// <summary>
         /// Gets the time separator.
         /// </summary>
@@ -411,15 +410,15 @@ namespace NodaTime.Globalization
         /// <exception cref="ArgumentException">The format provider cannot be used for Noda Time.</exception>
         /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
         public static NodaFormatInfo GetInstance(IFormatProvider? provider) => provider switch
-            {
-                null => GetFormatInfo(CurrentInfo.CultureInfo),
-                CultureInfo cultureInfo => GetFormatInfo(cultureInfo),
-                // Note: no caching for this case. It's a corner case anyway... we could add a cache later
-                // if users notice a problem.
-                DateTimeFormatInfo dateTimeFormatInfo => new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo),
-                // TODO(nullable): File a Roslyn bug, as provider really won't be null here.
-                _ => throw new ArgumentException($"Cannot use provider of type {provider!.GetType().FullName} in Noda Time", nameof(provider))
-            };
+        {
+            null => GetFormatInfo(CurrentInfo.CultureInfo),
+            CultureInfo cultureInfo => GetFormatInfo(cultureInfo),
+            // Note: no caching for this case. It's a corner case anyway... we could add a cache later
+            // if users notice a problem.
+            DateTimeFormatInfo dateTimeFormatInfo => new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo),
+            // TODO(nullable): File a Roslyn bug, as provider really won't be null here.
+            _ => throw new ArgumentException($"Cannot use provider of type {provider!.GetType().FullName} in Noda Time", nameof(provider))
+        };
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.

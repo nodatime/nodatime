@@ -33,7 +33,7 @@ namespace NodaTime.Utility
             {
                 throw new ArgumentOutOfRangeException(nameof(isoDayOfWeek));
             }
-            return isoDayOfWeek == IsoDayOfWeek.Sunday ? DayOfWeek.Sunday : (DayOfWeek)isoDayOfWeek;
+            return isoDayOfWeek == IsoDayOfWeek.Sunday ? DayOfWeek.Sunday : (DayOfWeek) isoDayOfWeek;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace NodaTime.Utility
             {
                 throw new ArgumentOutOfRangeException(nameof(dayOfWeek));
             }
-            return dayOfWeek == DayOfWeek.Sunday ? IsoDayOfWeek.Sunday : (IsoDayOfWeek)dayOfWeek;
+            return dayOfWeek == DayOfWeek.Sunday ? IsoDayOfWeek.Sunday : (IsoDayOfWeek) dayOfWeek;
         }
     }
 }

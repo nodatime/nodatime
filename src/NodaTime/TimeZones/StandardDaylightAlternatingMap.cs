@@ -2,10 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
-using JetBrains.Annotations;
+using System;
 
 namespace NodaTime.TimeZones
 {
@@ -75,7 +74,7 @@ namespace NodaTime.TimeZones
 
         public bool Equals(StandardDaylightAlternatingMap? other) =>
             other != null &&
-            standardOffset == other.standardOffset && 
+            standardOffset == other.standardOffset &&
             dstRecurrence.Equals(other.dstRecurrence) &&
             standardRecurrence.Equals(other.standardRecurrence);
 
@@ -149,7 +148,7 @@ namespace NodaTime.TimeZones
                 }
             }
         }
-        
+
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>

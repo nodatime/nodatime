@@ -30,7 +30,7 @@ namespace NodaTime.Utility
                 // See http://stackoverflow.com/questions/22258070 for the inspiration.
                 if (ticks >= 0)
                 {
-                    int days = (int)((ticks >> 14) / 52734375L);
+                    int days = (int) ((ticks >> 14) / 52734375L);
                     tickOfDay = ticks - days * TicksPerDay;
                     return days;
                 }
@@ -38,7 +38,7 @@ namespace NodaTime.Utility
                 {
                     // TODO(optimization): Optimize with shifting at some point. Note that this must *not* subtract from ticks,
                     // as it could already be long.MinValue.
-                    int days = (int)((ticks + 1) / TicksPerDay) - 1;
+                    int days = (int) ((ticks + 1) / TicksPerDay) - 1;
                     // We need to be careful as ticks might be close to long.MinValue, at which point
                     // days * TicksPerDay would overflow. We could validate that, but it only
                     // saves two additions, and introduces a branch.

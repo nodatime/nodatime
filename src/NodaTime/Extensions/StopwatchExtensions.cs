@@ -1,9 +1,8 @@
 ﻿// Copyright 2014 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
-using System.Diagnostics;
-using JetBrains.Annotations;
 using NodaTime.Utility;
+using System.Diagnostics;
 
 namespace NodaTime.Extensions
 {

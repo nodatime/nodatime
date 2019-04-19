@@ -3,7 +3,6 @@
 // as found in the LICENSE.txt file.
 
 using JetBrains.Annotations;
-using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;

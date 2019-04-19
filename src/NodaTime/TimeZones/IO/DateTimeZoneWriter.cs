@@ -2,13 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using static NodaTime.NodaConstants;
+using NodaTime.Utility;
 
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using NodaTime.Utility;
-using JetBrains.Annotations;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -48,7 +47,7 @@ namespace NodaTime.TimeZones.IO
         }
 
         private readonly Stream output;
-        private readonly IList<string>? stringPool; 
+        private readonly IList<string>? stringPool;
 
         /// <summary>
         /// Constructs a DateTimeZoneWriter.
@@ -103,10 +102,10 @@ namespace NodaTime.TimeZones.IO
             {
                 while (value > 0x7f)
                 {
-                    output.WriteByte((byte)(0x80 | (value & 0x7f)));
+                    output.WriteByte((byte) (0x80 | (value & 0x7f)));
                     value = value >> 7;
                 }
-                output.WriteByte((byte)(value & 0x7f));
+                output.WriteByte((byte) (value & 0x7f));
             }
         }
 
@@ -280,8 +279,8 @@ namespace NodaTime.TimeZones.IO
         {
             unchecked
             {
-                WriteByte((byte)((value >> 8) & 0xff));
-                WriteByte((byte)(value & 0xff));
+                WriteByte((byte) ((value >> 8) & 0xff));
+                WriteByte((byte) (value & 0xff));
             }
         }
 
@@ -293,8 +292,8 @@ namespace NodaTime.TimeZones.IO
         {
             unchecked
             {
-                WriteInt16((short)(value >> 16));
-                WriteInt16((short)value);
+                WriteInt16((short) (value >> 16));
+                WriteInt16((short) value);
             }
         }
 
@@ -306,8 +305,8 @@ namespace NodaTime.TimeZones.IO
         {
             unchecked
             {
-                WriteInt32((int)(value >> 32));
-                WriteInt32((int)value);
+                WriteInt32((int) (value >> 32));
+                WriteInt32((int) value);
             }
         }
 

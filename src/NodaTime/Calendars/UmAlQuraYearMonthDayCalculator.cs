@@ -31,7 +31,7 @@ namespace NodaTime.Calendars
             "CloVWgbYDrINpA0qCloUtgl0E3QHaBbSFqQVTAlsEtoF2A2yHWQaqBpUFKwJXBLaGtQWqBZSFSYKVhSu" +
             "CmwVag1UHSYAAA==";
 
-        private const int ComputedDaysAtStartOfYear1 = ComputedDaysAtStartOfMinYear + (int)(((1 - ComputedMinYear) / 10.0) * AverageDaysPer10Years);
+        private const int ComputedDaysAtStartOfYear1 = ComputedDaysAtStartOfMinYear + (int) (((1 - ComputedMinYear) / 10.0) * AverageDaysPer10Years);
         // Precomputed values for lengths of year and lengths of months, populated in the static constructor.
         // The number of days in each year, with array index 1 representing ComputedMinYear.
         private static readonly int[] YearLengths;
@@ -47,7 +47,7 @@ namespace NodaTime.Calendars
             MonthLengths = new ushort[data.Length / 2];
             for (int i = 0; i < MonthLengths.Length; i++)
             {
-                MonthLengths[i] = (ushort)((data[i * 2] << 8) | (data[i * 2 + 1]));
+                MonthLengths[i] = (ushort) ((data[i * 2] << 8) | (data[i * 2 + 1]));
             }
             YearLengths = new int[MonthLengths.Length];
             YearStartDays = new int[MonthLengths.Length];

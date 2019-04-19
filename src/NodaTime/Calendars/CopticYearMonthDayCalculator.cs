@@ -8,7 +8,7 @@ namespace NodaTime.Calendars
     {
         internal CopticYearMonthDayCalculator()
             : base(1, 9715, -615558)
-        {            
+        {
         }
 
         protected override int CalculateStartOfYearDays(int year)

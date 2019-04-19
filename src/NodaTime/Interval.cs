@@ -156,9 +156,9 @@ namespace NodaTime
         [Pure]
         public void Deconstruct(out Instant? start, out Instant? end)
         {
-            start = this.start.IsValid ? Start : (Instant?)null;
-            end = this.end.IsValid ? End : (Instant?)null;
-          }
+            start = this.start.IsValid ? Start : (Instant?) null;
+            end = this.end.IsValid ? End : (Instant?) null;
+        }
 
         #region Implementation of IEquatable<Interval>
         /// <summary>

@@ -2,10 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NodaTime.Annotations;
 using NodaTime.Utility;
-using JetBrains.Annotations;
+using System;
 
 namespace NodaTime.TimeZones
 {
@@ -122,9 +121,10 @@ namespace NodaTime.TimeZones
             {
                 case 0: throw new SkippedTimeException(LocalDateTime, Zone);
                 case 1: return BuildZonedDateTime(EarlyInterval);
-                case 2: throw new AmbiguousTimeException(
-                            BuildZonedDateTime(EarlyInterval),
-                            BuildZonedDateTime(LateInterval));
+                case 2:
+                    throw new AmbiguousTimeException(
+                        BuildZonedDateTime(EarlyInterval),
+                        BuildZonedDateTime(LateInterval));
                 default: throw new InvalidOperationException("Can't happen");
             }
         }
@@ -144,7 +144,7 @@ namespace NodaTime.TimeZones
             switch (Count)
             {
                 case 0: throw new SkippedTimeException(LocalDateTime, Zone);
-                case 1: 
+                case 1:
                 case 2: return BuildZonedDateTime(EarlyInterval);
                 default: throw new InvalidOperationException("Can't happen");
             }

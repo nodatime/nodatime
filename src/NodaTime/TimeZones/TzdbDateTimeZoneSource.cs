@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.TimeZones.IO;
@@ -40,7 +39,7 @@ namespace NodaTime.TimeZones
         // Class to enable lazy initialization of the default instance.
         private static class DefaultHolder
         {
-            static DefaultHolder() {}
+            static DefaultHolder() { }
 
             internal static readonly TzdbDateTimeZoneSource builtin = new TzdbDateTimeZoneSource(LoadDefaultDataSource());
 

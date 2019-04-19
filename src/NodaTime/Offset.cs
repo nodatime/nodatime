@@ -163,7 +163,7 @@ namespace NodaTime
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
         /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-        public static Offset operator +(Offset left, Offset right) =>  FromSeconds(left.Seconds + right.Seconds);
+        public static Offset operator +(Offset left, Offset right) => FromSeconds(left.Seconds + right.Seconds);
 
         /// <summary>
         /// Adds one Offset to another. Friendly alternative to <c>operator+()</c>.
@@ -310,7 +310,7 @@ namespace NodaTime
                 return 1;
             }
             Preconditions.CheckArgument(obj is Offset, nameof(obj), "Object must be of type NodaTime.Offset.");
-            return CompareTo((Offset)obj);
+            return CompareTo((Offset) obj);
         }
         #endregion
 
@@ -402,7 +402,7 @@ namespace NodaTime
         public static Offset FromMilliseconds(int milliseconds)
         {
             Preconditions.CheckArgumentRange(nameof(milliseconds), milliseconds, MinMilliseconds, MaxMilliseconds);
-            return new Offset((int) milliseconds / MillisecondsPerSecond);
+            return new Offset(milliseconds / MillisecondsPerSecond);
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace NodaTime
         public static Offset FromTicks(long ticks)
         {
             Preconditions.CheckArgumentRange(nameof(ticks), ticks, MinTicks, MaxTicks);
-            return new Offset((int)(ticks / TicksPerSecond));
+            return new Offset((int) (ticks / TicksPerSecond));
         }
 
         /// <summary>

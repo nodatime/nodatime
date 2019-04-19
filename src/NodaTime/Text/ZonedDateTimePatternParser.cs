@@ -2,11 +2,11 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Collections.Generic;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
+using System;
+using System.Collections.Generic;
 
 namespace NodaTime.Text
 {
@@ -121,7 +121,7 @@ namespace NodaTime.Text
             var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
             builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.Offset = offset, zdt => zdt.Offset);
         }
-        
+
         private static ParseResult<ZonedDateTime>? ParseZone(ValueCursor value, ZonedDateTimeParseBucket bucket) => bucket.ParseZone(value);
 
         private sealed class ZonedDateTimeParseBucket : ParseBucket<ZonedDateTime>
@@ -172,7 +172,7 @@ namespace NodaTime.Text
                 var parseResult = pattern.ParsePartial(value);
                 return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : DateTimeZone.Utc;
             }
-                
+
             /// <summary>
             /// Tries to parse a time zone ID from the provider. Returns the zone
             /// on success (after moving the cursor to the end of the ID) or null on failure
@@ -269,7 +269,7 @@ namespace NodaTime.Text
                         return ParseResult<ZonedDateTime>.AmbiguousLocalTime(text);
                     }
                 }
-                
+
                 // We were given an offset, so we can resolve and validate using that
                 var mapping = Zone.MapLocal(localDateTime);
                 ZonedDateTime result;

@@ -2,13 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Globalization;
+using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using NodaTime.Globalization;
-using NodaTime.Utility;
-using JetBrains.Annotations;
 
 namespace NodaTime.Text.Patterns
 {
@@ -306,7 +305,8 @@ namespace NodaTime.Text.Patterns
         /// </summary>
         internal void AddParseLongestTextAction(char field, Action<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues)
         {
-            AddParseAction((str, bucket) => {
+            AddParseAction((str, bucket) =>
+            {
                 int bestIndex = -1;
                 int longestMatch = 0;
                 FindLongestMatch(compareInfo, str, textValues, ref bestIndex, ref longestMatch);

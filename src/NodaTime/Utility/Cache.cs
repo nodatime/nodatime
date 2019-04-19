@@ -25,14 +25,14 @@ namespace NodaTime.Utility
         private readonly Func<TKey, TValue> valueFactory;
         // List of keys in (rough) insertion order. Used for eviction ordering.
         // The same key may appear in the list multiple times.
-        private readonly ConcurrentQueue<TKey> keyList; 
-        private readonly ConcurrentDictionary<TKey, TValue> dictionary; 
+        private readonly ConcurrentQueue<TKey> keyList;
+        private readonly ConcurrentDictionary<TKey, TValue> dictionary;
 
         internal Cache(int size, Func<TKey, TValue> valueFactory, IEqualityComparer<TKey> keyComparer)
         {
             this.size = size;
             this.valueFactory = valueFactory;
-            this.dictionary = new ConcurrentDictionary<TKey,TValue>(keyComparer);
+            this.dictionary = new ConcurrentDictionary<TKey, TValue>(keyComparer);
             this.keyList = new ConcurrentQueue<TKey>();
         }
 

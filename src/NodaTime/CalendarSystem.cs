@@ -2,15 +2,14 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Utility;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace NodaTime
 {
@@ -83,7 +82,7 @@ namespace NodaTime
 
         // While we could implement some of these as auto-props, it probably adds more confusion than convenience.
         private static readonly CalendarSystem IsoCalendarSystem;
-        private static readonly CalendarSystem[] CalendarByOrdinal = new CalendarSystem[(int)CalendarOrdinal.Size];
+        private static readonly CalendarSystem[] CalendarByOrdinal = new CalendarSystem[(int) CalendarOrdinal.Size];
 
         static CalendarSystem()
         {
@@ -125,7 +124,7 @@ namespace NodaTime
             {
                 return IsoCalendarSystem;
             }
-            CalendarSystem calendar = CalendarByOrdinal[(int)ordinal];
+            CalendarSystem calendar = CalendarByOrdinal[(int) ordinal];
             if (calendar != null)
             {
                 return calendar;

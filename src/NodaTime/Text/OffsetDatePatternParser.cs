@@ -65,7 +65,7 @@ namespace NodaTime.Text
             // Need to reconstruct the template value from the bits...
             return patternBuilder.Build(templateValue);
         }
-        
+
         private static void HandleOffset(PatternCursor pattern,
             SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket> builder)
         {
