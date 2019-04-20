@@ -87,7 +87,7 @@ namespace NodaTime.TimeZones
         /// <see cref="NotSupportedException" />.</para>
         /// </remarks>
         /// <value>A map from time zone ID to the canonical ID.</value>
-        public IDictionary<string, string> CanonicalIdMap { get; }
+        public IDictionary<string, string> CanonicalIdMap => source.TzdbIdMap;
 
         /// <summary>
         /// Gets a read-only list of zone locations known to this source, or null if the original source data
@@ -98,7 +98,7 @@ namespace NodaTime.TimeZones
         /// has been validated).
         /// </remarks>
         /// <value>A read-only list of zone locations known to this source.</value>
-        public IList<TzdbZoneLocation>? ZoneLocations { get; }
+        public IList<TzdbZoneLocation>? ZoneLocations => source.ZoneLocations;
 
         /// <summary>
         /// Gets a read-only list of "zone 1970" locations known to this source, or null if the original source data
@@ -124,7 +124,7 @@ namespace NodaTime.TimeZones
         /// </p>
         /// </remarks>
         /// <value>A read-only list of zone locations known to this source.</value>
-        public IList<TzdbZone1970Location>? Zone1970Locations { get; }
+        public IList<TzdbZone1970Location>? Zone1970Locations => source.Zone1970Locations;
 
         /// <inheritdoc />
         /// <remarks>
@@ -168,16 +168,11 @@ namespace NodaTime.TimeZones
         {
             Preconditions.CheckNotNull(source, nameof(source));
             this.source = source;
-            CanonicalIdMap = new ReadOnlyDictionary<string, string>(source.TzdbIdMap);
             Aliases = CanonicalIdMap
                 .Where(pair => pair.Key != pair.Value)
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
                 .ToLookup(pair => pair.Value, pair => pair.Key);
             version = source.TzdbVersion + " (mapping: " + source.WindowsMapping.Version + ")";
-            var originalZoneLocations = source.ZoneLocations;
-            ZoneLocations = originalZoneLocations is null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
-            var originalZone1970Locations = source.Zone1970Locations;
-            Zone1970Locations = originalZone1970Locations is null ? null : new ReadOnlyCollection<TzdbZone1970Location>(originalZone1970Locations);
         }
 
         /// <inheritdoc />
