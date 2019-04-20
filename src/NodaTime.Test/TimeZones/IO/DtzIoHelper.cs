@@ -21,7 +21,7 @@ namespace NodaTime.Test.TimeZones.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="DtzIoHelper" /> class.
         /// </summary>
-        private DtzIoHelper(IList<string> stringPool)
+        private DtzIoHelper(List<string> stringPool)
         {
             ioStream = new IoStream();
             Reader = new DateTimeZoneReader(ioStream.GetReadStream(), stringPool);

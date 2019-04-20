@@ -25,7 +25,7 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// String pool to use, or null if no string pool is in use.
         /// </summary>
-        private readonly IList<string>? stringPool;
+        private readonly IReadOnlyList<string>? stringPool;
 
         /// <summary>
         /// Sometimes we need to buffer a byte in memory, e.g. to check if there is any
@@ -33,7 +33,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         private byte? bufferedByte;
 
-        internal DateTimeZoneReader(Stream input, IList<string>? stringPool)
+        internal DateTimeZoneReader(Stream input, IReadOnlyList<string>? stringPool)
         {
             this.input = input;
             this.stringPool = stringPool;
