@@ -67,12 +67,12 @@ namespace NodaTime.Globalization
         private static readonly Cache<CultureInfo, NodaFormatInfo> Cache = new Cache<CultureInfo, NodaFormatInfo>
             (500, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
 
-        private IList<string>? longMonthNames;
-        private IList<string>? longMonthGenitiveNames;
-        private IList<string>? longDayNames;
-        private IList<string>? shortMonthNames;
-        private IList<string>? shortMonthGenitiveNames;
-        private IList<string>? shortDayNames;
+        private IReadOnlyList<string>? longMonthNames;
+        private IReadOnlyList<string>? longMonthGenitiveNames;
+        private IReadOnlyList<string>? longDayNames;
+        private IReadOnlyList<string>? shortMonthNames;
+        private IReadOnlyList<string>? shortMonthGenitiveNames;
+        private IReadOnlyList<string>? shortDayNames;
 
         private readonly ConcurrentDictionary<Era, EraDescription> eraDescriptions;
 
@@ -123,7 +123,7 @@ namespace NodaTime.Globalization
         /// <summary>
         /// The BCL returns arrays of month names starting at 0; we want a read-only list starting at 1 (with 0 as an empty string).
         /// </summary>
-        private static IList<string> ConvertMonthArray(string[] monthNames)
+        private static IReadOnlyList<string> ConvertMonthArray(string[] monthNames)
         {
             List<string> list = new List<string>(monthNames);
             list.Insert(0, "");
@@ -147,7 +147,7 @@ namespace NodaTime.Globalization
         /// The BCL returns arrays of week names starting at 0 as Sunday; we want a read-only list starting at 1 (with 0 as an empty string)
         /// and with 7 as Sunday.
         /// </summary>
-        private static IList<string> ConvertDayArray(string[] dayNames)
+        private static IReadOnlyList<string> ConvertDayArray(string[] dayNames)
         {
             List<string> list = new List<string>(dayNames);
             list.Add(dayNames[0]);
@@ -172,7 +172,7 @@ namespace NodaTime.Globalization
         /// See http://bugzilla.xamarin.com/show_bug.cgi?id=11361 for more details and progress.
         /// </para>
         /// </remarks>
-        private IList<string> ConvertGenitiveMonthArray(IList<string> nonGenitiveNames, string[] bclNames, string[] invariantNames)
+        private IReadOnlyList<string> ConvertGenitiveMonthArray(IReadOnlyList<string> nonGenitiveNames, string[] bclNames, string[] invariantNames)
         {
             if (int.TryParse(bclNames[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out var _))
             {
@@ -240,13 +240,13 @@ namespace NodaTime.Globalization
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
         /// </summary>
-        public IList<string> LongMonthNames { get { EnsureMonthsInitialized(); return longMonthNames!; } }
+        public IReadOnlyList<string> LongMonthNames { get { EnsureMonthsInitialized(); return longMonthNames!; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
         /// </summary>
-        public IList<string> ShortMonthNames { get { EnsureMonthsInitialized(); return shortMonthNames!; } }
+        public IReadOnlyList<string> ShortMonthNames { get { EnsureMonthsInitialized(); return shortMonthNames!; } }
         /// <summary>
         /// Returns a read-only list of the names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
@@ -255,7 +255,7 @@ namespace NodaTime.Globalization
         /// If the culture does not use genitive month names, this property will return the same reference as
         /// <see cref="LongMonthNames"/>.
         /// </summary>
-        public IList<string> LongMonthGenitiveNames { get { EnsureMonthsInitialized(); return longMonthGenitiveNames!; } }
+        public IReadOnlyList<string> LongMonthGenitiveNames { get { EnsureMonthsInitialized(); return longMonthGenitiveNames!; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
@@ -264,21 +264,21 @@ namespace NodaTime.Globalization
         /// If the culture does not use genitive month names, this property will return the same reference as
         /// <see cref="ShortMonthNames"/>.
         /// </summary>
-        public IList<string> ShortMonthGenitiveNames { get { EnsureMonthsInitialized(); return shortMonthGenitiveNames!; } }
+        public IReadOnlyList<string> ShortMonthGenitiveNames { get { EnsureMonthsInitialized(); return shortMonthGenitiveNames!; } }
         /// <summary>
         /// Returns a read-only list of the names of the days of the week for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, and the other elements correspond with the index values returned from
         /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
         /// </summary>
-        public IList<string> LongDayNames { get { EnsureDaysInitialized(); return longDayNames!; } }
+        public IReadOnlyList<string> LongDayNames { get { EnsureDaysInitialized(); return longDayNames!; } }
         /// <summary>
         /// Returns a read-only list of the abbreviated names of the days of the week for the default calendar for this culture.
         /// See the usage guide for caveats around the use of these names for other calendars.
         /// Element 0 of the list is null, and the other elements correspond with the index values returned from
         /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
         /// </summary>
-        public IList<string> ShortDayNames { get { EnsureDaysInitialized(); return shortDayNames!; } }
+        public IReadOnlyList<string> ShortDayNames { get { EnsureDaysInitialized(); return shortDayNames!; } }
 
         /// <summary>
         /// Gets the BCL date time format associated with this formatting information.
@@ -317,7 +317,7 @@ namespace NodaTime.Globalization
         /// <param name="era">The era to find the names of.</param>
         /// <returns>A read-only list of names for the given era, or an empty list if
         /// the era is not known in this culture.</returns>
-        public IList<string> GetEraNames(Era era)
+        public IReadOnlyList<string> GetEraNames(Era era)
         {
             Preconditions.CheckNotNull(era, nameof(era));
             return GetEraDescription(era).AllNames;

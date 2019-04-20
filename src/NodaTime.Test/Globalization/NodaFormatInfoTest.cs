@@ -183,7 +183,7 @@ namespace NodaTime.Test.Globalization
         public void TestGetEraNames()
         {
             var info = NodaFormatInfo.GetFormatInfo(enUs);
-            IList<string> names = info.GetEraNames(Era.BeforeCommon);
+            IReadOnlyList<string> names = info.GetEraNames(Era.BeforeCommon);
             CollectionAssert.AreEqual(new[] { "B.C.E.", "B.C.", "BCE", "BC" }, names);
         }
 
