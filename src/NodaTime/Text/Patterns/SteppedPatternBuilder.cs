@@ -303,7 +303,7 @@ namespace NodaTime.Text.Patterns
         /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
         /// match is used.
         /// </summary>
-        internal void AddParseLongestTextAction(char field, Action<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues)
+        internal void AddParseLongestTextAction(char field, Action<TBucket, int> setter, CompareInfo compareInfo, IReadOnlyList<string> textValues)
         {
             AddParseAction((str, bucket) =>
             {
@@ -325,7 +325,9 @@ namespace NodaTime.Text.Patterns
         /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
         /// match is used.
         /// </summary>
-        internal void AddParseLongestTextAction(char field, Action<TBucket, int> setter, CompareInfo compareInfo, IList<string> textValues1, IList<string> textValues2)
+        internal void AddParseLongestTextAction(
+            char field, Action<TBucket, int> setter, CompareInfo compareInfo,
+            IReadOnlyList<string> textValues1, IReadOnlyList<string> textValues2)
         {
             AddParseAction((str, bucket) =>
             {
@@ -347,7 +349,7 @@ namespace NodaTime.Text.Patterns
         /// Find the longest match from a given set of candidate strings, updating the index/length of the best value
         /// accordingly.
         /// </summary>
-        private static void FindLongestMatch(CompareInfo compareInfo, ValueCursor cursor, IList<string> values, ref int bestIndex, ref int longestMatch)
+        private static void FindLongestMatch(CompareInfo compareInfo, ValueCursor cursor, IReadOnlyList<string> values, ref int bestIndex, ref int longestMatch)
         {
             for (int i = 0; i < values.Count; i++)
             {
