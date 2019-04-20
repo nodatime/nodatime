@@ -29,7 +29,7 @@ namespace NodaTime.TimeZones.IO
 
         private const int AcceptedVersion = 0;
 
-        private readonly IList<string> stringPool;
+        private readonly IReadOnlyList<string> stringPool;
         private readonly IDictionary<string, TzdbStreamField> zoneFields;
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         private class Builder
         {
-            internal IList<string>? stringPool;
+            internal IReadOnlyList<string>? stringPool;
             internal string? tzdbVersion;
             internal IDictionary<string, string>? tzdbIdMap;
             internal IList<TzdbZoneLocation>? zoneLocations = null;
@@ -154,11 +154,12 @@ namespace NodaTime.TimeZones.IO
                 {
                     var reader = new DateTimeZoneReader(stream, null);
                     int count = reader.ReadCount();
-                    stringPool = new string[count];
+                    var stringPoolArray = new string[count];
                     for (int i = 0; i < count; i++)
                     {
-                        stringPool[i] = reader.ReadString();
+                        stringPoolArray[i] = reader.ReadString();
                     }
+                    stringPool = stringPoolArray;
                 }
             }
 
