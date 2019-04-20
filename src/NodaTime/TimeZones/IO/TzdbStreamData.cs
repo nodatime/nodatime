@@ -6,6 +6,7 @@ using NodaTime.TimeZones.Cldr;
 using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace NodaTime.TimeZones.IO
@@ -38,10 +39,9 @@ namespace NodaTime.TimeZones.IO
         public string TzdbVersion { get; }
 
         /// <summary>
-        /// Returns the TZDB ID dictionary (alias to canonical ID). This needn't be read-only; it won't be
-        /// exposed directly.
+        /// Returns the TZDB ID dictionary (alias to canonical ID).
         /// </summary>
-        public IDictionary<string, string> TzdbIdMap { get; }
+        public ReadOnlyDictionary<string, string> TzdbIdMap { get; }
 
         /// <summary>
         /// Returns the Windows mapping dictionary. (As the type is immutable, it can be exposed directly
@@ -51,20 +51,18 @@ namespace NodaTime.TimeZones.IO
 
         /// <summary>
         /// Returns the zone locations for the source, or null if no location data is available.
-        /// This needn't be a read-only collection; it won't be exposed directly.
         /// </summary>
-        public IList<TzdbZoneLocation>? ZoneLocations { get; }
+        public ReadOnlyCollection<TzdbZoneLocation>? ZoneLocations { get; }
 
         /// <summary>
         /// Returns the "zone 1970" locations for the source, or null if no such location data is available.
-        /// This needn't be a read-only collection; it won't be exposed directly.
         /// </summary>
-        public IList<TzdbZone1970Location>? Zone1970Locations { get; }
+        public ReadOnlyCollection<TzdbZone1970Location>? Zone1970Locations { get; }
 
         private TzdbStreamData(Builder builder)
         {
             stringPool = CheckNotNull(builder.stringPool, "string pool");
-            TzdbIdMap = CheckNotNull(builder.tzdbIdMap, "TZDB alias map");
+            var mutableIdMap = CheckNotNull(builder.tzdbIdMap, "TZDB alias map");
             TzdbVersion = CheckNotNull(builder.tzdbVersion, "TZDB version");
             WindowsMapping = CheckNotNull(builder.windowsMapping, "CLDR Supplemental Windows Zones");
             zoneFields = builder.zoneFields;
@@ -74,8 +72,9 @@ namespace NodaTime.TimeZones.IO
             // Add in the canonical IDs as mappings to themselves.
             foreach (var id in zoneFields.Keys)
             {
-                TzdbIdMap[id] = id;
+                mutableIdMap[id] = id;
             }
+            TzdbIdMap = new ReadOnlyDictionary<string, string>(mutableIdMap);
         }
 
         /// <summary>
@@ -141,9 +140,10 @@ namespace NodaTime.TimeZones.IO
         {
             internal IReadOnlyList<string>? stringPool;
             internal string? tzdbVersion;
+            // Note: deliberately mutable, as this is useful later when we map the canonical IDs to themselves.
             internal IDictionary<string, string>? tzdbIdMap;
-            internal IList<TzdbZoneLocation>? zoneLocations = null;
-            internal IList<TzdbZone1970Location>? zone1970Locations = null;
+            internal ReadOnlyCollection<TzdbZoneLocation>? zoneLocations = null;
+            internal ReadOnlyCollection<TzdbZone1970Location>? zone1970Locations = null;
             internal WindowsZones? windowsMapping;
             internal readonly IDictionary<string, TzdbStreamField> zoneFields = new Dictionary<string, TzdbStreamField>();
 
@@ -211,7 +211,7 @@ namespace NodaTime.TimeZones.IO
                     {
                         array[i] = TzdbZoneLocation.Read(reader);
                     }
-                    zoneLocations = array;
+                    zoneLocations = Array.AsReadOnly(array);
                 }
             }
 
@@ -228,7 +228,7 @@ namespace NodaTime.TimeZones.IO
                     {
                         array[i] = TzdbZone1970Location.Read(reader);
                     }
-                    zone1970Locations = array;
+                    zone1970Locations = Array.AsReadOnly(array);
                 }
             }
 
