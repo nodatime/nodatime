@@ -17,6 +17,8 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly Period SampleTimePeriod = new PeriodBuilder { Hours = 10, Minutes = 4, Seconds = 5, Milliseconds = 20, Ticks = 30 }.Build();
         private static readonly Period SampleDatePeriod = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4 }.Build();
         private static readonly Period SampleMixedPeriod = SampleDatePeriod + SampleTimePeriod;
+        // A period that's long enough that when added to the sample, it crosses a date.
+        private static readonly Period SampleMixedPeriod2 = SampleDatePeriod + SampleTimePeriod + SampleTimePeriod;
 
         [Benchmark]
         public LocalDateTime ConstructionToMinute() => new LocalDateTime(2009, 12, 26, 10, 8);
@@ -145,6 +147,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public LocalDateTime MinusMixedPeriod() => (Sample - SampleMixedPeriod);
+
+        [Benchmark]
+        public LocalDateTime PlusMixedPeriod_CrossingDate() => (Sample + SampleMixedPeriod2);
+
+        [Benchmark]
+        public LocalDateTime MinusMixedPeriod_CrossingDate() => (Sample - SampleMixedPeriod2);
 
 #if !NO_INTERNALS
         [Benchmark]

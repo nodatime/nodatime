@@ -235,11 +235,24 @@ namespace NodaTime.Test
         [Test]
         public void Plus_FullPeriod()
         {
+            // Period deliberately chosen to require date rollover
             LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
-            var period = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4, Hours = 5, Minutes = 6,
+            var period = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4, Hours = 15, Minutes = 6,
                                              Seconds = 7, Milliseconds = 8, Ticks = 9, Nanoseconds = 11 }.Build();
             var actual = start.Plus(period);
-            var expected = new LocalDateTime(2012, 6, 27, 17, 21, 15).PlusNanoseconds(8000911);
+            var expected = new LocalDateTime(2012, 6, 28, 3, 21, 15).PlusNanoseconds(8000911);
+            Assert.AreEqual(expected, actual, $"{expected:yyyy-MM-dd HH:mm:ss.fffffffff} != {actual:yyyy-MM-dd HH:mm:ss.fffffffff}");
+        }
+
+        [Test]
+        public void Minus_FullPeriod()
+        {
+            // Period deliberately chosen to require date rollover
+            LocalDateTime start = new LocalDateTime(2011, 4, 2, 12, 15, 8);
+            var period = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4, Hours = 15, Minutes = 6,
+                                             Seconds = 7, Milliseconds = 8, Ticks = 9, Nanoseconds = 11 }.Build();
+            var actual = start.Minus(period);
+            var expected = new LocalDateTime(2010, 1, 7, 21, 9, 0).PlusNanoseconds(991999089L);
             Assert.AreEqual(expected, actual, $"{expected:yyyy-MM-dd HH:mm:ss.fffffffff} != {actual:yyyy-MM-dd HH:mm:ss.fffffffff}");
         }
 

@@ -522,7 +522,19 @@ namespace NodaTime
         public LocalDateTime Plus(Period period)
         {
             Preconditions.CheckNotNull(period, nameof(period));
-            return period.AddTo(date, time, 1);
+            int extraDays = 0;
+            LocalTime time = TimeOfDay;
+            time = TimePeriodField.Hours.Add(time, period.Hours, ref extraDays);
+            time = TimePeriodField.Minutes.Add(time, period.Minutes, ref extraDays);
+            time = TimePeriodField.Seconds.Add(time, period.Seconds, ref extraDays);
+            time = TimePeriodField.Milliseconds.Add(time, period.Milliseconds, ref extraDays);
+            time = TimePeriodField.Ticks.Add(time, period.Ticks, ref extraDays);
+            time = TimePeriodField.Nanoseconds.Add(time, period.Nanoseconds, ref extraDays);
+            LocalDate date = Date.PlusYears(period.Years)
+                .PlusMonths(period.Months)
+                .PlusWeeks(period.Weeks)
+                .PlusDays(period.Days + extraDays);
+            return new LocalDateTime(date, time);
         }
 
         /// <summary>
@@ -553,7 +565,19 @@ namespace NodaTime
         public LocalDateTime Minus(Period period)
         {
             Preconditions.CheckNotNull(period, nameof(period));
-            return period.AddTo(date, time, -1);
+            int extraDays = 0;
+            LocalTime time = TimeOfDay;
+            time = TimePeriodField.Hours.Add(time, -period.Hours, ref extraDays);
+            time = TimePeriodField.Minutes.Add(time, -period.Minutes, ref extraDays);
+            time = TimePeriodField.Seconds.Add(time, -period.Seconds, ref extraDays);
+            time = TimePeriodField.Milliseconds.Add(time, -period.Milliseconds, ref extraDays);
+            time = TimePeriodField.Ticks.Add(time, -period.Ticks, ref extraDays);
+            time = TimePeriodField.Nanoseconds.Add(time, -period.Nanoseconds, ref extraDays);
+            LocalDate date = Date.PlusYears(-period.Years)
+                .PlusMonths(-period.Months)
+                .PlusWeeks(-period.Weeks)
+                .PlusDays(extraDays - period.Days);
+            return new LocalDateTime(date, time);
         }
 
         /// <summary>
