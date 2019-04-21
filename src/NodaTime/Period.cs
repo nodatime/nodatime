@@ -46,6 +46,12 @@ namespace NodaTime
     /// on the time line. (Note that although <see cref="ZonedDateTime" /> includes both concepts, it only supports
     /// duration-based arithmetic.)
     /// </para>
+    /// <para>
+    /// The complexity of each method in this type is hard to document precisely, and often depends on the calendar system
+    /// involved in performing the actual calculations. Operations do not depend on the magnitude of the units in the period,
+    /// other than for optimizations for values of zero or occasionally for particularly small values. For example,
+    /// adding 10,000 days to a date does not require greater algorithmic complexity than adding 1,000 days to the same date.
+    /// </para>
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
