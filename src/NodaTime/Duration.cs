@@ -1019,15 +1019,26 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of nanoseconds.</returns>
         public static Duration FromNanoseconds(long nanoseconds)
         {
-            // TODO(optimization): Try DivRem
-            int days = nanoseconds >= 0
-                ? (int) (nanoseconds / NanosecondsPerDay)
-                : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
+            unchecked
+            {
+                if (nanoseconds >= 0)
+                {
+                    // DivRem benchmarked against netcoreapp2.1 on 2019-04-21; definite win.
+                    long days = Math.DivRem(nanoseconds, NanosecondsPerDay, out var nanoOfDay);
+                    return new Duration((int) days, nanoOfDay);
+                }
+                else
+                {
+                    // Work out the "floor days"; division truncates towards zero and
+                    // nanoseconds is definitely negative by now, hence the addition and subtraction here.
+                    int days = (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
 
-            long nanoOfDay = nanoseconds >= long.MinValue + NanosecondsPerDay
-                ? nanoseconds - days * NanosecondsPerDay
-                : nanoseconds - (days + 1) * NanosecondsPerDay + NanosecondsPerDay; // Avoid multiplication overflow
-            return new Duration(days, nanoOfDay);
+                    long nanoOfDay = nanoseconds >= long.MinValue + NanosecondsPerDay
+                        ? nanoseconds - days * NanosecondsPerDay
+                        : nanoseconds - (days + 1) * NanosecondsPerDay + NanosecondsPerDay; // Avoid multiplication overflow
+                    return new Duration(days, nanoOfDay);
+                }
+            }
         }
 
         /// <summary>
