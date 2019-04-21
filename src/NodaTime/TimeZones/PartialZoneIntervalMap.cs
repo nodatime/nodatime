@@ -29,7 +29,6 @@ namespace NodaTime.TimeZones
         internal PartialZoneIntervalMap(Instant start, Instant end, IZoneIntervalMap map)
         {
             // Allowing empty maps makes life simpler.
-            // TODO(misc): Does it really? It's a pain in some places...
             Preconditions.DebugCheckArgument(start <= end, nameof(end),
                 "Invalid start/end combination: {0} - {1}", start, end);
             this.Start = start;
