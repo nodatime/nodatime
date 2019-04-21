@@ -173,8 +173,7 @@ namespace NodaTime.Text
         {
             private static readonly BigInteger BigIntegerNanosecondsPerDay = NanosecondsPerDay;
 
-            // TODO(optimization): We might want to try to optimize this, but it's *much* simpler to get working reliably this way
-            // than to manipulate a real Duration.
+            // Note: While we *could* try to optimize this to not use BigInteger, this approach is really simple.
             internal bool IsNegative { get; set; }
             private BigInteger currentNanos;
 
