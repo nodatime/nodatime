@@ -411,7 +411,12 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, nameof(period));
             Preconditions.CheckArgument(!period.HasDateComponent, nameof(period), "Cannot add a period with a date component to a time");
-            return period.AddTo(time, 1);
+            return time.PlusHours(period.Hours)
+                .PlusMinutes(period.Minutes)
+                .PlusSeconds(period.Seconds)
+                .PlusMilliseconds(period.Milliseconds)
+                .PlusTicks(period.Ticks)
+                .PlusNanoseconds(period.Nanoseconds);
         }
 
         /// <summary>
@@ -442,7 +447,12 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(period, nameof(period));
             Preconditions.CheckArgument(!period.HasDateComponent, nameof(period), "Cannot subtract a period with a date component from a time");
-            return period.AddTo(time, -1);
+            return time.PlusHours(-period.Hours)
+                .PlusMinutes(-period.Minutes)
+                .PlusSeconds(-period.Seconds)
+                .PlusMilliseconds(-period.Milliseconds)
+                .PlusTicks(-period.Ticks)
+                .PlusNanoseconds(-period.Nanoseconds);
         }
 
         /// <summary>

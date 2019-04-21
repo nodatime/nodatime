@@ -516,50 +516,6 @@ namespace NodaTime
             }
         }
 
-        // TODO(optimization): These three methods are only ever used with scalar values of 1 or -1. Unlikely that
-        // the multiplications are going to be relevant, but may be worth testing. (Easy enough to break out
-        // code for the two values separately.)
-
-        /// <summary>
-        /// Adds the time components of this period to the given time, scaled accordingly.
-        /// </summary>
-        [Pure]
-        internal LocalTime AddTo(LocalTime time, int scalar) =>
-            time.PlusHours(Hours * scalar)
-                .PlusMinutes(Minutes * scalar)
-                .PlusSeconds(Seconds * scalar)
-                .PlusMilliseconds(Milliseconds * scalar)
-                .PlusTicks(Ticks * scalar)
-                .PlusNanoseconds(Nanoseconds * scalar);
-
-        /// <summary>
-        /// Adds the date components of this period to the given time, scaled accordingly.
-        /// </summary>
-        [Pure]
-        internal LocalDate AddTo(LocalDate date, int scalar) =>
-            date.PlusYears(Years * scalar)
-                .PlusMonths(Months * scalar)
-                .PlusWeeks(Weeks * scalar)
-                .PlusDays(Days * scalar);
-
-        /// <summary>
-        /// Adds the contents of this period to the given date and time, with the given scale (either 1 or -1, usually).
-        /// </summary>
-        internal LocalDateTime AddTo(LocalDate date, LocalTime time, int scalar)
-        {
-            date = AddTo(date, scalar);
-            int extraDays = 0;
-            time = TimePeriodField.Hours.Add(time, Hours * scalar, ref extraDays);
-            time = TimePeriodField.Minutes.Add(time, Minutes * scalar, ref extraDays);
-            time = TimePeriodField.Seconds.Add(time, Seconds * scalar, ref extraDays);
-            time = TimePeriodField.Milliseconds.Add(time, Milliseconds * scalar, ref extraDays);
-            time = TimePeriodField.Ticks.Add(time, Ticks * scalar, ref extraDays);
-            time = TimePeriodField.Nanoseconds.Add(time, Nanoseconds * scalar, ref extraDays);
-            // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
-            // Could optimize by including that in a single call...
-            return new LocalDateTime(date.PlusDays(extraDays), time);
-        }
-
         /// <summary>
         /// Returns the exact difference between two date/times.
         /// </summary>
