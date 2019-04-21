@@ -344,6 +344,7 @@ namespace NodaTime
         #region Implementation of IEquatable<LocalDateTime>
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>
@@ -355,6 +356,7 @@ namespace NodaTime
         #region Operators
         /// <summary>
         /// Implements the operator == (equality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -363,6 +365,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator != (inequality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -370,13 +373,9 @@ namespace NodaTime
         public static bool operator !=(LocalDateTime left, LocalDateTime right) => !(left == right);
 
         /// <summary>
-        /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right
-        /// one.
+        /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only values with the same calendar system can be compared. See the top-level type
-        /// documentation for more information about comparisons.
-        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
@@ -389,13 +388,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two LocalDateTime values to see if the left one is earlier than or equal to the right
-        /// one.
+        /// Compares two LocalDateTime values to see if the left one is earlier than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only values with the same calendar system can be compared. See the top-level type
-        /// documentation for more information about comparisons.
-        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
@@ -408,13 +403,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two LocalDateTime values to see if the left one is strictly later than the right
-        /// one.
+        /// Compares two LocalDateTime values to see if the left one is strictly later than the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only values with the same calendar system can be compared. See the top-level type
-        /// documentation for more information about comparisons.
-        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
@@ -427,13 +418,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two LocalDateTime values to see if the left one is later than or equal to the right
-        /// one.
+        /// Compares two LocalDateTime values to see if the left one is later than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only values with the same calendar system can be compared. See the top-level type
-        /// documentation for more information about comparisons.
-        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
@@ -447,12 +434,8 @@ namespace NodaTime
 
         /// <summary>
         /// Indicates whether this date/time is earlier, later or the same as another one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only date/time values within the same calendar systems can be compared with this method. Attempting to compare
-        /// values within different calendars will fail with an <see cref="ArgumentException"/>. Ideally, comparisons
-        /// is almost always preferable to continuing.
-        /// </remarks>
         /// <param name="other">The other local date/time to compare with this value.</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="other"/> is not the
         /// same as the calendar system of this value.</exception>
@@ -472,6 +455,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two LocalDateTimes.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <remarks>
         /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
@@ -618,6 +602,7 @@ namespace NodaTime
         #region object overrides
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
         /// <returns>
@@ -628,6 +613,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a hash code for this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data

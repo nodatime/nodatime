@@ -25,6 +25,11 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
+    /// Equality is defined in a component-wise fashion: two values are the same if they represent equal date/time values
+    /// (including being in the same calendar) and equal offsets from UTC.
+    /// Ordering between offset date/time values has no natural definition; see <see cref="Comparer"/> for built-in comparers.
+    /// </para>
+    /// <para>
     /// A value of this type unambiguously represents both a local time and an instant on the timeline,
     /// but does not have a well-defined time zone. This means you cannot reliably know what the local
     /// time would be five minutes later, for example. While this doesn't sound terribly useful, it's very common
@@ -425,21 +430,22 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a hash code for this offset date and time.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>A hash code for this offset date and time.</returns>
         public override int GetHashCode() => HashCodeHelper.Hash(localDate, offsetTime);
 
         /// <summary>
-        /// Compares two <see cref="OffsetDateTime"/> values for equality. This requires
-        /// that the local date/time values be the same (in the same calendar) and the offsets.
+        /// Compares two <see cref="OffsetDateTime"/> values for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The object to compare this date with.</param>
         /// <returns>True if the given value is another offset date/time equal to this one; false otherwise.</returns>
         public override bool Equals(object? obj) => obj is OffsetDateTime other && this == other;
 
         /// <summary>
-        /// Compares two <see cref="OffsetDateTime"/> values for equality. This requires
-        /// that the local date/time values be the same (in the same calendar) and the offsets.
+        /// Compares two <see cref="OffsetDateTime"/> values for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">The value to compare this offset date/time with.</param>
         /// <returns>True if the given value is another offset date/time equal to this one; false otherwise.</returns>
@@ -658,6 +664,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator == (equality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -666,6 +673,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator != (inequality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
