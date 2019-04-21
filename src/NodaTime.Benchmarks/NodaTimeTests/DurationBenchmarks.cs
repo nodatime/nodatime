@@ -173,5 +173,14 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public double TotalNanoseconds_Large() => LargeDuration.TotalNanoseconds;
+
+        [Benchmark]
+        public Duration Zero() => Duration.Zero;
+
+        [Benchmark]
+        public Duration OneDay() => Duration.OneDay;
+
+        [Benchmark]
+        public Duration OneWeek() => Duration.OneWeek;
     }
 }
