@@ -15,6 +15,10 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
+    /// Equality is defined in a component-wise fashion: two date intervals are considered equal if their start dates are
+    /// equal to each other and their end dates are equal to each other. Ordering between date intervals is not defined.
+    /// </para>
+    /// <para>
     /// The two dates must be in the same calendar, and the end date must not be earlier than the start date.
     /// </para>
     /// <para>
@@ -60,6 +64,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns the hash code for this interval, consistent with <see cref="Equals(DateInterval?)"/>.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>The hash code for this interval.</returns>
         public override int GetHashCode() =>
@@ -70,10 +75,8 @@ namespace NodaTime
 
         /// <summary>
         /// Compares two <see cref="DateInterval" /> values for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
-        /// <remarks>
-        /// Date intervals are equal if they have the same start and end dates.
-        /// </remarks>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
         /// <returns>True if the two date intervals have the same properties; false otherwise.</returns>
@@ -92,10 +95,8 @@ namespace NodaTime
 
         /// <summary>
         /// Compares two <see cref="DateInterval" /> values for inequality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
-        /// <remarks>
-        /// Date intervals are equal if they have the same start and end dates.
-        /// </remarks>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
         /// <returns>False if the two date intervals have the same start and end date; true otherwise.</returns>
@@ -103,16 +104,15 @@ namespace NodaTime
 
         /// <summary>
         /// Compares the given date interval for equality with this one.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
-        /// <remarks>
-        /// Date intervals are equal if they have the same start and end dates.
-        /// </remarks>
         /// <param name="other">The date interval to compare this one with.</param>
         /// <returns>True if this date interval has the same same start and end date as the one specified.</returns>
         public bool Equals(DateInterval? other) => this == other;
 
         /// <summary>
         /// Compares the given object for equality with this one, as per <see cref="Equals(DateInterval?)"/>.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The value to compare this one with.</param>
         /// <returns>true if the other object is a date interval equal to this one, consistent with <see cref="Equals(DateInterval?)"/>.</returns>

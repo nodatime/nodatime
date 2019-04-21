@@ -18,6 +18,10 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
+    /// Equality is defined in a component-wise fashion: two date intervals are considered equal if their start instants are
+    /// equal to each other and their end instants are equal to each other. Ordering between intervals is not defined.
+    /// </para>
+    /// <para>
     /// The interval includes the start instant and excludes the end instant. However, an interval
     /// may be missing its start or end, in which case the interval is deemed to be infinite in that
     /// direction.
@@ -163,6 +167,7 @@ namespace NodaTime
         #region Implementation of IEquatable<Interval>
         /// <summary>
         /// Indicates whether the value of this interval is equal to the value of the specified interval.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">The value to compare with this instance.</param>
         /// <returns>
@@ -176,6 +181,7 @@ namespace NodaTime
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
@@ -186,6 +192,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns the hash code for this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
         /// A 32-bit signed integer that is the hash code for this instance.
@@ -210,6 +217,7 @@ namespace NodaTime
         #region Operators
         /// <summary>
         /// Implements the operator ==.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
@@ -218,6 +226,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator !=.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>

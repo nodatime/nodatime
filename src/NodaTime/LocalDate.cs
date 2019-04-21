@@ -406,8 +406,8 @@ namespace NodaTime
         [Pure] public Period Minus(LocalDate date) => this - date;
 
         /// <summary>
-        /// Compares two <see cref="LocalDate" /> values for equality. This requires
-        /// that the dates be the same, within the same calendar.
+        /// Compares two <see cref="LocalDate" /> values for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
@@ -416,6 +416,7 @@ namespace NodaTime
 
         /// <summary>
         /// Compares two <see cref="LocalDate" /> values for inequality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
@@ -426,13 +427,9 @@ namespace NodaTime
         // naive comparisons.
 
         /// <summary>
-        /// Compares two dates to see if the left one is strictly earlier than the right
-        /// one.
+        /// Compares two dates to see if the left one is strictly earlier than the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only dates with the same calendar system can be compared. See the top-level type
-        /// documentation for more information about comparisons.
-        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
@@ -445,13 +442,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two dates to see if the left one is earlier than or equal to the right
-        /// one.
+        /// Compares two dates to see if the left one is earlier than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only dates with the same calendar system can be compared. See the top-level type
-        /// documentation for more information about comparisons.
-        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
@@ -464,13 +457,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two dates to see if the left one is strictly later than the right
-        /// one.
+        /// Compares two dates to see if the left one is strictly later than the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only dates with the same calendar system can be compared. See the top-level type
-        /// documentation for more information about comparisons.
-        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
@@ -483,13 +472,9 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Compares two dates to see if the left one is later than or equal to the right
-        /// one.
+        /// Compares two dates to see if the left one is later than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only dates with the same calendar system can be compared. See the top-level type
-        /// documentation for more information about comparisons.
-        /// </remarks>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
@@ -503,13 +488,8 @@ namespace NodaTime
 
         /// <summary>
         /// Indicates whether this date is earlier, later or the same as another one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
-        /// <remarks>
-        /// Only dates within the same calendar systems can be compared with this method. Attempting to compare
-        /// dates within different calendars will fail with an <see cref="ArgumentException"/>. Ideally, comparisons
-        /// between values in different calendars would be a compile-time failure, but failing at execution time
-        /// is almost always preferable to continuing.
-        /// </remarks>
         /// <param name="other">The other date to compare this one with</param>
         /// <exception cref="ArgumentException">The calendar system of <paramref name="other"/> is not the
         /// same as the calendar system of this value.</exception>
@@ -524,6 +504,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two LocalDates.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <remarks>
         /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
@@ -572,21 +553,22 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a hash code for this local date.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>A hash code for this local date.</returns>
         public override int GetHashCode() => yearMonthDayCalendar.GetHashCode();
 
         /// <summary>
-        /// Compares two <see cref="LocalDate"/> values for equality. This requires
-        /// that the dates be the same, within the same calendar.
+        /// Compares two <see cref="LocalDate"/> values for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The object to compare this date with.</param>
         /// <returns>True if the given value is another local date equal to this one; false otherwise.</returns>
         public override bool Equals(object? obj) => obj is LocalDate other && this == other;
 
         /// <summary>
-        /// Compares two <see cref="LocalDate"/> values for equality. This requires
-        /// that the dates be the same, within the same calendar.
+        /// Compares two <see cref="LocalDate"/> values for equality.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="other">The value to compare this date with.</param>
         /// <returns>True if the given value is another local date equal to this one; false otherwise.</returns>

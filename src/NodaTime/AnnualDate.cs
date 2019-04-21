@@ -15,9 +15,18 @@ namespace NodaTime
     /// Represents an annual date (month and day) in the ISO calendar but without a specific year,
     /// typically for recurrent events such as birthdays, anniversaries, and deadlines.
     /// </summary>
-    /// <remarks>In the future, this struct may be expanded to support other calendar systems,
+    /// <remarks>
+    /// <para>
+    /// Equality and comparison order are defined in the natural way. Two values are equal if they
+    /// represent the same month and the same day-of-month. One value is earlier than another if it
+    /// has a smaller month, or the same month but an earlier day-of-month.
+    /// </para>
+    /// <para>
+    /// In the future, this struct may be expanded to support other calendar systems,
     /// but this does not generalize terribly cleanly, particularly to the Hebrew calendar system
-    /// with its leap month.</remarks>
+    /// with its leap month.
+    /// </para>
+    /// </remarks>
     [TypeConverter(typeof(AnnualDateTypeConverter))]
     public readonly struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IFormattable
     {
@@ -91,8 +100,8 @@ namespace NodaTime
         public bool IsValidYear(int year) => Month != 2 || Day != 29 || CalendarSystem.Iso.IsLeapYear(year);
 
         /// <summary>
-        /// Compares this annual date with the specified reference. An annual date is
-        /// only equal to another annual date with the same month and day values.
+        /// Compares this annual date with the specified reference.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The object to compare this one with</param>
         /// <returns>True if the specified value is an annual date which is equal to this one; false otherwise</returns>
@@ -100,6 +109,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a hash code for this annual date.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>A hash code for this annual date.</returns>
         public override int GetHashCode() => value.GetHashCode();
@@ -129,8 +139,8 @@ namespace NodaTime
             AnnualDatePattern.BclSupport.Format(this, patternText, formatProvider);
 
         /// <summary>
-        /// Compares this annual date with the specified one for equality,
-        /// by checking whether the two values represent the same annual date - the same month and day.
+        /// Compares this annual date with the specified one for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">The other annual date to compare this one with</param>
         /// <returns>True if the specified annual date is equal to this one; false otherwise</returns>
@@ -138,6 +148,7 @@ namespace NodaTime
 
         /// <summary>
         /// Indicates whether this annual date is earlier, later or the same as another one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="other">The other annual date to compare this one with</param>
         /// <returns>A value less than zero if this annual date is earlier than <paramref name="other"/>;
@@ -147,6 +158,7 @@ namespace NodaTime
 
         /// <summary>
         /// Compares two <see cref="AnnualDate" /> values for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
@@ -155,6 +167,7 @@ namespace NodaTime
 
         /// <summary>
         /// Compares two <see cref="AnnualDate" /> values for inequality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
@@ -162,8 +175,8 @@ namespace NodaTime
         public static bool operator !=(AnnualDate lhs, AnnualDate rhs) => !(lhs == rhs);
 
         /// <summary>
-        /// Compares two annual dates to see if the left one is strictly earlier than the right
-        /// one.
+        /// Compares two annual dates to see if the left one is strictly earlier than the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
@@ -173,8 +186,8 @@ namespace NodaTime
         public static bool operator <(AnnualDate lhs, AnnualDate rhs) => lhs.CompareTo(rhs) < 0;
 
         /// <summary>
-        /// Compares two annual dates to see if the left one is earlier than or equal to the right
-        /// one.
+        /// Compares two annual dates to see if the left one is earlier than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
@@ -182,8 +195,8 @@ namespace NodaTime
         public static bool operator <=(AnnualDate lhs, AnnualDate rhs) => lhs.CompareTo(rhs) <= 0;
 
         /// <summary>
-        /// Compares two annual dates to see if the left one is strictly later than the right
-        /// one.
+        /// Compares two annual dates to see if the left one is strictly later than the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
@@ -191,8 +204,8 @@ namespace NodaTime
         public static bool operator >(AnnualDate lhs, AnnualDate rhs) => lhs.CompareTo(rhs) > 0;
 
         /// <summary>
-        /// Compares two annual dates to see if the left one is later than or equal to the right
-        /// one.
+        /// Compares two annual dates to see if the left one is later than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>

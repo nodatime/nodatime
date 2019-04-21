@@ -25,6 +25,9 @@ namespace NodaTime
     /// LocalTime is an immutable struct representing a time of day, with no reference
     /// to a particular calendar, time zone or date.
     /// </summary>
+    /// <remarks>
+    /// Ordering and equality are defined in the natural way, simply comparing the number of "nanoseconds since midnight".
+    /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(LocalTimeTypeConverter))]
     public readonly struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
@@ -503,8 +506,8 @@ namespace NodaTime
         public Period Minus(LocalTime time) => this - time;
 
         /// <summary>
-        /// Compares two local times for equality, by checking whether they represent
-        /// the exact same local time, down to the tick.
+        /// Compares two local times for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
@@ -513,6 +516,7 @@ namespace NodaTime
 
         /// <summary>
         /// Compares two local times for inequality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="lhs">The first value to compare</param>
         /// <param name="rhs">The second value to compare</param>
@@ -520,8 +524,8 @@ namespace NodaTime
         public static bool operator !=(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds != rhs.nanoseconds;
 
         /// <summary>
-        /// Compares two LocalTime values to see if the left one is strictly earlier than the right
-        /// one.
+        /// Compares two LocalTime values to see if the left one is strictly earlier than the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
@@ -529,8 +533,8 @@ namespace NodaTime
         public static bool operator <(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds < rhs.nanoseconds;
 
         /// <summary>
-        /// Compares two LocalTime values to see if the left one is earlier than or equal to the right
-        /// one.
+        /// Compares two LocalTime values to see if the left one is earlier than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
@@ -538,8 +542,8 @@ namespace NodaTime
         public static bool operator <=(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds <= rhs.nanoseconds;
 
         /// <summary>
-        /// Compares two LocalTime values to see if the left one is strictly later than the right
-        /// one.
+        /// Compares two LocalTime values to see if the left one is strictly later than the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
@@ -547,8 +551,8 @@ namespace NodaTime
         public static bool operator >(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds > rhs.nanoseconds;
 
         /// <summary>
-        /// Compares two LocalTime values to see if the left one is later than or equal to the right
-        /// one.
+        /// Compares two LocalTime values to see if the left one is later than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="lhs">First operand of the comparison</param>
         /// <param name="rhs">Second operand of the comparison</param>
@@ -557,6 +561,7 @@ namespace NodaTime
 
         /// <summary>
         /// Indicates whether this time is earlier, later or the same as another one.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="other">The other date/time to compare this one with</param>
         /// <returns>A value less than zero if this time is earlier than <paramref name="other"/>;
@@ -566,6 +571,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two LocalTimes.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <remarks>
         /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
@@ -587,21 +593,22 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a hash code for this local time.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>A hash code for this local time.</returns>
         public override int GetHashCode() => nanoseconds.GetHashCode();
 
         /// <summary>
-        /// Compares this local time with the specified one for equality,
-        /// by checking whether the two values represent the exact same local time, down to the tick.
+        /// Compares this local time with the specified one for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">The other local time to compare this one with</param>
         /// <returns>True if the specified time is equal to this one; false otherwise</returns>
         public bool Equals(LocalTime other) => this == other;
 
         /// <summary>
-        /// Compares this local time with the specified reference. A local time is
-        /// only equal to another local time with the same underlying tick value.
+        /// Compares this local time with the specified reference.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The object to compare this one with</param>
         /// <returns>True if the specified value is a local time which is equal to this one; false otherwise</returns>

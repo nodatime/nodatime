@@ -34,6 +34,7 @@ namespace NodaTime
     /// Although durations are usually used with a positive number of nanoseconds, negative durations are valid, and may occur
     /// naturally when e.g. subtracting a later <see cref="Instant"/> from an earlier one.
     /// </para>
+    /// <para>Equality and ordering are defined in the natural way, simply comparing the number of nanoseconds contained.</para>
     /// <para>
     /// A duration represents a fixed length of elapsed time along the time line that occupies the same amount of
     /// time regardless of when it is applied. In contrast, <see cref="Period"/> represents a period of time in
@@ -413,6 +414,7 @@ namespace NodaTime
         #region Object overrides
         /// <summary>
         /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
         /// <returns>
@@ -423,6 +425,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a hash code for this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data
@@ -714,6 +717,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator == (equality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -723,6 +727,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator != (inequality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -731,6 +736,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator &lt; (less than).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -740,6 +746,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator &lt;= (less than or equal).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -749,6 +756,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator &gt; (greater than).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -758,6 +766,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator &gt;= (greater than or equal).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -792,7 +801,8 @@ namespace NodaTime
 
         #region IComparable<Duration> Members
         /// <summary>
-        /// Compares the current object with another object of the same type.
+        /// Implementation of <see cref="IComparable{Duration}.CompareTo"/> to compare two durations.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>
@@ -824,7 +834,8 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two offsets.
+        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two durations.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <remarks>
         /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
@@ -848,6 +859,7 @@ namespace NodaTime
         #region IEquatable<Duration> Members
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>

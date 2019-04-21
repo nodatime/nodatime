@@ -288,6 +288,7 @@ namespace NodaTime
         #region Equality
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
@@ -298,6 +299,7 @@ namespace NodaTime
 
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
@@ -309,6 +311,7 @@ namespace NodaTime
 
         /// <summary>
         /// Computes the hash code for this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
         /// A 32-bit signed integer that is the hash code for this instance.
@@ -320,6 +323,7 @@ namespace NodaTime
         #region Operators
         /// <summary>
         /// Implements the operator ==.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The first value to compare</param>
         /// <param name="right">The second value to compare</param>
@@ -328,6 +332,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator !=.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The first value to compare</param>
         /// <param name="right">The second value to compare</param>

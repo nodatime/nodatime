@@ -12,6 +12,12 @@ namespace NodaTime.TimeZones
     /// <summary>
     /// Represents a range of time for which a particular Offset applies.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Equality is defined component-wise in terms of all properties: the name, the start and end, and the offsets.
+    /// There is no ordering defined between zone intervals.
+    /// </para>
+    /// </remarks>
     /// <threadsafety>This type is an immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
     public sealed class ZoneInterval : IEquatable<ZoneInterval?>
@@ -256,13 +262,13 @@ namespace NodaTime.TimeZones
 
         #region IEquatable<ZoneInterval> Members
         /// <summary>
-        ///   Indicates whether the current object is equal to another object of the same type.
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
-        ///   true if the current object is equal to the <paramref name = "other" /> parameter; otherwise, false.
+        /// true if the current object is equal to the <paramref name = "other" /> parameter; otherwise, false.
         /// </returns>
-        /// <param name="other">An object to compare with this object.
-        /// </param>
+        /// <param name="other">An object to compare with this object.</param>
         [DebuggerStepThrough]
         public bool Equals(ZoneInterval? other)
         {
@@ -281,10 +287,11 @@ namespace NodaTime.TimeZones
 
         #region object Overrides
         /// <summary>
-        ///   Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, <c>false</c>.
         /// </returns>
         /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />.</param>
         /// <filterpriority>2</filterpriority>
@@ -292,12 +299,10 @@ namespace NodaTime.TimeZones
         public override bool Equals(object? obj) => Equals(obj as ZoneInterval);
 
         /// <summary>
-        ///   Serves as a hash function for a particular type.
+        /// Returns a hash code for this zone interval.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
-        /// <returns>
-        ///   A hash code for the current <see cref="T:System.Object" />.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
+        /// <returns>A hash code for this zone interval.</returns>
         public override int GetHashCode() =>
             HashCodeHelper.Initialize()
                 .Hash(Name)

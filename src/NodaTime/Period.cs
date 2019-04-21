@@ -32,7 +32,13 @@ namespace NodaTime
     /// both cases).
     /// </para>
     /// <para>
-    /// <see cref="Period"/> equality is implemented by comparing each property's values individually.
+    /// <see cref="Period"/> equality is implemented by comparing each property's values individually, without any normalization.
+    /// (For example, a period of "24 hours" is not considered equal to a period of "1 day".) The static
+    /// <see cref="NormalizingEqualityComparer"/> comparer provides an equality comparer which performs normalization before comparsions.
+    /// </para>
+    /// <para>
+    /// There is no natural ordering for periods, but <see cref="CreateComparer(LocalDateTime)"/> can be used to create a
+    /// comparer which orders periods according to a reference date, by adding each period to that date and comparing the results.
     /// </para>
     /// <para>
     /// Periods operate on calendar-related types such as
@@ -768,6 +774,7 @@ namespace NodaTime
 
         /// <summary>
         /// Compares the given object for equality with this one, as per <see cref="Equals(Period?)"/>.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">The value to compare this one with.</param>
         /// <returns>true if the other object is a period equal to this one, consistent with <see cref="Equals(Period?)"/></returns>
@@ -775,6 +782,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns the hash code for this period, consistent with <see cref="Equals(Period?)"/>.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>The hash code for this period.</returns>
         public override int GetHashCode() =>
@@ -793,11 +801,8 @@ namespace NodaTime
 
         /// <summary>
         /// Compares the given period for equality with this one.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
-        /// <remarks>
-        /// Periods are equal if they contain the same values for the same properties.
-        /// However, no normalization takes place, so "one hour" is not equal to "sixty minutes".
-        /// </remarks>
         /// <param name="other">The period to compare this one with.</param>
         /// <returns>True if this period has the same values for the same properties as the one specified.</returns>
         public bool Equals(Period? other) =>

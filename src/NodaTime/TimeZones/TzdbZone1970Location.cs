@@ -147,6 +147,10 @@ namespace NodaTime.TimeZones
         /// A country represented within an entry in the "zone1970.tab" file, with the English name
         /// mapped from the "iso3166.tab" file.
         /// </summary>
+        /// <remarks>
+        /// <para>Equality is defined component-wise: two values are considered equal if their country names are equal to
+        /// each other, and their country codes are equal to each other.</para>
+        /// </remarks>
         [Immutable]
         public sealed class Country : IEquatable<Country?>
         {
@@ -176,14 +180,16 @@ namespace NodaTime.TimeZones
             }
 
             /// <summary>
-            /// Compares countries for equality, by name and code.
+            /// Compares countries for equality.
+            /// See the type documentation for a description of equality semantics.
             /// </summary>
             /// <param name="other">The country to compare with this one.</param>
             /// <returns><c>true</c> if the given country has the same name and code as this one; <c>false</c> otherwise.</returns>
             public bool Equals(Country? other) => other != null && other.Code == Code && other.Name == Name;
 
             /// <summary>
-            /// Compares countries for equality, by name and code.
+            /// Compares countries for equality.
+            /// See the type documentation for a description of equality semantics.
             /// </summary>
             /// <param name="obj">The object to compare this one with.</param>
             /// <returns><c>true</c> if the given object is a country with the same name and code as this one; <c>false</c> otherwise.</returns>
@@ -191,6 +197,7 @@ namespace NodaTime.TimeZones
 
             /// <summary>
             /// Returns a hash code for this country.
+            /// See the type documentation for a description of equality semantics.
             /// </summary>
             /// <returns>A hash code for this country.</returns>
             public override int GetHashCode() => HashCodeHelper.Hash(Name, Code);

@@ -33,6 +33,8 @@ namespace NodaTime
     /// <para>Offsets are represented with a granularity of one second. This allows all offsets within TZDB
     /// to be represented. It is possible that it could present issues to some other time zone data sources,
     /// but only in very rare historical cases (or fictional ones).</para>
+    /// <para>Equality and ordering are defined in the natural way by comparing the underlying number
+    /// of seconds. For example, this means that offsets for America are ordered before offsets in Europe.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(OffsetTypeConverter))]
@@ -131,7 +133,7 @@ namespace NodaTime
 
         #region Operators
         /// <summary>
-        ///   Implements the unary operator - (negation).
+        /// Implements the unary operator - (negation).
         /// </summary>
         /// <param name="offset">The offset to negate.</param>
         /// <returns>A new <see cref="Offset" /> instance with a negated value.</returns>
@@ -216,6 +218,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator == (equality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -224,6 +227,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator != (inequality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -232,6 +236,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator &lt; (less than).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -240,6 +245,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator &lt;= (less than or equal).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -248,6 +254,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator &gt; (greater than).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -255,7 +262,8 @@ namespace NodaTime
         public static bool operator >(Offset left, Offset right) => left.CompareTo(right) > 0;
 
         /// <summary>
-        ///   Implements the operator &gt;= (greater than or equal).
+        /// Implements the operator &gt;= (greater than or equal).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -266,6 +274,7 @@ namespace NodaTime
         #region IComparable<Offset> Members
         /// <summary>
         /// Compares the current object with another object of the same type.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>
@@ -294,6 +303,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two offsets.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <remarks>
         /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
@@ -316,33 +326,36 @@ namespace NodaTime
 
         #region IEquatable<Offset> Members
         /// <summary>
-        ///   Indicates whether the current object is equal to another object of the same type.
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>
-        ///   true if the current object is equal to the <paramref name = "other" /> parameter;
-        ///   otherwise, false.
+        /// true if the current object is equal to the <paramref name = "other" /> parameter;
+        /// otherwise, false.
         /// </returns>
         public bool Equals(Offset other) => Seconds == other.Seconds;
         #endregion
 
         #region Object overrides
         /// <summary>
-        ///   Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
-        ///   otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance;
+        /// otherwise, <c>false</c>.
         /// </returns>
         public override bool Equals(object? obj) => obj is Offset other && Equals(other);
 
         /// <summary>
-        ///   Returns a hash code for this instance.
+        /// Returns a hash code for this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
-        ///   A hash code for this instance, suitable for use in hashing algorithms and data
-        ///   structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data
+        /// structures like a hash table. 
         /// </returns>
         public override int GetHashCode() => Seconds.GetHashCode();
         #endregion  // Object overrides

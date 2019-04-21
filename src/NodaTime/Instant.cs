@@ -25,6 +25,10 @@ namespace NodaTime
     /// An <see cref="Instant"/> has no concept of a particular time zone or calendar: it simply represents a point in
     /// time that can be globally agreed-upon.
     /// </para>
+    /// <para>
+    /// Equality and ordering comparisons are defined in the natural way, with earlier points on the timeline
+    /// being considered "less than" later points.
+    /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(InstantTypeConverter))]
@@ -141,6 +145,7 @@ namespace NodaTime
         #region IComparable<Instant> and IComparable Members
         /// <summary>
         /// Compares the current object with another object of the same type.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="other">An object to compare with this object.</param>
         /// <returns>
@@ -169,6 +174,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two instants.
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <remarks>
         /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
@@ -192,6 +198,7 @@ namespace NodaTime
         #region Object overrides
         /// <summary>
         /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
         /// <returns>
@@ -201,11 +208,12 @@ namespace NodaTime
         public override bool Equals(object? obj) => obj is Instant other && Equals(other);
 
         /// <summary>
-        ///   Returns a hash code for this instance.
+        /// Returns a hash code for this instance.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
-        ///   A hash code for this instance, suitable for use in hashing algorithms and data
-        ///   structures like a hash table. 
+        /// A hash code for this instance, suitable for use in hashing algorithms and data
+        /// structures like a hash table. 
         /// </returns>
         public override int GetHashCode() => duration.GetHashCode();
         #endregion  // Object overrides
@@ -352,6 +360,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator == (equality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -360,6 +369,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator != (inequality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -367,7 +377,8 @@ namespace NodaTime
         public static bool operator !=(Instant left, Instant right) => !(left == right);
 
         /// <summary>
-        ///   Implements the operator &lt; (less than).
+        /// Implements the operator &lt; (less than).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -375,7 +386,8 @@ namespace NodaTime
         public static bool operator <(Instant left, Instant right) => left.duration < right.duration;
 
         /// <summary>
-        ///   Implements the operator &lt;= (less than or equal).
+        /// Implements the operator &lt;= (less than or equal).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -383,7 +395,8 @@ namespace NodaTime
         public static bool operator <=(Instant left, Instant right) => left.duration <= right.duration;
 
         /// <summary>
-        ///   Implements the operator &gt; (greater than).
+        /// Implements the operator &gt; (greater than).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -391,7 +404,8 @@ namespace NodaTime
         public static bool operator >(Instant left, Instant right) => left.duration > right.duration;
 
         /// <summary>
-        ///   Implements the operator &gt;= (greater than or equal).
+        /// Implements the operator &gt;= (greater than or equal).
+        /// See the type documentation for a description of ordering semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -492,6 +506,7 @@ namespace NodaTime
         #region IEquatable<Instant> Members
         /// <summary>
         /// Indicates whether the value of this instant is equal to the value of the specified instant.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">The value to compare with this instance.</param>
         /// <returns>

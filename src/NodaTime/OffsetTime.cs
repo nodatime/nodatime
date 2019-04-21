@@ -21,6 +21,10 @@ namespace NodaTime
     /// A combination of a <see cref="LocalTime"/> and an <see cref="Offset"/>, to represent
     /// a time-of-day at a specific offset from UTC but without any date information.
     /// </summary>
+    /// <para>
+    /// Equality is defined in a component-wise fashion: two values are the same if they represent equal time-of-day values
+    /// and equal offsets from UTC. Ordering between offset time values is not defined.
+    /// </para>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(OffsetTimeTypeConverter))]
     public readonly struct OffsetTime : IEquatable<OffsetTime>, IXmlSerializable, IFormattable
@@ -207,21 +211,22 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a hash code for this offset time.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>A hash code for this offset time.</returns>
         public override int GetHashCode() => HashCodeHelper.Hash(TimeOfDay, Offset);
 
         /// <summary>
-        /// Compares two <see cref="OffsetTime"/> values for equality. This requires
-        /// that the time-of-day values be the same and the offsets.
+        /// Compares two <see cref="OffsetTime"/> values for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="obj">The object to compare this offset time with.</param>
         /// <returns>True if the given value is another offset time equal to this one; false otherwise.</returns>
         public override bool Equals(object? obj) => obj is OffsetTime other && Equals(other);
 
         /// <summary>
-        /// Compares two <see cref="OffsetTime"/> values for equality. This requires
-        /// that the date values be the same and the offsets.
+        /// Compares two <see cref="OffsetTime"/> values for equality.
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="other">The value to compare this offset time with.</param>
         /// <returns>True if the given value is another offset time equal to this one; false otherwise.</returns>
@@ -229,6 +234,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator == (equality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>
@@ -237,6 +243,7 @@ namespace NodaTime
 
         /// <summary>
         /// Implements the operator != (inequality).
+        /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <param name="left">The left hand side of the operator.</param>
         /// <param name="right">The right hand side of the operator.</param>

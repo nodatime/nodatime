@@ -15,6 +15,12 @@ namespace NodaTime.TimeZones.Cldr
     /// <summary>
     /// Represents a single <c>&lt;mapZone&gt;</c> element in the CLDR Windows zone mapping file. 
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Equality is defined in a component-wise fashion. When comparing two values for equality, the <see cref="TzdbIds"/> properties
+    /// must return the same IDs in the same order for the values to be considered equal.
+    /// </para>
+    /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
     public sealed class MapZone : IEquatable<MapZone?>
@@ -124,14 +130,23 @@ namespace NodaTime.TimeZones.Cldr
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Compares two <see cref="MapZone"/> values for equality.
+        /// See the type documentation for a description of equality semantics.
+        /// </summary>
+        /// <param name="other">The value to compare this map zone with.</param>
+        /// <returns>True if the given value is another map zone equal to this one; false otherwise.</returns>
         public bool Equals(MapZone? other) =>
             other != null &&
             WindowsId == other.WindowsId &&
             Territory == other.Territory &&
             TzdbIds.SequenceEqual(other.TzdbIds);
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns a hash code for this map zone.
+        /// See the type documentation for a description of equality semantics.
+        /// </summary>
+        /// <returns>A hash code for this map zone.</returns>
         public override int GetHashCode()
         {
             var hash = HashCodeHelper.Initialize().Hash(WindowsId).Hash(Territory);
@@ -142,7 +157,12 @@ namespace NodaTime.TimeZones.Cldr
             return hash.Value;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Compares two <see cref="MapZone"/> values for equality.
+        /// See the type documentation for a description of equality semantics.
+        /// </summary>
+        /// <param name="obj">The value to compare this map zone with.</param>
+        /// <returns>True if the given value is another map zone equal to this one; false otherwise.</returns>
         public override bool Equals(object? obj) => Equals(obj as MapZone);
 
         /// <summary>
