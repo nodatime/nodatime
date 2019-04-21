@@ -80,30 +80,27 @@ namespace NodaTime
 
         #region Readonly static properties
 
-        // TODO(optimization): Evaluate performance of this implementation vs readonly automatically implemented properties.
-        // Consider adding a private constructor which performs no validation at all.
-
         /// <summary>
         /// Gets a zero <see cref="Duration"/> of 0 nanoseconds.
         /// </summary>
         /// <value>The zero <see cref="Duration"/> value.</value>
-        public static Duration Zero => new Duration(0, 0L);
+        public static Duration Zero => default;
 
         /// <summary>
         /// Gets a <see cref="Duration"/> value equal to 1 nanosecond; the smallest amount by which an instant can vary.
         /// </summary>
         /// <value>A duration representing 1 nanosecond.</value>
-        public static Duration Epsilon => new Duration(0, 1L);
+        public static Duration Epsilon => new Duration(0, 1L, noValidation: true);
 
         /// <summary>
         /// Gets the maximum value supported by <see cref="Duration"/>.
         /// </summary>
-        public static Duration MaxValue => new Duration(MaxDays, NanosecondsPerDay - 1);
+        public static Duration MaxValue => new Duration(MaxDays, NanosecondsPerDay - 1, noValidation: true);
 
         /// <summary>
         /// Gets the minimum (largest negative) value supported by <see cref="Duration"/>.
         /// </summary>
-        public static Duration MinValue => new Duration(MinDays, 0);
+        public static Duration MinValue => new Duration(MinDays, 0, noValidation: true);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 standard week (7 days).
@@ -111,7 +108,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this property is 604,800,000,000,000 nanoseconds.
         /// </remarks>
-        internal static Duration OneWeek => new Duration(7, 0L);
+        internal static Duration OneWeek => new Duration(7, 0L, noValidation: true);
 
         /// <summary>
         /// Represents the <see cref="Duration"/> value equal to the number of nanoseconds in 1 day.
@@ -119,7 +116,7 @@ namespace NodaTime
         /// <remarks>
         /// The value of this property is 86.4 trillion nanoseconds; that is, 86,400,000,000,000 nanoseconds.
         /// </remarks>
-        internal static Duration OneDay => new Duration(1, 0L);
+        internal static Duration OneDay => new Duration(1, 0L, noValidation: true);
         #endregion
 
         // This is effectively a 25 bit value. (It can't be 24 bits, or we can't represent every TimeSpan value.)
@@ -128,6 +125,14 @@ namespace NodaTime
         // positive nanoOfDay. (A duration of -1ns will have a days value of -1 and a nanoOfDay of
         // NanosecondsPerDay - 1, for example.)
         private readonly long nanoOfDay;
+
+        // Trusted constructor with no validation. The value of the noValidation parameter is
+        // ignored completely; its name is just to be suggestive.
+        private Duration([Trusted] int days, [Trusted] long nanoOfDay, bool noValidation)
+        {
+            this.days = days;
+            this.nanoOfDay = nanoOfDay;
+        }
 
         // Implementation note: I've tried making this internal and calling it directly from Instant.FromUnixTimeSeconds etc?
         // That reduces the number of range checks, but doesn't seem to affect the performance in a significant way.
@@ -994,7 +999,7 @@ namespace NodaTime
         {
             // No precondition here, as we cover a wider range than Int64 ticks can handle...
             int days = TickArithmetic.TicksToDaysAndTickOfDay(ticks, out long tickOfDay);
-            return new Duration(days, tickOfDay * NanosecondsPerTick);
+            return new Duration(days, tickOfDay * NanosecondsPerTick, noValidation: true);
         }
 
         /// <summary>
@@ -1019,13 +1024,15 @@ namespace NodaTime
         /// <returns>A <see cref="Duration"/> representing the given number of nanoseconds.</returns>
         public static Duration FromNanoseconds(long nanoseconds)
         {
+            // Note: both branches call the private constructor overload that performs no validation,
+            // as the value is always valid.
             unchecked
             {
                 if (nanoseconds >= 0)
                 {
                     // DivRem benchmarked against netcoreapp2.1 on 2019-04-21; definite win.
                     long days = Math.DivRem(nanoseconds, NanosecondsPerDay, out var nanoOfDay);
-                    return new Duration((int) days, nanoOfDay);
+                    return new Duration((int) days, nanoOfDay, noValidation: true);
                 }
                 else
                 {
@@ -1036,7 +1043,7 @@ namespace NodaTime
                     long nanoOfDay = nanoseconds >= long.MinValue + NanosecondsPerDay
                         ? nanoseconds - days * NanosecondsPerDay
                         : nanoseconds - (days + 1) * NanosecondsPerDay + NanosecondsPerDay; // Avoid multiplication overflow
-                    return new Duration(days, nanoOfDay);
+                    return new Duration(days, nanoOfDay, noValidation: true);
                 }
             }
         }
@@ -1072,7 +1079,7 @@ namespace NodaTime
                 : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
 
             long nanoOfDay = (long) (nanoseconds - ((BigInteger) days) * NanosecondsPerDay);
-            return new Duration(days, nanoOfDay);
+            return new Duration(days, nanoOfDay, noValidation: true);
         }
 
         internal static Duration FromNanoseconds(decimal nanoseconds)
@@ -1088,7 +1095,7 @@ namespace NodaTime
                 : (int) ((nanoseconds + 1) / NanosecondsPerDay) - 1;
 
             long nanoOfDay = (long) (nanoseconds - ((decimal) days) * NanosecondsPerDay);
-            return new Duration(days, nanoOfDay);
+            return new Duration(days, nanoOfDay, noValidation: true);
         }
 
         /// <summary>
