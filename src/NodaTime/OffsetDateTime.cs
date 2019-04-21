@@ -160,13 +160,6 @@ namespace NodaTime
         /// <value>The hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.</value>
         public int ClockHourOfHalfDay => offsetTime.ClockHourOfHalfDay;
 
-        // TODO(feature): Consider exposing this.
-        /// <summary>
-        /// Gets the hour of the half-day of this offset date and time, in the range 0 to 11 inclusive.
-        /// </summary>
-        /// <value>The hour of the half-day of this offset date and time, in the range 0 to 11 inclusive.</value>
-        internal int HourOfHalfDay => offsetTime.HourOfHalfDay;
-
         /// <summary>
         /// Gets the minute of this offset date and time, in the range 0 to 59 inclusive.
         /// </summary>

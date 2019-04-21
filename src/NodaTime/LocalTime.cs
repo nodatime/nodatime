@@ -317,18 +317,11 @@ namespace NodaTime
             {
                 unchecked
                 {
-                    int hourOfHalfDay = HourOfHalfDay;
+                    int hourOfHalfDay = unchecked(Hour % 12);
                     return hourOfHalfDay == 0 ? 12 : hourOfHalfDay;
                 }
             }
         }
-
-        // TODO(feature): Consider exposing this.
-        /// <summary>
-        /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
-        /// </summary>
-        /// <value>The hour of the half-day of this local time, in the range 0 to 11 inclusive.</value>
-        internal int HourOfHalfDay => unchecked(Hour % 12);
 
         /// <summary>
         /// Gets the minute of this local time, in the range 0 to 59 inclusive.
