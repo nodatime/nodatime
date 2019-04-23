@@ -39,6 +39,8 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 #else
             Duration.FromStandardDays(100);
 #endif
+        [Benchmark]
+        public Duration FromDays_Double() => Duration.FromDays(100.0);
 
         // Durations where * is efficient
         [Benchmark]
