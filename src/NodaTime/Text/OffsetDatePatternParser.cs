@@ -88,7 +88,7 @@ namespace NodaTime.Text
 
             internal override ParseResult<OffsetDate> CalculateValue(PatternFields usedFields, string text)
             {
-                ParseResult<LocalDate> dateResult = Date.CalculateValue(usedFields & PatternFields.AllDateFields, text);
+                ParseResult<LocalDate> dateResult = Date.CalculateValue(usedFields & PatternFields.AllDateFields, text, typeof(OffsetDate));
                 if (!dateResult.Success)
                 {
                     return dateResult.ConvertError<OffsetDate>();

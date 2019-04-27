@@ -135,12 +135,12 @@ namespace NodaTime.Text
                     hour24 = true;
                 }
 
-                ParseResult<LocalDate> dateResult = dateBucket.CalculateValue(usedFields & PatternFields.AllDateFields, text);
+                ParseResult<LocalDate> dateResult = dateBucket.CalculateValue(usedFields & PatternFields.AllDateFields, text, typeof(LocalDateTime));
                 if (!dateResult.Success)
                 {
                     return dateResult.ConvertError<LocalDateTime>();
                 }
-                ParseResult<LocalTime> timeResult = timeBucket.CalculateValue(usedFields & PatternFields.AllTimeFields, text);
+                ParseResult<LocalTime> timeResult = timeBucket.CalculateValue(usedFields & PatternFields.AllTimeFields, text, typeof(LocalDateTime));
                 if (!timeResult.Success)
                 {
                     return timeResult.ConvertError<LocalDateTime>();

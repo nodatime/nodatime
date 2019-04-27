@@ -24,9 +24,10 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] ParseFailureData = {
+            // TODO: Make these use typeof(Instant)
             new Data { Text = "rubbish", Pattern = "yyyyMMdd'T'HH:mm:ss", Message = TextErrorMessages.MismatchedNumber, Parameters = { "yyyy" } },
-            new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
-            new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
+            new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalDateTime).FullName}},
+            new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalDateTime).FullName}},
         };
 
         internal static Data[] ParseOnlyData = {
