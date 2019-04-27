@@ -4,6 +4,7 @@
 
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+using System;
 using System.Collections.Generic;
 
 namespace NodaTime.Text
@@ -128,7 +129,10 @@ namespace NodaTime.Text
             /// <summary>
             /// Calculates the value from the parsed pieces.
             /// </summary>            
-            internal override ParseResult<LocalTime> CalculateValue(PatternFields usedFields, string text)
+            internal override ParseResult<LocalTime> CalculateValue(PatternFields usedFields, string text) =>
+                CalculateValue(usedFields, text, typeof(LocalTime));
+
+            internal ParseResult<LocalTime> CalculateValue(PatternFields usedFields, string text, Type eventualResultType)
             {
                 if (usedFields.HasAny(PatternFields.EmbeddedTime))
                 {
@@ -138,7 +142,7 @@ namespace NodaTime.Text
                 {
                     AmPm = TemplateValue.Hour / 12;
                 }
-                ParseResult<LocalTime>? failure = DetermineHour(usedFields, text, out int hour);
+                ParseResult<LocalTime>? failure = DetermineHour(usedFields, text, out int hour, eventualResultType);
                 if (failure != null)
                 {
                     return failure;
@@ -149,7 +153,7 @@ namespace NodaTime.Text
                 return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondNanosecond(hour, minutes, seconds, fraction));
             }
 
-            private ParseResult<LocalTime>? DetermineHour(PatternFields usedFields, string text, out int hour)
+            private ParseResult<LocalTime>? DetermineHour(PatternFields usedFields, string text, out int hour, Type eventualResultType)
             {
                 hour = 0;
                 if (usedFields.HasAny(PatternFields.Hours24))
@@ -158,14 +162,14 @@ namespace NodaTime.Text
                     {
                         if (Hours12 % 12 != Hours24 % 12)
                         {
-                            return ParseResult<LocalTime>.InconsistentValues(text, 'H', 'h');
+                            return ParseResult<LocalTime>.InconsistentValues(text, 'H', 'h', eventualResultType);
                         }
                     }
                     if (usedFields.HasAny(PatternFields.AmPm))
                     {
                         if (Hours24 / 12 != AmPm)
                         {
-                            return ParseResult<LocalTime>.InconsistentValues(text, 'H', 't');
+                            return ParseResult<LocalTime>.InconsistentValues(text, 'H', 't', eventualResultType);
                         }
                     }
                     hour = Hours24;

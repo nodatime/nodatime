@@ -238,14 +238,14 @@ namespace NodaTime.Text
         internal static ParseResult<T> FieldValueOutOfRange(ValueCursor cursor, long value, char field) =>
             ForInvalidValue(cursor, TextErrorMessages.FieldValueOutOfRange, value, field, typeof(T));
 
-        internal static ParseResult<T> FieldValueOutOfRangePostParse(string text, int value, char field) =>
-            ForInvalidValuePostParse(text, TextErrorMessages.FieldValueOutOfRange, value, field, typeof(T));
+        internal static ParseResult<T> FieldValueOutOfRangePostParse(string text, int value, char field, Type eventualResultType) =>
+            ForInvalidValuePostParse(text, TextErrorMessages.FieldValueOutOfRange, value, field, eventualResultType);
 
         /// <summary>
         /// Two fields (e.g. "hour of day" and "hour of half day") were mutually inconsistent.
         /// </summary>
-        internal static ParseResult<T> InconsistentValues(string text, char field1, char field2) =>
-            ForInvalidValuePostParse(text, TextErrorMessages.InconsistentValues2, field1, field2, typeof(T));
+        internal static ParseResult<T> InconsistentValues(string text, char field1, char field2, Type eventualResultType) =>
+            ForInvalidValuePostParse(text, TextErrorMessages.InconsistentValues2, field1, field2, eventualResultType);
 
         /// <summary>
         /// The month of year is inconsistent between the text and numeric specifications.

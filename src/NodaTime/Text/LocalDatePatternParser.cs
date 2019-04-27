@@ -5,6 +5,7 @@
 using NodaTime.Calendars;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+using System;
 using System.Collections.Generic;
 
 namespace NodaTime.Text
@@ -125,14 +126,17 @@ namespace NodaTime.Text
                 return ParseResult<TResult>.MismatchedText(cursor, 'g');
             }
 
-            internal override ParseResult<LocalDate> CalculateValue(PatternFields usedFields, string text)
+            internal override ParseResult<LocalDate> CalculateValue(PatternFields usedFields, string text) =>
+                CalculateValue(usedFields, text, typeof(LocalDate));
+
+            internal ParseResult<LocalDate> CalculateValue(PatternFields usedFields, string text, Type eventualResultType)
             {
                 if (usedFields.HasAny(PatternFields.EmbeddedDate))
                 {
                     return ParseResult<LocalDate>.ForValue(new LocalDate(Year, MonthOfYearNumeric, DayOfMonth, Calendar));
                 }
                 // This will set Year if necessary
-                ParseResult<LocalDate>? failure = DetermineYear(usedFields, text);
+                ParseResult<LocalDate>? failure = DetermineYear(usedFields, text, eventualResultType);
                 if (failure != null)
                 {
                     return failure;
@@ -184,18 +188,18 @@ namespace NodaTime.Text
             /// 
             /// Phew.
             /// </summary>
-            private ParseResult<LocalDate>? DetermineYear(PatternFields usedFields, string text)
+            private ParseResult<LocalDate>? DetermineYear(PatternFields usedFields, string text, Type eventualResultType)
             {
                 if (usedFields.HasAny(PatternFields.Year))
                 {
                     if (Year > Calendar.MaxYear || Year < Calendar.MinYear)
                     {
-                        return ParseResult<LocalDate>.FieldValueOutOfRangePostParse(text, Year, 'u');
+                        return ParseResult<LocalDate>.FieldValueOutOfRangePostParse(text, Year, 'u', eventualResultType);
                     }
 
                     if (usedFields.HasAny(PatternFields.Era) && Era != Calendar.GetEra(Year))
                     {
-                        return ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u');
+                        return ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u', eventualResultType);
                     }
 
                     if (usedFields.HasAny(PatternFields.YearOfEra))
@@ -208,7 +212,7 @@ namespace NodaTime.Text
                         }
                         if (yearOfEraFromYear != YearOfEra)
                         {
-                            return ParseResult<LocalDate>.InconsistentValues(text, 'y', 'u');
+                            return ParseResult<LocalDate>.InconsistentValues(text, 'y', 'u', eventualResultType);
                         }
                     }
                     return null;
@@ -219,7 +223,7 @@ namespace NodaTime.Text
                 {
                     Year = TemplateValue.Year;
                     return usedFields.HasAny(PatternFields.Era) && Era != Calendar.GetEra(Year)
-                        ? ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u') : null;
+                        ? ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u', eventualResultType) : null;
                 }
 
                 if (!usedFields.HasAny(PatternFields.Era))

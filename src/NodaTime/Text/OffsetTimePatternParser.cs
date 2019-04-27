@@ -92,7 +92,7 @@ namespace NodaTime.Text
 
             internal override ParseResult<OffsetTime> CalculateValue(PatternFields usedFields, string text)
             {
-                ParseResult<LocalTime> timeResult = Time.CalculateValue(usedFields & PatternFields.AllTimeFields, text);
+                ParseResult<LocalTime> timeResult = Time.CalculateValue(usedFields & PatternFields.AllTimeFields, text, typeof(OffsetTime));
                 if (!timeResult.Success)
                 {
                     return timeResult.ConvertError<OffsetTime>();

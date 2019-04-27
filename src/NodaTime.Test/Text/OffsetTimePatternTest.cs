@@ -36,8 +36,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "HH:mm:ss", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "HH" }},
 
             new Data { Pattern = "HH:mm:ss o<+HH>", Text = "16:02 +15:00", Message = TextErrorMessages.TimeSeparatorMismatch },
-            // It's not ideal that the type reported is LocalTime rather than OffsetTime, but probably not worth fixing.
-            new Data { Pattern = "HH:mm:ss tt o<+HH>", Text = "16:02:00 AM +15:00", Message = TextErrorMessages.InconsistentValues2, Parameters = { 'H', 't', typeof(LocalTime) } },
+            new Data { Pattern = "HH:mm:ss tt o<+HH>", Text = "16:02:00 AM +15:00", Message = TextErrorMessages.InconsistentValues2, Parameters = { 'H', 't', typeof(OffsetTime) } },
         };
 
         internal static Data[] ParseOnlyData = {
