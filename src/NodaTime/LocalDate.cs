@@ -286,6 +286,13 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Creates a <see cref="YearMonth"/> value for the month containing this date.
+        /// </summary>
+        /// <returns>A year/month value containing this date.</returns>
+        [Pure]
+        public YearMonth ToYearMonth() => new YearMonth(Year, Month, Calendar);
+
+        /// <summary>
         /// Adds the specified period to the date.
         /// Fields are added in descending order of significance (years first, then months, and so on).
         /// </summary>
@@ -512,7 +519,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalDate"/>, or refers
         /// to a date in a different calendar system.</exception>
         /// <param name="obj">The object to compare this value with.</param>
-        /// <returns>The result of comparing this LocalDate with another one; see <see cref="CompareTo(NodaTime.LocalDate)"/> for general details.
+        /// <returns>The result of comparing this LocalDate with another one.
         /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
         /// </returns>
         int IComparable.CompareTo(object obj)
