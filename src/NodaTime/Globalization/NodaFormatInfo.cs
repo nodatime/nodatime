@@ -52,6 +52,7 @@ namespace NodaTime.Globalization
         private FixedFormatInfoPatternParser<OffsetTime>? offsetTimePatternParser;
         private FixedFormatInfoPatternParser<ZonedDateTime>? zonedDateTimePatternParser;
         private FixedFormatInfoPatternParser<AnnualDate>? annualDatePatternParser;
+        private FixedFormatInfoPatternParser<YearMonth>? yearMonthPatternParser;
         #endregion
 
         /// <summary>
@@ -210,6 +211,7 @@ namespace NodaTime.Globalization
         internal FixedFormatInfoPatternParser<OffsetTime> OffsetTimePatternParser => EnsureFixedFormatInitialized(ref offsetTimePatternParser, () => new OffsetTimePatternParser(OffsetTimePattern.DefaultTemplateValue));
         internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser => EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
         internal FixedFormatInfoPatternParser<AnnualDate> AnnualDatePatternParser => EnsureFixedFormatInitialized(ref annualDatePatternParser, () => new AnnualDatePatternParser(AnnualDatePattern.DefaultTemplateValue));
+        internal FixedFormatInfoPatternParser<YearMonth> YearMonthPatternParser => EnsureFixedFormatInitialized(ref yearMonthPatternParser, () => new YearMonthPatternParser(YearMonthPattern.DefaultTemplateValue));
 
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T>? field,
             Func<IPatternParser<T>> patternParserFactory)

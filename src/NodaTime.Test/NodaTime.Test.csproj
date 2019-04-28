@@ -46,5 +46,8 @@
     <Compile Update="OffsetTest.*.cs">
       <DependentUpon>OffsetTest.cs</DependentUpon>
     </Compile>
+    <Compile Update="YearMonthTest.*.cs">
+      <DependentUpon>YearMonthTest.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
