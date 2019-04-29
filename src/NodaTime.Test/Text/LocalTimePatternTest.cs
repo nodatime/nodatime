@@ -144,6 +144,10 @@ namespace NodaTime.Test.Text
             new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "5", Pattern = "%H" },
             new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "6", Pattern = "%m" },
             new Data(5, 6, 7, 8) { Culture = Cultures.EnUs, Text = "7", Pattern = "%s" },
+
+            // The subminute values are truncated for the short pattern
+            new Data(14, 15, 16) { Culture = Cultures.DotTimeSeparator, Text = "14.15", Pattern = "t" },
+            new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15", Pattern = "t" },
         };
 
         internal static Data[] DefaultPatternData = {                              
@@ -230,6 +234,7 @@ namespace NodaTime.Test.Text
             new Data(2, 0, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
             new Data(0, 0, 12, 340) { Culture = Cultures.EnUs, Text = "12.34", Pattern = "ss.FFF"  },
 
+            // Standard patterns
             new Data(14, 15, 16) { Culture = Cultures.EnUs, Text = "14:15:16", Pattern = "r" },
             new Data(14, 15, 16, 700) { Culture = Cultures.EnUs, Text = "14:15:16.7", Pattern = "r" },
             new Data(14, 15, 16, 780) { Culture = Cultures.EnUs, Text = "14:15:16.78", Pattern = "r" },
@@ -246,6 +251,20 @@ namespace NodaTime.Test.Text
             new Data(14, 15, 16, 789, 1230) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.789123", Pattern = "r" },
             new Data(14, 15, 16, 789, 1234) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.7891234", Pattern = "r" },
             new Data(14, 15, 16, 789123456L) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16.789123456", Pattern = "r" },
+
+            new Data(14, 15, 0) { Culture = Cultures.DotTimeSeparator, Text = "14.15", Pattern = "t" },
+            new Data(14, 15, 0) { Culture = Cultures.Invariant, Text = "14:15", Pattern = "t" },
+
+            new Data(14, 15, 16) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16", Pattern = "T" },
+            new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15:16", Pattern = "T" },
+
+            new Data(14, 15, 16, 789) { Culture = Cultures.DotTimeSeparator, Text = "14:15:16.789", Pattern = "o" },
+            new Data(14, 15, 16, 789) { Culture = Cultures.EnUs, Text = "14:15:16.789", Pattern = "o" },
+            new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15:16", Pattern = "o" },
+
+            new Data(14, 15, 16, 789) { Culture = Cultures.DotTimeSeparator, Text = "14:15:16.789000000", Pattern = "O" },
+            new Data(14, 15, 16, 789) { Culture = Cultures.EnUs, Text = "14:15:16.789000000", Pattern = "O" },
+            new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15:16.000000000", Pattern = "O" },
 
             // ------------ Template value tests ----------
             // Mixtures of 12 and 24 hour times
@@ -302,9 +321,6 @@ namespace NodaTime.Test.Text
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF", Text = "16:05:20.352" },
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20.352 end" },
             new Data(16, 05, 20) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20 end" },
-            
-            // Patterns obtainable by properties but not single character standard patterns
-            new Data(1, 2, 3, 123456700L) { StandardPattern = LocalTimePattern.ExtendedIso, Culture = Cultures.EnUs, Text = "01:02:03.1234567", Pattern = "HH':'mm':'ss;FFFFFFF" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
