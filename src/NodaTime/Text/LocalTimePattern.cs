@@ -41,7 +41,7 @@ namespace NodaTime.Text
         /// This pattern corresponds to the 'O' standard pattern.
         /// </remarks>
         /// <value>An invariant local time pattern which is ISO-8601 compatible, providing exactly 9 decimal places.</value>
-        public static LocalTimePattern LongExtendedIso => Patterns.ExtendedIsoPatternImpl;
+        public static LocalTimePattern LongExtendedIso => Patterns.LongExtendedIsoPatternImpl;
 
         private const string DefaultFormatPattern = "T"; // Long
 
