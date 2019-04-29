@@ -258,13 +258,13 @@ namespace NodaTime.Test.Text
             new Data(14, 15, 16) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16", Pattern = "T" },
             new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15:16", Pattern = "T" },
 
-            new Data(14, 15, 16, 789) { Culture = Cultures.DotTimeSeparator, Text = "14:15:16.789", Pattern = "o" },
-            new Data(14, 15, 16, 789) { Culture = Cultures.EnUs, Text = "14:15:16.789", Pattern = "o" },
-            new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15:16", Pattern = "o" },
+            new Data(14, 15, 16, 789) { StandardPattern = LocalTimePattern.ExtendedIso, Culture = Cultures.DotTimeSeparator, Text = "14:15:16.789", Pattern = "o" },
+            new Data(14, 15, 16, 789) { StandardPattern = LocalTimePattern.ExtendedIso, Culture = Cultures.EnUs, Text = "14:15:16.789", Pattern = "o" },
+            new Data(14, 15, 16) { StandardPattern = LocalTimePattern.ExtendedIso, Culture = Cultures.Invariant, Text = "14:15:16", Pattern = "o" },
 
-            new Data(14, 15, 16, 789) { Culture = Cultures.DotTimeSeparator, Text = "14:15:16.789000000", Pattern = "O" },
-            new Data(14, 15, 16, 789) { Culture = Cultures.EnUs, Text = "14:15:16.789000000", Pattern = "O" },
-            new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15:16.000000000", Pattern = "O" },
+            new Data(14, 15, 16, 789) { StandardPattern = LocalTimePattern.LongExtendedIso, Culture = Cultures.DotTimeSeparator, Text = "14:15:16.789000000", Pattern = "O" },
+            new Data(14, 15, 16, 789) { StandardPattern = LocalTimePattern.LongExtendedIso, Culture = Cultures.EnUs, Text = "14:15:16.789000000", Pattern = "O" },
+            new Data(14, 15, 16) { StandardPattern = LocalTimePattern.LongExtendedIso, Culture = Cultures.Invariant, Text = "14:15:16.000000000", Pattern = "O" },
 
             // ------------ Template value tests ----------
             // Mixtures of 12 and 24 hour times

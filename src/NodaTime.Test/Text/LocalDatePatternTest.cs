@@ -132,9 +132,9 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 20) { Pattern = "d", Text = "10/20/2011" },
             new Data(2011, 10, 20) { Pattern = "D", Text = "Thursday, 20 October 2011" },
             // ISO pattern uses a sensible format
-            new Data(2011, 10, 20) { Pattern = "r", Text = "2011-10-20" },
+            new Data(2011, 10, 20) { StandardPattern = LocalDatePattern.Iso, Pattern = "r", Text = "2011-10-20" },
             // Round trip with calendar system
-            new Data(2011, 10, 20, CalendarSystem.Coptic) { Pattern = "R", Text = "2011-10-20 (Coptic)" },
+            new Data(2011, 10, 20, CalendarSystem.Coptic) { StandardPattern = LocalDatePattern.FullRoundtrip, Pattern = "R", Text = "2011-10-20 (Coptic)" },
 
             // Custom patterns
             new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011/10/03" },
