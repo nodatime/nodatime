@@ -27,8 +27,21 @@ namespace NodaTime.Text
         /// (These digits are omitted when unnecessary.)
         /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFFFF".
         /// </summary>
+        /// <remarks>
+        /// This pattern corresponds to the 'o' standard pattern.
+        /// </remarks>
         /// <value>An invariant local time pattern which is ISO-8601 compatible, providing up to 9 decimal places.</value>
         public static LocalTimePattern ExtendedIso => Patterns.ExtendedIsoPatternImpl;
+
+        /// <summary>
+        /// Gets an invariant local time pattern which is ISO-8601 compatible, providing exactly 9 decimal places.
+        /// This corresponds to the text pattern "HH':'mm':'ss;fffffffff".
+        /// </summary>
+        /// <remarks>
+        /// This pattern corresponds to the 'O' standard pattern.
+        /// </remarks>
+        /// <value>An invariant local time pattern which is ISO-8601 compatible, providing exactly 9 decimal places.</value>
+        public static LocalTimePattern LongExtendedIso => Patterns.ExtendedIsoPatternImpl;
 
         private const string DefaultFormatPattern = "T"; // Long
 
@@ -39,9 +52,10 @@ namespace NodaTime.Text
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
         /// from needing NodaFormatInfo.InvariantInfo...
         /// </summary>
-        private static class Patterns
+        internal static class Patterns
         {
             internal static readonly LocalTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
+            internal static readonly LocalTimePattern LongExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss;fffffffff");
         }
 
         /// <summary>

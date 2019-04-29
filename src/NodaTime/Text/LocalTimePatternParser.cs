@@ -55,20 +55,30 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                patternText = patternText[0] switch
+                return patternText[0] switch
                 {
-                    't' => formatInfo.DateTimeFormat.ShortTimePattern,
-                    'T' => formatInfo.DateTimeFormat.LongTimePattern,
-                    'r' => "HH:mm:ss.FFFFFFFFF",
+                    // Invariant standard patterns return cached implementations.
+                    'o' => LocalTimePattern.Patterns.ExtendedIsoPatternImpl,
+                    'O' => LocalTimePattern.Patterns.LongExtendedIsoPatternImpl,
+                    // Other standard patterns expand the pattern text to the appropriate custom pattern.
+                    // Note: we don't just recurse, as otherwise a ShortTimePattern of 't' (for example) would cause a stack overflow.
+                    't' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.ShortTimePattern),
+                    'T' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.LongTimePattern),
+                    'r' => ParseNoStandardExpansion("HH:mm:ss.FFFFFFFFF"),
+                    // Unknown standard patterns fail.
                     _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalTime))
                 };
             }
+            return ParseNoStandardExpansion(patternText);
 
-            var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo,
-                () => new LocalTimeParseBucket(templateValue));
-            patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-            patternBuilder.ValidateUsedFields();
-            return patternBuilder.Build(templateValue);
+            IPattern<LocalTime> ParseNoStandardExpansion(string patternTextLocal)
+            {
+                var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo,
+                    () => new LocalTimeParseBucket(templateValue));
+                patternBuilder.ParseCustomPattern(patternTextLocal, PatternCharacterHandlers);
+                patternBuilder.ValidateUsedFields();
+                return patternBuilder.Build(templateValue);
+            }
         }
 
         /// <summary>
