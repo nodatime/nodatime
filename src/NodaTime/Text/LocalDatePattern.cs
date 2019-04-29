@@ -47,7 +47,7 @@ namespace NodaTime.Text
         /// This pattern corresponds to the 'R' standard pattern.
         /// </remarks>
         /// <value>An invariant local date pattern which round trips values including the calendar system.</value>
-        public static LocalDatePattern FullRoundtrip => Patterns.IsoPatternImpl;
+        public static LocalDatePattern FullRoundtrip => Patterns.FullRoundtripPatternImpl;
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
