@@ -59,19 +59,29 @@ namespace NodaTime.Text
 
             if (patternText.Length == 1)
             {
-                patternText = patternText[0] switch
+                return patternText[0] switch
                 {
-                    'd' => formatInfo.DateTimeFormat.ShortDatePattern,
-                    'D' => formatInfo.DateTimeFormat.LongDatePattern,
+                    // Invariant standard patterns return cached implementations.
+                    'r' => LocalDatePattern.Patterns.IsoPatternImpl,
+                    'R' => LocalDatePattern.Patterns.FullRoundtripPatternImpl,
+                    // Other standard patterns expand the pattern text to the appropriate custom pattern.
+                    // Note: we don't just recurse, as otherwise a ShortDatePattern of 'd' (for example) would cause a stack overflow.
+                    'd' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.ShortDatePattern),
+                    'D' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.LongDatePattern),
+                    // Unknown standard patterns fail.
                     _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalDate))
                 };
             }
+            return ParseNoStandardExpansion(patternText);
 
-            var patternBuilder = new SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo,
-                () => new LocalDateParseBucket(templateValue));
-            patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-            patternBuilder.ValidateUsedFields();
-            return patternBuilder.Build(templateValue);
+            IPattern<LocalDate> ParseNoStandardExpansion(string patternTextLocal)
+            {
+                var patternBuilder = new SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo,
+                    () => new LocalDateParseBucket(templateValue));
+                patternBuilder.ParseCustomPattern(patternTextLocal, PatternCharacterHandlers);
+                patternBuilder.ValidateUsedFields();
+                return patternBuilder.Build(templateValue);
+            }
         }
 
         /// <summary>

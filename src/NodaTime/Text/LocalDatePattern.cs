@@ -30,19 +30,33 @@ namespace NodaTime.Text
             new PatternBclSupport<LocalDate>(DefaultFormatPattern, fi => fi.LocalDatePatternParser);
 
         /// <summary>
-        /// Gets an invariant local date pattern which is ISO-8601 compatible.
+        /// Gets an invariant local date pattern which is ISO-8601 compatible and which round trips values, but doesn't include the calendar system.
         /// This corresponds to the text pattern "uuuu'-'MM'-'dd".
         /// </summary>
+        /// <remarks>
+        /// This pattern corresponds to the 'r' standard pattern.
+        /// </remarks>
         /// <value>An invariant local date pattern which is ISO-8601 compatible.</value>
         public static LocalDatePattern Iso => Patterns.IsoPatternImpl;
+
+        /// <summary>
+        /// Gets an invariant local date pattern which round trips values including the calendar system.
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd '('c')'".
+        /// </summary>
+        /// <remarks>
+        /// This pattern corresponds to the 'R' standard pattern.
+        /// </remarks>
+        /// <value>An invariant local date pattern which round trips values including the calendar system.</value>
+        public static LocalDatePattern FullRoundtrip => Patterns.IsoPatternImpl;
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
         /// from needing NodaFormatInfo.InvariantInfo...
         /// </summary>
-        private static class Patterns
+        internal static class Patterns
         {
             internal static readonly LocalDatePattern IsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd");
+            internal static readonly LocalDatePattern FullRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd '('c')'");
         }
 
         /// <summary>
