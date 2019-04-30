@@ -63,8 +63,8 @@ namespace NodaTime.Text
                 return patternText[0] switch
                 {
                     // Invariant standard patterns return cached implementations.
-                    'r' => LocalDatePattern.Patterns.IsoPatternImpl,
-                    'R' => LocalDatePattern.Patterns.FullRoundtripPatternImpl,
+                    'R' => LocalDatePattern.Patterns.IsoPatternImpl,
+                    'r' => LocalDatePattern.Patterns.FullRoundtripPatternImpl,
                     // Other standard patterns expand the pattern text to the appropriate custom pattern.
                     // Note: we don't just recurse, as otherwise a ShortDatePattern of 'd' (for example) would cause a stack overflow.
                     'd' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.ShortDatePattern),
