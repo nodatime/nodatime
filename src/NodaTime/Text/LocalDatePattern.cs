@@ -34,7 +34,7 @@ namespace NodaTime.Text
         /// This corresponds to the text pattern "uuuu'-'MM'-'dd".
         /// </summary>
         /// <remarks>
-        /// This pattern corresponds to the 'r' standard pattern.
+        /// This pattern corresponds to the 'R' standard pattern.
         /// </remarks>
         /// <value>An invariant local date pattern which is ISO-8601 compatible.</value>
         public static LocalDatePattern Iso => Patterns.IsoPatternImpl;
@@ -44,7 +44,7 @@ namespace NodaTime.Text
         /// This corresponds to the text pattern "uuuu'-'MM'-'dd '('c')'".
         /// </summary>
         /// <remarks>
-        /// This pattern corresponds to the 'R' standard pattern.
+        /// This pattern corresponds to the 'r' standard pattern.
         /// </remarks>
         /// <value>An invariant local date pattern which round trips values including the calendar system.</value>
         public static LocalDatePattern FullRoundtrip => Patterns.FullRoundtripPatternImpl;
