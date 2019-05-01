@@ -157,5 +157,33 @@ namespace NodaTime.Test
             Assert.Throws<ArgumentOutOfRangeException>(() => LocalTime.FromSecondsSinceMidnight(-1));
             Assert.Throws<ArgumentOutOfRangeException>(() => LocalTime.FromSecondsSinceMidnight(NodaConstants.SecondsPerDay));
         }
+
+        [Test]
+        public void FromMinutesSinceMidnight_Valid()
+        {
+            Assert.AreEqual(LocalTime.Midnight, LocalTime.FromMinutesSinceMidnight(0));
+            Assert.AreEqual(LocalTime.Midnight - Period.FromMinutes(1), LocalTime.FromMinutesSinceMidnight(NodaConstants.MinutesPerDay - 1));
+        }
+
+        [Test]
+        public void FromMinutesSinceMidnight_RangeChecks()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => LocalTime.FromMinutesSinceMidnight(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => LocalTime.FromMinutesSinceMidnight(NodaConstants.MinutesPerDay));
+        }
+
+        [Test]
+        public void FromHoursSinceMidnight_Valid()
+        {
+            Assert.AreEqual(LocalTime.Midnight, LocalTime.FromHoursSinceMidnight(0));
+            Assert.AreEqual(LocalTime.Midnight - Period.FromHours(1), LocalTime.FromHoursSinceMidnight(NodaConstants.HoursPerDay - 1));
+        }
+
+        [Test]
+        public void FromHoursSinceMidnight_RangeChecks()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => LocalTime.FromHoursSinceMidnight(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => LocalTime.FromHoursSinceMidnight(NodaConstants.HoursPerDay));
+        }
     }
 }
