@@ -303,6 +303,36 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Factory method for creating a local time from the number of minutes which have elapsed since midnight.
+        /// </summary>
+        /// <param name="minutes">The number of minutes, in the range [0, 1439]</param>
+        /// <returns>The resulting time.</returns>
+        public static LocalTime FromMinutesSinceMidnight(int minutes)
+        {
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (minutes < 0 || minutes > MinutesPerDay - 1)
+            {
+                Preconditions.CheckArgumentRange(nameof(minutes), minutes, 0, MinutesPerDay - 1);
+            }
+            return new LocalTime(unchecked(minutes * NanosecondsPerMinute));
+        }
+
+        /// <summary>
+        /// Factory method for creating a local time from the number of hours which have elapsed since midnight.
+        /// </summary>
+        /// <param name="hours">The number of hours, in the range [0, 23]</param>
+        /// <returns>The resulting time.</returns>
+        public static LocalTime FromHoursSinceMidnight(int hours)
+        {
+            // Avoid the method calls which give a decent exception unless we're actually going to fail.
+            if (hours < 0 || hours > HoursPerDay - 1)
+            {
+                Preconditions.CheckArgumentRange(nameof(hours), hours, 0, HoursPerDay - 1);
+            }
+            return new LocalTime(unchecked(hours * NanosecondsPerHour));
+        }
+
+        /// <summary>
         /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
         /// </summary>
         /// <value>The hour of day of this local time, in the range 0 to 23 inclusive.</value>
