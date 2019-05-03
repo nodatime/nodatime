@@ -3,7 +3,8 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime;
-using Nunit.Framework;
+using NUnit.Framework;
+using System;
 
 namespace NodaTime.Demo
 {
@@ -17,7 +18,7 @@ namespace NodaTime.Demo
                 Offset.FromHours(3)));
 
             Assert.AreEqual(Offset.FromHours(3), offsetDate.Offset);
-            Assert.AreEqual(new LocalDate(2019, 5, 3), offsetDate.LocalDate);
+            Assert.AreEqual(new LocalDate(2019, 5, 3), offsetDate.Date);
         }
 
         [Test]
@@ -29,7 +30,7 @@ namespace NodaTime.Demo
 
             OffsetDate updated = Snippet.For(original.WithOffset(Offset.FromHours(-3)));
             Assert.AreEqual(original.Offset, updated.Offset);
-            Assert.AreEqual(original.LocalDate, updated.LocalDate);
+            Assert.AreEqual(original.Date, updated.Date);
         }
 
         [Test]
@@ -42,7 +43,7 @@ namespace NodaTime.Demo
             Func<LocalDate, LocalDate> tomorrowfier = x => x.Plus(Period.FromDays(1));
             OffsetDate updated = Snippet.For(original.With(tomorrowfier));
             Assert.AreEqual(original.Offset, updated.Offset);
-            Assert.AreEqual(tomorrowfier(original.LocalDate), updated.LocalDate);
+            Assert.AreEqual(tomorrowfier(original.Date), updated.Date);
         }
 
         [Test]
@@ -54,7 +55,7 @@ namespace NodaTime.Demo
 
             OffsetDate updated = Snippet.For(original.WithCalendar(CalendarSystem.Gregorian));
             Assert.AreEqual(original.Offset, updated.Offset);
-            Assert.AreEqual(original.LocalDate, updated.LocalDate);
+            Assert.AreEqual(original.Date, updated.Date);
             Assert.AreEqual(CalendarSystem.Gregorian, updated.Calendar);
         }
     }
