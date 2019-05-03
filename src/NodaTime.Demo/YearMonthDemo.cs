@@ -3,7 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NUnit.Framework;
-using System;
+using NodaTime.Calendars;
 
 namespace NodaTime.Demo
 {
@@ -21,7 +21,7 @@ namespace NodaTime.Demo
         [Test]
         public void ConstructionFromEra()
         {
-            YearMonth yearMonth = Snippet.For(new YearMonth(Calendars.Era.Common, 1994, 5));
+            YearMonth yearMonth = Snippet.For(new YearMonth(Era.Common, 1994, 5));
             Assert.AreEqual(1994, yearMonth.Year);
             Assert.AreEqual(5, yearMonth.Month);
             Assert.AreEqual(CalendarSystem.Iso, yearMonth.Calendar);
@@ -40,11 +40,11 @@ namespace NodaTime.Demo
         [Test]
         public void ConstructionWithExplicitCalendar2()
         {
-            YearMonth yearMonth = Snippet.For(new YearMonth(Calendars.Era.Common, 2019, 5, CalendarSystem.Gregorian));
+            YearMonth yearMonth = Snippet.For(new YearMonth(Era.Common, 2019, 5, CalendarSystem.Gregorian));
             Assert.AreEqual(2019, yearMonth.Year);
             Assert.AreEqual(5, yearMonth.Month);
             Assert.AreEqual(CalendarSystem.Gregorian, yearMonth.Calendar);
-            Assert.AreEqual(Calendars.Era.Common, yearMonth.Era);
+            Assert.AreEqual(Era.Common, yearMonth.Era);
         }
 
         [Test]
