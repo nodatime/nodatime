@@ -10,15 +10,6 @@ namespace NodaTime.Demo
     public class YearMonthDemo
     {
         [Test]
-        public void Construction()
-        {
-            YearMonth yearMonth = Snippet.For(new YearMonth());
-            Assert.AreEqual(1, yearMonth.Year);
-            Assert.AreEqual(1, yearMonth.Month);
-            Assert.AreEqual(CalendarSystem.Iso, yearMonth.Calendar);
-        }
-
-        [Test]
         public void ConstructionWithExplicitYearAndMonth()
         {
             YearMonth yearMonth = Snippet.For(new YearMonth(2019, 5));
