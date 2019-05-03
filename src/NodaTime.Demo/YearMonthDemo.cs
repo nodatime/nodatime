@@ -25,7 +25,7 @@ namespace NodaTime.Demo
             Assert.AreEqual(1994, yearMonth.Year);
             Assert.AreEqual(5, yearMonth.Month);
             Assert.AreEqual(CalendarSystem.Iso, yearMonth.Calendar);
-            Assert.AreEqual(Calendars.Era.Common, yearMonth.Era);
+            Assert.AreEqual(Era.Common, yearMonth.Era);
         }
 
         [Test]
