@@ -47,10 +47,10 @@ Try to use a short, descriptive name for your branch, such as `add-tests-foobar-
 
 ### Building
 
-To build everything under Visual Studio, simply open the src/NodaTime-All.sln solution file and build normally. To build with just the .NET Core SDK, run
+To build everything under Visual Studio, simply open the src/NodaTime.sln solution file and build normally. To build with just the .NET Core SDK, run
 
 ```Text 
-dotnet build src/NodaTime-All.sln
+dotnet build src/NodaTime.sln
 ```
 
 ### Running Tests
