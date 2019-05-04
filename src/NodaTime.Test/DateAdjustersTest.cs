@@ -120,5 +120,23 @@ namespace NodaTime.Test
             Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Previous(invalid));
             Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.PreviousOrSame(invalid));
         }
+
+        [Test]
+        public void AddPeriod_Valid()
+        {
+            var period = Period.FromMonths(1) + Period.FromDays(3);
+            var adjuster = DateAdjusters.AddPeriod(period);
+            var start = new LocalDate(2019, 5, 4);
+            Assert.AreEqual(new LocalDate(2019, 6, 7), start.With(adjuster));
+        }
+
+        [Test]
+        public void AddPeriod_Null() =>
+            Assert.Throws<ArgumentNullException>(() => DateAdjusters.AddPeriod(null!));
+
+
+        [Test]
+        public void AddPeriod_IncludingTimeUnits() =>
+            Assert.Throws<ArgumentException>(() => DateAdjusters.AddPeriod(Period.FromDays(1) + Period.FromHours(1)));
     }
 }
