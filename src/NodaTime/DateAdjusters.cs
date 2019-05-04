@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Utility;
 using System;
 
 namespace NodaTime
@@ -128,6 +129,23 @@ namespace NodaTime
                 throw new ArgumentOutOfRangeException(nameof(dayOfWeek));
             }
             return date => date.Previous(dayOfWeek);
+        }
+
+        /// <summary>
+        /// Creates a date adjuster to add the specified period to the date.
+        /// </summary>
+        /// <remarks>
+        /// This is the adjuster equivalent of <see cref="LocalDate.Plus(Period)"/>.
+        /// </remarks>
+        /// <param name="period">The period to add when the adjuster is invoked. Must not contain any (non-zero) time units.</param>
+        /// <returns>An adjuster which adds the specified period.</returns>
+        public static Func<LocalDate, LocalDate> AddPeriod(Period period)
+        {
+            Preconditions.CheckNotNull(period, nameof(period));
+            // Perform this validation eagerly. It will be performed on each invocation as well,
+            // but it's good to throw an exception now rather than waiting for the first invocation.
+            Preconditions.CheckArgument(!period.HasTimeComponent, nameof(period), "Cannot add a period with a time component to a date");
+            return date => date + period;
         }
     }
 }
