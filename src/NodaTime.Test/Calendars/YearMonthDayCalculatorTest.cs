@@ -14,36 +14,36 @@ namespace NodaTime.Test.Calendars
     {
         // Here the term "Islamic" only refers to whether the implementation is IslamicYearMonthDayCalculator,
         // not whether the calendar itself is based on Islamic scripture.
-        private static readonly TestCaseData[] NonIslamicCalculators = {
-            new TestCaseData(new GregorianYearMonthDayCalculator()).SetName("Gregorian"),
-            new TestCaseData(new CopticYearMonthDayCalculator()).SetName("Coptic"),
-            new TestCaseData(new JulianYearMonthDayCalculator()).SetName("Julian"),
-            new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil)).SetName("Hebrew Civil"),
-            new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural)).SetName("Hebrew Scriptural"),
-            new TestCaseData(new PersianYearMonthDayCalculator.Simple()).SetName("Persian Simple"),
-            new TestCaseData(new PersianYearMonthDayCalculator.Arithmetic()).SetName("Persian Arithmetic"),
-            new TestCaseData(new PersianYearMonthDayCalculator.Astronomical()).SetName("Persian Astronomoical"),
-            new TestCaseData(new UmAlQuraYearMonthDayCalculator()).SetName("Um Al Qura"),
+        private static readonly NamedWrapper<YearMonthDayCalculator>[] NonIslamicCalculators =
+        {
+            new NamedWrapper<YearMonthDayCalculator>(new GregorianYearMonthDayCalculator(), "Gregorian"),
+            new NamedWrapper<YearMonthDayCalculator>(new CopticYearMonthDayCalculator(), "Coptic"),
+            new NamedWrapper<YearMonthDayCalculator>(new JulianYearMonthDayCalculator(), "Julian"),
+            new NamedWrapper<YearMonthDayCalculator>(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), "HebrewCivil"),
+            new NamedWrapper<YearMonthDayCalculator>(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), "HebrewScriptural"),
+            new NamedWrapper<YearMonthDayCalculator>(new PersianYearMonthDayCalculator.Simple(), "PersianSimple"),
+            new NamedWrapper<YearMonthDayCalculator>(new PersianYearMonthDayCalculator.Arithmetic(), "PersianArithmetic"),
+            new NamedWrapper<YearMonthDayCalculator>(new PersianYearMonthDayCalculator.Astronomical(), "PersianAstronomical"),
+            new NamedWrapper<YearMonthDayCalculator>(new UmAlQuraYearMonthDayCalculator(), "UmAlQura)"),
         };
 
-        private static readonly TestCaseData[] IslamicCalculators =
+        private static readonly NamedWrapper<YearMonthDayCalculator>[] IslamicCalculators =
             (from epoch in Enum.GetValues(typeof(IslamicEpoch)).Cast<IslamicEpoch>()
              from leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)).Cast<IslamicLeapYearPattern>()
              let calculator = new IslamicYearMonthDayCalculator(leapYearPattern, epoch)
-             select new TestCaseData(calculator).SetName($"Islamic: {epoch}, {leapYearPattern}"))
+             select new NamedWrapper<YearMonthDayCalculator>(calculator, $"Islamic;{epoch};{leapYearPattern}"))
              .ToArray();
 
-        private static readonly IEnumerable<TestCaseData> AllCalculators = NonIslamicCalculators.Concat(IslamicCalculators);
+        private static readonly IEnumerable<NamedWrapper<YearMonthDayCalculator>> AllCalculators = NonIslamicCalculators.Concat(IslamicCalculators);
 
-        // Note for tests using TestCaseSource:
+        // Note for tests:
         // We can't make the parameter of type YearMonthDayCalculator, because that's internal.
         // We can't make the method internal, as then it isn't a test. Casting is all we've got.
-
         [Test]
         [TestCaseSource(nameof(AllCalculators))]
-        public void ValidateStartOfYear1Days(object calculatorAsObject)
+        public void ValidateStartOfYear1Days(object calculatorWrapper)
         {
-            var calculator = (YearMonthDayCalculator) calculatorAsObject;
+            var calculator = ((NamedWrapper<YearMonthDayCalculator>) calculatorWrapper).Value;
             // Some calendars (e.g. Um Al Qura) don't support year 1, so the DaysAtStartOfYear1
             // is somewhat theoretical. (It's still used in such calendars, but only to get a guess
             // as to a year number given a day number.)
@@ -53,12 +53,12 @@ namespace NodaTime.Test.Calendars
             }
             Assert.AreEqual(calculator.GetStartOfYearInDays(1), calculator.DaysAtStartOfYear1);
         }
-
+        
         [Test]
         [TestCaseSource(nameof(AllCalculators))]
-        public void GetYearConsistentWithGetYearDays(object calculatorAsObject)
+        public void GetYearConsistentWithGetYearDays(object calculatorWrapper)
         {
-            var calculator = (YearMonthDayCalculator)calculatorAsObject;
+            var calculator = ((NamedWrapper<YearMonthDayCalculator>) calculatorWrapper).Value;
             for (int year = calculator.MinYear; year <= calculator.MaxYear; year++)
             {
                 int startOfYearDays = calculator.GetStartOfYearInDays(year);

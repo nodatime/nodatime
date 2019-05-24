@@ -446,6 +446,8 @@ namespace NodaTime.Test.Text
             // Default to midnight
             protected override LocalTime DefaultTemplate => LocalTime.Midnight;
 
+            protected override string? ValuePatternText => "HH:mm:ss.FFFFFFFFF";
+
             public Data(LocalTime value) : base(value)
             {
             }
