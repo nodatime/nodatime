@@ -14,16 +14,16 @@ namespace NodaTime.Test.Calendars
 {
     public class EraTest
     {
-        private static readonly IEnumerable<Era> Eras = typeof(Era).GetTypeInfo()
-                                                                   .DeclaredProperties // TODO: Only static and public ones...
-                                                                   .Where(property => property.PropertyType == typeof(Era))
-                                                                   .Select(property => property.GetValue(null, null))
-                                                                   .Cast<Era>();
+        private static readonly IEnumerable<NamedWrapper<Era>> Eras = typeof(Era).GetTypeInfo()
+            .DeclaredProperties // TODO: Only static and public ones...
+            .Where(property => property.PropertyType == typeof(Era))
+            .Select(property => new NamedWrapper<Era>((Era) property.GetValue(null, null), property.Name));
 
         [TestCaseSource(nameof(Eras))]
         [Test]
-        public void ResourcePresence(Era era)
+        public void ResourcePresence(NamedWrapper<Era> eraWrapper)
         {
+            var era = eraWrapper.Value;
             var valueByName = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo.InvariantCulture);
             Assert.NotNull(valueByName, "Missing resource for " + era.ResourceIdentifier);
         }

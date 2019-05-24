@@ -24,7 +24,7 @@ namespace NodaTime.Test.Text
 
         private static readonly object[] AllCulturesStandardPatterns = (from culture in Cultures.AllCultures
                                                                         from format in AllStandardPatterns
-                                                                        select new TestCaseData(culture, format).SetName(culture + ": " + format)).ToArray();
+                                                                        select new TestCaseData(culture, format)).ToArray();
 
         // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
         // the expected results of the standard patterns.

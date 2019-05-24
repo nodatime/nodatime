@@ -11,12 +11,12 @@ using NodaTime.TimeZones;
 namespace NodaTime.Test.TimeZones
 {
     public class BclDateTimeZoneTest
-    {
-        private static readonly ReadOnlyCollection<TimeZoneInfo> BclZones =
-            TestHelper.IsRunningOnMono ? GetSafeSystemTimeZones() : TimeZoneInfo.GetSystemTimeZones();
-
-        private static readonly object[] BclZonesAndIds =
-            BclZones.Select(zone => new object[] { zone, zone.Id }).ToArray();
+    {        
+        private static readonly ReadOnlyCollection<NamedWrapper<TimeZoneInfo>> BclZones =
+            (TestHelper.IsRunningOnMono ? GetSafeSystemTimeZones() : TimeZoneInfo.GetSystemTimeZones())
+            .Select(zone => new NamedWrapper<TimeZoneInfo>(zone, zone.Id))
+            .ToList()
+            .AsReadOnly();
 
         private static ReadOnlyCollection<TimeZoneInfo> GetSafeSystemTimeZones() =>
              TimeZoneInfo.GetSystemTimeZones()
@@ -43,9 +43,10 @@ namespace NodaTime.Test.TimeZones
         // TODO: Check what this does on Mono, both on Windows and Unix.
 
         [Test]
-        [TestCaseSource(nameof(BclZonesAndIds))]
-        public void AreWindowsStyleRules(TimeZoneInfo zone, string id)
+        [TestCaseSource(nameof(BclZones))]
+        public void AreWindowsStyleRules(NamedWrapper<TimeZoneInfo> zoneWrapper)
         {
+            var zone = zoneWrapper.Value;
             var expected = !TestHelper.IsRunningOnDotNetCoreUnix;
             var rules = zone.GetAdjustmentRules();
             if (rules is null || rules.Length == 0)
@@ -56,10 +57,11 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        [TestCaseSource(nameof(BclZonesAndIds))]
+        [TestCaseSource(nameof(BclZones))]
         [Category("BrokenOnMonoLinux")]
-        public void AllZoneTransitions(TimeZoneInfo windowsZone, string id)
+        public void AllZoneTransitions(NamedWrapper<TimeZoneInfo> windowsZoneWrapper)
         {
+            var windowsZone = windowsZoneWrapper.Value;
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
 
             // Currently .NET Core doesn't expose the information we need to determine any DST recurrence
@@ -79,9 +81,10 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        [TestCaseSource(nameof(BclZonesAndIds))]
-        public void DisplayName(TimeZoneInfo windowsZone, string id)
+        [TestCaseSource(nameof(BclZones))]
+        public void DisplayName(NamedWrapper<TimeZoneInfo> windowsZoneWrapper)
         {
+            var windowsZone = windowsZoneWrapper.Value;
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
             Assert.AreEqual(windowsZone.DisplayName, nodaZone.DisplayName);
         }
@@ -95,11 +98,11 @@ namespace NodaTime.Test.TimeZones
         /// practical - it's a relatively slow test, mostly because TimeZoneInfo is slow.
         /// </summary>
         [Test]
-        [TestCaseSource(nameof(BclZonesAndIds))]
+        [TestCaseSource(nameof(BclZones))]
         [Category("BrokenOnMonoLinux")]
-        public void AllZonesEveryWeek(TimeZoneInfo windowsZone, string id)
+        public void AllZonesEveryWeek(NamedWrapper<TimeZoneInfo> windowsZoneWrapper)
         {
-            ValidateZoneEveryWeek(windowsZone);
+            ValidateZoneEveryWeek(windowsZoneWrapper.Value);
         }
 
         // This demonstrates bug 115.
@@ -119,10 +122,10 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        [TestCaseSource(nameof(BclZonesAndIds))]
-        public void AllZonesStartAndEndOfTime(TimeZoneInfo windowsZone, string id)
+        [TestCaseSource(nameof(BclZones))]
+        public void AllZonesStartAndEndOfTime(NamedWrapper<TimeZoneInfo> windowsZoneWrapper)
         {
-            var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
+            var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZoneWrapper.Value);
             var firstInterval = nodaZone.GetZoneInterval(Instant.MinValue);
             Assert.IsFalse(firstInterval.HasStart);
             var lastInterval = nodaZone.GetZoneInterval(Instant.MaxValue);

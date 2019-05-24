@@ -135,6 +135,8 @@ namespace NodaTime.Test.Text
             // Default to the start of the year 2000 UTC
             protected override OffsetTime DefaultTemplate => OffsetTimePattern.DefaultTemplateValue;
 
+            protected override string? ValuePatternText => "HH:mm:ss.FFFFFFFFF o<G>";
+
             /// <summary>
             /// Initializes a new instance of the <see cref="Data" /> class.
             /// </summary>

@@ -14,7 +14,8 @@ namespace NodaTime.Test.TimeZones
 {
     public class TzdbDateTimeZoneSourceTest
     {
-        private static readonly List<TimeZoneInfo> SystemTimeZones = TimeZoneInfo.GetSystemTimeZones().ToList();
+        private static readonly List<NamedWrapper<TimeZoneInfo>> SystemTimeZones =
+            TimeZoneInfo.GetSystemTimeZones().Select(zone => new NamedWrapper<TimeZoneInfo>(zone, zone.Id)).ToList();
 
         /// <summary>
         /// Tests that we can load (and exercise) the binary Tzdb resource file distributed with Noda Time 1.1.0.
@@ -211,8 +212,9 @@ namespace NodaTime.Test.TimeZones
         // but that appears to fail under Mono.
         [Test]
         [TestCaseSource(nameof(SystemTimeZones))]
-        public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
+        public void GuessZoneIdByTransitionsUncached(NamedWrapper<TimeZoneInfo> bclZoneWrapper)
         {
+            var bclZone = bclZoneWrapper.Value;
             // As of May 4th 2018, the Windows time zone database on Jon's laptop has caught up with this,
             // but the one on AppVeyor hasn't. Keep skipping it for now.
             if (bclZone.Id == "Namibia Standard Time")

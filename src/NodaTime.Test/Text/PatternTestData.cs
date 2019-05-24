@@ -165,28 +165,40 @@ namespace NodaTime.Test.Text
             try
             {
                 StringBuilder builder = new StringBuilder();
-                builder.AppendFormat("Value={0}; ", Value);
-                builder.AppendFormat("Pattern={0}; ", Pattern);
-                builder.AppendFormat("Text={0}; ", Text);
+                string valueText =
+                    Value is IFormattable formattable ? formattable.ToString(ValuePatternText, CultureInfo.InvariantCulture)
+                    : Value?.ToString() ?? "";
+                builder.AppendFormat("Value={0};", valueText);
+                builder.AppendFormat("Pattern={0};", Pattern);
+                builder.AppendFormat("Text={0};", Text);
                 if (Culture != CultureInfo.InvariantCulture)
                 {
-                    builder.AppendFormat("Culture={0}; ", Culture);
+                    builder.AppendFormat("Culture={0};", Culture);
                 }
                 if (Description != null)
                 {
-                    builder.AppendFormat("Description={0}; ", Description);
+                    builder.AppendFormat("Description={0};", Description);
                 }
                 if (!Template!.Equals(DefaultTemplate))
                 {
                     builder.AppendFormat("Template={0};", Template);
                 }
-                return builder.ToString();
+                // Trim the trailing semi-colon
+                builder.Length--;
+                return NamedWrapper<T>.SanitizeName(builder.ToString());
             }
             catch (Exception)
             {
                 return "Formatting of test name failed";
             }
         }
+
+        /// <summary>
+        /// Returns the pattern text to use when formatting the value for the test name.
+        /// Defaults to null, implying the default pattern for the type, but can be overridden to provide
+        /// a more fine-grained pattern. This property is only used if the value implements IFormattable.
+        /// </summary>
+        protected virtual string? ValuePatternText => null;
 
         /// <summary>
         /// Formats a message, giving a *useful* error message on failure. It can be a pain checking exactly what
