@@ -77,8 +77,6 @@ namespace NodaTime.Test.Calendars
         [TestCase(2012, 12, 31, 2013, 1, Monday)]
         [TestCase(1960, 1, 19, 1960, 3, Tuesday)]
         [TestCase(2012, 10, 19, 2012, 42, Friday)]
-        [TestCase(2011, 1, 1, 2010, 52, Saturday)]
-        [TestCase(2012, 12, 31, 2013, 1, Monday)]
         [TestCase(2005, 1, 2, 2004, 53, Sunday)]
         public void WeekYearDifferentToYear(int year, int month, int day, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
         {

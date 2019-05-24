@@ -68,16 +68,10 @@ namespace NodaTime.Test.Text
             new Data(0, 0, 0, 400) { Text = "40000", Pattern = "fffff", },
             new Data(0, 0, 0, 400) { Text = "400000", Pattern = "ffffff", },
             new Data(0, 0, 0, 400) { Text = "4000000", Pattern = "fffffff", },
-            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%f", },
-            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%F", },
             new Data(0, 0, 0, 450) { Text = "45", Pattern = "ff" },
             new Data(0, 0, 0, 450) { Text = "45", Pattern = "FF" },
             new Data(0, 0, 0, 450) { Text = "45", Pattern = "FFF" },
             new Data(0, 0, 0, 450) { Text = "450", Pattern = "fff" },
-            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%f" },
-            new Data(0, 0, 0, 400) { Text = "4", Pattern = "%F" },
-            new Data(0, 0, 0, 450) { Text = "45", Pattern = "ff" },
-            new Data(0, 0, 0, 450) { Text = "45", Pattern = "FF" },
             new Data(0, 0, 0, 456) { Text = "456", Pattern = "fff" },
             new Data(0, 0, 0, 456) { Text = "456", Pattern = "FFF" },
 
@@ -231,7 +225,6 @@ namespace NodaTime.Test.Text
             new Data(12, 0, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%H" },
             new Data(12, 0, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "HH" },
             new Data(2, 0, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
-            new Data(2, 0, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
             new Data(0, 0, 12, 340) { Culture = Cultures.EnUs, Text = "12.34", Pattern = "ss.FFF"  },
 
             // Standard patterns
@@ -283,7 +276,6 @@ namespace NodaTime.Test.Text
             // Tests for each individual field being propagated
             new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
             new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
-            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
             new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
             new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5)) { Culture = Cultures.EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
 

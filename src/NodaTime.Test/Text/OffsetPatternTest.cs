@@ -22,9 +22,6 @@ namespace NodaTime.Test.Text
         /// </summary>
         internal static readonly Data[] FormatOnlyData = {
             new Data(3, 0, 0) { Culture = Cultures.EnUs, Text = "", Pattern = "%-", },
-            new Data(5, 0, 0) { Culture = Cultures.EnUs, Text = "+05", Pattern = "g" },
-            new Data(5, 12, 0) { Culture = Cultures.EnUs, Text = "+05:12", Pattern = "g" },
-            new Data(5, 12, 34) { Culture = Cultures.EnUs, Text = "+05:12:34", Pattern = "g" },
 
             // Losing information
             new Data(5, 6, 7) { Culture = Cultures.EnUs, Text = "05", Pattern = "HH" },
@@ -141,7 +138,6 @@ namespace NodaTime.Test.Text
 
             new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "%H" },
             new Data(12, 0, 0) { Culture = Cultures.EnUs, Text = "12", Pattern = "HH" },
-            new Data(2, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
             new Data(2, 0, 0) { Culture = Cultures.EnUs, Text = "2", Pattern = "%H" },
 
             // Standard patterns with punctuation...

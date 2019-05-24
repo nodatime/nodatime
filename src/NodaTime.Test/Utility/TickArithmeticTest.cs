@@ -15,7 +15,7 @@ namespace NodaTime.Test.Utility
         [TestCase(-NodaConstants.TicksPerDay + 1)]
         [TestCase(-1)]
         [TestCase(0)]
-        [TestCase(-1)]
+        [TestCase(1)]
         [TestCase(NodaConstants.TicksPerDay - 1)]
         [TestCase(NodaConstants.TicksPerDay)]
         [TestCase(NodaConstants.TicksPerDay + 1)]
