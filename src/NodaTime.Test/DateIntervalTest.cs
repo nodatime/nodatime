@@ -4,6 +4,7 @@
 using NodaTime.Text;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Linq;
 
 namespace NodaTime.Test
@@ -340,6 +341,10 @@ namespace NodaTime.Test
             var interval = ParseInterval(intervalText);
             var expected = expectedDatesText.Select(x => LocalDatePattern.Iso.Parse(x).Value).ToList();
             var actual = interval.ToList();
+            Assert.AreEqual(expected, actual);
+
+            // Test the non-generic version too. The double cast makes sure we use the right GetEnumerator call.
+            actual = ((IEnumerable) interval).Cast<object>().Cast<LocalDate>().ToList();
             Assert.AreEqual(expected, actual);
         }
 
