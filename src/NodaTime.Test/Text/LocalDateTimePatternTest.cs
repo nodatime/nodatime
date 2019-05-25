@@ -140,6 +140,8 @@ namespace NodaTime.Test.Text
             // Current culture decimal separator is irrelevant when trimming the dot for truncated fractional settings
             new Data(2011, 10, 19, 4, 5, 6) { Pattern="yyyy-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06", Culture = Cultures.FrFr },
             new Data(2011, 10, 19, 4, 5, 6, 123) { Pattern="yyyy-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06.123", Culture = Cultures.FrFr },
+            // Check handling of F after non-period.
+            new Data(2011, 10, 19, 4, 5, 6, 123) { Pattern="yyyy-MM-dd HH:mm:ss'x'FFF", Text="2011-10-19 04:05:06x123", Culture = Cultures.FrFr },
 
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },

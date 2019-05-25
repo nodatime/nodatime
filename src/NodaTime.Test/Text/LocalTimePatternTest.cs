@@ -319,6 +319,9 @@ namespace NodaTime.Test.Text
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF", Text = "16:05:20.352" },
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20.352 end" },
             new Data(16, 05, 20) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20 end" },
+            
+            // Check handling of F after non-period.
+            new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss'x'FFF", Text = "16:05:20x352" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
