@@ -104,6 +104,8 @@ namespace NodaTime.Test.Text
             new Data(1, 2, 3) { Pattern = "MMM:ss", Text = "062:03" },
 
             new Data(0, 0, 1, 2, 123400000) { Pattern = "SS.FFFF", Text = "62.1234" },
+            // Check handling of F after non-period.
+            new Data(0, 0, 1, 2, 123400000) { Pattern = "SS'x'FFFF", Text = "62x1234" },
 
             new Data(1, 2, 3, 4, 123456789) { Pattern = "D:hh:mm:ss.FFFFFFFFF", Text = "1.02.03.04.123456789", Culture = Cultures.DotTimeSeparator },
 

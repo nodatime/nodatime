@@ -69,6 +69,9 @@ namespace NodaTime.Test.Text
             
             // Fields not otherwise covered
             new Data(MsdnStandardExample) { Pattern = "h:mm:ss.FF tt o<g>", Text = "1:45:30.09 PM +01" },
+            
+            // Check handling of F after non-period.
+            new Data(MsdnStandardExample) { Pattern = "HH':'mm':'ss'x'FFFFFFFFFo<Z+HH:mm>", Text = "13:45:30x09+01:00" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
