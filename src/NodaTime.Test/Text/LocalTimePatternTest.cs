@@ -50,7 +50,13 @@ namespace NodaTime.Test.Text
             new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
             new Data { Text = "5 foo", Pattern = "h t", Message = TextErrorMessages.MissingAmPmDesignator},
             new Data { Text = "04.", Pattern = "ss.FF", Message = TextErrorMessages.MismatchedNumber, Parameters = { "FF" } },
+            new Data { Text = "04.", Pattern = "ss;FF", Message = TextErrorMessages.MismatchedNumber, Parameters = { "FF" } },
             new Data { Text = "04.", Pattern = "ss.ff", Message = TextErrorMessages.MismatchedNumber, Parameters = { "ff" } },
+            new Data { Text = "04.", Pattern = "ss;ff", Message = TextErrorMessages.MismatchedNumber, Parameters = { "ff" } },
+            new Data { Text = "04.x", Pattern = "ss.FF", Message = TextErrorMessages.MismatchedNumber, Parameters = { "FF" } },
+            new Data { Text = "04.x", Pattern = "ss;FF", Message = TextErrorMessages.MismatchedNumber, Parameters = { "FF" } },
+            new Data { Text = "04.x", Pattern = "ss.ff", Message = TextErrorMessages.MismatchedNumber, Parameters = { "ff" } },
+            new Data { Text = "04.x", Pattern = "ss;ff", Message = TextErrorMessages.MismatchedNumber, Parameters = { "ff" } },
             new Data { Text = "05 Foo", Pattern = "HH tt", Message = TextErrorMessages.MissingAmPmDesignator }
         };
 
