@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Globalization;
 using NodaTime.TimeZones;
 using NUnit.Framework;
 
@@ -123,6 +124,15 @@ namespace NodaTime.Test.TimeZones
                 new ZoneInterval("name", SampleStart, SampleEnd.PlusNanoseconds(1), Offset.FromHours(1), Offset.FromHours(2)),
                 new ZoneInterval("name", SampleStart, SampleEnd, Offset.FromHours(2), Offset.FromHours(2)),
                 new ZoneInterval("name", SampleStart, SampleEnd, Offset.FromHours(1), Offset.FromHours(3)));
+        }
+
+        [Test]
+        public void ZoneIntervalToString()
+        {
+            using (CultureSaver.SetCultures(CultureInfo.InvariantCulture))
+            {
+                Assert.AreEqual("TestTime: [2011-06-03T10:15:00Z, 2011-08-02T13:45:00Z) +09 (+01)", SampleInterval.ToString());
+            }
         }
     }
 }
