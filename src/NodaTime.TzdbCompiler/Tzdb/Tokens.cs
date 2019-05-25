@@ -136,7 +136,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 result = words[index++];
                 return true;
             }
-            result = string.Empty;
+            result = "";
             return false;
         }
     }
