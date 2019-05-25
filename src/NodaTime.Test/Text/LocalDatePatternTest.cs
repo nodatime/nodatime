@@ -66,6 +66,9 @@ namespace NodaTime.Test.Text
             // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
             new Data { Pattern = "yyyy MMM dd", Text = "2011 October 09", Message = TextErrorMessages.MismatchedCharacter, Parameters = {' '}},
 
+            // Invalid month even when we've got genitive and non-genitive names to pick from
+            new Data(2011, 1, 3) { Pattern = "MMMM", Text = "BogusName", Culture = Cultures.GenitiveNameTestCulture, Message = TextErrorMessages.MismatchedText, Parameters = {'M'}},
+
             // Invalid year, year-of-era, month, day
             new Data { Pattern = "yyyy MM dd", Text = "0000 01 01", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { 0, 'y', typeof(LocalDate) } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 15 29", Message = TextErrorMessages.MonthOutOfRange, Parameters = { 15, 2011 } },
