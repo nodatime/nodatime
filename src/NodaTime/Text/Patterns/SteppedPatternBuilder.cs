@@ -129,8 +129,9 @@ namespace NodaTime.Text.Patterns
             Action<TResult, StringBuilder>? formatDelegate = null;
             foreach (Action<TResult, StringBuilder> formatAction in formatActions)
             {
-                IPostPatternParseFormatAction? postAction = formatAction.Target as IPostPatternParseFormatAction;
-                formatDelegate += postAction is null ? formatAction : postAction.BuildFormatAction(usedFields);
+                formatDelegate += formatAction.Target is IPostPatternParseFormatAction postAction
+                    ? postAction.BuildFormatAction(usedFields)
+                    : formatAction;
             }
             return new SteppedPattern(formatDelegate!, formatOnly ? null : parseActions.ToArray(), bucketProvider, usedFields, sample);
         }

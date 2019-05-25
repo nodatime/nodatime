@@ -48,13 +48,29 @@ namespace NodaTime.Test.Text.Patterns
         }
 
         [Test]
-        public void Parse_Partial_Invalid()
+        public void ParsePartial_Invalid()
         {
             var value = new ValueCursor("x17:y");
             value.MoveNext();
             value.MoveNext();
             var result = SimpleOffsetPattern.ParsePartial(value);
             Assert.Throws<UnparsableValueException>(() => result.GetValueOrThrow());
+        }
+
+        [Test]
+        public void FormatOnly_ParsingFails()
+        {
+            var builder = new SteppedPatternBuilder<LocalDate, SampleBucket>(
+                NodaFormatInfo.InvariantInfo, () => new SampleBucket());
+            builder.AddFormatAction((date, sb) => sb.Append("Formatted"));
+            builder.SetFormatOnly();
+            var pattern = builder.Build(LocalDate.MinIsoValue);
+
+            var value = new ValueCursor("xyz");
+            var result = pattern.ParsePartial(value);
+            Assert.AreEqual(ParseResult<LocalDate>.FormatOnlyPattern, result);
+            result = pattern.Parse("xyz");
+            Assert.AreEqual(ParseResult<LocalDate>.FormatOnlyPattern, result);
         }
 
         [Test]
