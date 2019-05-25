@@ -67,7 +67,7 @@ namespace NodaTime.TimeZones.Cldr
         /// </summary>
         /// <remarks>
         /// For the primary and fixed-offset territory IDs ("001" and "ZZ") this always
-        /// contains exactly one time zone ID.
+        /// contains exactly one time zone ID. The IDs returned are not necessarily canonical in TZDB.
         /// </remarks>
         /// <value>A read-only non-empty collection of TZDB zone identifiers for this mapping.</value>
         public IList<string> TzdbIds { get; }

@@ -3,6 +3,9 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.TimeZones;
+using NodaTime.TimeZones.Cldr;
+using NodaTime.TimeZones.IO;
+using NodaTime.Utility;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -306,6 +309,101 @@ namespace NodaTime.Test.TimeZones
             // In the case of the "Lilo and Stitch" zone, this means hitting the cache rather than guessing
             // via transitions again.
             Assert.AreEqual(mappedId, TzdbDateTimeZoneSource.Default.MapTimeZoneInfoId(zoneInfo));
+        }
+
+        [Test]
+        public void CanonicalIdMapValueIsNotAKey()
+        {
+            var builder = CreateSampleBuilder();
+            builder.tzdbIdMap!["zone3"] = "missing-zone";
+            AssertInvalid(builder);
+        }
+
+        [Test]
+        public void CanonicalIdMapValueIsNotCanonical()
+        {
+            var builder = CreateSampleBuilder();
+            builder.tzdbIdMap!["zone4"] = "zone3"; // zone3 is an alias for zone1
+            AssertInvalid(builder);
+        }
+
+        [Test]
+        public void WindowsMappingWithoutPrimaryTerritory()
+        {
+            var builder = CreateSampleBuilder();
+            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[] { new MapZone("windows-id", "nonprimary", new[] { "zone1", "zone2" }) });
+            AssertInvalid(builder);
+        }
+
+        [Test]
+        public void WindowsMappingUsesMissingId()
+        {
+            var builder = CreateSampleBuilder();
+            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[] { new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone4" }) });
+            AssertInvalid(builder);
+        }
+
+        [Test]
+        public void ZoneLocationsContainsMissingId()
+        {
+            var builder = CreateSampleBuilder();
+            builder.zoneLocations = new List<TzdbZoneLocation>
+            {
+                new TzdbZoneLocation(0, 0, "country", "xx", "zone4", "comment")
+            }.AsReadOnly();
+            AssertInvalid(builder);
+        }
+
+        [Test]
+        public void Zone1970LocationsContainsMissingId()
+        {
+            var builder = CreateSampleBuilder();
+            var country = new TzdbZone1970Location.Country("country", "xx");
+            builder.zone1970Locations = new List<TzdbZone1970Location>
+            {
+                new TzdbZone1970Location(0, 0, new[] { country }, "zone4", "comment")
+            }.AsReadOnly();
+            AssertInvalid(builder);
+        }
+
+        /// <summary>
+        /// Creates a sample builder with two canonical zones (zone1 and zone2), and a link from zone3 to zone1.
+        /// There's a single Windows mapping, but no zone locations.
+        /// </summary>
+        private static TzdbStreamData.Builder CreateSampleBuilder()
+        {
+            var stringPool = new List<string> { "zone1", "zone2" };
+            var zone1 = new FixedDateTimeZone("zone1", Offset.FromHours(1), "zone1");
+            var zone2 = new FixedDateTimeZone("zone2", Offset.FromHours(2), "zone2");
+            var zone1Field = CreateZoneField(stringPool, zone1);
+            var zone2Field = CreateZoneField(stringPool, zone2);
+            return new TzdbStreamData.Builder
+            {
+                stringPool = stringPool,
+                tzdbIdMap = new Dictionary<string, string> { { "zone3", "zone1" } },
+                tzdbVersion = "tzdb-version",
+                windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                    new[] { new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }) }),
+                zoneFields = { { zone1.Name, zone1Field }, { zone2.Name, zone2Field } }
+            };
+        }
+
+        private static TzdbStreamField CreateZoneField(List<string> stringPool, FixedDateTimeZone zone)
+        {
+            var stream = new MemoryStream();
+            var writer = new DateTimeZoneWriter(stream, stringPool);
+            writer.WriteString(zone.Id);
+            zone.Write(writer);
+            return new TzdbStreamField(TzdbStreamFieldId.TimeZone, stream.ToArray());
+        }
+
+        private static void AssertInvalid(TzdbStreamData.Builder builder)
+        {
+            var streamData = new TzdbStreamData(builder);
+            var source = new TzdbDateTimeZoneSource(streamData);
+            Assert.Throws<InvalidNodaDataException>(source.Validate);
         }
     }
 }

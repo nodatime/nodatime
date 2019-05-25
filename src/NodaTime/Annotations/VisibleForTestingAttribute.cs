@@ -11,11 +11,11 @@ namespace NodaTime.Annotations
     /// but is exposed for test purposes.
     /// </summary>
     /// <remarks>
-    /// Currently this excludes nested types, fields, and events - but it could be expanded to do so. Likewise
+    /// Currently this excludes field and events - but it could be expanded to do so. Likewise
     /// we don't indicate the intended access mode, which could be done via an enum. For the moment we'll
     /// assume everything would be private apart from for testing.
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property)]
     internal class VisibleForTestingAttribute : Attribute
     {
     }

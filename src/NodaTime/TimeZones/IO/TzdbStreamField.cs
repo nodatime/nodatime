@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ namespace NodaTime.TimeZones.IO
         private readonly byte[] data;
         internal TzdbStreamFieldId Id { get; }
 
-        private TzdbStreamField(TzdbStreamFieldId id, byte[] data)
+        [VisibleForTesting]
+        internal TzdbStreamField(TzdbStreamFieldId id, byte[] data)
         {
             this.Id = id;
             this.data = data;
