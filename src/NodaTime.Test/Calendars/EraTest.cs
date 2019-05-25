@@ -19,13 +19,21 @@ namespace NodaTime.Test.Calendars
             .Where(property => property.PropertyType == typeof(Era))
             .Select(property => new NamedWrapper<Era>((Era) property.GetValue(null, null), property.Name));
 
-        [TestCaseSource(nameof(Eras))]
         [Test]
+        [TestCaseSource(nameof(Eras))]
         public void ResourcePresence(NamedWrapper<Era> eraWrapper)
         {
             var era = eraWrapper.Value;
             var valueByName = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo.InvariantCulture);
             Assert.NotNull(valueByName, "Missing resource for " + era.ResourceIdentifier);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(Eras))]
+        public void ToStringReturnsName(NamedWrapper<Era> eraWrapper)
+        {
+            var era = eraWrapper.Value;
+            Assert.AreEqual(era.Name, era.ToString());
         }
     }
 }
