@@ -37,11 +37,6 @@ namespace NodaTime.TimeZones
     /// </remarks>
     internal sealed class ZoneYearOffset : IEquatable<ZoneYearOffset?>
     {
-        /// <summary>
-        /// An offset that specifies the beginning of the year.
-        /// </summary>
-        internal static readonly ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, LocalTime.Midnight);
-
         private readonly int dayOfMonth;
         private readonly int dayOfWeek;
         private readonly int monthOfYear;

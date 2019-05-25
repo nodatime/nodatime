@@ -16,6 +16,11 @@ namespace NodaTime.TzdbCompiler.Tzdb
     internal class TzdbZoneInfoParser
     {
         /// <summary>
+        /// An offset that specifies the beginning of the year.
+        /// </summary>
+        internal static readonly ZoneYearOffset StartOfYearZoneOffset = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, LocalTime.Midnight);
+
+        /// <summary>
         /// The keyword that specifies the line defines an alias link.
         /// </summary>
         private const string KeywordLink = "Link";
@@ -141,8 +146,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <returns>The ZoneYearOffset object.</returns>
         internal ZoneYearOffset ParseDateTimeOfYear(Tokens tokens, bool forRule)
         {
-            var mode = ZoneYearOffset.StartOfYear.Mode;
-            var timeOfDay = ZoneYearOffset.StartOfYear.TimeOfDay;
+            var mode = StartOfYearZoneOffset.Mode;
+            var timeOfDay = StartOfYearZoneOffset.TimeOfDay;
 
             int monthOfYear = NextMonth(tokens, "MonthOfYear");
 
@@ -410,7 +415,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 return new ZoneLine(name, offset, rules, format, year, until);
             }
 
-            return new ZoneLine(name, offset, rules, format, year, ZoneYearOffset.StartOfYear);
+            return new ZoneLine(name, offset, rules, format, year, StartOfYearZoneOffset);
         }
 
         /// <summary>
