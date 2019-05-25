@@ -463,5 +463,21 @@ namespace NodaTime.Test
                 Assert.AreEqual(expectedTime, actualTime);
             });
         }
+
+        [Test]
+        public void Equality() => TestHelper.TestEqualsStruct(
+            value: new LocalDateTime(2017, 10, 15, 21, 30, 0, 0, CalendarSystem.Iso),
+            equalValue: new LocalDateTime(2017, 10, 15, 21, 30, 0, 0, CalendarSystem.Iso),
+            unequalValues: new[]
+            {
+                new LocalDateTime(2018, 10, 15, 21, 30, 0, 0, CalendarSystem.Iso),
+                new LocalDateTime(2017, 11, 15, 21, 30, 0, 0, CalendarSystem.Iso),
+                new LocalDateTime(2017, 10, 16, 21, 30, 0, 0, CalendarSystem.Iso),
+                new LocalDateTime(2017, 10, 15, 22, 30, 0, 0, CalendarSystem.Iso),
+                new LocalDateTime(2017, 10, 15, 21, 31, 0, 0, CalendarSystem.Iso),
+                new LocalDateTime(2017, 10, 15, 21, 30, 1, 0, CalendarSystem.Iso),
+                new LocalDateTime(2017, 10, 15, 21, 30, 0, 1, CalendarSystem.Iso),
+                new LocalDateTime(2017, 10, 15, 21, 30, 0, 0, CalendarSystem.Gregorian),
+            });
     }
 }
