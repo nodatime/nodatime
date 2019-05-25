@@ -2,8 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using NUnit.Framework;
 using NodaTime.TimeZones;
+using NUnit.Framework;
+using System.Globalization;
 
 namespace NodaTime.Demo
 {
@@ -15,7 +16,7 @@ namespace NodaTime.Demo
             // Yes, in 1900 Paris did (according to TZDB) have a UTC offset of 9 minutes, 21 seconds.
             DateTimeZone paris = DateTimeZoneProviders.Tzdb["Europe/Paris"];
             Offset offset = Snippet.For(paris.GetUtcOffset(Instant.FromUtc(1900, 1, 1, 0, 0)));
-            Assert.AreEqual("+00:09:21", offset.ToString());
+            Assert.AreEqual("+00:09:21", offset.ToString("G", CultureInfo.InvariantCulture));
         }
 
         [Test]
