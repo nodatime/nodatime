@@ -260,7 +260,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         {
             var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 - P%sT");
-            var expected = new ZoneLine(string.Empty, ToOffset(2, 0), null, "P%sT", int.MaxValue, ZoneYearOffset.StartOfYear);
+            var expected = new ZoneLine(string.Empty, ToOffset(2, 0), null, "P%sT", int.MaxValue, TzdbZoneInfoParser.StartOfYearZoneOffset);
             Assert.AreEqual(expected, parser.ParseZone(string.Empty, tokens));
         }
 
@@ -269,7 +269,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         {
             var parser = new TzdbZoneInfoParser();
             var tokens = Tokens.Tokenize("2:00 US P%sT");
-            var expected = new ZoneLine(string.Empty, ToOffset(2, 0), "US", "P%sT", int.MaxValue, ZoneYearOffset.StartOfYear);
+            var expected = new ZoneLine(string.Empty, ToOffset(2, 0), "US", "P%sT", int.MaxValue, TzdbZoneInfoParser.StartOfYearZoneOffset);
             Assert.AreEqual(expected, parser.ParseZone(string.Empty, tokens));
         }
 
