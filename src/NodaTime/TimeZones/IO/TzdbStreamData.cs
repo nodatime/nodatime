@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Annotations;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.Utility;
 using System;
@@ -59,7 +60,8 @@ namespace NodaTime.TimeZones.IO
         /// </summary>
         public ReadOnlyCollection<TzdbZone1970Location>? Zone1970Locations { get; }
 
-        private TzdbStreamData(Builder builder)
+        [VisibleForTesting]
+        internal TzdbStreamData(Builder builder)
         {
             stringPool = CheckNotNull(builder.stringPool, "string pool");
             var mutableIdMap = CheckNotNull(builder.tzdbIdMap, "TZDB alias map");
@@ -108,7 +110,7 @@ namespace NodaTime.TimeZones.IO
         {
             if (input is null)
             {
-                throw new InvalidNodaDataException("Incomplete TZDB data. Missing field: " + name);
+                throw new InvalidNodaDataException($"Incomplete TZDB data. Missing field: {name}");
             }
             return input;
         }
@@ -119,7 +121,7 @@ namespace NodaTime.TimeZones.IO
             int version = new BinaryReader(stream).ReadInt32();
             if (version != AcceptedVersion)
             {
-                throw new InvalidNodaDataException("Unable to read stream with version " + version);
+                throw new InvalidNodaDataException($"Unable to read stream with version {version}");
             }
             Builder builder = new Builder();
             foreach (var field in TzdbStreamField.ReadFields(stream))
@@ -136,11 +138,13 @@ namespace NodaTime.TimeZones.IO
         /// <summary>
         /// Mutable builder class used during parsing.
         /// </summary>
-        private class Builder
+        [VisibleForTesting]
+        internal class Builder
         {
             internal IReadOnlyList<string>? stringPool;
             internal string? tzdbVersion;
             // Note: deliberately mutable, as this is useful later when we map the canonical IDs to themselves.
+            // This is a mapping of the aliases from TZDB, at this point.
             internal IDictionary<string, string>? tzdbIdMap;
             internal ReadOnlyCollection<TzdbZoneLocation>? zoneLocations = null;
             internal ReadOnlyCollection<TzdbZone1970Location>? zone1970Locations = null;

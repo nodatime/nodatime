@@ -9,7 +9,6 @@ using NodaTime.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -164,7 +163,8 @@ namespace NodaTime.TimeZones
             return new TzdbDateTimeZoneSource(TzdbStreamData.FromStream(stream));
         }
 
-        private TzdbDateTimeZoneSource(TzdbStreamData source)
+        [VisibleForTesting]
+        internal TzdbDateTimeZoneSource(TzdbStreamData source)
         {
             Preconditions.CheckNotNull(source, nameof(source));
             this.source = source;
@@ -317,7 +317,7 @@ namespace NodaTime.TimeZones
         {
             // Check that each entry has a canonical value. (Every mapping x to y
             // should be such that y maps to itself.)
-            foreach (var entry in this.CanonicalIdMap)
+            foreach (var entry in CanonicalIdMap)
             {
                 if (!CanonicalIdMap.TryGetValue(entry.Value, out string canonical))
                 {
@@ -332,7 +332,7 @@ namespace NodaTime.TimeZones
             }
 
             // Check that every Windows mapping has a primary territory
-            foreach (var mapZone in source.WindowsMapping.MapZones)
+            foreach (var mapZone in WindowsMapping.MapZones)
             {
                 // Simplest way of checking is to find the primary mapping...
                 if (!source.WindowsMapping.PrimaryMapping.ContainsKey(mapZone.WindowsId))
@@ -342,15 +342,15 @@ namespace NodaTime.TimeZones
                 }
             }
 
-            // Check that each Windows mapping has a known canonical ID.
-            foreach (var mapZone in source.WindowsMapping.MapZones)
+            // Check that each Windows mapping uses TZDB IDs that are known to this source.
+            foreach (var mapZone in WindowsMapping.MapZones)
             {
                 foreach (var id in mapZone.TzdbIds)
                 {
                     if (!CanonicalIdMap.ContainsKey(id))
                     {
                         throw new InvalidNodaDataException(
-                            $"Windows mapping uses canonical ID {id} which is missing");
+                            $"Windows mapping uses TZDB ID {id} which is missing");
                     }
                 }
             }
