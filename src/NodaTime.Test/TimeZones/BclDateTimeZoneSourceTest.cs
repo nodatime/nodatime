@@ -113,6 +113,7 @@ namespace NodaTime.Test.TimeZones
             {
                 var source = new BclDateTimeZoneSource();
                 Assert.Null(source.GetSystemDefaultId());
+                CollectionAssert.AreEqual(new[] { systemZone.Id }, source.GetIds().ToList());
             }
         }
     }
