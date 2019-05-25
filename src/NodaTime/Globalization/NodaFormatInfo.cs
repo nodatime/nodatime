@@ -84,7 +84,8 @@ namespace NodaTime.Globalization
         /// <param name="cultureInfo">The culture info to use.</param>
         [VisibleForTesting]
         internal NodaFormatInfo(CultureInfo cultureInfo)
-            : this(cultureInfo, cultureInfo?.DateTimeFormat)
+            // If cultureInfo is null, this will throw before we get to the DateTimeFormatInfo being null.
+            : this(cultureInfo, cultureInfo?.DateTimeFormat!)
         {
         }
 

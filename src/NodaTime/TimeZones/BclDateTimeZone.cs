@@ -399,14 +399,17 @@ namespace NodaTime.TimeZones
             }
             BclDateTimeZone currentSystemDefault = systemDefault;
 
-            // Cached copy is out of date - wrap a new one
+            // Cached copy is out of date - wrap a new one.
+            // If currentSystemDefault is null, we always enter this block (as local isn't null).
             if (currentSystemDefault?.OriginalZone != local)
             {
                 currentSystemDefault = FromTimeZoneInfo(local);
                 systemDefault = currentSystemDefault;
             }
-            // Always return our local variable; the variable may have changed again.
-            return currentSystemDefault;
+            // Always return our local variable; the field may have changed again.
+            // The ! is because the compiler doesn't recognize the logic around
+            // "always fetch if we currentSystemDefault is null".
+            return currentSystemDefault!;
         }
     }
 }

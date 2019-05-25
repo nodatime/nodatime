@@ -66,7 +66,7 @@ namespace NodaTime.Test.Text
             }
         });
 
-        private static string[] LowerCaseFrench(Func<DateTimeFormatInfo, string[]> propertySelector) =>
+        private static string?[] LowerCaseFrench(Func<DateTimeFormatInfo, string[]> propertySelector) =>
             propertySelector(new CultureInfo("fr-FR").DateTimeFormat).Select(x => x?.ToLowerInvariant()).ToArray();
 
         internal static readonly CultureInfo DotTimeSeparator = CultureInfo.ReadOnly(new CultureInfo("fi-FI") {
