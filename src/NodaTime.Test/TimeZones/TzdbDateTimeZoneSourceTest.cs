@@ -346,6 +346,64 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void WindowsMapping_PrimaryTerritoryIgnoredForDuplicateDetection()
+        {
+            var builder = CreateSampleBuilder();
+            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[]
+                {
+                    new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }),
+                    new MapZone("windows-id", "UK", new[] { "zone1" }),
+                });
+            var streamData = new TzdbStreamData(builder);
+            var source = new TzdbDateTimeZoneSource(streamData);
+            source.Validate();
+        }
+
+        [Test]
+        public void WindowsMappingContainsDuplicateTzdbIds_SameTerritory()
+        {
+            var builder = CreateSampleBuilder();
+            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[]
+                {
+                    new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }),
+                    new MapZone("windows-id", "UK", new[] { "zone1" }),
+                    new MapZone("windows-id", "CA", new[] { "zone2", "zone2" })
+                });
+            AssertInvalid(builder);
+        }
+
+        [Test]
+        public void WindowsMappingContainsDuplicateTzdbIds_SameWindowsIdDifferentTerritory()
+        {
+            var builder = CreateSampleBuilder();
+            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[]
+                {
+                    new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }),
+                    new MapZone("windows-id", "UK", new[] { "zone1" }),
+                    new MapZone("windows-id", "CA", new[] { "zone1" })
+                });
+            AssertInvalid(builder);
+        }
+
+        [Test]
+        public void WindowsMappingContainsDuplicateTzdbIds_DifferentTerritories()
+        {
+            var builder = CreateSampleBuilder();
+            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[]
+                {
+                    new MapZone("windows-id1", MapZone.PrimaryTerritory, new[] { "zone1" }),
+                    new MapZone("windows-id1", "CA", new[] { "zone1" }),
+                    new MapZone("windows-id2", MapZone.PrimaryTerritory, new[] { "zone1" }),
+                    new MapZone("windows-id2", "UK", new[] { "zone1" }),
+                });
+            AssertInvalid(builder);
+        }
+
+        [Test]
         public void ZoneLocationsContainsMissingId()
         {
             var builder = CreateSampleBuilder();

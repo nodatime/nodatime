@@ -342,7 +342,12 @@ namespace NodaTime.TimeZones
                 }
             }
 
-            // Check that each Windows mapping uses TZDB IDs that are known to this source.
+            // Check that:
+            // - Each Windows mapping uses TZDB IDs that are known to this source,
+            // - Each TZDB ID only occurs once except for the primary territory
+            // We *could* also validate that the primary territory TZDB ID occurs as a non-primary
+            // territory, but we have no need for that constraint at the moment.
+            HashSet<string> mappedTzdbIds = new HashSet<string>();
             foreach (var mapZone in WindowsMapping.MapZones)
             {
                 foreach (var id in mapZone.TzdbIds)
@@ -351,6 +356,13 @@ namespace NodaTime.TimeZones
                     {
                         throw new InvalidNodaDataException(
                             $"Windows mapping uses TZDB ID {id} which is missing");
+                    }
+                    // The primary territory ID is also present as a non-primary territory,
+                    // so don't include it in duplicate detection. Everything else should be unique.
+                    if (mapZone.Territory != MapZone.PrimaryTerritory && !mappedTzdbIds.Add(id))
+                    {
+                        throw new InvalidNodaDataException(
+                            $"Windows mapping has multiple entries for TZDB ID {id}");
                     }
                 }
             }
