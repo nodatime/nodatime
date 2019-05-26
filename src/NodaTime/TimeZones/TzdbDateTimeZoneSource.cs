@@ -347,8 +347,7 @@ namespace NodaTime.TimeZones
             // - Each TZDB ID only occurs once except for the primary territory
             // - Every ID has a primary territory
             // - Within each ID, the territories are unique
-            // We *could* also validate that the primary territory TZDB ID occurs as a non-primary
-            // territory, but we have no need for that constraint at the moment.
+            // - Each primary territory TZDB ID occurs as a non-primary territory
             HashSet<string> mappedTzdbIds = new HashSet<string>();
             foreach (var mapZone in WindowsMapping.MapZones)
             {
@@ -368,18 +367,25 @@ namespace NodaTime.TimeZones
                     }
                 }
             }
-            var territoriesByWindowsId = WindowsMapping.MapZones.ToLookup(mapZone => mapZone.WindowsId, mapZone => mapZone.Territory);
+            var territoriesByWindowsId = WindowsMapping.MapZones.ToLookup(mapZone => mapZone.WindowsId);
             foreach (var group in territoriesByWindowsId)
             {
-                if (!group.Contains(MapZone.PrimaryTerritory))
+                if (group.Select(zone => zone.Territory).Distinct().Count() != group.Count())
+                {
+                    throw new InvalidNodaDataException(
+                        $"Windows mapping has duplicate territories entries for Windows ID {group.Key}");
+                }
+                var primary = group.FirstOrDefault(zone => zone.Territory == MapZone.PrimaryTerritory);
+                if (primary == null)
                 {
                     throw new InvalidNodaDataException(
                         $"Windows mapping has no primary territory entry for Windows ID {group.Key}");
                 }
-                if (group.Distinct().Count() != group.Count())
+                var primaryTzdb = primary.TzdbIds.Single();
+                if (!group.Any(zone => zone.Territory != MapZone.PrimaryTerritory && zone.TzdbIds.Contains(primaryTzdb)))
                 {
                     throw new InvalidNodaDataException(
-                        $"Windows mapping has no duplicate territories entries for Windows ID {group.Key}");
+                        $"Windows mapping primary territory entry for Windows ID {group.Key} has TZDB ID {primaryTzdb} which does not occur in a non-primary territory");
                 }
             }
 

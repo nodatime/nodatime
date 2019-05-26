@@ -337,27 +337,29 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void WindowsMappingUsesMissingId()
-        {
-            var builder = CreateSampleBuilder();
-            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
-                new[] { new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone4" }) });
-            AssertInvalid(builder);
-        }
-
-        [Test]
-        public void WindowsMapping_PrimaryTerritoryIgnoredForDuplicateDetection()
+        public void WindowsMappingPrimaryTerritoryNotInNonPrimary()
         {
             var builder = CreateSampleBuilder();
             builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
                 new[]
                 {
                     new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }),
-                    new MapZone("windows-id", "UK", new[] { "zone1" }),
+                    new MapZone("windows-id", "UK", new[] { "zone2" })
                 });
-            var streamData = new TzdbStreamData(builder);
-            var source = new TzdbDateTimeZoneSource(streamData);
-            source.Validate();
+            AssertInvalid(builder);
+        }
+
+        [Test]
+        public void WindowsMappingUsesMissingId()
+        {
+            var builder = CreateSampleBuilder();
+            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[]
+                {
+                    new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone4" }),
+                    new MapZone("windows-id", "UK", new[] { "zone4" })
+                });
+            AssertInvalid(builder);
         }
 
         [Test]
@@ -454,7 +456,7 @@ namespace NodaTime.Test.TimeZones
 
         /// <summary>
         /// Creates a sample builder with two canonical zones (zone1 and zone2), and a link from zone3 to zone1.
-        /// There's a single Windows mapping, but no zone locations.
+        /// There's a single Windows mapping territory, but no zone locations.
         /// </summary>
         private static TzdbStreamData.Builder CreateSampleBuilder()
         {
@@ -464,7 +466,11 @@ namespace NodaTime.Test.TimeZones
                 tzdbIdMap = new Dictionary<string, string> { { "zone3", "zone1" } },
                 tzdbVersion = "tzdb-version",
                 windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
-                    new[] { new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }) })                
+                    new[]
+                    {
+                        new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }),
+                        new MapZone("windows-id", "UK", new[] { "zone1" })
+                    })                
             };
             PopulateZoneFields(builder, "zone1", "zone2");
             return builder;
