@@ -374,29 +374,24 @@ namespace NodaTime.Test.TimeZones
         /// </summary>
         private static TzdbStreamData.Builder CreateSampleBuilder()
         {
-            var stringPool = new List<string> { "zone1", "zone2" };
-            var zone1 = new FixedDateTimeZone("zone1", Offset.FromHours(1), "zone1");
-            var zone2 = new FixedDateTimeZone("zone2", Offset.FromHours(2), "zone2");
-            var zone1Field = CreateZoneField(stringPool, zone1);
-            var zone2Field = CreateZoneField(stringPool, zone2);
-            return new TzdbStreamData.Builder
+            var builder = new TzdbStreamData.Builder
             {
-                stringPool = stringPool,
+                stringPool = new List<string>(),
                 tzdbIdMap = new Dictionary<string, string> { { "zone3", "zone1" } },
                 tzdbVersion = "tzdb-version",
                 windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
-                    new[] { new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }) }),
-                zoneFields = { { zone1.Name, zone1Field }, { zone2.Name, zone2Field } }
+                    new[] { new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }) })                
             };
+            PopulateZoneFields(builder, "zone1", "zone2");
+            return builder;
         }
 
-        private static TzdbStreamField CreateZoneField(List<string> stringPool, FixedDateTimeZone zone)
+        private static void PopulateZoneFields(TzdbStreamData.Builder builder, params string[] zoneIds)
         {
-            var stream = new MemoryStream();
-            var writer = new DateTimeZoneWriter(stream, stringPool);
-            writer.WriteString(zone.Id);
-            zone.Write(writer);
-            return new TzdbStreamField(TzdbStreamFieldId.TimeZone, stream.ToArray());
+            foreach (var id in zoneIds)
+            {
+                builder.zoneFields[id] = new TzdbStreamField(TzdbStreamFieldId.TimeZone, new byte[0]);
+            }
         }
 
         private static void AssertInvalid(TzdbStreamData.Builder builder)
