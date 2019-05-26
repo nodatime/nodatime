@@ -322,12 +322,12 @@ namespace NodaTime.TimeZones
                 if (!CanonicalIdMap.TryGetValue(entry.Value, out string canonical))
                 {
                     throw new InvalidNodaDataException(
-                        "Mapping for entry {entry.Key} ({entry.Value}) is missing");
+                        $"Mapping for entry {entry.Key} ({entry.Value}) is missing");
                 }
                 if (entry.Value != canonical)
                 {
                     throw new InvalidNodaDataException(
-                        "Mapping for entry {entry.Key} ({entry.Value}) is not canonical ({entry.Value} maps to {canonical}");
+                        $"Mapping for entry {entry.Key} ({entry.Value}) is not canonical ({entry.Value} maps to {canonical})");
                 }
             }
 
