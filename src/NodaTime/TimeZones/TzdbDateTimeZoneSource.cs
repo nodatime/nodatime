@@ -9,10 +9,12 @@ using NodaTime.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace NodaTime.TimeZones
 {
@@ -62,6 +64,9 @@ namespace NodaTime.TimeZones
         /// Composite version ID including TZDB and Windows mapping version strings.
         /// </summary>
         private readonly string version;
+
+        private readonly Lazy<IReadOnlyDictionary<string, string>> tzdbToWindowsId;
+        private readonly Lazy<IReadOnlyDictionary<string, string>> windowsToTzdbId;
 
         /// <summary>
         /// Gets a lookup from canonical time zone ID (e.g. "Europe/London") to a group of aliases for that time zone
@@ -173,7 +178,63 @@ namespace NodaTime.TimeZones
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
                 .ToLookup(pair => pair.Value, pair => pair.Key);
             version = source.TzdbVersion + " (mapping: " + source.WindowsMapping.Version + ")";
+            tzdbToWindowsId = new Lazy<IReadOnlyDictionary<string, string>>(BuildTzdbToWindowsIdMap, LazyThreadSafetyMode.ExecutionAndPublication);
+            windowsToTzdbId = new Lazy<IReadOnlyDictionary<string, string>>(BuildWindowsToTzdbId, LazyThreadSafetyMode.ExecutionAndPublication);
         }
+
+        /// <summary>
+        /// Builds the dictionary returned by <see cref="TzdbToWindowsIds"/>; this is called lazily.
+        /// This method assumes the source is valid, for uniqueness purposes etc.
+        /// /// </summary>
+        private IReadOnlyDictionary<string, string> BuildTzdbToWindowsIdMap()
+        {
+            var mutable = new Dictionary<string, string>();
+            // First map everything from the WindowsZones.
+            foreach (var zone in WindowsMapping.MapZones.Where(mz => mz.Territory != MapZone.PrimaryTerritory))
+            {
+                foreach (var tzdbId in zone.TzdbIds)
+                {
+                    mutable[tzdbId] = zone.WindowsId;
+                }
+            }
+
+            var aliases = CanonicalIdMap.Where(pair => pair.Key != pair.Value);
+
+            // Now map any missing canonical IDs based on aliases
+            foreach (var entry in aliases
+                // Only find aliases where the canonical ID isn't in the map
+                .Where(pair => !mutable.ContainsKey(pair.Value))
+                // Order by alias for predictability
+                .OrderBy(pair => pair.Key))
+            {
+                // OrderBy is effectively greedy, so our earlier check for may not still be valid.
+                // (An earlier alias may have provided an ID.)
+                if (!mutable.ContainsKey(entry.Value) && mutable.TryGetValue(entry.Key, out var windowsId))
+                {
+                    mutable[entry.Value] = windowsId;
+                }
+            }
+
+            // Finally map any missing aliases based on canonical IDs
+            foreach (var entry in aliases
+                // Only find aliases where the alias ID isn't in the map
+                .Where(pair => !mutable.ContainsKey(pair.Key)))
+            {
+                // Add a mapping based on the canonical mapping, if it's present.
+                if (mutable.TryGetValue(entry.Value, out var windowsId))
+                {
+                    mutable[entry.Key] = windowsId;
+                }
+            }
+            return new ReadOnlyDictionary<string, string>(mutable);
+        }
+
+        /// <summary>
+        /// Builds the dictionary returned by <see cref="WindowsToTzdbIds"/>; this is called lazily.
+        /// </summary>
+        private IReadOnlyDictionary<string, string> BuildWindowsToTzdbId() =>
+            new ReadOnlyDictionary<string, string>(
+                WindowsMapping.PrimaryMapping.ToDictionary(pair => pair.Key, pair => CanonicalIdMap[pair.Value]));
 
         /// <inheritdoc />
         public DateTimeZone ForId(string id)
@@ -301,6 +362,45 @@ namespace NodaTime.TimeZones
         /// <value>The Windows time zone mapping information provided in the CLDR
         /// supplemental "windowsZones.xml" file.</value>
         public WindowsZones WindowsMapping => source.WindowsMapping;
+
+        /// <summary>
+        /// Returns a dictionary mapping TZDB IDs to Windows IDs.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Where a TZDB alias isn't present directly in the Windows mapping, but its canonical ID is,
+        /// the dictionary will contain an entry for the alias as well. For example, the TZDB ID
+        /// "Africa/Asmara" is an alias for "Africa/Nairobi", which has a Windows ID of "E. Africa Standard Time".
+        /// "Africa/Asmara" doesn't appear in the Windows mapping directly, but it will still be present in the
+        /// returned dictionary.
+        /// </para>
+        /// <para>
+        /// Where a TZDB canonical ID isn't present in the Windows mapping, but an alias is, the dictionary
+        /// will contain an entry for the canonical ID as well. For example, the Windows mapping uses the
+        /// TZDB ID "Asia/Calcutta" for "India Standard Time". This is an alias for "Asia/Kolkata" in TZDB,
+        /// so the returned dictionary will have an entry mapping "Asia/Kolkata" to "Asia/Calcutta".
+        /// If multiple aliases for the same canonical ID have entries in the Windows mapping with different
+        /// Windows IDs, the alias that is earliest in lexicographical ordering determines the value for the entry.
+        /// </para>
+        /// <para>
+        /// If a canonical ID is not present in the mapping, nor any of its aliases, it will not be present in
+        /// the returned dictionary.
+        /// </para>
+        /// </remarks>
+        public IReadOnlyDictionary<string, string> TzdbToWindowsIds => tzdbToWindowsId.Value;
+
+        /// <summary>
+        /// Returns a dictionary mapping Windows IDs to canonical TZDB IDs, using the
+        /// primary mapping in each <see cref="MapZone"/>.
+        /// </summary>
+        /// <remarks>
+        /// Sometimes the Windows mapping contains values which are not canonical TZDB IDs.
+        /// Every value in the returned dictionary is a canonical ID. For example, the Windows
+        /// mapping contains as "Asia/Calcutta" for the Windows ID "India Standard Time", but
+        /// "Asia/Calcutta" is an alias for "Asia/Kolkata". The entry for "India Standard Time"
+        /// in the returned dictionary therefore has "Asia/Kolkata" as the value.
+        /// </remarks>
+        public IReadOnlyDictionary<string, string> WindowsToTzdbIds => windowsToTzdbId.Value;
 
         /// <summary>
         /// Validates that the data within this source is consistent with itself.

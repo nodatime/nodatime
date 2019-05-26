@@ -490,5 +490,149 @@ namespace NodaTime.Test.TimeZones
             var source = new TzdbDateTimeZoneSource(streamData);
             Assert.Throws<InvalidNodaDataException>(source.Validate);
         }
+        
+        [Test]
+        public void WindowsToTzdbIds()
+        {
+            var source = CreateComplexMappingSource();
+            var actual = source.WindowsToTzdbIds;
+            var expected = new Dictionary<string, string>
+            {
+                { "win1", "zone1" },
+                { "win2", "zone2" },
+                { "win3", "zone3" },
+                { "win4", "zone4" },
+            };
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        [Test]
+        public void TzbdToWindowsIds()
+        {
+            var source = CreateComplexMappingSource();
+            var actual = source.TzdbToWindowsIds;
+            var expected = new Dictionary<string, string>
+            {
+                { "zone1", "win1" },
+                { "link1", "win1" },                
+                { "zone2", "win2" },
+                { "link2", "win2" },
+                // No explicit zone3 mapping; link3a and link3b map to win3 and win4 respectively;
+                // link3a "wins" as it's earlier lexicographically.
+                { "zone3", "win3" },
+                { "link3a", "win3" },
+                // Explicit mapping to win4 from link3b.
+                // This is unusual, but we handle it
+                { "link3b", "win4" },
+                // link3c isn't mentioned at all, so we use the canonical ID
+                { "link3c", "win3" },
+                { "zone4", "win4" },
+                { "zone5", "win4" }
+                // zone6 isn't mapped at all
+            };
+            CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        // We'll need to adjust the documentation if either of these tests starts to fail.
+        [Test]
+        public void TzdbToWindowsIdDocumentationExamples()
+        {
+            var source = TzdbDateTimeZoneSource.Default;
+            string kolkata = "Asia/Kolkata";
+            string calcutta = "Asia/Calcutta";
+            string indiaStandardTime = "India Standard Time";
+
+            string asmara = "Africa/Asmara";
+            string eastAfricaStandardTime = "E. Africa Standard Time";
+            string nairobi = "Africa/Nairobi";
+
+            // Validate the claims about the source data
+            Assert.AreEqual(kolkata, source.CanonicalIdMap[calcutta]);
+            Assert.IsFalse(source.WindowsMapping.MapZones.SelectMany(mz => mz.TzdbIds).Contains(kolkata));
+
+            Assert.AreEqual(nairobi, source.CanonicalIdMap[asmara]);
+            Assert.IsFalse(source.WindowsMapping.MapZones.SelectMany(mz => mz.TzdbIds).Contains(asmara));
+
+            // And the mappings
+            var mapping = source.TzdbToWindowsIds;
+            Assert.AreEqual(indiaStandardTime, mapping[kolkata]);
+            Assert.AreEqual(eastAfricaStandardTime, mapping[asmara]);
+        }
+
+        // Asserts that my commentary is correct in https://github.com/nodatime/nodatime/pull/1393
+        [Test]
+        public void UtcMappings()
+        {
+            var source = TzdbDateTimeZoneSource.Default;
+            // Note: not Etc/UTC as TimeZoneConverter does.
+            Assert.AreEqual("Etc/GMT", source.WindowsToTzdbIds["UTC"]);
+
+            Assert.AreEqual("UTC", source.TzdbToWindowsIds["Etc/UTC"]);
+            // We follow the link
+            Assert.AreEqual("UTC", source.TzdbToWindowsIds["Etc/GMT+0"]);
+        }
+
+        [Test]
+        public void WindowsToTzdbIdDocumentationExamples()
+        {
+            var source = TzdbDateTimeZoneSource.Default;
+            string kolkata = "Asia/Kolkata";
+            string calcutta = "Asia/Calcutta";
+            string indiaStandardTime = "India Standard Time";
+
+            // Validate the claims about the source data
+            Assert.AreEqual(kolkata, source.CanonicalIdMap[calcutta]);
+            Assert.IsFalse(source.WindowsMapping.MapZones.SelectMany(mz => mz.TzdbIds).Contains(kolkata));
+
+            // And the mapping
+            var mapping = source.WindowsToTzdbIds;
+            Assert.AreEqual(kolkata, mapping[indiaStandardTime]);
+        }
+
+        /// <summary>
+        /// Creates a time zone source with everything required to test the maps between
+        /// Windows and TZDB IDs. Details (not in XML) in the source...
+        /// </summary>
+        private static TzdbDateTimeZoneSource CreateComplexMappingSource()
+        {
+            // Canonical IDs: zone1, zone2, zone3, zone4, zone5, zone6
+            // Aliases, linked to the obvious corresponding IDs: link1, link2, link3a, link3b, link3c
+            // Windows mappings:
+            // win1: zone1 (primary, UK)
+            // win2: link2 (primary, UK)
+            // win3: link3a (primary, UK)
+            // win4: zone4 (primary, UK), zone5 (FR), link3b (CA)
+            var builder = new TzdbStreamData.Builder
+            {
+                stringPool = new List<string>(),
+                tzdbIdMap = new Dictionary<string, string>
+                {
+                    { "link1", "zone1" },
+                    { "link2", "zone2" },
+                    { "link3a", "zone3" },
+                    { "link3b", "zone3" },
+                    { "link3c", "zone3" }
+                },
+                tzdbVersion = "tzdb-version",
+                windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[]
+                {
+                    new MapZone("win1", MapZone.PrimaryTerritory, new[] { "zone1" }),
+                    new MapZone("win1", "UK", new[] { "zone1" }),
+                    new MapZone("win2", MapZone.PrimaryTerritory, new[] { "link2" }),
+                    new MapZone("win2", "UK", new[] { "link2" }),
+                    new MapZone("win3", MapZone.PrimaryTerritory, new[] { "link3a" }),
+                    new MapZone("win3", "UK", new[] { "link3a" }),
+                    new MapZone("win4", MapZone.PrimaryTerritory, new[] { "zone4" }),
+                    new MapZone("win4", "UK", new[] { "zone4" }),
+                    new MapZone("win4", "FR", new[] { "zone5" }),
+                    new MapZone("win4", "CA", new[] { "link3b" }),
+                })
+            };
+            PopulateZoneFields(builder, "zone1", "zone2", "zone3", "zone4", "zone5", "zone6");
+            var source = new TzdbDateTimeZoneSource(new TzdbStreamData(builder));
+            source.Validate();
+            return source;
+        }
     }
 }
