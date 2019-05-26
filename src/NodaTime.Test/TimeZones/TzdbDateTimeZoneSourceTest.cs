@@ -404,6 +404,32 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void WindowsMappingContainsWindowsIdWithNoPrimaryTerritory()
+        {
+            var builder = CreateSampleBuilder();
+            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[]
+                {
+                    new MapZone("windows-id1", "CA", new[] { "zone1" }),
+                });
+            AssertInvalid(builder);
+        }
+
+        [Test]
+        public void WindowsMappingContainsWindowsIdWithDuplicateTerritories()
+        {
+            var builder = CreateSampleBuilder();
+            builder.windowsMapping = new WindowsZones("cldr-version", "tzdb-version", "windows-version",
+                new[]
+                {
+                    new MapZone("windows-id1", MapZone.PrimaryTerritory, new[] { "zone1" }),
+                    new MapZone("windows-id1", "CA", new[] { "zone2" }),
+                    new MapZone("windows-id1", "CA", new[] { "zone3" }),
+                });
+            AssertInvalid(builder);
+        }
+
+        [Test]
         public void ZoneLocationsContainsMissingId()
         {
             var builder = CreateSampleBuilder();
