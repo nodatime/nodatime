@@ -15,9 +15,17 @@ namespace NodaTime
     [Immutable]
     public sealed class ZonedClock : IClock
     {
-        private readonly IClock clock;
-        private readonly DateTimeZone zone;
-        private readonly CalendarSystem calendar;
+        /// <summary>Gets the clock used to provide the current instant.</summary>
+        /// <value>The time zone associated with this zoned clock.</value>
+        public IClock Clock { get; }
+
+        /// <summary>Gets the time zone used when converting the current instant into a zone-sensitive value.</summary>
+        /// <value>The time zone associated with this zoned clock.</value>
+        public DateTimeZone Zone { get; }
+
+        /// <summary>Gets the calendar system used when converting the current instant into a calendar-sensitive value.</summary>
+        /// <value>The calendar system associated with this zoned clock.</value>
+        public CalendarSystem Calendar { get; }
 
         /// <summary>
         /// Creates a new <see cref="ZonedClock"/> with the given clock, time zone and calendar system.
@@ -27,16 +35,16 @@ namespace NodaTime
         /// <param name="calendar">Calendar system to use.</param>
         public ZonedClock(IClock clock, DateTimeZone zone, CalendarSystem calendar)
         {
-            this.clock = Preconditions.CheckNotNull(clock, nameof(clock));
-            this.zone = Preconditions.CheckNotNull(zone, nameof(zone));
-            this.calendar = Preconditions.CheckNotNull(calendar, nameof(calendar));
+            Clock = Preconditions.CheckNotNull(clock, nameof(clock));
+            Zone = Preconditions.CheckNotNull(zone, nameof(zone));
+            Calendar = Preconditions.CheckNotNull(calendar, nameof(calendar));
         }
 
         /// <summary>
         /// Returns the current instant provided by the underlying clock.
         /// </summary>
         /// <returns>The current instant provided by the underlying clock.</returns>
-        public Instant GetCurrentInstant() => clock.GetCurrentInstant();
+        public Instant GetCurrentInstant() => Clock.GetCurrentInstant();
 
         /// <summary>
         /// Returns the current instant provided by the underlying clock, adjusted
@@ -45,7 +53,7 @@ namespace NodaTime
         /// <returns>The current instant provided by the underlying clock, adjusted to the
         /// time zone of this object.</returns>
         [Pure]
-        public ZonedDateTime GetCurrentZonedDateTime() => GetCurrentInstant().InZone(zone, calendar);
+        public ZonedDateTime GetCurrentZonedDateTime() => GetCurrentInstant().InZone(Zone, Calendar);
 
         /// <summary>
         /// Returns the local date/time of the current instant provided by the underlying clock, adjusted
