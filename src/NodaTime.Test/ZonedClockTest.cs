@@ -28,5 +28,16 @@ namespace NodaTime.Test
             Assert.AreEqual(new LocalDate(1969, 12, 19, julian), zonedClock.GetCurrentDate());
             Assert.AreEqual(new LocalTime(2, 0, 0), zonedClock.GetCurrentTimeOfDay());
         }
+
+        [Test]
+        public void Properties()
+        {
+            var calendar = CalendarSystem.Julian;
+            var clock = new FakeClock(NodaConstants.UnixEpoch);
+            var zonedClock = clock.InZone(SampleZone, calendar);
+            Assert.AreSame(clock, zonedClock.Clock);
+            Assert.AreSame(calendar, zonedClock.Calendar);
+            Assert.AreSame(SampleZone, zonedClock.Zone);
+        }
     }
 }
