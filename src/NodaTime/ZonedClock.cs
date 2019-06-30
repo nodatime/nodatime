@@ -16,7 +16,7 @@ namespace NodaTime
     public sealed class ZonedClock : IClock
     {
         /// <summary>Gets the clock used to provide the current instant.</summary>
-        /// <value>The time zone associated with this zoned clock.</value>
+        /// <value>The clock associated with this zoned clock.</value>
         public IClock Clock { get; }
 
         /// <summary>Gets the time zone used when converting the current instant into a zone-sensitive value.</summary>
