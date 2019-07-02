@@ -47,7 +47,7 @@ namespace NodaTime
     /// </para>
     /// <para>
     /// Noda Time has two built-in sources of time zone data available: a copy of the
-    /// <a href="http://www.iana.org/time-zones">tz database</a> (also known as the IANA Time Zone database, or zoneinfo
+    /// <a href="https://www.iana.org/time-zones">tz database</a> (also known as the IANA Time Zone database, or zoneinfo
     /// or Olson database), and the ability to convert .NET's own <see cref="TimeZoneInfo"/> format into a "native" Noda
     /// Time zone. Which of these is most appropriate for you to use will very much depend on your exact needs. The
     /// zoneinfo database is widely used outside Windows, and has more historical data than the Windows-provided

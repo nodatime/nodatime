@@ -24,16 +24,16 @@ dotnet build $SRCDIR/NodaTime.sln
 
 dotnet run -p $SRCDIR/NodaTime.TzdbCompiler -- \
   -o $OUTPUT \
-  -s http://www.iana.org/time-zones/repository/releases/tzdata$1.tar.gz \
+  -s https://data.iana.org/time-zones/releases/tzdata$1.tar.gz \
   -w $DATADIR/cldr \
   | grep -v "Skipping"
-  
+
 echo ""
 
 dotnet test ../../src/NodaTime.Test --filter=TestCategory!=Slow
 
 echo Hash on github pages:
-wget -q -O - http://nodatime.github.io/tzvalidate/tzdata$1-sha256.txt 2> /dev/null
+wget -q -O - https://nodatime.github.io/tzvalidate/tzdata$1-sha256.txt 2> /dev/null
 echo Hash from new file:
 dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash | grep -v "Skipping"
 echo Hash from new file without abbreviations:

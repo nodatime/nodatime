@@ -18,7 +18,7 @@ namespace NodaTime.TimeZones
 {
     /// <summary>
     /// Provides an implementation of <see cref="IDateTimeZoneSource" /> that loads data originating from the
-    /// <a href="http://www.iana.org/time-zones">tz database</a> (also known as the IANA Time Zone database, or zoneinfo
+    /// <a href="https://www.iana.org/time-zones">tz database</a> (also known as the IANA Time Zone database, or zoneinfo
     /// or Olson database).
     /// </summary>
     /// <remarks>
