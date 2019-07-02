@@ -195,7 +195,7 @@ namespace CommandLine
         /// </summary>
         /// <param name="shortName">The short name of the option or null if not used.</param>
         /// <param name="longName">The long name of the option or null if not used.</param>
-        public OptionAttribute(string shortName, string longName)
+        public OptionAttribute(string? shortName, string? longName)
         {
             // Always initialized to a non-null value before the constructor returns.
             _uniqueName = null!;
