@@ -17,7 +17,15 @@ environment:
 install:
 - nuget sources Add -NonInteractive -Name replicon -Source https://replicon.myget.org/F/replicon/auth/680abe10-0c9b-4b29-b466-d6257b98118e/api/v2
 - nuget sources Add -NonInteractive -Name replicon-dev -Source https://replicon.myget.org/F/developer/auth/680abe10-0c9b-4b29-b466-d6257b98118e/api/v2
-- ps: |    
+- ps: |
+    Write-Host "Installing .NET Core SDK..." -ForegroundColor Cyan
+    Write-Host "Downloading..."
+    $exePath = "$env:TEMP\dotnet-sdk.exe"
+    (New-Object Net.WebClient).DownloadFile('https://download.visualstudio.microsoft.com/download/pr/31b5b67f-b787-4f73-a728-5ec61f10a4de/be6430bcd9a62f610cd9f12f8cc2c736/dotnet-sdk-3.0.100-preview3-010431-win-x64.exe', $exePath)
+    Write-Host "Installing..."
+    cmd /c start /wait "$exePath" /quiet /norestart
+    del $exePath
+    Write-Host "Installed" -ForegroundColor Green
     $env:component_version = $env:APPVEYOR_BUILD_VERSION
     If ($env:APPVEYOR_REPO_BRANCH -ne "master") {
       $nuget_suffix = $env:APPVEYOR_REPO_BRANCH.substring(0, [System.Math]::Min(20, $env:APPVEYOR_REPO_BRANCH.length)) -replace "[^a-zA-Z0-9\-]","-"
@@ -31,21 +39,12 @@ assembly_info:
   assembly_version: "1.0.0.0"
   assembly_file_version: "{version}"
   assembly_informational_version: "$(component_version)"
-
-before_build:
-  - nuget restore  
-
-# Perform the build.
-build:
-  parallel: true
-  project: src/NodaTime.sln
-  publish_nuget: true
-  verbosity: minimal
   
-#build_script:
-#  - bash build/appveyor.sh
-#  - choco install codecov
-#  - codecov -f coverage/coverage.xml
+# Perform the build.
+build_script:
+  - bash build/appveyor.sh
+  - choco install codecov
+  - codecov -f coverage/coverage.xml
 
 deploy:
   #push package to developer NuGet feed

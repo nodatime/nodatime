@@ -11,7 +11,7 @@
     <Company>Replicon</Company>
     <LangVersion>preview</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeBuiltProjectOutputGroup>True</IncludeBuiltProjectOutputGroup>
     <ApplicationIcon />
     <StartupObject />
