@@ -28,9 +28,11 @@ namespace NodaTime.Test.Annotations
                 m.Name,
                 string.Join(", ", GetParameters(m).Select(p => p.ParameterType)));
 
-        private static bool InvalidForTrustedParameters(dynamic member) =>
+        private static bool InvalidForTrustedParameters(dynamic member)
+        {
             // We'll need to be more specific at some point, but this will do to start with...
-            member.IsPublic && (member.DeclaringType.IsPublic || member.DeclaringType.IsNestedPublic);
+            return member.IsPublic && (member.DeclaringType.IsPublic || member.DeclaringType.IsNestedPublic);
+        }
 
         private static IEnumerable<ParameterInfo> GetParameters(MemberInfo member)
         {
