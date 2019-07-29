@@ -19,7 +19,3 @@ dotnet test -c Release src/NodaTime.Test --filter=TestCategory!=Slow
 dotnet test -c Release src/NodaTime.TzdbCompiler.Test
 
 dotnet pack src/NodaTime.TzdbCompiler -c Release
-
-# Run the tests under dotCover. (This is after the non-coverage tests,
-# so that if there are any test failures we get those sooner.)
-build/coverage.sh
