@@ -5,7 +5,7 @@
     <AssemblyTitle>Noda Time</AssemblyTitle>
     <VersionPrefix>3.0.0</VersionPrefix>
     <Authors>Jon Skeet</Authors>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
@@ -18,6 +18,7 @@
     <Deterministic>True</Deterministic>
     <LangVersion>preview</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

@@ -7,7 +7,6 @@ using NodaTime.TimeZones;
 using NodaTime.Tools.Common;
 using System;
 using System.IO;
-using System.Net.Http;
 
 namespace NodaTime.TzValidate.NzdCompatibility
 {

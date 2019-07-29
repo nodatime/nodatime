@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-16"?>
+<package>
+  <metadata>
+    <id>NodaTime.TzdbCompiler</id>
+    <version>@VERSION@</version>
+    <title>NodaTime.TzdbCompiler</title>
+    <authors>Replicon</authors>
+    <owners>Replicon</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NodaTime library to compile Tzdb</description>
+  </metadata>
+  <files>
+    <file src="bin\Release\net461\NodaTime.pdb" target="lib\net461\"/>
+	<file src="bin\Release\net461\NodaTime.Tools.Common.pdb" target="lib\net461\"/>
+	<file src="bin\Release\net461\NodaTime.TzdbCompiler.pdb" target="lib\net461\"/>
+	<file src="bin\Release\net461\SharpCompress.dll" target="lib\net461\"/>
+	<file src="bin\Release\net461\NodaTime.dll" target="lib\net461\"/>
+	<file src="bin\Release\net461\NodaTime.Tools.Common.dll" target="lib\net461\"/>
+	<file src="bin\Release\net461\NodaTime.TzdbCompiler.dll" target="lib\net461\"/>
+  </files>
+</package>

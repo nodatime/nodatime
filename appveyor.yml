@@ -1,13 +1,14 @@
 # Version for the build. We make it clear that it's
 # Appveyor as this isn't a version we expect to make
 # it elsewhere...
-version: 1.0.{build}-appveyor
+version: 1.0.{build}
 
 image: Visual Studio 2017
 
 branches:
   only:
     - master
+    - CORE-3257
 
 environment:
   COVERALLS_REPO_TOKEN:

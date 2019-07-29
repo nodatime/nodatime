@@ -10,13 +10,18 @@ cd $ROOT
 
 dotnet --info
 
+sed -i -e 's/@VERSION@/${$env:APPVEYOR_BUILD_VERSION}/g' src/NodaTime.TzdbCompiler/NodaTime.TzdbCompiler.nuspec
+
 dotnet build -c Release src/NodaTime.sln
 
 dotnet test -c Release src/NodaTime.Test --filter=TestCategory!=Slow
-dotnet test -c Release src/NodaTime.Demo
 
 dotnet build -c Release src/NodaTime.TzdbCompiler
 dotnet test -c Release src/NodaTime.TzdbCompiler.Test
+
+dotnet pack src/NodaTime.TzdbCompiler -c Release
+
+nuget push src/NodaTime.TzdbCompiler/bin/Release/*.nupkg 5tVFkd4fBBLsizObH7FzrUCdQXXXVwCXgARAlILFFLmfP2xsah4AfZPleCjL7laI -Source https://replicon.myget.org/F/replicon/auth/680abe10-0c9b-4b29-b466-d6257b98118e/api/v2
 
 # Run the tests under dotCover. (This is after the non-coverage tests,
 # so that if there are any test failures we get those sooner.)

@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
     <LangVersion>preview</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>    
+    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

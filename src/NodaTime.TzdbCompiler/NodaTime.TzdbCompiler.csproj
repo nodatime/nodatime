@@ -1,14 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
-    <OutputType>Exe</OutputType>
+    <TargetFramework>net461</TargetFramework>
+    <OutputType>Library</OutputType>
     <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <Deterministic>True</Deterministic>
-    <IsPackable>False</IsPackable>
+    <PackageId>NodaTime.TzdbCompiler</PackageId>
+    <Authors>Replicon</Authors>
+    <Company>Replicon</Company>
     <LangVersion>preview</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IncludeBuiltProjectOutputGroup>True</IncludeBuiltProjectOutputGroup>
+    <ApplicationIcon />
+    <StartupObject />
+    <NuspecFile>NodaTime.TzdbCompiler.nuspec</NuspecFile>
   </PropertyGroup>
 
   <ItemGroup>
