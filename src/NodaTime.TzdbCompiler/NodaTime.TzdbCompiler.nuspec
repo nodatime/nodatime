@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>NodaTime.TzdbCompiler</id>
-    <version>@VERSION@</version>
+    <version>$version$</version>
     <title>NodaTime.TzdbCompiler</title>
     <authors>Replicon</authors>
     <owners>Replicon</owners>

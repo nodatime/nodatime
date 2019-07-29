@@ -1,7 +1,7 @@
 # Version for the build. We make it clear that it's
 # Appveyor as this isn't a version we expect to make
 # it elsewhere...
-version: 1.0.{build}
+version: 1.0.0.{build}
 
 image: Visual Studio 2017
 
@@ -15,6 +15,8 @@ environment:
     secure: 0MrjEwujECMnIaBkI76fNmCpKy5jr9rZx0rAFOM+41frhVfy2r0ldzzoFC4bvGig
 
 install:
+- nuget sources Add -NonInteractive -Name replicon -Source https://replicon.myget.org/F/replicon/auth/680abe10-0c9b-4b29-b466-d6257b98118e/api/v2
+- nuget sources Add -NonInteractive -Name replicon-dev -Source https://replicon.myget.org/F/developer/auth/680abe10-0c9b-4b29-b466-d6257b98118e/api/v2
 - ps: |
     Write-Host "Installing .NET Core SDK..." -ForegroundColor Cyan
     Write-Host "Downloading..."
@@ -24,12 +26,48 @@ install:
     cmd /c start /wait "$exePath" /quiet /norestart
     del $exePath
     Write-Host "Installed" -ForegroundColor Green
+    $env:component_version = $env:APPVEYOR_BUILD_VERSION
+    If ($env:APPVEYOR_REPO_BRANCH -ne "master") {
+      $nuget_suffix = $env:APPVEYOR_REPO_BRANCH.substring(0, [System.Math]::Min(20, $env:APPVEYOR_REPO_BRANCH.length)) -replace "[^a-zA-Z0-9\-]","-"
+      $env:component_version = $env:component_version + "-" + $nuget_suffix
+    }
+    Write-Host "Nuget Component Version:" $env:component_version
 
+assembly_info:
+  patch: true
+  file: AssemblyInfo.*
+  assembly_version: "1.0.0.0"
+  assembly_file_version: "{version}"
+  assembly_informational_version: "$(component_version)"
+  
 # Perform the build.
 build_script:
   - bash build/appveyor.sh
   - choco install codecov
   - codecov -f coverage/coverage.xml
 
+deploy:
+  #push package to developer NuGet feed
+  - provider: NuGet
+    server: https://replicon.myget.org/F/developer
+    api_key:
+      secure: 5tVFkd4fBBLsizObH7FzrUCdQXXXVwCXgARAlILFFLmfP2xsah4AfZPleCjL7laI
+    skip_symbols: true
+    artifact: /.*\.nupkg/
+    max_error_retry: 2
+    on:
+      release_build: False
+
+    # if master, push NuGet package to MyGet
+  - provider: NuGet
+    server: https://replicon.myget.org/F/replicon
+    api_key:
+      secure: 5tVFkd4fBBLsizObH7FzrUCdQXXXVwCXgARAlILFFLmfP2xsah4AfZPleCjL7laI
+    skip_symbols: true
+    artifact: /.*\.nupkg/
+    max_error_retry: 2
+    on:
+      release_build: True
+      
 # The tests are run as part of the build.
 test: off
