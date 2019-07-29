@@ -56,7 +56,7 @@ deploy:
     artifact: /.*\.nupkg/
     max_error_retry: 2
     on:
-      release_build: False
+      branch: /^((?!master).)*$/
 
     # if master, push NuGet package to MyGet
   - provider: NuGet
@@ -67,7 +67,7 @@ deploy:
     artifact: /.*\.nupkg/
     max_error_retry: 2
     on:
-      release_build: True
+      branch: master
       
 # The tests are run as part of the build.
 test: off
