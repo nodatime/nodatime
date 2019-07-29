@@ -46,6 +46,9 @@ build_script:
   - choco install codecov
   - codecov -f coverage/coverage.xml
 
+artifact:
+  - path: '**\*.nupkg'
+ 
 deploy:
   #push package to developer NuGet feed
   - provider: NuGet
