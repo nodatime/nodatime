@@ -10,7 +10,7 @@ cd $ROOT
 
 dotnet --info
 
-sed -i -e "s/$version$/${APPVEYOR_BUILD_VERSION}/g" src/NodaTime.TzdbCompiler/NodaTime.TzdbCompiler.nuspec
+sed -i -e "s/@VERSION@/${APPVEYOR_BUILD_VERSION}/g" src/NodaTime.TzdbCompiler/NodaTime.TzdbCompiler.nuspec
 
 dotnet build -c Release src/NodaTime.sln
 
