@@ -46,7 +46,7 @@ build_script:
   - choco install codecov
   - codecov -f coverage/coverage.xml
 
-artifact:
+artifacts:
   - path: '**\*.nupkg'
  
 deploy:
