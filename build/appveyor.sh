@@ -14,7 +14,6 @@ dotnet build -c Release src/NodaTime.sln
 
 dotnet test -c Release src/NodaTime.Test --filter=TestCategory!=Slow
 
-dotnet build -c Release src/NodaTime.TzdbCompiler
 dotnet test -c Release src/NodaTime.TzdbCompiler.Test
 
 # Run the tests under dotCover. (This is after the non-coverage tests,
