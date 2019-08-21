@@ -569,6 +569,25 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the earlier date of the given two.
+        /// </summary>
+        /// <param name="x">The first date to compare.</param>
+        /// <param name="y">The second date to compare.</param>
+        /// <exception cref="ArgumentException">The two dates have different calendar systems.</exception>
+        /// <returns>The earlier date of <paramref name="x"/> or <paramref name="y"/>.
+        /// If either of the dates is null, the non-null value is returned. If both dates are null, null is returned.</returns>
+        public static LocalDate? Min(LocalDate? x, LocalDate? y)
+        {
+            if (x is null)
+                return y;
+
+            if (y is null)
+                return x;
+
+            return Min(x.Value, y.Value);
+        }
+
+        /// <summary>
         /// Returns a hash code for this local date.
         /// </summary>
         /// <returns>A hash code for this local date.</returns>
