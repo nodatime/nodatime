@@ -6,7 +6,8 @@
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
     <LangVersion>preview</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>    
+    <NullableContextOptions>enable</NullableContextOptions>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
