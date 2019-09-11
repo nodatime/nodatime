@@ -8,7 +8,6 @@
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
     <LangVersion>preview</LangVersion>
-    <NullableContextOptions>enable</NullableContextOptions>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
