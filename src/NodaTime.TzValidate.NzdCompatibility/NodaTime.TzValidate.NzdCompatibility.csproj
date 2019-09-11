@@ -5,6 +5,8 @@
     <OutputType>Exe</OutputType>
     <Deterministic>True</Deterministic>
     <IsPackable>False</IsPackable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>

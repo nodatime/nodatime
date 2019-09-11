@@ -7,6 +7,8 @@
     <IsPackable>False</IsPackable>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>
