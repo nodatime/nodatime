@@ -15,6 +15,8 @@
     <Deterministic>True</Deterministic>
     <LangVersion>preview</LangVersion>
     <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>
