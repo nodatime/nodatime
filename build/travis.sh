@@ -2,7 +2,7 @@
 
 set -e
 
-curl -o preview-sdk.tgz https://download.visualstudio.microsoft.com/download/pr/35c9c95a-535e-4f00-ace0-4e1686e33c6e/b9787e68747a7e8a2cf8cc530f4b2f88/dotnet-sdk-3.0.100-preview3-010431-linux-x64.tar.gz
+curl -o preview-sdk.tgz https://download.visualstudio.microsoft.com/download/pr/498b8b41-7626-435e-bea8-878c39ccbbf3/c8df08e881d1bcf9a49a9ff5367090cc/dotnet-sdk-3.0.100-preview9-014004-linux-x64.tar.gz
 mkdir -p $HOME/dotnet && tar zxf preview-sdk.tgz -C $HOME/dotnet
 export DOTNET_ROOT=$HOME/dotnet 
 export PATH=$HOME/dotnet:$PATH
