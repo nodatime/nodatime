@@ -18,7 +18,7 @@ install:
     Write-Host "Installing .NET Core SDK..." -ForegroundColor Cyan
     Write-Host "Downloading..."
     $exePath = "$env:TEMP\dotnet-sdk.exe"
-    (New-Object Net.WebClient).DownloadFile('https://download.visualstudio.microsoft.com/download/pr/31b5b67f-b787-4f73-a728-5ec61f10a4de/be6430bcd9a62f610cd9f12f8cc2c736/dotnet-sdk-3.0.100-preview3-010431-win-x64.exe', $exePath)
+    (New-Object Net.WebClient).DownloadFile('https://download.visualstudio.microsoft.com/download/pr/27e21201-9d9d-49c9-a80e-fe09a7859c06/26c8cf6cd21c350f929440f3f0d1d631/dotnet-sdk-3.0.100-preview9-014004-win-x64.exe', $exePath)
     Write-Host "Installing..."
     cmd /c start /wait "$exePath" /quiet /norestart
     del $exePath
