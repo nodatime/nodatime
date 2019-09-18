@@ -50,7 +50,7 @@ namespace NodaTime
         public static IDateTimeZoneProvider Bcl => BclHolder.BclImpl;
 
         private static readonly object SerializationProviderLock = new object();
-        private static IDateTimeZoneProvider serializationProvider;
+        private static IDateTimeZoneProvider? serializationProvider;
 
         /// <summary>
         /// Gets the <see cref="IDateTimeZoneProvider"/> to use to interpret a time zone ID read as part of
