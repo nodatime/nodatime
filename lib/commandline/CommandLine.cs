@@ -447,12 +447,18 @@ namespace CommandLine
             while (ae.MoveNext())
             {
                 if (IsInputValue(ae.Current))
+                {
                     list.Add(ae.Current);
+                }
                 else
+                {
                     break;
+                }
             }
             if (!ae.MovePrevious())
+            {
                 throw new CommandLineParserException();
+            }
 
             return list;
         }
@@ -475,10 +481,14 @@ namespace CommandLine
         protected static ParserState BooleanToParserState(bool value, bool addMoveNextIfTrue)
         {
             if (value && !addMoveNextIfTrue)
+            {
                 return ParserState.Success;
+            }
 
             if (value)
+            {
                 return ParserState.Success | ParserState.MoveOnNextElement;
+            }
 
             return ParserState.Failure;
         }
@@ -486,13 +496,17 @@ namespace CommandLine
         protected static void EnsureOptionAttributeIsArrayCompatible(OptionInfo option)
         {
             if (!option.IsAttributeArrayCompatible)
+            {
                 throw new CommandLineParserException();
+            }
         }
 
         protected static void EnsureOptionArrayAttributeIsNotBoundToScalar(OptionInfo option)
         {
             if (!option.IsArray && option.IsAttributeArrayCompatible)
+            {
                 throw new CommandLineParserException();
+            }
         }
     }
 
@@ -554,7 +568,9 @@ namespace CommandLine
             bool valueSetting;
 
             if (option == null)
+            {
                 return _ignoreUnkwnownArguments ? ParserState.MoveOnNextElement : ParserState.Failure;
+            }
 
             option.IsDefined = true;
 
@@ -574,7 +590,9 @@ namespace CommandLine
                     {
                         valueSetting = option.SetValue(parts[1], options);
                         if (!valueSetting)
+                        {
                             this.DefineOptionThatViolatesFormat(option);
+                        }
 
                         return ArgumentParser.BooleanToParserState(valueSetting);
                     }
@@ -586,7 +604,9 @@ namespace CommandLine
 
                     valueSetting = option.SetValue(items, options);
                     if (!valueSetting)
+                    {
                         this.DefineOptionThatViolatesFormat(option);
+                    }
 
                     return ArgumentParser.BooleanToParserState(valueSetting);
                 }
@@ -609,7 +629,9 @@ namespace CommandLine
 
                     valueSetting = option.SetValue(items, options);
                     if (!valueSetting)
+                    {
                         this.DefineOptionThatViolatesFormat(option);
+                    }
 
                     //return ArgumentParser.BooleanToParserState(valueSetting, true);
                     return ArgumentParser.BooleanToParserState(valueSetting);
@@ -617,11 +639,15 @@ namespace CommandLine
             }
 
             if (parts.Length == 2)
+            {
                 return ParserState.Failure;
+            }
 
             valueSetting = option.SetValue(true, options);
             if (!valueSetting)
+            {
                 this.DefineOptionThatViolatesFormat(option);
+            }
 
             return ArgumentParser.BooleanToParserState(valueSetting);
         }
@@ -686,10 +712,14 @@ namespace CommandLine
         public string GetRemainingFromNext()
         {
             if (_index == -1)
+            {
                 throw new InvalidOperationException();
+            }
 
             if (_index > _data.Length)
+            {
                 throw new InvalidOperationException();
+            }
 
             return _data.Substring(_index + 1);
         }
@@ -756,7 +786,9 @@ namespace CommandLine
 
                         valueSetting = option.SetValue(items, options);
                         if (!valueSetting)
+                        {
                             this.DefineOptionThatViolatesFormat(option);
+                        }
 
                         return ArgumentParser.BooleanToParserState(valueSetting, true);
                     }
@@ -784,17 +816,23 @@ namespace CommandLine
 
                         valueSetting = option.SetValue(items, options);
                         if (!valueSetting)
+                        {
                             this.DefineOptionThatViolatesFormat(option);
+                        }
 
                         return ArgumentParser.BooleanToParserState(valueSetting);
                     }
                 }
 
                 if (!@group.IsLast && map[@group.Next!] == null)
+                {
                     return ParserState.Failure;
+                }
 
                 if (!option.SetValue(true, options))
+                {
                     return ParserState.Failure;
+                }
             }
 
             return ParserState.Success;
@@ -860,10 +898,14 @@ namespace CommandLine
         public bool SetValue(string value, object options)
         {
             if (_attribute is OptionListAttribute)
+            {
                 return SetValueList(value, options);
+            }
 
             if (ReflectionUtil.IsNullableType(_property.PropertyType))
+            {
                 return SetNullableValue(value, options);
+            }
 
             return SetValueScalar(value, options);
         }
@@ -1164,8 +1206,10 @@ namespace CommandLine
         private static void BuildAndSetPostParsingStateIfNeeded(object options, OptionInfo option, bool? required, bool? mutualExclusiveness)
         {
             var commandLineOptionsBase = options as CommandLineOptionsBase;
-            if (commandLineOptionsBase == null) 
+            if (commandLineOptionsBase == null)
+            {
                 return;
+            }
 
             var error = new ParsingError {
                 BadOption = {
@@ -1174,8 +1218,14 @@ namespace CommandLine
                 }
             };
 
-            if (required != null) error.ViolatesRequired = required.Value;
-            if (mutualExclusiveness != null) error.ViolatesMutualExclusiveness = mutualExclusiveness.Value;
+            if (required != null)
+            {
+                error.ViolatesRequired = required.Value;
+            }
+            if (mutualExclusiveness != null)
+            {
+                error.ViolatesMutualExclusiveness = mutualExclusiveness.Value;
+            }
 
             (commandLineOptionsBase).InternalLastPostParsingState.Errors.Add(error);
         }
@@ -1215,7 +1265,9 @@ namespace CommandLine
             var other = obj as Pair<TLeft, TRight>;
 
             if (other == null)
+            {
                 return false;
+            }
 
             return Equals(_left, other._left) && Equals(_right, other._right);
         }
@@ -1751,13 +1803,17 @@ namespace CommandLine
                 if (!string.IsNullOrEmpty(helpOption.ShortName))
                 {
                     if (ArgumentParser.CompareShort(args[i], helpOption.ShortName, caseSensitive))
+                    {
                         return true;
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(helpOption.LongName))
                 {
                     if (ArgumentParser.CompareLong(args[i], helpOption.LongName, caseSensitive))
+                    {
                         return true;
+                    }
                 }
             }
 
@@ -1769,7 +1825,9 @@ namespace CommandLine
         {
             var commandLineOptionsBase = options as CommandLineOptionsBase;
             if (commandLineOptionsBase != null)
-                (commandLineOptionsBase).InternalLastPostParsingState.Errors.AddRange(state);
+            {
+                commandLineOptionsBase.InternalLastPostParsingState.Errors.AddRange(state);
+            }
         }
     }
     #endregion
@@ -1781,19 +1839,25 @@ namespace CommandLine
                 where T : class
         {
             if (value == null)
+            {
                 throw new ArgumentNullException(paramName);
+            }
         }
 
         public static void NotNullOrEmpty(string value, string paramName)
         {
             if (string.IsNullOrEmpty(value))
+            {
                 throw new ArgumentException(paramName);
+            }
         }
 
         public static void NotZeroLength<T>(T[] array, string paramName)
         {
             if (array.Length == 0)
+            {
                 throw new ArgumentOutOfRangeException(paramName);
+            }
         }
     }
 
@@ -1816,7 +1880,9 @@ namespace CommandLine
                         {
                             var attribute = property.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
                             if (attribute != null)
+                            {
                                 list.Add(new Pair<PropertyInfo, TAttribute>(property, attribute));
+                            }
                         }
                     }
                 }
@@ -1880,7 +1946,9 @@ namespace CommandLine
                     {
                         var attribute = property.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
                         if (attribute != null)
+                        {
                             list.Add(attribute);
+                        }
                     }
                 }
             }
