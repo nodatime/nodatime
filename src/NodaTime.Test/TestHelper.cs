@@ -269,7 +269,7 @@ namespace NodaTime.Test
         {
             TestObjectEquals(value, equalValue, unequalValues);
             Assert.False(value.Equals(null), "value.Equals<T>(null)");
-            Assert.True(value.Equals(value), "value.Equals<T>(value)");
+            Assert.True(value!.Equals(value), "value.Equals<T>(value)");
             Assert.True(value.Equals(equalValue), "value.Equals<T>(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals<T>(value)");
             foreach (var unequal in unequalValues)
@@ -312,7 +312,7 @@ namespace NodaTime.Test
         {
             ValidateInput(value, equalValue, unequalValues, "unequalValue");
             Assert.False(value.Equals(null), "value.Equals(null)");
-            Assert.True(value.Equals(value), "value.Equals(value)");
+            Assert.True(value!.Equals(value), "value.Equals(value)");
             Assert.True(value.Equals(equalValue), "value.Equals(equalValue)");
             Assert.True(equalValue.Equals(value), "equalValue.Equals(value)");
             foreach (var unequalValue in unequalValues)

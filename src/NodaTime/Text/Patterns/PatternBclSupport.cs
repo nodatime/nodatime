@@ -29,7 +29,8 @@ namespace NodaTime.Text.Patterns
                 patternText = defaultFormatPattern;
             }
             NodaFormatInfo formatInfo = NodaFormatInfo.GetInstance(formatProvider);
-            IPattern<T> pattern = patternParser(formatInfo).ParsePattern(patternText);
+            // TODO(nullable): Work out why Roslyn doesn't know about string.IsNullOrEmpty any more.
+            IPattern<T> pattern = patternParser(formatInfo).ParsePattern(patternText!);
             return pattern.Format(value);
         }
     }

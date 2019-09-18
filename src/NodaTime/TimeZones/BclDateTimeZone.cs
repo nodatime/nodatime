@@ -37,7 +37,7 @@ namespace NodaTime.TimeZones
         /// matter if it's out of date - we'll just create another wrapper if necessary. It's not *that* expensive to make
         /// a few more wrappers than we need.
         /// </summary>
-        private static BclDateTimeZone systemDefault;
+        private static BclDateTimeZone? systemDefault;
 
         private readonly IZoneIntervalMap map;
 
@@ -397,7 +397,7 @@ namespace NodaTime.TimeZones
             {
                 throw new InvalidOperationException("No system default time zone is available");
             }
-            BclDateTimeZone currentSystemDefault = systemDefault;
+            BclDateTimeZone? currentSystemDefault = systemDefault;
 
             // Cached copy is out of date - wrap a new one.
             // If currentSystemDefault is null, we always enter this block (as local isn't null).
@@ -407,9 +407,7 @@ namespace NodaTime.TimeZones
                 systemDefault = currentSystemDefault;
             }
             // Always return our local variable; the field may have changed again.
-            // The ! is because the compiler doesn't recognize the logic around
-            // "always fetch if we currentSystemDefault is null".
-            return currentSystemDefault!;
+            return currentSystemDefault;
         }
     }
 }
