@@ -201,11 +201,11 @@ namespace CommandLine
             _uniqueName = null!;
             if (!string.IsNullOrEmpty(shortName))
             {
-                _uniqueName = shortName;
+                _uniqueName = shortName!;
             }
             else if (!string.IsNullOrEmpty(longName))
             {
-                _uniqueName = longName;
+                _uniqueName = longName!;
             }
             if (_uniqueName == null)
             {
@@ -1029,7 +1029,7 @@ namespace CommandLine
                     {
                         _property.SetValue(options, _defaultValue, null);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         throw new CommandLineParserException("Bad default value.", e);
                     }
@@ -1802,7 +1802,7 @@ namespace CommandLine
             {
                 if (!string.IsNullOrEmpty(helpOption.ShortName))
                 {
-                    if (ArgumentParser.CompareShort(args[i], helpOption.ShortName, caseSensitive))
+                    if (ArgumentParser.CompareShort(args[i], helpOption.ShortName!, caseSensitive))
                     {
                         return true;
                     }
@@ -1810,7 +1810,7 @@ namespace CommandLine
 
                 if (!string.IsNullOrEmpty(helpOption.LongName))
                 {
-                    if (ArgumentParser.CompareLong(args[i], helpOption.LongName, caseSensitive))
+                    if (ArgumentParser.CompareLong(args[i], helpOption.LongName!, caseSensitive))
                     {
                         return true;
                     }

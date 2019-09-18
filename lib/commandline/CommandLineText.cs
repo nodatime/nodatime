@@ -462,7 +462,7 @@ namespace CommandLine.Text
             {
                 if (!string.IsNullOrEmpty(text))
                 {
-                    helpText.AddPreOptionsLine(text);
+                    helpText.AddPreOptionsLine(text!);
                 }
             }
 
@@ -470,7 +470,7 @@ namespace CommandLine.Text
             {
                 if (!string.IsNullOrEmpty(text))
                 {
-                    helpText.AddPostOptionsLine(text);
+                    helpText.AddPostOptionsLine(text!);
                 }
             }
         }
@@ -1058,7 +1058,7 @@ namespace CommandLine.Text
                 do
                 {
                     int wordBuffer = 0;
-                    var words = option.HelpText.Split (new[] {' '});
+                    var words = option.HelpText!.Split (new[] {' '});
                     for (int i = 0; i < words.Length; i++)
                     {
                         if (words [i].Length < (widthOfHelpText - wordBuffer))
