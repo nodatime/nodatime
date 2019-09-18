@@ -443,19 +443,35 @@ namespace CommandLine.Text
         {
             if (before)
             {
-                if (!string.IsNullOrEmpty(_line1)) helpText.AddPreOptionsLine(_line1);
-                if (!string.IsNullOrEmpty(_line2)) helpText.AddPreOptionsLine(_line2);
-                if (!string.IsNullOrEmpty(_line3)) helpText.AddPreOptionsLine(_line3);
-                if (!string.IsNullOrEmpty(_line4)) helpText.AddPreOptionsLine(_line4);
-                if (!string.IsNullOrEmpty(_line5)) helpText.AddPreOptionsLine(_line5);
+                MaybeAddPreOptionsLine(_line1);
+                MaybeAddPreOptionsLine(_line2);
+                MaybeAddPreOptionsLine(_line3);
+                MaybeAddPreOptionsLine(_line4);
+                MaybeAddPreOptionsLine(_line5);
             }
             else
             {
-                if (!string.IsNullOrEmpty(_line1)) helpText.AddPostOptionsLine(_line1);
-                if (!string.IsNullOrEmpty(_line2)) helpText.AddPostOptionsLine(_line2);
-                if (!string.IsNullOrEmpty(_line3)) helpText.AddPostOptionsLine(_line3);
-                if (!string.IsNullOrEmpty(_line4)) helpText.AddPostOptionsLine(_line4);
-                if (!string.IsNullOrEmpty(_line5)) helpText.AddPostOptionsLine(_line5);
+                MaybeAddPostOptionsLine(_line1);
+                MaybeAddPostOptionsLine(_line2);
+                MaybeAddPostOptionsLine(_line3);
+                MaybeAddPostOptionsLine(_line4);
+                MaybeAddPostOptionsLine(_line5);
+            }
+
+            void MaybeAddPreOptionsLine(string? text)
+            {
+                if (!string.IsNullOrEmpty(text))
+                {
+                    helpText.AddPreOptionsLine(text);
+                }
+            }
+
+            void MaybeAddPostOptionsLine(string? text)
+            {
+                if (!string.IsNullOrEmpty(text))
+                {
+                    helpText.AddPostOptionsLine(text);
+                }
             }
         }
     }
@@ -740,11 +756,20 @@ namespace CommandLine.Text
         public static HelpText AutoBuild(object options, HandleParsingErrorsDelegate? errDelegate)
         {
             var title = ReflectionUtil.GetAttribute<AssemblyTitleAttribute>();
-            if (title == null) throw new InvalidOperationException("HelpText::AutoBuild() requires that you define AssemblyTitleAttribute.");
+            if (title == null)
+            {
+                throw new InvalidOperationException("HelpText::AutoBuild() requires that you define AssemblyTitleAttribute.");
+            }
             var version = ReflectionUtil.GetAttribute<AssemblyInformationalVersionAttribute>();
-            if (version == null) throw new InvalidOperationException("HelpText::AutoBuild() requires that you define AssemblyInformationalVersionAttribute.");
+            if (version == null)
+            {
+                throw new InvalidOperationException("HelpText::AutoBuild() requires that you define AssemblyInformationalVersionAttribute.");
+            }
             var copyright = ReflectionUtil.GetAttribute<AssemblyCopyrightAttribute>();
-            if (copyright == null) throw new InvalidOperationException("HelpText::AutoBuild() requires that you define AssemblyCopyrightAttribute.");
+            if (copyright == null)
+            {
+                throw new InvalidOperationException("HelpText::AutoBuild() requires that you define AssemblyCopyrightAttribute.");
+            }
 
             var auto = new HelpText {
                 Heading = new HeadingInfo(Path.GetFileNameWithoutExtension(title.Title), version.InformationalVersion),
@@ -959,7 +984,10 @@ namespace CommandLine.Text
                 {
                     line.Append ('-');
                     line.Append (e.BadOption.ShortName);
-                    if (!string.IsNullOrEmpty(e.BadOption.LongName)) line.Append ('/');
+                    if (!string.IsNullOrEmpty(e.BadOption.LongName))
+                    {
+                        line.Append('/');
+                    }
                 }
                 if (!string.IsNullOrEmpty(e.BadOption.LongName))
                 {
