@@ -17,7 +17,7 @@ namespace NodaTime.Test.Calendars
         private static readonly IEnumerable<NamedWrapper<Era>> Eras = typeof(Era).GetTypeInfo()
             .DeclaredProperties // TODO: Only static and public ones...
             .Where(property => property.PropertyType == typeof(Era))
-            .Select(property => new NamedWrapper<Era>((Era) property.GetValue(null, null), property.Name));
+            .Select(property => new NamedWrapper<Era>((Era) property.GetValue(null, null)!, property.Name));
 
         [Test]
         [TestCaseSource(nameof(Eras))]

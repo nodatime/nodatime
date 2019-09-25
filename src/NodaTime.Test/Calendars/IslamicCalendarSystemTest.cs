@@ -14,6 +14,8 @@ namespace NodaTime.Test.Calendars
     public class IslamicCalendarSystemTest
     {
         private static readonly CalendarSystem SampleCalendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil);
+        private static IEnumerable<IslamicEpoch> Epochs => Enum.GetValues(typeof(IslamicEpoch)).Cast<IslamicEpoch>();
+        private static IEnumerable<IslamicLeapYearPattern> LeapYearPatterns => Enum.GetValues(typeof(IslamicLeapYearPattern)).Cast<IslamicLeapYearPattern>();
 
         [Test]
         public void SampleDate1()
@@ -330,9 +332,9 @@ namespace NodaTime.Test.Calendars
             var set = new HashSet<CalendarSystem>();
             var ids = new HashSet<string>();
 
-            foreach (IslamicLeapYearPattern leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)))
+            foreach (var leapYearPattern in LeapYearPatterns)
             {
-                foreach (IslamicEpoch epoch in Enum.GetValues(typeof(IslamicEpoch)))
+                foreach (var epoch in Epochs)
                 {
                     var calendar = CalendarSystem.GetIslamicCalendar(leapYearPattern, epoch);
                     queue.Enqueue(calendar);
@@ -342,9 +344,9 @@ namespace NodaTime.Test.Calendars
             }
 
             // Now check we get the same references again...
-            foreach (IslamicLeapYearPattern leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)))
+            foreach (var leapYearPattern in LeapYearPatterns)
             {
-                foreach (IslamicEpoch epoch in Enum.GetValues(typeof(IslamicEpoch)))
+                foreach (var epoch in Epochs)
                 {
                     var oldCalendar = queue.Dequeue();
                     var newCalendar = CalendarSystem.GetIslamicCalendar(leapYearPattern, epoch);
@@ -356,12 +358,10 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void GetInstance_ArgumentValidation()
         {
-            var epochs = Enum.GetValues(typeof(IslamicEpoch)).Cast<IslamicEpoch>();
-            var leapYearPatterns = Enum.GetValues(typeof(IslamicLeapYearPattern)).Cast<IslamicLeapYearPattern>();
-            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Min() - 1, epochs.Min()));
-            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Min(), epochs.Min() - 1));
-            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Max() + 1, epochs.Min()));
-            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(leapYearPatterns.Min(), epochs.Max() + 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(LeapYearPatterns.Min() - 1, Epochs.Min()));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(LeapYearPatterns.Min(), Epochs.Min() - 1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(LeapYearPatterns.Max() + 1, Epochs.Min()));
+            Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.GetIslamicCalendar(LeapYearPatterns.Min(), Epochs.Max() + 1));
         }
 
         [Test]

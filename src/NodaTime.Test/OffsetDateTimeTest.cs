@@ -34,7 +34,7 @@ namespace NodaTime.Test
                                                          .Where(p => localDateTimePropertyNames.Contains(p.Name));
             foreach (var property in commonProperties)
             {
-                Assert.AreEqual(typeof(LocalDateTime).GetProperty(property.Name).GetValue(local, null),
+                Assert.AreEqual(typeof(LocalDateTime).GetProperty(property.Name)!.GetValue(local, null),
                                 property.GetValue(odt, null));
             }
         }

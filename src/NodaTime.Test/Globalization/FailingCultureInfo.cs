@@ -49,9 +49,7 @@ namespace NodaTime.Test.Globalization
 
         public override string Name => "Failing";
 
-        public override object GetFormat(Type formatType)
-        {
+        public override object GetFormat(Type? formatType) =>
             throw new NotSupportedException(CultureNotSet);
-        }
     }
 }

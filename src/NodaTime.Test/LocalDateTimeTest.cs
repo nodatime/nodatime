@@ -10,6 +10,7 @@ using NodaTime.TimeZones;
 using NodaTime.Utility;
 using NUnit.Framework;
 using NodaTime.Test.Calendars;
+using System.Linq;
 
 namespace NodaTime.Test
 {
@@ -55,7 +56,7 @@ namespace NodaTime.Test
         public void FromDateTime()
         {
             LocalDateTime expected = new LocalDateTime(2011, 08, 18, 20, 53);
-            foreach (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
+            foreach (var kind in Enum.GetValues(typeof(DateTimeKind)).Cast<DateTimeKind>())
             {
                 DateTime x = new DateTime(2011, 08, 18, 20, 53, 0, kind);
                 LocalDateTime actual = LocalDateTime.FromDateTime(x);
@@ -68,7 +69,7 @@ namespace NodaTime.Test
         {
             // Julian calendar is 13 days behind Gregorian calendar in the 21st century
             LocalDateTime expected = new LocalDateTime(2011, 08, 05, 20, 53, CalendarSystem.Julian);
-            foreach (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
+            foreach (var kind in Enum.GetValues(typeof(DateTimeKind)).Cast<DateTimeKind>())
             {
                 DateTime x = new DateTime(2011, 08, 18, 20, 53, 0, kind);
                 LocalDateTime actual = LocalDateTime.FromDateTime(x, CalendarSystem.Julian);

@@ -30,7 +30,7 @@ namespace NodaTime.Test.TimeZones
         {
             var assembly = typeof(TzdbDateTimeZoneSourceTest).GetTypeInfo().Assembly;
             TzdbDateTimeZoneSource source;
-            using (Stream stream = assembly.GetManifestResourceStream("NodaTime.Test.TestData.Tzdb2013bFromNodaTime1.1.nzd"))
+            using (Stream stream = assembly.GetManifestResourceStream("NodaTime.Test.TestData.Tzdb2013bFromNodaTime1.1.nzd")!)
             {
                 source = TzdbDateTimeZoneSource.FromStream(stream);
             }

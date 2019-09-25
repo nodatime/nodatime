@@ -18,9 +18,9 @@ namespace NodaTime.Test.Text
 
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
-            new Data { Pattern = "!", Message = TextErrorMessages.UnknownStandardFormat, Parameters = {'!', typeof(YearMonth).FullName }},
-            new Data { Pattern = "%", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '%', typeof(YearMonth).FullName } },
-            new Data { Pattern = "\\", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '\\', typeof(YearMonth).FullName } },
+            new Data { Pattern = "!", Message = TextErrorMessages.UnknownStandardFormat, Parameters = {'!', typeof(YearMonth).FullName! }},
+            new Data { Pattern = "%", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '%', typeof(YearMonth).FullName! } },
+            new Data { Pattern = "\\", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '\\', typeof(YearMonth).FullName! } },
             new Data { Pattern = "%%", Message = TextErrorMessages.PercentDoubled },
             new Data { Pattern = "%\\", Message = TextErrorMessages.EscapeAtEndOfString },
             new Data { Pattern = "MMMMM", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 'M', 4 } },

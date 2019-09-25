@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -48,7 +49,7 @@ namespace NodaTime.Test
         public void FromDateTime()
         {
             var expected = new LocalDate(2011, 08, 18);
-            foreach (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
+            foreach (var kind in Enum.GetValues(typeof(DateTimeKind)).Cast<DateTimeKind>())
             {
                 var bcl = new DateTime(2011, 08, 18, 20, 53, 0, kind);
                 var actual = LocalDate.FromDateTime(bcl);
@@ -61,7 +62,7 @@ namespace NodaTime.Test
         {
             // Julian calendar is 13 days behind Gregorian calendar in the 21st century
             var expected = new LocalDate(2011, 08, 05, CalendarSystem.Julian);
-            foreach (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
+            foreach (var kind in Enum.GetValues(typeof(DateTimeKind)).Cast<DateTimeKind>())
             {
                 var bcl = new DateTime(2011, 08, 18, 20, 53, 0, kind);
                 var actual = LocalDate.FromDateTime(bcl, CalendarSystem.Julian);
