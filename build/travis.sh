@@ -16,7 +16,7 @@ dotnet --info
 
 dotnet build -c Release src/NodaTime
 dotnet build -c Release src/NodaTime.Testing
-dotnet build -c Release src/NodaTime.Benchmarks -f netcoreapp2.0
+dotnet build -c Release src/NodaTime.Benchmarks
 dotnet test -c Release src/NodaTime.Test --filter=TestCategory!=Slow
 dotnet test -c Release src/NodaTime.Demo
 
