@@ -13,9 +13,9 @@ namespace NodaTime.Test.Text
     {
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
-            new Data { Pattern = "!", Message = TextErrorMessages.UnknownStandardFormat, Parameters = {'!', typeof(Instant).FullName}},
-            new Data { Pattern = "%", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '%', typeof(Instant).FullName } },
-            new Data { Pattern = "\\", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '\\', typeof(Instant).FullName } },
+            new Data { Pattern = "!", Message = TextErrorMessages.UnknownStandardFormat, Parameters = {'!', typeof(Instant).FullName! }},
+            new Data { Pattern = "%", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '%', typeof(Instant).FullName! } },
+            new Data { Pattern = "\\", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '\\', typeof(Instant).FullName! } },
             // Just a few - these are taken from other tests
             new Data { Pattern = "%%", Message = TextErrorMessages.PercentDoubled },
             new Data { Pattern = "%\\", Message = TextErrorMessages.EscapeAtEndOfString },
@@ -26,8 +26,8 @@ namespace NodaTime.Test.Text
         internal static Data[] ParseFailureData = {
             // TODO: Make these use typeof(Instant)
             new Data { Text = "rubbish", Pattern = "yyyyMMdd'T'HH:mm:ss", Message = TextErrorMessages.MismatchedNumber, Parameters = { "yyyy" } },
-            new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalDateTime).FullName}},
-            new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalDateTime).FullName}},
+            new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalDateTime).FullName! }},
+            new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalDateTime).FullName! }},
         };
 
         internal static Data[] ParseOnlyData = {

@@ -26,9 +26,9 @@ namespace NodaTime.Test.Text
 
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
-            new Data { Pattern = "!", Message = TextErrorMessages.UnknownStandardFormat, Parameters = {'!', typeof(LocalTime).FullName}},
-            new Data { Pattern = "%", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '%', typeof(LocalTime).FullName } },
-            new Data { Pattern = "\\", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '\\', typeof(LocalTime).FullName } },
+            new Data { Pattern = "!", Message = TextErrorMessages.UnknownStandardFormat, Parameters = {'!', typeof(LocalTime).FullName! }},
+            new Data { Pattern = "%", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '%', typeof(LocalTime).FullName! } },
+            new Data { Pattern = "\\", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { '\\', typeof(LocalTime).FullName! } },
             new Data { Pattern = "%%", Message = TextErrorMessages.PercentDoubled },
             new Data { Pattern = "%\\", Message = TextErrorMessages.EscapeAtEndOfString },
             new Data { Pattern = "ffffffffff", Message = TextErrorMessages.RepeatCountExceeded, Parameters = { 'f', 9 } },
@@ -46,8 +46,8 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] ParseFailureData = {
-            new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName}},
-            new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName}},
+            new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalTime).FullName! }},
+            new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalTime).FullName! }},
             new Data { Text = "5 foo", Pattern = "h t", Message = TextErrorMessages.MissingAmPmDesignator},
             new Data { Text = "04.", Pattern = "ss.FF", Message = TextErrorMessages.MismatchedNumber, Parameters = { "FF" } },
             new Data { Text = "04.", Pattern = "ss;FF", Message = TextErrorMessages.MismatchedNumber, Parameters = { "FF" } },

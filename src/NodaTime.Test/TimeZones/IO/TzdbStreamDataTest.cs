@@ -6,6 +6,7 @@ using NodaTime.TimeZones.Cldr;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -71,7 +72,8 @@ namespace NodaTime.Test.TimeZones.IO
         {
             var fieldId = (TzdbStreamFieldId) fieldIdObject;
             var field = new TzdbStreamField(fieldId, new byte[1]);
-            var method = typeof(TzdbStreamData.Builder).GetMethod(handlerMethodName, BindingFlags.Instance | BindingFlags.NonPublic);
+            var method = typeof(TzdbStreamData.Builder).GetMethod(handlerMethodName, BindingFlags.Instance | BindingFlags.NonPublic)
+                ?? throw new Exception($"Can't find method {handlerMethodName}");
             var builder = new TzdbStreamData.Builder();
             
             var exception = Assert.Throws<TargetInvocationException>(() => method.Invoke(builder, new object[] { field }));
@@ -91,7 +93,8 @@ namespace NodaTime.Test.TimeZones.IO
             var fieldId = (TzdbStreamFieldId) fieldIdObject;
             
             var field = new TzdbStreamField(fieldId, new byte[1]);
-            var method = typeof(TzdbStreamData.Builder).GetMethod(handlerMethodName, BindingFlags.Instance | BindingFlags.NonPublic);
+            var method = typeof(TzdbStreamData.Builder).GetMethod(handlerMethodName, BindingFlags.Instance | BindingFlags.NonPublic)
+                ?? throw new Exception($"Can't find handler method {handlerMethodName}");
             var builder = new TzdbStreamData.Builder();
             // Provide an empty string pool if we're not checking for a duplicate string pool.
             if (fieldId != TzdbStreamFieldId.StringPool)

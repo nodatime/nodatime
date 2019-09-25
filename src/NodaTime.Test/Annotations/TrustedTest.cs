@@ -24,7 +24,7 @@ namespace NodaTime.Test.Annotations
 
         private static string FormatMemberDebugName(MemberInfo m) =>
             string.Format("{0}.{1}({2})",
-                m.DeclaringType.Name,
+                m.DeclaringType?.Name,
                 m.Name,
                 string.Join(", ", GetParameters(m).Select(p => p.ParameterType)));
 

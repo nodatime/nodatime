@@ -137,7 +137,7 @@ namespace NodaTime.Test
         // haven't needed it before.
         private static Era GetEra(string eraName)
         {
-            return (Era) typeof(Era).GetProperty(eraName, BindingFlags.Public | BindingFlags.Static).GetValue(null);
+            return (Era) typeof(Era).GetProperty(eraName, BindingFlags.Public | BindingFlags.Static)!.GetValue(null)!;
         }
     }
 }

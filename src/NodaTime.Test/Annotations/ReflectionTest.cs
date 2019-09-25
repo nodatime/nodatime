@@ -28,7 +28,7 @@ namespace NodaTime.Test.Annotations
                 .Where(m => conversionName.IsMatch(m.Name))
                 .Where(m => !m.Name.StartsWith("To" + m.ReturnType.Name));
 
-            TestHelper.AssertNoFailures(badMethods, m => $"{m.DeclaringType.Name}.{m.Name}", TestExemptionCategory.ConversionName);
+            TestHelper.AssertNoFailures(badMethods, m => $"{m.DeclaringType?.Name}.{m.Name}", TestExemptionCategory.ConversionName);
         }
     }
 }
