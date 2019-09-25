@@ -3,7 +3,7 @@
 # it elsewhere...
 version: 1.0.{build}-appveyor
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 branches:
   only:
@@ -12,17 +12,6 @@ branches:
 environment:
   COVERALLS_REPO_TOKEN:
     secure: 0MrjEwujECMnIaBkI76fNmCpKy5jr9rZx0rAFOM+41frhVfy2r0ldzzoFC4bvGig
-
-install:
-- ps: |
-    Write-Host "Installing .NET Core SDK..." -ForegroundColor Cyan
-    Write-Host "Downloading..."
-    $exePath = "$env:TEMP\dotnet-sdk.exe"
-    (New-Object Net.WebClient).DownloadFile('https://download.visualstudio.microsoft.com/download/pr/27e21201-9d9d-49c9-a80e-fe09a7859c06/26c8cf6cd21c350f929440f3f0d1d631/dotnet-sdk-3.0.100-preview9-014004-win-x64.exe', $exePath)
-    Write-Host "Installing..."
-    cmd /c start /wait "$exePath" /quiet /norestart
-    del $exePath
-    Write-Host "Installed" -ForegroundColor Green
 
 # Perform the build.
 build_script:
