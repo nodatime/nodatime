@@ -28,7 +28,6 @@ DOTNET := dotnet
 #   restore
 #     fetches third-party packages using NuGet.
 
-
 # Everything is under src/$(project) or build/$(project), so we can get a list
 # of all the projects by looking for .csproj files.
 ALL_PROJECTS := $(dir $(wildcard src/*/*.csproj build/*/*.csproj))
