@@ -55,19 +55,19 @@ namespace NodaTime.Demo
         [Test]
         public void Max()
         {
-            LocalDate date = new LocalDate(2010, 6, 16);
-            LocalDate date_other = new LocalDate(2010, 6, 10);
-            LocalDate dateTime = Snippet.For(LocalDate.Max(date, date_other));
-            Assert.AreEqual(new LocalDate(2010, 6, 16), dateTime);
+            LocalDate earlyJune = new LocalDate(2010, 6, 5);
+            LocalDate lateJune = new LocalDate(2010, 6, 25);
+            LocalDate max = Snippet.For(LocalDate.Max(earlyJune, lateJune));
+            Assert.AreEqual(new LocalDate(2010, 6, 25), max);
         }
 
         [Test]
         public void Min()
         {
-            LocalDate date = new LocalDate(2010, 6, 16);
-            LocalDate date_other = new LocalDate(2010, 6, 10);
-            LocalDate dateTime = Snippet.For(LocalDate.Min(date, date_other));
-            Assert.AreEqual(new LocalDate(2010, 6, 10), dateTime);
+            LocalDate earlyJune = new LocalDate(2010, 6, 5);
+            LocalDate lateJune = new LocalDate(2010, 6, 25);
+            LocalDate min = Snippet.For(LocalDate.Min(earlyJune, lateJune));
+            Assert.AreEqual(new LocalDate(2010, 6, 5), min);
         }
     }
 }
