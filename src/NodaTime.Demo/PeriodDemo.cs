@@ -188,5 +188,17 @@ namespace NodaTime.Demo
 
             Assert.AreEqual(expected, normalized);
         }
+
+        [Test]
+        public void ToDuration()
+        {
+            Period oneDayAsPeriod = Period.FromDays(1);
+            Duration oneDayAsDuration = Duration.FromDays(1);
+
+            var actual = Snippet.For(oneDayAsPeriod.ToDuration());
+
+            Assert.IsFalse(oneDayAsPeriod.HasTimeComponent);
+            Assert.AreEqual(oneDayAsDuration, actual);
+        }
     }
 }
