@@ -69,5 +69,20 @@ namespace NodaTime.Demo
             var result = Snippet.For(interval.Contains(june));
             Assert.AreEqual(true, result);
         }
+
+        [Test]
+        public void Deconstruct()
+        {
+            var calendar = CalendarSystem.Gregorian;
+            LocalDate start = new LocalDate(2017, 1, 1);
+            LocalDate end = new LocalDate(2017, 12, 31);
+
+            DateInterval interval = new DateInterval(start, end);
+
+            interval.Deconstruct(out LocalDate startDeconstructed, out LocalDate endDeconstructed);
+
+            Assert.AreEqual(start, startDeconstructed);
+            Assert.AreEqual(end, endDeconstructed);
+        }
     }
 }
