@@ -22,5 +22,16 @@ namespace NodaTime.Demo
                 updated.LocalDateTime);
             Assert.AreEqual(original.Offset, updated.Offset);
         }
+
+        [Test]
+        public void DayOfMonth()
+        {
+            var start = new LocalDate(2014, 6, 27);
+            var end = new LocalDate(2014, 6, 19);
+
+            var adjuster = Snippet.For(DateAdjusters.DayOfMonth(19));
+
+            Assert.AreEqual(end, adjuster(start));
+        }
     }
 }
