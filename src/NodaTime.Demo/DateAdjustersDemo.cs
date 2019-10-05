@@ -33,5 +33,16 @@ namespace NodaTime.Demo
 
             Assert.AreEqual(end, adjuster(start));
         }
+
+        [Test]
+        public void Month()
+        {
+            var start = new LocalDate(2014, 6, 27);
+            var end = new LocalDate(2014, 2, 27);
+
+            var adjuster = Snippet.For(DateAdjusters.Month(2));
+
+            Assert.AreEqual(end, adjuster(start));
+        }
     }
 }
