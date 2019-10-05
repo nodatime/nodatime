@@ -71,7 +71,7 @@ namespace NodaTime.Demo
         }
 
         [Test]
-        public void Deconstruct()
+        public void Deconstruction()
         {
             var calendar = CalendarSystem.Gregorian;
             LocalDate start = new LocalDate(2017, 1, 1);
