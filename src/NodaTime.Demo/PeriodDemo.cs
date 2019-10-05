@@ -177,5 +177,16 @@ namespace NodaTime.Demo
             Assert.AreEqual(23, period.Hours);
             Assert.AreEqual("P2Y264DT23H", period.ToString());
         }
+
+        [Test]
+        public void Normalize()
+        {
+            var original = new PeriodBuilder { Weeks = 2, Days = 5 }.Build();
+            var expected = new PeriodBuilder { Days = 19 }.Build();
+
+            var normalized = Snippet.For(original.Normalize());
+
+            Assert.AreEqual(expected, normalized);
+        }
     }
 }
