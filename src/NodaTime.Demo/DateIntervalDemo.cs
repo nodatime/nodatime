@@ -81,11 +81,8 @@ namespace NodaTime.Demo
 
             value.Deconstruct(out LocalDate actualStart, out LocalDate actualEnd);
 
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(start, actualStart);
-                Assert.AreEqual(end, actualEnd);
-            });
+            Assert.AreEqual(start, actualStart);
+            Assert.AreEqual(end, actualEnd);
         }
     }
 }
