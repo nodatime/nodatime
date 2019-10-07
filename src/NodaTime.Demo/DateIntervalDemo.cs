@@ -69,5 +69,40 @@ namespace NodaTime.Demo
             var result = Snippet.For(interval.Contains(june));
             Assert.AreEqual(true, result);
         }
+
+        [Test]
+        public void Deconstruction()
+        {
+            LocalDate start = new LocalDate(2017, 1, 1);
+            LocalDate end = new LocalDate(2017, 12, 31);
+
+            DateInterval value = new DateInterval(start, end);
+
+            Snippet.SilentForAction(() => value.Deconstruct(out var _, out var _));
+            value.Deconstruct(out LocalDate actualStart, out LocalDate actualEnd);
+
+            Assert.AreEqual(start, actualStart);
+            Assert.AreEqual(end, actualEnd);
+        }
+
+        [Test]
+        public void Union()
+        {
+            DateInterval firstInterval = new DateInterval(
+                new LocalDate(2014, 3, 7),
+                new LocalDate(2014, 3, 20));
+
+            DateInterval secondInterval = new DateInterval(
+                new LocalDate(2014, 3, 15),
+                new LocalDate(2014, 3, 23));
+
+            DateInterval? overlappingInterval = Snippet.For(firstInterval.Union(secondInterval));
+
+            Assert.AreEqual(
+                new DateInterval(
+                    new LocalDate(2014, 3, 7),
+                    new LocalDate(2014, 3, 23)),
+                overlappingInterval);
+        }
     }
 }
