@@ -84,5 +84,25 @@ namespace NodaTime.Demo
             Assert.AreEqual(start, actualStart);
             Assert.AreEqual(end, actualEnd);
         }
+
+        [Test]
+        public void Union()
+        {
+            DateInterval firstInterval = new DateInterval(
+                new LocalDate(2014, 3, 7),
+                new LocalDate(2014, 3, 20));
+
+            DateInterval secondInterval = new DateInterval(
+                new LocalDate(2014, 3, 15),
+                new LocalDate(2014, 3, 23));
+
+            DateInterval? overlappingInterval = Snippet.For(firstInterval.Union(secondInterval));
+
+            Assert.AreEqual(
+                new DateInterval(
+                    new LocalDate(2014, 3, 7),
+                    new LocalDate(2014, 3, 23)),
+                overlappingInterval);
+        }
     }
 }
