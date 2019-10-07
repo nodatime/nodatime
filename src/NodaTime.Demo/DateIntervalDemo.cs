@@ -73,12 +73,12 @@ namespace NodaTime.Demo
         [Test]
         public void Deconstruction()
         {
-            var calendar = CalendarSystem.Gregorian;
             LocalDate start = new LocalDate(2017, 1, 1);
             LocalDate end = new LocalDate(2017, 12, 31);
 
             DateInterval value = new DateInterval(start, end);
 
+            Snippet.SilentForAction(() => value.Deconstruct(out var _, out var _));
             value.Deconstruct(out LocalDate actualStart, out LocalDate actualEnd);
 
             Assert.AreEqual(start, actualStart);
