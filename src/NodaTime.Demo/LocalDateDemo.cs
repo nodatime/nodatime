@@ -51,5 +51,23 @@ namespace NodaTime.Demo
             LocalDateTime dateTime = Snippet.For(date.AtMidnight());
             Assert.AreEqual(new LocalDateTime(2010, 6, 16, 0, 0, 0), dateTime);
         }
+
+        [Test]
+        public void Max()
+        {
+            LocalDate earlyJune = new LocalDate(2010, 6, 5);
+            LocalDate lateJune = new LocalDate(2010, 6, 25);
+            LocalDate max = Snippet.For(LocalDate.Max(earlyJune, lateJune));
+            Assert.AreEqual(new LocalDate(2010, 6, 25), max);
+        }
+
+        [Test]
+        public void Min()
+        {
+            LocalDate earlyJune = new LocalDate(2010, 6, 5);
+            LocalDate lateJune = new LocalDate(2010, 6, 25);
+            LocalDate min = Snippet.For(LocalDate.Min(earlyJune, lateJune));
+            Assert.AreEqual(new LocalDate(2010, 6, 5), min);
+        }
     }
 }
