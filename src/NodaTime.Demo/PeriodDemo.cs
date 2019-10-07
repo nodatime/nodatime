@@ -182,23 +182,23 @@ namespace NodaTime.Demo
         public void Normalize()
         {
             var original = new PeriodBuilder { Weeks = 2, Days = 5 }.Build();
-            var expected = new PeriodBuilder { Days = 19 }.Build();
 
             var actual = Snippet.For(original.Normalize());
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(
+                new PeriodBuilder { Days = 19 }.Build(), 
+                actual);
         }
 
         [Test]
         public void ToDuration()
         {
             Period oneDayAsPeriod = Period.FromDays(1);
-            Duration oneDayAsDuration = Duration.FromDays(1);
 
             var actual = Snippet.For(oneDayAsPeriod.ToDuration());
 
             Assert.IsFalse(oneDayAsPeriod.HasTimeComponent);
-            Assert.AreEqual(oneDayAsDuration, actual);
+            Assert.AreEqual(Duration.FromDays(1), actual);
         }
     }
 }
