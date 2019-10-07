@@ -2,6 +2,8 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System;
+
 namespace NodaTime.Demo
 {
     // TODO: Move this into an entirely separate project, along with the
@@ -20,7 +22,21 @@ namespace NodaTime.Demo
         /// <returns><paramref name="value"/></returns>
         public static T For<T>(T value) => value;
 
-        // TODO: Snippets for a void method. Probably accept Action and execute it...
+        /// <summary>
+        /// Indicates that the expression within <paramref name="action"/> should be used to
+        /// generate a sample for the member invoked.
+        /// </summary>
+        /// <param name="action">An action, which should be expressed as an expression-bodied lambda expression.</param>
+        public static void ForAction(Action action) { }
+
+        /// <summary>
+        /// Indicates that the expression within <paramref name="action"/> should be used to
+        /// generate a sample for the member invoked, but that the expression should be removed entirely
+        /// rather than just replacing the Snippet call.
+        /// </summary>
+        /// <param name="action">An action, which should be expressed as an expression-bodied lambda expression.</param>
+        public static void SilentForAction(Action action) { }
+
         // TODO: Allow multiple values in a "For" expression, to allow for easy overloading.
         // (Challenge is to work out what the resulting snippet should look like - especially
         // if there are multiple Snippet.For calls. Maybe prohibit that scenario...)
