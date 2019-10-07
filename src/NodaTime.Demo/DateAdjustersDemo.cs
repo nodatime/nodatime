@@ -27,66 +27,60 @@ namespace NodaTime.Demo
         public void DayOfMonth()
         {
             var start = new LocalDate(2014, 6, 27);
-            var end = new LocalDate(2014, 6, 19);
 
             var adjuster = Snippet.For(DateAdjusters.DayOfMonth(19));
 
-            Assert.AreEqual(end, adjuster(start));
+            Assert.AreEqual(new LocalDate(2014, 6, 19), adjuster(start));
         }
 
         [Test]
         public void Month()
         {
             var start = new LocalDate(2014, 6, 27);
-            var end = new LocalDate(2014, 2, 27);
 
             var adjuster = Snippet.For(DateAdjusters.Month(2));
 
-            Assert.AreEqual(end, adjuster(start));
+            Assert.AreEqual(new LocalDate(2014, 2, 27), adjuster(start));
         }
 
         [Test]
         public void Next()
         {
             var start = new LocalDate(2014, 6, 27);
-            var end = new LocalDate(2014, 7, 3);
 
             var adjuster = Snippet.For(DateAdjusters.Next(IsoDayOfWeek.Thursday));
 
-            Assert.AreEqual(end, adjuster(start));
+            Assert.AreEqual(new LocalDate(2014, 7, 3), adjuster(start));
         }
 
         [Test]
         public void NextOrSame_SameDay()
         {
             var start = new LocalDate(2014, 6, 27);
-            var end = new LocalDate(2014, 6, 27);
 
             var adjuster = Snippet.For(DateAdjusters.NextOrSame(IsoDayOfWeek.Friday));
 
-            Assert.AreEqual(end, adjuster(start));
+            Assert.AreEqual(new LocalDate(2014, 6, 27), adjuster(start));
         }
 
         [Test]
         public void Previous()
         {
             var start = new LocalDate(2014, 6, 27);
-            var end = new LocalDate(2014, 6, 26);
 
             var adjuster = Snippet.For(DateAdjusters.Previous(IsoDayOfWeek.Thursday));
 
-            Assert.AreEqual(end, adjuster(start));
+            Assert.AreEqual(new LocalDate(2014, 6, 26), adjuster(start));
         }
 
         [Test]
         public void PreviousOrSame_SameDay()
         {
             var start = new LocalDate(2014, 6, 27);
-            var end = new LocalDate(2014, 6, 27);
 
             var adjuster = Snippet.For(DateAdjusters.PreviousOrSame(IsoDayOfWeek.Friday));
 
-            Assert.AreEqual(end, adjuster(start));
+            Assert.AreEqual(new LocalDate(2014, 6, 27), adjuster(start));
         }
     }
 }
