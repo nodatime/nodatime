@@ -182,12 +182,8 @@ namespace NodaTime.Demo
         public void Normalize()
         {
             var original = new PeriodBuilder { Weeks = 2, Days = 5 }.Build();
-
             var actual = Snippet.For(original.Normalize());
-
-            Assert.AreEqual(
-                new PeriodBuilder { Days = 19 }.Build(), 
-                actual);
+            Assert.AreEqual(new PeriodBuilder { Days = 19 }.Build(), actual);
         }
 
         [Test]
