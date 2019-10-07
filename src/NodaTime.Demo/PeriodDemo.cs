@@ -190,10 +190,8 @@ namespace NodaTime.Demo
         public void ToDuration()
         {
             Period oneDayAsPeriod = Period.FromDays(1);
-
             var actual = Snippet.For(oneDayAsPeriod.ToDuration());
-
-            Assert.IsFalse(oneDayAsPeriod.HasTimeComponent);
+            Assert.False(oneDayAsPeriod.HasTimeComponent);
             Assert.AreEqual(Duration.FromDays(1), actual);
         }
     }
