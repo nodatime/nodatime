@@ -36,6 +36,14 @@ namespace NodaTime.Demo
         }
 
         [Test]
+        public void Add()
+        {
+            LocalDate date = new LocalDate(2010, 6, 16);
+            LocalDate dateTime = Snippet.For(LocalDate.Add(date, Period.FromDays(3)));
+            Assert.AreEqual(new LocalDate(2010, 6, 19), dateTime);
+        }
+
+        [Test]
         public void At()
         {
             LocalDate date = new LocalDate(2010, 6, 16);
@@ -50,6 +58,15 @@ namespace NodaTime.Demo
             LocalDate date = new LocalDate(2010, 6, 16);
             LocalDateTime dateTime = Snippet.For(date.AtMidnight());
             Assert.AreEqual(new LocalDateTime(2010, 6, 16, 0, 0, 0), dateTime);
+        }
+
+        [Test]
+        public void CompareTo()
+        {
+            LocalDate date = new LocalDate(2010, 6, 16);
+            LocalDate date_equal = new LocalDate(2010, 6, 16);
+            int dateTime = Snippet.For(date.CompareTo(date_equal));
+            Assert.AreEqual(0, dateTime);
         }
 
         [Test]
