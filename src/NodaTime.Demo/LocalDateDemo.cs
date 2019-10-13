@@ -79,6 +79,15 @@ namespace NodaTime.Demo
         }
 
         [Test]
+        public void EqualsObject()
+        {
+            LocalDate date = new LocalDate(2010, 6, 16);
+            object dateAsObject = new LocalDate(2010, 6, 16);
+            bool result = Snippet.For(date.Equals(dateAsObject));
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
         public void Max()
         {
             LocalDate earlyJune = new LocalDate(2010, 6, 5);
