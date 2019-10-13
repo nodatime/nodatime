@@ -70,6 +70,15 @@ namespace NodaTime.Demo
         }
 
         [Test]
+        public void Equals()
+        {
+            LocalDate date1 = new LocalDate(2010, 6, 16);
+            LocalDate date2 = new LocalDate(2010, 6, 16);
+            bool result = Snippet.For(date1.Equals(date2));
+            Assert.AreEqual(true, result);
+        }
+
+        [Test]
         public void Max()
         {
             LocalDate earlyJune = new LocalDate(2010, 6, 5);
