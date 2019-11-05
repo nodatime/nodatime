@@ -40,10 +40,12 @@ namespace NodaTime.Demo
         [Test]
         public void Deconstruct()
         {
-            Instant start = Instant.FromUtc(2019, 1, 2, 3, 10, 11);
-            Instant end = Instant.FromUtc(2020, 4, 5, 6, 12, 13);
+            Instant? start = Instant.FromUtc(2019, 1, 2, 3, 10, 11);
+            Instant? end = Instant.FromUtc(2020, 4, 5, 6, 12, 13);
             Interval interval = new Interval(start, end);
-            Snippet.ForAction(() => interval.Deconstruct(out var start, out var end));
+
+            Snippet.SilentForAction(() => interval.Deconstruct(out _, out _));
+            interval.Deconstruct(out start, out end);
             Assert.AreEqual(Instant.FromUtc(2019, 1, 2, 3, 10, 11), start);
             Assert.AreEqual(Instant.FromUtc(2020, 4, 5, 6, 12, 13), end);
         }
