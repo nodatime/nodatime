@@ -218,16 +218,9 @@ namespace NodaTime.Test.TimeZones
         public void GuessZoneIdByTransitionsUncached(NamedWrapper<TimeZoneInfo> bclZoneWrapper)
         {
             var bclZone = bclZoneWrapper.Value;
-            // As of May 4th 2018, the Windows time zone database on Jon's laptop has caught up with this,
-            // but the one on AppVeyor hasn't. Keep skipping it for now.
-            if (bclZone.Id == "Namibia Standard Time")
-            {
-                return;
-            }
-
-            // As of May 4th 2018, the Windows time zone database hasn't caught up
-            // with the North Korea change in TZDB 2018e.
-            if (bclZone.Id == "North Korea Standard Time")
+            // As of November 21st 2019, the Windows time zone database hasn't caught up
+            // with the Morocco change in TZDB 2019a. Skip it for now.
+            if (bclZone.Id == "Morocco Standard Time")
             {
                 return;
             }
