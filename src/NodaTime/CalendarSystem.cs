@@ -93,8 +93,7 @@ namespace NodaTime
         #region Public factory members for calendars
         /// <summary>
         /// Fetches a calendar system by its unique identifier. This provides full round-tripping of a calendar
-        /// system. It is not guaranteed that calling this method twice with the same identifier will return
-        /// identical references, but the references objects will be equal.
+        /// system. This method will always return the same reference for the same ID.
         /// </summary>
         /// <param name="id">The ID of the calendar system. This is case-sensitive.</param>
         /// <returns>The calendar system with the given ID.</returns>
@@ -143,6 +142,8 @@ namespace NodaTime
         /// <value>The IDs of all calendar systems available within Noda Time.</value>
         public static IEnumerable<string> Ids => IdToFactoryMap.Keys;
 
+        // Note: each factory method must return the same reference on every invocation.
+        // If the delegate calls a method, that method must have the same guarantee.
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
             {IsoId, () => Iso},
