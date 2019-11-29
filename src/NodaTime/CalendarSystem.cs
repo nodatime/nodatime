@@ -331,7 +331,7 @@ namespace NodaTime
         ///   <item><term>ISO</term><description><see cref="CalendarSystem.Iso"/></description></item>
         ///   <item><term>Gregorian</term><description><see cref="CalendarSystem.Gregorian"/></description></item>
         ///   <item><term>Coptic</term><description><see cref="CalendarSystem.Coptic"/></description></item>
-        ///   <item><term>Badíʿ</term><description><see cref="CalendarSystem.Badi"/></description></item>
+        ///   <item><term>Badi</term><description><see cref="CalendarSystem.Badi"/></description></item>
         ///   <item><term>Julian</term><description><see cref="CalendarSystem.Julian"/></description></item>
         ///   <item><term>Hijri Civil-Indian</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)</description></item>
         ///   <item><term>Hijri Civil-Base15</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)</description></item>
