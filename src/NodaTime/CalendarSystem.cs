@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+using static System.FormattableString;
 
 namespace NodaTime
 {
@@ -63,7 +63,7 @@ namespace NodaTime
         // Not part of IslamicCalendars as we want to be able to call it without triggering type initialization.
         internal static string GetIslamicId(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0} {1}-{2}", IslamicIdBase, epoch, leapYearPattern);
+            return Invariant($"{IslamicIdBase} {epoch}-{leapYearPattern}");
         }
 
         private const string PersianName = "Persian";
@@ -81,14 +81,13 @@ namespace NodaTime
         private const string UmAlQuraId = UmAlQuraName;
 
         // While we could implement some of these as auto-props, it probably adds more confusion than convenience.
-        private static readonly CalendarSystem IsoCalendarSystem;
         private static readonly CalendarSystem[] CalendarByOrdinal = new CalendarSystem[(int) CalendarOrdinal.Size];
 
         static CalendarSystem()
         {
             var gregorianCalculator = new GregorianYearMonthDayCalculator();
             var gregorianEraCalculator = new GJEraCalculator(gregorianCalculator);
-            IsoCalendarSystem = new CalendarSystem(CalendarOrdinal.Iso, IsoId, IsoName, gregorianCalculator, gregorianEraCalculator);
+            Iso = new CalendarSystem(CalendarOrdinal.Iso, IsoId, IsoName, gregorianCalculator, gregorianEraCalculator);
         }
 
         #region Public factory members for calendars
@@ -122,7 +121,7 @@ namespace NodaTime
             // Avoid an array lookup for the overwhelmingly common case.
             if (ordinal == CalendarOrdinal.Iso)
             {
-                return IsoCalendarSystem;
+                return Iso;
             }
             CalendarSystem calendar = CalendarByOrdinal[(int) ordinal];
             if (calendar != null)
@@ -179,7 +178,7 @@ namespace NodaTime
         /// and consistency.
         /// </remarks>
         /// <value>The ISO calendar system.</value>
-        public static CalendarSystem Iso => IsoCalendarSystem;
+        public static CalendarSystem Iso { get; }
 
         /// <summary>
         /// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
@@ -814,7 +813,7 @@ namespace NodaTime
             {
                 var julianCalculator = new JulianYearMonthDayCalculator();
                 Julian = new CalendarSystem(CalendarOrdinal.Julian, JulianId, JulianName, julianCalculator, new GJEraCalculator(julianCalculator));
-                Gregorian = new CalendarSystem(CalendarOrdinal.Gregorian, GregorianId, GregorianName, IsoCalendarSystem.YearMonthDayCalculator, IsoCalendarSystem.eraCalculator);
+                Gregorian = new CalendarSystem(CalendarOrdinal.Gregorian, GregorianId, GregorianName, Iso.YearMonthDayCalculator, Iso.eraCalculator);
             }
         }
 
