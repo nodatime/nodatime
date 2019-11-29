@@ -343,11 +343,16 @@ namespace NodaTime
         ///   <item><term>Hijri Astronomical-HabashAlHasib</term><description><see cref="CalendarSystem.GetIslamicCalendar"/>(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)</description></item>
         ///   <item><term>Persian Simple</term><description><see cref="CalendarSystem.PersianSimple"/></description></item>
         ///   <item><term>Persian Arithmetic</term><description><see cref="CalendarSystem.PersianArithmetic"/></description></item>
-        ///   <item><term>Persian Astronomical</term><description><see cref="CalendarSystem.PersianAstronomical"/></description></item>
+        ///   <item><term>Persian Algorithmic</term><description><see cref="CalendarSystem.PersianAstronomical"/> (see note)</description></item>
         ///   <item><term>Um Al Qura</term><description><see cref="CalendarSystem.UmAlQura"/>()</description></item>
         ///   <item><term>Hebrew Civil</term><description><see cref="CalendarSystem.HebrewCivil"/></description></item>
         ///   <item><term>Hebrew Scriptural</term><description><see cref="CalendarSystem.HebrewScriptural"/></description></item>
         /// </list>
+        /// <para>
+        /// The ID "Persian Algorithmic" for the Persian Astronomical calendar is an unfortunate error. The ID has been incorrect
+        /// in Noda Time for so long that "fixing" it now would cause compatibility issues between systems storing or
+        /// exchanging Noda Time data.
+        /// </para>
         /// </remarks>
         /// <value>The unique identifier for this calendar system.</value>
         public string Id { get; }
