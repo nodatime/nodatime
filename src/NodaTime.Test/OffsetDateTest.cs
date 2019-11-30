@@ -113,7 +113,7 @@ namespace NodaTime.Test
             LocalDate date = new LocalDate(2012, 10, 6);
             Offset offset = Offset.FromHours(1);
             OffsetDate offsetDate = new OffsetDate(date, offset);
-            Assert.AreEqual("2012/10/06 01", offsetDate.ToString("yyyy/MM/dd o<-HH>", CultureInfo.InvariantCulture));
+            Assert.AreEqual("2012/10/06 01", offsetDate.ToString("uuuu/MM/dd o<-HH>", CultureInfo.InvariantCulture));
         }
 
         [Test]

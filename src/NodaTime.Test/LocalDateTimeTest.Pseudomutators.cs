@@ -241,7 +241,7 @@ namespace NodaTime.Test
                                              Seconds = 7, Milliseconds = 8, Ticks = 9, Nanoseconds = 11 }.Build();
             var actual = start.Plus(period);
             var expected = new LocalDateTime(2012, 6, 28, 3, 21, 15).PlusNanoseconds(8000911);
-            Assert.AreEqual(expected, actual, $"{expected:yyyy-MM-dd HH:mm:ss.fffffffff} != {actual:yyyy-MM-dd HH:mm:ss.fffffffff}");
+            Assert.AreEqual(expected, actual, $"{expected:uuuu-MM-dd HH:mm:ss.fffffffff} != {actual:uuuu-MM-dd HH:mm:ss.fffffffff}");
         }
 
         [Test]
@@ -253,7 +253,7 @@ namespace NodaTime.Test
                                              Seconds = 7, Milliseconds = 8, Ticks = 9, Nanoseconds = 11 }.Build();
             var actual = start.Minus(period);
             var expected = new LocalDateTime(2010, 1, 7, 21, 9, 0).PlusNanoseconds(991999089L);
-            Assert.AreEqual(expected, actual, $"{expected:yyyy-MM-dd HH:mm:ss.fffffffff} != {actual:yyyy-MM-dd HH:mm:ss.fffffffff}");
+            Assert.AreEqual(expected, actual, $"{expected:uuuu-MM-dd HH:mm:ss.fffffffff} != {actual:uuuu-MM-dd HH:mm:ss.fffffffff}");
         }
 
         // Each test case gives a day-of-month in November 2011 and a target "next day of week";

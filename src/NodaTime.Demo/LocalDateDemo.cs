@@ -13,7 +13,7 @@ namespace NodaTime.Demo
         public void SimpleConstruction()
         {
             LocalDate date = Snippet.For(new LocalDate(2010, 6, 16));
-            Assert.AreEqual("2010-06-16", date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+            Assert.AreEqual("2010-06-16", date.ToString("uuuu-MM-dd", CultureInfo.InvariantCulture));
             Assert.AreEqual(2010, date.Year);
             Assert.AreEqual(6, date.Month);
             Assert.AreEqual(16, date.Day);

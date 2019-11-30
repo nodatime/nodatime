@@ -30,7 +30,7 @@ namespace NodaTime.Demo
         public void TestToString()
         {
             LocalDateTime dt = new LocalDateTime(2010, 6, 16, 16, 20);
-            Assert.AreEqual("2010-06-16T16:20:00", Snippet.For(dt.ToString("yyyy-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture)));
+            Assert.AreEqual("2010-06-16T16:20:00", Snippet.For(dt.ToString("uuuu-MM-dd'T'HH:mm:ss", CultureInfo.InvariantCulture)));
         }
     }
 }

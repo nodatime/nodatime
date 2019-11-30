@@ -28,15 +28,15 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "dd MM yyyy gg c", Message = TextErrorMessages.CalendarAndEra },
             new Data { Pattern = "g", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { 'g', typeof(OffsetDate) } },
             // Invalid patterns involving embedded values
-            new Data { Pattern = "l<d> yyyy", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
-            new Data { Pattern = "l<yyyy-MM-dd> dd", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
+            new Data { Pattern = "l<d> uuuu", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
+            new Data { Pattern = "l<uuuu-MM-dd> dd", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
             new Data { Pattern = "l<d> l<f>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
             new Data { Pattern = @"l<\", Message = TextErrorMessages.EscapeAtEndOfString },
         };
 
         internal static Data[] ParseFailureData = {
-            new Data { Pattern = "dd MM yyyy", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "dd" }},
-            new Data { Pattern = "dd MM yyyy", Text = "29 02 2001", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 29, 2, 2001 } },
+            new Data { Pattern = "dd MM uuuu", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "dd" }},
+            new Data { Pattern = "dd MM uuuu", Text = "29 02 2001", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 29, 2, 2001 } },
             new Data { Pattern = "(c)", Text = "(xxx)", Message = TextErrorMessages.NoMatchingCalendarSystem },
         };
 
@@ -44,11 +44,11 @@ namespace NodaTime.Test.Text
         };
 
         internal static Data[] FormatOnlyData = {
-            new Data(2011, 10, 19) { Pattern = "ddd yyyy", Text = "Wed 2011" },
+            new Data(2011, 10, 19) { Pattern = "ddd uuuu", Text = "Wed 2011" },
 
             // Our template value has an offset of 0, but the value has an offset of 1.
             // The pattern doesn't include the offset, so that information is lost - no round-trip.
-            new Data(MsdnStandardExample) { Pattern = "yyyy-MM-dd", Text = "2009-06-15" }
+            new Data(MsdnStandardExample) { Pattern = "uuuu-MM-dd", Text = "2009-06-15" }
         };
 
         internal static Data[] FormatAndParseData = {
@@ -64,7 +64,7 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { StandardPattern = OffsetDatePattern.FullRoundtrip, Pattern = "r", Text = "2009-06-15+01 (ISO)", Culture = Cultures.FrFr },
 
             // Custom embedded patterns (or mixture of custom and standard)
-            new Data(2015, 10, 24, AthensOffset) { Pattern = "l<yyyy*MM*dd>'X'o<g>", Text = "2015*10*24X+03" },
+            new Data(2015, 10, 24, AthensOffset) { Pattern = "l<uuuu*MM*dd>'X'o<g>", Text = "2015*10*24X+03" },
             new Data(2015, 10, 24, AthensOffset) { Pattern = "l<d>'X'o<g>", Text = "10/24/2015X+03" },
 
             // Standard embedded patterns.
@@ -81,7 +81,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void CreateWithInvariantCulture()
         {
-            var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-ddo<g>");
+            var pattern = OffsetDatePattern.CreateWithInvariantCulture("uuuu-MM-ddo<g>");
             Assert.AreSame(NodaFormatInfo.InvariantInfo, pattern.FormatInfo);
             var od = new LocalDate(2017, 8, 23).WithOffset(Offset.FromHours(2));
             Assert.AreEqual("2017-08-23+02", pattern.Format(od));
@@ -106,7 +106,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void WithCulture()
         {
-            var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy/MM/dd o<G>").WithCulture(Cultures.FrCa);
+            var pattern = OffsetDatePattern.CreateWithInvariantCulture("uuuu/MM/dd o<G>").WithCulture(Cultures.FrCa);
             var text = pattern.Format(new LocalDate(2000, 1, 1).WithOffset(Offset.FromHours(1)));
             Assert.AreEqual("2000-01-01 +01", text);
         }
@@ -114,7 +114,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void WithPatternText()
         {
-            var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-dd").WithPatternText("dd MM yyyy o<g>");
+            var pattern = OffsetDatePattern.CreateWithInvariantCulture("uuuu-MM-dd").WithPatternText("dd MM uuuu o<g>");
             var value = new LocalDate(1970, 1, 1).WithOffset(Offset.FromHours(2));
             var text = pattern.Format(value);
             Assert.AreEqual("01 01 1970 +02", text);
@@ -133,7 +133,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void WithCalendar()
         {
-            var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
+            var pattern = OffsetDatePattern.CreateWithInvariantCulture("uuuu-MM-dd")
                 .WithCalendar(CalendarSystem.Coptic);
             var parsed = pattern.Parse("0284-08-29").Value;
             Assert.AreEqual(new LocalDate(284, 8, 29, CalendarSystem.Coptic), parsed.Date);

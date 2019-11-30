@@ -37,15 +37,15 @@ namespace NodaTime.Test.Text
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM yyyy gg c", Message = TextErrorMessages.CalendarAndEra },
 
-            // Invalid patterns directly after the yyyy specifier. This will detect the issue early, but then
+            // Invalid patterns directly after the uuuu specifier. This will detect the issue early, but then
             // continue and reject it in the normal path.
-            new Data { Pattern = "yyyy'", Message = TextErrorMessages.MissingEndQuote, Parameters = { '\'' } },
-            new Data { Pattern = "yyyy\\", Message = TextErrorMessages.EscapeAtEndOfString },
+            new Data { Pattern = "uuuu'", Message = TextErrorMessages.MissingEndQuote, Parameters = { '\'' } },
+            new Data { Pattern = "uuuu\\", Message = TextErrorMessages.EscapeAtEndOfString },
 
             // Common typo, which is caught in 2.0...
-            new Data { Pattern = "yyyy-mm-dd", Message = TextErrorMessages.UnquotedLiteral, Parameters = { 'm' } },
+            new Data { Pattern = "uuuu-mm-dd", Message = TextErrorMessages.UnquotedLiteral, Parameters = { 'm' } },
             // T isn't valid in a date pattern
-            new Data { Pattern = "yyyy-MM-ddT00:00:00", Message = TextErrorMessages.UnquotedLiteral, Parameters = { 'T' } },
+            new Data { Pattern = "uuuu-MM-ddT00:00:00", Message = TextErrorMessages.UnquotedLiteral, Parameters = { 'T' } },
 
             // These became invalid in v2.0, when we decided that y and yyy weren't sensible.
             new Data { Pattern = "y M d", Message = TextErrorMessages.InvalidRepeatCount, Parameters = { 'y', 1 } },
@@ -55,21 +55,21 @@ namespace NodaTime.Test.Text
         internal static Data[] ParseFailureData = {
             new Data { Pattern = "yyyy gg", Text = "2011 NodaEra", Message = TextErrorMessages.MismatchedText, Parameters = {'g'} },
             new Data { Pattern = "yyyy uuuu gg", Text = "0010 0009 B.C.", Message = TextErrorMessages.InconsistentValues2, Parameters = {'g', 'u', typeof(LocalDate)} },
-            new Data { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 Saturday", Message = TextErrorMessages.InconsistentDayOfWeekTextValue },
-            new Data { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 Sat", Message = TextErrorMessages.InconsistentDayOfWeekTextValue },
-            new Data { Pattern = "yyyy MM dd MMMM", Text = "2011 10 09 January", Message = TextErrorMessages.InconsistentMonthTextValue },
-            new Data { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 FooBar", Message = TextErrorMessages.MismatchedText, Parameters = {'d'} },
-            new Data { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 FooBar", Message = TextErrorMessages.MismatchedText, Parameters = {'d'} },
-            new Data { Pattern = "yyyy/MM/dd", Text = "2011/02-29", Message = TextErrorMessages.DateSeparatorMismatch },
+            new Data { Pattern = "uuuu MM dd dddd", Text = "2011 10 09 Saturday", Message = TextErrorMessages.InconsistentDayOfWeekTextValue },
+            new Data { Pattern = "uuuu MM dd ddd", Text = "2011 10 09 Sat", Message = TextErrorMessages.InconsistentDayOfWeekTextValue },
+            new Data { Pattern = "uuuu MM dd MMMM", Text = "2011 10 09 January", Message = TextErrorMessages.InconsistentMonthTextValue },
+            new Data { Pattern = "uuuu MM dd ddd", Text = "2011 10 09 FooBar", Message = TextErrorMessages.MismatchedText, Parameters = {'d'} },
+            new Data { Pattern = "uuuu MM dd dddd", Text = "2011 10 09 FooBar", Message = TextErrorMessages.MismatchedText, Parameters = {'d'} },
+            new Data { Pattern = "uuuu/MM/dd", Text = "2011/02-29", Message = TextErrorMessages.DateSeparatorMismatch },
             // Don't match a short name against a long pattern
-            new Data { Pattern = "yyyy MMMM dd", Text = "2011 Oct 09", Message = TextErrorMessages.MismatchedText, Parameters = {'M'} },
+            new Data { Pattern = "uuuu MMMM dd", Text = "2011 Oct 09", Message = TextErrorMessages.MismatchedText, Parameters = {'M'} },
             // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
-            new Data { Pattern = "yyyy MMM dd", Text = "2011 October 09", Message = TextErrorMessages.MismatchedCharacter, Parameters = {' '}},
+            new Data { Pattern = "uuuu MMM dd", Text = "2011 October 09", Message = TextErrorMessages.MismatchedCharacter, Parameters = {' '}},
 
             // Invalid month even when we've got genitive and non-genitive names to pick from
             new Data(2011, 1, 3) { Pattern = "MMMM", Text = "BogusName", Culture = Cultures.GenitiveNameTestCulture, Message = TextErrorMessages.MismatchedText, Parameters = {'M'}},
 
-            // Invalid year, year-of-era, month, day
+            // Invalid year-of-era, month, day
             new Data { Pattern = "yyyy MM dd", Text = "0000 01 01", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { 0, 'y', typeof(LocalDate) } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 15 29", Message = TextErrorMessages.MonthOutOfRange, Parameters = { 15, 2011 } },
             new Data { Pattern = "yyyy MM dd", Text = "2011 02 35", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 35, 2, 2011 } },
@@ -77,14 +77,14 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "yyyy MM dd", Text = "-15 01 01", Message = TextErrorMessages.UnexpectedNegative },
 
             // Invalid leap years
-            new Data { Pattern = "yyyy MM dd", Text = "2011 02 29", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 29, 2, 2011 } },
-            new Data { Pattern = "yyyy MM dd", Text = "1900 02 29", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 29, 2, 1900 } },
+            new Data { Pattern = "uuuu MM dd", Text = "2011 02 29", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 29, 2, 2011 } },
+            new Data { Pattern = "uuuu MM dd", Text = "1900 02 29", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 29, 2, 1900 } },
 
             // Year of era and two-digit year, but they don't match
-            new Data { Pattern = "uuuu yy", Text = "2011 10", Message = TextErrorMessages.InconsistentValues2, Parameters = { 'y', 'u', typeof(LocalDate) } },
+            new Data { Pattern = "yyyy uu", Text = "2011 10", Message = TextErrorMessages.InconsistentValues2, Parameters = { 'y', 'u', typeof(LocalDate) } },
 
             // Invalid calendar name
-            new Data { Pattern = "c yyyy MM dd", Text = "2015 01 01", Message = TextErrorMessages.NoMatchingCalendarSystem },
+            new Data { Pattern = "c uuuu MM dd", Text = "2015 01 01", Message = TextErrorMessages.NoMatchingCalendarSystem },
 
             // Invalid year
             new Data { Template = new LocalDate(1, 1, 1, CalendarSystem.IslamicBcl), Pattern = "uuuu", Text = "9999", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { 9999, 'u', typeof(LocalDate) } },
@@ -95,7 +95,7 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "M/d/yyyy", Text = "00/15/1984", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { 0, 'M', typeof(LocalDate) } },
 
             // Calendar ID parsing is now ordinal, case-sensitive
-            new Data(2011, 10, 9) { Pattern = "yyyy MM dd c", Text = "2011 10 09 iso", Message = TextErrorMessages.NoMatchingCalendarSystem },
+            new Data(2011, 10, 9) { Pattern = "uuuu MM dd c", Text = "2011 10 09 iso", Message = TextErrorMessages.NoMatchingCalendarSystem },
         };
 
         internal static Data[] ParseOnlyData = {
@@ -103,21 +103,21 @@ namespace NodaTime.Test.Text
             new Data(0, 10, 3) { Pattern = "yyyy MM dd gg", Text = "0001 10 03 BCE" },
 
             // Valid leap years
-            new Data(2000, 2, 29) { Pattern = "yyyy MM dd", Text = "2000 02 29" },
-            new Data(2004, 2, 29) { Pattern = "yyyy MM dd", Text = "2004 02 29" },
+            new Data(2000, 2, 29) { Pattern = "uuuu MM dd", Text = "2000 02 29" },
+            new Data(2004, 2, 29) { Pattern = "uuuu MM dd", Text = "2004 02 29" },
 
             // Month parsing should be case-insensitive
-            new Data(2011, 10, 3) { Pattern = "yyyy MMM dd", Text = "2011 OcT 03" },
-            new Data(2011, 10, 3) { Pattern = "yyyy MMMM dd", Text = "2011 OcToBeR 03" },
+            new Data(2011, 10, 3) { Pattern = "uuuu MMM dd", Text = "2011 OcT 03" },
+            new Data(2011, 10, 3) { Pattern = "uuuu MMMM dd", Text = "2011 OcToBeR 03" },
             // Day-of-week parsing should be case-insensitive
-            new Data(2011, 10, 9) { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 sUN" },
-            new Data(2011, 10, 9) { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 SuNDaY" },
+            new Data(2011, 10, 9) { Pattern = "uuuu MM dd ddd", Text = "2011 10 09 sUN" },
+            new Data(2011, 10, 9) { Pattern = "uuuu MM dd dddd", Text = "2011 10 09 SuNDaY" },
 
             // Genitive name is an extension of the non-genitive name; parse longer first.
-            new Data(2011, 1, 10) { Pattern = "yyyy MMMM dd", Text = "2011 MonthName-Genitive 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
-            new Data(2011, 1, 10) { Pattern = "yyyy MMMM dd", Text = "2011 MonthName 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
-            new Data(2011, 1, 10) { Pattern = "yyyy MMM dd", Text = "2011 MN-Gen 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
-            new Data(2011, 1, 10) { Pattern = "yyyy MMM dd", Text = "2011 MN 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "uuuu MMMM dd", Text = "2011 MonthName-Genitive 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "uuuu MMMM dd", Text = "2011 MonthName 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "uuuu MMM dd", Text = "2011 MN-Gen 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
+            new Data(2011, 1, 10) { Pattern = "uuuu MMM dd", Text = "2011 MN 10", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
         };
 
         internal static Data[] FormatOnlyData = {
@@ -140,9 +140,10 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 20, CalendarSystem.Coptic) { StandardPattern = LocalDatePattern.FullRoundtrip, Pattern = "r", Text = "2011-10-20 (Coptic)" },
 
             // Custom patterns
-            new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011/10/03" },
-            new Data(2011, 10, 3) { Pattern = "yyyy/MM/dd", Text = "2011-10-03", Culture = Cultures.FrCa },
-            new Data(2011, 10, 3) { Pattern = "yyyyMMdd", Text = "20111003" },
+            new Data(2011, 10, 3) { Pattern = "uuuu/MM/dd", Text = "2011/10/03" },
+            new Data(2011, 10, 3) { Pattern = "uuuu/MM/dd", Text = "2011-10-03", Culture = Cultures.FrCa },
+            new Data(2011, 10, 3) { Pattern = "uuuuMMdd", Text = "20111003" },
+            // 2-digit year-of-era patterns
             new Data(2001, 7, 3) { Pattern = "yy M d", Text = "01 7 3" },
             new Data(2011, 7, 3) { Pattern = "yy M d", Text = "11 7 3" },
             new Data(2030, 7, 3) { Pattern = "yy M d", Text = "30 7 3" },
@@ -151,8 +152,8 @@ namespace NodaTime.Test.Text
             new Data(1976, 7, 3) { Pattern = "yy M d", Text = "76 7 3" },
 
             // In the first century, we don't skip back a century for "high" two-digit year numbers.
-            new Data(25, 7, 3) { Pattern = "yy M d", Text = "25 7 3", Template = new LocalDate(50, 1, 1) },
-            new Data(35, 7, 3) { Pattern = "yy M d", Text = "35 7 3", Template = new LocalDate(50, 1, 1) },
+            new Data(25, 7, 3) { Pattern = "uu M d", Text = "25 7 3", Template = new LocalDate(50, 1, 1) },
+            new Data(35, 7, 3) { Pattern = "uu M d", Text = "35 7 3", Template = new LocalDate(50, 1, 1) },
 
             new Data(2000, 10, 3) { Pattern = "MM/dd", Text = "10/03"},
             new Data(1885, 10, 3) { Pattern = "MM/dd", Text = "10/03", Template = new LocalDate(1885, 10, 3) },
@@ -175,12 +176,12 @@ namespace NodaTime.Test.Text
             new Data(-1, 1, 3) { Pattern = "yyyy MM dd gg", Text = "0002 01 03 B.C." },
 
             // Day of week handling
-            new Data(2011, 10, 9) { Pattern = "yyyy MM dd dddd", Text = "2011 10 09 Sunday" },
-            new Data(2011, 10, 9) { Pattern = "yyyy MM dd ddd", Text = "2011 10 09 Sun" },
+            new Data(2011, 10, 9) { Pattern = "uuuu MM dd dddd", Text = "2011 10 09 Sunday" },
+            new Data(2011, 10, 9) { Pattern = "uuuu MM dd ddd", Text = "2011 10 09 Sun" },
 
             // Month handling
-            new Data(2011, 10, 9) { Pattern = "yyyy MMMM dd", Text = "2011 October 09" },
-            new Data(2011, 10, 9) { Pattern = "yyyy MMM dd", Text = "2011 Oct 09" },
+            new Data(2011, 10, 9) { Pattern = "uuuu MMMM dd", Text = "2011 October 09" },
+            new Data(2011, 10, 9) { Pattern = "uuuu MMM dd", Text = "2011 Oct 09" },
 
             // Year and two-digit year-of-era in the same format. Note that the year
             // gives the full year information, so we're not stuck in the 20th/21st century
@@ -190,8 +191,8 @@ namespace NodaTime.Test.Text
             new Data(-43, 3, 15) { Pattern = "uuuu MM dd", Text = "-0043 03 15"},
 
             // Calendar handling
-            new Data(2011, 10, 9) { Pattern = "c yyyy MM dd", Text = "ISO 2011 10 09" },
-            new Data(2011, 10, 9) { Pattern = "yyyy MM dd c", Text = "2011 10 09 ISO" },
+            new Data(2011, 10, 9) { Pattern = "c uuuu MM dd", Text = "ISO 2011 10 09" },
+            new Data(2011, 10, 9) { Pattern = "uuuu MM dd c", Text = "2011 10 09 ISO" },
             new Data(2011, 10, 9, CalendarSystem.Coptic) { Pattern = "c uuuu MM dd", Text = "Coptic 2011 10 09" },
             new Data(2011, 10, 9, CalendarSystem.Coptic) { Pattern = "uuuu MM dd c", Text = "2011 10 09 Coptic" },
 
@@ -199,11 +200,11 @@ namespace NodaTime.Test.Text
 
             // Awkward day-of-week handling
             // December 14th 2012 was a Friday. Friday is "Foo" or "FooBar" in AwkwardDayOfWeekCulture.
-            new Data(2012, 12, 14) { Pattern = "ddd yyyy MM dd", Text = "Foo 2012 12 14", Culture = Cultures.AwkwardDayOfWeekCulture },
-            new Data(2012, 12, 14) { Pattern = "dddd yyyy MM dd", Text = "FooBar 2012 12 14", Culture = Cultures.AwkwardDayOfWeekCulture },
+            new Data(2012, 12, 14) { Pattern = "ddd uuuu MM dd", Text = "Foo 2012 12 14", Culture = Cultures.AwkwardDayOfWeekCulture },
+            new Data(2012, 12, 14) { Pattern = "dddd uuuu MM dd", Text = "FooBar 2012 12 14", Culture = Cultures.AwkwardDayOfWeekCulture },
             // December 13th 2012 was a Thursday. Friday is "FooBaz" or "FooBa" in AwkwardDayOfWeekCulture.
-            new Data(2012, 12, 13) { Pattern = "ddd yyyy MM dd", Text = "FooBaz 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
-            new Data(2012, 12, 13) { Pattern = "dddd yyyy MM dd", Text = "FooBa 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
+            new Data(2012, 12, 13) { Pattern = "ddd uuuu MM dd", Text = "FooBaz 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
+            new Data(2012, 12, 13) { Pattern = "dddd uuuu MM dd", Text = "FooBa 2012 12 13", Culture = Cultures.AwkwardDayOfWeekCulture },
 
             // 3 digit year patterns (odd, but valid)
             new Data(12, 1, 2) { Pattern = "uuu MM dd", Text = "012 01 02" },

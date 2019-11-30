@@ -16,8 +16,8 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         private static readonly OffsetDateTime TemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).WithOffset(Offset.Zero);
         private static readonly OffsetDateTime SampleOffsetDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30).WithOffset(Offset.FromHours(2));
         // Note: not using CreateWithInvariantCulture for backward compatibility reasons.
-        private static readonly OffsetDateTimePattern PatternWithLongMonthAndDay = OffsetDateTimePattern.Create("dddd MMMM dd yyyy HH:mm:ss o<G>", CultureInfo.InvariantCulture, TemplateValue);
-        private static readonly OffsetDateTimePattern PatternWithNumbersToSecond = OffsetDateTimePattern.Create("dd/MM/yyyy HH:mm:ss o<G>", CultureInfo.InvariantCulture, TemplateValue);
+        private static readonly OffsetDateTimePattern PatternWithLongMonthAndDay = OffsetDateTimePattern.Create("dddd MMMM dd uuuu HH:mm:ss o<G>", CultureInfo.InvariantCulture, TemplateValue);
+        private static readonly OffsetDateTimePattern PatternWithNumbersToSecond = OffsetDateTimePattern.Create("dd/MM/uuuu HH:mm:ss o<G>", CultureInfo.InvariantCulture, TemplateValue);
 
         /// <summary>
         /// This includes both text and numeric parsing to avoid a test which is just a worst case for text.

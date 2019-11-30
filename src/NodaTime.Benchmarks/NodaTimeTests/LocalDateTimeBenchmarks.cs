@@ -87,13 +87,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public string ToString_Parameterless() => Sample.ToString();
 
         [Benchmark]
-        public string ToString_ExplicitPattern_Invariant() => Sample.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+        public string ToString_ExplicitPattern_Invariant() => Sample.ToString("dd/MM/uuuu HH:mm:ss", CultureInfo.InvariantCulture);
 
         /// <summary>
         /// This test will involve creating a new NodaFormatInfo for each iteration.
         /// </summary>
         [Benchmark]
-        public string ToString_ExplicitPattern_MutableCulture() => Sample.ToString("dd/MM/yyyy HH:mm:ss", MutableCulture);
+        public string ToString_ExplicitPattern_MutableCulture() => Sample.ToString("dd/MM/uuuu HH:mm:ss", MutableCulture);
 
         [Benchmark]
         public LocalDateTime PlusYears() => Sample.PlusYears(3);

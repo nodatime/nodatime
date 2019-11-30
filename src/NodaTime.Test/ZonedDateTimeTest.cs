@@ -464,7 +464,7 @@ namespace NodaTime.Test
         {
             var local = new LocalDateTime(2013, 7, 23, 13, 05, 20);
             ZonedDateTime zoned = local.InZoneStrictly(SampleZone);
-            Assert.AreEqual("2013/07/23 13:05:20 Single", zoned.ToString("yyyy/MM/dd HH:mm:ss z", CultureInfo.InvariantCulture));
+            Assert.AreEqual("2013/07/23 13:05:20 Single", zoned.ToString("uuuu/MM/dd HH:mm:ss z", CultureInfo.InvariantCulture));
         }
 
         [Test]

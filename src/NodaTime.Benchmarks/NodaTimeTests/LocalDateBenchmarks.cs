@@ -15,7 +15,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly DateTime SampleDateTime = new DateTime(2009, 12, 26, 1, 2, 3, DateTimeKind.Utc);
         private static readonly LocalDate SampleBeforeEpoch = new LocalDate(1909, 12, 26);
 
-        private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/yyyy");
+        private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/uuuu");
 
         private static readonly Period SamplePeriod = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4 }.Build();
 
