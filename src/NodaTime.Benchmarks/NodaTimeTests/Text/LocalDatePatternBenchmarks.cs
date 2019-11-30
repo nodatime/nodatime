@@ -12,10 +12,10 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
     public class LocalDatePatternBenchmarks
     {
         private static readonly LocalDate SampleLocalDate = new LocalDate(2009, 12, 26);
-        private static readonly LocalDatePattern PatternWithLongMonth = LocalDatePattern.CreateWithInvariantCulture("MMMM dd yyyy");
-        private static readonly LocalDatePattern PatternWithShortMonth = LocalDatePattern.CreateWithInvariantCulture("MMM dd yyyy");
-        private static readonly LocalDatePattern PatternWithLongDay = LocalDatePattern.CreateWithInvariantCulture("dddd MM dd yyyy");
-        private static readonly LocalDatePattern PatternWithShortDay = LocalDatePattern.CreateWithInvariantCulture("ddd MM dd yyyy");
+        private static readonly LocalDatePattern PatternWithLongMonth = LocalDatePattern.CreateWithInvariantCulture("MMMM dd uuuu");
+        private static readonly LocalDatePattern PatternWithShortMonth = LocalDatePattern.CreateWithInvariantCulture("MMM dd uuuu");
+        private static readonly LocalDatePattern PatternWithLongDay = LocalDatePattern.CreateWithInvariantCulture("dddd MM dd uuuu");
+        private static readonly LocalDatePattern PatternWithShortDay = LocalDatePattern.CreateWithInvariantCulture("ddd MM dd uuuu");
 
         private static readonly StringBuilder builder = new StringBuilder();
 

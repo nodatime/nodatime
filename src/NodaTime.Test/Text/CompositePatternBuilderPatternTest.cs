@@ -38,7 +38,7 @@ namespace NodaTime.Test.Text
             var pattern = new CompositePatternBuilder<LocalDate>
             {
                 { LocalDatePattern.Iso, _ => false },
-                { LocalDatePattern.CreateWithInvariantCulture("yyyy"), _ => false },
+                { LocalDatePattern.CreateWithInvariantCulture("uuuu"), _ => false },
             }.Build();
             Assert.Throws<FormatException>(() => pattern.Format(new LocalDate(2017, 1, 1)));
         }
@@ -49,7 +49,7 @@ namespace NodaTime.Test.Text
             var pattern = new CompositePatternBuilder<LocalDate>
             {
                 { LocalDatePattern.Iso, _ => true },
-                { LocalDatePattern.CreateWithInvariantCulture("yyyy"), _ => false },
+                { LocalDatePattern.CreateWithInvariantCulture("uuuu"), _ => false },
             }.Build();
             Assert.IsTrue(pattern.Parse("2017-03-20").Success);
             Assert.IsFalse(pattern.Parse("2017-03").Success);
@@ -67,7 +67,7 @@ namespace NodaTime.Test.Text
         public void Enumerators()
         {
             var pattern1 = LocalDatePattern.Iso;
-            var pattern2 = LocalDatePattern.CreateWithInvariantCulture("yyyy");
+            var pattern2 = LocalDatePattern.CreateWithInvariantCulture("uuuu");
 
             var builder = new CompositePatternBuilder<LocalDate>
             {

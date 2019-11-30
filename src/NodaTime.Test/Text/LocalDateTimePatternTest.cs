@@ -35,47 +35,47 @@ namespace NodaTime.Test.Text
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
             new Data { Pattern = "a", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { 'a', typeof(LocalDateTime) } },
-            new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'M' } },
+            new Data { Pattern = "dd MM uuuu HH:MM:SS", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
             new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = TextErrorMessages.EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = TextErrorMessages.CalendarAndEra },
             // Embedded pattern start without ld or lt
-            new Data { Pattern = "yyyy MM dd <", Message = TextErrorMessages.UnquotedLiteral, Parameters = { '<' } },
+            new Data { Pattern = "uuuu MM dd <", Message = TextErrorMessages.UnquotedLiteral, Parameters = { '<' } },
             // Attempt to use a full embedded date/time pattern (not valid for LocalDateTime)
-            new Data { Pattern = "l<yyyy MM dd HH:mm>", Message = TextErrorMessages.InvalidEmbeddedPatternType },
+            new Data { Pattern = "l<uuuu MM dd HH:mm>", Message = TextErrorMessages.InvalidEmbeddedPatternType },
             // Invalid nested pattern (local date pattern doesn't know about embedded patterns)
             new Data { Pattern = "ld<<D>>", Message = TextErrorMessages.UnquotedLiteral, Parameters = { '<' } },
         };
 
         internal static Data[] ParseFailureData = {
-            new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "dd" }},
+            new Data { Pattern = "dd MM uuuu HH:mm:ss", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "dd" }},
             new Data { Pattern = "(c)", Text = "(xxx)", Message = TextErrorMessages.NoMatchingCalendarSystem },
             // 24 as an hour is only valid when the time is midnight
-            new Data { Pattern = "yyyy-MM-dd", Text = "2017-02-30", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 30, 2, 2017 } },
-            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:05", Message = TextErrorMessages.InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:01:00", Message = TextErrorMessages.InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = TextErrorMessages.InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:00", Template = new LocalDateTime(1970, 1, 1, 0, 0, 5), Message = TextErrorMessages.InvalidHour24},
-            new Data { Pattern = "yyyy-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0), Message = TextErrorMessages.InvalidHour24},
+            new Data { Pattern = "uuuu-MM-dd", Text = "2017-02-30", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 30, 2, 2017 } },
+            new Data { Pattern = "uuuu-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:05", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "uuuu-MM-dd HH:mm:ss", Text = "2011-10-19 24:01:00", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "uuuu-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "uuuu-MM-dd HH:mm", Text = "2011-10-19 24:00", Template = new LocalDateTime(1970, 1, 1, 0, 0, 5), Message = TextErrorMessages.InvalidHour24},
+            new Data { Pattern = "uuuu-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0), Message = TextErrorMessages.InvalidHour24},
         };
 
         internal static Data[] ParseOnlyData = {
-            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "dd MM yyyy", Text = "19 10 2011", Template = new LocalDateTime(2000, 1, 1, 16, 05, 20) },
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "dd MM uuuu", Text = "19 10 2011", Template = new LocalDateTime(2000, 1, 1, 16, 05, 20) },
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "HH:mm:ss", Text = "16:05:20", Template = new LocalDateTime(2011, 10, 19, 0, 0, 0) },
             // Parsing using the semi-colon "comma dot" specifier
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20,352" },
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20,352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20,352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20,352" },
 
             // 24:00 meaning "start of next day"
-            new Data(2011, 10, 20) { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:00" },
-            new Data(2011, 10, 20) { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:00", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0) },
-            new Data(2011, 10, 20) { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:00" },
-            new Data(2011, 10, 20) { Pattern = "yyyy-MM-dd HH", Text = "2011-10-19 24" },
+            new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:00" },
+            new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:00", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0) },
+            new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH:mm", Text = "2011-10-19 24:00" },
+            new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH", Text = "2011-10-19 24" },
         };
 
         internal static Data[] FormatOnlyData = {
-            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "ddd yyyy", Text = "Wed 2011" },
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "ddd uuuu", Text = "Wed 2011" },
             // Note trunction of the "89" nanoseconds; o and O are BCL roundtrip patterns, with tick precision.
             new Data(SampleLocalDateTime) { Pattern = "o", Text = "1976-06-19T21:13:34.1234567" },
             new Data(SampleLocalDateTime) { Pattern = "O", Text = "1976-06-19T21:13:34.1234567" }
@@ -128,29 +128,29 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.ExtendedIso, Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF", Text = "2009-06-15T13:45:30.09", Culture = Cultures.FrFr },            
 
             // Use of the semi-colon "comma dot" specifier
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20.352" },
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20.352 end" },
-            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20 end" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20.352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20.352 end" },
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "uuuu-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20 end" },
 
             // When the AM designator is a leading substring of the PM designator...
-            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "yyyy-MM-dd h:mm:ss tt", Text = "2011-10-19 4:05:20 FooBar", Culture = Cultures.AwkwardAmPmDesignatorCulture },
-            new Data(2011, 10, 19, 4, 05, 20) { Pattern = "yyyy-MM-dd h:mm:ss tt", Text = "2011-10-19 4:05:20 Foo", Culture = Cultures.AwkwardAmPmDesignatorCulture },
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "uuuu-MM-dd h:mm:ss tt", Text = "2011-10-19 4:05:20 FooBar", Culture = Cultures.AwkwardAmPmDesignatorCulture },
+            new Data(2011, 10, 19, 4, 05, 20) { Pattern = "uuuu-MM-dd h:mm:ss tt", Text = "2011-10-19 4:05:20 Foo", Culture = Cultures.AwkwardAmPmDesignatorCulture },
 
             // Current culture decimal separator is irrelevant when trimming the dot for truncated fractional settings
-            new Data(2011, 10, 19, 4, 5, 6) { Pattern="yyyy-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06", Culture = Cultures.FrFr },
-            new Data(2011, 10, 19, 4, 5, 6, 123) { Pattern="yyyy-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06.123", Culture = Cultures.FrFr },
+            new Data(2011, 10, 19, 4, 5, 6) { Pattern="uuuu-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06", Culture = Cultures.FrFr },
+            new Data(2011, 10, 19, 4, 5, 6, 123) { Pattern="uuuu-MM-dd HH:mm:ss.FFF", Text="2011-10-19 04:05:06.123", Culture = Cultures.FrFr },
             // Check handling of F after non-period.
-            new Data(2011, 10, 19, 4, 5, 6, 123) { Pattern="yyyy-MM-dd HH:mm:ss'x'FFF", Text="2011-10-19 04:05:06x123", Culture = Cultures.FrFr },
+            new Data(2011, 10, 19, 4, 5, 6, 123) { Pattern="uuuu-MM-dd HH:mm:ss'x'FFF", Text="2011-10-19 04:05:06x123", Culture = Cultures.FrFr },
 
             // Check that unquoted T still works.
-            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
+            new Data(2012, 1, 31, 17, 36, 45) { Pattern = "uuuu-MM-ddTHH:mm:ss", Text = "2012-01-31T17:36:45" },
 
             // Custom embedded patterns (or mixture of custom and standard)
-            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss>", Text = "2015*10*24X11_55_30" },
-            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>", Text = "11_55_30Y2015*10*24" },
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<uuuu*MM*dd>'X'lt<HH_mm_ss>", Text = "2015*10*24X11_55_30" },
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "lt<HH_mm_ss>'Y'ld<uuuu*MM*dd>", Text = "11_55_30Y2015*10*24" },
             new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<d>'X'lt<HH_mm_ss>", Text = "10/24/2015X11_55_30" },
-            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<yyyy*MM*dd>'X'lt<T>", Text = "2015*10*24X11:55:30" },
+            new Data(2015, 10, 24, 11, 55, 30, 0) { Pattern = "ld<uuuu*MM*dd>'X'lt<T>", Text = "2015*10*24X11:55:30" },
 
             // Standard embedded patterns (main use case of embedded patterns). Short time versions have a seconds value of 0 so they can round-trip.
             new Data(2015, 10, 24, 11, 55, 30, 90) { Pattern = "ld<D> lt<r>", Text = "Saturday, 24 October 2015 11:55:30.09" },

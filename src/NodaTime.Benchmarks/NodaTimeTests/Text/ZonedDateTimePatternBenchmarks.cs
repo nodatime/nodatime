@@ -13,7 +13,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
     {
         private static readonly DateTimeZone SampleZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
         private static readonly ZonedDateTime SampleZonedDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30).InZoneStrictly(SampleZone);
-        private static readonly ZonedDateTimePattern PatternWithNumbersToSecond = ZonedDateTimePattern.CreateWithInvariantCulture("dd/MM/yyyy HH:mm:ss", null);
+        private static readonly ZonedDateTimePattern PatternWithNumbersToSecond = ZonedDateTimePattern.CreateWithInvariantCulture("dd/MM/uuuu HH:mm:ss", null);
 
         [Benchmark]
         public void FormatWithNumbersToSecond()

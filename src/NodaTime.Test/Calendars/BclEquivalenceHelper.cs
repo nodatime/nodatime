@@ -48,7 +48,7 @@ namespace NodaTime.Test.Calendars
                     {
                         LocalDate nodaDate = new LocalDate(year, month, day, noda);
                         Assert.AreEqual(bclDate, nodaDate.ToDateTimeUnspecified(),
-                            "Original calendar system date: {0:yyyy-MM-dd}", nodaDate);
+                            "Original calendar system date: {0:uuuu-MM-dd}", nodaDate);
                         Assert.AreEqual(nodaDate, LocalDate.FromDateTime(bclDate, noda));
                         Assert.AreEqual(year, nodaDate.Year);
                         Assert.AreEqual(month, nodaDate.Month);

@@ -42,18 +42,18 @@ namespace NodaTime.Test.Text
 
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
-            new Data { Pattern = "dd MM yyyy HH:MM:SS", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'M' } },
+            new Data { Pattern = "dd MM uuuu HH:MM:SS", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'M' } },
             // Note incorrect use of "u" (year) instead of "y" (year of era)
             new Data { Pattern = "dd MM uuuu HH:mm:ss gg", Message = TextErrorMessages.EraWithoutYearOfEra },
             // Era specifier and calendar specifier in the same pattern.
             new Data { Pattern = "dd MM yyyy HH:mm:ss gg c", Message = TextErrorMessages.CalendarAndEra },
             new Data { Pattern = "g", Message = TextErrorMessages.UnknownStandardFormat, Parameters = { 'g', typeof(ZonedDateTime) } },
             // Invalid patterns involving embedded values
-            new Data { Pattern = "ld<d> yyyy", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
-            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> dd", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
+            new Data { Pattern = "ld<d> uuuu", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
+            new Data { Pattern = "l<uuuu-MM-dd HH:mm:ss> dd", Message = TextErrorMessages.DateFieldAndEmbeddedDate },
             new Data { Pattern = "ld<d> ld<f>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
             new Data { Pattern = "lt<T> HH", Message = TextErrorMessages.TimeFieldAndEmbeddedTime },
-            new Data { Pattern = "l<yyyy-MM-dd HH:mm:ss> HH", Message = TextErrorMessages.TimeFieldAndEmbeddedTime },
+            new Data { Pattern = "l<uuuu-MM-dd HH:mm:ss> HH", Message = TextErrorMessages.TimeFieldAndEmbeddedTime },
             new Data { Pattern = "lt<T> lt<t>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
             new Data { Pattern = "ld<d> l<F>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
             new Data { Pattern = "l<F> ld<d>", Message = TextErrorMessages.RepeatedFieldInPattern, Parameters = { 'l' } },
@@ -63,84 +63,84 @@ namespace NodaTime.Test.Text
 
         internal static Data[] ParseFailureData = {
             // Skipped value
-            new Data { Pattern = "yyyy-MM-dd HH:mm z", Text = "2010-01-01 01:30 ab", Message = TextErrorMessages.SkippedLocalTime},
+            new Data { Pattern = "uuuu-MM-dd HH:mm z", Text = "2010-01-01 01:30 ab", Message = TextErrorMessages.SkippedLocalTime},
             // Ambiguous value
-            new Data { Pattern = "yyyy-MM-dd HH:mm z", Text = "2010-01-01 01:30 abc", Message = TextErrorMessages.AmbiguousLocalTime },
+            new Data { Pattern = "uuuu-MM-dd HH:mm z", Text = "2010-01-01 01:30 abc", Message = TextErrorMessages.AmbiguousLocalTime },
 
             // Invalid offset within a skipped time
-            new Data { Pattern = "yyyy-MM-dd HH:mm z o<g>", Text = "2010-01-01 01:30 ab +01", Message = TextErrorMessages.InvalidOffset},
+            new Data { Pattern = "uuuu-MM-dd HH:mm z o<g>", Text = "2010-01-01 01:30 ab +01", Message = TextErrorMessages.InvalidOffset},
             // Invalid offset within an ambiguous time (doesn't match either option)
-            new Data { Pattern = "yyyy-MM-dd HH:mm z o<g>", Text = "2010-01-01 01:30 abc +05", Message = TextErrorMessages.InvalidOffset},
+            new Data { Pattern = "uuuu-MM-dd HH:mm z o<g>", Text = "2010-01-01 01:30 abc +05", Message = TextErrorMessages.InvalidOffset},
             // Invalid offset for an unambiguous time
-            new Data { Pattern = "yyyy-MM-dd HH:mm z o<g>", Text = "2005-01-01 01:30 ab +02", Message = TextErrorMessages.InvalidOffset},
+            new Data { Pattern = "uuuu-MM-dd HH:mm z o<g>", Text = "2005-01-01 01:30 ab +02", Message = TextErrorMessages.InvalidOffset},
 
             // Failures copied from LocalDateTimePatternTest
-            new Data { Pattern = "dd MM yyyy HH:mm:ss", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "dd" }},
+            new Data { Pattern = "dd MM uuuu HH:mm:ss", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "dd" }},
             new Data { Pattern = "(c)", Text = "(xxx)", Message = TextErrorMessages.NoMatchingCalendarSystem },
             // 24 as an hour is only valid when the time is midnight
-            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:05", Message = TextErrorMessages.InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:01:00", Message = TextErrorMessages.InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = TextErrorMessages.InvalidHour24 },
-            new Data { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:00", Template = new LocalDateTime(1970, 1, 1, 0, 0, 5).InZoneStrictly(TestZone1), Message = TextErrorMessages.InvalidHour24},
-            new Data { Pattern = "yyyy-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0).InZoneStrictly(TestZone1), Message = TextErrorMessages.InvalidHour24},
+            new Data { Pattern = "uuuu-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:05", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "uuuu-MM-dd HH:mm:ss", Text = "2011-10-19 24:01:00", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "uuuu-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = TextErrorMessages.InvalidHour24 },
+            new Data { Pattern = "uuuu-MM-dd HH:mm", Text = "2011-10-19 24:00", Template = new LocalDateTime(1970, 1, 1, 0, 0, 5).InZoneStrictly(TestZone1), Message = TextErrorMessages.InvalidHour24},
+            new Data { Pattern = "uuuu-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0).InZoneStrictly(TestZone1), Message = TextErrorMessages.InvalidHour24},
 
             // Redundant specification of fixed zone but not enough digits - we'll parse UTC+01:00:00 and unexpectedly be left with 00
-            new Data { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00:00.00", Message = TextErrorMessages.ExtraValueCharacters, Parameters = { ".00" }},
+            new Data { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00:00.00", Message = TextErrorMessages.ExtraValueCharacters, Parameters = { ".00" }},
 
             // Can't parse a pattern with a time zone abbreviation.
-            new Data { Pattern = "yyyy-MM-dd HH:mm x", Text = "ignored", Message = TextErrorMessages.FormatOnlyPattern },
+            new Data { Pattern = "uuuu-MM-dd HH:mm x", Text = "ignored", Message = TextErrorMessages.FormatOnlyPattern },
 
             // Can't parse using a pattern that has no provider
-            new Data { ZoneProvider = null, Pattern = "yyyy-MM-dd z", Text = "ignored", Message = TextErrorMessages.FormatOnlyPattern },
+            new Data { ZoneProvider = null, Pattern = "uuuu-MM-dd z", Text = "ignored", Message = TextErrorMessages.FormatOnlyPattern },
 
             // Invalid ID
-            new Data { Pattern = "yyyy-MM-dd z", Text = "2017-08-21 LemonCurdIceCream", Message = TextErrorMessages.NoMatchingZoneId }
+            new Data { Pattern = "uuuu-MM-dd z", Text = "2017-08-21 LemonCurdIceCream", Message = TextErrorMessages.NoMatchingZoneId }
         };
 
         internal static Data[] ParseOnlyData = {
             // Template value time zone is from a different provider, but it's not part of the pattern.
-            new Data(2013, 1, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm", Text = "2013-01-13 16:02", Template = NodaConstants.UnixEpoch.InZone(France) },
+            new Data(2013, 1, 13, 16, 2, France) { Pattern = "uuuu-MM-dd HH:mm", Text = "2013-01-13 16:02", Template = NodaConstants.UnixEpoch.InZone(France) },
 
             // Skipped value, resolver returns start of second interval
-            new Data(TestZone1.Transition.InZone(TestZone1)) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2010-01-01 01:30 ab", Resolver = Resolvers.CreateMappingResolver(Resolvers.ThrowWhenAmbiguous, Resolvers.ReturnStartOfIntervalAfter) },
+            new Data(TestZone1.Transition.InZone(TestZone1)) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2010-01-01 01:30 ab", Resolver = Resolvers.CreateMappingResolver(Resolvers.ThrowWhenAmbiguous, Resolvers.ReturnStartOfIntervalAfter) },
 
             // Skipped value, resolver returns end of first interval
-            new Data(TestZone1.Transition.Minus(Duration.Epsilon).InZone(TestZone1)) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2010-01-01 01:30 ab", Resolver = Resolvers.CreateMappingResolver(Resolvers.ThrowWhenAmbiguous, Resolvers.ReturnEndOfIntervalBefore) },
+            new Data(TestZone1.Transition.Minus(Duration.Epsilon).InZone(TestZone1)) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2010-01-01 01:30 ab", Resolver = Resolvers.CreateMappingResolver(Resolvers.ThrowWhenAmbiguous, Resolvers.ReturnEndOfIntervalBefore) },
 
             // Parse-only tests from LocalDateTimeTest.
-            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "dd MM yyyy", Text = "19 10 2011", Template = new LocalDateTime(2000, 1, 1, 16, 05, 20).InUtc() },
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "dd MM uuuu", Text = "19 10 2011", Template = new LocalDateTime(2000, 1, 1, 16, 05, 20).InUtc() },
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "HH:mm:ss", Text = "16:05:20", Template = new LocalDateTime(2011, 10, 19, 0, 0, 0).InUtc() },
 
             // Parsing using the semi-colon "comma dot" specifier
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20,352" },
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20,352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20,352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20,352" },
 
             // 24:00 meaning "start of next day"
-            new Data(2011, 10, 20) { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:00" },
-            new Data(2011, 10, 20, 0, 0, TestZone1) { Pattern = "yyyy-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:00", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0).InZoneStrictly(TestZone1) },
-            new Data(2011, 10, 20) { Pattern = "yyyy-MM-dd HH:mm", Text = "2011-10-19 24:00" },
-            new Data(2011, 10, 20) { Pattern = "yyyy-MM-dd HH", Text = "2011-10-19 24" },
+            new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:00" },
+            new Data(2011, 10, 20, 0, 0, TestZone1) { Pattern = "uuuu-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:00", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0).InZoneStrictly(TestZone1) },
+            new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH:mm", Text = "2011-10-19 24:00" },
+            new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH", Text = "2011-10-19 24" },
 
             // Redundant specification of offset
-            new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00" },
-            new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00:00" },
+            new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00" },
+            new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:00:00" },
         };
 
         internal static Data[] FormatOnlyData = {
-            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "ddd yyyy", Text = "Wed 2011" },
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "ddd uuuu", Text = "Wed 2011" },
 
             // Time zone isn't in the provider
-            new Data(2013, 1, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 16:02 Europe/Paris" },
+            new Data(2013, 1, 13, 16, 2, France) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 16:02 Europe/Paris" },
 
             // Ambiguous value - would be invalid if parsed with a strict parser.
-            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(30)).InZone(TestZone2)) { Pattern = "yyyy-MM-dd HH:mm", Text = "2010-01-01 01:30" },
+            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(30)).InZone(TestZone2)) { Pattern = "uuuu-MM-dd HH:mm", Text = "2010-01-01 01:30" },
 
             // Winter
-            new Data(2013, 1, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm x", Text = "2013-01-13 16:02 CET" },
+            new Data(2013, 1, 13, 16, 2, France) { Pattern = "uuuu-MM-dd HH:mm x", Text = "2013-01-13 16:02 CET" },
             // Summer
-            new Data(2013, 6, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm x", Text = "2013-06-13 16:02 CEST" },
+            new Data(2013, 6, 13, 16, 2, France) { Pattern = "uuuu-MM-dd HH:mm x", Text = "2013-06-13 16:02 CEST" },
 
-            new Data(2013, 6, 13, 16, 2, France) { ZoneProvider = null, Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-06-13 16:02 Europe/Paris" },
+            new Data(2013, 6, 13, 16, 2, France) { ZoneProvider = null, Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-06-13 16:02 Europe/Paris" },
 
             // Standard patterns without a DateTimeZoneProvider
             new Data(MsdnStandardExampleNoMillis) { StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso, Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr, ZoneProvider = null},
@@ -153,44 +153,44 @@ namespace NodaTime.Test.Text
         internal static Data[] FormatAndParseData = {
 
             // Zone ID at the end
-            new Data(2013, 01, 13, 15, 44, TestZone1) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 ab" },
-            new Data(2013, 01, 13, 15, 44, TestZone2) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 abc" },
-            new Data(2013, 01, 13, 15, 44, TestZone3) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 abcd" },
-            new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01" },
-            new Data(2013, 01, 13, 15, 44, FixedMinus1) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC-01" },
-            new Data(2013, 01, 13, 15, 44, DateTimeZone.Utc) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC" },
+            new Data(2013, 01, 13, 15, 44, TestZone1) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 ab" },
+            new Data(2013, 01, 13, 15, 44, TestZone2) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 abc" },
+            new Data(2013, 01, 13, 15, 44, TestZone3) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 abcd" },
+            new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01" },
+            new Data(2013, 01, 13, 15, 44, FixedMinus1) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC-01" },
+            new Data(2013, 01, 13, 15, 44, DateTimeZone.Utc) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC" },
 
             // Zone ID at the start
-            new Data(2013, 01, 13, 15, 44, TestZone1) { Pattern = "z yyyy-MM-dd HH:mm", Text = "ab 2013-01-13 15:44" },
-            new Data(2013, 01, 13, 15, 44, TestZone2) { Pattern = "z yyyy-MM-dd HH:mm", Text = "abc 2013-01-13 15:44" },
-            new Data(2013, 01, 13, 15, 44, TestZone3) { Pattern = "z yyyy-MM-dd HH:mm", Text = "abcd 2013-01-13 15:44" },
-            new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "z yyyy-MM-dd HH:mm", Text = "UTC+01 2013-01-13 15:44" },
-            new Data(2013, 01, 13, 15, 44, FixedMinus1) { Pattern = "z yyyy-MM-dd HH:mm", Text = "UTC-01 2013-01-13 15:44" },
-            new Data(2013, 01, 13, 15, 44, DateTimeZone.Utc) { Pattern = "z yyyy-MM-dd HH:mm", Text = "UTC 2013-01-13 15:44" },
+            new Data(2013, 01, 13, 15, 44, TestZone1) { Pattern = "z uuuu-MM-dd HH:mm", Text = "ab 2013-01-13 15:44" },
+            new Data(2013, 01, 13, 15, 44, TestZone2) { Pattern = "z uuuu-MM-dd HH:mm", Text = "abc 2013-01-13 15:44" },
+            new Data(2013, 01, 13, 15, 44, TestZone3) { Pattern = "z uuuu-MM-dd HH:mm", Text = "abcd 2013-01-13 15:44" },
+            new Data(2013, 01, 13, 15, 44, FixedPlus1) { Pattern = "z uuuu-MM-dd HH:mm", Text = "UTC+01 2013-01-13 15:44" },
+            new Data(2013, 01, 13, 15, 44, FixedMinus1) { Pattern = "z uuuu-MM-dd HH:mm", Text = "UTC-01 2013-01-13 15:44" },
+            new Data(2013, 01, 13, 15, 44, DateTimeZone.Utc) { Pattern = "z uuuu-MM-dd HH:mm", Text = "UTC 2013-01-13 15:44" },
 
             // More precise fixed zones.
-            new Data(2013, 01, 13, 15, 44, FixedWithMinutes) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:30" },
-            new Data(2013, 01, 13, 15, 44, FixedWithSeconds) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+00:00:05" },
+            new Data(2013, 01, 13, 15, 44, FixedWithMinutes) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+01:30" },
+            new Data(2013, 01, 13, 15, 44, FixedWithSeconds) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 15:44 UTC+00:00:05" },
 
             // Valid offset for an unambiguous time
-            new Data(new LocalDateTime(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1)) { Pattern = "yyyy-MM-dd HH:mm z o<g>", Text = "2005-01-01 01:30 ab +01"},
+            new Data(new LocalDateTime(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1)) { Pattern = "uuuu-MM-dd HH:mm z o<g>", Text = "2005-01-01 01:30 ab +01"},
             // Valid offset (in the middle of the pattern) for an unambiguous time
-            new Data(new LocalDateTime(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1)) { Pattern = "yyyy-MM-dd o<g> HH:mm z", Text = "2005-01-01 +01 01:30 ab"},
+            new Data(new LocalDateTime(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1)) { Pattern = "uuuu-MM-dd o<g> HH:mm z", Text = "2005-01-01 +01 01:30 ab"},
             
             // Ambiguous value, resolver returns later value.
-            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(30)).InZone(TestZone2)) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2010-01-01 01:30 abc", Resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnLater, Resolvers.ThrowWhenSkipped) },
+            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(30)).InZone(TestZone2)) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2010-01-01 01:30 abc", Resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnLater, Resolvers.ThrowWhenSkipped) },
 
             // Ambiguous value, resolver returns earlier value.
-            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(-30)).InZone(TestZone2)) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2010-01-01 01:30 abc", Resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnEarlier, Resolvers.ThrowWhenSkipped) },
+            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(-30)).InZone(TestZone2)) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2010-01-01 01:30 abc", Resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnEarlier, Resolvers.ThrowWhenSkipped) },
 
             // Ambiguous local value, but with offset for later value (smaller offset).
-            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(30)).InZone(TestZone2)) { Pattern = "yyyy-MM-dd HH:mm z o<g>", Text = "2010-01-01 01:30 abc +01"},
+            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(30)).InZone(TestZone2)) { Pattern = "uuuu-MM-dd HH:mm z o<g>", Text = "2010-01-01 01:30 abc +01"},
 
             // Ambiguous local value, but with offset for earlier value (greater offset).
-            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(-30)).InZone(TestZone2)) { Pattern = "yyyy-MM-dd HH:mm z o<g>", Text = "2010-01-01 01:30 abc +02"},
+            new Data(TestZone2.Transition.Plus(Duration.FromMinutes(-30)).InZone(TestZone2)) { Pattern = "uuuu-MM-dd HH:mm z o<g>", Text = "2010-01-01 01:30 abc +02"},
 
             // Specify the provider
-            new Data(2013, 1, 13, 16, 2, France) { Pattern = "yyyy-MM-dd HH:mm z", Text = "2013-01-13 16:02 Europe/Paris", ZoneProvider = DateTimeZoneProviders.Tzdb},
+            new Data(2013, 1, 13, 16, 2, France) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2013-01-13 16:02 Europe/Paris", ZoneProvider = DateTimeZoneProviders.Tzdb},
 
             // Tests without zones, copied from LocalDateTimePatternTest
             // Calendar patterns are invariant
@@ -200,21 +200,21 @@ namespace NodaTime.Test.Text
             new Data(SampleZonedDateTimeCoptic) { Pattern = "uuuu-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCopticT21:13:34.123456789", Culture = Cultures.EnUs },
             
             // Use of the semi-colon "comma dot" specifier
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20.352" },
-            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20.352 end" },
-            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20 end" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20.352" },
+            new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20.352 end" },
+            new Data(2011, 10, 19, 16, 05, 20) { Pattern = "uuuu-MM-dd HH:mm:ss;FFF 'end'", Text = "2011-10-19 16:05:20 end" },
 
             // Standard patterns with a time zone provider
             new Data(2013, 01, 13, 15, 44, 30, 0, TestZone1) { StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso.WithZoneProvider(TestProvider) , Pattern = "G", Text = "2013-01-13T15:44:30 ab (+02)", Culture = Cultures.FrFr },
             new Data(2013, 01, 13, 15, 44, 30, 90, TestZone1) { StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso.WithZoneProvider(TestProvider), Pattern = "F", Text = "2013-01-13T15:44:30.09 ab (+02)", Culture = Cultures.FrFr },
 
             // Custom embedded patterns (or mixture of custom and standard)
-            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss> z o<g>", Text = "2015*10*24X11_55_30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
-            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "lt<HH_mm_ss>'Y'ld<yyyy*MM*dd> z o<g>", Text = "11_55_30Y2015*10*24 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
-            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<HH_mm_ss'Y'yyyy*MM*dd> z o<g>", Text = "11_55_30Y2015*10*24 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<uuuu*MM*dd>'X'lt<HH_mm_ss> z o<g>", Text = "2015*10*24X11_55_30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "lt<HH_mm_ss>'Y'ld<uuuu*MM*dd> z o<g>", Text = "11_55_30Y2015*10*24 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<HH_mm_ss'Y'uuuu*MM*dd> z o<g>", Text = "11_55_30Y2015*10*24 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
             new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<d>'X'lt<HH_mm_ss> z o<g>", Text = "10/24/2015X11_55_30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
-            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<yyyy*MM*dd>'X'lt<T> z o<g>", Text = "2015*10*24X11:55:30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<uuuu*MM*dd>'X'lt<T> z o<g>", Text = "2015*10*24X11:55:30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
 
             // Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
             new Data(2015, 10, 24, 11, 55, 30, 90, Athens) { Pattern = "ld<D> lt<r> z o<g>", Text = "Saturday, 24 October 2015 11:55:30.09 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
@@ -225,13 +225,13 @@ namespace NodaTime.Test.Text
 
             // Nested embedded patterns
             new Data(2015, 10, 24, 11, 55, 30, 90, Athens) { Pattern = "l<ld<D> lt<r>> z o<g>", Text = "Saturday, 24 October 2015 11:55:30.09 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
-            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<'X'lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>'X'> z o<g>", Text = "X11_55_30Y2015*10*24X Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
+            new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "l<'X'lt<HH_mm_ss>'Y'ld<uuuu*MM*dd>'X'> z o<g>", Text = "X11_55_30Y2015*10*24X Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
 
             // Check that unquoted T still works.
-            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
+            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "uuuu-MM-ddTHH:mm:ss" },
             
             // Check handling of F after non-period.
-            new Data(2012, 1, 31, 17, 36, 45, 123) { Text = "2012-01-31T17:36:45x123", Pattern = "yyyy-MM-dd'T'HH:mm:ss'x'FFF" },
+            new Data(2012, 1, 31, 17, 36, 45, 123) { Text = "2012-01-31T17:36:45x123", Pattern = "uuuu-MM-dd'T'HH:mm:ss'x'FFF" },
 
             // Issue981
             new Data(1906, 8, 29, 20, 58, 32, 0, DateTimeZoneProviders.Tzdb["Etc/GMT-12"]) { Text = "1906-08-29T20:58:32 Etc/GMT-12 (+12)", Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'", ZoneProvider = DateTimeZoneProviders.Tzdb },
@@ -246,7 +246,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void WithTemplateValue()
         {
-            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider)
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("uuuu-MM-dd", TestProvider)
                 .WithTemplateValue(Instant.FromUtc(1970, 1, 1, 11, 30).InZone(TestZone3));
             var parsed = pattern.Parse("2017-08-23").Value;
             Assert.AreSame(TestZone3, parsed.Zone);
@@ -259,7 +259,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void WithCalendar()
         {
-            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider).WithCalendar(CalendarSystem.Coptic);
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("uuuu-MM-dd", TestProvider).WithCalendar(CalendarSystem.Coptic);
             var parsed = pattern.Parse("0284-08-29").Value;
             Assert.AreEqual(new LocalDateTime(284, 8, 29, 0, 0, CalendarSystem.Coptic), parsed.LocalDateTime);
         }
@@ -267,7 +267,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void WithPatternText()
         {
-            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy", TestProvider).WithPatternText("yyyy-MM-dd");
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("uuuu", TestProvider).WithPatternText("uuuu-MM-dd");
             var text = pattern.Format(NodaConstants.UnixEpoch.InUtc());
             Assert.AreEqual("1970-01-01", text);
         }

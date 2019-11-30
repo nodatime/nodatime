@@ -25,7 +25,7 @@ namespace NodaTime.Test.Text
 
         internal static Data[] ParseFailureData = {
             // TODO: Make these use typeof(Instant)
-            new Data { Text = "rubbish", Pattern = "yyyyMMdd'T'HH:mm:ss", Message = TextErrorMessages.MismatchedNumber, Parameters = { "yyyy" } },
+            new Data { Text = "rubbish", Pattern = "uuuuMMdd'T'HH:mm:ss", Message = TextErrorMessages.MismatchedNumber, Parameters = { "uuuu" } },
             new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalDateTime).FullName! }},
             new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalDateTime).FullName! }},
         };
@@ -73,11 +73,11 @@ namespace NodaTime.Test.Text
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
         /// </summary>
         internal static readonly Data[] FormatAndParseData = {
-            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-dd'T'HH:mm:ss" },
+            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "uuuu-MM-dd'T'HH:mm:ss" },
             // Check that unquoted T still works.
-            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "yyyy-MM-ddTHH:mm:ss" },
-            new Data(2012, 4, 28, 0, 0, 0) { Text = "2012 avr. 28", Pattern = "yyyy MMM dd", Culture = Cultures.FrFr },
-            new Data { Text = " 1970 ", Pattern = " yyyy " },
+            new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "uuuu-MM-ddTHH:mm:ss" },
+            new Data(2012, 4, 28, 0, 0, 0) { Text = "2012 avr. 28", Pattern = "uuuu MMM dd", Culture = Cultures.FrFr },
+            new Data { Text = " 1970 ", Pattern = " uuuu " },
             new Data(Instant.MinValue) { Text = "-9998-01-01T00:00:00Z", Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
             new Data(Instant.MaxValue) { Text = "9999-12-31T23:59:59.999999999Z", Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'" },
 

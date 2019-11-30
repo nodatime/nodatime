@@ -115,7 +115,7 @@ namespace NodaTime.Test.Calendars
         {
             var civil = CalendarSystem.HebrewCivil;
             var scriptural = CalendarSystem.HebrewScriptural;
-            var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
+            var pattern = LocalDatePattern.CreateWithInvariantCulture("uuuu-MM-dd")
                 .WithTemplateValue(new LocalDate(5774, 1, 1, scriptural)); // Sample value in 2014 ISO
 
             var start = pattern.Parse(startText).Value;
@@ -132,7 +132,7 @@ namespace NodaTime.Test.Calendars
         public void AddMonths_MonthsBetween(string startText, int months, string expectedEndText)
         {
             var civil = CalendarSystem.HebrewCivil;
-            var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
+            var pattern = LocalDatePattern.CreateWithInvariantCulture("uuuu-MM-dd")
                 .WithTemplateValue(new LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
 
             var start = pattern.Parse(startText).Value;
@@ -146,7 +146,7 @@ namespace NodaTime.Test.Calendars
         public void MonthsBetween(string startText, int expectedMonths, string endText)
         {
             var civil = CalendarSystem.HebrewCivil;
-            var pattern = LocalDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
+            var pattern = LocalDatePattern.CreateWithInvariantCulture("uuuu-MM-dd")
                 .WithTemplateValue(new LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
 
             var start = pattern.Parse(startText).Value;

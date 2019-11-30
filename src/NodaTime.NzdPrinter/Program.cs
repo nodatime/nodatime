@@ -119,7 +119,7 @@ namespace NodaTime.NzdPrinter
                 var offset = reader.ReadOffset();
                 var savings = reader.ReadOffset();
                 var nextStart = reader.ReadZoneIntervalTransition(start);
-                Console.WriteLine(Invariant($"  {start:yyyy-MM-dd'T'HH:mm:ss} - {nextStart:yyyy-MM-dd'T'HH:mm:ss}; wall offset: {offset}; savings: {savings}; name: {name}"));
+                Console.WriteLine(Invariant($"  {start:uuuu-MM-dd'T'HH:mm:ss} - {nextStart:uuuu-MM-dd'T'HH:mm:ss}; wall offset: {offset}; savings: {savings}; name: {name}"));
                 start = nextStart;
             }
             if (reader.ReadByte() == 1)

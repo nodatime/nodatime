@@ -19,7 +19,7 @@ namespace NodaTime.TzValidate.NzdCompatibility
     /// </summary>
     public sealed class ZoneDumper
     {
-        private static readonly IPattern<Instant> InstantPattern = NodaTime.Text.InstantPattern.CreateWithInvariantCulture("yyyy-MM-dd HH:mm:ss'Z'");
+        private static readonly IPattern<Instant> InstantPattern = NodaTime.Text.InstantPattern.CreateWithInvariantCulture("uuuu-MM-dd HH:mm:ss'Z'");
         private static readonly IPattern<Offset> OffsetPattern = NodaTime.Text.OffsetPattern.CreateWithInvariantCulture("l");
         private const string LineFormatWithAbbreviations = "{0} {1} {2} {3}\n";
         private const string LineFormatWithoutAbbreviations = "{0} {1} {2}\n";
