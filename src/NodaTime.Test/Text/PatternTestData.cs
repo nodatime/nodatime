@@ -145,7 +145,7 @@ namespace NodaTime.Test.Text
             string expectedMessage = FormatMessage(Message!, Parameters.ToArray());
             IPattern<T> pattern = CreatePattern();
             var result = pattern.Parse(Text!);
-            Assert.IsFalse(result.Success, "Expected parsing to failed, but it succeeded");
+            Assert.IsFalse(result.Success, "Expected parsing to fail, but it succeeded");
             try
             {
                 result.GetValueOrThrow();

@@ -226,12 +226,20 @@ namespace NodaTime
                 Preconditions.CheckArgumentRange(nameof(second), second, 0, SecondsPerMinute - 1);
                 Preconditions.CheckArgumentRange(nameof(nanosecondWithinSecond), nanosecondWithinSecond, 0, NanosecondsPerSecond - 1);
             }
-            return new LocalTime(unchecked(
+            return FromHourMinuteSecondNanosecondTrusted(hour, minute, second, nanosecondWithinSecond);
+        }
+
+        /// <summary>
+        /// Factory method for creating a local time from the hour of day, minute of hour, second of minute, and nanosecond of second
+        /// where the values have already been validated.
+        /// </summary>
+        internal static LocalTime FromHourMinuteSecondNanosecondTrusted(
+            [Trusted] int hour, [Trusted] int minute, [Trusted] int second, [Trusted] long nanosecondWithinSecond) =>
+            new LocalTime(unchecked(
                 hour * NanosecondsPerHour +
                 minute * NanosecondsPerMinute +
                 second * NanosecondsPerSecond +
                 nanosecondWithinSecond));
-        }
 
         /// <summary>
         /// Constructor only called from other parts of Noda Time - trusted to be the range [0, NanosecondsPerDay).

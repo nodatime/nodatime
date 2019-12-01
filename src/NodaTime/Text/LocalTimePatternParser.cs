@@ -124,6 +124,11 @@ namespace NodaTime.Text
             internal LocalTimeParseBucket(LocalTime templateValue)
             {
                 this.TemplateValue = templateValue;
+                // By copying these out of the template value now, we don't have to use any conditional
+                // logic later on.
+                Minutes = templateValue.Minute;
+                Seconds = templateValue.Second;
+                FractionalSeconds = templateValue.NanosecondOfSecond;
             }
 
             /// <summary>
@@ -132,12 +137,23 @@ namespace NodaTime.Text
             internal override ParseResult<LocalTime> CalculateValue(PatternFields usedFields, string text) =>
                 CalculateValue(usedFields, text, typeof(LocalTime));
 
+            private const PatternFields Hour24MinuteSecond = PatternFields.Hours24 | PatternFields.Minutes | PatternFields.Seconds;
+            private const PatternFields AllTimeFieldsExceptFractionalSeconds = PatternFields.AllTimeFields ^ PatternFields.FractionalSeconds;
+
             internal ParseResult<LocalTime> CalculateValue(PatternFields usedFields, string text, Type eventualResultType)
             {
+                // Optimize common situation for ISO values.
+                if ((usedFields & AllTimeFieldsExceptFractionalSeconds) == Hour24MinuteSecond)
+                {
+                    return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondNanosecondTrusted(Hours24, Minutes, Seconds, FractionalSeconds));
+                }
+
+                // If this bucket was created from an embedded pattern, it's already been computed.
                 if (usedFields.HasAny(PatternFields.EmbeddedTime))
                 {
-                    return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondNanosecond(Hours24, Minutes, Seconds, FractionalSeconds));
+                    return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondNanosecondTrusted(Hours24, Minutes, Seconds, FractionalSeconds));
                 }
+                
                 if (AmPm == 2)
                 {
                     AmPm = TemplateValue.Hour / 12;
@@ -147,10 +163,7 @@ namespace NodaTime.Text
                 {
                     return failure;
                 }
-                int minutes = usedFields.HasAny(PatternFields.Minutes) ? Minutes : TemplateValue.Minute;
-                int seconds = usedFields.HasAny(PatternFields.Seconds) ? Seconds : TemplateValue.Second;
-                int fraction = usedFields.HasAny(PatternFields.FractionalSeconds) ? FractionalSeconds : TemplateValue.NanosecondOfSecond;
-                return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondNanosecond(hour, minutes, seconds, fraction));
+                return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondNanosecondTrusted(hour, Minutes, Seconds, FractionalSeconds));
             }
 
             private ParseResult<LocalTime>? DetermineHour(PatternFields usedFields, string text, out int hour, Type eventualResultType)
