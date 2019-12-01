@@ -131,6 +131,13 @@ namespace NodaTime.Text
 
             internal ParseResult<LocalDate> CalculateValue(PatternFields usedFields, string text, Type eventualResultType)
             {
+                // Optimization for very, very common case.
+                if (usedFields == (PatternFields.Year | PatternFields.MonthOfYearNumeric | PatternFields.DayOfMonth) &&
+                    Calendar == CalendarSystem.Iso)
+                {
+                    return CalculateSimpleIsoValue(text);
+                }
+
                 if (usedFields.HasAny(PatternFields.EmbeddedDate))
                 {
                     return ParseResult<LocalDate>.ForValue(new LocalDate(Year, MonthOfYearNumeric, DayOfMonth, Calendar));
@@ -154,13 +161,40 @@ namespace NodaTime.Text
                     return ParseResult<LocalDate>.DayOfMonthOutOfRange(text, day, MonthOfYearNumeric, Year);
                 }
 
-                LocalDate value = new LocalDate(Year, MonthOfYearNumeric, day, Calendar);
+                // Avoid further revalidation.
+                LocalDate value = new LocalDate(new YearMonthDayCalendar(Year, MonthOfYearNumeric, day, Calendar.Ordinal));
 
                 if (usedFields.HasAny(PatternFields.DayOfWeek) && DayOfWeek != (int) value.DayOfWeek)
                 {
                     return ParseResult<LocalDate>.InconsistentDayOfWeekTextValue(text);
                 }
 
+                return ParseResult<LocalDate>.ForValue(value);
+            }
+
+            /// <summary>
+            /// Optimized computation for a pattern with an ISO calendar template value,
+            /// and year/month/day fields.
+            /// </summary>
+            private ParseResult<LocalDate> CalculateSimpleIsoValue(string text)
+            {
+                int day = DayOfMonth;
+                int month = MonthOfYearNumeric;
+                // Note: year is always valid, as it's already validated to be in the range -9999 to 9999.
+
+                if (month > 12)
+                {
+                    return ParseResult<LocalDate>.MonthOutOfRange(text, MonthOfYearNumeric, Year);
+                }
+                // If we've been asked for day 1-28, we're definitely okay regardless of month.
+                // If it's 29-31, we need to check.
+                // If it's over 31, it's definitely wrong.
+                if (day > 31 || (day > 28 && day > Calendar.GetDaysInMonth(Year, MonthOfYearNumeric)))
+                {
+                    return ParseResult<LocalDate>.DayOfMonthOutOfRange(text, day, MonthOfYearNumeric, Year);
+                }
+
+                var value = new LocalDate(new YearMonthDayCalendar(Year, month, day, CalendarOrdinal.Iso));
                 return ParseResult<LocalDate>.ForValue(value);
             }
 

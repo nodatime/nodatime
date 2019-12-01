@@ -12,6 +12,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
     public class LocalDatePatternBenchmarks
     {
         private static readonly LocalDate SampleLocalDate = new LocalDate(2009, 12, 26);
+        private static readonly string SampleIsoFormattedDate = "2009-12-26";
         private static readonly LocalDatePattern PatternWithLongMonth = LocalDatePattern.CreateWithInvariantCulture("MMMM dd uuuu");
         private static readonly LocalDatePattern PatternWithShortMonth = LocalDatePattern.CreateWithInvariantCulture("MMM dd uuuu");
         private static readonly LocalDatePattern PatternWithLongDay = LocalDatePattern.CreateWithInvariantCulture("dddd MM dd uuuu");
@@ -56,6 +57,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         public void FormatWithShortDay()
         {
             PatternWithShortDay.Format(SampleLocalDate);
+        }
+
+        [Benchmark]
+        public void ParseIsoDate()
+        {
+            LocalDatePattern.Iso.Parse(SampleIsoFormattedDate);
         }
     }
 }
