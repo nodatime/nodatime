@@ -28,7 +28,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     [TypeConverter(typeof(AnnualDateTypeConverter))]
-    public readonly struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IFormattable
+    public readonly struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IComparable, IFormattable
     {
         // The underlying value. We only care about the month and day, but for the sake of
         // compatibility with the default value, this ends up being in year 1. This would
@@ -155,6 +155,29 @@ namespace NodaTime
         /// zero if this time is the same as <paramref name="other"/>; a value greater than zero if this annual date is
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(AnnualDate other) => value.CompareTo(other.value);
+
+
+        /// <summary>
+        /// Implementation of <see cref="IComparable.CompareTo"/> to compare two AnnualDates.
+        /// See the type documentation for a description of ordering semantics.
+        /// </summary>
+        /// <remarks>
+        /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
+        /// </remarks>
+        /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="AnnualDate"/></exception>
+        /// <param name="obj">The object to compare this value with.</param>
+        /// <returns>The result of comparing this AnnualDate with another one.
+        /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
+        /// </returns>
+        public int CompareTo(object obj)
+        {
+            if (obj is null)
+            {
+                return 1;
+            }
+            Preconditions.CheckArgument(obj is AnnualDate, nameof(obj), "Object must be of type NodaTime.AnnualDate.");
+            return CompareTo((AnnualDate)obj);
+        }
 
         /// <summary>
         /// Compares two <see cref="AnnualDate" /> values for equality.
