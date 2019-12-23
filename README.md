@@ -11,12 +11,6 @@ precisely.
 * [Project source and issue site](https://github.com/nodatime/nodatime)
 * [Stack Overflow tag](http://stackoverflow.com/questions/tagged/nodatime) - for specific "How do I do X?" questions
 
-The above links should be used for most interactions. The Gitter chat linked below is also available,
-but as Noda Time is a small project, there are rarely people actively watching the chat - most concerns
-are better handled on Stack Overflow, the mailing list, or as a GitHub issue.
-
-* [Public chat room](https://gitter.im/nodatime/nodatime) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nodatime/nodatime?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
 ## Contributing
 
 We appreciate your interest in contributing to Noda Time. See the [contribution guidelines](https://github.com/nodatime/nodatime/blob/master/CONTRIBUTING.md) for more details.
