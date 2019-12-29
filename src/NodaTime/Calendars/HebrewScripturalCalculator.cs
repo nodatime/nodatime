@@ -164,7 +164,7 @@ namespace NodaTime.Calendars
                     // Adar II
                     13 => 30 + heshvanLength + kislevLength + 29 + 30 + firstAdarLength,
                     // TODO: It would be nice for this to be simple via Preconditions
-                    _ => throw new ArgumentOutOfRangeException(nameof(month), month, $"Value should be in range [1-13]")
+                    _ => throw new ArgumentOutOfRangeException(nameof(month), month, "Value should be in range [1-13]")
                 };
             }
         }

@@ -120,7 +120,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     // I know using .Result is nasty, but we're in a console app, and nothing is
                     // going to deadlock...
                     var data = client.GetAsync(path).Result.EnsureSuccessStatusCode().Content.ReadAsByteArrayAsync().Result;
-                    log?.WriteLine($"Compiling from archive");
+                    log?.WriteLine("Compiling from archive");
                     return FileSource.FromArchive(new MemoryStream(data), uri.AbsolutePath);
                 }
             }
