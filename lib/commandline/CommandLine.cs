@@ -310,7 +310,7 @@ namespace CommandLine
         {
             if (concreteType == null)
             {
-                throw new ArgumentNullException("concreteType");
+                throw new ArgumentNullException(nameof(concreteType));
             }
 
             if (!typeof(IList<string>).GetTypeInfo().IsAssignableFrom(concreteType.GetTypeInfo()))
