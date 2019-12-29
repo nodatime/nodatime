@@ -8,7 +8,7 @@ namespace NodaTime.Calendars
 {
     /// <summary>
     /// Implementation of the algorithms described in
-    /// http://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps, using scriptural
+    /// https://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps, using scriptural
     /// month numbering.
     /// </summary>
     internal static class HebrewScripturalCalculator

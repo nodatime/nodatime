@@ -182,7 +182,7 @@ namespace NodaTime
         public static CalendarSystem Iso { get; }
 
         /// <summary>
-        /// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
+        /// Returns a Hebrew calendar, as described at https://en.wikipedia.org/wiki/Hebrew_calendar. This is a
         /// purely mathematical calculator, applied proleptically to the period where the real calendar was observational. 
         /// </summary>
         /// <remarks>
@@ -190,7 +190,7 @@ namespace NodaTime
         /// particularly in terms of calculations involving adding or subtracting years. Additionally, text formatting
         /// and parsing using month names is not currently supported, due to the challenges of handling leap months.
         /// It is hoped that this will be improved in future versions.</para>
-        /// <para>The implementation for this was taken from http://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps,
+        /// <para>The implementation for this was taken from https://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps,
         /// which is a public domain algorithm presumably equivalent to that given in the Calendrical Calculations book
         /// by the same authors (Nachum Dershowitz and Edward Reingold).
         /// </para>

@@ -27,7 +27,7 @@ namespace NodaTime.Utility
                 // start of the day).
                 // The shift approach here is equivalent to dividing by NodaConstants.TicksPerDay, but appears to be
                 // very significantly faster under the x64 JIT (and no slower under the x86 JIT).
-                // See http://stackoverflow.com/questions/22258070 for the inspiration.
+                // See https://stackoverflow.com/questions/22258070 for the inspiration.
                 if (ticks >= 0)
                 {
                     int days = (int) ((ticks >> 14) / 52734375L);

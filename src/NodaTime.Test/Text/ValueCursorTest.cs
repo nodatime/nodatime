@@ -163,7 +163,7 @@ namespace NodaTime.Test.Text
         public void ParseDigits_NonAscii_NeverMatches()
         {
             // Arabic-Indic digits 0 and 1. See
-            // http://www.unicode.org/charts/PDF/U0600.pdf
+            // https://www.unicode.org/charts/PDF/U0600.pdf
             var value = new ValueCursor("\u0660\u0661");
             Assert.True(value.MoveNext());
             Assert.False(value.ParseDigits(1, 2, out int actual));

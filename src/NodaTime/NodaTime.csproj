@@ -10,7 +10,7 @@
     <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PackageTags>date;time;timezone;calendar;nodatime</PackageTags>
-    <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
+    <PackageProjectUrl>https://nodatime.org/</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/nodatime/nodatime</RepositoryUrl>
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>

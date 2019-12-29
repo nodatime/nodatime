@@ -19,7 +19,7 @@ namespace NodaTime.Demo
     {
         /// <summary>
         /// Why would iOS 6 not be able to parse a Julian date of 2475213?
-        /// <see href="http://stackoverflow.com/questions/12922645"/>
+        /// <see href="https://stackoverflow.com/questions/12922645"/>
         /// </summary>
         [Test]
         public void MysteryTimeZones()

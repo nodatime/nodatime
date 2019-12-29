@@ -25,7 +25,7 @@ namespace NodaTime
         // DateTimeZoneProviders.Bcl to force a read/parse of TZDB data.
         private static class TzdbHolder
         {
-            // See http://csharpindepth.com/Articles/General/BeforeFieldInit.aspx
+            // See https://csharpindepth.com/Articles/BeforeFieldInit
             static TzdbHolder() {}
             internal static readonly DateTimeZoneCache TzdbImpl = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
         }
