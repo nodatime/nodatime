@@ -503,7 +503,7 @@ namespace NodaTime.Test
                 serializer.Serialize(stream, helper);
                 stream.Position = 0;
                 var result = (SerializationHelper<T>) serializer.Deserialize(stream);
-                Assert.IsTrue(comparer.Equals(result.Value, value), "Expected " + value + "; was " + result.Value);
+                Assert.IsTrue(comparer.Equals(result.Value, value), $"Expected {value}; was {result.Value}");
                 // Validate the rest of the object deserialization is still okay.
                 Assert.AreEqual(100, result.Before);
                 Assert.AreEqual(200, result.After);
@@ -533,7 +533,7 @@ namespace NodaTime.Test
                 var doc = XElement.Load(stream);
                 doc.Element("value").ReplaceWith(XElement.Parse(validXml));
                 var result = (SerializationHelper<T>) serializer.Deserialize(doc.CreateReader());
-                Assert.IsTrue(comparer.Equals(result.Value, expectedValue), "Expected " + expectedValue + "; was " + result.Value);
+                Assert.IsTrue(comparer.Equals(result.Value, expectedValue), $"Expected {expectedValue}; was {result.Value}");
                 // Validate the rest of the object deserialization is still okay.
                 Assert.AreEqual(100, result.Before);
                 Assert.AreEqual(200, result.After);

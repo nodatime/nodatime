@@ -149,7 +149,7 @@ namespace NodaTime.Testing.TimeZones
             /// <param name="newStandardOffsetHours">The new standard offset, in hours.</param>
             /// <param name="newSavingOffsetHours">The new daylight saving offset, in hours.</param>
             public void Add(Instant transition, int newStandardOffsetHours, int newSavingOffsetHours) =>
-                Add(transition, newStandardOffsetHours, newSavingOffsetHours, "Interval from " + transition);
+                Add(transition, newStandardOffsetHours, newSavingOffsetHours, $"Interval from {transition}");
 
             /// <summary>
             /// Adds a transition at the given instant, to the specified new standard offset,

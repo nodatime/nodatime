@@ -60,7 +60,7 @@ namespace NodaTime.Calendars
         {
             Preconditions.DebugCheckState(
                 FirstYearOfStandardizedCalendar + YearInfoRaw.Length == BadiMaxYear + 1,
-                "Invalid compressed data. Length: " + YearInfoRaw.Length);
+                $"Invalid compressed data. Length: {YearInfoRaw.Length}");
         }
 
         internal BadiYearMonthDayCalculator()

@@ -82,7 +82,7 @@ namespace NodaTime.Testing.TimeZones
             {
                 return zone;
             }
-            throw new ArgumentException("Unknown ID: " + id);
+            throw new ArgumentException($"Unknown ID: {id}");
         }
 
         /// <summary>

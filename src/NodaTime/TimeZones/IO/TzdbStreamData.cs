@@ -100,7 +100,7 @@ namespace NodaTime.TimeZones.IO
                     DateTimeZoneWriter.DateTimeZoneType.Fixed => FixedDateTimeZone.Read(reader, id),
                     DateTimeZoneWriter.DateTimeZoneType.Precalculated =>
                     CachedDateTimeZone.ForZone(PrecalculatedDateTimeZone.Read(reader, id)),
-                    _ => throw new InvalidNodaDataException("Unknown time zone type " + type)
+                    _ => throw new InvalidNodaDataException($"Unknown time zone type {type}")
                 };
             }
         }
@@ -178,7 +178,7 @@ namespace NodaTime.TimeZones.IO
                     string id = reader.ReadString();
                     if (zoneFields.ContainsKey(id))
                     {
-                        throw new InvalidNodaDataException("Multiple definitions for zone " + id);
+                        throw new InvalidNodaDataException($"Multiple definitions for zone {id}");
                     }
                     zoneFields[id] = field;
                 }
@@ -240,7 +240,7 @@ namespace NodaTime.TimeZones.IO
             {
                 if (expectedNullField != null)
                 {
-                    throw new InvalidNodaDataException("Multiple fields of ID " + field.Id);
+                    throw new InvalidNodaDataException($"Multiple fields of ID {field.Id}");
                 }
             }
 
@@ -248,7 +248,7 @@ namespace NodaTime.TimeZones.IO
             {
                 if (stringPool is null)
                 {
-                    throw new InvalidNodaDataException("String pool must be present before field " + field.Id);
+                    throw new InvalidNodaDataException($"String pool must be present before field {field.Id}");
                 }
             }
         }

@@ -15,7 +15,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         ///   Initializes a new instance of the <see cref="MissingTokenException" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        public MissingTokenException(string name) : this(name, "Missing token " + name)
+        public MissingTokenException(string name) : this(name, $"Missing token {name}")
         {
         }
 

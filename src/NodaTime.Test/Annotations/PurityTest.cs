@@ -30,7 +30,7 @@ namespace NodaTime.Test.Annotations
                                                .Where(m => !implicitlyPureNames.Contains(m.Name))
                                                .Where(m => !m.IsDefined(typeof(PureAttribute)));
 
-            TestHelper.AssertNoFailures(impureMethods, m => m.DeclaringType?.Name + "." + m.Name);
+            TestHelper.AssertNoFailures(impureMethods, m => $"{m.DeclaringType?.Name}.{m.Name}");
         }
     }
 }

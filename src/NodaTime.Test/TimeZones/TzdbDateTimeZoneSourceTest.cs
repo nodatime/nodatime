@@ -200,7 +200,7 @@ namespace NodaTime.Test.TimeZones
         public void VersionId()
         {
             var source = TzdbDateTimeZoneSource.Default;
-            StringAssert.StartsWith("TZDB: " + source.TzdbVersion, source.VersionId);
+            StringAssert.StartsWith($"TZDB: {source.TzdbVersion}", source.VersionId);
         }
 
         [Test]
@@ -294,7 +294,7 @@ namespace NodaTime.Test.TimeZones
         public void MapTimeZoneInfoId(string timeZoneInfoId, int standardUtc, string expectedId)
         {
             var zoneInfo = TimeZoneInfo.CreateCustomTimeZone(timeZoneInfoId, TimeSpan.FromHours(standardUtc),
-                "Ignored display name", "Standard name for " + timeZoneInfoId);
+                "Ignored display name", $"Standard name for {timeZoneInfoId}");
             var mappedId = TzdbDateTimeZoneSource.Default.MapTimeZoneInfoId(zoneInfo);
             Assert.AreEqual(expectedId, mappedId);
 

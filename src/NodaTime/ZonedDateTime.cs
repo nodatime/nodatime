@@ -97,8 +97,7 @@ namespace NodaTime
             // Not using Preconditions, to avoid building the string unnecessarily.
             if (correctOffset != offset)
             {
-                throw new ArgumentException("Offset " + offset + " is invalid for local date and time " + localDateTime
-                    + " in time zone " + zone.Id, nameof(offset));
+                throw new ArgumentException($"Offset {offset} is invalid for local date and time {localDateTime} in time zone {zone.Id}", nameof(offset));
 
             }
             offsetDateTime = new OffsetDateTime(localDateTime, offset);

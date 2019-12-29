@@ -152,7 +152,7 @@ namespace NodaTime.TimeZones.IO
                             millis = (firstData << 24) + (ReadByte() << 16) + (ReadInt16() & 0xffff);
                             break;
                         default:
-                            throw new InvalidNodaDataException("Invalid flag in offset: " + flag.ToString("x2"));
+                            throw new InvalidNodaDataException($"Invalid flag in offset: {flag:x2}");
                     }
                 }
                 millis -= NodaConstants.MillisecondsPerDay;
@@ -214,7 +214,7 @@ namespace NodaTime.TimeZones.IO
                         DateTimeZoneWriter.ZoneIntervalConstants.MarkerMinValue => Instant.BeforeMinValue,
                         DateTimeZoneWriter.ZoneIntervalConstants.MarkerMaxValue => Instant.AfterMaxValue,
                         DateTimeZoneWriter.ZoneIntervalConstants.MarkerRaw => Instant.FromUnixTimeTicks(ReadInt64()),
-                        _ => throw new InvalidNodaDataException("Unrecognised marker value: " + value)
+                        _ => throw new InvalidNodaDataException($"Unrecognised marker value: {value}")
                     };
                 }
                 if (value < DateTimeZoneWriter.ZoneIntervalConstants.MinValueForMinutesSinceEpoch)
@@ -222,7 +222,7 @@ namespace NodaTime.TimeZones.IO
                     if (previous is null)
                     {
                         throw new InvalidNodaDataException(
-                            "No previous value, so can't interpret value encoded as delta-since-previous: " + value);
+                            $"No previous value, so can't interpret value encoded as delta-since-previous: {value}");
                     }
                     return (Instant) previous + Duration.FromHours(value);
                 }
@@ -251,7 +251,7 @@ namespace NodaTime.TimeZones.IO
                     int bytesRead = input.Read(data, offset, length - offset);
                     if (bytesRead <= 0)
                     {
-                        throw new InvalidNodaDataException("Unexpectedly reached end of data with " + (length - offset) + " bytes still to read");
+                        throw new InvalidNodaDataException($"Unexpectedly reached end of data with {length - offset} bytes still to read");
                     }
                     offset += bytesRead;
                 }

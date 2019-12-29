@@ -73,8 +73,8 @@ namespace NodaTime.Text
         ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString() =>
-            Index <= 0 ? "^" + Value
-                : Index >= Length ? Value + "^"
+            Index <= 0 ? $"^{Value}"
+                : Index >= Length ? $"{Value}^"
                 : Value.Insert(Index, "^");
 
         /// <summary>

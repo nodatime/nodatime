@@ -133,7 +133,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 }
                 else
                 {
-                    throw new ArgumentException("Unserializable DateTimeZone type " + zone.GetType());
+                    throw new ArgumentException($"Unserializable DateTimeZone type {zone.GetType()}");
                 }
             }
         }

@@ -426,7 +426,7 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        public override string ToString() => "NodaFormatInfo[" + CultureInfo.Name + "]";
+        public override string ToString() => $"NodaFormatInfo[{CultureInfo.Name}]";
 
         /// <summary>
         /// The description for an era: the primary name and all possible names.
@@ -457,7 +457,7 @@ namespace NodaTime.Globalization
                     string? eraNameFromCulture = GetEraNameFromBcl(era, cultureInfo);
                     if (eraNameFromCulture != null && !pipeDelimited.StartsWith(eraNameFromCulture + "|"))
                     {
-                        pipeDelimited = eraNameFromCulture + "|" + pipeDelimited;
+                        pipeDelimited = $"{eraNameFromCulture}|{pipeDelimited}";
                     }
                     allNames = pipeDelimited.Split('|');
                     primaryName = allNames[0];

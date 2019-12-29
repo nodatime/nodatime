@@ -210,7 +210,7 @@ namespace NodaTime
         public override string ToString()
         {
             var pattern = InstantPattern.ExtendedIso;
-            return pattern.Format(start) + "/" + pattern.Format(end);
+            return $"{pattern.Format(start)}/{pattern.Format(end)}";
         }
         #endregion
 

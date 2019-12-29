@@ -76,7 +76,7 @@ namespace NodaTime
         /// <param name="earlierMapping">The earlier possible mapping</param>
         /// <param name="laterMapping">The later possible mapping</param>
         public AmbiguousTimeException(ZonedDateTime earlierMapping, ZonedDateTime laterMapping)
-            : base("Local time " + earlierMapping.LocalDateTime + " is ambiguous in time zone " + earlierMapping.Zone.Id)
+            : base($"Local time {earlierMapping.LocalDateTime} is ambiguous in time zone {earlierMapping.Zone.Id}")
         {
             EarlierMapping = earlierMapping;
             LaterMapping = laterMapping;
