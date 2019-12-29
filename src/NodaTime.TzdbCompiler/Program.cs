@@ -15,7 +15,7 @@ namespace NodaTime.TzdbCompiler
     /// <summary>
     /// Main entry point for the time zone information compiler. In theory we could support
     /// multiple sources and formats but currently we only support one:
-    /// http://www.twinsun.com/tz/tz-link.htm. This system refers to it as TZDB.
+    /// https://www.iana.org/time-zones. This system refers to it as TZDB.
     /// This also requires a windowsZone.xml file from the Unicode CLDR repository, to
     /// map Windows time zone names to TZDB IDs.
     /// </summary>
