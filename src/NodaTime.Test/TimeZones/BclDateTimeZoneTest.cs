@@ -117,7 +117,7 @@ namespace NodaTime.Test.TimeZones
             catch (TimeZoneNotFoundException)
             {
                 // This may occur on Mono, for example.
-                Assert.Ignore("Test assumes existence of BCL zone with ID: " + bclId);
+                Assert.Ignore($"Test assumes existence of BCL zone with ID: {bclId}");
             }
         }
 

@@ -439,7 +439,7 @@ namespace NodaTime.Test.Text
                     if (cursor.Current < '\u0080')
                     {
                         Assert.IsTrue(ExpectedCharacters.Contains(cursor.Current),
-                            "Pattern '" + pattern + "' contains unquoted, unexpected characters");
+                            $"Pattern '{pattern}' contains unquoted, unexpected characters");
                     }
                 }
             }

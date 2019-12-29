@@ -26,7 +26,7 @@ namespace NodaTime.Test.Annotations
                 .SelectMany(m => m.DeclaredMethods)
                 .Where(m => m.IsPublic)
                 .Where(m => conversionName.IsMatch(m.Name))
-                .Where(m => !m.Name.StartsWith("To" + m.ReturnType.Name));
+                .Where(m => !m.Name.StartsWith($"To{m.ReturnType.Name}"));
 
             TestHelper.AssertNoFailures(badMethods, m => $"{m.DeclaringType?.Name}.{m.Name}", TestExemptionCategory.ConversionName);
         }

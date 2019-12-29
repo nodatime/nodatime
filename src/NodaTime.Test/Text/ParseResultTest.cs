@@ -69,7 +69,7 @@ namespace NodaTime.Test.Text
         [Test]
         public void Convert_ForFailureResult()
         {
-            ParseResult<string> converted = FailureResult.Convert(x => "xx" + x + "xx");
+            ParseResult<string> converted = FailureResult.Convert(x => $"xx{x}xx");
             Assert.Throws<UnparsableValueException>(() => converted.GetValueOrThrow());
         }
 
@@ -77,7 +77,7 @@ namespace NodaTime.Test.Text
         public void Convert_ForSuccessResult()
         {
             ParseResult<int> original = ParseResult<int>.ForValue(10);
-            ParseResult<string> converted = original.Convert(x => "xx" + x + "xx");
+            ParseResult<string> converted = original.Convert(x => $"xx{x}xx");
             Assert.AreEqual("xx10xx", converted.Value);
         }
 

@@ -46,7 +46,7 @@ namespace NodaTime.Test.TimeZones
         {
             for (int month = 1; month <= 12; month++)
             {
-                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, month, 1, 1, true, LocalTime.Midnight), "Month " + month);
+                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, month, 1, 1, true, LocalTime.Midnight), $"Month {month}");
             }
         }
 
@@ -55,11 +55,11 @@ namespace NodaTime.Test.TimeZones
         {
             for (int day = 1; day <= 31; day++)
             {
-                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, day, 1, true, LocalTime.Midnight), "Day " + day);
+                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, day, 1, true, LocalTime.Midnight), $"Day {day}");
             }
             for (int day = -1; day >= -31; day--)
             {
-                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, day, 1, true, LocalTime.Midnight), "Day " + day);
+                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, day, 1, true, LocalTime.Midnight), $"Day {day}");
             }
         }
 
@@ -68,7 +68,7 @@ namespace NodaTime.Test.TimeZones
         {
             for (int dayOfWeek = 0; dayOfWeek <= 7; dayOfWeek++)
             {
-                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, 1, dayOfWeek, true, LocalTime.Midnight), "Day of week " + dayOfWeek);
+                Assert.NotNull(new ZoneYearOffset(TransitionMode.Standard, 1, 1, dayOfWeek, true, LocalTime.Midnight), $"Day of week {dayOfWeek}");
             }
         }
 

@@ -57,7 +57,7 @@ namespace NodaTime.TimeZones.IO
                     int bytesRead = input.Read(data, offset, data.Length - offset);
                     if (bytesRead == 0)
                     {
-                        throw new InvalidNodaDataException("Stream ended after reading " + offset + " bytes out of " + data.Length);
+                        throw new InvalidNodaDataException($"Stream ended after reading {offset} bytes out of {data.Length}");
                     }
                     offset += bytesRead;
                 }

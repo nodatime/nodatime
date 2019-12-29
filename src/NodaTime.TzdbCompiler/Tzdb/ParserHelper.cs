@@ -38,7 +38,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             int value = Int32.Parse(text, NumberStyles.Integer, CultureInfo.InvariantCulture);
             if (value < -23 || value > 23)
             {
-                throw new FormatException("hours out of valid range of [-23, 23]: " + value);
+                throw new FormatException($"hours out of valid range of [-23, 23]: {value}");
             }
             return value * NodaConstants.TicksPerHour;
         }
@@ -55,7 +55,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             int value = Int32.Parse(text, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.InvariantCulture);
             if (value < 0 || value > 59)
             {
-                throw new FormatException("minutes out of valid range of [0, 59]: " + value);
+                throw new FormatException($"minutes out of valid range of [0, 59]: {value}");
             }
             return value * NodaConstants.TicksPerMinute;
         }
@@ -73,7 +73,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                                          CultureInfo.InvariantCulture);
             if (number < 0.0 || number >= 60.0)
             {
-                throw new FormatException("seconds out of valid range of [0, 60): " + number);
+                throw new FormatException($"seconds out of valid range of [0, 60): {number}");
             }
             long value = (long)(number * NodaConstants.MillisecondsPerSecond) * NodaConstants.TicksPerMillisecond;
             return value;
@@ -129,7 +129,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             var parts = Regex.Split(text, ":", RegexOptions.CultureInvariant | RegexOptions.Compiled);
             if (parts.Length > 3)
             {
-                throw new FormatException("Offset has too many colon separated parts (max of 3 allowed): " + text);
+                throw new FormatException($"Offset has too many colon separated parts (max of 3 allowed): {text}");
             }
             long ticks = ConvertHourToTicks(parts[0]);
             if (parts.Length > 1)
@@ -154,7 +154,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     return result.Value;
                 }
             }
-            throw new FormatException("Invalid time in rules: " + text);
+            throw new FormatException($"Invalid time in rules: {text}");
         }
 
         /// <summary>

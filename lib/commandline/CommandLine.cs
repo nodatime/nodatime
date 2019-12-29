@@ -465,12 +465,12 @@ namespace CommandLine
 
         public static bool CompareShort(string argument, string option, bool caseSensitive)
         {
-            return string.Compare(argument, "-" + option, !caseSensitive) == 0;
+            return string.Compare(argument, $"-{option}", !caseSensitive) == 0;
         }
 
         public static bool CompareLong(string argument, string option, bool caseSensitive)
         {
-            return string.Compare(argument, "--" + option, !caseSensitive) == 0;
+            return string.Compare(argument, $"--{option}", !caseSensitive) == 0;
         }
 
         protected static ParserState BooleanToParserState(bool value)

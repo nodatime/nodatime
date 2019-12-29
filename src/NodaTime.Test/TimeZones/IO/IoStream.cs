@@ -97,7 +97,7 @@ namespace NodaTime.Test.TimeZones.IO
         {
             if (writeIndex >= buffer.Length)
             {
-                throw new IOException("Exceeded the IoStream buffer size of " + buffer.Length);
+                throw new IOException($"Exceeded the IoStream buffer size of {buffer.Length}");
             }
             buffer[writeIndex++] = value;
         }

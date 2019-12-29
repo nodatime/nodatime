@@ -141,7 +141,7 @@ namespace NodaTime.TimeZones
         /// directly from the <see cref="TzdbVersion"/> and <see cref="WindowsZones.Version"/> properties.
         /// </para>
         /// </remarks>
-        public string VersionId => "TZDB: " + version;
+        public string VersionId => $"TZDB: {version}";
 
         /// <summary>
         /// Creates an instance from a stream in the custom Noda Time format. The stream must be readable.
@@ -177,7 +177,7 @@ namespace NodaTime.TimeZones
                 .Where(pair => pair.Key != pair.Value)
                 .OrderBy(pair => pair.Key, StringComparer.Ordinal)
                 .ToLookup(pair => pair.Value, pair => pair.Key);
-            version = source.TzdbVersion + " (mapping: " + source.WindowsMapping.Version + ")";
+            version = $"{source.TzdbVersion} (mapping: {source.WindowsMapping.Version})";
             tzdbToWindowsId = new Lazy<IReadOnlyDictionary<string, string>>(BuildTzdbToWindowsIdMap, LazyThreadSafetyMode.ExecutionAndPublication);
             windowsToTzdbId = new Lazy<IReadOnlyDictionary<string, string>>(BuildWindowsToTzdbId, LazyThreadSafetyMode.ExecutionAndPublication);
         }
@@ -241,7 +241,7 @@ namespace NodaTime.TimeZones
         {
             if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, nameof(id)), out string canonicalId))
             {
-                throw new ArgumentException("Time zone with ID " + id + " not found in source " + version, nameof(id));
+                throw new ArgumentException($"Time zone with ID {id} not found in source {version}", nameof(id));
             }
             return source.CreateZone(id, canonicalId);
         }

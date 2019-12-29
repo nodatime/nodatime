@@ -29,7 +29,7 @@ namespace NodaTime.Test.Annotations
                             map.InterfaceMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false) &&
                             !map.TargetMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false))
                         {
-                            violations.Add(type.FullName + "/" + map.TargetMethods[i].Name);
+                            violations.Add($"{type.FullName}/{map.TargetMethods[i].Name}");
                         }
                     }
                 }

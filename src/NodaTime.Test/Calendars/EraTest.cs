@@ -25,7 +25,7 @@ namespace NodaTime.Test.Calendars
         {
             var era = eraWrapper.Value;
             var valueByName = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo.InvariantCulture);
-            Assert.NotNull(valueByName, "Missing resource for " + era.ResourceIdentifier);
+            Assert.NotNull(valueByName, $"Missing resource for {era.ResourceIdentifier}");
         }
 
         [Test]

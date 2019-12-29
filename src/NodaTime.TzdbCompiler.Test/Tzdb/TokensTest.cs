@@ -62,9 +62,9 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
                 var actual = tokens.NextToken(i.ToString());
                 if (actual is null)
                 {
-                    Assert.Fail("The enumeration item at index [" + i + "] is null");
+                    Assert.Fail($"The enumeration item at index [{i}] is null");
                 }
-                Assert.AreEqual(expectedTokens[i], actual, "The enumeration item at index [" + i + "] is not correct");
+                Assert.AreEqual(expectedTokens[i], actual, $"The enumeration item at index [{i}] is not correct");
             }
             Assert.False(tokens.HasNextToken, "Too many items in enumeration");
         }
