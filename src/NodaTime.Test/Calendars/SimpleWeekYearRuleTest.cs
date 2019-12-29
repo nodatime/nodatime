@@ -106,7 +106,7 @@ namespace NodaTime.Test.Calendars
         }
 
         // Ported from LocalDateTest.BasicProperties
-        // See http://stackoverflow.com/questions/8010125
+        // See https://stackoverflow.com/questions/8010125
         [Test]
         [TestCase(2007, 12, 31, 1)]
         [TestCase(2008, 1, 6, 1)]

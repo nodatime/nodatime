@@ -69,7 +69,7 @@ namespace NodaTime.Calendars
 
         /// <summary>
         /// Change the year, maintaining month and day as well as possible. This doesn't
-        /// work in the same way as other calendars; see http://judaism.stackexchange.com/questions/39053
+        /// work in the same way as other calendars; see https://judaism.stackexchange.com/questions/39053
         /// for the reasoning behind the rules.
         /// </summary>
         internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, int year)

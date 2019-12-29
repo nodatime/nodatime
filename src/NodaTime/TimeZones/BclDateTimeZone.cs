@@ -22,7 +22,7 @@ namespace NodaTime.TimeZones
     /// <para>
     /// This implementation does not always give the same results as <c>TimeZoneInfo</c>, in that it doesn't replicate
     /// the bugs in the BCL interpretation of the data. These bugs are described in
-    /// <a href="http://codeblog.jonskeet.uk/2014/09/30/the-mysteries-of-bcl-time-zone-data/">a blog post</a>, but we're
+    /// <a href="https://codeblog.jonskeet.uk/2014/09/30/the-mysteries-of-bcl-time-zone-data/">a blog post</a>, but we're
     /// not expecting them to be fixed any time soon. Being bug-for-bug compatible would not only be tricky, but would be painful
     /// if the BCL were ever to be fixed. As far as we are aware, there are only discrepancies around new year where the zone
     /// changes from observing one rule to observing another.

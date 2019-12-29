@@ -34,7 +34,7 @@ namespace NodaTime.Globalization
     {
         // Names that we can use to check for broken Mono behaviour.
         // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
-        // See http://bugzilla.xamarin.com/show_bug.cgi?id=3279
+        // See https://xamarin.github.io/bugzilla-archives/32/3279/bug.html
         private static readonly string[] ShortInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.Clone();
         private static readonly string[] LongInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Clone();
 
@@ -166,12 +166,12 @@ namespace NodaTime.Globalization
         /// Mono uses the invariant month names for the genitive month names by default, so we'll assume that
         /// if we see an invariant name, that *isn't* deliberately a genitive month name. A non-invariant culture
         /// which decided to have genitive month names exactly matching the invariant ones would be distinctly odd.
-        /// See http://bugzilla.xamarin.com/show_bug.cgi?id=3278 for more details and progress.
+        /// See https://xamarin.github.io/bugzilla-archives/32/3278/bug.html for more details and progress.
         /// </para>
         /// <para>
         /// Mono 3.0.6 has an exciting and different bug, where all the abbreviated genitive month names are just numbers ("1" etc).
         /// So again, if we detect that, we'll go back to the non-genitive version.
-        /// See http://bugzilla.xamarin.com/show_bug.cgi?id=11361 for more details and progress.
+        /// See https://xamarin.github.io/bugzilla-archives/11/11361/bug.html for more details and progress.
         /// </para>
         /// </remarks>
         private IReadOnlyList<string> ConvertGenitiveMonthArray(IReadOnlyList<string> nonGenitiveNames, string[] bclNames, string[] invariantNames)

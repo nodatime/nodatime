@@ -17,7 +17,7 @@ namespace NodaTime.Calendars
     /// </para>
     /// <para>
     /// While the patterns themselves are reasonably commonly documented (see e.g.
-    /// <a href="http://en.wikipedia.org/wiki/Tabular_Islamic_calendar">Wikipedia</a>)
+    /// <a href="https://en.wikipedia.org/wiki/Tabular_Islamic_calendar">Wikipedia</a>)
     /// there is little standardization in terms of naming the patterns. I hope the current names do not
     /// cause offence to anyone; suggestions for better names would be welcome.
     /// </para>
