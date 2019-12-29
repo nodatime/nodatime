@@ -181,7 +181,7 @@ namespace NodaTime.Calendars
             8 => IsHeshvanLong(year) ? 30 : 29,
             9 => IsKislevShort(year) ? 29 : 30,
             12 => IsLeapYear(year) ? 30 : 29,
-            _ => 30 // 1, 3, 5, 7, 11, 13
+            _ => 30 // 1, 3, 5, 7, 11
         };
 
         private static bool IsHeshvanLong(int year)
