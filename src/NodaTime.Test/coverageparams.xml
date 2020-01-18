@@ -5,7 +5,7 @@
  -->
 <CoverageParams>
   <TargetExecutable>c:/Program Files/dotnet/dotnet.exe</TargetExecutable>
-  <TargetArguments>test --no-build -c Release --filter=TestCategory!=Slow</TargetArguments>
+  <TargetArguments>test --no-build -c Release -s NoSlowTests.runsettings</TargetArguments>
   <TargetWorkingDir>.</TargetWorkingDir>
   <Filters>
     <IncludeFilters>
