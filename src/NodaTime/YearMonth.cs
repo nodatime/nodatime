@@ -141,6 +141,20 @@ namespace NodaTime
         public DateInterval ToDateInterval() => new DateInterval(StartDate, EndDate);
 
         /// <summary>
+        /// Returns a <see cref="LocalDate"/> with the year/month of this value, and the given day of month.
+        /// </summary>
+        /// <param name="day">The day within the month.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="day"/> does not fall within the
+        /// month represented by this value.</exception>
+        /// <returns>The result of combining this year and month with <paramref name="day"/>.</returns>
+        [Pure]
+        public LocalDate OnDayOfMonth(int day)
+        {
+            Preconditions.CheckArgumentRange(nameof(day), day, 1, Calendar.GetDaysInMonth(Year, Month));
+            return new LocalDate(Year, Month, day, Calendar);
+        }
+
+        /// <summary>
         /// Indicates whether this year/month is earlier, later or the same as another one.
         /// See the type documentation for a description of ordering semantics.
         /// </summary>
