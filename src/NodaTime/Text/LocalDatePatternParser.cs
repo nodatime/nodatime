@@ -69,6 +69,7 @@ namespace NodaTime.Text
                     // Note: we don't just recurse, as otherwise a ShortDatePattern of 'd' (for example) would cause a stack overflow.
                     'd' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.ShortDatePattern),
                     'D' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.LongDatePattern),
+                    'M' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.MonthDayPattern),
                     // Unknown standard patterns fail.
                     _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(LocalDate))
                 };
