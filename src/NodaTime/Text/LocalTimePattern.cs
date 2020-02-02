@@ -43,6 +43,13 @@ namespace NodaTime.Text
         /// <value>An invariant local time pattern which is ISO-8601 compatible, providing exactly 9 decimal places.</value>
         public static LocalTimePattern LongExtendedIso => Patterns.LongExtendedIsoPatternImpl;
 
+        /// <summary>
+        /// Gets an invariant local time pattern which is ISO-8601 compatible, with precision of just seconds.
+        /// This corresponds to the text pattern "HH':'mm':'ss".
+        /// </summary>
+        /// <value>An invariant local time pattern which is ISO-8601 compatible, with no sub-second precision.</value>
+        public static LocalTimePattern GeneralIso => Patterns.GeneralIsoPatternImpl;
+
         private const string DefaultFormatPattern = "T"; // Long
 
         internal static readonly PatternBclSupport<LocalTime> BclSupport =
@@ -56,6 +63,7 @@ namespace NodaTime.Text
         {
             internal static readonly LocalTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
             internal static readonly LocalTimePattern LongExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss;fffffffff");
+            internal static readonly LocalTimePattern GeneralIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss");
         }
 
         /// <summary>

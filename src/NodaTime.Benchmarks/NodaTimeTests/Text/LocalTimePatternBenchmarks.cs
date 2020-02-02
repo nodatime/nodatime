@@ -15,9 +15,6 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
         private static readonly string SampleIsoFormattedTime = "15:12:10";
         private static readonly string SampleIsoFormattedTimeWithNanos = "15:12:10.123456789";
 
-        // TODO: Make this a standard pattern.
-        private static readonly LocalTimePattern IsoPatternToSecond = LocalTimePattern.CreateWithInvariantCulture("HH:mm:ss");
-
         [Benchmark]
         public void ExtendedIso_Format() =>
             LocalTimePattern.ExtendedIso.Format(SampleLocalTimeToNanos);
@@ -28,10 +25,10 @@ namespace NodaTime.Benchmarks.NodaTimeTests.Text
 
         [Benchmark]
         public void IsoPatternToSecond_Format() =>
-            IsoPatternToSecond.Format(SampleLocalTimeToSecond);
+            LocalTimePattern.GeneralIso.Format(SampleLocalTimeToSecond);
 
         [Benchmark]
         public void IsoPatternToSecond_Parse() =>
-            IsoPatternToSecond.Parse(SampleIsoFormattedTime);
+            LocalTimePattern.GeneralIso.Parse(SampleIsoFormattedTime);
     }
 }
