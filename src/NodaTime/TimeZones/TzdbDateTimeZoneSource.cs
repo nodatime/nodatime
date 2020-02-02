@@ -280,10 +280,8 @@ namespace NodaTime.TimeZones
         private readonly ConcurrentDictionary<string, string?> guesses = new ConcurrentDictionary<string, string?>();
 
         // Cache around GuessZoneIdByTransitionsUncached
-        private string? GuessZoneIdByTransitions(TimeZoneInfo zone)
-        {
-            // FIXME: Stop using StandardName! (We have Id now...)
-            return guesses.GetOrAdd(zone.StandardName, _ =>
+        private string? GuessZoneIdByTransitions(TimeZoneInfo zone) =>
+            guesses.GetOrAdd(zone.Id, _ =>
             {
                 // Build the list of candidates here instead of within the method, so that
                 // tests can pass in the same list on each iteration. We order the time zones
@@ -292,7 +290,6 @@ namespace NodaTime.TimeZones
                 var candidates = CanonicalIdMap.Values.Select(ForId).OrderBy(dtz => dtz.Id).ToList();
                 return GuessZoneIdByTransitionsUncached(zone, candidates);
             });
-        }
 
         /// <summary>
         /// In cases where we can't get a zone mapping directly, we try to work out a good fit

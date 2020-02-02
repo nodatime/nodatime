@@ -76,6 +76,14 @@ namespace NodaTime.Utility
                 $"Value should be in range [{minInclusive}-{maxInclusive}]");
         }
 
+        // This method exists for cases where we know we want to throw an exception, but we need the compiler to think it
+        // *could* return something. (Typically switch expressions.)
+        internal static T ThrowArgumentOutOfRangeExceptionWithReturn<T>([InvokerParameterName] string paramName, T value, T minInclusive, T maxInclusive)
+        {
+            throw new ArgumentOutOfRangeException(paramName, value,
+                $"Value should be in range [{minInclusive}-{maxInclusive}]");
+        }
+
         /// <summary>
         /// Range change to perform just within debug builds. This is typically for internal sanity checking, where we normally
         /// trusting the argument value to be valid, and adding a check just for the sake of documentation - and to help find

@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Utility;
 using System;
 
 namespace NodaTime.Calendars
@@ -163,15 +164,16 @@ namespace NodaTime.Calendars
                     12 => 30 + heshvanLength + kislevLength + 29 + 30,
                     // Adar II
                     13 => 30 + heshvanLength + kislevLength + 29 + 30 + firstAdarLength,
-                    // TODO: It would be nice for this to be simple via Preconditions
-                    _ => throw new ArgumentOutOfRangeException(nameof(month), month, "Value should be in range [1-13]")
+                    _ => Preconditions.ThrowArgumentOutOfRangeExceptionWithReturn(nameof(month), month, 1, 13)
                 };
             }
         }
 
         internal static int DaysInMonth(int year, int month) => month switch
         {
-            // FIXME: How do we express multiple cases in a switch expression?
+            // It's slightly annoying that we have to express these 5 cases
+            // separately, but there's no language support for multiple individual
+            // cases right now.
             // We want: (2, 4, 6, 10, 13) => 29,
             2 => 29,
             4 => 29,

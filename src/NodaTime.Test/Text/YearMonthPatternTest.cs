@@ -94,7 +94,6 @@ namespace NodaTime.Test.Text
             new Data(2011, 10) { Pattern = "uuuu MMMM", Text = "2011 OcToBeR" },
 
             // Genitive name is an extension of the non-genitive name; parse longer first.
-            // FIXME: Should we be using the genitive name at all?
             new Data(2011, 1) { Pattern = "uuuu MMMM", Text = "2011 MonthName-Genitive", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
             new Data(2011, 1) { Pattern = "uuuu MMMM", Text = "2011 MonthName", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
             new Data(2011, 1) { Pattern = "uuuu MMM", Text = "2011 MN-Gen", Culture = Cultures.GenitiveNameTestCultureWithLeadingNames },
