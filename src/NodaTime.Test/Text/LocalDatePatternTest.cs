@@ -134,6 +134,8 @@ namespace NodaTime.Test.Text
             // Invariant culture uses the crazy MM/dd/yyyy format. Blech.
             new Data(2011, 10, 20) { Pattern = "d", Text = "10/20/2011" },
             new Data(2011, 10, 20) { Pattern = "D", Text = "Thursday, 20 October 2011" },
+            // Year comes from the template
+            new Data(2000, 10, 20) { Pattern = "M", Text = "October 20" },
             // ISO pattern uses a sensible format
             new Data(2011, 10, 20) { StandardPattern = LocalDatePattern.Iso, Pattern = "R", Text = "2011-10-20" },
             // Round trip with calendar system
