@@ -58,12 +58,12 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// This property defaults to <see cref="DateTimeZoneProviders.Tzdb"/>. The mere existence of
-        /// this property is unfortunate, but XML and binary serialization in .NET provide no simple way of configuring
+        /// this property is unfortunate, but XML serialization in .NET provides no simple way of configuring
         /// appropriate context. It is expected that any single application is unlikely to want to serialize
         /// <c>ZonedDateTime</c> values using different time zone providers.
         /// </remarks>
         /// <value>The <c>IDateTimeZoneProvider</c> to use to interpret a time zone ID read as part of
-        /// XML or binary serialization.</value>
+        /// XML serialization.</value>
         public static IDateTimeZoneProvider Serialization
         {
             get
