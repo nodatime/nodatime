@@ -264,6 +264,7 @@ namespace NodaTime.Test.Text
             new Data(14, 15, 16, 789) { StandardPattern = LocalTimePattern.LongExtendedIso, Culture = Cultures.DotTimeSeparator, Text = "14:15:16.789000000", Pattern = "O" },
             new Data(14, 15, 16, 789) { StandardPattern = LocalTimePattern.LongExtendedIso, Culture = Cultures.EnUs, Text = "14:15:16.789000000", Pattern = "O" },
             new Data(14, 15, 16) { StandardPattern = LocalTimePattern.LongExtendedIso, Culture = Cultures.Invariant, Text = "14:15:16.000000000", Pattern = "O" },
+            new Data(14, 15, 16) { StandardPattern = LocalTimePattern.GeneralIso, Culture = Cultures.Invariant, Text = "14:15:16", Pattern = "HH:mm:ss" },
 
             // ------------ Template value tests ----------
             // Mixtures of 12 and 24 hour times
