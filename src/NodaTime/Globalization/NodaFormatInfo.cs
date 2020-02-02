@@ -419,8 +419,7 @@ namespace NodaTime.Globalization
             // Note: no caching for this case. It's a corner case anyway... we could add a cache later
             // if users notice a problem.
             DateTimeFormatInfo dateTimeFormatInfo => new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo),
-            // TODO(nullable): File a Roslyn bug, as provider really won't be null here.
-            _ => throw new ArgumentException($"Cannot use provider of type {provider!.GetType().FullName} in Noda Time", nameof(provider))
+            _ => throw new ArgumentException($"Cannot use provider of type {provider.GetType().FullName} in Noda Time", nameof(provider))
         };
 
         /// <summary>
