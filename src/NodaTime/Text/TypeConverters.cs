@@ -60,4 +60,32 @@ namespace NodaTime.Text
     {
         public PeriodTypeConverter() : base(PeriodPattern.Roundtrip) { }
     }
+
+    internal sealed class ZonedDateTimeTypeConverter : TypeConverterBase<ZonedDateTime>
+    {
+        /// <summary>
+        /// Cached pattern based on <see cref="DateTimeZoneProviders.ForTypeConverter"/>.
+        /// This avoids us creating more patterns than we need, but still allows changes in
+        /// <see cref="DateTimeZoneProviders.ForTypeConverter"/> to be reflected appropriately.
+        /// </summary>
+        private static ZonedDateTimePattern? cachedPattern;
+
+        public ZonedDateTimeTypeConverter() : base(GetCurrentPattern()) { }
+
+        private static ZonedDateTimePattern GetCurrentPattern()
+        {
+            // Note: no locking, as an extra cache miss is not the end of the world.
+            // (We'll never get the wrong result, although we may end up creating a redundant pattern.)
+            // It's also unlikely that this will ever be called more than once, due to framework caching
+            // of type converters. But at least we'll make it feasible.
+            ZonedDateTimePattern? cached = cachedPattern;
+            IDateTimeZoneProvider provider = DateTimeZoneProviders.ForTypeConverter;
+            if (cached?.ZoneProvider != provider)
+            {
+                cached = ZonedDateTimePattern.ExtendedFormatOnlyIso.WithZoneProvider(provider);
+                cachedPattern = cached;
+            }
+            return cached;
+        }
+    }
 }
