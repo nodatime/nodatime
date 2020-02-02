@@ -4,7 +4,9 @@
 
 using System;
 using System.ComponentModel;
+using NodaTime.Testing.TimeZones;
 using NodaTime.Text;
+using NodaTime.TimeZones;
 using NUnit.Framework;
 
 namespace NodaTime.Test.Text
@@ -100,8 +102,8 @@ namespace NodaTime.Test.Text
         [TestCase(2019, 1, 1, 4, 59, -25200, "2019-01-01T04:59:00-07")]
         [TestCase(2020, 2, 29, 23, 59, 0, "2020-02-29T23:59:00Z")]
         [TestCase(2018, 12, 31, 13, 30, 20700, "2018-12-31T13:30:00+05:45")]
-        public void OffsetDateTime_Roundtrip(int year, int month, int day, int hour, int minute, int seconds, string text) =>
-            AssertRoundtrip(text, new OffsetDateTime(new LocalDateTime(year, month, day, hour, minute), new Offset(seconds)));
+        public void OffsetDateTime_Roundtrip(int year, int month, int day, int hour, int minute, int offsetSeconds, string text) =>
+            AssertRoundtrip(text, new OffsetDateTime(new LocalDateTime(year, month, day, hour, minute), new Offset(offsetSeconds)));
 
         [Test]
         [TestCase(0, 0, 0, 0, -25200, "00:00:00-07")]
@@ -116,18 +118,26 @@ namespace NodaTime.Test.Text
         public void Period_Roundtrip(int years, int months, int weeks, int days, long hours, long minutes, long seconds, long milliseconds, long ticks, long nanoseconds, string text) =>
             AssertRoundtrip(text, new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds));
 
-        private static void AssertRoundtrip<T>(string input, T expected)
+        [Test]
+        [TestCase(2019, 1, 1, 4, 59, "Europe/Paris", "2019-01-01T04:59:00 Europe/Paris (+01)")]
+        [TestCase(2020, 2, 29, 23, 59, "America/Los_Angeles", "2020-02-29T23:59:00 America/Los_Angeles (-08)")]
+        [TestCase(2018, 12, 31, 13, 30, "Asia/Kathmandu", "2018-12-31T13:30:00 Asia/Kathmandu (+05:45)")]
+        public void ZonedDateTime_Roundtrip(int year, int month, int day, int hour, int minute, string zoneId, string text)
+        {
+            Assert.AreSame(DateTimeZoneProviders.Tzdb, DateTimeZoneProviders.ForTypeConverter,
+                "Expected no other test to change DateTimeZoneProviders.ForTypeConverter");
+            var zone = DateTimeZoneProviders.Tzdb[zoneId];
+            AssertRoundtrip(text, new LocalDateTime(year, month, day, hour, minute).InZoneStrictly(zone));
+        }
+
+        private static void AssertRoundtrip<T>(string textEquivalent, T nodaValue)
         {
             var converter = TypeDescriptor.GetConverter(typeof(T));
-            var actual = (T)converter.ConvertFrom(input);
+            var valueFromConverter = (T)converter.ConvertFrom(textEquivalent);
+            Assert.AreEqual(nodaValue, valueFromConverter);
 
-            Assert.NotNull(actual);
-            Assert.AreEqual(expected, actual);
-
-            var serialized = converter.ConvertTo(actual, typeof(string));
-
-            Assert.NotNull(serialized);
-            Assert.AreEqual(input, serialized);
+            var textFromConverter = converter.ConvertTo(nodaValue, typeof(string));
+            Assert.AreEqual(textEquivalent, textFromConverter);
         }
     }
 }

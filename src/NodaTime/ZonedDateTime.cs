@@ -10,6 +10,7 @@ using NodaTime.TimeZones;
 using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Xml;
@@ -40,6 +41,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+    [TypeConverter(typeof(ZonedDateTimeTypeConverter))]
     public readonly struct ZonedDateTime : IEquatable<ZonedDateTime>, IFormattable, IXmlSerializable
     {
         private readonly OffsetDateTime offsetDateTime;

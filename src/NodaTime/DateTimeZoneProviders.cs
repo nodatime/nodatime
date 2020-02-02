@@ -52,6 +52,9 @@ namespace NodaTime
         private static readonly object SerializationProviderLock = new object();
         private static IDateTimeZoneProvider? serializationProvider;
 
+        private static readonly object typeConverterProviderLock = new object();
+        private static IDateTimeZoneProvider? typeConverterProvider;
+
         /// <summary>
         /// Gets the <see cref="IDateTimeZoneProvider"/> to use to interpret a time zone ID read as part of
         /// XML or binary serialization.
@@ -78,6 +81,37 @@ namespace NodaTime
                 lock (SerializationProviderLock)
                 {
                     serializationProvider = Preconditions.CheckNotNull(value, nameof(value));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDateTimeZoneProvider"/> to use to interpret a time zone ID read as part of
+        /// conversion using the default <see cref="System.ComponentModel.TypeConverter"/> for <see cref="ZonedDateTime"/>.
+        /// Note that if a value other than <see cref="DateTimeZoneProviders.Tzdb"/> is required, it should be set on
+        /// application startup, before any type converters are used. Type converters are cached internally by the framework,
+        /// so changes to this property after the first type converter for <see cref="ZonedDateTime"/> is created will
+        /// not generally be visible.
+        /// </summary>
+        /// <remarks>
+        /// This property defaults to <see cref="DateTimeZoneProviders.Tzdb"/>.
+        /// </remarks>
+        /// <value>The <c>IDateTimeZoneProvider</c> to use to interpret a time zone ID read as part of
+        /// conversion using the default <see cref="System.ComponentModel.TypeConverter"/>.</value>
+        public static IDateTimeZoneProvider ForTypeConverter
+        {
+            get
+            {
+                lock (typeConverterProviderLock)
+                {
+                    return typeConverterProvider ?? (typeConverterProvider = Tzdb);
+                }
+            }
+            set
+            {
+                lock (typeConverterProviderLock)
+                {
+                    typeConverterProvider = Preconditions.CheckNotNull(value, nameof(value));
                 }
             }
         }
