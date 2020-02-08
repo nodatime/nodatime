@@ -49,7 +49,7 @@ namespace NodaTime
         /// <value>A time zone provider which uses a <c>BclDateTimeZoneSource</c>.</value>
         public static IDateTimeZoneProvider Bcl => BclHolder.BclImpl;
 
-        private static readonly object SerializationProviderLock = new object();
+        private static readonly object serializationProviderLock = new object();
         private static IDateTimeZoneProvider? serializationProvider;
 
         private static readonly object typeConverterProviderLock = new object();
@@ -71,14 +71,14 @@ namespace NodaTime
         {
             get
             {
-                lock (SerializationProviderLock)
+                lock (serializationProviderLock)
                 {
                     return serializationProvider ?? (serializationProvider = Tzdb);
                 }
             }
             set
             {
-                lock (SerializationProviderLock)
+                lock (serializationProviderLock)
                 {
                     serializationProvider = Preconditions.CheckNotNull(value, nameof(value));
                 }
