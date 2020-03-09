@@ -185,7 +185,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void BetweenLocalDates_AssymetricForwardAndBackward()
+        public void BetweenLocalDates_AsymmetricForwardAndBackward()
         {
             // February 10th 2010
             LocalDate d1 = new LocalDate(2010, 2, 10);

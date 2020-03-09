@@ -28,7 +28,7 @@ namespace NodaTime.TimeZones
     /// offset is moved is determined by the <see cref="AdvanceDayOfWeek"/> property.
     /// </para>
     /// <para>
-    /// Finally the <see cref="Mode"/> property deterines whether the <see cref="TimeOfDay"/> value
+    /// Finally the <see cref="Mode"/> property determines whether the <see cref="TimeOfDay"/> value
     /// is added to the calculated offset to generate an offset within the day.
     /// </para>
     /// <para>

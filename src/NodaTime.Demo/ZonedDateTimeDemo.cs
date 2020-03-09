@@ -58,7 +58,7 @@ namespace NodaTime.Demo
         public void IsDaylightSavingTime()
         {
             // Europe/Dublin transitions from UTC+1 to UTC+0 at 2am (local) on 2017-10-29
-            // However, Euopre/Dublin is also odd in terms of having its standard time as *summer* time,
+            // However, Europe/Dublin is also odd in terms of having its standard time as *summer* time,
             // and its winter time as "daylight saving time". The saving offset in winter is -1 hour,
             // as opposed to the more common "+1 hour in summer".
             var dt = new LocalDateTime(2017, 10, 29, 1, 45, 0);

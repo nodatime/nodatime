@@ -26,7 +26,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="instant">The instant that this transistion occurs at.</param>
+        /// <param name="instant">The instant that this transition occurs at.</param>
         /// <param name="name">The name for the time at this transition e.g. PDT or PST.</param>
         /// <param name="standardOffset">The standard offset at this transition.</param>
         /// <param name="savings">The actual offset at this transition.</param>

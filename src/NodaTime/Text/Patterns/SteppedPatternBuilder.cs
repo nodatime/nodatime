@@ -271,7 +271,7 @@ namespace NodaTime.Text.Patterns
         /// <summary>
         /// Returns a handler for a zero-padded purely-numeric field specifier, such as "seconds", "minutes", "24-hour", "12-hour" etc.
         /// </summary>
-        /// <param name="maxCount">Maximum permissable count (usually two)</param>
+        /// <param name="maxCount">Maximum permissible count (usually two)</param>
         /// <param name="field">Field to remember that we've seen</param>
         /// <param name="minValue">Minimum valid value for the field (inclusive)</param>
         /// <param name="maxValue">Maximum value value for the field (inclusive)</param>
@@ -422,7 +422,7 @@ namespace NodaTime.Text.Patterns
         }
 
         /// <summary>
-        /// Adds an action to pad a selected value to a given minimum lenth.
+        /// Adds an action to pad a selected value to a given minimum length.
         /// </summary>
         /// <param name="count">The minimum length to pad to</param>
         /// <param name="selector">The selector function to apply to obtain a value to format</param>

@@ -126,7 +126,7 @@ namespace NodaTime.Test.Testing.TimeZones
         }
 
         // We don't really care how it fails - just that an exception is thrown.
-        // Unfortuntely NUnit requires the exact exception type :(
+        // Unfortunately NUnit requires the exact exception type :(
         private static void AssertBuildFails(FakeDateTimeZoneSource.Builder builder)
         {
             bool success = false;

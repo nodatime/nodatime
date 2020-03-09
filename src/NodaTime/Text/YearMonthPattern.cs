@@ -31,7 +31,7 @@ namespace NodaTime.Text
 
         /// <summary>
         /// Gets an invariant year/month pattern which is ISO-8601 compatible.
-        /// This corresponds to the text pattern "uuuu'-'MM.
+        /// This corresponds to the text pattern "uuuu'-'MM".
         /// </summary>
         /// <remarks>
         /// This pattern corresponds to the 'g' standard pattern.

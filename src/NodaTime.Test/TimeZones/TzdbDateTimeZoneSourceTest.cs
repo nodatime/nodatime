@@ -500,7 +500,7 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
-        public void TzbdToWindowsIds()
+        public void TzdbToWindowsIds()
         {
             var source = CreateComplexMappingSource();
             var actual = source.TzdbToWindowsIds;

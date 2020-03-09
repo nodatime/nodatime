@@ -297,7 +297,7 @@ namespace NodaTime.Test.Text
             // --------------- end of template value tests ----------------------
 
             // Only one of the AM/PM designator is present. We should still be able to work out what is meant, by the presence
-            // or absense of the non-empty one.
+            // or absence of the non-empty one.
             new Data(5, 0, 0) { Culture = AmOnlyCulture, Text = "5 am", Pattern = "h tt" },
             new Data(15, 0, 0) { Culture = AmOnlyCulture, Text = "3 ", Pattern = "h tt", Description = "Implicit PM" },
             new Data(5, 0, 0) { Culture = AmOnlyCulture, Text = "5 a", Pattern = "h t" },

@@ -9,7 +9,7 @@ namespace NodaTime.TimeZones
 {
     /// <summary>
     /// Interception for TimeZoneInfo static methods. These are still represented as
-    /// static methods in this class, but they're implemented via a replacable shim, which
+    /// static methods in this class, but they're implemented via a replaceable shim, which
     /// by default delegates to the static methods in TimeZoneInfo.
     /// </summary>
     internal static class TimeZoneInfoInterceptor

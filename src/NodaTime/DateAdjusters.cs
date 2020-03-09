@@ -63,7 +63,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
         /// <returns>An adjuster which advances a date to the next occurrence of the
-        /// specified day-of-week, or the original date if the day is already corret.</returns>
+        /// specified day-of-week, or the original date if the day is already correct.</returns>
         public static Func<LocalDate, LocalDate> NextOrSame(IsoDayOfWeek dayOfWeek)
         {
             // Avoids boxing...
@@ -80,7 +80,7 @@ namespace NodaTime
         /// </summary>
         /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
         /// <returns>An adjuster which advances a date to the previous occurrence of the
-        /// specified day-of-week, or the original date if the day is already corret.</returns>
+        /// specified day-of-week, or the original date if the day is already correct.</returns>
         public static Func<LocalDate, LocalDate> PreviousOrSame(IsoDayOfWeek dayOfWeek)
         {
             // Avoids boxing...

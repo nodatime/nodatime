@@ -155,7 +155,7 @@ namespace NodaTime.TimeZones
             }
 
             // We've got a transition earlier than we were asked for. Try next year.
-            // Note that this will stil be within the FromYear/ToYear range, otherwise
+            // Note that this will still be within the FromYear/ToYear range, otherwise
             // safeLocal >= maxLocalInstant would have been triggered earlier.
             targetYear++;
             // Handle infinite transitions
@@ -171,7 +171,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns the last transition which occurs before or on the given instant.
         /// </summary>
-        /// <param name="instant">The <see cref="Instant"/> lower bound for the next trasnition.</param>
+        /// <param name="instant">The <see cref="Instant"/> lower bound for the next transition.</param>
         /// <param name="standardOffset">The <see cref="Offset"/> standard offset.</param>
         /// <param name="previousSavings">The <see cref="Offset"/> savings adjustment at the given Instant.</param>
         /// <returns>The previous transition, or null if there is no previous transition. The transition may be
@@ -228,7 +228,7 @@ namespace NodaTime.TimeZones
             }
 
             // We've got a transition later than we were asked for. Try next year.
-            // Note that this will stil be within the FromYear/ToYear range, otherwise
+            // Note that this will still be within the FromYear/ToYear range, otherwise
             // safeLocal < minLocalInstant would have been triggered earlier.
             targetYear--;
             // Handle infinite transitions

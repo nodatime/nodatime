@@ -302,7 +302,7 @@ namespace NodaTime.Text
         /// <summary>
         /// Formats the given value, which is an integer representation of a fraction,
         /// truncating any right-most zero digits.
-        /// If the entire value is truncated then the preceeding decimal separater is also removed.
+        /// If the entire value is truncated then the preceding decimal separator is also removed.
         /// Note: current usage means this never has to cope with negative numbers.
         /// </summary>
         /// <example>

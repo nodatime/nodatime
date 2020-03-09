@@ -267,7 +267,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </para>
         /// <para>
         /// A line beginning with leading whitespace (an empty keyword) defines another part of the
-        /// preceeding time zone. As many lines as necessary to define the time zone can be listed,
+        /// preceding time zone. As many lines as necessary to define the time zone can be listed,
         /// but they must all be together and only the first line can have a name.
         /// </para>
         /// </remarks>
@@ -419,7 +419,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        /// Normalizes the transition mode characater.
+        /// Normalizes the transition mode character.
         /// </summary>
         /// <param name="modeCharacter">The character to normalize.</param>
         /// <returns>The <see cref="TransitionMode"/>.</returns>

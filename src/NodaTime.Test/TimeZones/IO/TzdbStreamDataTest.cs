@@ -31,7 +31,7 @@ namespace NodaTime.Test.TimeZones.IO
         }
 
         [Test]
-        public void MissingTzbdAliasMap()
+        public void MissingTzdbAliasMap()
         {
             var builder = CreateMinimalBuilder();
             builder.tzdbIdMap = null;

@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace NodaTime.Test.TimeZones.IO
 {
     /// <summary>
-    ///   Provides a simple, fized-size, pipe-like stream that has a writer and a reader.
+    ///   Provides a simple, fixed-size, pipe-like stream that has a writer and a reader.
     /// </summary>
     /// <remarks>
     ///   When the buffer fills up an exception is thrown and currently the buffer is fixed at 4096. The write
@@ -113,7 +113,7 @@ namespace NodaTime.Test.TimeZones.IO
 
         #region Nested type: ReadStreamImpl
         /// <summary>
-        ///   Provides a read-only <see cref="Stream" /> implementaion for reading from the buffer.
+        ///   Provides a read-only <see cref="Stream" /> implementation for reading from the buffer.
         /// </summary>
         private class ReadStreamImpl : Stream
         {
@@ -305,7 +305,7 @@ namespace NodaTime.Test.TimeZones.IO
 
         #region Nested type: WriteStreamImpl
         /// <summary>
-        ///   Provides a write-only <see cref="Stream" /> implementaion for writing to the buffer.
+        ///   Provides a write-only <see cref="Stream" /> implementation for writing to the buffer.
         /// </summary>
         private class WriteStreamImpl : Stream
         {

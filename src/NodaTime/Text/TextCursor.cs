@@ -84,7 +84,7 @@ namespace NodaTime.Text
         internal char PeekNext() => unchecked(HasMoreCharacters ? Value[Index + 1] : Nul);
 
         /// <summary>
-        /// Moves the specified target index. If the new index is out of range of the valid indicies
+        /// Moves the specified target index. If the new index is out of range of the valid indices
         /// for this string then the index is set to the beginning or the end of the string whichever
         /// is nearest the requested index.
         /// </summary>
