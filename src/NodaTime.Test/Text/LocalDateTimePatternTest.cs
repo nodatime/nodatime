@@ -76,7 +76,7 @@ namespace NodaTime.Test.Text
 
         internal static Data[] FormatOnlyData = {
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "ddd uuuu", Text = "Wed 2011" },
-            // Note trunction of the "89" nanoseconds; o and O are BCL roundtrip patterns, with tick precision.
+            // Note truncation of the "89" nanoseconds; o and O are BCL roundtrip patterns, with tick precision.
             new Data(SampleLocalDateTime) { Pattern = "o", Text = "1976-06-19T21:13:34.1234567" },
             new Data(SampleLocalDateTime) { Pattern = "O", Text = "1976-06-19T21:13:34.1234567" }
         };

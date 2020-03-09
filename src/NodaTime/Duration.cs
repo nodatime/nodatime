@@ -55,7 +55,7 @@ namespace NodaTime
     /// Various operations accept or return a <see cref="Double"/>, in-keeping with durations often being natural lengths
     /// of time which are imprecisely measured anyway. The implementation of these operations should never result in a not-a-number
     /// or infinite value, nor do any operations accept not-a-number or infinite values. Additionally, operations involving
-    /// <c>Double</c> have initially been implemented fairly naïvely; it's possible that future releases will improve the accuracy
+    /// <c>Double</c> have initially been implemented fairly naively; it's possible that future releases will improve the accuracy
     /// or performance (or both) of various operations.
     /// </para>
     /// </remarks>

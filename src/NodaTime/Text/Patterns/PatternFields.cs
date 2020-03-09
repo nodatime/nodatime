@@ -24,7 +24,7 @@ namespace NodaTime.Text.Patterns
         FractionalSeconds = 1 << 5,
         AmPm = 1 << 6,
         Year = 1 << 7,
-        YearTwoDigits = 1 << 8, // Actually year of *era* as two ditits...
+        YearTwoDigits = 1 << 8, // Actually year of *era* as two digits...
         YearOfEra = 1 << 9,
         MonthOfYearNumeric = 1 << 10,
         MonthOfYearText = 1 << 11,

@@ -9,7 +9,7 @@ namespace NodaTime.Testing
     /// <summary>
     /// Helper static methods for argument/state validation. Copied from NodaTime.Utility,
     /// as we don't want the Testing assembly to have internal access to NodaTime, but we
-    /// don't really want to expose Preconditions publically.
+    /// don't really want to expose Preconditions publicly.
     /// </summary>
     internal static class Preconditions
     {

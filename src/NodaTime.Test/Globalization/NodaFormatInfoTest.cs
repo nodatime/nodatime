@@ -191,7 +191,7 @@ namespace NodaTime.Test.Globalization
         public void TestGetEraNames_NoSuchEra()
         {
             var info = NodaFormatInfo.GetFormatInfo(enUs);
-            Assert.AreEqual(0, info.GetEraNames(new Era("Ignored", "NonExistantResource")).Count);
+            Assert.AreEqual(0, info.GetEraNames(new Era("Ignored", "NonExistentResource")).Count);
         }
 
         [Test]
@@ -212,7 +212,7 @@ namespace NodaTime.Test.Globalization
         public void TestGetEraPrimaryName_NoSuchEra()
         {
             var info = NodaFormatInfo.GetFormatInfo(enUs);
-            Assert.AreEqual("", info.GetEraPrimaryName(new Era("Ignored", "NonExistantResource")));
+            Assert.AreEqual("", info.GetEraPrimaryName(new Era("Ignored", "NonExistentResource")));
         }
 
         [Test]

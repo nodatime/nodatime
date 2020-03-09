@@ -12,7 +12,7 @@ namespace NodaTime.TimeZones
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The cache supports mulTiple caching strategies which are implemented in nested subclasses of
+    /// The cache supports multiple caching strategies which are implemented in nested subclasses of
     /// this one. Until we have a better sense of what the usage behavior is, we cannot tune the
     /// cache. It is possible that we may support multiple strategies selectable at runtime so the
     /// user can tune the performance based on their knowledge of how they are using the system.

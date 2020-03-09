@@ -554,11 +554,11 @@ namespace CommandLine
 
     internal sealed class LongOptionParser : ArgumentParser
     {
-        private readonly bool _ignoreUnkwnownArguments;
+        private readonly bool _ignoreUnknownArguments;
 
-        public LongOptionParser(bool ignoreUnkwnownArguments)
+        public LongOptionParser(bool ignoreUnknownArguments)
         {
-            _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
+            _ignoreUnknownArguments = ignoreUnknownArguments;
         }
 
         public override ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options)
@@ -569,7 +569,7 @@ namespace CommandLine
 
             if (option == null)
             {
-                return _ignoreUnkwnownArguments ? ParserState.MoveOnNextElement : ParserState.Failure;
+                return _ignoreUnknownArguments ? ParserState.MoveOnNextElement : ParserState.Failure;
             }
 
             option.IsDefined = true;
@@ -736,11 +736,11 @@ namespace CommandLine
 
     internal sealed class OptionGroupParser : ArgumentParser
     {
-        private readonly bool _ignoreUnkwnownArguments;
+        private readonly bool _ignoreUnknownArguments;
 
-        public OptionGroupParser(bool ignoreUnkwnownArguments)
+        public OptionGroupParser(bool ignoreUnknownArguments)
         {
-            _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
+            _ignoreUnknownArguments = ignoreUnknownArguments;
         }
 
         public override ParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options)
@@ -751,7 +751,7 @@ namespace CommandLine
                 var option = map[group.Current];
                 if (option == null)
                 {
-                    return _ignoreUnkwnownArguments ? ParserState.MoveOnNextElement : ParserState.Failure;
+                    return _ignoreUnknownArguments ? ParserState.MoveOnNextElement : ParserState.Failure;
                 }
 
                 option.IsDefined = true;
@@ -1327,7 +1327,7 @@ namespace CommandLine
     }
 
     /// <summary>
-    /// Models a type that records the parser state afeter parsing.
+    /// Models a type that records the parser state after parsing.
     /// </summary>
     public sealed class PostParsingState
     {
@@ -1641,7 +1641,7 @@ namespace CommandLine
         /// encounter an unknown arguments
         /// </summary>
         /// <value>
-        /// <c>true</c> to allow parsing the arguments with differents class options that do not have all the arguments.
+        /// <c>true</c> to allow parsing the arguments with different class options that do not have all the arguments.
         /// </value>
         /// <remarks>
         /// This allows fragmented version class parsing, useful for project with addon where addons also requires command line arguments but

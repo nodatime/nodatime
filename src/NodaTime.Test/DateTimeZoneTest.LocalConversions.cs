@@ -238,13 +238,13 @@ namespace NodaTime.Test
         public void MapLocalDateTime_UnambiguousDateReturnsUnambiguousMapping()
         {
             //2011-11-09 01:30:00 - not ambiguous in America/New York timezone
-            var unambigiousTime = new LocalDateTime(2011, 11, 9, 1, 30); 
-            var mapping = NewYork.MapLocal(unambigiousTime);
+            var unambiguousTime = new LocalDateTime(2011, 11, 9, 1, 30);
+            var mapping = NewYork.MapLocal(unambiguousTime);
             Assert.AreEqual(1, mapping.Count);
         }
 
         [Test]
-        public void MapLocalDateTime_AmbiguousDateReturnsAmbigousMapping()
+        public void MapLocalDateTime_AmbiguousDateReturnsAmbiguousMapping()
         {
             //2011-11-06 01:30:00 - falls during DST - EST conversion in America/New York timezone
             var ambiguousTime = new LocalDateTime(2011, 11, 6, 1, 30);

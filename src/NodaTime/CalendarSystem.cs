@@ -228,7 +228,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This returns a tablular calendar, rather than one based on lunar observation. This calendar is a
+        /// This returns a tabular calendar, rather than one based on lunar observation. This calendar is a
         /// lunar calendar with 12 months, each of 29 or 30 days, resulting in a year of 354 days (or 355 on a leap
         /// year).
         /// </para>
@@ -437,7 +437,7 @@ namespace NodaTime
         /// the returned value represents the latest year of the era rather than the earliest
         /// year. (See the BC era in the Gregorian calendar, for example.)</remarks>
         /// <param name="era">The era in which to find the greatest year</param>
-        /// <returns>The minimum valid year in the given eraera.</returns>
+        /// <returns>The minimum valid year in the given era.</returns>
         /// <exception cref="ArgumentException"><paramref name="era"/> is not an era used in this calendar.</exception>
         public int GetMinYearOfEra(Era era) => eraCalculator.GetMinYearOfEra(era);
 

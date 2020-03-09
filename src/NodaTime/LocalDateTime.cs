@@ -461,7 +461,7 @@ namespace NodaTime
         /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
         /// </remarks>
         /// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalDateTime"/>,
-        /// or refers to a adate/time in a different calendar system.</exception>
+        /// or refers to a date/time in a different calendar system.</exception>
         /// <param name="obj">The object to compare this value with.</param>
         /// <returns>The result of comparing this LocalDateTime with another one; see <see cref="CompareTo(NodaTime.LocalDateTime)"/> for general details.
         /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
@@ -622,7 +622,7 @@ namespace NodaTime
         public override int GetHashCode() => HashCodeHelper.Hash(date, time, Calendar);
         #endregion
         /// <summary>
-        /// Returns this date/time, with the given date adjuster applied to it, maintaing the existing time of day.
+        /// Returns this date/time, with the given date adjuster applied to it, maintaining the existing time of day.
         /// </summary>
         /// <remarks>
         /// If the adjuster attempts to construct an

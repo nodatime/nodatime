@@ -65,7 +65,7 @@ namespace NodaTime.Text.Patterns
         /// repeated sequence.
         /// </summary>
         /// <param name="maximumCount">The maximum number of repetitions allowed.</param>
-        /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
+        /// <returns>The repetition count which is always at least <c>1</c>.</returns>
         internal int GetRepeatCount(int maximumCount)
         {
             char patternCharacter = Current;

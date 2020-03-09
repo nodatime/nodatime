@@ -198,7 +198,7 @@ namespace NodaTime.Test.TimeZones
         public void AwkwardLeapYears()
         {
             // This mimics the data on Mono on Linux for Europe/Malta, where there's a BCL adjustment rule for
-            // each rule for quite a long time. One of those years is 1948, and the daylight transition is Feburary
+            // each rule for quite a long time. One of those years is 1948, and the daylight transition is February
             // 29th. That then fails when we try to build a ZoneInterval at the end of that year.
             // See https://github.com/nodatime/nodatime/issues/743 for more details. We've simplified this to just
             // a single rule here...

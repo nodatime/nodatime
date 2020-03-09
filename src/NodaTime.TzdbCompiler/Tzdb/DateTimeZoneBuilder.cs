@@ -35,7 +35,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
         private DateTimeZone BuildZone(string id, IList<ZoneRuleSet> ruleSets)
         {
-            // This does most of the work: for each rule set (correspoding to a zone line
+            // This does most of the work: for each rule set (corresponding to a zone line
             // in the original data) we add some zone intervals.
             foreach (var ruleSet in ruleSets)
             {

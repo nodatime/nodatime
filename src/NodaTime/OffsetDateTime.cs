@@ -154,15 +154,15 @@ namespace NodaTime
         public int DayOfYear => localDate.DayOfYear;
 
         /// <summary>
-        /// Gets the hour of day of this offest date and time, in the range 0 to 23 inclusive.
+        /// Gets the hour of day of this offset date and time, in the range 0 to 23 inclusive.
         /// </summary>
-        /// <value>The hour of day of this offest date and time, in the range 0 to 23 inclusive.</value>
+        /// <value>The hour of day of this offset date and time, in the range 0 to 23 inclusive.</value>
         public int Hour => offsetTime.Hour;
 
         /// <summary>
-        /// Gets the hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.
+        /// Gets the hour of the half-day of this offset date and time, in the range 1 to 12 inclusive.
         /// </summary>
-        /// <value>The hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.</value>
+        /// <value>The hour of the half-day of this offset date and time, in the range 1 to 12 inclusive.</value>
         public int ClockHourOfHalfDay => offsetTime.ClockHourOfHalfDay;
 
         /// <summary>

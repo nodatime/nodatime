@@ -9,7 +9,7 @@ using System;
 namespace NodaTime.Test
 {
     /// <summary>
-    /// Tests for exceptions - we don't typically call the serialization code anywhere else, for eaxmple.
+    /// Tests for exceptions - we don't typically call the serialization code anywhere else, for example.
     /// </summary>
     public class ExceptionConstructorTests
     {

@@ -81,7 +81,7 @@ namespace NodaTime.Test.Text
         /// <summary>
         /// .NET 3.5 doesn't contain any cultures where the abbreviated month names differ
         /// from the non-abbreviated month names. As we're testing under .NET 3.5, we'll need to create
-        /// our own. This is just a clone of the invarant culture, with month 1 changed.
+        /// our own. This is just a clone of the invariant culture, with month 1 changed.
         /// </summary>
         private static CultureInfo CreateGenitiveTestCulture()
         {

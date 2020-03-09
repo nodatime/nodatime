@@ -34,7 +34,7 @@ namespace NodaTime
     /// <para>
     /// <see cref="Period"/> equality is implemented by comparing each property's values individually, without any normalization.
     /// (For example, a period of "24 hours" is not considered equal to a period of "1 day".) The static
-    /// <see cref="NormalizingEqualityComparer"/> comparer provides an equality comparer which performs normalization before comparsions.
+    /// <see cref="NormalizingEqualityComparer"/> comparer provides an equality comparer which performs normalization before comparisons.
     /// </para>
     /// <para>
     /// There is no natural ordering for periods, but <see cref="CreateComparer(LocalDateTime)"/> can be used to create a
@@ -285,7 +285,7 @@ namespace NodaTime
         public static Period FromTicks(long ticks) => new Period(0L, 0L, 0L, 0L, ticks, 0L);
 
         /// <summary>
-        /// Creates a period representing the specified number of nanooseconds.
+        /// Creates a period representing the specified number of nanoseconds.
         /// </summary>
         /// <param name="nanoseconds">The number of nanoseconds in the new period</param>
         /// <returns>A period consisting of the given number of nanoseconds.</returns>
@@ -382,7 +382,7 @@ namespace NodaTime
                 return Zero;
             }
 
-            // Adjust for situations like "days between 5th January 10am and 7th Janary 5am" which should be one
+            // Adjust for situations like "days between 5th January 10am and 7th January 5am" which should be one
             // day, because if we actually reach 7th January with date fields, we've overshot.
             // The date adjustment will always be valid, because it's just moving it towards start.
             // We need this for all date-based period fields. We could potentially optimize by not doing this
