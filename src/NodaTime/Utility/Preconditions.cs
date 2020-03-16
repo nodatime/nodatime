@@ -28,8 +28,7 @@ namespace NodaTime.Utility
         }
 
         /// <summary>
-        /// Like <see cref="Preconditions.CheckNotNull"/>, but only checked in debug builds. (This means it can't return
-        /// anything...)
+        /// Like <see cref="CheckNotNull{T}"/>, but only checked in debug builds. (This means it can't return anything...)
         /// </summary>
         [Conditional("DEBUG")]
         [ContractAnnotation("argument:null => halt")]
