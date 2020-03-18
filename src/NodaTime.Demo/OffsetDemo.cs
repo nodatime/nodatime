@@ -63,6 +63,19 @@ namespace NodaTime.Demo
         }
 
         [Test]
+        public void Max()
+        {
+            var offset = Offset.FromSeconds(10);
+            var offset2 = Offset.FromSeconds(20);
+            var expected = Offset.FromSeconds(20);
+
+            var actual = Snippet.For(Offset.Max(offset, offset2));
+
+            Assert.Less(offset, offset2);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void Plus()
         {
             var offset = Offset.FromSeconds(100);
