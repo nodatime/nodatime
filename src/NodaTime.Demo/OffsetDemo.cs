@@ -65,14 +65,12 @@ namespace NodaTime.Demo
         [Test]
         public void Max()
         {
-            var offset = Offset.FromSeconds(10);
-            var offset2 = Offset.FromSeconds(20);
-            var expected = Offset.FromSeconds(20);
+            var smallerOffset = Offset.FromHours(3);
+            var largerOffset = Offset.FromHours(5);
 
-            var actual = Snippet.For(Offset.Max(offset, offset2));
+            var result = Snippet.For(Offset.Max(smallerOffset, largerOffset));
 
-            Assert.Less(offset, offset2);
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(largerOffset, result);
         }
 
         [Test]
