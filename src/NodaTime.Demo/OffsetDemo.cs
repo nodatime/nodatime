@@ -63,6 +63,58 @@ namespace NodaTime.Demo
         }
 
         [Test]
+        public void Add()
+        {
+            var lefHandOffset = Offset.FromHours(5);
+            var rightHandOffset = Offset.FromHours(6);
+
+            var result = Snippet.For(Offset.Add(lefHandOffset, rightHandOffset));
+
+            Assert.AreEqual(result, lefHandOffset + rightHandOffset);
+        }
+
+        [Test]
+        public void Substract()
+        {
+            var lefHandOffset = Offset.FromHours(7);
+            var rightHandOffset = Offset.FromHours(5);
+
+            var result = Snippet.For(Offset.Subtract(lefHandOffset, rightHandOffset));
+
+            Assert.AreEqual(result, lefHandOffset - rightHandOffset);
+        }
+
+        [Test]
+        public void CompareTo()
+        {
+            var smallerOffset = Offset.FromHours(3);
+            var largerOffset = Offset.FromHours(5);
+            var equalOffset = Offset.FromHours(5);
+
+            var lessThan = smallerOffset.CompareTo(largerOffset);
+            var equalTo = largerOffset.CompareTo(equalOffset);
+            var largerThan = largerOffset.CompareTo(smallerOffset);
+
+            Assert.Less(lessThan, 0);
+            Assert.AreEqual(equalTo, 0);
+            Assert.Greater(largerThan, 0);
+        }
+
+        [Test]
+        public void Equals()
+        {
+            var equalOffset1 = Offset.FromHoursAndMinutes(1, 30);
+            var equalOffset2 = Offset.FromHoursAndMinutes(1, 30);
+            var inequalOffset = Offset.FromHours(2);
+
+            var isEqual = equalOffset1.Equals(equalOffset2);
+            var isInequal = equalOffset1.Equals(inequalOffset);
+
+            Assert.IsTrue(isEqual);
+            Assert.IsFalse(isInequal);
+        }
+
+        [Test]
         public void Max()
         {
             var smallerOffset = Offset.FromHours(3);
@@ -71,6 +123,27 @@ namespace NodaTime.Demo
             var result = Snippet.For(Offset.Max(smallerOffset, largerOffset));
 
             Assert.AreEqual(largerOffset, result);
+        }
+
+        [Test]
+        public void Min()
+        {
+            var smallerOffset = Offset.FromHours(3);
+            var largerOffset = Offset.FromHours(5);
+
+            var result = Snippet.For(Offset.Min(smallerOffset, largerOffset));
+
+            Assert.AreEqual(smallerOffset, result);
+        }
+
+        [Test]
+        public void Negate()
+        {
+            var offsetToNegate = Offset.FromHours(2);
+
+            var result = Snippet.For(Offset.Negate(offsetToNegate));
+
+            Assert.AreEqual(result, -offsetToNegate);
         }
 
         [Test]
