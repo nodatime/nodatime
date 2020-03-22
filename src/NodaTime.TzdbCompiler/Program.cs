@@ -131,7 +131,7 @@ namespace NodaTime.TzdbCompiler
 
         private static TzdbDateTimeZoneSource Read(CompilerOptions options)
         {
-            string file = Path.ChangeExtension(options.OutputFileName, "nzd");
+            string file = Path.ChangeExtension(options.OutputFileName!, "nzd");
             using (var stream = File.OpenRead(file))
             {
                 return TzdbDateTimeZoneSource.FromStream(stream);

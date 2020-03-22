@@ -33,7 +33,7 @@ namespace NodaTime.TzdbCompiler
         [HelpOption(HelpText = "Display this help screen.")]
         public string GetUsage()
         {
-            var help = new HelpText(new HeadingInfo(typeof(CompilerOptions).Namespace))
+            var help = new HelpText(new HeadingInfo(typeof(CompilerOptions).Namespace!))
             {
                 AdditionalNewLineAfterOption = true,
                 Copyright = new CopyrightInfo("The Noda Time Authors", 2009)

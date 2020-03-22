@@ -17,7 +17,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
         internal static IEnumerable<string> ReadLines(this TextReader reader)
         {
-            string line;
+            string? line;
             while ((line = reader.ReadLine()) != null)
             {
                 yield return line;
@@ -28,7 +28,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             using (var reader = readerProvider())
             {
-                string line;
+                string? line;
                 while ((line = reader.ReadLine()) != null)
                 {
                     yield return line;
