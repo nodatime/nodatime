@@ -8,6 +8,7 @@ using NodaTime.Tools.Common;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace NodaTime.TzValidate.NzdCompatibility
 {
@@ -17,7 +18,7 @@ namespace NodaTime.TzValidate.NzdCompatibility
     /// </summary>
     internal class Program
     {
-        private static int Main(string[] args)
+        private static async Task<int> Main(string[] args)
         {
             Options options = new Options();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
@@ -25,7 +26,7 @@ namespace NodaTime.TzValidate.NzdCompatibility
             {
                 return 1;
             }
-            var data = FileUtility.LoadFileOrUrl(options.Source);
+            var data = await FileUtility.LoadFileOrUrlAsync(options.Source);
             TzdbDateTimeZoneSource source = TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
             var dumper = new ZoneDumper(source, options);
             try
