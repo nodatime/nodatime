@@ -8,7 +8,7 @@ using NodaTime.Tools.Common;
 using NodaTime.TzdbCompiler.Tzdb;
 using System;
 using System.IO;
-using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace NodaTime.TzValidate.NodaDump
 {
@@ -20,7 +20,7 @@ namespace NodaTime.TzValidate.NodaDump
     /// </summary>
     internal class Program
     {
-        private static int Main(string[] args)
+        private static async Task<int> Main(string[] args)
         {
             Options options = new Options();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
@@ -29,7 +29,7 @@ namespace NodaTime.TzValidate.NodaDump
                 return 1;
             }
             // Not null after we've parsed the arguments.
-            TzdbDateTimeZoneSource source = LoadSource(options.Source);
+            TzdbDateTimeZoneSource source = await LoadSourceAsync(options.Source);
             var dumper = new ZoneDumper(source, options);
             try
             {
@@ -47,7 +47,7 @@ namespace NodaTime.TzValidate.NodaDump
             return 0;
         }        
 
-        private static TzdbDateTimeZoneSource LoadSource(string? source)
+        private static async Task<TzdbDateTimeZoneSource> LoadSourceAsync(string? source)
         {
             if (source is null)
             {
@@ -55,7 +55,7 @@ namespace NodaTime.TzValidate.NodaDump
             }
             if (source.EndsWith(".nzd"))
             {
-                var data = FileUtility.LoadFileOrUrl(source);
+                var data = await FileUtility.LoadFileOrUrlAsync(source);
                 return TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
             }
             else

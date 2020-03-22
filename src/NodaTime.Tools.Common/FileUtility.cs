@@ -10,25 +10,15 @@ namespace NodaTime.Tools.Common
 {
     public static class FileUtility
     {
-        public static byte[] LoadFileOrUrl(string source)
+        public static async Task<byte[]> LoadFileOrUrlAsync(string source)
         {
             if (source.StartsWith("http://") || source.StartsWith("https://") || source.StartsWith("ftp://"))
             {
-                // This is an ugly way of avoiding asynchrony, but we're only using it in
-                // command line tools.
-                var task = Task.Run(() => FetchContentAsync(source));
-                return task.Result;
+                using var client = new HttpClient();
+                var response = await client.GetAsync(source);
+                return await response.EnsureSuccessStatusCode().Content.ReadAsByteArrayAsync();
             }
             return File.ReadAllBytes(source);
-
-            async Task<byte[]> FetchContentAsync(string url)
-            {
-                using (var client = new HttpClient())
-                {
-                    var response = await client.GetAsync(source);
-                    return await response.EnsureSuccessStatusCode().Content.ReadAsByteArrayAsync();
-                }
-            }
         }
     }
 }
