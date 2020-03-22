@@ -90,7 +90,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="rule">The rule to add.</param>
         internal void AddRule(RuleLine rule)
         {
-            if (!Rules.TryGetValue(rule.Name, out IList<RuleLine> ruleSet))
+            if (!Rules.TryGetValue(rule.Name, out var ruleSet))
             {
                 ruleSet = new List<RuleLine>();
                 Rules[rule.Name] = ruleSet;
@@ -105,7 +105,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="zone">The zone to add.</param>
         internal void AddZone(ZoneLine zone)
         {
-            if (!Zones.TryGetValue(zone.Name, out IList<ZoneLine> zoneSet))
+            if (!Zones.TryGetValue(zone.Name, out var zoneSet))
             {
                 zoneSet = new List<ZoneLine>();
                 Zones[zone.Name] = zoneSet;
