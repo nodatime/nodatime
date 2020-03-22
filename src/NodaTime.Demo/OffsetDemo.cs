@@ -91,8 +91,12 @@ namespace NodaTime.Demo
             var largerOffset = Offset.FromHours(5);
 
             var lessThan = Snippet.For(smallerOffset.CompareTo(largerOffset));
+            var equal = smallerOffset.CompareTo(smallerOffset);
+            var greaterThan = largerOffset.CompareTo(smallerOffset);
 
             Assert.Less(lessThan, 0);
+            Assert.AreEqual(0, equal);
+            Assert.Greater(greaterThan, 0);
         }
 
         [Test]
@@ -102,8 +106,10 @@ namespace NodaTime.Demo
             var inequalOffset = Offset.FromHours(2);
 
             var isInequal = Snippet.For(offset1.Equals(inequalOffset));
+            var isEqual = offset1.Equals(offset1);
 
             Assert.False(isInequal);
+            Assert.True(isEqual);
         }
 
         [Test]
