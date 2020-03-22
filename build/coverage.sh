@@ -6,7 +6,7 @@ set -e
 
 declare -r ROOT=$(realpath $(dirname $0)/..)
 declare -r TEST=$ROOT/src/NodaTime.Test
-declare -r DOTCOVER_VERSION=2019.1.1
+declare -r DOTCOVER_VERSION=2019.3.4
 declare -r REPORTGENERATOR_VERSION=4.0.12
 
 nuget.exe install -Verbosity quiet -OutputDirectory $ROOT/packages -Version $DOTCOVER_VERSION JetBrains.dotCover.CommandLineTools
@@ -20,7 +20,7 @@ mkdir $ROOT/coverage
 (cd $TEST; 
  $DOTCOVER cover coverageparams.xml -ReturnTargetExitCode)
 
-$DOTCOVER report -Source=$ROOT/coverage/NodaTime.dvcr -Output=$ROOT/coverage/coverage.xml -ReportType=DetailedXML ""
+$DOTCOVER report --Source=$ROOT/coverage/NodaTime.dvcr --Output=$ROOT/coverage/coverage.xml --ReportType=DetailedXML ""
 
 if [[ $1 == "--report" ]]
 then
