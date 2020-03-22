@@ -3,7 +3,7 @@
 # TODO: Test against Mono as well, using matrix.include
 language: csharp
 mono: none
-dotnet: 3.0.100
+dotnet: 3.1
 dist: xenial
 
 script:
