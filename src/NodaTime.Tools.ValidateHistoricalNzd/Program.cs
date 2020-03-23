@@ -4,11 +4,12 @@
 
 using NodaTime.TimeZones;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Dasync.Collections;
 using ShellProgressBar;
 
 namespace NodaTime.Tools.ValidateHistoricalNzd
@@ -21,15 +22,15 @@ namespace NodaTime.Tools.ValidateHistoricalNzd
             var allUrlsText = await httpClient.GetStringAsync("https://nodatime.org/tzdb/index.txt");
             var urls = allUrlsText.Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
             var progressBar = new ProgressBar(urls.Length, "Validating historical nzd files");
-            var exceptions = new List<Exception>();
-            foreach (var url in urls)
+            var exceptions = new ConcurrentBag<Exception>();
+            await urls.ParallelForEachAsync(async url =>
             {
                 progressBar.Tick($"Validating {url}");
                 var exception = await ValidateAsync(httpClient, url);
                 if (exception != null)
                     exceptions.Add(exception);
-            }
-            foreach (var exception in exceptions)
+            }, maxDegreeOfParallelism: 8);
+            foreach (var exception in exceptions.OrderBy(e => e.Message))
             {
                 progressBar.WriteLine(exception.Message);
             }

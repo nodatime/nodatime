@@ -13,6 +13,7 @@
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
     <PackageReference Include="ShellProgressBar" Version="5.0.0" />
   </ItemGroup>
 </Project>
