@@ -9,6 +9,7 @@ using NodaTime.TzdbCompiler.Tzdb;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace NodaTime.TzdbCompiler
 {
@@ -26,7 +27,7 @@ namespace NodaTime.TzdbCompiler
         /// </summary>
         /// <param name="arguments">The command line arguments. Each compiler defines its own.</param>
         /// <returns>0 for success, non-0 for error.</returns>
-        private static int Main(string[] arguments)
+        private static async Task<int> Main(string[] arguments)
         {
             CompilerOptions options = new CompilerOptions();
             ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error) { MutuallyExclusive = true });
@@ -36,7 +37,7 @@ namespace NodaTime.TzdbCompiler
             }
 
             var tzdbCompiler = new TzdbZoneInfoCompiler();
-            var tzdb = tzdbCompiler.Compile(options.SourceDirectoryName!);
+            var tzdb = await tzdbCompiler.CompileAsync(options.SourceDirectoryName!);
             tzdb.LogCounts();
             if (options.ZoneId != null)
             {

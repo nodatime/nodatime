@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Net.Http;
+using System.Threading.Tasks;
+using NodaTime.Tools.Common;
 
 namespace NodaTime.TzdbCompiler.Tzdb
 {
@@ -55,9 +57,9 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// The version ID is taken from the Makefile, if it exists. Otherwise, an attempt is made to guess
         /// it based on the last element of the path, to match a regex of \d{2,4}[a-z] (anywhere within the element).
         /// </summary>
-        public TzdbDatabase Compile(string path)
+        public async Task<TzdbDatabase> CompileAsync(string path)
         {
-            var source = LoadSource(path);
+            var source = await LoadSourceAsync(path);
             var version = InferVersion(source);
             var database = new TzdbDatabase(version);
             LoadZoneFiles(source, database);
@@ -109,20 +111,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
         }
 
-        private FileSource LoadSource(string path)
+        private async Task<FileSource> LoadSourceAsync(string path)
         {
             if (path.StartsWith("ftp://") || path.StartsWith("http://") || path.StartsWith("https://"))
             {
                 log?.WriteLine($"Downloading {path}");
-                Uri uri = new Uri(path);
-                using (HttpClient client = new HttpClient())
-                {
-                    // I know using .Result is nasty, but we're in a console app, and nothing is
-                    // going to deadlock...
-                    var data = client.GetAsync(path).Result.EnsureSuccessStatusCode().Content.ReadAsByteArrayAsync().Result;
-                    log?.WriteLine("Compiling from archive");
-                    return FileSource.FromArchive(new MemoryStream(data), uri.AbsolutePath);
-                }
+                var data = await FileUtility.LoadFileOrUrlAsync(path);
+                return FileSource.FromArchive(new MemoryStream(data), path);
             }
             if (Directory.Exists(path))
             {

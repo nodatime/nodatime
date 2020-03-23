@@ -61,7 +61,7 @@ namespace NodaTime.TzValidate.NodaDump
             else
             {
                 var compiler = new TzdbZoneInfoCompiler(log: null);
-                var database = compiler.Compile(source);
+                var database = await compiler.CompileAsync(source);
                 return database.ToTzdbDateTimeZoneSource();
             }
         }
