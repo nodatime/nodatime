@@ -1,4 +1,4 @@
-﻿// Copyright 2019 The Noda Time Authors. All rights reserved.
+﻿// Copyright 2020 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
@@ -11,12 +11,12 @@ namespace NodaTime.Demo
         [Test]
         public void CompareTo()
         {
-            var earlierDate = new AnnualDate(2, 23);
-            var laterDate = new AnnualDate(8, 17);
+            var february23rd = new AnnualDate(2, 23);
+            var august17th = new AnnualDate(8, 17);
 
-            var lessThan = Snippet.For(earlierDate.CompareTo(laterDate));
-            var equal = earlierDate.CompareTo(earlierDate);
-            var greaterThan = laterDate.CompareTo(earlierDate);
+            var lessThan = Snippet.For(february23rd.CompareTo(august17th));
+            var equal = february23rd.CompareTo(february23rd);
+            var greaterThan = august17th.CompareTo(february23rd);
 
             Assert.Less(lessThan, 0);
             Assert.AreEqual(0, equal);
@@ -26,11 +26,11 @@ namespace NodaTime.Demo
         [Test]
         public void Equals()
         {
-            var date1 = new AnnualDate(2, 23);
-            var date2 = new AnnualDate(8, 17);
+            var february23rd = new AnnualDate(2, 23);
+            var august17th = new AnnualDate(8, 17);
 
-            var unequal = Snippet.For(date1.Equals(date2));
-            var equal = date1.Equals(date1);
+            var unequal = Snippet.For(february23rd.Equals(august17th));
+            var equal = february23rd.Equals(february23rd);
 
             Assert.False(unequal);
             Assert.True(equal);
@@ -39,8 +39,8 @@ namespace NodaTime.Demo
         [Test]
         public void InYear()
         {
-            var annualDate = Snippet.For(new AnnualDate(3, 12));
-            var localDate = annualDate.InYear(2013);
+            var annualDate = new AnnualDate(3, 12);
+            var localDate = Snippet.For(annualDate.InYear(2013));
 
             Assert.AreEqual(new LocalDate(2013, 3, 12), localDate);
         }
@@ -48,10 +48,10 @@ namespace NodaTime.Demo
         [Test]
         public void IsValidYear()
         {
-            var date = new AnnualDate(2, 29);
+            var leapDay = new AnnualDate(2, 29);
 
-            var leapYear = Snippet.For(date.IsValidYear(2020));
-            var nonLeapYear = date.IsValidYear(2018);
+            var leapYear = Snippet.For(leapDay.IsValidYear(2020));
+            var nonLeapYear = leapDay.IsValidYear(2018);
 
             Assert.True(leapYear);
             Assert.False(nonLeapYear);
