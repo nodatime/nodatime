@@ -12,4 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ShellProgressBar" Version="5.0.0" />
+  </ItemGroup>
 </Project>

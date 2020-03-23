@@ -4,9 +4,12 @@
 
 using NodaTime.TimeZones;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ShellProgressBar;
 
 namespace NodaTime.Tools.ValidateHistoricalNzd
 {
@@ -17,28 +20,34 @@ namespace NodaTime.Tools.ValidateHistoricalNzd
             var httpClient = new HttpClient();
             var allUrlsText = await httpClient.GetStringAsync("https://nodatime.org/tzdb/index.txt");
             var urls = allUrlsText.Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
-            bool success = true;
+            var progressBar = new ProgressBar(urls.Length, "Validating historical nzd files");
+            var exceptions = new List<Exception>();
             foreach (var url in urls)
             {
-                success &= await ValidateAsync(httpClient, url);
+                progressBar.Tick($"Validating {url}");
+                var exception = await ValidateAsync(httpClient, url);
+                if (exception != null)
+                    exceptions.Add(exception);
             }
-            return success ? 0 : 1;
+            foreach (var exception in exceptions)
+            {
+                progressBar.WriteLine(exception.Message);
+            }
+            return exceptions.Any() ? 1 : 0;
         }
 
-        private static async Task<bool> ValidateAsync(HttpClient httpClient, string url)
+        private static async Task<Exception?> ValidateAsync(HttpClient httpClient, string url)
         {
             try
             {
-                Console.WriteLine($"Validating {url}");
                 byte[] data = await httpClient.GetByteArrayAsync(url);
                 var source = TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
                 source.Validate();
-                return true;
+                return null;
             }
             catch (Exception e)
             {
-                Console.WriteLine($"{e.GetType().Name}: {e.Message}");
-                return false;
+                return new ApplicationException($"Validation failed for {url} [{e.GetType().Name}] {e.Message}", e);
             }
         }
     }
