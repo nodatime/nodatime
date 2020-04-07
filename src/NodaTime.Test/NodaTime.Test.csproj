@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>net48;netcoreapp3.1</TargetFrameworks>
     <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <Deterministic>True</Deterministic>
@@ -16,6 +16,7 @@
     <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
   </ItemGroup>
 

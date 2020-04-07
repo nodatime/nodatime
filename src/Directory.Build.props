@@ -1,0 +1,7 @@
+<Project>
+  <ItemGroup>
+    <!-- Required for building the .NET Framework target (net4x) on Linux and macOS without mono.
+         Eventually, explicitly using the reference assemblies shouldn't be needed anymore, see https://github.com/dotnet/designs/pull/33#issuecomment-528457298 -->
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" IncludeAssets="runtime; build; native; contentfiles; analyzers" />
+  </ItemGroup>
+</Project>

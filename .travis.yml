@@ -1,10 +1,16 @@
 # See http://docs.travis-ci.com/user/languages/csharp/ for details
 
-# TODO: Test against Mono as well, using matrix.include
 language: csharp
-mono: none
 dotnet: 3.1
-dist: xenial
+
+matrix:
+  include:
+    - name: ".NET Core"
+      mono: none
+      env: TARGET_FRAMEWORK=netcoreapp3.1
+    - name: "Mono"
+      mono: latest
+      env: TARGET_FRAMEWORK=net48
 
 script:
   - build/travis.sh
