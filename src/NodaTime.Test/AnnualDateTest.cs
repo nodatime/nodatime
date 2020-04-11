@@ -5,6 +5,7 @@
 using NodaTime.Test.Text;
 using NUnit.Framework;
 using System;
+using NodaTime.Text;
 
 namespace NodaTime.Test
 {
@@ -67,6 +68,20 @@ namespace NodaTime.Test
         public void Operators()
         {
             TestHelper.TestOperatorComparisonEquality(new AnnualDate(6, 19), new AnnualDate(6, 19), new AnnualDate(6, 20), new AnnualDate(7, 1));
+        }
+
+        [Test]
+        public void XmlSerialization()
+        {
+            AnnualDate value = new AnnualDate(3, 14);
+            TestHelper.AssertXmlRoundtrip(value, "<value>03-14</value>");
+        }
+
+        [Test]
+        [TestCase("<value>XYZ</value>", typeof(UnparsableValueException), Description = "Completely unparsable")]
+        public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
+        {
+            TestHelper.AssertXmlInvalid<AnnualDate>(xml, expectedExceptionType);
         }
 
         [Test]
