@@ -8,6 +8,10 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace NodaTime
 {
@@ -28,7 +32,7 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     [TypeConverter(typeof(AnnualDateTypeConverter))]
-    public readonly struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IComparable, IFormattable
+    public readonly struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IComparable, IFormattable, IXmlSerializable
     {
         // The underlying value. We only care about the month and day, but for the sake of
         // compatibility with the default value, this ends up being in year 1. This would
@@ -234,5 +238,26 @@ namespace NodaTime
         /// <param name="rhs">Second operand of the comparison</param>
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(AnnualDate lhs, AnnualDate rhs) => lhs.CompareTo(rhs) >= 0;
+
+        #region XML serialization
+        /// <inheritdoc />
+        XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
+
+        /// <inheritdoc />
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            Preconditions.CheckNotNull(reader, nameof(reader));
+            var pattern = AnnualDatePattern.Iso;
+            string text = reader.ReadElementContentAsString();
+            Unsafe.AsRef(this) = pattern.Parse(text).Value;
+        }
+
+        /// <inheritdoc />
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            Preconditions.CheckNotNull(writer, nameof(writer));
+            writer.WriteString(AnnualDatePattern.Iso.Format(this));
+        }
+        #endregion
     }
 }
