@@ -181,14 +181,11 @@ namespace NodaTime.Xml
             };
         }
 
-        private static XmlSchemaSimpleType CreatePatternRestriction<T>(XmlSchemaType baseType, string pattern) where T : IXmlSerializable
-        {
-            return CreatePatternRestriction(typeof(T).Name, baseType, pattern);
-        }
+        private static XmlSchemaSimpleType CreatePatternRestriction<T>(XmlSchemaType baseType, string pattern) where T : IXmlSerializable =>
+            CreatePatternRestriction(typeof(T).Name, baseType, pattern);
 
-        private static XmlSchemaSimpleType CreatePatternRestriction(string name, XmlSchemaType baseType, string pattern)
-        {
-            return QualifySchemaType(new XmlSchemaSimpleType
+        private static XmlSchemaSimpleType CreatePatternRestriction(string name, XmlSchemaType baseType, string pattern) =>
+            QualifySchemaType(new XmlSchemaSimpleType
             {
                 Name = name,
                 Content = new XmlSchemaSimpleTypeRestriction
@@ -197,7 +194,6 @@ namespace NodaTime.Xml
                     Facets = { new XmlSchemaPatternFacet { Value = pattern } }
                 }
             });
-        }
 
         private static XmlSchemaType CreateEnumerationRestriction(string name, XmlSchemaType baseType, IEnumerable<string> values)
         {
