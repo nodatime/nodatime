@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -138,16 +137,14 @@ namespace NodaTime.Xml
         private static XmlSchema CreateNodaTimeXmlSchema()
         {
             var schemaSetForCollecting = new XmlSchemaSet();
-            var xmlSerializableTypes = typeof(XmlSchemaDefinition).Assembly.GetExportedTypes().Where(t => t.GetInterfaces().Contains(typeof(IXmlSerializable)));
-            foreach (var xmlSerializableType in xmlSerializableTypes)
+            var addSchemaMethods = new Func<XmlSchemaSet, XmlQualifiedName>[]
             {
-                var schemaProvider = xmlSerializableType.GetCustomAttribute<XmlSchemaProviderAttribute>();
-                if (schemaProvider == null)
-                    throw new InvalidOperationException($"The type '{xmlSerializableType}' is missing the '{nameof(XmlSchemaProviderAttribute)}' on its class definition.");
-                var schemaProviderMethod = xmlSerializableType.GetMethod(schemaProvider.MethodName, BindingFlags.Public | BindingFlags.Static);
-                if (schemaProviderMethod == null)
-                    throw new MissingMethodException(xmlSerializableType.Name, schemaProvider.MethodName);
-                schemaProviderMethod.Invoke(null, new object[] { schemaSetForCollecting });
+                AnnualDate.AddSchema, Duration.AddSchema, Instant.AddSchema, Interval.AddSchema, LocalDate.AddSchema, LocalDateTime.AddSchema, LocalTime.AddSchema,
+                Offset.AddSchema, OffsetDate.AddSchema, OffsetDateTime.AddSchema, OffsetTime.AddSchema, PeriodBuilder.AddSchema, YearMonth.AddSchema, ZonedDateTime.AddSchema
+            };
+            foreach (var addSchemaMethod in addSchemaMethods)
+            {
+                addSchemaMethod(schemaSetForCollecting);
             }
             var xmlSchema = new XmlSchema
             {
