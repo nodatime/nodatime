@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:nodatime="https://nodatime.org/api/" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="https://nodatime.org/api/" />
+  <xs:element name="NodaTimeObject" nillable="true" type="NodaTimeObject" />
+  <xs:complexType name="NodaTimeObject">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="MyAnnualDate" type="nodatime:AnnualDate" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyDuration" type="nodatime:Duration" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyInstant" type="nodatime:Instant" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyInterval" type="nodatime:Interval" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyLocalDate" type="nodatime:LocalDate" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyLocalDateTime" type="nodatime:LocalDateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyLocalTime" type="nodatime:LocalTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyOffset" type="nodatime:Offset" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyOffsetDate" type="nodatime:OffsetDate" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyOffsetDateTime" type="nodatime:OffsetDateTime" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyOffsetTime" type="nodatime:OffsetTime" />
+      <xs:element minOccurs="0" maxOccurs="1" name="MyPeriodBuilder" type="nodatime:PeriodBuilder" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyYearMonth" type="nodatime:YearMonth" />
+      <xs:element minOccurs="1" maxOccurs="1" name="MyZonedDateTime" type="nodatime:ZonedDateTime" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
