@@ -22,6 +22,7 @@ namespace NodaTime
     /// thread affinity.
     /// </threadsafety>
     [Mutable]
+    [XmlSchemaProvider(nameof(AddSchema))]
     public sealed class PeriodBuilder : IXmlSerializable
     {
         #region Properties
@@ -176,6 +177,13 @@ namespace NodaTime
         /// <returns>A period containing the values from this builder.</returns>
         public Period Build() =>
             new Period(Years, Months, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Ticks, Nanoseconds);
+
+        /// <summary>
+        /// Adds the XML schema type describing the structure of the <see cref="PeriodBuilder"/> XML serialization to the given <paramref name="xmlSchemaSet"/>.
+        /// </summary>
+        /// <param name="xmlSchemaSet">The XML schema set provided by <see cref="XmlSchemaExporter"/>.</param>
+        /// <returns>The qualified name of the schema type that was added to the <paramref name="xmlSchemaSet"/>.</returns>
+        public static XmlQualifiedName AddSchema(XmlSchemaSet xmlSchemaSet) => Xml.XmlSchemaDefinition.AddPeriodBuilderSchemaType(xmlSchemaSet);
 
         /// <inheritdoc />
         XmlSchema IXmlSerializable.GetSchema() => null!; // TODO(nullable): Return XmlSchema? when docfx works with that
