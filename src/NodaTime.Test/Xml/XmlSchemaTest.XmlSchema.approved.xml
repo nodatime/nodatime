@@ -110,6 +110,9 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="zone">
+    <xs:union memberTypes="nodatime:zoneIds xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="zoneIds">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Africa/Abidjan" />
       <xs:enumeration value="Africa/Accra" />

@@ -62,6 +62,15 @@ namespace NodaTime.Test.Xml
         }
 
         [Test]
+        public void UnknownFutureZoneIdIsValid()
+        {
+            var xml = @"<?xml version=""1.0""?><ZonedDateTime zone=""UnknownFutureZoneId"">0001-01-01T00:00:00Z</ZonedDateTime>";
+
+            var errors = ValidateXml<ZonedDateTime>(xml);
+            Assert.IsEmpty(errors);
+        }
+
+        [Test]
         public void AnnualDateMinValue()
         {
             AssertValidSerializedNodaTimeObject(new NodaTimeObject { MyAnnualDate = new AnnualDate(1, 1) });

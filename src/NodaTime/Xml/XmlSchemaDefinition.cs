@@ -62,7 +62,14 @@ namespace NodaTime.Xml
             var calendarRestriction = CreateEnumerationRestriction("calendar", xsStringType, CalendarSystem.Ids);
             var localDateRestriction = CreatePatternRestriction("localDate", xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}");
             var localDateTimeRestriction = CreatePatternRestriction("localDateTime", xsStringType,  $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}");
-            var zoneRestriction = CreateEnumerationRestriction("zone", xsStringType, DateTimeZoneProviders.Serialization.GetAllZones().Select(e => e.Id));
+            var zoneIds = CreateEnumerationRestriction("zoneIds", xsStringType, DateTimeZoneProviders.Serialization.GetAllZones().Select(e => e.Id));
+            // The "zoneIds" purpose is to document the known zone identifiers. The "zone" restriction is a union between known zone ids and
+            // xs:string so that validation won't fail when a new zone identifier is added to the Time Zone Database.
+            var zoneRestriction = QualifySchemaType(new XmlSchemaSimpleType
+            {
+                Name = "zone",
+                Content = new XmlSchemaSimpleTypeUnion { MemberTypes = new[] { zoneIds.QualifiedName, xsStringType.QualifiedName } }
+            });
 
             var calendarAttribute = new XmlSchemaAttribute { Name = "calendar", SchemaTypeName = calendarRestriction.QualifiedName };
             var zoneAttribute = new XmlSchemaAttribute { Name = "zone", SchemaTypeName = zoneRestriction.QualifiedName, Use = XmlSchemaUse.Required };
@@ -94,7 +101,7 @@ namespace NodaTime.Xml
                 [IntervalSchemaType] = new[] { InstantSchemaType },
                 [LocalDateSchemaType] = new[] { localDateRestriction, calendarRestriction },
                 [LocalDateTimeSchemaType] = new[] { localDateTimeRestriction, calendarRestriction },
-                [ZonedDateTimeSchemaType] = new[] { OffsetDateTimeSchemaType, calendarRestriction, zoneRestriction },
+                [ZonedDateTimeSchemaType] = new[] { OffsetDateTimeSchemaType, calendarRestriction, zoneRestriction, zoneIds },
             };
 
             NodaTimeXmlSchema = CreateNodaTimeXmlSchema();
