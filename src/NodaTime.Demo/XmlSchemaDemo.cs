@@ -1,17 +1,33 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using NodaTime.Xml;
 using NUnit.Framework;
 
 namespace NodaTime.Demo
 {
-    public class XmlSchemaDemo
+    public partial class XmlSchemaDemo
     {
+        /// <summary>
+        /// Provides mapping from <see cref="XmlSchemaSet"/> types to C# types.
+        /// </summary>
+        private interface IXmlSchemaAssemblyCreator
+        {
+            /// <summary>
+            /// An assembly with types defined in the given XML schema set mapped to C# types.
+            /// </summary>
+            /// <param name="namespaceName">The name of the C# namespace in which types will be created.</param>
+            /// <param name="schemaSet">A <see cref="XmlSchemaSet"/> defining a set of types.</param>
+            /// <returns>An assembly with types defined in the <paramref name="schemaSet"/> mapped to C# types.</returns>
+            Assembly CreateAssembly(string namespaceName, XmlSchemaSet schemaSet);
+        }
+
         [Test]
-        public void DynamicCodeGeneration()
+        [TestCase(typeof(XmlCodeExporterAssemblyCreator))]
+        [TestCase(typeof(XmlSchemaClassGeneratorAssemblyCreator))]
+        public void DynamicCodeGeneration(Type assemblyGeneratorType)
         {
             var schemaXmlReader = new StringReader(@"<?xml version=""1.0"" encoding=""utf-8""?>
 <xs:schema xmlns:nodatime=""https://nodatime.org/api/"" elementFormDefault=""qualified"" xmlns:xs=""http://www.w3.org/2001/XMLSchema"">
@@ -33,9 +49,19 @@ namespace NodaTime.Demo
             var personXmlSchema = XmlSchema.Read(schemaXmlReader, (sender, args) => throw new Exception($"[{args.Severity}] {args.Message}"));
             var schemaSet = new XmlSchemaSet();
             schemaSet.Add(personXmlSchema);
-            schemaSet.Add(XmlSchemaDefinition.NodaTimeXmlSchema);
+            schemaSet.Add(Xml.XmlSchemaDefinition.NodaTimeXmlSchema);
             const string namespaceName = nameof(XmlSchemaDemo);
-            var assembly = XmlTypeGenerator.CreateAssembly(namespaceName, schemaSet);
+            var assemblyGenerator = (IXmlSchemaAssemblyCreator)Activator.CreateInstance(assemblyGeneratorType)!;
+            Assembly assembly;
+            try
+            {
+                assembly = assemblyGenerator.CreateAssembly(namespaceName, schemaSet);
+            }
+            catch (PlatformNotSupportedException exception) when (exception.Message.Contains(assemblyGeneratorType.Name))
+            {
+                Assert.Ignore(exception.Message);
+                return;
+            }
             var personElement = personXmlSchema.Elements.Values.Cast<XmlSchemaElement>().Single();
             var personType = assembly.GetExportedTypes().Single(t => t.FullName == $"{namespaceName}.{personElement.Name}");
             var serializer = new XmlSerializer(personType);
