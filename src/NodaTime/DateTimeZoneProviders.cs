@@ -4,6 +4,7 @@
 
 using NodaTime.TimeZones;
 using NodaTime.Utility;
+using System;
 
 namespace NodaTime
 {
@@ -49,71 +50,17 @@ namespace NodaTime
         /// <value>A time zone provider which uses a <c>BclDateTimeZoneSource</c>.</value>
         public static IDateTimeZoneProvider Bcl => BclHolder.BclImpl;
 
-        private static readonly object serializationProviderLock = new object();
-        private static IDateTimeZoneProvider? serializationProvider;
-
-        private static readonly object typeConverterProviderLock = new object();
-        private static IDateTimeZoneProvider? typeConverterProvider;
-
         /// <summary>
         /// Gets the <see cref="IDateTimeZoneProvider"/> to use to interpret a time zone ID read as part of
-        /// XML or binary serialization.
+        /// XML serialization. This property is obsolete as of version 3.0; the functionality still exists
+        /// in <see cref="Xml.XmlSerializationSettings.DateTimeZoneProvider"/>, which this property delegates
+        /// to. (The behavior has not changed; this is purely an exercise in moving/renaming.)
         /// </summary>
-        /// <remarks>
-        /// This property defaults to <see cref="DateTimeZoneProviders.Tzdb"/>. The mere existence of
-        /// this property is unfortunate, but XML serialization in .NET provides no simple way of configuring
-        /// appropriate context. It is expected that any single application is unlikely to want to serialize
-        /// <c>ZonedDateTime</c> values using different time zone providers.
-        /// </remarks>
-        /// <value>The <c>IDateTimeZoneProvider</c> to use to interpret a time zone ID read as part of
-        /// XML serialization.</value>
+        [Obsolete("This property exists primarily for binary backward compatibility. Please use NodaTime.Xml.XmlSerializationSettings.DateTimeZoneProvider instead.")]
         public static IDateTimeZoneProvider Serialization
         {
-            get
-            {
-                lock (serializationProviderLock)
-                {
-                    return serializationProvider ?? (serializationProvider = Tzdb);
-                }
-            }
-            set
-            {
-                lock (serializationProviderLock)
-                {
-                    serializationProvider = Preconditions.CheckNotNull(value, nameof(value));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IDateTimeZoneProvider"/> to use to interpret a time zone ID read as part of
-        /// conversion using the default <see cref="System.ComponentModel.TypeConverter"/> for <see cref="ZonedDateTime"/>.
-        /// Note that if a value other than <see cref="DateTimeZoneProviders.Tzdb"/> is required, it should be set on
-        /// application startup, before any type converters are used. Type converters are cached internally by the framework,
-        /// so changes to this property after the first type converter for <see cref="ZonedDateTime"/> is created will
-        /// not generally be visible.
-        /// </summary>
-        /// <remarks>
-        /// This property defaults to <see cref="DateTimeZoneProviders.Tzdb"/>.
-        /// </remarks>
-        /// <value>The <c>IDateTimeZoneProvider</c> to use to interpret a time zone ID read as part of
-        /// conversion using the default <see cref="System.ComponentModel.TypeConverter"/>.</value>
-        public static IDateTimeZoneProvider ForTypeConverter
-        {
-            get
-            {
-                lock (typeConverterProviderLock)
-                {
-                    return typeConverterProvider ?? (typeConverterProvider = Tzdb);
-                }
-            }
-            set
-            {
-                lock (typeConverterProviderLock)
-                {
-                    typeConverterProvider = Preconditions.CheckNotNull(value, nameof(value));
-                }
-            }
+            get => Xml.XmlSerializationSettings.DateTimeZoneProvider;
+            set => Xml.XmlSerializationSettings.DateTimeZoneProvider = value;
         }
     }
 }

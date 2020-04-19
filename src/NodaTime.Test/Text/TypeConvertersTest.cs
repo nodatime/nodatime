@@ -124,7 +124,7 @@ namespace NodaTime.Test.Text
         [TestCase(2018, 12, 31, 13, 30, "Asia/Kathmandu", "2018-12-31T13:30:00 Asia/Kathmandu (+05:45)")]
         public void ZonedDateTime_Roundtrip(int year, int month, int day, int hour, int minute, string zoneId, string text)
         {
-            Assert.AreSame(DateTimeZoneProviders.Tzdb, DateTimeZoneProviders.ForTypeConverter,
+            Assert.AreSame(DateTimeZoneProviders.Tzdb, TypeConverterSettings.DateTimeZoneProvider,
                 "Expected no other test to change DateTimeZoneProviders.ForTypeConverter");
             var zone = DateTimeZoneProviders.Tzdb[zoneId];
             AssertRoundtrip(text, new LocalDateTime(year, month, day, hour, minute).InZoneStrictly(zone));
