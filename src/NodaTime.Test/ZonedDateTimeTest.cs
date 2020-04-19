@@ -9,6 +9,7 @@ using NodaTime.Calendars;
 using NodaTime.Testing.TimeZones;
 using NodaTime.Text;
 using NodaTime.TimeZones;
+using NodaTime.Xml;
 using NUnit.Framework;
 
 namespace NodaTime.Test
@@ -402,7 +403,7 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization_Iso()
         {
-            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
+            XmlSerializationSettings.DateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
             var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23).WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertXmlRoundtrip(value, "<value zone=\"America/New_York\">2013-04-12T17:53:23-04</value>");
@@ -424,7 +425,7 @@ namespace NodaTime.Test
                 return;
             }
 
-            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Bcl;
+            XmlSerializationSettings.DateTimeZoneProvider = DateTimeZoneProviders.Bcl;
             var value = new ZonedDateTime(new LocalDateTime(2013, 4, 12, 17, 53, 23).WithOffset(Offset.FromHours(-4)), zone);
             TestHelper.AssertXmlRoundtrip(value, "<value zone=\"Eastern Standard Time\">2013-04-12T17:53:23-04</value>");
         }
@@ -432,7 +433,7 @@ namespace NodaTime.Test
         [Test]
         public void XmlSerialization_NonIso()
         {
-            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
+            XmlSerializationSettings.DateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
             var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
             var localDateTime = new LocalDateTime(2013, 6, 12, 17, 53, 23, CalendarSystem.Julian);
             var value = new ZonedDateTime(localDateTime.WithOffset(Offset.FromHours(-4)), zone);
@@ -447,7 +448,7 @@ namespace NodaTime.Test
         [TestCase("<value zone=\"Europe/London\">2013-04-12T17:53:23-04</value>", typeof(UnparsableValueException), Description = "Incorrect offset")]
         public void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
         {
-            DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
+            XmlSerializationSettings.DateTimeZoneProvider = DateTimeZoneProviders.Tzdb;
             TestHelper.AssertXmlInvalid<ZonedDateTime>(xml, expectedExceptionType);
         }
 

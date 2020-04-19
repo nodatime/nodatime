@@ -809,7 +809,7 @@ namespace NodaTime
             {
                 throw new ArgumentException("No zone specified in XML for ZonedDateTime");
             }
-            DateTimeZone newZone = DateTimeZoneProviders.Serialization[reader.Value];
+            DateTimeZone newZone = Xml.XmlSerializationSettings.DateTimeZoneProvider[reader.Value];
             if (reader.MoveToAttribute("calendar"))
             {
                 string newCalendarId = reader.Value;

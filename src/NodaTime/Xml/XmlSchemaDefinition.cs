@@ -62,7 +62,7 @@ namespace NodaTime.Xml
             var calendarRestriction = CreateEnumerationRestriction("calendar", xsStringType, CalendarSystem.Ids);
             var localDateRestriction = CreatePatternRestriction("localDate", xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}");
             var localDateTimeRestriction = CreatePatternRestriction("localDateTime", xsStringType,  $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}");
-            var zoneIds = CreateEnumerationRestriction("zoneIds", xsStringType, DateTimeZoneProviders.Serialization.GetAllZones().Select(e => e.Id));
+            var zoneIds = CreateEnumerationRestriction("zoneIds", xsStringType, XmlSerializationSettings.DateTimeZoneProvider.GetAllZones().Select(e => e.Id));
             // The "zoneIds" purpose is to document the known zone identifiers. The "zone" restriction is a union between known zone ids and
             // xs:string so that validation won't fail when a new zone identifier is added to the Time Zone Database.
             var zoneRestriction = QualifySchemaType(new XmlSchemaSimpleType
