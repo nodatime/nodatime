@@ -186,7 +186,7 @@ namespace NodaTime.Test.TimeZones
         public void TzdbVersion()
         {
             var source = TzdbDateTimeZoneSource.Default;
-            StringAssert.StartsWith("201", source.TzdbVersion);
+            StringAssert.StartsWith("20", source.TzdbVersion);
         }
 
         [Test]
