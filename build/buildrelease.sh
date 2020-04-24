@@ -12,6 +12,9 @@ if [[ $# -ne 1 ]]; then
   exit 1
 fi
 
+# Make sure the packages end up with suitable embedded paths
+export DeterministicSourcePaths=true
+
 declare -r VERSION=$1
 declare -r SUFFIX=$(echo $VERSION | cut -s -d- -f2)
 declare -r BUILD_FLAG=${SUFFIX:+--version-suffix ${SUFFIX}}

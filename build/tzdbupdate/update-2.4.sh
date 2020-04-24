@@ -63,6 +63,8 @@ dotnet restore src/NodaTime-All.sln
 dotnet build -c Release src/NodaTime-All.sln
 
 echo "Packaging..."
+# Make sure the packages end up with suitable embedded paths
+export DeterministicSourcePaths=true
 # NuGet packages
 dotnet pack -o "$OUTPUT" -c Release --no-build src/NodaTime-All.sln
 
