@@ -10,7 +10,7 @@
     <SignAssembly>true</SignAssembly>
     <PackageTags>nodatime;testing</PackageTags>
     <PackageProjectUrl>http://nodatime.org/</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/nodatime/nodatime</RepositoryUrl>
     <Deterministic>True</Deterministic>
   </PropertyGroup>
