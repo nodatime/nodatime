@@ -289,6 +289,7 @@
       <xs:enumeration value="America/North_Dakota/Beulah" />
       <xs:enumeration value="America/North_Dakota/Center" />
       <xs:enumeration value="America/North_Dakota/New_Salem" />
+      <xs:enumeration value="America/Nuuk" />
       <xs:enumeration value="America/Ojinaga" />
       <xs:enumeration value="America/Panama" />
       <xs:enumeration value="America/Pangnirtung" />
