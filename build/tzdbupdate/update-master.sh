@@ -26,6 +26,7 @@ dotnet run -p $SRCDIR/NodaTime.TzdbCompiler -- \
   -o $OUTPUT \
   -s https://data.iana.org/time-zones/releases/tzdata$1.tar.gz \
   -w $DATADIR/cldr \
+  -x $SRCDIR/NodaTime.Test/Xml/XmlSchemaTest.XmlSchema.approved.xml \
   | grep -v "Skipping"
 
 echo ""

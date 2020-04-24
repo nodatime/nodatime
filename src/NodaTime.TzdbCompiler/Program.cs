@@ -6,10 +6,13 @@ using CommandLine;
 using NodaTime.TimeZones;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.TzdbCompiler.Tzdb;
+using NodaTime.Xml;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace NodaTime.TzdbCompiler
 {
@@ -62,6 +65,17 @@ namespace NodaTime.TzdbCompiler
                 Console.WriteLine("Reading generated data and validating...");
                 var source = Read(options);
                 source.Validate();
+            }
+
+            if (options.XmlSchema is object)
+            {
+                Console.WriteLine($"Writing XML schema to {options.XmlSchema}");
+                var source = Read(options);
+                var provider = new DateTimeZoneCache(source);
+                XmlSerializationSettings.DateTimeZoneProvider = provider;
+                var settings = new XmlWriterSettings { Indent = true, NewLineChars = "\n", Encoding = new UTF8Encoding() };
+                using var xmlWriter = XmlWriter.Create(options.XmlSchema, settings);
+                XmlSchemaDefinition.NodaTimeXmlSchema.Write(xmlWriter);
             }
             return 0;
         }
