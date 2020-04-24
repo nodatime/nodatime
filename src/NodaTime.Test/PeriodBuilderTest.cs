@@ -160,11 +160,11 @@ namespace NodaTime.Test
             }
         }
 
-        private class BuilderEqualityComparer : IEqualityComparer<PeriodBuilder>
+        private class BuilderEqualityComparer : IEqualityComparer<PeriodBuilder?>
         {
-            public bool Equals(PeriodBuilder x, PeriodBuilder y) => x.Build().Equals(y.Build());
+            public bool Equals(PeriodBuilder? x, PeriodBuilder? y) => Equals(x?.Build(), y?.Build());
 
-            public int GetHashCode(PeriodBuilder obj) => obj.Build().GetHashCode();
+            public int GetHashCode(PeriodBuilder? obj) => obj!.Build().GetHashCode();
         }
 
         private static void Call(object ignored) {}
