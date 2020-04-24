@@ -22,7 +22,7 @@ namespace NodaTime.Test
             // Previously all the conversions missed the SystemConversions.DateTimeEpochTicks,
             // so they were self-consistent but not consistent with sanity.
             Instant minimumExpected = Instant.FromUtc(2011, 8, 1, 0, 0);
-            Instant maximumExpected = Instant.FromUtc(2020, 1, 1, 0, 0);
+            Instant maximumExpected = Instant.FromUtc(2030, 1, 1, 0, 0);
             Instant now = SystemClock.Instance.GetCurrentInstant();
             Assert.Less(minimumExpected.ToUnixTimeTicks(), now.ToUnixTimeTicks());
             Assert.Less(now.ToUnixTimeTicks(), maximumExpected.ToUnixTimeTicks());
