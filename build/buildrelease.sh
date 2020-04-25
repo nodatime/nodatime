@@ -16,7 +16,6 @@ fi
 export ContinuousIntegrationBuild=true
 
 declare -r VERSION=$1
-declare -r SUFFIX=$(echo $VERSION | cut -s -d- -f2)
 declare -r OUTPUT=artifacts
 
 rm -rf releasebuild
