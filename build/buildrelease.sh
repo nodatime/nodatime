@@ -17,8 +17,6 @@ export ContinuousIntegrationBuild=true
 
 declare -r VERSION=$1
 declare -r SUFFIX=$(echo $VERSION | cut -s -d- -f2)
-declare -r BUILD_FLAG=${SUFFIX:+--version-suffix ${SUFFIX}}
-declare -r RESTORE_FLAG=${SUFFIX:+-p:VersionSuffix=${SUFFIX}}
 declare -r OUTPUT=artifacts
 
 rm -rf releasebuild
@@ -26,24 +24,27 @@ git clone https://github.com/nodatime/nodatime.git releasebuild -c core.autocrlf
 cd releasebuild
 git checkout "$VERSION"
 
-# See https://github.com/nodatime/nodatime/issues/713
-# and https://github.com/NuGet/Home/issues/3953
-# ... but note that from bash, /p has to be -p
-dotnet restore $RESTORE_FLAG src/NodaTime
-dotnet restore $RESTORE_FLAG src/NodaTime.Testing
-dotnet restore $RESTORE_FLAG src/NodaTime.Test
+# Check that the version requested matches the one in the code
+declare -r ACTUAL_VERSION=$(grep \<Version\> Directory.Build.props | sed 's/<[^>]*>//g' | sed 's/ //g')
 
-dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime
-dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime.Testing
-dotnet build -c Release $BUILD_FLAG -p:SourceLinkCreate=true src/NodaTime.Test
+if [[ $VERSION != $ACTUAL_VERSION ]]
+then
+  echo "Tagged version: $VERSION. Version in Directory.Build.props: $ACTUAL_VERSION"
+  echo "Aborting"
+  exit 1
+fi
+
+export Configuration=Release
+
+dotnet build src/NodaTime.sln
 
 # Even run the slow tests before a release...
-dotnet test -c Release src/NodaTime.Test
+dotnet test src/NodaTime.Test
 
 mkdir $OUTPUT
 
-dotnet pack --no-build -c Release $BUILD_FLAG src/NodaTime
-dotnet pack --no-build -c Release $BUILD_FLAG src/NodaTime.Testing
+dotnet pack --no-build src/NodaTime
+dotnet pack --no-build src/NodaTime.Testing
 cp src/NodaTime/bin/Release/*.nupkg $OUTPUT
 cp src/NodaTime.Testing/bin/Release/*.nupkg $OUTPUT
 git archive $VERSION -o $OUTPUT/NodaTime-$VERSION-src.zip --prefix=NodaTime-$VERSION-src/
