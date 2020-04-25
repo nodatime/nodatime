@@ -1,4 +1,13 @@
 <Project>
+
+  <!-- Make source control information available for all projects, to avoid this error:
+    -  error : SourceRoot items must include at least one top-level
+    - (not nested) item when DeterministicSourcePaths is true
+    -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+  </ItemGroup>
+
   <!-- See https://github.com/dotnet/sourcelink/issues/572 -->
   <PropertyGroup>
     <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
