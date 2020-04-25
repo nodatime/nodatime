@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <!-- Embed test data -->    
-    <EmbeddedResource Include="TestData\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <EmbeddedResource Include="TestData\*" />
     
     <!-- Nesting for tests -->
     <Compile Update="CalendarSystemTest.*.cs">
