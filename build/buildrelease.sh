@@ -13,7 +13,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 # Make sure the packages end up with suitable embedded paths
-export DeterministicSourcePaths=true
+export ContinuousIntegrationBuild=true
 
 declare -r VERSION=$1
 declare -r SUFFIX=$(echo $VERSION | cut -s -d- -f2)

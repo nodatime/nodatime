@@ -5,6 +5,8 @@
 
 set -e
 
+export ContinuousIntegrationBuild=true
+
 declare -r ROOT=$(realpath $(dirname $0)/..)
 cd $ROOT
 

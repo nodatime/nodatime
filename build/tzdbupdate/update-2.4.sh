@@ -58,13 +58,14 @@ cp "${ROOT}/src/NodaTime/TimeZones/Tzdb.nzd" src/NodaTime/TimeZones
 git commit -a -m "Update to TZDB ${TZDB_RELEASE} for release ${NEW_RELEASE}"
 git tag ${NEW_RELEASE}
 
+# Make sure the packages end up with suitable embedded paths
+export ContinuousIntegrationBuild=true
+
 # Build the code
 dotnet restore src/NodaTime-All.sln
 dotnet build -c Release src/NodaTime-All.sln
 
 echo "Packaging..."
-# Make sure the packages end up with suitable embedded paths
-export DeterministicSourcePaths=true
 # NuGet packages
 dotnet pack -o "$OUTPUT" -c Release --no-build src/NodaTime-All.sln
 

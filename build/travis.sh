@@ -2,6 +2,8 @@
 
 set -e
 
+export ContinuousIntegrationBuild=true
+
 dotnet --info
 
 dotnet build -c Release src/NodaTime.sln
