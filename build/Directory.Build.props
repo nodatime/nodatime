@@ -1,0 +1,6 @@
+<Project>
+  <!--
+    - This file exists so that the build tools don't pick up the
+    - common properties from the root.
+    -->
+</Project>

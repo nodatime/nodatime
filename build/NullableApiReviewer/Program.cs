@@ -93,7 +93,7 @@ namespace NullableApiReviewer
                 return null;
             }
             var nullability = false;
-            var builder = new StringBuilder(ctor.DeclaringType.Name);
+            var builder = new StringBuilder(ctor.DeclaringType!.Name);
             builder.Append("(");
             nullability |= AppendParameters(builder, ctor.GetParameters());
             builder.Append(")");
@@ -117,8 +117,9 @@ namespace NullableApiReviewer
                 // The simplest way of representing this is just a very long string of bytes all with the same value. 
                 byte b => Enumerable.Repeat(b, 1_000_000),
                 // Not terribly robust, but...
-                IEnumerable<CustomAttributeTypedArgument> arguments => arguments.Select(arg => (byte)arg.Value).ToArray(),
-                _ => throw new InvalidOperationException($"Unexpected argument type: {value.GetType()}")
+                IEnumerable<CustomAttributeTypedArgument> arguments => arguments.Select(arg => (byte)arg.Value!).ToArray(),
+                { } => throw new InvalidOperationException($"Unexpected argument type: {value.GetType()}"),
+                _ => throw new InvalidOperationException("Unexpected null argument")
             };
             var iterator = values.GetEnumerator();
             AppendTypeWithNullability(builder, iterator, type);
@@ -178,12 +179,12 @@ namespace NullableApiReviewer
                 if (parameter.IsOut)
                 {
                     builder.Append("out ");
-                    parameterType = parameterType.GetElementType();
+                    parameterType = parameterType.GetElementType()!;
                 }
                 else if (parameterType.IsByRef)
                 {
                     builder.Append("ref ");
-                    parameterType = parameterType.GetElementType();
+                    parameterType = parameterType.GetElementType()!;
                 }
                 nullability |= AppendType(builder, parameterType, parameter.GetCustomAttributesData());
                 builder.Append(" ").Append(parameter.Name);

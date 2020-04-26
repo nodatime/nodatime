@@ -6,4 +6,32 @@
   <PropertyGroup>
     <Version>3.0.0-beta02</Version>
   </PropertyGroup>
+  
+  <!-- Common properties across all projects (or ones that at least aren't harmful) -->
+  <PropertyGroup>
+    <!-- Build properties -->
+    <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <Deterministic>True</Deterministic>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+
+    <!-- Packaging properties -->
+    <PackageTags>date;time;timezone;calendar;nodatime</PackageTags>
+    <PackageProjectUrl>https://nodatime.org/</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/nodatime/nodatime</RepositoryUrl>
+    <!-- Most of our projects aren't packable, and this is a safe default.
+      -  We enable packing explicitly for NodaTime and NodaTime.Testing. -->
+    <IsPackable>False</IsPackable>
+
+    <!-- Properties to get SourceLink to work -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
 </Project>
