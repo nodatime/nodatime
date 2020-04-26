@@ -1,14 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>Exe</OutputType>
-    <Deterministic>True</Deterministic>
-    <IsPackable>False</IsPackable>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,5 +9,4 @@
     <ProjectReference Include="..\NodaTime.Tools.Common\NodaTime.Tools.Common.csproj" />
     <ProjectReference Include="..\NodaTime.TzdbCompiler\NodaTime.TzdbCompiler.csproj" />
   </ItemGroup>
-
 </Project>

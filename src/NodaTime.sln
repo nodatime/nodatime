@@ -26,7 +26,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Tools.Common", "No
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Tools.DumpTimeZoneInfo", "NodaTime.Tools.DumpTimeZoneInfo\NodaTime.Tools.DumpTimeZoneInfo.csproj", "{0499CFF0-5485-4772-A33F-AB6D2BA3B1DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodaTime.Tools.ValidateHistoricalNzd", "NodaTime.Tools.ValidateHistoricalNzd\NodaTime.Tools.ValidateHistoricalNzd.csproj", "{76ADCF95-2FDB-4135-A30B-1CDE34FBD29A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodaTime.Tools.ValidateHistoricalNzd", "NodaTime.Tools.ValidateHistoricalNzd\NodaTime.Tools.ValidateHistoricalNzd.csproj", "{76ADCF95-2FDB-4135-A30B-1CDE34FBD29A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{33DA218C-5233-4ACC-94AA-61096670F2AC}"
+	ProjectSection(SolutionItems) = preProject
+		..\Directory.Build.props = ..\Directory.Build.props
+		..\Directory.Build.targets = ..\Directory.Build.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

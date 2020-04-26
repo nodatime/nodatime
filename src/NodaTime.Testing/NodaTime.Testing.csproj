@@ -2,25 +2,9 @@
 
   <PropertyGroup>
     <Description>Provides extra types which may be useful when testing code which uses Noda Time, such as a fake programmable implementation of IClock and a time zone which has a fixed transition. These types are also used to test Noda Time itself.</Description>
-    <Authors>Jon Skeet</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>true</SignAssembly>
+    <IsPackable>True</IsPackable>
     <PackageTags>nodatime;testing</PackageTags>
-    <PackageProjectUrl>https://nodatime.org/</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/nodatime/nodatime</RepositoryUrl>
-    <Deterministic>True</Deterministic>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-
-    <!-- Properties to get SourceLink to work -->
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <ItemGroup>
