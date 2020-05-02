@@ -273,6 +273,7 @@ namespace NodaTime.Test.TimeZones
             // of its own data around the new year. See http://codeblog.jonskeet.uk/2014/09/30/the-mysteries-of-bcl-time-zone-data/
             // for details. We're not trying to emulate this behaviour.
             // It's a lot *better* for .NET 4.6, 
+            // FIXME: Finish this comment, try again. (We don't test against .NET 4.5 any more...)
             var utc = instant.InUtc();
             if ((utc.Month == 12 && utc.Day == 31) || (utc.Month == 1 && utc.Day == 1))
             {
