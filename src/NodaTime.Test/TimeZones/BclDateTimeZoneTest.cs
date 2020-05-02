@@ -105,22 +105,6 @@ namespace NodaTime.Test.TimeZones
             ValidateZoneEveryWeek(windowsZoneWrapper.Value);
         }
 
-        // This demonstrates bug 115.
-        [Test]
-        public void Namibia()
-        {
-            String bclId = "Namibia Standard Time";
-            try
-            {
-                ValidateZoneEveryWeek(TimeZoneInfo.FindSystemTimeZoneById(bclId));
-            }
-            catch (TimeZoneNotFoundException)
-            {
-                // This may occur on Mono, for example.
-                Assert.Ignore($"Test assumes existence of BCL zone with ID: {bclId}");
-            }
-        }
-
         [Test]
         [TestCaseSource(nameof(BclZones))]
         public void AllZonesStartAndEndOfTime(NamedWrapper<TimeZoneInfo> windowsZoneWrapper)
