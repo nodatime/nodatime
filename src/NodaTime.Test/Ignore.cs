@@ -4,8 +4,6 @@
 
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NodaTime.Test
 {
@@ -20,6 +18,16 @@ namespace NodaTime.Test
             {
                 Assert.Ignore(message);
             }
-        }        
+        }
+
+        /// <summary>
+        /// Calls Assert.Ignore, which always throws an exception - but with a return type
+        /// of T, which makes it easier to call in expression-bodied members.
+        /// </summary>
+        public static T Throw<T>(string message)
+        {
+            Assert.Ignore(message);
+            throw new InvalidOperationException($"Expected Assert.Ignore to throw");
+        }
     }
 }
