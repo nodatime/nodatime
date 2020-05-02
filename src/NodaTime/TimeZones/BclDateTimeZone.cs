@@ -27,6 +27,12 @@ namespace NodaTime.TimeZones
     /// if the BCL were ever to be fixed. As far as we are aware, there are only discrepancies around new year where the zone
     /// changes from observing one rule to observing another.
     /// </para>
+    /// <para>
+    /// As of version 3.0, a new "incompatible but doing the right thing" category of differences has been implemented,
+    /// for time zones which have a transition at 24:00. The Windows time zone data represents this as a transition at 23:59:59.999,
+    /// and that's faithfully represented by TimeZoneInfo (and BclDateTimeZone in version 2.x). As of 3.0, this is spotted
+    /// and converted to a midnight-on-the-following-day transition.
+    /// </para>
     /// </remarks>
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
@@ -336,16 +342,29 @@ namespace NodaTime.TimeZones
                        standard.TimeOfDay.TimeOfDay < TimeSpan.FromMinutes(1);
             }
 
+            private static readonly LocalTime OneMillisecondBeforeMidnight = new LocalTime(23, 59, 59, 999);
+
             // Converts a TimeZoneInfo "TransitionTime" to a "ZoneYearOffset" - the two correspond pretty closely.
             private static ZoneYearOffset ConvertTransition(TimeZoneInfo.TransitionTime transitionTime)
             {
                 // Used for both fixed and non-fixed transitions.
                 LocalTime timeOfDay = LocalDateTime.FromDateTime(transitionTime.TimeOfDay).TimeOfDay;
 
+                // Transitions at midnight are represented in the Windows database by a transition one millisecond early.
+                // See BclDateTimeZoneTest.TransitionAtMidnight for a concrete example.
+                // We adjust to midnight to represent the correct data - it's clear this is just a data fudge.
+                // It's probably done like this to allow the rule to represent "Saturday 24:00" instead of "Sunday 00:00".
+                bool addDay = false;
+                if (timeOfDay == OneMillisecondBeforeMidnight)
+                {
+                    timeOfDay = LocalTime.Midnight;
+                    addDay = true;
+                }
+
                 // Easy case - fixed day of the month.
                 if (transitionTime.IsFixedDateRule)
                 {
-                    return new ZoneYearOffset(TransitionMode.Wall, transitionTime.Month, transitionTime.Day, 0, false, timeOfDay);
+                    return new ZoneYearOffset(TransitionMode.Wall, transitionTime.Month, transitionTime.Day, 0, false, timeOfDay, addDay);
                 }
 
                 // Floating: 1st Sunday in March etc.
@@ -365,7 +384,7 @@ namespace NodaTime.TimeZones
                     // Week 2 corresponds to ">=8" etc
                     dayOfMonth = (transitionTime.Week * 7) - 6;
                 }
-                return new ZoneYearOffset(TransitionMode.Wall, transitionTime.Month, dayOfMonth, dayOfWeek, advance, timeOfDay);
+                return new ZoneYearOffset(TransitionMode.Wall, transitionTime.Month, dayOfMonth, dayOfWeek, advance, timeOfDay, addDay);
             }
         }
 

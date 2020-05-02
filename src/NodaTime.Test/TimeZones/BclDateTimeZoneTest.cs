@@ -2,11 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.TimeZones;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using NUnit.Framework;
-using NodaTime.TimeZones;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -267,6 +268,51 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(expectedSummer, summerInterval);
         }
 
+        // See https://github.com/nodatime/nodatime/issues/1524 for the background
+        // It would be nice to test earlier dates (e.g. 1967 and 1998) where transitions
+        // actually occurred on the first of the "next month", but the Windows database has very different
+        // data from TZDB in those cases.
+        [Test]
+        public void TransitionAtMidnight()
+        {
+            var bclZone = GetBclZoneOrIgnore("E. South America Standard Time");
+            var nodaTzdbZone = DateTimeZoneProviders.Tzdb["America/Sao_Paulo"];
+            var nodaBclZone = BclDateTimeZone.FromTimeZoneInfo(bclZone);
+
+            // Brazil in 2012:
+            // Fall back from -02:00 to -03:00 at midnight on February 26th
+            var expectedFallBack = Instant.FromUtc(2012, 2, 26, 2, 0, 0);
+            // Spring forward from -03:00 to -02:00 at midnight on October 21st
+            var expectedSpringForward = Instant.FromUtc(2012, 10, 21, 3, 0, 0);
+            // This is an arbitrary instant between the fall back and spring forward.
+            var betweenTransitions = Instant.FromUtc(2012, 6, 1, 0, 0, 0);
+
+            // Check that these transitions are as expected when we use TZDB.
+            var nodaTzdbInterval = nodaTzdbZone.GetZoneInterval(betweenTransitions);
+            Assert.AreEqual(expectedFallBack, nodaTzdbInterval.Start);
+            Assert.AreEqual(expectedSpringForward, nodaTzdbInterval.End);
+
+            // Check that the real BCL time zone behaves as reported in the issue: the transitions occur one millisecond early
+            var expectedFallBackBclTransition = expectedFallBack - Duration.FromMilliseconds(1);
+            Assert.AreEqual(TimeSpan.FromHours(-2), bclZone.GetUtcOffset(expectedFallBackBclTransition.ToDateTimeUtc() - TimeSpan.FromTicks(1)));
+            Assert.AreEqual(TimeSpan.FromHours(-3), bclZone.GetUtcOffset(expectedFallBackBclTransition.ToDateTimeUtc()));
+
+            var expectedSpringForwardBclTransition = expectedSpringForward - Duration.FromMilliseconds(1);
+            Assert.AreEqual(TimeSpan.FromHours(-3), bclZone.GetUtcOffset(expectedSpringForwardBclTransition.ToDateTimeUtc() - TimeSpan.FromTicks(1)));
+            Assert.AreEqual(TimeSpan.FromHours(-2), bclZone.GetUtcOffset(expectedSpringForwardBclTransition.ToDateTimeUtc()));
+
+            // Assert that Noda Time accounts for the Windows time zone data weirdness, and corrects it to
+            // a transition at midnight.
+            var nodaBclInterval = nodaBclZone.GetZoneInterval(betweenTransitions);
+            Assert.AreEqual(nodaTzdbInterval.Start, nodaBclInterval.Start);
+            Assert.AreEqual(nodaTzdbInterval.End, nodaBclInterval.End);
+
+            // Finally check the use case that was actually reported
+            var actualStartOfDayAfterSpringForward = nodaBclZone.AtStartOfDay(new LocalDate(2012, 10, 21));
+            var expectedStartOfDayAfterSpringForward = new LocalDateTime(2012, 10, 21, 1, 0, 0).InZoneStrictly(nodaBclZone);
+            Assert.AreEqual(expectedStartOfDayAfterSpringForward, actualStartOfDayAfterSpringForward);
+        }
+
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
             // The BCL is basically broken (up to and including .NET 4.5.1 at least) around its interpretation
@@ -292,12 +338,37 @@ namespace NodaTime.Test.TimeZones
                     "Non-transition from {0} to {1}", previousInterval, interval);
             }
             var nodaOffset = interval.WallOffset;
-            var windowsOffset = windowsZone.GetUtcOffset(instant.ToDateTimeUtc());
-            Assert.AreEqual(windowsOffset, nodaOffset.ToTimeSpan(), "Incorrect offset at {0} in interval {1}", instant, interval);
-            var bclDaylight = windowsZone.IsDaylightSavingTime(instant.ToDateTimeUtc());
+
+            // Some midnight transitions in the Noda Time representation are actually corrections for the
+            // BCL data indicating 23:59:59.999 on the previous day. If we're testing around midnight,
+            // allow the Windows data to be correct for either of those instants.
+            var acceptableInstants = new List<Instant> { instant };
+            var localTimeOfDay = instant.InZone(nodaZone).TimeOfDay;
+            if ((localTimeOfDay == LocalTime.Midnight || localTimeOfDay == LocalTime.MaxValue) && instant > NodaConstants.BclEpoch)
+            {
+                acceptableInstants.Add(instant - Duration.FromMilliseconds(1));
+            }
+
+            var expectedOffsetAsTimeSpan = nodaOffset.ToTimeSpan();
+
+            // Find an instant that at least has the right offset (so will pass the first assertion).
+            var instantToTest = acceptableInstants.FirstOrDefault(candidate => windowsZone.GetUtcOffset(candidate.ToDateTimeUtc()) == expectedOffsetAsTimeSpan);
+            // If the test is definitely going to fail, just use the original instant that was passed in.
+            if (instantToTest == default)
+            {
+                instantToTest = instant;
+            }
+
+            var windowsOffset = windowsZone.GetUtcOffset(instantToTest.ToDateTimeUtc());
+            Assert.AreEqual(windowsOffset, expectedOffsetAsTimeSpan, "Incorrect offset at {0} in interval {1}", instantToTest, interval);
+            var bclDaylight = windowsZone.IsDaylightSavingTime(instantToTest.ToDateTimeUtc());
             Assert.AreEqual(bclDaylight, interval.Savings != Offset.Zero,
                 "At {0}, BCL IsDaylightSavingTime={1}; Noda savings={2}",
                 instant, bclDaylight, interval.Savings);
         }
+
+        private TimeZoneInfo GetBclZoneOrIgnore(string systemTimeZoneId) =>
+            TimeZoneInfo.GetSystemTimeZones().FirstOrDefault(z => z.Id == systemTimeZoneId)
+            ?? Ignore.Throw<TimeZoneInfo>($"Time zone {systemTimeZoneId} not found");
     }
 }
