@@ -62,8 +62,9 @@ namespace NodaTime
         /// If it is necessary to handle this case, callers can construct a
         /// <see cref="BclDateTimeZone"/> via <see cref="BclDateTimeZone.ForSystemDefault"/>, which returns a
         /// <see cref="DateTimeZone"/> that wraps the system local <see cref="TimeZoneInfo"/>, and which always
-        /// succeeds. Note that <c>BclDateTimeZone</c> is not available on the .NET Standard 1.3 build of Noda Time, so
-        /// this fallback strategy can only be used with the desktop version.
+        /// succeeds.
+        /// Note that <c>BclDateTimeZone</c> may not be available in all versions of Noda Time 1.x and 2.x; see
+        /// the class documentation for more details.
         /// </para>
         /// </remarks>
         /// <exception cref="DateTimeZoneNotFoundException">The system default time zone is not mapped by

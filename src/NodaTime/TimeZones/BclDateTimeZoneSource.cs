@@ -19,7 +19,8 @@ namespace NodaTime.TimeZones
     /// (i.e. "UTC" and "UTC+/-Offset").
     /// </para>
     /// <para>
-    /// This class is not available in the .NET Standard 1.3 version.
+    /// In Noda Time 1.x and 2.x, this class is only available on the .NET Framework builds of Noda Time, and not the
+    /// PCL (Noda Time 1.x) or .NET Standard 1.3 (Noda Time 2.x) builds.
     /// </para>
     /// </remarks>
     /// <threadsafety>This type maintains no state, and all members are thread-safe. See the thread safety section of the user guide for more information.</threadsafety>

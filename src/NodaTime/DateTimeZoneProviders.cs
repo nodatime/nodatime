@@ -45,7 +45,13 @@ namespace NodaTime
         /// This property is not available on the .NET Standard 1.3 build of Noda Time.
         /// </summary>
         /// <remarks>
-        /// <para>See note on <see cref="BclDateTimeZone"/> for details of some incompatibilities with the BCL.</para>
+        /// <para>
+        /// See note on <see cref="BclDateTimeZone"/> for details of some incompatibilities with the BCL.
+        /// </para>
+        /// <para>
+        /// In Noda Time 1.x and 2.x, this property is only available on the .NET Framework builds of Noda Time, and not
+        /// the PCL (Noda Time 1.x) or .NET Standard 1.3 (Noda Time 2.x) builds.
+        /// </para>
         /// </remarks>
         /// <value>A time zone provider which uses a <c>BclDateTimeZoneSource</c>.</value>
         public static IDateTimeZoneProvider Bcl => BclHolder.BclImpl;
