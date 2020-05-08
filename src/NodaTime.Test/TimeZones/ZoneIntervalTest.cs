@@ -127,6 +127,29 @@ namespace NodaTime.Test.TimeZones
         }
 
         [Test]
+        public void EqualityOperators()
+        {
+            ZoneInterval val1 = new ZoneInterval("name", SampleStart, SampleEnd, Offset.FromHours(1), Offset.FromHours(2));
+            ZoneInterval val2 = new ZoneInterval("name", SampleStart, SampleEnd, Offset.FromHours(1), Offset.FromHours(2));
+            ZoneInterval val3 = new ZoneInterval("name2", SampleStart, SampleEnd, Offset.FromHours(1), Offset.FromHours(2));
+            ZoneInterval? val4 = null;
+
+            Assert.IsTrue(val1 == val2);
+            Assert.IsFalse(val1 == val3);
+            Assert.IsFalse(val1 == val4);
+            Assert.IsFalse(val4 == val1);
+            Assert.IsTrue(val4 == null);
+            Assert.IsTrue(null == val4);
+
+            Assert.IsFalse(val1 != val2);
+            Assert.IsTrue(val1 != val3);
+            Assert.IsTrue(val1 != val4);
+            Assert.IsTrue(val4 != val1);
+            Assert.IsFalse(val4 != null);
+            Assert.IsFalse(null != val4);
+        }
+
+        [Test]
         public void ZoneIntervalToString()
         {
             using (CultureSaver.SetCultures(CultureInfo.InvariantCulture))

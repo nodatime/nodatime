@@ -283,6 +283,24 @@ namespace NodaTime.TimeZones
             return Name == other.Name && RawStart == other.RawStart && RawEnd == other.RawEnd
                 && WallOffset == other.WallOffset && Savings == other.Savings;
         }
+
+        /// <summary>
+        /// Implements the operator == (equality).
+        /// See the type documentation for a description of equality semantics.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+        public static bool operator ==(ZoneInterval? left, ZoneInterval? right) => ReferenceEquals(left, right) || (left is object && left.Equals(right));
+
+        /// <summary>
+        /// Implements the operator != (inequality).
+        /// See the type documentation for a description of equality semantics.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
+        public static bool operator !=(ZoneInterval? left, ZoneInterval? right) => !(left == right);
         #endregion
 
         #region object Overrides

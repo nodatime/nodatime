@@ -823,6 +823,24 @@ namespace NodaTime
             Milliseconds == other.Milliseconds &&
             Ticks == other.Ticks &&
             Nanoseconds == other.Nanoseconds;
+
+        /// <summary>
+        /// Implements the operator == (equality).
+        /// See the type documentation for a description of equality semantics.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+        public static bool operator ==(Period? left, Period? right) => ReferenceEquals(left, right) || (left is object && left.Equals(right));
+
+        /// <summary>
+        /// Implements the operator != (inequality).
+        /// See the type documentation for a description of equality semantics.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
+        public static bool operator !=(Period? left, Period? right) => !(left == right);
         #endregion
 
         /// <summary>

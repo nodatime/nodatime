@@ -438,6 +438,28 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void EqualityOperators()
+        {
+            Period val1 = Period.FromHours(1);
+            Period val2 = Period.FromHours(1);
+            Period val3 = Period.FromHours(2);
+            Period? val4 = null;
+            Assert.IsTrue(val1 == val2);
+            Assert.IsFalse(val1 == val3);
+            Assert.IsFalse(val1 == val4);
+            Assert.IsFalse(val4 == val1);
+            Assert.IsTrue(val4 == null);
+            Assert.IsTrue(null == val4);
+
+            Assert.IsFalse(val1 != val2);
+            Assert.IsTrue(val1 != val3);
+            Assert.IsTrue(val1 != val4);
+            Assert.IsTrue(val4 != val1);
+            Assert.IsFalse(val4 != null);
+            Assert.IsFalse(null != val4);
+        }
+
+        [Test]
         [TestCase(PeriodUnits.Years, false)]
         [TestCase(PeriodUnits.Weeks, false)]
         [TestCase(PeriodUnits.Months, false)]
