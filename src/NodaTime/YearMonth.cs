@@ -195,6 +195,66 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Compares two YearMonth values to see if the left one is strictly earlier than the right one.
+        /// See the type documentation for a description of ordering semantics.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
+        /// as the calendar of <paramref name="lhs"/>.</exception>
+        /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <(YearMonth lhs, YearMonth rhs)
+        {
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.CompareTo(rhs) < 0;
+        }
+
+        /// <summary>
+        /// Compares two YearMonth values to see if the left one is earlier than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
+        /// as the calendar of <paramref name="lhs"/>.</exception>
+        /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator <=(YearMonth lhs, YearMonth rhs)
+        {
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.CompareTo(rhs) <= 0;
+        }
+
+        /// <summary>
+        /// Compares two YearMonth values to see if the left one is strictly later than the right one.
+        /// See the type documentation for a description of ordering semantics.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
+        /// as the calendar of <paramref name="lhs"/>.</exception>
+        /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >(YearMonth lhs, YearMonth rhs)
+        {
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.CompareTo(rhs) > 0;
+        }
+
+        /// <summary>
+        /// Compares two YearMonth values to see if the left one is later than or equal to the right one.
+        /// See the type documentation for a description of ordering semantics.
+        /// </summary>
+        /// <param name="lhs">First operand of the comparison</param>
+        /// <param name="rhs">Second operand of the comparison</param>
+        /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
+        /// as the calendar of <paramref name="lhs"/>.</exception>
+        /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
+        public static bool operator >=(YearMonth lhs, YearMonth rhs)
+        {
+            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.CompareTo(rhs) >= 0;
+        }
+
+        /// <summary>
         /// Returns a hash code for this year/month.
         /// See the type documentation for a description of equality semantics.
         /// </summary>

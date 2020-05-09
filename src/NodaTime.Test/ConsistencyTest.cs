@@ -33,5 +33,18 @@ namespace NodaTime.Test
                 .ToList();
             Assert.IsEmpty(failures);
         }
+
+        [Test]
+        public void ComparisonOperatorForComparable()
+        {
+            var expectedExceptions = new Type[] { };
+
+            var failures = AllPublicTypes
+                .Where(t => typeof(IComparable<>).MakeGenericType(t).IsAssignableFrom(t))
+                .Where(t => t.GetMethod("op_LessThan") is null || t.GetMethod("op_LessThanOrEqual") is null)
+                .Except(expectedExceptions)
+                .ToList();
+            Assert.IsEmpty(failures);
+        }
     }
 }
