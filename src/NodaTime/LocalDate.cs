@@ -140,7 +140,9 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this local date.</summary>
         /// <value>The calendar system associated with this local date.</value>
-        public CalendarSystem Calendar => CalendarSystem.ForOrdinal(yearMonthDayCalendar.CalendarOrdinal);
+        public CalendarSystem Calendar => CalendarSystem.ForOrdinal(CalendarOrdinal);
+
+        private CalendarOrdinal CalendarOrdinal => yearMonthDayCalendar.CalendarOrdinal;
 
         /// <summary>Gets the year of this local date.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
@@ -445,8 +447,8 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(LocalDate lhs, LocalDate rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-            return lhs.CompareTo(rhs) < 0;
+            Preconditions.CheckArgument(lhs.CalendarOrdinal == rhs.CalendarOrdinal, nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.TrustedCompareTo(rhs) < 0;
         }
 
         /// <summary>
@@ -460,8 +462,8 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(LocalDate lhs, LocalDate rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-            return lhs.CompareTo(rhs) <= 0;
+            Preconditions.CheckArgument(lhs.CalendarOrdinal == rhs.CalendarOrdinal, nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.TrustedCompareTo(rhs) <= 0;
         }
 
         /// <summary>
@@ -475,8 +477,8 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(LocalDate lhs, LocalDate rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-            return lhs.CompareTo(rhs) > 0;
+            Preconditions.CheckArgument(lhs.CalendarOrdinal == rhs.CalendarOrdinal, nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.TrustedCompareTo(rhs) > 0;
         }
 
         /// <summary>
@@ -490,8 +492,8 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(LocalDate lhs, LocalDate rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-            return lhs.CompareTo(rhs) >= 0;
+            Preconditions.CheckArgument(lhs.CalendarOrdinal == rhs.CalendarOrdinal, nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.TrustedCompareTo(rhs) >= 0;
         }
 
         /// <summary>
@@ -506,9 +508,15 @@ namespace NodaTime
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(LocalDate other)
         {
-            Preconditions.CheckArgument(Calendar.Equals(other.Calendar), nameof(other), "Only values with the same calendar system can be compared");
-            return Calendar.Compare(YearMonthDay, other.YearMonthDay);
+            Preconditions.CheckArgument(CalendarOrdinal == other.CalendarOrdinal, nameof(other), "Only values with the same calendar system can be compared");
+            return TrustedCompareTo(other);
         }
+
+        /// <summary>
+        /// Performs a comparison with another date, trusting that the calendar of the other date is already correct.
+        /// This avoids duplicate calendar checks.
+        /// </summary>
+        private int TrustedCompareTo([Trusted] LocalDate other) => Calendar.Compare(YearMonthDay, other.YearMonthDay);
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two LocalDates.

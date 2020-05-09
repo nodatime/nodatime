@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
@@ -40,7 +41,9 @@ namespace NodaTime
 
         /// <summary>Gets the calendar system associated with this year/month.</summary>
         /// <value>The calendar system associated with this year/month.</value>
-        public CalendarSystem Calendar => CalendarSystem.ForOrdinal(startOfMonth.CalendarOrdinal);
+        public CalendarSystem Calendar => CalendarSystem.ForOrdinal(CalendarOrdinal);
+
+        private CalendarOrdinal CalendarOrdinal => startOfMonth.CalendarOrdinal;
 
         /// <summary>Gets the year of this year/month.</summary>
         /// <remarks>This returns the "absolute year", so, for the ISO calendar,
@@ -167,9 +170,15 @@ namespace NodaTime
         /// later than <paramref name="other"/>.</returns>
         public int CompareTo(YearMonth other)
         {
-            Preconditions.CheckArgument(Calendar.Equals(other.Calendar), nameof(other), "Only values with the same calendar system can be compared");
-            return Calendar.Compare(YearMonthDay, other.YearMonthDay);
+            Preconditions.CheckArgument(CalendarOrdinal == other.CalendarOrdinal, nameof(other), "Only values with the same calendar system can be compared");
+            return TrustedCompareTo(other);
         }
+
+        /// <summary>
+        /// Performs a comparison with another YearMonth, trusting that the calendar of the other date is already correct.
+        /// This avoids duplicate calendar checks.
+        /// </summary>
+        private int TrustedCompareTo([Trusted] YearMonth other) => Calendar.Compare(YearMonthDay, other.YearMonthDay);
 
         /// <summary>
         /// Implementation of <see cref="IComparable.CompareTo"/> to compare two YearMonth values.
@@ -205,8 +214,8 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <(YearMonth lhs, YearMonth rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-            return lhs.CompareTo(rhs) < 0;
+            Preconditions.CheckArgument(lhs.CalendarOrdinal == rhs.CalendarOrdinal, nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.TrustedCompareTo(rhs) < 0;
         }
 
         /// <summary>
@@ -220,8 +229,8 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator <=(YearMonth lhs, YearMonth rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-            return lhs.CompareTo(rhs) <= 0;
+            Preconditions.CheckArgument(lhs.CalendarOrdinal == rhs.CalendarOrdinal, nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.TrustedCompareTo(rhs) <= 0;
         }
 
         /// <summary>
@@ -235,8 +244,8 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >(YearMonth lhs, YearMonth rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-            return lhs.CompareTo(rhs) > 0;
+            Preconditions.CheckArgument(lhs.CalendarOrdinal == rhs.CalendarOrdinal, nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.TrustedCompareTo(rhs) > 0;
         }
 
         /// <summary>
@@ -250,8 +259,8 @@ namespace NodaTime
         /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
         public static bool operator >=(YearMonth lhs, YearMonth rhs)
         {
-            Preconditions.CheckArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-            return lhs.CompareTo(rhs) >= 0;
+            Preconditions.CheckArgument(lhs.CalendarOrdinal == rhs.CalendarOrdinal, nameof(rhs), "Only values in the same calendar can be compared");
+            return lhs.TrustedCompareTo(rhs) >= 0;
         }
 
         /// <summary>
