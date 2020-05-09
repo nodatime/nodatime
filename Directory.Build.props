@@ -9,8 +9,11 @@
   
   <!-- Common properties across all projects (or ones that at least aren't harmful) -->
   <PropertyGroup>
+    <!-- Make the repository root available for other properties -->
+    <RepoRoot>$([System.IO.Path]::GetDirectoryName('$(MSBuildThisFileDirectory)'))</RepoRoot>
+
     <!-- Build properties -->
-    <AssemblyOriginatorKeyFile>../../NodaTime Release.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(RepoRoot)/NodaTime Release.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
