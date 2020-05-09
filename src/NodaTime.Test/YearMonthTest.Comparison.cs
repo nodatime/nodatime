@@ -70,11 +70,9 @@ namespace NodaTime.Test
         {
             YearMonth yearMonth1 = new YearMonth(2011, 1);
             YearMonth yearMonth2 = new YearMonth(2011, 1);
-            YearMonth date3 = new YearMonth(2011, 2);
+            YearMonth yearMonth3 = new YearMonth(2011, 2);
 
-            Assert.That(yearMonth1.CompareTo(yearMonth2), Is.EqualTo(0));
-            Assert.That(yearMonth1.CompareTo(date3), Is.LessThan(0));
-            Assert.That(date3.CompareTo(yearMonth2), Is.GreaterThan(0));
+            TestHelper.TestOperatorComparisonEquality(yearMonth1, yearMonth2, yearMonth3);
         }
 
         [Test]
@@ -86,6 +84,7 @@ namespace NodaTime.Test
 
             Assert.Throws<ArgumentException>(() => yearMonth1.CompareTo(yearMonth2));
             Assert.Throws<ArgumentException>(() => ((IComparable) yearMonth1).CompareTo(yearMonth2));
+            Assert.Throws<ArgumentException>(() => (yearMonth1 > yearMonth2).ToString());
         }
 
         /// <summary>
