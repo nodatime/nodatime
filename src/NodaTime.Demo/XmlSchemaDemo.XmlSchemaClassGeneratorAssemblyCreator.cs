@@ -75,15 +75,23 @@ namespace NodaTime.Demo
 
                 generator.Generate(schemaSet);
 
-                var systemDependencies = new List<string> { "netstandard", "System.ComponentModel.Primitives", "System.Diagnostics.Tools", "System.Runtime", "System.Xml.XmlSerializer" };
+                var systemDependencies = new List<string>
+                {
 #if NETFRAMEWORK
-                systemDependencies.Add("mscorlib");
-                systemDependencies.Add("System");
-                systemDependencies.Add("System.Xml");
+                    "netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51",
+                    "mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                    "System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                    "System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
 #else
-                systemDependencies.Add("System.Private.CoreLib");
-                systemDependencies.Add("System.Private.Xml");
+                    "netstandard",
+                    "System.ComponentModel.Primitives",
+                    "System.Diagnostics.Tools",
+                    "System.Private.CoreLib",
+                    "System.Private.Xml",
+                    "System.Runtime",
+                    "System.Xml.XmlSerializer",
 #endif
+                };
                 var references = systemDependencies.Select(e => Assembly.Load(e).Location)
                     .Append(typeof(Instant).Assembly.Location)
                     .Select(p => MetadataReference.CreateFromFile(p));

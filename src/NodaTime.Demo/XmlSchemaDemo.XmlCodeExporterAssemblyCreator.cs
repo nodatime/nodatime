@@ -80,13 +80,13 @@ namespace NodaTime.Demo
                 }
                 CodeGenerator.ValidateIdentifiers(codeNamespace);
 #else
-                throw new PlatformNotSupportedException($"{nameof(XmlCodeExporterAssemblyCreator)} is not available");
+                throw new PlatformNotSupportedException($"{nameof(XmlCodeExporterAssemblyCreator)} is only available on .NET Framework");
 #endif
             }
 
             private static Assembly Compile(CodeNamespace codeNamespace)
             {
-                var referencedAssemblies = new List<string> { typeof(Instant).Assembly.Location, "System", "System.Xml" };
+                var referencedAssemblies = new List<string> { typeof(Instant).Assembly.Location, "System.dll", "System.Xml.dll" };
                 try
                 {
                     // mono needs the absolute path to netstandard.dll, but Assembly.Load("netstandard") fails on .NET Framework
