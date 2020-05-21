@@ -2,12 +2,10 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Text;
+using NUnit.Framework;
 using System;
 using System.ComponentModel;
-using NodaTime.Testing.TimeZones;
-using NodaTime.Text;
-using NodaTime.TimeZones;
-using NUnit.Framework;
 
 namespace NodaTime.Test.Text
 {
@@ -25,6 +23,8 @@ namespace NodaTime.Test.Text
         [TestCase(typeof(OffsetDateTime))]
         [TestCase(typeof(OffsetTime))]
         [TestCase(typeof(Period))]
+        [TestCase(typeof(YearMonth))]
+        [TestCase(typeof(ZonedDateTime))]
         public void HasConverter(Type type)
         {
             var converter = TypeDescriptor.GetConverter(type);
@@ -129,6 +129,12 @@ namespace NodaTime.Test.Text
             var zone = DateTimeZoneProviders.Tzdb[zoneId];
             AssertRoundtrip(text, new LocalDateTime(year, month, day, hour, minute).InZoneStrictly(zone));
         }
+
+        [Test]
+        [TestCase(2020, 5, "2020-05")]
+        [TestCase(1976, 6, "1976-06")]
+        public void YearMonth_RoundTrip(int year, int month, string text) =>
+            AssertRoundtrip(text, new YearMonth(year, month));
 
         private static void AssertRoundtrip<T>(string textEquivalent, T nodaValue)
         {
