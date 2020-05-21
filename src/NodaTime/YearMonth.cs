@@ -8,6 +8,7 @@ using NodaTime.Calendars;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -30,6 +31,7 @@ namespace NodaTime
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [XmlSchemaProvider(nameof(AddSchema))]
+    [TypeConverter(typeof(YearMonthTypeConverter))]
     public struct YearMonth : IEquatable<YearMonth>, IComparable<YearMonth>, IComparable, IFormattable, IXmlSerializable
     {
         /// <summary>

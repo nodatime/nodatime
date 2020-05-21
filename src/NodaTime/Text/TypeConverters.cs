@@ -61,6 +61,11 @@ namespace NodaTime.Text
         public PeriodTypeConverter() : base(PeriodPattern.Roundtrip) { }
     }
 
+    internal sealed class YearMonthTypeConverter : TypeConverterBase<YearMonth>
+    {
+        public YearMonthTypeConverter() : base(YearMonthPattern.Iso) { }
+    }
+
     internal sealed class ZonedDateTimeTypeConverter : TypeConverterBase<ZonedDateTime>
     {
         /// <summary>
