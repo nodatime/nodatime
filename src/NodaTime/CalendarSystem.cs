@@ -186,7 +186,7 @@ namespace NodaTime
         /// purely mathematical calculator, applied proleptically to the period where the real calendar was observational. 
         /// </summary>
         /// <remarks>
-        /// <para>Please note that in version 1.3.0 of Noda Time, support for the Hebrew calendar is somewhat experimental,
+        /// <para>Please note that support for the Hebrew calendar is somewhat experimental,
         /// particularly in terms of calculations involving adding or subtracting years. Additionally, text formatting
         /// and parsing using month names is not currently supported, due to the challenges of handling leap months.
         /// It is hoped that this will be improved in future versions.</para>
