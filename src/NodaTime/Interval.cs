@@ -18,7 +18,7 @@ namespace NodaTime
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Equality is defined in a component-wise fashion: two date intervals are considered equal if their start instants are
+    /// Equality is defined in a component-wise fashion: two intervals are considered equal if their start instants are
     /// equal to each other and their end instants are equal to each other. Ordering between intervals is not defined.
     /// </para>
     /// <para>
