@@ -147,6 +147,16 @@ namespace NodaTime
         public DateInterval ToDateInterval() => new DateInterval(StartDate, EndDate);
 
         /// <summary>
+        /// Returns a <see cref="YearMonth"/> object which is the result of adding the specified number
+        /// of months to this object.
+        /// </summary>
+        /// <param name="months">The number of months to add to this object.</param>
+        /// <returns>The resulting <see cref="YearMonth"/> after adding the specified number of months.</returns>
+        [Pure]
+        public YearMonth PlusMonths(int months) =>
+            OnDayOfMonth(1).PlusMonths(months).ToYearMonth();
+   
+        /// <summary>
         /// Returns a <see cref="LocalDate"/> with the year/month of this value, and the given day of month.
         /// </summary>
         /// <param name="day">The day within the month.</param>

@@ -39,5 +39,18 @@ namespace NodaTime.Test
             var yearMonth = new YearMonth(year, month, calendar);
             Assert.Throws<ArgumentOutOfRangeException>(() => yearMonth.OnDayOfMonth(day));
         }
+               
+        [Test]
+        [TestCase(2014, 8, 4, 2014, 12)]
+        [TestCase(2014, 8, 5, 2015, 1)]
+        [TestCase(2014, 8, 0, 2014, 8)]
+        [TestCase(2014, 8, -1, 2014, 7)]
+        [TestCase(2014, 8, -8, 2013, 12)]
+        public void PlusMonths(int year, int month, int monthsToAdd, int expectedYear, int expectedMonth)
+        {
+            var yearMonth = new YearMonth(year, month);
+            var expected = new YearMonth(expectedYear, expectedMonth);
+            Assert.AreEqual(expected, yearMonth.PlusMonths(monthsToAdd));
+        }
     }
 }
