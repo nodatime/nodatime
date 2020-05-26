@@ -130,10 +130,10 @@ namespace NodaTime.Text
         public ParseResult<OffsetDateTime> Parse([SpecialNullHandling] string text) => pattern.Parse(text);
 
         /// <summary>
-        /// Formats the given zoned date/time as text according to the rules of this pattern.
+        /// Formats the given offset date/time as text according to the rules of this pattern.
         /// </summary>
-        /// <param name="value">The zoned date/time to format.</param>
-        /// <returns>The zoned date/time formatted according to this pattern.</returns>
+        /// <param name="value">The offset date/time to format.</param>
+        /// <returns>The offset date/time formatted according to this pattern.</returns>
         public string Format(OffsetDateTime value) => pattern.Format(value);
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="formatInfo">The format info to use in the pattern</param>
         /// <param name="templateValue">Template value to use for unspecified fields</param>
-        /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
+        /// <returns>A pattern for parsing and formatting offset date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         private static OffsetDateTimePattern Create(string patternText, NodaFormatInfo formatInfo,
             OffsetDateTime templateValue)
