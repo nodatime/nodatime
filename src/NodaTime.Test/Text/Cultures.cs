@@ -62,7 +62,9 @@ namespace NodaTime.Test.Text
                 LongDatePattern = "d MMMM yyyy",
                 LongTimePattern = "HH:mm:ss",
                 ShortDatePattern = "yyyy-MM-dd",
-                ShortTimePattern = "HH:mm"
+                ShortTimePattern = "HH:mm",
+                // Some flavours of Linux have a very odd setting here.
+                TimeSeparator = ":"
             }
         });
 
