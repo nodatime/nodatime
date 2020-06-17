@@ -131,7 +131,53 @@ namespace NodaTime.Test
             var expected = new PeriodBuilder { [units] = expectedValue }.Build();
             Assert.AreEqual(expected, actual);
         }
-                
+
+        [Test]
+        public void DaysBetweenLocalDates_DifferentCalendarsThrows()
+        {
+            var start = new LocalDate(2020, 6, 13, CalendarSystem.Iso);
+            var end = new LocalDate(2020, 6, 15, CalendarSystem.Julian);
+            Assert.Throws<ArgumentException>(() => Period.DaysBetween(start, end));
+        }
+
+        [Test]
+        public void DaysBetweenLocalDates_SameDatesReturnsZero()
+        {
+            var start = new LocalDate(2020, 6, 13, CalendarSystem.Iso);
+            var end = start;
+            var expected = 0;
+            var actual = Period.DaysBetween(start, end);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("2016-05-16", "2016-05-17", 1)]
+        [TestCase("2020-06-15", "2020-06-18", 3)]
+        [TestCase("2016-05-16", "2016-05-26", 10)]
+        [TestCase("2020-06-15", "2021-06-19", 369)]
+        [TestCase("2020-03-23", "2020-06-12", 81)]
+        public void DaysBetweenLocalDates(string startText, string endText, int expected)
+        {
+            var start = LocalDatePattern.Iso.Parse(startText).Value;
+            var end = LocalDatePattern.Iso.Parse(endText).Value;
+            var actual = Period.DaysBetween(start, end);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("2016-05-16", "2016-05-15", -1)]
+        [TestCase("2020-06-15", "2020-06-12", -3)]
+        [TestCase("2016-05-16", "2016-05-06", -10)]
+        [TestCase("2021-06-19", "2020-06-15", -369)]
+        [TestCase("2020-05-16", "2019-05-16", -366)]
+        public void DaysBetweenLocalDates_StartDateGreaterThanEndDate(string startText, string endText, int expected)
+        {
+            var start = LocalDatePattern.Iso.Parse(startText).Value;
+            var end = LocalDatePattern.Iso.Parse(endText).Value;
+            var actual = Period.DaysBetween(start, end);
+            Assert.AreEqual(expected, actual);
+        }
+
         [Test]
         public void BetweenLocalDates_MovingForwardNoLeapYears_WithExactResults()
         {

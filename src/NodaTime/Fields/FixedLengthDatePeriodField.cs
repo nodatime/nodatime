@@ -73,6 +73,6 @@ namespace NodaTime.Fields
         }
 
         public int UnitsBetween(LocalDate start, LocalDate end) =>
-            Period.DaysBetween(start, end) / unitDays;
+            Period.InternalDaysBetween(start, end) / unitDays;
     }
 }
