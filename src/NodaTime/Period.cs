@@ -355,6 +355,23 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the number of days between two <see cref="LocalDate"/> objects.
+        /// </summary>
+        /// <param name="start">Start date/time</param>
+        /// <param name="end">End date/time</param> 
+        /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
+        /// <returns>The number of days between the given dates.</returns>
+        public static int DaysBetween(LocalDate start, LocalDate end)
+        {
+            Preconditions.CheckArgument(
+                start.Calendar.Equals(end.Calendar),
+                nameof(end),
+                "start and end must use the same calendar system");
+
+            return InternalDaysBetween(start, end);
+        }
+
+        /// <summary>
         /// Returns the period between a start and an end date/time, using only the given units.
         /// </summary>
         /// <remarks>
@@ -406,7 +423,7 @@ namespace NodaTime
                 case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.UnitsBetween(start.Date, endDate));
                 case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.Date, endDate));
                 case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.Date, endDate));
-                case PeriodUnits.Days: return FromDays(DaysBetween(start.Date, endDate));
+                case PeriodUnits.Days: return FromDays(InternalDaysBetween(start.Date, endDate));
                 case PeriodUnits.Hours: return FromHours(TimePeriodField.Hours.UnitsBetween(start, end));
                 case PeriodUnits.Minutes: return FromMinutes(TimePeriodField.Minutes.UnitsBetween(start, end));
                 case PeriodUnits.Seconds: return FromSeconds(TimePeriodField.Seconds.UnitsBetween(start, end));
@@ -577,7 +594,7 @@ namespace NodaTime
                 case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.UnitsBetween(start, end));
                 case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.UnitsBetween(start, end));
                 case PeriodUnits.Weeks: return FromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start, end));
-                case PeriodUnits.Days: return FromDays(DaysBetween(start, end));
+                case PeriodUnits.Days: return FromDays(InternalDaysBetween(start, end));
             }
 
             // Multiple fields
@@ -663,7 +680,7 @@ namespace NodaTime
         /// Returns the number of days between two dates. This allows optimizations in DateInterval,
         /// and for date calculations which just use days - we don't need state or a virtual method invocation.
         /// </summary>
-        internal static int DaysBetween(LocalDate start, LocalDate end)
+        internal static int InternalDaysBetween(LocalDate start, LocalDate end)
         {
             // We already assume the calendars are the same.
             if (start.YearMonthDay == end.YearMonthDay)
