@@ -157,6 +157,7 @@ namespace NodaTime.TimeZones
         /// Gets the first Instant that the Offset applies.
         /// </summary>
         /// <value>The first Instant that the Offset applies.</value>
+        /// <exception cref="InvalidOperationException">The interval extends to the start of time.</exception>
         public Instant Start
         {
             [DebuggerStepThrough]
