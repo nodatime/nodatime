@@ -27,8 +27,8 @@ namespace NodaTime.Test.TimeZones
         public void FirstTransitions()
         {
             // Paris had a name change in 1891, and then moved from +0:09:21 to UTC in 1911
-            var nameChangeInstant = Instant.FromUtc(1891, 3, 14, 23, 51, 39);
-            var utcChangeInstant = Instant.FromUtc(1911, 3, 10, 23, 51, 39);
+            var nameChangeInstant = Instant.FromUtc(1891, 3, 15, 23, 50, 39);
+            var utcChangeInstant = Instant.FromUtc(1911, 3, 10, 23, 50, 39);
 
             var beforeNameChange = Paris.GetZoneInterval(nameChangeInstant - Duration.Epsilon);
             var afterNameChange = Paris.GetZoneInterval(nameChangeInstant);
