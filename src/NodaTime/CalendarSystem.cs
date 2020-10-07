@@ -146,7 +146,8 @@ namespace NodaTime
         // If the delegate calls a method, that method must have the same guarantee.
         private static readonly Dictionary<string, Func<CalendarSystem>> IdToFactoryMap = new Dictionary<string, Func<CalendarSystem>>
         {
-            {IsoId, () => Iso},
+            // The compiler doesn't know that nothing will execute the delegate before we assign a value to Iso.
+            {IsoId, () => Iso!},
             {PersianSimpleId, () => PersianSimple},
             {PersianArithmeticId, () => PersianArithmetic},
             {PersianAstronomicalId, () => PersianAstronomical},
