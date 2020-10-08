@@ -52,6 +52,7 @@ cd ..
 cd nodatime
 sed -i s/\>${RELEASE}\</\>${NEW_RELEASE}\</g Directory.Build.props
 cp "${ROOT}/src/NodaTime/TimeZones/Tzdb.nzd" src/NodaTime/TimeZones
+cp "${ROOT}/src/NodaTime.Test/Xml/XmlSchemaTest.XmlSchema.approved.xml" src/NodaTime.Test/Xml
 
 # Commit and tag the change
 git commit -a -m "Update to TZDB ${TZDB_RELEASE} for release ${NEW_RELEASE}"
