@@ -702,7 +702,6 @@
       <xs:enumeration value="US/Michigan" />
       <xs:enumeration value="US/Mountain" />
       <xs:enumeration value="US/Pacific" />
-      <xs:enumeration value="US/Pacific-New" />
       <xs:enumeration value="US/Samoa" />
       <xs:enumeration value="UTC" />
       <xs:enumeration value="W-SU" />
