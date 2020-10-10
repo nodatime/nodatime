@@ -36,6 +36,30 @@ namespace NodaTime.Demo
         }
 
         [Test]
+        public void Day()
+        {
+            LocalDate date = new LocalDate(2010, 6, 16);
+            int result = Snippet.For(date.Day);
+            Assert.AreEqual(16, result);
+        }
+        
+        [Test]
+        public void DayOfWeek()
+        {
+            LocalDate date = new LocalDate(2010, 6, 16);
+            IsoDayOfWeek result = Snippet.For(date.DayOfWeek);
+            Assert.AreEqual(IsoDayOfWeek.Wednesday, result);
+        }
+
+        [Test]
+        public void DayOfYear()
+        {
+            LocalDate date = new LocalDate(2010, 6, 16);
+            int result = Snippet.For(date.DayOfYear);
+            Assert.AreEqual(167, result);
+        }
+
+        [Test]
         public void Add()
         {
             LocalDate date = new LocalDate(2010, 6, 16);
