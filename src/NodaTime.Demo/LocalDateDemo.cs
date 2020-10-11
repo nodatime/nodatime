@@ -121,7 +121,7 @@ namespace NodaTime.Demo
             DateTime earlyJune = new DateTime(2010, 6, 5);
             CalendarSystem calendar = CalendarSystem.ForId("Julian");
             LocalDate date = Snippet.For(LocalDate.FromDateTime(earlyJune, calendar));
-            //Until 2099, Julian calendar is 13 days behind Gregorian
+            // Between the years 2000 and 2099, the Julian calendar is 13 days behind the Gregorian calendar.
             Assert.AreEqual(2010, date.Year);
             Assert.AreEqual(5, date.Month);
             Assert.AreEqual(23, date.Day);
