@@ -128,13 +128,6 @@ namespace NodaTime.Demo
         }
 
         [Test]
-        public void CommonEra()
-        {
-            LocalDate date = Snippet.For(new LocalDate(Era.Common, 2010, 6, 16));
-            Assert.AreEqual(new LocalDate(2010, 6, 16), date);
-        }
-
-        [Test]
         public void BeforeCommonEra()
         {
             LocalDate date = Snippet.For(new LocalDate(Era.BeforeCommon, 2010, 6, 16));
@@ -165,15 +158,15 @@ namespace NodaTime.Demo
         [Test]
         public void Plus()
         {
-            LocalDate date = Snippet.For(new LocalDate(2010, 6, 16).Plus(Period.FromDays(1)));
-            Assert.AreEqual(new LocalDate(2010, 6, 17), date);
+            LocalDate date = Snippet.For(new LocalDate(2010, 1, 30).Plus(Period.FromMonths(1)));
+            Assert.AreEqual(new LocalDate(2010, 2, 28), date);
         }
 
         [Test]
         public void Subtract()
         {
-            LocalDate date = Snippet.For(LocalDate.Subtract(new LocalDate(2010, 6, 16), Period.FromDays(1)));
-            Assert.AreEqual(new LocalDate(2010, 6, 15), date);
+            LocalDate date = Snippet.For(LocalDate.Subtract(new LocalDate(2010, 2, 28), Period.FromMonths(1)));
+            Assert.AreEqual(new LocalDate(2010, 1, 28), date);
         }
 
         [Test]
