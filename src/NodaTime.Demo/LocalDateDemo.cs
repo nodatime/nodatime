@@ -4,6 +4,8 @@
 
 using NUnit.Framework;
 using System.Globalization;
+using NodaTime.Calendars;
+using System;
 
 namespace NodaTime.Demo
 {
@@ -128,5 +130,75 @@ namespace NodaTime.Demo
             LocalDate min = Snippet.For(LocalDate.Min(earlyJune, lateJune));
             Assert.AreEqual(new LocalDate(2010, 6, 5), min);
         }
+
+        [Test]
+        public void FromDateTime()
+        {
+            DateTime earlyJune = new DateTime(2010, 6, 5);
+            LocalDate date = Snippet.For(LocalDate.FromDateTime(earlyJune));
+            Assert.AreEqual(new LocalDate(2010, 6, 5), date);
+        }
+
+        [Test]
+        public void FromDateTimeWithCalendarSystem()
+        {
+            DateTime earlyJune = new DateTime(2010, 6, 5);
+            CalendarSystem calendar = CalendarSystem.ForId("Julian");
+            LocalDate date = Snippet.For(LocalDate.FromDateTime(earlyJune, calendar));
+            // Between the years 2000 and 2099, the Julian calendar is 13 days behind the Gregorian calendar.
+            Assert.AreEqual(2010, date.Year);
+            Assert.AreEqual(5, date.Month);
+            Assert.AreEqual(23, date.Day);
+        }
+
+        [Test]
+        public void BeforeCommonEra()
+        {
+            LocalDate date = Snippet.For(new LocalDate(Era.BeforeCommon, 2010, 6, 16));
+            Assert.AreEqual(new LocalDate(Era.BeforeCommon, 2010, 6, 16), date);
+        }
+
+        [Test]
+        public void FromWeekYearWeekAndDay()
+        {
+            LocalDate date = Snippet.For(LocalDate.FromWeekYearWeekAndDay(2010, 24, IsoDayOfWeek.Wednesday));
+            Assert.AreEqual(new LocalDate(2010, 6, 16), date);
+        }
+
+        [Test]
+        public void FromYearMonthWeekAndDay()
+        {
+            LocalDate date = Snippet.For(LocalDate.FromYearMonthWeekAndDay(2010, 6, 3, IsoDayOfWeek.Wednesday));
+            Assert.AreEqual(new LocalDate(2010, 6, 16), date);
+        }
+
+        [Test]
+        public void ToYearMonth()
+        {
+            YearMonth yearMonth = Snippet.For(new LocalDate(2010, 6, 16).ToYearMonth());
+            Assert.AreEqual(new YearMonth(2010, 6), yearMonth);
+        }
+
+        [Test]
+        public void Plus()
+        {
+            LocalDate date = Snippet.For(new LocalDate(2010, 1, 30).Plus(Period.FromMonths(1)));
+            Assert.AreEqual(new LocalDate(2010, 2, 28), date);
+        }
+
+        [Test]
+        public void Subtract()
+        {
+            LocalDate date = Snippet.For(LocalDate.Subtract(new LocalDate(2010, 2, 28), Period.FromMonths(1)));
+            Assert.AreEqual(new LocalDate(2010, 1, 28), date);
+        }
+
+        [Test]
+        public void Minus()
+        {
+            LocalDate date = Snippet.For(new LocalDate(2010, 6, 16).Minus(Period.FromDays(1)));
+            Assert.AreEqual(new LocalDate(2010, 6, 15), date);
+        }
+
     }
 }
