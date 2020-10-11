@@ -144,8 +144,8 @@ namespace NodaTime.Demo
         [Test]
         public void FromWeekYearWeekAndDay()
         {
-            LocalDate date = Snippet.For(LocalDate.FromWeekYearWeekAndDay(2010,24,IsoDayOfWeek.Wednesday));
-            Assert.AreEqual(new LocalDate(2010, 6,16), date);
+            LocalDate date = Snippet.For(LocalDate.FromWeekYearWeekAndDay(2010, 24, IsoDayOfWeek.Wednesday));
+            Assert.AreEqual(new LocalDate(2010, 6, 16), date);
         }
 
         [Test]
