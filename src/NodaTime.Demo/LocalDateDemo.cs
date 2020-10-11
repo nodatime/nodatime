@@ -159,7 +159,7 @@ namespace NodaTime.Demo
         public void ToYearMonth()
         {
             YearMonth yearMonth = Snippet.For(new LocalDate(2010, 6, 16).ToYearMonth());
-            Assert.AreEqual(new YearMonth(2010,6), yearMonth);
+            Assert.AreEqual(new YearMonth(2010, 6), yearMonth);
         }
 
         [Test]
