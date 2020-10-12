@@ -173,6 +173,14 @@ namespace NodaTime.Demo
         }
 
         [Test]
+        public void Next()
+        {
+            LocalDate date = new LocalDate(2010, 6, 16);
+            LocalDate result = Snippet.For(date.Next(IsoDayOfWeek.Thursday));
+            Assert.AreEqual(new LocalDate(2010, 6, 17), result);
+        }
+
+        [Test]
         public void ToYearMonth()
         {
             YearMonth yearMonth = Snippet.For(new LocalDate(2010, 6, 16).ToYearMonth());
