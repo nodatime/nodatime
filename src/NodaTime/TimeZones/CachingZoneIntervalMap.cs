@@ -69,7 +69,7 @@ namespace NodaTime.TimeZones
             /// </summary>
             /// <param name="instant">The Instant to test.</param>
             /// <returns>The defined ZoneOffsetPeriod or null.</returns>
-            public ZoneInterval GetZoneInterval(Instant instant)
+            public ZoneInterval GetZoneIntervalInternal(Instant instant)
             {
                 int period = instant.DaysSinceEpoch >> PeriodShift;
                 int index = period & CachePeriodMask;
@@ -114,7 +114,7 @@ namespace NodaTime.TimeZones
                     var periodStart = Instant.FromTrustedDuration(new Duration(Math.Max(days, Instant.MinDays), 0L));
                     var nextPeriodStartDays = days + (1 << PeriodShift);
 
-                    var interval = map.GetZoneInterval(periodStart);
+                    var interval = map.GetZoneIntervalInternal(periodStart);
                     var node = new HashCacheNode(interval, period, null);
 
                     // Keep going while the current interval ends before the period.
@@ -124,7 +124,7 @@ namespace NodaTime.TimeZones
                     // evaluate to false.
                     while (interval.RawEnd.DaysSinceEpoch < nextPeriodStartDays)
                     {
-                        interval = map.GetZoneInterval(interval.End);
+                        interval = map.GetZoneIntervalInternal(interval.End);
                         node = new HashCacheNode(interval, period, node);
                     }
 

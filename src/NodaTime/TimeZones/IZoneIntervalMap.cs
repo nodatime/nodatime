@@ -15,7 +15,7 @@ namespace NodaTime.TimeZones
     /// </remarks>
     internal interface IZoneIntervalMap
     {
-        ZoneInterval GetZoneInterval(Instant instant);
+        ZoneInterval GetZoneIntervalInternal(Instant instant);
     }
 
     // This is slightly ugly, but it allows us to use any time zone as the tail

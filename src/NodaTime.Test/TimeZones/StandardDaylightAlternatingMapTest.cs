@@ -45,7 +45,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneInterval_Instant_Summer()
         {
-            var interval = TestMap.GetZoneInterval(Instant.FromUtc(2010, 6, 1, 0, 0));
+            var interval = TestMap.GetZoneIntervalInternal(Instant.FromUtc(2010, 6, 1, 0, 0));
             Assert.AreEqual("Summer", interval.Name);
             Assert.AreEqual(Offset.FromHours(6), interval.WallOffset);
             Assert.AreEqual(Offset.FromHours(5), interval.StandardOffset);
@@ -57,7 +57,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void GetZoneInterval_Instant_Winter()
         {
-            var interval = TestMap.GetZoneInterval(Instant.FromUtc(2010, 11, 1, 0, 0));
+            var interval = TestMap.GetZoneIntervalInternal(Instant.FromUtc(2010, 11, 1, 0, 0));
             Assert.AreEqual("Winter", interval.Name);
             Assert.AreEqual(Offset.FromHours(5), interval.WallOffset);
             Assert.AreEqual(Offset.FromHours(5), interval.StandardOffset);
@@ -71,7 +71,7 @@ namespace NodaTime.Test.TimeZones
         {
             // This is only just about valid
             var firstSummer = Instant.FromUtc(2000, 3, 9, 20, 0);
-            var interval = TestMap.GetZoneInterval(firstSummer);
+            var interval = TestMap.GetZoneIntervalInternal(firstSummer);
             Assert.AreEqual("Summer", interval.Name);
         }
 
@@ -266,16 +266,16 @@ namespace NodaTime.Test.TimeZones
             var lastSummer = new ZoneInterval("Summer", lastSpring, lastAutumn, dstOffset, dstOffset);
             var lastWinter = new ZoneInterval("Winter", lastAutumn, Instant.AfterMaxValue, Offset.Zero, Offset.Zero);
 
-            Assert.AreEqual(firstWinter, zone.GetZoneInterval(Instant.MinValue));
-            Assert.AreEqual(firstWinter, zone.GetZoneInterval(Instant.FromUtc(-9998, 2, 1, 0, 0)));
-            Assert.AreEqual(firstSummer, zone.GetZoneInterval(firstSpring));
-            Assert.AreEqual(firstSummer, zone.GetZoneInterval(Instant.FromUtc(-9998, 5, 1, 0, 0)));
+            Assert.AreEqual(firstWinter, zone.GetZoneIntervalInternal(Instant.MinValue));
+            Assert.AreEqual(firstWinter, zone.GetZoneIntervalInternal(Instant.FromUtc(-9998, 2, 1, 0, 0)));
+            Assert.AreEqual(firstSummer, zone.GetZoneIntervalInternal(firstSpring));
+            Assert.AreEqual(firstSummer, zone.GetZoneIntervalInternal(Instant.FromUtc(-9998, 5, 1, 0, 0)));
 
-            Assert.AreEqual(lastSummer, zone.GetZoneInterval(lastSpring));
-            Assert.AreEqual(lastSummer, zone.GetZoneInterval(Instant.FromUtc(9999, 5, 1, 0, 0)));
-            Assert.AreEqual(lastWinter, zone.GetZoneInterval(lastAutumn));
-            Assert.AreEqual(lastWinter, zone.GetZoneInterval(Instant.FromUtc(9999, 11, 1, 0, 0)));
-            Assert.AreEqual(lastWinter, zone.GetZoneInterval(Instant.MaxValue));
+            Assert.AreEqual(lastSummer, zone.GetZoneIntervalInternal(lastSpring));
+            Assert.AreEqual(lastSummer, zone.GetZoneIntervalInternal(Instant.FromUtc(9999, 5, 1, 0, 0)));
+            Assert.AreEqual(lastWinter, zone.GetZoneIntervalInternal(lastAutumn));
+            Assert.AreEqual(lastWinter, zone.GetZoneIntervalInternal(Instant.FromUtc(9999, 11, 1, 0, 0)));
+            Assert.AreEqual(lastWinter, zone.GetZoneIntervalInternal(Instant.MaxValue));
         }
 
         [Test]
@@ -290,7 +290,7 @@ namespace NodaTime.Test.TimeZones
 
             var map = new StandardDaylightAlternatingMap(Offset.Zero, r1, r2);
 
-            Assert.Throws<InvalidOperationException>(() => map.GetZoneInterval(Instant.FromUtc(2017, 8, 25, 0, 0, 0)));
+            Assert.Throws<InvalidOperationException>(() => map.GetZoneIntervalInternal(Instant.FromUtc(2017, 8, 25, 0, 0, 0)));
         }
 
         private void CheckMapping(ZoneLocalMapping mapping, string earlyIntervalName, string lateIntervalName, int count)

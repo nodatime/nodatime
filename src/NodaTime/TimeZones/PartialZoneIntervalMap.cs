@@ -53,7 +53,7 @@ namespace NodaTime.TimeZones
         {
             Preconditions.DebugCheckArgument(instant >= Start && instant < End, nameof(instant),
                 "Value {0} was not in the range [{0}, {1})", instant, Start, End);
-            var interval = map.GetZoneInterval(instant);
+            var interval = map.GetZoneIntervalInternal(instant);
             // Clamp the interval for the sake of sanity. Checking this every time isn't very efficient,
             // but we're not expecting this to be called too often, due to caching.
             if (interval.RawStart < Start)
@@ -70,7 +70,7 @@ namespace NodaTime.TimeZones
         /// <summary>
         /// Returns true if this map only contains a single interval; that is, if the first interval includes the end of the map.
         /// </summary>
-        private bool IsSingleInterval => map.GetZoneInterval(Start).RawEnd >= End;
+        private bool IsSingleInterval => map.GetZoneIntervalInternal(Start).RawEnd >= End;
 
         /// <summary>
         /// Returns a partial zone interval map equivalent to this one, but with the given start point.
@@ -178,7 +178,7 @@ namespace NodaTime.TimeZones
                 this.partialMaps = partialMaps;
             }
 
-            public ZoneInterval GetZoneInterval(Instant instant)
+            public ZoneInterval GetZoneIntervalInternal(Instant instant)
             {
                 // We assume the maps are ordered, and start with "beginning of time"
                 // which means we only need to find the first partial map which ends after

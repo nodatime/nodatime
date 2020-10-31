@@ -88,7 +88,7 @@ namespace NodaTime.TimeZones
         /// <returns>The ZoneInterval in effect at the given instant.</returns>
         /// <exception cref="ArgumentOutOfRangeException">The instant falls outside the bounds
         /// of the recurrence rules of the zone.</exception>
-        public ZoneInterval GetZoneInterval(Instant instant)
+        public ZoneInterval GetZoneIntervalInternal(Instant instant)
         {
             var next = NextTransition(instant, out ZoneRecurrence recurrence);
             // Now we know the recurrence we're in, we can work out when we went into it. (We'll never have

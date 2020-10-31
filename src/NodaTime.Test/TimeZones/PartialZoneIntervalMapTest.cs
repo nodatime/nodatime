@@ -82,7 +82,7 @@ namespace NodaTime.Test.TimeZones
             var current = Instant.MinValue;
             while (current < Instant.AfterMaxValue)
             {
-                var zoneInterval = map.GetZoneInterval(current);
+                var zoneInterval = map.GetZoneIntervalInternal(current);
                 yield return zoneInterval;
                 // If this is the end of time, this will just fail on the next comparison.
                 current = zoneInterval.RawEnd;

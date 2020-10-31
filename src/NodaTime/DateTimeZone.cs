@@ -220,6 +220,18 @@ namespace NodaTime
         public abstract ZoneInterval GetZoneInterval(Instant instant);
 
         /// <summary>
+        /// IZoneIntervalMap is internal, and a Microsoft internal analyzer flags a public abstract implementation
+        /// of that as a security vulnerability (CA2119). This approach silences the analyzer, without making any really
+        /// significant difference. If someone provides a bad DateTimeZone implementation, then yes, time zone
+        /// calculations will be broken. If they provide a malicious DateTimeZone implementation, then yes, bad things
+        /// may happen if it's used. We don't "trust" IZoneIntervalMap particularly more than DateTimeZone in general.
+        /// For further information, see:
+        /// - https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2119
+        /// - https://github.com/nodatime/nodatime/issues/1583
+        /// </summary>
+        ZoneInterval IZoneIntervalMap.GetZoneIntervalInternal(Instant instant) => GetZoneInterval(instant);
+
+        /// <summary>
         /// Returns complete information about how the given <see cref="LocalDateTime" /> is mapped in this time zone.
         /// </summary>
         /// <remarks>
