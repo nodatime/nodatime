@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;net471;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks Condition="'$(BenchmarksIncludeNet50)' != '' ">netcoreapp2.1;net471;netcoreapp3.1;net50</TargetFrameworks>
     <OutputType>Exe</OutputType>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.10.14" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>
