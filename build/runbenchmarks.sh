@@ -57,7 +57,7 @@ do
   echo "Running benchmarks for $TARGET_FRAMEWORK"
   rm -rf BenchmarkDotNet.Artifacts
   date -u -Iseconds > $OUTPUT/start.txt
-  dotnet run -f $TARGET_FRAMEWORK -c Release -- --exporter=briefjson '*'
+  dotnet run -f $TARGET_FRAMEWORK -c Release -- --exporters=briefjson --filter '*'
   date -u -Iseconds > $OUTPUT/end.txt
   for report in BenchmarkDotNet.Artifacts/results/*-report-brief.json
   do
