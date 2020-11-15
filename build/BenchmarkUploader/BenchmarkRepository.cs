@@ -39,6 +39,7 @@ namespace BenchmarkUploader
                 environments.Add(BenchmarkEnvironment.Parser.ParseDelimitedFrom(stream));
             }
             environmentSaveRequired = false;
+            Console.WriteLine($"Loaded {environments.Count} environments");
         }
 
         public void AddRun(BenchmarkRun run)
@@ -70,6 +71,7 @@ namespace BenchmarkUploader
             // Not found, so let's add our clone after populating the ID.
             environmentWithoutId.BenchmarkEnvironmentId = Guid.NewGuid().ToString();
             environments.Add(environmentWithoutId);
+            Console.WriteLine($"Adding environment {environment.Machine} / {environment.TargetFramework} to save later");
             environmentSaveRequired = true;
             return environmentWithoutId.BenchmarkEnvironmentId;
         }
