@@ -92,7 +92,7 @@ namespace BenchmarkUploader
                 Processor = hostEnvironment.ProcessorName ?? "",
                 ProcessorCount = hostEnvironment.LogicalCoreCount,
                 TargetFramework = tfm,
-                JitModules = hostEnvironment.JitModules,
+                JitModules = hostEnvironment.JitModules ?? "",
                 HasRyuJit = hostEnvironment.HasRyuJit,
                 Architecture = hostEnvironment.Architecture,
                 RuntimeVersion = hostEnvironment.RuntimeVersion
