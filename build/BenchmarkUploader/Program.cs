@@ -46,7 +46,6 @@ namespace BenchmarkUploader
             foreach (var endFile in Directory.EnumerateFiles(directory, "end.txt", SearchOption.AllDirectories))
             {
                 ProcessRun(environmentRepository, Path.GetDirectoryName(endFile));
-                var runDirectory = Path.GetDirectoryName(endFile);
             }
             environmentRepository.Save();
         }
@@ -61,6 +60,7 @@ namespace BenchmarkUploader
                 return;
             }
 
+            var runIdFile = Path.Combine(runDirectory, "id.txt");
             var startFile = Path.Combine(runDirectory, "start.txt");
             var endFile = Path.Combine(runDirectory, "end.txt");
 
@@ -80,9 +80,10 @@ namespace BenchmarkUploader
                 return;
             }
 
-            var runKey = Guid.NewGuid().ToString();
+            var runId = Guid.NewGuid().ToString();
 
-            File.WriteAllText(outputFile, runKey);
+            // Keep the run ID in an easy-to-find file.
+            File.WriteAllText(runIdFile, runId);
 
             var hostEnvironment = models.First().HostEnvironmentInfo;
             var environment = new BenchmarkEnvironment
@@ -100,7 +101,7 @@ namespace BenchmarkUploader
             var environmentId = environmentRepository.GetOrAddEnvironmentId(environment);
             var run = new BenchmarkRun
             {
-                BenchmarkRunId = Guid.NewGuid().ToString(),
+                BenchmarkRunId = runId,
                 BenchmarkEnvironmentId = environmentId,
                 Commit = commit,
                 Start = start.ToTimestamp(),
