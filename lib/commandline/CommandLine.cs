@@ -313,7 +313,7 @@ namespace CommandLine
                 throw new ArgumentNullException(nameof(concreteType));
             }
 
-            if (!typeof(IList<string>).GetTypeInfo().IsAssignableFrom(concreteType.GetTypeInfo()))
+            if (!typeof(IList<string>).IsAssignableFrom(concreteType))
             {
                 throw new CommandLineParserException("The types are incompatible.");
             }
@@ -939,7 +939,7 @@ namespace CommandLine
         {
             try
             {
-                if (_property.PropertyType.GetTypeInfo().IsEnum)
+                if (_property.PropertyType.IsEnum)
                 {
                     lock (_setValueLock)
                     {
@@ -1959,13 +1959,13 @@ namespace CommandLine
         public static TAttribute GetAttribute<TAttribute>()
             where TAttribute : Attribute
         {
-            var assembly = typeof(ReflectionUtil).GetTypeInfo().Assembly;
+            var assembly = typeof(ReflectionUtil).Assembly;
             return assembly.GetCustomAttributes().OfType<TAttribute>().FirstOrDefault();
         }
 
         public static bool IsNullableType(Type type)
         {
-            return type.GetTypeInfo().IsGenericType && type.GetTypeInfo().GetGenericTypeDefinition() == typeof(Nullable<>);
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
     }
 

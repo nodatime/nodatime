@@ -341,7 +341,7 @@ namespace NodaTime.Test
             // Comparisons only involving equal values
             if (greaterThan != null)
             {
-                if (!type.GetTypeInfo().IsValueType)
+                if (!type.IsValueType)
                 {
                     Assert.True((bool) greaterThan.Invoke(null, new object?[] { value, null })!, "value > null");
                     Assert.False((bool) greaterThan.Invoke(null, new object?[] { null, value })!, "null > value");
@@ -352,7 +352,7 @@ namespace NodaTime.Test
             }
             if (lessThan != null)
             {
-                if (!type.GetTypeInfo().IsValueType)
+                if (!type.IsValueType)
                 {
                     Assert.False((bool) lessThan.Invoke(null, new object?[] { value, null })!, "value < null");
                     Assert.True((bool) lessThan.Invoke(null, new object?[] { null, value })!, "null < value");
@@ -403,7 +403,7 @@ namespace NodaTime.Test
             // First the comparisons with equal values
             if (greaterThanOrEqual != null)
             {
-                if (!type.GetTypeInfo().IsValueType)
+                if (!type.IsValueType)
                 {
                     Assert.True((bool) greaterThanOrEqual.Invoke(null, new object?[] { value, null })!, "value >= null");
                     Assert.False((bool) greaterThanOrEqual.Invoke(null, new object?[] { null, value })!, "null >= value");
@@ -414,7 +414,7 @@ namespace NodaTime.Test
             }
             if (lessThanOrEqual != null)
             {
-                if (!type.GetTypeInfo().IsValueType)
+                if (!type.IsValueType)
                 {
                     Assert.False((bool) lessThanOrEqual.Invoke(null, new object?[] { value, null })!, "value <= null");
                     Assert.True((bool) lessThanOrEqual.Invoke(null, new object?[] { null, value })!, "null <= value");
@@ -456,7 +456,7 @@ namespace NodaTime.Test
             var equality = type.GetMethod("op_Equality", new[] { type, type });
             if (equality != null)
             {
-                if (!type.GetTypeInfo().IsValueType)
+                if (!type.IsValueType)
                 {
                     Assert.True((bool)equality.Invoke(null, new object?[] { null, null })!, "null == null");
                     Assert.False((bool)equality.Invoke(null, new object?[] { value, null })!, "value == null");
@@ -470,7 +470,7 @@ namespace NodaTime.Test
             var inequality = type.GetMethod("op_Inequality", new[] { type, type });
             if (inequality != null)
             {
-                if (!type.GetTypeInfo().IsValueType)
+                if (!type.IsValueType)
                 {
                     Assert.False((bool)inequality.Invoke(null, new object?[] { null, null })!, "null != null");
                     Assert.True((bool)inequality.Invoke(null, new object?[] { value, null })!, "value != null");
