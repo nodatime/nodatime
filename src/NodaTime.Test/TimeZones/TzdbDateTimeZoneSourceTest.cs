@@ -28,7 +28,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void CanLoadNodaTimeResourceFromOnePointOneRelease()
         {
-            var assembly = typeof(TzdbDateTimeZoneSourceTest).GetTypeInfo().Assembly;
+            var assembly = typeof(TzdbDateTimeZoneSourceTest).Assembly;
             TzdbDateTimeZoneSource source;
             using (Stream stream = assembly.GetManifestResourceStream("NodaTime.Test.TestData.Tzdb2013bFromNodaTime1.1.nzd")!)
             {

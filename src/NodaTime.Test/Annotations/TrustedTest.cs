@@ -14,7 +14,7 @@ namespace NodaTime.Test.Annotations
         [Test]
         public void MembersWithTrustedParametersAreNotPublic()
         {
-            var types = typeof(Instant).GetTypeInfo().Assembly.DefinedTypes;
+            var types = typeof(Instant).Assembly.DefinedTypes;
             var invalidMembers = types.SelectMany(t => t.DeclaredMembers)
                                       .Where(m => GetParameters(m).Any(p => p.IsDefined(typeof(TrustedAttribute), false)))
                                       .Where(InvalidForTrustedParameters);

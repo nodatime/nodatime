@@ -15,7 +15,7 @@ namespace NodaTime.Test.Text
         public void NoPatternSuffix()
         {
             var properties =
-                from type in typeof(Instant).GetTypeInfo().Assembly.DefinedTypes
+                from type in typeof(Instant).Assembly.DefinedTypes
                 where type.Name.EndsWith("Pattern")
                 from property in type.DeclaredProperties
                 where property.GetMethod?.IsStatic == true && property.Name.EndsWith("Pattern")

@@ -15,7 +15,7 @@ namespace NodaTime.Benchmarks
         // Run it with args = { "*" } for choosing all of target benchmarks
         public static void Main(string[] args)
         {
-            new BenchmarkSwitcher(typeof(Program).GetTypeInfo().Assembly).Run(args);
+            new BenchmarkSwitcher(typeof(Program).Assembly).Run(args);
         }
     }
 }

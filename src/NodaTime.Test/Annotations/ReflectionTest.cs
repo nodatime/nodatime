@@ -19,7 +19,7 @@ namespace NodaTime.Test.Annotations
         {
             Regex conversionName = new Regex("^To([A-Z][a-zA-Z0-9]*)$");
 
-            var badMethods = typeof(Instant).GetTypeInfo().Assembly
+            var badMethods = typeof(Instant).Assembly
                 .DefinedTypes
                 .Where(t => t.IsPublic || t.IsNestedPublic)
                 .OrderBy(t => t.Name)

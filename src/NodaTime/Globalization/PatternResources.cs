@@ -2,7 +2,6 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Reflection;
 using System.Resources;
 
 namespace NodaTime.Globalization
@@ -13,6 +12,6 @@ namespace NodaTime.Globalization
     static class PatternResources
     {
         internal static ResourceManager ResourceManager { get; }
-            = new ResourceManager(typeof(PatternResources).FullName, typeof(PatternResources).GetTypeInfo().Assembly);
+            = new ResourceManager(typeof(PatternResources).FullName, typeof(PatternResources).Assembly);
     }
 }

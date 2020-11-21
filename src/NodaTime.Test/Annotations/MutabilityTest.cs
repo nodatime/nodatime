@@ -15,7 +15,7 @@ namespace NodaTime.Test.Annotations
         [Test]
         public void AllPublicClassesAreMutableOrImmutable()
         {
-            var unannotatedClasses = typeof(Instant).GetTypeInfo().Assembly
+            var unannotatedClasses = typeof(Instant).Assembly
                                                     .DefinedTypes
                                                     .Where(t => t.IsClass && (t.IsNestedPublic || t.IsPublic) && t.BaseType != typeof(MulticastDelegate))
                                                     .Where(t => !(t.IsAbstract && t.IsSealed)) // Ignore static classes

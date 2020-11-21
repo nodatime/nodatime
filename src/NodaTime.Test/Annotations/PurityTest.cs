@@ -20,7 +20,7 @@ namespace NodaTime.Test.Annotations
         {
             var implicitlyPureNames = new HashSet<string> { "Equals", "GetHashCode", "CompareTo", "ToString" };
 
-            var impureMethods = typeof(Instant).GetTypeInfo().Assembly
+            var impureMethods = typeof(Instant).Assembly
                                                .DefinedTypes
                                                .Where(t => t.IsValueType && (t.IsPublic || t.IsNestedPublic))
                                                .OrderBy(t => t.Name)
