@@ -70,11 +70,16 @@ namespace NodaTime.Testing.TimeZones
             throw new InvalidOperationException($"Instant {instant} did not exist in time zone {Id}");
         }
 
+// This isn't really a collection type; it only implements IEnumerable to enable collection initializers.
+#pragma warning disable CA1010 // Implement IEnumerable<T>
+#pragma warning disable CA1710 // Rename to class end in "Collection"
         /// <summary>
         /// Builder to create instances of <see cref="MultiTransitionDateTimeZone"/>. Each builder
         /// can only be built once.
         /// </summary>
         public sealed class Builder : IEnumerable
+#pragma warning restore CA1710
+#pragma warning restore CA1010
         {
             private readonly List<ZoneInterval> intervals = new List<ZoneInterval>();
             private Offset currentStandardOffset;
