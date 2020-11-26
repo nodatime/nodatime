@@ -80,7 +80,7 @@ namespace NodaTime.Testing.TimeZones
             private Offset currentStandardOffset;
             private Offset currentSavings;
             private string currentName;
-            private bool built = false;
+            private bool built;
 
             /// <summary>
             /// Gets the ID of the time zone which will be built.

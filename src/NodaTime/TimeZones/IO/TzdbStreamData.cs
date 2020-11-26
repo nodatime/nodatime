@@ -146,8 +146,8 @@ namespace NodaTime.TimeZones.IO
             // Note: deliberately mutable, as this is useful later when we map the canonical IDs to themselves.
             // This is a mapping of the aliases from TZDB, at this point.
             internal IDictionary<string, string>? tzdbIdMap;
-            internal ReadOnlyCollection<TzdbZoneLocation>? zoneLocations = null;
-            internal ReadOnlyCollection<TzdbZone1970Location>? zone1970Locations = null;
+            internal ReadOnlyCollection<TzdbZoneLocation>? zoneLocations;
+            internal ReadOnlyCollection<TzdbZone1970Location>? zone1970Locations;
             internal WindowsZones? windowsMapping;
             internal readonly IDictionary<string, TzdbStreamField> zoneFields = new Dictionary<string, TzdbStreamField>();
 
