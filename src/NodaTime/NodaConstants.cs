@@ -176,11 +176,11 @@ namespace NodaTime
         /// <summary>
         /// The number of ticks in a BCL DateTime at the Unix epoch.
         /// </summary>
-        internal static readonly long BclTicksAtUnixEpoch = 621355968000000000;
+        internal const long BclTicksAtUnixEpoch = 621355968000000000;
 
         /// <summary>
         /// The number of days in a BCL DateTime at the Unix epoch.
         /// </summary>
-        internal static readonly int BclDaysAtUnixEpoch = 719162;
+        internal const int BclDaysAtUnixEpoch = 719162;
     }
 }
