@@ -56,7 +56,7 @@ namespace NodaTime
         internal static YearMonthDay Parse(string text)
         {
             // Handle a leading - to negate the year
-            if (text.StartsWith("-"))
+            if (text.StartsWith("-", StringComparison.Ordinal))
             {
                 var ymd = Parse(text.Substring(1));
                 return new YearMonthDay(-ymd.Year, ymd.Month, ymd.Day);

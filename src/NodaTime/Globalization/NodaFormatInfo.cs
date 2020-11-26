@@ -454,7 +454,7 @@ namespace NodaTime.Globalization
                 else
                 {
                     string? eraNameFromCulture = GetEraNameFromBcl(era, cultureInfo);
-                    if (eraNameFromCulture != null && !pipeDelimited.StartsWith(eraNameFromCulture + "|"))
+                    if (eraNameFromCulture != null && !pipeDelimited.StartsWith(eraNameFromCulture + "|", StringComparison.Ordinal))
                     {
                         pipeDelimited = $"{eraNameFromCulture}|{pipeDelimited}";
                     }
