@@ -23,7 +23,7 @@ namespace NodaTime
     // reference to avoid being resolved to the LocalDateTime property instead.
 
     /// <summary>
-    /// A <see cref="T:NodaTime.LocalDateTime" /> in a specific time zone and with a particular offset to distinguish
+    /// A <see cref="NodaTime.LocalDateTime" /> in a specific time zone and with a particular offset to distinguish
     /// between otherwise-ambiguous instants. A <see cref="ZonedDateTime"/> is global, in that it maps to a single
     /// <see cref="Instant"/>.
     /// </summary>
@@ -119,7 +119,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// The returned
-        /// <see cref="T:NodaTime.LocalDateTime"/> will have the same calendar system and return the same values for
+        /// <see cref="NodaTime.LocalDateTime"/> will have the same calendar system and return the same values for
         /// each of the calendar properties (Year, MonthOfYear and so on), but will not be associated with any
         /// particular time zone.
         /// </remarks>
@@ -254,7 +254,7 @@ namespace NodaTime
         /// <remarks>
         /// This is always an unambiguous conversion. Any difficulties due to daylight saving
         /// transitions or other changes in time zone are handled when converting from a
-        /// <see cref="T:NodaTime.LocalDateTime" /> to a <see cref="ZonedDateTime"/>; the <c>ZonedDateTime</c> remembers
+        /// <see cref="NodaTime.LocalDateTime" /> to a <see cref="ZonedDateTime"/>; the <c>ZonedDateTime</c> remembers
         /// the actual offset from UTC to local time, so it always knows the exact instant represented.
         /// </remarks>
         /// <returns>The instant corresponding to this value.</returns>
@@ -539,12 +539,12 @@ namespace NodaTime
         /// Formats the value of the current instance using the specified pattern.
         /// </summary>
         /// <returns>
-        /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+        /// A <see cref="System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
-        /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
+        /// <param name="patternText">The <see cref="System.String" /> specifying the pattern to use,
         /// or null to use the default format pattern ("G").
         /// </param>
-        /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
+        /// <param name="formatProvider">The <see cref="System.IFormatProvider" /> to use when formatting the value,
         /// or null to use the current thread's culture to obtain a format provider.
         /// </param>
         /// <filterpriority>2</filterpriority>

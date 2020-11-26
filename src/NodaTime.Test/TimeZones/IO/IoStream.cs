@@ -161,9 +161,9 @@ namespace NodaTime.Test.TimeZones.IO
             /// <returns>
             ///   A long value representing the length of the stream in bytes.
             /// </returns>
-            /// <exception cref="T:System.NotSupportedException">A class derived from Stream does not support seeking. 
+            /// <exception cref="System.NotSupportedException">A class derived from Stream does not support seeking. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override long Length
@@ -177,11 +177,11 @@ namespace NodaTime.Test.TimeZones.IO
             /// <returns>
             ///   The current position within the stream.
             /// </returns>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support seeking. 
+            /// <exception cref="System.NotSupportedException">The stream does not support seeking. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override long Position
@@ -193,7 +193,7 @@ namespace NodaTime.Test.TimeZones.IO
             /// <summary>
             ///   When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.
             /// </summary>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
             /// <filterpriority>2</filterpriority>
             public override void Flush()
@@ -212,17 +212,17 @@ namespace NodaTime.Test.TimeZones.IO
             /// </param>
             /// <param name="count">The maximum number of bytes to be read from the current stream. 
             /// </param>
-            /// <exception cref="T:System.ArgumentException">The sum of <paramref name = "offset" /> and <paramref name = "count" /> is larger than the buffer length. 
+            /// <exception cref="System.ArgumentException">The sum of <paramref name = "offset" /> and <paramref name = "count" /> is larger than the buffer length. 
             /// </exception>
-            /// <exception cref="T:System.ArgumentNullException"><paramref name = "buffer" /> is null. 
+            /// <exception cref="System.ArgumentNullException"><paramref name = "buffer" /> is null. 
             /// </exception>
-            /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name = "offset" /> or <paramref name = "count" /> is negative. 
+            /// <exception cref="System.ArgumentOutOfRangeException"><paramref name = "offset" /> or <paramref name = "count" /> is negative. 
             /// </exception>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support reading. 
+            /// <exception cref="System.NotSupportedException">The stream does not support reading. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override int Read(byte[] buffer, int offset, int count)
@@ -243,13 +243,13 @@ namespace NodaTime.Test.TimeZones.IO
             /// </returns>
             /// <param name="offset">A byte offset relative to the <paramref name = "origin" /> parameter. 
             /// </param>
-            /// <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin" /> indicating the reference point used to obtain the new position. 
+            /// <param name="origin">A value of type <see cref="System.IO.SeekOrigin" /> indicating the reference point used to obtain the new position. 
             /// </param>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support seeking, such as if the stream is constructed from a pipe or console output. 
+            /// <exception cref="System.NotSupportedException">The stream does not support seeking, such as if the stream is constructed from a pipe or console output. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override long Seek(long offset, SeekOrigin origin)
@@ -262,11 +262,11 @@ namespace NodaTime.Test.TimeZones.IO
             /// </summary>
             /// <param name="value">The desired length of the current stream in bytes. 
             /// </param>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output. 
+            /// <exception cref="System.NotSupportedException">The stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>2</filterpriority>
             public override void SetLength(long value)
@@ -283,17 +283,17 @@ namespace NodaTime.Test.TimeZones.IO
             /// </param>
             /// <param name="count">The number of bytes to be written to the current stream. 
             /// </param>
-            /// <exception cref="T:System.ArgumentException">The sum of <paramref name = "offset" /> and <paramref name = "count" /> is greater than the buffer length. 
+            /// <exception cref="System.ArgumentException">The sum of <paramref name = "offset" /> and <paramref name = "count" /> is greater than the buffer length. 
             /// </exception>
-            /// <exception cref="T:System.ArgumentNullException"><paramref name = "buffer" /> is null. 
+            /// <exception cref="System.ArgumentNullException"><paramref name = "buffer" /> is null. 
             /// </exception>
-            /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name = "offset" /> or <paramref name = "count" /> is negative. 
+            /// <exception cref="System.ArgumentOutOfRangeException"><paramref name = "offset" /> or <paramref name = "count" /> is negative. 
             /// </exception>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support writing. 
+            /// <exception cref="System.NotSupportedException">The stream does not support writing. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override void Write(byte[] buffer, int offset, int count)
@@ -353,9 +353,9 @@ namespace NodaTime.Test.TimeZones.IO
             /// <returns>
             ///   A long value representing the length of the stream in bytes.
             /// </returns>
-            /// <exception cref="T:System.NotSupportedException">A class derived from Stream does not support seeking. 
+            /// <exception cref="System.NotSupportedException">A class derived from Stream does not support seeking. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override long Length
@@ -369,11 +369,11 @@ namespace NodaTime.Test.TimeZones.IO
             /// <returns>
             ///   The current position within the stream.
             /// </returns>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support seeking. 
+            /// <exception cref="System.NotSupportedException">The stream does not support seeking. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override long Position
@@ -385,7 +385,7 @@ namespace NodaTime.Test.TimeZones.IO
             /// <summary>
             ///   When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.
             /// </summary>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
             /// <filterpriority>2</filterpriority>
             public override void Flush()
@@ -404,17 +404,17 @@ namespace NodaTime.Test.TimeZones.IO
             /// </param>
             /// <param name="count">The maximum number of bytes to be read from the current stream. 
             /// </param>
-            /// <exception cref="T:System.ArgumentException">The sum of <paramref name = "offset" /> and <paramref name = "count" /> is larger than the buffer length. 
+            /// <exception cref="System.ArgumentException">The sum of <paramref name = "offset" /> and <paramref name = "count" /> is larger than the buffer length. 
             /// </exception>
-            /// <exception cref="T:System.ArgumentNullException"><paramref name = "buffer" /> is null. 
+            /// <exception cref="System.ArgumentNullException"><paramref name = "buffer" /> is null. 
             /// </exception>
-            /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name = "offset" /> or <paramref name = "count" /> is negative. 
+            /// <exception cref="System.ArgumentOutOfRangeException"><paramref name = "offset" /> or <paramref name = "count" /> is negative. 
             /// </exception>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support reading. 
+            /// <exception cref="System.NotSupportedException">The stream does not support reading. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override int Read(byte[] buffer, int offset, int count)
@@ -430,13 +430,13 @@ namespace NodaTime.Test.TimeZones.IO
             /// </returns>
             /// <param name="offset">A byte offset relative to the <paramref name = "origin" /> parameter. 
             /// </param>
-            /// <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin" /> indicating the reference point used to obtain the new position. 
+            /// <param name="origin">A value of type <see cref="System.IO.SeekOrigin" /> indicating the reference point used to obtain the new position. 
             /// </param>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support seeking, such as if the stream is constructed from a pipe or console output. 
+            /// <exception cref="System.NotSupportedException">The stream does not support seeking, such as if the stream is constructed from a pipe or console output. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override long Seek(long offset, SeekOrigin origin)
@@ -449,11 +449,11 @@ namespace NodaTime.Test.TimeZones.IO
             /// </summary>
             /// <param name="value">The desired length of the current stream in bytes. 
             /// </param>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output. 
+            /// <exception cref="System.NotSupportedException">The stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>2</filterpriority>
             public override void SetLength(long value)
@@ -470,17 +470,17 @@ namespace NodaTime.Test.TimeZones.IO
             /// </param>
             /// <param name="count">The number of bytes to be written to the current stream. 
             /// </param>
-            /// <exception cref="T:System.ArgumentException">The sum of <paramref name = "offset" /> and <paramref name = "count" /> is greater than the buffer length. 
+            /// <exception cref="System.ArgumentException">The sum of <paramref name = "offset" /> and <paramref name = "count" /> is greater than the buffer length. 
             /// </exception>
-            /// <exception cref="T:System.ArgumentNullException"><paramref name = "buffer" /> is null. 
+            /// <exception cref="System.ArgumentNullException"><paramref name = "buffer" /> is null. 
             /// </exception>
-            /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name = "offset" /> or <paramref name = "count" /> is negative. 
+            /// <exception cref="System.ArgumentOutOfRangeException"><paramref name = "offset" /> or <paramref name = "count" /> is negative. 
             /// </exception>
-            /// <exception cref="T:System.IO.IOException">An I/O error occurs. 
+            /// <exception cref="System.IO.IOException">An I/O error occurs. 
             /// </exception>
-            /// <exception cref="T:System.NotSupportedException">The stream does not support writing. 
+            /// <exception cref="System.NotSupportedException">The stream does not support writing. 
             /// </exception>
-            /// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. 
+            /// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. 
             /// </exception>
             /// <filterpriority>1</filterpriority>
             public override void Write(byte[] buffer, int offset, int count)

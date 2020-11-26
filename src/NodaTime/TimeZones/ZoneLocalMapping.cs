@@ -12,7 +12,7 @@ namespace NodaTime.TimeZones
     // reference to avoid being resolved to the LocalDateTime property instead.
 
     /// <summary>
-    /// The result of mapping a <see cref="T:NodaTime.LocalDateTime" /> within a time zone, i.e. finding out
+    /// The result of mapping a <see cref="NodaTime.LocalDateTime" /> within a time zone, i.e. finding out
     /// at what "global" time the "local" time occurred.
     /// </summary>
     /// <remarks>
@@ -58,7 +58,7 @@ namespace NodaTime.TimeZones
         public DateTimeZone Zone { get; }
 
         /// <summary>
-        /// Gets the <see cref="T:NodaTime.LocalDateTime" /> which was mapped within the time zone.
+        /// Gets the <see cref="NodaTime.LocalDateTime" /> which was mapped within the time zone.
         /// </summary>
         /// <value>The local date and time which was mapped within the time zone.</value>
         public LocalDateTime LocalDateTime { get; }
@@ -88,7 +88,7 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// Gets the number of results within this mapping: the number of distinct
-        /// <see cref="ZonedDateTime" /> values which map to the original <see cref="T:NodaTime.LocalDateTime" />.
+        /// <see cref="ZonedDateTime" /> values which map to the original <see cref="NodaTime.LocalDateTime" />.
         /// </summary>
         /// <value>The number of results within this mapping: the number of distinct values which map to the
         /// original local date and time.</value>
@@ -110,7 +110,7 @@ namespace NodaTime.TimeZones
 
         /// <summary>
         /// Returns the single <see cref="ZonedDateTime"/> which maps to the original
-        /// <see cref="T:NodaTime.LocalDateTime" /> in the mapped <see cref="DateTimeZone" />.
+        /// <see cref="NodaTime.LocalDateTime" /> in the mapped <see cref="DateTimeZone" />.
         /// </summary>
         /// <exception cref="SkippedTimeException">The local date/time was skipped in the time zone.</exception>
         /// <exception cref="AmbiguousTimeException">The local date/time was ambiguous in the time zone.</exception>
@@ -132,7 +132,7 @@ namespace NodaTime.TimeZones
         // TODO: Reimplement as switch expressions after fixing https://github.com/nodatime/nodatime/issues/1269
 
         /// <summary>
-        /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="T:NodaTime.LocalDateTime" />
+        /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="NodaTime.LocalDateTime" />
         /// in the mapped <see cref="DateTimeZone" />: either the single result if the mapping is unambiguous,
         /// or the earlier result if the local date/time occurs twice in the time zone due to a time zone
         /// offset change such as an autumnal daylight saving transition.
@@ -151,7 +151,7 @@ namespace NodaTime.TimeZones
         }
 
         /// <summary>
-        /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="T:NodaTime.LocalDateTime" />
+        /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="NodaTime.LocalDateTime" />
         /// in the mapped <see cref="DateTimeZone" />: either the single result if the mapping is unambiguous,
         /// or the later result if the local date/time occurs twice in the time zone due to a time zone
         /// offset change such as an autumnal daylight saving transition.

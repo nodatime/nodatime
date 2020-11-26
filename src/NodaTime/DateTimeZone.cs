@@ -103,7 +103,7 @@ namespace NodaTime
         /// compare equal to an instance returned by calling <see cref="ForOffset"/> with an offset of zero, but it may
         /// or may not compare equal to an instance returned by e.g. <c>DateTimeZoneProviders.Tzdb["UTC"]</c>.
         /// </remarks>
-        /// <value>A UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
+        /// <value>A UTC <see cref="NodaTime.DateTimeZone" />.</value>
         public static DateTimeZone Utc { get; } = new FixedDateTimeZone(Offset.Zero);
         private const int FixedZoneCacheGranularitySeconds = NodaConstants.SecondsPerMinute * 30;
         private const int FixedZoneCacheMinimumSeconds = -FixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
@@ -142,7 +142,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:NodaTime.DateTimeZone" /> class.
+        /// Initializes a new instance of the <see cref="NodaTime.DateTimeZone" /> class.
         /// </summary>
         /// <param name="id">The unique id of this time zone.</param>
         /// <param name="isFixed">Set to <c>true</c> if this time zone has no transitions.</param>
@@ -214,8 +214,8 @@ namespace NodaTime
         /// <remarks>
         /// This will always return a valid zone interval, as time zones cover the whole of time.
         /// </remarks>
-        /// <param name="instant">The <see cref="T:NodaTime.Instant" /> to query.</param>
-        /// <returns>The defined <see cref="T:NodaTime.TimeZones.ZoneInterval" />.</returns>
+        /// <param name="instant">The <see cref="NodaTime.Instant" /> to query.</param>
+        /// <returns>The defined <see cref="NodaTime.TimeZones.ZoneInterval" />.</returns>
         /// <seealso cref="GetZoneIntervals(Interval)"/>
         public abstract ZoneInterval GetZoneInterval(Instant instant);
 

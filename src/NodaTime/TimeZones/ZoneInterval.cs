@@ -306,13 +306,13 @@ namespace NodaTime.TimeZones
 
         #region object Overrides
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
+        /// Determines whether the specified <see cref="System.Object" /> is equal to the current <see cref="System.Object" />.
         /// See the type documentation for a description of equality semantics.
         /// </summary>
         /// <returns>
-        /// <c>true</c> if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, <c>false</c>.
+        /// <c>true</c> if the specified <see cref="System.Object" /> is equal to the current <see cref="System.Object" />; otherwise, <c>false</c>.
         /// </returns>
-        /// <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:System.Object" />.</param>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with the current <see cref="System.Object" />.</param>
         /// <filterpriority>2</filterpriority>
         [DebuggerStepThrough]
         public override bool Equals(object? obj) => Equals(obj as ZoneInterval);
