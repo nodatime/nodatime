@@ -777,11 +777,13 @@ namespace NodaTime
         /// </summary>
         private static class IslamicCalendars
         {
+#pragma warning disable CA1814 // Prefer jagged arrays; in this case it would take *more* space.
             internal static readonly CalendarSystem[,] ByLeapYearPatterAndEpoch;
 
             static IslamicCalendars()
             {
                 ByLeapYearPatterAndEpoch = new CalendarSystem[4, 2];
+#pragma warning restore CA1814
                 for (int i = 1; i <= 4; i++)
                 {
                     for (int j = 1; j <= 2; j++)
