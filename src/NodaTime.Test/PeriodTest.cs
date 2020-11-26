@@ -394,6 +394,7 @@ namespace NodaTime.Test
             Period p2 = Period.FromHours(2);
             Period sum = p1 + p2;
             Assert.AreEqual(5, sum.Hours);
+            Assert.AreEqual(sum, Period.Add(p1, p2));
         }
 
         [Test]
@@ -442,9 +443,10 @@ namespace NodaTime.Test
         {
             Period p1 = Period.FromHours(3);
             Period p2 = Period.FromMinutes(20);
-            Period sum = p1 - p2;
-            Assert.AreEqual(3, sum.Hours);
-            Assert.AreEqual(-20, sum.Minutes);
+            Period difference = p1 - p2;
+            Assert.AreEqual(3, difference.Hours);
+            Assert.AreEqual(-20, difference.Minutes);
+            Assert.AreEqual(difference, Period.Subtract(p1, p2));
         }
 
         [Test]
@@ -452,8 +454,9 @@ namespace NodaTime.Test
         {
             Period p1 = Period.FromHours(3);
             Period p2 = Period.FromHours(2);
-            Period sum = p1 - p2;
-            Assert.AreEqual(1, sum.Hours);
+            Period difference = p1 - p2;
+            Assert.AreEqual(1, difference.Hours);
+            Assert.AreEqual(difference, Period.Subtract(p1, p2));
         }
 
         [Test]

@@ -316,6 +316,15 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Adds two periods together, by simply adding the values for each property.
+        /// </summary>
+        /// <param name="left">The first period to add</param>
+        /// <param name="right">The second period to add</param>
+        /// <returns>The sum of the two periods. The units of the result will be the union of those in both
+        /// periods.</returns>
+        public static Period Add(Period left, Period right) => left + right;
+
+        /// <summary>
         /// Creates an <see cref="IComparer{T}"/> for periods, using the given "base" local date/time.
         /// </summary>
         /// <remarks>
@@ -353,6 +362,16 @@ namespace NodaTime
                 minuend.Ticks - subtrahend.Ticks,
                 minuend.Nanoseconds - subtrahend.Nanoseconds);
         }
+
+        /// <summary>
+        /// Subtracts one period from another, by simply subtracting each property value.
+        /// </summary>
+        /// <param name="minuend">The period to subtract the second operand from</param>
+        /// <param name="subtrahend">The period to subtract the first operand from</param>
+        /// <returns>The result of subtracting all the values in the second operand from the values in the first. The
+        /// units of the result will be the union of both periods, even if the subtraction caused some properties to
+        /// become zero (so "2 weeks, 1 days" minus "2 weeks" is "zero weeks, 1 days", not "1 days").</returns>
+        public static Period Subtract(Period minuend, Period subtrahend) => minuend - subtrahend;
 
         /// <summary>
         /// Returns the number of days between two <see cref="LocalDate"/> objects.
