@@ -20,7 +20,9 @@ namespace NodaTime.TimeZones
     /// </para>
     /// </remarks>
     /// <threadsafety>All members of this class are thread-safe, as are the values returned by them.</threadsafety>
+#pragma warning disable CA1724 // Name conflicts with a framework name
     public static class Resolvers
+#pragma warning restore CA1724
     {
         /// <summary>
         /// An <see cref="AmbiguousTimeResolver"/> which returns the earlier of the two matching times.

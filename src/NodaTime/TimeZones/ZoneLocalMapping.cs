@@ -115,7 +115,9 @@ namespace NodaTime.TimeZones
         /// <exception cref="SkippedTimeException">The local date/time was skipped in the time zone.</exception>
         /// <exception cref="AmbiguousTimeException">The local date/time was ambiguous in the time zone.</exception>
         /// <returns>The unambiguous result of mapping the local date/time in the time zone.</returns>
+#pragma warning disable CA1720 // Identifier contains type name
         public ZonedDateTime Single()
+#pragma warning restore CA1720
         {
             switch (Count)
             {
