@@ -78,7 +78,7 @@ namespace NodaTime.Text
         /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
         public StringBuilder AppendFormat(Period value, StringBuilder builder) => pattern.AppendFormat(value, builder);
 
-        private static void AppendValue(StringBuilder builder, long value, string suffix)
+        private static void AppendValue(StringBuilder builder, long value, char suffix)
         {
             // Avoid having a load of conditions in the calling code by checking here
             if (value == 0)
@@ -184,20 +184,20 @@ namespace NodaTime.Text
             {
                 Preconditions.CheckNotNull(value, nameof(value));
                 Preconditions.CheckNotNull(builder, nameof(builder));
-                builder.Append("P");
-                AppendValue(builder, value.Years, "Y");
-                AppendValue(builder, value.Months, "M");
-                AppendValue(builder, value.Weeks, "W");
-                AppendValue(builder, value.Days, "D");
+                builder.Append('P');
+                AppendValue(builder, value.Years, 'Y');
+                AppendValue(builder, value.Months, 'M');
+                AppendValue(builder, value.Weeks, 'W');
+                AppendValue(builder, value.Days, 'D');
                 if (value.HasTimeComponent)
                 {
-                    builder.Append("T");
-                    AppendValue(builder, value.Hours, "H");
-                    AppendValue(builder, value.Minutes, "M");
-                    AppendValue(builder, value.Seconds, "S");
-                    AppendValue(builder, value.Milliseconds, "s");
-                    AppendValue(builder, value.Ticks, "t");
-                    AppendValue(builder, value.Nanoseconds, "n");
+                    builder.Append('T');
+                    AppendValue(builder, value.Hours, 'H');
+                    AppendValue(builder, value.Minutes, 'M');
+                    AppendValue(builder, value.Seconds, 'S');
+                    AppendValue(builder, value.Milliseconds, 's');
+                    AppendValue(builder, value.Ticks, 't');
+                    AppendValue(builder, value.Nanoseconds, 'n');
                 }
                 return builder;
             }
@@ -346,33 +346,33 @@ namespace NodaTime.Text
                     builder.Append("P0D");
                     return builder;
                 }
-                builder.Append("P");
-                AppendValue(builder, value.Years, "Y");
-                AppendValue(builder, value.Months, "M");
-                AppendValue(builder, value.Weeks, "W");
-                AppendValue(builder, value.Days, "D");
+                builder.Append('P');
+                AppendValue(builder, value.Years, 'Y');
+                AppendValue(builder, value.Months, 'M');
+                AppendValue(builder, value.Weeks, 'W');
+                AppendValue(builder, value.Days, 'D');
                 if (value.HasTimeComponent)
                 {
-                    builder.Append("T");
-                    AppendValue(builder, value.Hours, "H");
-                    AppendValue(builder, value.Minutes, "M");
+                    builder.Append('T');
+                    AppendValue(builder, value.Hours, 'H');
+                    AppendValue(builder, value.Minutes, 'M');
                     long nanoseconds = value.Milliseconds * NanosecondsPerMillisecond + value.Ticks * NanosecondsPerTick + value.Nanoseconds;
                     long seconds = value.Seconds;
                     if (nanoseconds != 0 || seconds != 0)
                     {
                         if (nanoseconds < 0 || seconds < 0)
                         {
-                            builder.Append("-");
+                            builder.Append('-');
                             nanoseconds = -nanoseconds;
                             seconds = -seconds;
                         }
                         FormatHelper.FormatInvariant(seconds, builder);
                         if (nanoseconds != 0)
                         {
-                            builder.Append(".");
+                            builder.Append('.');
                             FormatHelper.AppendFractionTruncate((int) nanoseconds, 9, 9, builder);
                         }
-                        builder.Append("S");
+                        builder.Append('S');
                     }
                 }
                 return builder;
