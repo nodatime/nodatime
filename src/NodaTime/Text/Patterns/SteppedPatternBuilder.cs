@@ -247,6 +247,7 @@ namespace NodaTime.Text.Patterns
         }
 
 #pragma warning disable IDE0060
+#pragma warning disable CA1801 // Remove/use unused parameter
         // Note: the builder parameter is unused, but required so that the method fits the delegate signature.
 
         /// <summary>
@@ -254,6 +255,7 @@ namespace NodaTime.Text.Patterns
         /// "use a custom format string consisting of H instead of a standard pattern H".
         /// </summary>
         internal static void HandlePercent(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder)
+#pragma warning restore CA1801
 #pragma warning restore IDE0060
         {
             if (pattern.HasMoreCharacters)

@@ -127,6 +127,7 @@ namespace NodaTime
         // NanosecondsPerDay - 1, for example.)
         private readonly long nanoOfDay;
 
+#pragma warning disable CA1801 // Remove/use unused parameter
         // Trusted constructor with no validation. The value of the noValidation parameter is
         // ignored completely; its name is just to be suggestive.
         private Duration([Trusted] int days, [Trusted] long nanoOfDay, bool noValidation)
@@ -134,6 +135,7 @@ namespace NodaTime
             this.days = days;
             this.nanoOfDay = nanoOfDay;
         }
+#pragma warning restore CA1801
 
         // Implementation note: I've tried making this internal and calling it directly from Instant.FromUnixTimeSeconds etc?
         // That reduces the number of range checks, but doesn't seem to affect the performance in a significant way.

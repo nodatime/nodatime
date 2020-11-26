@@ -114,13 +114,18 @@ namespace NodaTime.Text.Patterns
                 this.getter = getter;
             }
 
+#pragma warning disable CA1822 // Make this static
+#pragma warning disable CA1801 // Use/remove unused parameters
             [ExcludeFromCodeCoverage]
             internal void DummyMethod(TResult value, StringBuilder builder)
             {
                 // This method is never called. We use it to create a delegate with a target that implements
                 // IPostPatternParseFormatAction. There's no test for this throwing.
+                // This method must be an instance method, so that we can get the target of the method in SteppedPatternBuilder.Build.
                 throw new InvalidOperationException("This method should never be called");
             }
+#pragma warning restore CA1801
+#pragma warning restore CA1822
 
             public Action<TResult, StringBuilder> BuildFormatAction(PatternFields finalFields)
             {

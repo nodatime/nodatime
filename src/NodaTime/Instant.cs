@@ -73,6 +73,7 @@ namespace NodaTime
         /// </summary>
         private readonly Duration duration;
 
+#pragma warning disable CA1801 // Remove/use unused parameter
         /// <summary>
         /// Constructor which should *only* be used to construct the invalid instances.
         /// </summary>
@@ -80,6 +81,7 @@ namespace NodaTime
         {
             this.duration = new Duration(days, 0);
         }
+#pragma warning restore CA1801
 
         /// <summary>
         /// Constructor which constructs a new instance with the given duration, which
