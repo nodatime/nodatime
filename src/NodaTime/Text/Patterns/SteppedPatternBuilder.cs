@@ -416,7 +416,7 @@ namespace NodaTime.Text.Patterns
             {
                 if (!nonNegativePredicate(value))
                 {
-                    builder.Append("-");
+                    builder.Append('-');
                 }
             });
         }
