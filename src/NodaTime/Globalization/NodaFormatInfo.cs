@@ -448,7 +448,7 @@ namespace NodaTime.Globalization
                 string[] allNames;
                 if (pipeDelimited is null)
                 {
-                    allNames = new string[0];
+                    allNames = Array.Empty<string>();
                     primaryName = "";
                 }
                 else
