@@ -31,5 +31,14 @@ namespace NodaTime.Text
             : base(message)
         {
         }
+
+        /// <summary>
+        /// Creates a new UnparsableValueException with the given message and inner exception
+        /// </summary>
+        /// <param name="message">The failure message</param>
+        /// <param name="innerException">The inner exception</param>
+        public UnparsableValueException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

@@ -5,6 +5,11 @@
 using NodaTime.Annotations;
 using System;
 
+// Standard exception constructors.
+// This exception is expected to be constructed within the library.
+// There are never any inner exceptions, and we always *do* have a message.
+#pragma warning disable CA1032
+
 namespace NodaTime.TimeZones
 {
     /// <summary>

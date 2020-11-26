@@ -6,6 +6,11 @@ using NodaTime.Annotations;
 using System;
 using System.Globalization;
 
+// Standard exception constructors.
+// This exception is expected to be constructed within the library, and there are never any
+// inner exceptions.
+#pragma warning disable CA1032
+
 namespace NodaTime.Text
 {
     /// <summary>

@@ -181,6 +181,9 @@ namespace NodaTime.Utility
     }
 
 #if DEBUG
+// This is an internal exception very deliberately, and we don't need other constructor forms.
+#pragma warning disable CA1032 // Standard exception constructors
+#pragma warning disable CA1064 // Exceptions should be public
     /// <summary>
     /// Exception which occurs only for preconditions violated in debug mode. This is
     /// thrown from the Preconditions.Debug* methods to avoid them throwing exceptions
@@ -195,5 +198,7 @@ namespace NodaTime.Utility
         {
         }
     }
+#pragma warning restore CA1064
+#pragma warning restore CA1032
 #endif
 }
