@@ -15,7 +15,7 @@ namespace NodaTime.Annotations
     {
         internal TestExemptionCategory Category { get; }
 
-        internal TestExemptionAttribute(TestExemptionCategory category, string? message = null)
+        internal TestExemptionAttribute(TestExemptionCategory category)
         {
             Category = category;
         }
