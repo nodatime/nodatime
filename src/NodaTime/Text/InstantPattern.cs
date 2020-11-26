@@ -137,7 +137,7 @@ namespace NodaTime.Text
         /// <param name="cultureInfo">The culture to use in the pattern</param>
         /// <returns>A pattern for parsing and formatting instants.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static InstantPattern Create(string patternText, CultureInfo cultureInfo) =>
+        public static InstantPattern Create(string patternText, [ValidatedNotNull] CultureInfo cultureInfo) =>
             Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), DefaultTemplateValue);
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="cultureInfo">The culture to use in the new pattern.</param>
         /// <returns>A new pattern with the given culture.</returns>
-        public InstantPattern WithCulture(CultureInfo cultureInfo) =>
+        public InstantPattern WithCulture([ValidatedNotNull] CultureInfo cultureInfo) =>
             WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
 
         /// <summary>

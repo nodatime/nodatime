@@ -139,7 +139,7 @@ namespace NodaTime.Text
         /// <param name="templateValue">Template value to use for unspecified fields</param>
         /// <returns>A pattern for parsing and formatting annual dates.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static AnnualDatePattern Create(string patternText, CultureInfo cultureInfo, AnnualDate templateValue) =>
+        public static AnnualDatePattern Create(string patternText, [ValidatedNotNull] CultureInfo cultureInfo, AnnualDate templateValue) =>
             Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="cultureInfo">The culture to use in the new pattern.</param>
         /// <returns>A new pattern with the given culture.</returns>
-        public AnnualDatePattern WithCulture(CultureInfo cultureInfo) =>
+        public AnnualDatePattern WithCulture([ValidatedNotNull] CultureInfo cultureInfo) =>
             WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
 
         /// <summary>

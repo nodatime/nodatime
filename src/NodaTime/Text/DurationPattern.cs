@@ -112,7 +112,7 @@ namespace NodaTime.Text
         /// <param name="cultureInfo">The culture to use in the pattern</param>
         /// <returns>A pattern for parsing and formatting offsets.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        public static DurationPattern Create(string patternText, CultureInfo cultureInfo) =>
+        public static DurationPattern Create(string patternText, [ValidatedNotNull] CultureInfo cultureInfo) =>
             Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="cultureInfo">The culture to use in the new pattern.</param>
         /// <returns>A new pattern with the given culture.</returns>
-        public DurationPattern WithCulture(CultureInfo cultureInfo) =>
+        public DurationPattern WithCulture([ValidatedNotNull] CultureInfo cultureInfo) =>
             Create(PatternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
     }
 }

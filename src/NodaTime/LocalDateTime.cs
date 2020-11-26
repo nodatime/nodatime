@@ -338,6 +338,7 @@ namespace NodaTime
         /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
         public static LocalDateTime FromDateTime(DateTime dateTime, CalendarSystem calendar)
         {
+            Preconditions.CheckNotNull(calendar, nameof(calendar));
             int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.Ticks, out long tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
             return new LocalDateTime(new LocalDate(days, calendar), new LocalTime(unchecked(tickOfDay * NodaConstants.NanosecondsPerTick)));
         }
