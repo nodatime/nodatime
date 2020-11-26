@@ -5,6 +5,12 @@
 using NodaTime.Annotations;
 using System;
 
+// Standard exception constructors.
+// This exception is expected to be constructed within the library.
+// We always have a message, and we don't want to accidentally be able
+// to construct an instance of this exception without a message.
+#pragma warning disable CA1032
+
 namespace NodaTime.Utility
 {
     /// <summary>

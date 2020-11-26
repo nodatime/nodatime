@@ -6,6 +6,13 @@ using NodaTime.Annotations;
 using NodaTime.Utility;
 using System;
 
+// Standard exception constructors: we don't *want* those constructors.
+// The single constructor provided in this class populates the message and
+// accepts the required parameters for populating other properties.
+// There are never any other causes to the exception, at least that I can
+// envisage for the moment.
+#pragma warning disable CA1032
+
 namespace NodaTime
 {
     /// <summary>
