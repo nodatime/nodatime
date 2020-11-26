@@ -11,6 +11,11 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using static System.FormattableString;
 
+// Remove static constructors.
+// The calendar system initialization here can be slow or increase memory usage,
+// so the static constructors are very deliberately present to make them truly lazy.
+#pragma warning disable CA1810
+
 namespace NodaTime
 {
     /// <summary>

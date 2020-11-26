@@ -24,23 +24,24 @@ namespace NodaTime.Calendars
         private const int AverageDaysPer10Years = (DaysPerNonLeapYear * 25 + DaysPerLeapYear * 8) * 10 / 33;
         internal const int MaxPersianYear = 9377;
 
-        private static readonly int[] TotalDaysByMonth;
+        private static readonly int[] TotalDaysByMonth = GenerateTotalDaysByMonth();
 
         private readonly int[] startOfYearInDaysCache;
 
-        static PersianYearMonthDayCalculator()
+        private static int[] GenerateTotalDaysByMonth()
         {
             int days = 0;
-            TotalDaysByMonth = new int[13];
+            int[] ret = new int[13];
             for (int i = 1; i <= 12; i++)
             {
-                TotalDaysByMonth[i] = days;
+                ret[i] = days;
                 int daysInMonth = i <= 6 ? 31 : 30;
                 // This doesn't take account of leap years, but that doesn't matter - because
                 // it's not used on the last iteration, and leap years only affect the final month
                 // in the Persian calendar.
                 days += daysInMonth;
             }
+            return ret;
         }
 
         private PersianYearMonthDayCalculator(int daysAtStartOfYear1)
