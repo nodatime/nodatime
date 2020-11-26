@@ -10,6 +10,14 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using NodaTime.Extensions;
 
+// Remove static constructors.
+// The static constructor here does a fair amount of work and includes
+// local variables that would either need to be initialized multiple times,
+// or stored in another static field. Although this is a public type,
+// it's not a commonly-used one; I don't expect the performance difference
+// to be significant enough to merit extraordinary measures.
+#pragma warning disable CA1810
+
 namespace NodaTime.Xml
 {
     /// <summary>

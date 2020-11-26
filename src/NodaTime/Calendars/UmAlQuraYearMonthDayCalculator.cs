@@ -7,6 +7,12 @@ using NodaTime.Utility;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
+// Remove static constructors.
+// The static constructor here does enough work across multiple fields that
+// it would be awkward to initialize the fields inline. It's an internal
+// class and referenced pretty rarely, so it really shouldn't be a problem.
+#pragma warning disable CA1810
+
 namespace NodaTime.Calendars
 {
     /// <summary>

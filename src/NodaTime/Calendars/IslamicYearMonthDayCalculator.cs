@@ -41,15 +41,15 @@ namespace NodaTime.Calendars
         /// <summary>The pattern of leap years within a cycle, one bit per year, for this calendar.</summary>
         private readonly int leapYearPatternBits;
 
-        private static readonly int[] TotalDaysByMonth;
+        private static readonly int[] TotalDaysByMonth = GenerateTotalDaysByMonth();
 
-        static IslamicYearMonthDayCalculator()
+        private static int[] GenerateTotalDaysByMonth()
         {
             int days = 0;
-            TotalDaysByMonth = new int[12];
+            int[] ret = new int[12];
             for (int i = 0; i < 12; i++)
             {
-                TotalDaysByMonth[i] = days;
+                ret[i] = days;
                 // Here, the month number is 0-based, so even months are long
                 int daysInMonth = (i & 1) == 0 ? LongMonthLength : ShortMonthLength;
                 // This doesn't take account of leap years, but that doesn't matter - because
@@ -57,6 +57,7 @@ namespace NodaTime.Calendars
                 // in the Islamic calendar.
                 days += daysInMonth;
             }
+            return ret;
         }
 
         internal IslamicYearMonthDayCalculator(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)

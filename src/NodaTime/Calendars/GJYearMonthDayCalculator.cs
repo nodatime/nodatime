@@ -15,22 +15,20 @@ namespace NodaTime.Calendars
         protected static readonly int[] MinDaysPerMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
         protected static readonly int[] MaxDaysPerMonth = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-        private static readonly int[] MinTotalDaysByMonth;
-        private static readonly int[] MaxTotalDaysByMonth;
+        // Note: these fields must be declared after MinDaysPerMonth and MaxDaysPerMonth so that the initialization
+        // is correct. This behavior (textual order for initialization) is guaranteed by the spec. We'd normally
+        // try to avoid relying on it, but that's quite hard here.
+        private static readonly int[] MinTotalDaysByMonth = GenerateTotalDaysByMonth(MinDaysPerMonth);
+        private static readonly int[] MaxTotalDaysByMonth = GenerateTotalDaysByMonth(MaxDaysPerMonth);
 
-        static GJYearMonthDayCalculator()
+        private static int[] GenerateTotalDaysByMonth(int[] monthLengths)
         {
-            MinTotalDaysByMonth = new int[12];
-            MaxTotalDaysByMonth = new int[12];
-            int minSum = 0;
-            int maxSum = 0;
-            for (int i = 0; i < 11; i++)
+            int[] ret = new int[monthLengths.Length];
+            for (int i = 0; i < ret.Length - 1; i++)
             {
-                minSum += MinDaysPerMonth[i];
-                maxSum += MaxDaysPerMonth[i];
-                MinTotalDaysByMonth[i + 1] = minSum;
-                MaxTotalDaysByMonth[i + 1] = maxSum;
+                ret[i + 1] = ret[i] + monthLengths[i];
             }
+            return ret;
         }
 
         protected GJYearMonthDayCalculator(int minYear, int maxYear, int averageDaysPer10Years, int daysAtStartOfYear1)
