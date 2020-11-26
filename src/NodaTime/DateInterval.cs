@@ -146,7 +146,7 @@ namespace NodaTime
         /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different
         /// calendar to this date interval.</exception>
         /// <returns><c>true</c> if <paramref name="interval"/> is within this interval; <c>false</c> otherwise.</returns>
-        public bool Contains(DateInterval interval)
+        public bool Contains([ValidatedNotNull] DateInterval interval)
         {
             ValidateInterval(interval);
             return Start <= interval.Start && interval.End <= End;
@@ -204,7 +204,7 @@ namespace NodaTime
         /// </returns>
         /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different
         /// calendar to this date interval.</exception>
-        public DateInterval? Intersection(DateInterval interval) =>
+        public DateInterval? Intersection([ValidatedNotNull] DateInterval interval) =>
             Contains(interval) ? interval
                 : interval.Contains(this) ? this
                 : interval.Contains(Start) ? new DateInterval(Start, interval.End)
@@ -220,7 +220,7 @@ namespace NodaTime
         /// instance, in the case the intervals overlap or are contiguous; a null reference otherwise.
         /// </returns>
         /// <exception cref="ArgumentException"><paramref name="interval" /> uses a different calendar to this date interval.</exception>
-        public DateInterval? Union(DateInterval interval)
+        public DateInterval? Union([ValidatedNotNull] DateInterval interval)
         {
             ValidateInterval(interval);
 
