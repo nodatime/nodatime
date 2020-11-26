@@ -75,8 +75,8 @@ namespace NodaTime.Testing.TimeZones
         /// This will always return a valid zone interval, as time zones cover the whole of time.
         /// This returns either the zone interval before or after the transition, based on the instant provided.
         /// </remarks>
-        /// <param name="instant">The <see cref="T:NodaTime.Instant" /> to query.</param>
-        /// <returns>The defined <see cref="T:NodaTime.TimeZones.ZoneInterval" />.</returns>
+        /// <param name="instant">The <see cref="NodaTime.Instant" /> to query.</param>
+        /// <returns>The defined <see cref="NodaTime.TimeZones.ZoneInterval" />.</returns>
         public override ZoneInterval GetZoneInterval(Instant instant) => EarlyInterval.Contains(instant) ? EarlyInterval : LateInterval;
     }
 }

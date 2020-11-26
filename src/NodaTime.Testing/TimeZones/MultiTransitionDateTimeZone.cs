@@ -42,8 +42,8 @@ namespace NodaTime.Testing.TimeZones
         /// <remarks>
         /// This will always return a valid zone interval, as time zones cover the whole of time.
         /// </remarks>
-        /// <param name="instant">The <see cref="T:NodaTime.Instant" /> to query.</param>
-        /// <returns>The defined <see cref="T:NodaTime.TimeZones.ZoneInterval" />.</returns>
+        /// <param name="instant">The <see cref="NodaTime.Instant" /> to query.</param>
+        /// <returns>The defined <see cref="NodaTime.TimeZones.ZoneInterval" />.</returns>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
             int lower = 0; // Inclusive
