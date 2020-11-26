@@ -167,7 +167,7 @@ namespace NodaTime.Text.Patterns
 
                 // If we don't have an AM or PM designator, we're nearly done. Set the AM/PM designator
                 // to the special value of 2, meaning "take it from the template".
-                if (amDesignator == "" && pmDesignator == "")
+                if (amDesignator.Length == 0 && pmDesignator.Length == 0)
                 {
                     builder.AddParseAction((str, bucket) =>
                     {
@@ -178,9 +178,9 @@ namespace NodaTime.Text.Patterns
                 }
                 // Odd scenario (but present in af-ZA for .NET 2) - exactly one of the AM/PM designator is valid.
                 // Delegate to a separate method to keep this clearer...
-                if (amDesignator == "" || pmDesignator == "")
+                if (amDesignator.Length == 0 || pmDesignator.Length == 0)
                 {
-                    int specifiedDesignatorValue = amDesignator == "" ? 1 : 0;
+                    int specifiedDesignatorValue = amDesignator.Length == 0 ? 1 : 0;
                     string specifiedDesignator = specifiedDesignatorValue == 1 ? pmDesignator : amDesignator;
                     HandleHalfAmPmDesignator(count, specifiedDesignator, specifiedDesignatorValue, hourOfDayGetter, amPmSetter, builder);
                     return;
