@@ -78,7 +78,7 @@ namespace NodaTime
         internal static YearMonthDayCalendar Parse(string text)
         {
             // Handle a leading - to negate the year
-            if (text.StartsWith("-"))
+            if (text.StartsWith("-", StringComparison.Ordinal))
             {
                 var ymdc = Parse(text.Substring(1));
                 return new YearMonthDayCalendar(-ymdc.Year, ymdc.Month, ymdc.Day, ymdc.CalendarOrdinal);

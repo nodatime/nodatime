@@ -74,7 +74,7 @@ namespace NodaTime.TimeZones
         /// <returns>The parsed time zone, or null if the ID doesn't match.</returns>
         internal static DateTimeZone? GetFixedZoneOrNull(string id)
         {
-            if (!id.StartsWith(UtcId))
+            if (!id.StartsWith(UtcId, StringComparison.Ordinal))
             {
                 return null;
             }
