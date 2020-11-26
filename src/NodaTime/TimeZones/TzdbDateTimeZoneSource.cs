@@ -304,7 +304,7 @@ namespace NodaTime.TimeZones
         /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
         /// <param name="candidates">All the Noda Time zones to consider - normally a list 
         /// obtained from this source.</param>
-        internal string? GuessZoneIdByTransitionsUncached(TimeZoneInfo zone, List<DateTimeZone> candidates)
+        internal static string? GuessZoneIdByTransitionsUncached(TimeZoneInfo zone, List<DateTimeZone> candidates)
         {
             // See https://github.com/nodatime/nodatime/issues/686 for performance observations.
             // Very rare use of the system clock! Windows time zone updates sometimes sacrifice past

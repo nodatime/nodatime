@@ -217,7 +217,7 @@ namespace NodaTime.Calendars
             return new YearMonthDay(year, month, day);
         }
 
-        internal bool IsInAyyamiHa(YearMonthDay ymd) => ymd.Month == Month18 && ymd.Day > DaysInMonth;
+        internal static bool IsInAyyamiHa(YearMonthDay ymd) => ymd.Month == Month18 && ymd.Day > DaysInMonth;
 
         internal override bool IsLeapYear(int year) => GetDaysInAyyamiHa(year) != DaysInAyyamiHaInNormalYear;
 
