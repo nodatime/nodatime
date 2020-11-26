@@ -583,6 +583,7 @@ namespace NodaTime
             return eraCalculator.GetEra(absoluteYear);
         }
 
+#pragma warning disable CA1822 // Make a member static because it doesn't use instance members - which is only true in a release build...
         /// <summary>
         /// In debug configurations only, this method calls <see cref="ValidateYearMonthDay"/>
         /// with the components of the given YearMonthDay, ensuring that it's valid in the
@@ -598,6 +599,7 @@ namespace NodaTime
             ValidateYearMonthDay(yearMonthDay.Year, yearMonthDay.Month, yearMonthDay.Day);
 #endif
         }
+#pragma warning restore CA1822
 
         #endregion
 
