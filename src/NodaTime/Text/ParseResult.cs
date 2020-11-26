@@ -139,6 +139,8 @@ namespace NodaTime.Text
 
         #region Factory methods and readonly static fields
 
+// Changing this would be a breaking change, and I'm comfortable with it anyway.
+#pragma warning disable CA1000 // Do not declare static members on generic types
         /// <summary>
         /// Produces a ParseResult which represents a successful parse operation.
         /// </summary>
@@ -159,6 +161,7 @@ namespace NodaTime.Text
         /// <returns>A ParseResult representing a failed parsing operation.</returns>
         public static ParseResult<T> ForException(Func<Exception> exceptionProvider) =>
            new ParseResult<T>(Preconditions.CheckNotNull(exceptionProvider, nameof(exceptionProvider)), false);
+#pragma warning restore CA1000
 
         internal static ParseResult<T> ForInvalidValue(ValueCursor cursor, string formatString, params object[] parameters) =>
             ForInvalidValue(() =>
