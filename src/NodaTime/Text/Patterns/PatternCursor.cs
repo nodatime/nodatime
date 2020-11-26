@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.Globalization;
 using System.Text;
 
 namespace NodaTime.Text.Patterns
@@ -104,7 +105,7 @@ namespace NodaTime.Text.Patterns
         {
             if (!MoveNext() || Current != EmbeddedPatternStart)
             {
-                throw new InvalidPatternException(string.Format(TextErrorMessages.MissingEmbeddedPatternStart, EmbeddedPatternStart));
+                throw new InvalidPatternException(string.Format(CultureInfo.CurrentCulture, TextErrorMessages.MissingEmbeddedPatternStart, EmbeddedPatternStart));
             }
             int startIndex = Index + 1;
             int depth = 1; // For nesting
@@ -138,7 +139,7 @@ namespace NodaTime.Text.Patterns
                 }
             }
             // We've reached the end of the enclosing pattern without reaching the end of the embedded pattern. Oops.
-            throw new InvalidPatternException(string.Format(TextErrorMessages.MissingEmbeddedPatternEnd, EmbeddedPatternEnd));
+            throw new InvalidPatternException(string.Format(CultureInfo.CurrentCulture, TextErrorMessages.MissingEmbeddedPatternEnd, EmbeddedPatternEnd));
         }
     }
 }

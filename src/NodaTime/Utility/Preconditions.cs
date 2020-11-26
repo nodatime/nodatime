@@ -5,6 +5,7 @@
 using JetBrains.Annotations;
 using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace NodaTime.Utility
 {
@@ -122,7 +123,7 @@ namespace NodaTime.Utility
 #if DEBUG
             if (!expression)
             {
-                string message = string.Format(messageFormat, messageArgs);
+                string message = string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs);
                 throw new DebugPreconditionException($"{message} (parameter name: {parameter})");
             }
 #endif
@@ -143,7 +144,7 @@ namespace NodaTime.Utility
         {
             if (!expression)
             {
-                string message = string.Format(messageFormat, messageArg);
+                string message = string.Format(CultureInfo.CurrentCulture, messageFormat, messageArg);
                 throw new ArgumentException(message, parameter);
             }
         }
@@ -154,7 +155,7 @@ namespace NodaTime.Utility
         {
             if (!expression)
             {
-                string message = string.Format(messageFormat, messageArg1, messageArg2);
+                string message = string.Format(CultureInfo.CurrentCulture, messageFormat, messageArg1, messageArg2);
                 throw new ArgumentException(message, parameter);
             }
         }
