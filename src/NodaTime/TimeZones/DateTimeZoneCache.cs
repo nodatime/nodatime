@@ -125,7 +125,9 @@ namespace NodaTime.TimeZones
                 var zone = GetZoneOrNull(id);
                 if (zone is null)
                 {
+#pragma warning disable CA1065 // Don't throw an exception from an indexer
                     throw new DateTimeZoneNotFoundException($"Time zone {id} is unknown to source {VersionId}");
+#pragma warning restore CA1065
                 }
                 return zone;
             }
