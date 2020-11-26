@@ -116,7 +116,6 @@ namespace NodaTime.Calendars
             private const long LeapYearPatternBits = (1L << 1) | (1L << 5) | (1L << 9) | (1L << 13)
                 | (1L << 17) | (1L << 22) | (1L << 26) | (1L << 30);
             private const int LeapYearCycleLength = 33;
-            private const int DaysPerLeapCycle = DaysPerNonLeapYear * 25 + DaysPerLeapYear * 8;
 
             /// <summary>The ticks for the epoch of March 21st 622CE.</summary>
             private const int DaysAtStartOfYear1Constant = -492268;
