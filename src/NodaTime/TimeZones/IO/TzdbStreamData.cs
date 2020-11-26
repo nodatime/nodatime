@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text;
 
 namespace NodaTime.TimeZones.IO
 {
@@ -118,10 +119,16 @@ namespace NodaTime.TimeZones.IO
         internal static TzdbStreamData FromStream(Stream stream)
         {
             Preconditions.CheckNotNull(stream, nameof(stream));
-            int version = new BinaryReader(stream).ReadInt32();
-            if (version != AcceptedVersion)
+
+            // Using statement to satisfy FxCop, but disposable won't do anything anyway, because
+            // we deliberately leave the stream open.
+            using (var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
             {
-                throw new InvalidNodaDataException($"Unable to read stream with version {version}");
+                int version = reader.ReadInt32();
+                if (version != AcceptedVersion)
+                {
+                    throw new InvalidNodaDataException($"Unable to read stream with version {version}");
+                }
             }
             Builder builder = new Builder();
             foreach (var field in TzdbStreamField.ReadFields(stream))
