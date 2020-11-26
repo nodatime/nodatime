@@ -10,6 +10,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
+// Do not nest type X.
+// The rule is somewhat subjective, but more importantly these have been available
+// publicly for a while, so we can't change them now anyway.
+#pragma warning disable CA1034
+
 namespace NodaTime.TimeZones
 {
     /// <summary>
