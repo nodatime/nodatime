@@ -23,7 +23,7 @@ namespace NodaTime.Text.Patterns
         private readonly List<ParseAction> parseActions;
         private readonly Func<TBucket> bucketProvider;
         private PatternFields usedFields;
-        private bool formatOnly = false;
+        private bool formatOnly;
 
         internal NodaFormatInfo FormatInfo { get; }
 
