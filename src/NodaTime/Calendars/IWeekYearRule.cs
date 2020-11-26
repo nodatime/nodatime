@@ -86,14 +86,18 @@ namespace NodaTime.Calendars
         /// </summary>
         /// <param name="date">The date to compute the week-year of.</param>
         /// <returns>The week-year of <paramref name="date"/>, according to this rule.</returns>
+#pragma warning disable CA1716 // Parameter name conflicts with a framework name
         int GetWeekYear(LocalDate date);
+#pragma warning restore CA1716
 
         /// <summary>
         /// Calculates the week of the week-year in which the given date occurs, according to this rule.
         /// </summary>
         /// <param name="date">The date to compute the week of.</param>
         /// <returns>The week of the week-year of <paramref name="date"/>, according to this rule.</returns>
+#pragma warning disable CA1716 // Parameter name conflicts with a framework name
         int GetWeekOfWeekYear(LocalDate date);
+#pragma warning restore CA1716
 
         /// <summary>
         /// Returns the number of weeks in the given week-year, within the specified calendar system.
