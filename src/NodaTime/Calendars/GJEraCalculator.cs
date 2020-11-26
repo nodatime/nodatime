@@ -20,7 +20,7 @@ namespace NodaTime.Calendars
             maxYearOfAd = ymdCalculator.MaxYear;
         }
 
-        private void ValidateEra(Era era)
+        private static void ValidateEra(Era era)
         {
             if (era != Era.Common && era != Era.BeforeCommon)
             {

@@ -236,7 +236,7 @@ namespace NodaTime.TimeZones.IO
                 }
             }
 
-            private void CheckSingleField(TzdbStreamField field, object? expectedNullField)
+            private static void CheckSingleField(TzdbStreamField field, object? expectedNullField)
             {
                 if (expectedNullField != null)
                 {

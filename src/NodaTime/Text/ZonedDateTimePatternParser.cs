@@ -161,7 +161,7 @@ namespace NodaTime.Text
             /// zone. Otherwise, it will return null and the cursor will remain where
             /// it was.
             /// </summary>
-            private DateTimeZone? TryParseFixedZone(ValueCursor value)
+            private static DateTimeZone? TryParseFixedZone(ValueCursor value)
             {
                 if (value.CompareOrdinal(DateTimeZone.UtcId) != 0)
                 {

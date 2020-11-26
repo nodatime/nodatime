@@ -225,8 +225,7 @@ namespace NodaTime.Test.TimeZones
                 return;
             }
 
-            string? id = TzdbDateTimeZoneSource.Default.GuessZoneIdByTransitionsUncached(bclZone,
-                TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached);
+            string? id = TzdbDateTimeZoneSource.GuessZoneIdByTransitionsUncached(bclZone, TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached);
 
             // Unmappable zones may not be mapped, or may be mapped to something reasonably accurate.
             // We don't mind either way.

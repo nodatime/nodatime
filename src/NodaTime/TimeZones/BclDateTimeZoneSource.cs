@@ -97,6 +97,8 @@ namespace NodaTime.TimeZones
         /// </remarks>        
         DateTimeZone IDateTimeZoneSource.ForId(string id) => ForId(id);
 
+// Even though this member could be static, it would be inconsistent with the interface member.
+#pragma warning disable CA1822 // Make this member static
         /// <summary>
         /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
         /// ID. The ID must be a known system time zone ID.
@@ -116,6 +118,7 @@ namespace NodaTime.TimeZones
                 throw new ArgumentException(id + " is not a system time zone ID", nameof(id));
             }
         }
+#pragma warning restore CA1822
 
         // Note: if TimeZoneInfo.Local returns a null reference, we'll return a null reference here as well.
         // However, we *don't* attempt to validate that a non-null reference has a valid ID that can be looked up.

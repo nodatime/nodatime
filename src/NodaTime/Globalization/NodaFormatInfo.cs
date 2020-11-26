@@ -174,7 +174,7 @@ namespace NodaTime.Globalization
         /// See https://xamarin.github.io/bugzilla-archives/11/11361/bug.html for more details and progress.
         /// </para>
         /// </remarks>
-        private IReadOnlyList<string> ConvertGenitiveMonthArray(IReadOnlyList<string> nonGenitiveNames, string[] bclNames, string[] invariantNames)
+        private static IReadOnlyList<string> ConvertGenitiveMonthArray(IReadOnlyList<string> nonGenitiveNames, string[] bclNames, string[] invariantNames)
         {
             if (int.TryParse(bclNames[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out var _))
             {
