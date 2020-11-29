@@ -72,7 +72,7 @@ namespace NodaTime.Testing.TimeZones
 
 // This isn't really a collection type; it only implements IEnumerable to enable collection initializers.
 #pragma warning disable CA1010 // Implement IEnumerable<T>
-#pragma warning disable CA1710 // Rename to class end in "Collection"
+#pragma warning disable CA1710 // Rename class to end in "Collection"
         /// <summary>
         /// Builder to create instances of <see cref="MultiTransitionDateTimeZone"/>. Each builder
         /// can only be built once.
