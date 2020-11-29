@@ -453,6 +453,9 @@ namespace NodaTime.Globalization
                 }
                 else
                 {
+                    // If the BCL has provided an era name other than the one we'd consider to be the primary one, make *that*
+                    // the primary one for formatting.
+                    // TODO: Achieve the same result without the string allocations.
                     string? eraNameFromCulture = GetEraNameFromBcl(era, cultureInfo);
                     if (eraNameFromCulture != null && !pipeDelimited.StartsWith(eraNameFromCulture + "|", StringComparison.Ordinal))
                     {

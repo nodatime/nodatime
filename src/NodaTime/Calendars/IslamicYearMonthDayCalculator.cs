@@ -41,6 +41,7 @@ namespace NodaTime.Calendars
         /// <summary>The pattern of leap years within a cycle, one bit per year, for this calendar.</summary>
         private readonly int leapYearPatternBits;
 
+        /// <summary>The number of days preceding the 0-indexed month - so [0, 30, 59, ...]</summary>
         private static readonly int[] TotalDaysByMonth = GenerateTotalDaysByMonth();
 
         private static int[] GenerateTotalDaysByMonth()

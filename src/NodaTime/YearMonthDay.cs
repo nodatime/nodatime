@@ -52,11 +52,11 @@ namespace NodaTime
         internal int Month => unchecked(((value & MonthMask) >> YearMonthDayCalendar.DayBits) + 1);
         internal int Day => unchecked((value & DayMask) + 1);
 
-        // Just for testing purposes...
+        // Just for testing purposes... note that this does not perform clean validation.
         internal static YearMonthDay Parse(string text)
         {
             // Handle a leading - to negate the year
-            if (text.StartsWith("-", StringComparison.Ordinal))
+            if (text[0] == '-')
             {
                 var ymd = Parse(text.Substring(1));
                 return new YearMonthDay(-ymd.Year, ymd.Month, ymd.Day);
