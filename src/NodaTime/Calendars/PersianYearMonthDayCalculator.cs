@@ -24,6 +24,7 @@ namespace NodaTime.Calendars
         private const int AverageDaysPer10Years = (DaysPerNonLeapYear * 25 + DaysPerLeapYear * 8) * 10 / 33;
         internal const int MaxPersianYear = 9377;
 
+        /// <summary>The number of days preceding the 1-indexed month - so [0, 0, 31, 62, 93, ...]</summary>
         private static readonly int[] TotalDaysByMonth = GenerateTotalDaysByMonth();
 
         private readonly int[] startOfYearInDaysCache;

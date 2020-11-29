@@ -21,6 +21,10 @@ namespace NodaTime.Calendars
         private static readonly int[] MinTotalDaysByMonth = GenerateTotalDaysByMonth(MinDaysPerMonth);
         private static readonly int[] MaxTotalDaysByMonth = GenerateTotalDaysByMonth(MaxDaysPerMonth);
 
+        /// <summary>
+        /// Produces an array with "the sum of the elements of <paramref name="monthLengths"/> before the corresponding index".
+        /// So for an input of [1, 2, 3, 4, 5] this would produce [0, 1, 3, 6, 10].
+        /// </summary>
         private static int[] GenerateTotalDaysByMonth(int[] monthLengths)
         {
             int[] ret = new int[monthLengths.Length];

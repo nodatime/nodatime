@@ -120,7 +120,7 @@ namespace NodaTime.TimeZones.IO
         {
             Preconditions.CheckNotNull(stream, nameof(stream));
 
-            // Using statement to satisfy FxCop, but disposable won't do anything anyway, because
+            // Using statement to satisfy FxCop, but dispose won't do anything anyway, because
             // we deliberately leave the stream open.
             using (var reader = new BinaryReader(stream, Encoding.UTF8, leaveOpen: true))
             {

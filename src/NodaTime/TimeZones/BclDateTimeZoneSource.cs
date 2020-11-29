@@ -98,6 +98,7 @@ namespace NodaTime.TimeZones
         DateTimeZone IDateTimeZoneSource.ForId(string id) => ForId(id);
 
 // Even though this member could be static, it would be inconsistent with the interface member.
+// It would also be a breaking change.
 #pragma warning disable CA1822 // Make this member static
         /// <summary>
         /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given
