@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
@@ -67,9 +68,19 @@ namespace NodaTime.Xml
         {
             var xsStringType = XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String);
 
+            var annualDateRestriction = CreatePatternRestriction<AnnualDate>(xsStringType, $"{MonthPattern}-{DayPattern}");
             var calendarRestriction = CreateEnumerationRestriction("calendar", xsStringType, CalendarSystem.Ids);
-            var localDateRestriction = CreatePatternRestriction("localDate", xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}");
-            var localDateTimeRestriction = CreatePatternRestriction("localDateTime", xsStringType,  $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}");
+            var durationRestriction = CreatePatternRestriction<Duration>(xsStringType, DurationPattern);
+            var instantRestriction = CreatePatternRestriction<Instant>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}Z");
+            var localDateRestriction = CreatePatternRestriction<LocalDate>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}");
+            var localDateTimeRestriction = CreatePatternRestriction<LocalDateTime>(xsStringType,  $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}");
+            var localTimeRestriction = CreatePatternRestriction<LocalTime>(xsStringType, TimePattern);
+            var offsetRestriction = CreatePatternRestriction<Offset>(xsStringType, OffsetPattern);
+            var offsetDateRestriction = CreatePatternRestriction<OffsetDate>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}{OffsetPattern}");
+            var offsetDateTimeRestriction = CreatePatternRestriction<OffsetDateTime>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}{OffsetPattern}");
+            var offsetTimeRestriction = CreatePatternRestriction<OffsetTime>(xsStringType, $"{TimePattern}{OffsetPattern}");
+            var periodBuilderRestriction = CreatePatternRestriction<PeriodBuilder>(xsStringType, PeriodBuilderPattern);
+            var yearMonthRestriction = CreatePatternRestriction<YearMonth>(xsStringType, $"{YearPattern}-{MonthPattern}");
             var zoneIds = CreateEnumerationRestriction("zoneIds", xsStringType, XmlSerializationSettings.DateTimeZoneProvider.GetAllZones().Select(e => e.Id));
             // The "zoneIds" purpose is to document the known zone identifiers. The "zone" restriction is a union between known zone ids and
             // xs:string so that validation won't fail when a new zone identifier is added to the Time Zone Database.
@@ -82,34 +93,44 @@ namespace NodaTime.Xml
             var calendarAttribute = new XmlSchemaAttribute { Name = "calendar", SchemaTypeName = calendarRestriction.QualifiedName };
             var zoneAttribute = new XmlSchemaAttribute { Name = "zone", SchemaTypeName = zoneRestriction.QualifiedName, Use = XmlSchemaUse.Required };
 
-            AnnualDateSchemaType = CreatePatternRestriction<AnnualDate>(xsStringType, $"{MonthPattern}-{DayPattern}");
-            DurationSchemaType = CreatePatternRestriction<Duration>(xsStringType, DurationPattern);
-            InstantSchemaType = CreatePatternRestriction<Instant>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}Z");
+            AnnualDateSchemaType = CreateSchemaType<AnnualDate>(annualDateRestriction);
+            DurationSchemaType = CreateSchemaType<Duration>(durationRestriction);
+            InstantSchemaType = CreateSchemaType<Instant>(instantRestriction);
             IntervalSchemaType = new XmlSchemaComplexType
             {
                 Name = nameof(Interval),
                 Attributes = {
-                    new XmlSchemaAttribute { Name = "start", SchemaTypeName = InstantSchemaType.QualifiedName },
-                    new XmlSchemaAttribute { Name = "end", SchemaTypeName = InstantSchemaType.QualifiedName }
+                    new XmlSchemaAttribute { Name = "start", SchemaTypeName = instantRestriction.QualifiedName },
+                    new XmlSchemaAttribute { Name = "end", SchemaTypeName = instantRestriction.QualifiedName }
                 }
             };
-            LocalDateSchemaType = CreateSchemaTypeWithAttributes<LocalDate>(localDateRestriction, calendarAttribute);
-            LocalDateTimeSchemaType = CreateSchemaTypeWithAttributes<LocalDateTime>(localDateTimeRestriction, calendarAttribute);
-            LocalTimeSchemaType = CreatePatternRestriction<LocalTime>(xsStringType, TimePattern);
-            OffsetSchemaType = CreatePatternRestriction<Offset>(xsStringType, OffsetPattern);
-            OffsetDateSchemaType = CreatePatternRestriction<OffsetDate>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}{OffsetPattern}");
-            OffsetDateTimeSchemaType = CreatePatternRestriction<OffsetDateTime>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}{OffsetPattern}");
-            OffsetTimeSchemaType = CreatePatternRestriction<OffsetTime>(xsStringType, $"{TimePattern}{OffsetPattern}");
-            PeriodBuilderSchemaType = CreatePatternRestriction<PeriodBuilder>(xsStringType, PeriodBuilderPattern);
-            YearMonthSchemaType = CreatePatternRestriction<YearMonth>(xsStringType, $"{YearPattern}-{MonthPattern}");
-            ZonedDateTimeSchemaType = CreateSchemaTypeWithAttributes<ZonedDateTime>(OffsetDateTimeSchemaType, zoneAttribute, calendarAttribute);
+            LocalDateSchemaType = CreateSchemaType<LocalDate>(localDateRestriction, calendarAttribute);
+            LocalDateTimeSchemaType = CreateSchemaType<LocalDateTime>(localDateTimeRestriction, calendarAttribute);
+            LocalTimeSchemaType = CreateSchemaType<LocalTime>(localTimeRestriction);
+            OffsetSchemaType = CreateSchemaType<Offset>(offsetRestriction);
+            OffsetDateSchemaType = CreateSchemaType<OffsetDate>(offsetDateRestriction);
+            OffsetDateTimeSchemaType = CreateSchemaType<OffsetDateTime>(offsetDateTimeRestriction);
+            OffsetTimeSchemaType = CreateSchemaType<OffsetTime>(offsetTimeRestriction);
+            PeriodBuilderSchemaType = CreateSchemaType<PeriodBuilder>(periodBuilderRestriction);
+            YearMonthSchemaType = CreateSchemaType<YearMonth>(yearMonthRestriction);
+            ZonedDateTimeSchemaType = CreateSchemaType<ZonedDateTime>(offsetDateTimeRestriction, zoneAttribute, calendarAttribute);
 
             DependentSchemaTypes = new Dictionary<XmlSchemaType, IEnumerable<XmlSchemaType>>
             {
-                [IntervalSchemaType] = new[] { InstantSchemaType },
+                [AnnualDateSchemaType] = new[] { annualDateRestriction },
+                [DurationSchemaType] = new[] { durationRestriction },
+                [InstantSchemaType] = new[] { instantRestriction },
+                [IntervalSchemaType] = new[] { instantRestriction },
                 [LocalDateSchemaType] = new[] { localDateRestriction, calendarRestriction },
                 [LocalDateTimeSchemaType] = new[] { localDateTimeRestriction, calendarRestriction },
-                [ZonedDateTimeSchemaType] = new[] { OffsetDateTimeSchemaType, calendarRestriction, zoneRestriction, zoneIds },
+                [LocalTimeSchemaType] = new[] { localTimeRestriction },
+                [OffsetSchemaType] = new[] { offsetRestriction },
+                [OffsetDateSchemaType] = new[] { offsetDateRestriction },
+                [OffsetDateTimeSchemaType] = new[] { offsetDateTimeRestriction },
+                [OffsetTimeSchemaType] = new[] { offsetTimeRestriction },
+                [PeriodBuilderSchemaType] = new[] { periodBuilderRestriction },
+                [YearMonthSchemaType] = new[] { yearMonthRestriction },
+                [ZonedDateTimeSchemaType] = new[] { offsetDateTimeRestriction, calendarRestriction, zoneRestriction, zoneIds },
             };
 
             NodaTimeXmlSchema = CreateNodaTimeXmlSchema();
@@ -182,7 +203,7 @@ namespace NodaTime.Xml
         }
 
         // See https://stackoverflow.com/questions/626319/add-attributes-to-a-simpletype-or-restriction-to-a-complextype-in-xml-schema/626385#626385
-        private static XmlSchemaComplexType CreateSchemaTypeWithAttributes<T>(XmlSchemaType baseType, params XmlSchemaAttribute[] attributes) where T : IXmlSerializable
+        private static XmlSchemaComplexType CreateSchemaType<T>(XmlSchemaType baseType, params XmlSchemaAttribute[] attributes) where T : IXmlSerializable
         {
             var content = new XmlSchemaSimpleContentExtension { BaseTypeName = baseType.QualifiedName };
             foreach (var attribute in attributes)
@@ -197,12 +218,9 @@ namespace NodaTime.Xml
         }
 
         private static XmlSchemaSimpleType CreatePatternRestriction<T>(XmlSchemaType baseType, string pattern) where T : IXmlSerializable =>
-            CreatePatternRestriction(typeof(T).Name, baseType, pattern);
-
-        private static XmlSchemaSimpleType CreatePatternRestriction(string name, XmlSchemaType baseType, string pattern) =>
             QualifySchemaType(new XmlSchemaSimpleType
             {
-                Name = name,
+                Name = char.ToLower(typeof(T).Name[0], CultureInfo.InvariantCulture) + typeof(T).Name.Substring(1),
                 Content = new XmlSchemaSimpleTypeRestriction
                 {
                     BaseTypeName = baseType.QualifiedName,

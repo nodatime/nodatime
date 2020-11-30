@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:nodatime="https://nodatime.org/api/" targetNamespace="https://nodatime.org/api/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:simpleType name="AnnualDate">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[0-9]{2}-[0-9]{2}" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="Duration">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="-?[0-9]{1,8}:[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="Instant">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="-?[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?Z" />
-    </xs:restriction>
-  </xs:simpleType>
+  <xs:complexType name="AnnualDate">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:annualDate" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="Duration">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:duration" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="Instant">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:instant" />
+    </xs:simpleContent>
+  </xs:complexType>
   <xs:complexType name="Interval">
-    <xs:attribute name="start" type="nodatime:Instant" />
-    <xs:attribute name="end" type="nodatime:Instant" />
+    <xs:attribute name="start" type="nodatime:instant" />
+    <xs:attribute name="end" type="nodatime:instant" />
   </xs:complexType>
   <xs:complexType name="LocalDate">
     <xs:simpleContent>
@@ -33,49 +33,54 @@
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
-  <xs:simpleType name="LocalTime">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="Offset">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="(Z|[+-][0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="OffsetDate">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="-?[0-9]{4}-[0-9]{2}-[0-9]{2}(Z|[+-][0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="OffsetDateTime">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="-?[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?(Z|[+-][0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="OffsetTime">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?(Z|[+-][0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="PeriodBuilder">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="P(-?[0-9]+Y)?(-?[0-9]+M)?(-?[0-9]+W)?(-?[0-9]+D)?(T(-?[0-9]+H)?(-?[0-9]+M)?(-?[0-9]+S)?(-?[0-9]+s)?(-?[0-9]+t)?(-?[0-9]+n)?)?" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="YearMonth">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="-?[0-9]{4}-[0-9]{2}" />
-    </xs:restriction>
-  </xs:simpleType>
+  <xs:complexType name="LocalTime">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:localTime" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="Offset">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:offset" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="OffsetDate">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:offsetDate" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="OffsetDateTime">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:offsetDateTime" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="OffsetTime">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:offsetTime" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PeriodBuilder">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:periodBuilder" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="YearMonth">
+    <xs:simpleContent>
+      <xs:extension base="nodatime:yearMonth" />
+    </xs:simpleContent>
+  </xs:complexType>
   <xs:complexType name="ZonedDateTime">
     <xs:simpleContent>
-      <xs:extension base="nodatime:OffsetDateTime">
+      <xs:extension base="nodatime:offsetDateTime">
         <xs:attribute name="zone" type="nodatime:zone" use="required" />
         <xs:attribute name="calendar" type="nodatime:calendar" />
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
+  <xs:simpleType name="annualDate">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{2}-[0-9]{2}" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="calendar">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Badi" />
@@ -99,6 +104,16 @@
       <xs:enumeration value="Um Al Qura" />
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="duration">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="-?[0-9]{1,8}:[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="instant">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="-?[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?Z" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="localDate">
     <xs:restriction base="xs:string">
       <xs:pattern value="-?[0-9]{4}-[0-9]{2}-[0-9]{2}" />
@@ -107,6 +122,41 @@
   <xs:simpleType name="localDateTime">
     <xs:restriction base="xs:string">
       <xs:pattern value="-?[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="localTime">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="offset">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(Z|[+-][0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="offsetDate">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="-?[0-9]{4}-[0-9]{2}-[0-9]{2}(Z|[+-][0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="offsetDateTime">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="-?[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?(Z|[+-][0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="offsetTime">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?(Z|[+-][0-9]{2}(:[0-9]{2}(:[0-9]{2})?)?)" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="periodBuilder">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="P(-?[0-9]+Y)?(-?[0-9]+M)?(-?[0-9]+W)?(-?[0-9]+D)?(T(-?[0-9]+H)?(-?[0-9]+M)?(-?[0-9]+S)?(-?[0-9]+s)?(-?[0-9]+t)?(-?[0-9]+n)?)?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="yearMonth">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="-?[0-9]{4}-[0-9]{2}" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="zone">
