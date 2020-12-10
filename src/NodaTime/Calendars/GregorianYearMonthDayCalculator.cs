@@ -151,7 +151,7 @@ namespace NodaTime.Calendars
             {
                 return;
             }
-            int daysInMonth = month == 2 && IsGregorianLeapYear(year) ? MaxDaysPerMonth[month - 1] : MinDaysPerMonth[month - 1];
+            int daysInMonth = month == 2 && IsGregorianLeapYear(year) ? LeapDaysPerMonth[month] : NonLeapDaysPerMonth[month];
             if (day < 1 || day > daysInMonth)
             {
                 Preconditions.CheckArgumentRange(nameof(day), day, 1, daysInMonth);
