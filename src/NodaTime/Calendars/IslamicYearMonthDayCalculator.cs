@@ -41,18 +41,18 @@ namespace NodaTime.Calendars
         /// <summary>The pattern of leap years within a cycle, one bit per year, for this calendar.</summary>
         private readonly int leapYearPatternBits;
 
-        /// <summary>The number of days preceding the 0-indexed month - so [0, 30, 59, ...]</summary>
+        /// <summary>The number of days preceding the 1-indexed month - so [0, 0, 30, 59, ...]</summary>
         private static readonly int[] TotalDaysByMonth = GenerateTotalDaysByMonth();
 
         private static int[] GenerateTotalDaysByMonth()
         {
             int days = 0;
-            int[] ret = new int[12];
-            for (int i = 0; i < 12; i++)
+            int[] ret = new int[13];
+            for (int i = 1; i <= 12; i++)
             {
                 ret[i] = days;
-                // Here, the month number is 0-based, so even months are long
-                int daysInMonth = (i & 1) == 0 ? LongMonthLength : ShortMonthLength;
+                // Here, the month number is 1-based, so odd months are long
+                int daysInMonth = (i & 1) == 1 ? LongMonthLength : ShortMonthLength;
                 // This doesn't take account of leap years, but that doesn't matter - because
                 // it's not used on the last iteration, and leap years only affect the final month
                 // in the Islamic calendar.
@@ -67,12 +67,9 @@ namespace NodaTime.Calendars
             this.leapYearPatternBits = GetLeapYearPatternBits(leapYearPattern);
         }
 
-        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month)
-        {
-            // The number of days at the *start* of a month isn't affected by
-            // the year as the only month length which varies by year is the last one.
-            return TotalDaysByMonth[month - 1];
-        }
+        // The number of days at the *start* of a month isn't affected by
+        // the year as the only month length which varies by year is the last one.
+        protected override int GetDaysFromStartOfYearToStartOfMonth(int year, int month) => TotalDaysByMonth[month];
 
         internal override YearMonthDay GetYearMonthDay(int year, int dayOfYear)
         {
