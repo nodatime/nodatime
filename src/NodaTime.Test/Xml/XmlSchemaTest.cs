@@ -117,6 +117,24 @@ namespace NodaTime.Test.Xml
         }
 
         [Test]
+        public void IntervalWithoutStart()
+        {
+            AssertValidSerializedNodaTimeObject(new NodaTimeObject { MyInterval = new Interval(null, Instant.MinValue) });
+        }
+
+        [Test]
+        public void IntervalWithoutEnd()
+        {
+            AssertValidSerializedNodaTimeObject(new NodaTimeObject { MyInterval = new Interval(Instant.MinValue, null) });
+        }
+
+        [Test]
+        public void IntervalWithoutStartNorEnd()
+        {
+            AssertValidSerializedNodaTimeObject(new NodaTimeObject { MyInterval = new Interval(null, null) });
+        }
+
+        [Test]
         public void LocalDateMinValue()
         {
             AssertValidSerializedNodaTimeObject(new NodaTimeObject { MyLocalDate = LocalDate.MinIsoValue });
