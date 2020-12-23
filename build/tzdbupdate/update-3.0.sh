@@ -55,7 +55,11 @@ cd ..
 cd nodatime
 sed -i s/\>${RELEASE}\</\>${NEW_RELEASE}\</g Directory.Build.props
 cp "${ROOT}/src/NodaTime/TimeZones/Tzdb.nzd" src/NodaTime/TimeZones
-cp "${ROOT}/src/NodaTime.Test/Xml/XmlSchemaTest.XmlSchema.approved.xml" src/NodaTime.Test/Xml
+
+# Don't update the XML schema test file; this only needs to change when there's a new
+# time zone, and the 3.0.x schema uses simple types instead of complex ones, so the
+# tests fail.
+# cp "${ROOT}/src/NodaTime.Test/Xml/XmlSchemaTest.XmlSchema.approved.xml" src/NodaTime.Test/Xml
 
 # Commit and tag the change
 git commit -a -m "Update to TZDB ${TZDB_RELEASE} for release ${NEW_RELEASE}"
