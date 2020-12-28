@@ -8,7 +8,7 @@ If you want to contribute to the codebase, you're going to need a text editor or
 
 [Visual Studio for Mac](https://visualstudio.microsoft.com/vs/mac/) and [JetBrains Rider](https://www.jetbrains.com/rider/) should be fine as well, but we haven't tried developing Noda Time using them.
 
-You're also going to need .NET Core SDK installed - you can download it from [here](https://dotnet.microsoft.com/download).
+You're also going to need the .NET / .NET Core SDK installed. Look at the [global.json](global.json) file to see which version of the SDK is currently required, then download it from [here](https://dotnet.microsoft.com/download). (The version required to build and test Noda Time won't always be the most recent version; we generally stick to LTS releases unless there's a compelling reason to upgrade to something else.)
 
 Please make sure you have a [git client](https://git-scm.com/) installed. If you don't already have a GitHub account, [please create one](https://github.com/join).
 
