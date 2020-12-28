@@ -383,14 +383,21 @@ namespace NodaTime.TzdbCompiler.Tzdb
             {
                 throw new ArgumentException($"To year cannot be before the from year in a Rule: {toYear} < {fromYear}");
             }
+
+            // We don't support types any more, but rather than just ignoring the value, we check that it's not specified.
             var type = NextOptional(tokens, "Type");
+            if (type is object)
+            {
+                throw new NotImplementedException($"Zone rules with types are no longer supported. Recurrence '{name}' has type '{type}'");
+            }
+
             var yearOffset = ParseDateTimeOfYear(tokens, true);
             var savings = NextOffset(tokens, "SaveMillis");
             var daylightSavingsIndicator = NextOptional(tokens, "LetterS");
             // The name of the zone recurrence is currently the name of the rule. Later (in ZoneRule.GetRecurrences)
             // it will be replaced with the formatted name. It's not ideal, but it avoids a lot of duplication.
             var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
-            return new RuleLine(recurrence, daylightSavingsIndicator, type);
+            return new RuleLine(recurrence, daylightSavingsIndicator);
         }
 
         /// <summary>
