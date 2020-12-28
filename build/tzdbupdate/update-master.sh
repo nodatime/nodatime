@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -e
-set -o pipefail
+set -eu -o pipefail
 
 cd $(dirname $0)
 
@@ -47,10 +46,10 @@ dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash --noabbr
 dotnet run -p $SRCDIR/NodaTime.TzValidate.NzdCompatibility -- -s $OUTPUT --hash --noabbr | grep -v "Skipping" > tmp-hashes/local-noabbr-11.txt
 
 echo ""
-echo "Hash on github pages: $(cat tmp-hashes/github-pages.txt)"
-echo "Hash from new file: $(cat tmp-hashes/local.txt)"
-echo "Hash from new file without abbreviations: $(cat tmp-hashes/local-noabbr.txt)"
-echo "Hash from new file without abbreviations, using Noda Time 1.1: $(cat tmp-hashes/local-noabbr-11.txt)"
+echo "Hash on github pages: $(< tmp-hashes/github-pages.txt)"
+echo "Hash from new file: $(< tmp-hashes/local.txt)"
+echo "Hash from new file without abbreviations: $(< tmp-hashes/local-noabbr.txt)"
+echo "Hash from new file without abbreviations, using Noda Time 1.1: $(< tmp-hashes/local-noabbr-11.txt)"
 
 # diff's exit code will stop the script at this point if the hashes don't match
 diff tmp-hashes/github-pages.txt tmp-hashes/local.txt
