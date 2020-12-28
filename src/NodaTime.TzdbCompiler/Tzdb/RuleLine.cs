@@ -36,25 +36,17 @@ namespace NodaTime.TzdbCompiler.Tzdb
         public string Name => recurrence.Name;
 
         /// <summary>
-        /// The "type" of the rule - usually null, meaning "applies in every year" - but can be
-        /// "odd", "even" etc - usually yearistype.sh is used to determine this; Noda Time only supports
-        /// "odd" and "even" (used in Australia for data up to and including 2000e).
-        /// </summary>
-        public string? Type { get; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RuleLine" /> class.
         /// </summary>
         /// <param name="recurrence">The recurrence definition of this rule.</param>
         /// <param name="daylightSavingsIndicator">The daylight savings indicator letter for time zone names.</param>
-        public RuleLine(ZoneRecurrence recurrence, string? daylightSavingsIndicator, string? type)
+        public RuleLine(ZoneRecurrence recurrence, string? daylightSavingsIndicator)
         {
             this.recurrence = recurrence;
             this.daylightSavingsIndicator = daylightSavingsIndicator;
-            this.Type = type;
         }
        
-        #region IEquatable<ZoneRule> Members
+        #region IEquatable<RuleLine> Members
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.
         /// </summary>
@@ -94,42 +86,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// daylight saving time, but with different names.
         /// </remarks>
         /// <param name="zone">The zone for which this rule is being considered.</param>
-        public IEnumerable<ZoneRecurrence> GetRecurrences(ZoneLine zone)
+        public ZoneRecurrence GetRecurrence(ZoneLine zone)
         {
             string name = zone.FormatName(recurrence.Savings, daylightSavingsIndicator);
-            if (Type is null)
-            {
-                yield return recurrence.WithName(name);
-            }
-            else
-            {
-                Predicate<int> yearPredicate = GetYearPredicate();
-                // Apply a little sanity...
-                if (recurrence.IsInfinite || recurrence.ToYear - recurrence.FromYear > 1000)
-                {
-                    throw new NotSupportedException("Noda Time does not support 'typed' rules over large periods");
-                }
-                for (int year = recurrence.FromYear; year <= recurrence.ToYear; year++)
-                {
-                    if (yearPredicate(year))
-                    {                        
-                        yield return recurrence.ForSingleYear(year).WithName(name);
-                    }
-                }
-            }
-        }
-
-        private Predicate<int> GetYearPredicate()
-        {
-            switch (Type)
-            {
-                case "odd":
-                    return year => year % 2 == 1;
-                case "even":
-                    return year => year % 2 == 0;
-                default:
-                    throw new NotSupportedException($"Noda Time does not support rules of type {Type}");
-            }
+            return recurrence.WithName(name);
         }
 
         #region Object overrides

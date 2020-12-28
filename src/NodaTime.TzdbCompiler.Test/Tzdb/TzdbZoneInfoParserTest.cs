@@ -525,6 +525,15 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             Assert.AreEqual(int.MaxValue, zone.UntilYear);
         }
 
+        [Test]
+        public void Parse_RuleWithType()
+        {
+            string line = "Rule BrokenRule 2010 2020 odd Apr Sun>=1 2:00 1:00 D\n";
+            var exception = Assert.Throws<NotImplementedException>(() => ParseText(line));            
+            StringAssert.Contains("'BrokenRule'", exception.Message);
+            StringAssert.Contains("'odd'", exception.Message);
+        }
+
         /// <summary>
         /// Helper method to create a database and call Parse with the given text.
         /// </summary>
