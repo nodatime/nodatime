@@ -20,9 +20,11 @@ declare -r OUTPUT=$SRCDIR/NodaTime/TimeZones/Tzdb.nzd
 declare -r DATADIR=$ROOT/data
 declare -r WWWDIR=$SRCDIR/NodaTime.Web/wwwroot
 
-dotnet restore -v quiet $SRCDIR/NodaTime.sln
-dotnet build $SRCDIR/NodaTime.sln
+echo "Building solution"
+dotnet build -nologo -clp:NoSummary -v quiet $SRCDIR/NodaTime.sln
 
+echo ""
+echo "Generating NZD file"
 dotnet run -p $SRCDIR/NodaTime.TzdbCompiler -- \
   -o $OUTPUT \
   -s https://data.iana.org/time-zones/releases/tzdata$1.tar.gz \
@@ -31,18 +33,30 @@ dotnet run -p $SRCDIR/NodaTime.TzdbCompiler -- \
   | grep -v "Skipping"
 
 echo ""
+echo "Testing"
+dotnet build -nologo -clp:NoSummary -v quiet -c Release $SRCDIR/NodaTime.Test
+dotnet test -nologo --no-build -c Release ../../src/NodaTime.Test --filter=TestCategory!=Slow
 
-dotnet test ../../src/NodaTime.Test --filter=TestCategory!=Slow
+echo "Checking hashes"
+rm -rf tmp-hashes
+mkdir tmp-hashes
 
-echo Hash on github pages:
-wget -q -O - https://nodatime.github.io/tzvalidate/tzdata$1-sha256.txt 2> /dev/null
-echo Hash from new file:
-dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash | grep -v "Skipping"
-echo Hash from new file without abbreviations:
-dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash --noabbr | grep -v "Skipping"
-echo Hash from new file without abbreviations, using Noda Time 1.1:
-dotnet run -p $SRCDIR/NodaTime.TzValidate.NzdCompatibility -- -s $OUTPUT --hash --noabbr | grep -v "Skipping"
+wget -q -O tmp-hashes/github-pages.txt https://nodatime.github.io/tzvalidate/tzdata$1-sha256.txt 2> /dev/null
+dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash | grep -v "Skipping" > tmp-hashes/local.txt
+dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash --noabbr | grep -v "Skipping" > tmp-hashes/local-noabbr.txt
+dotnet run -p $SRCDIR/NodaTime.TzValidate.NzdCompatibility -- -s $OUTPUT --hash --noabbr | grep -v "Skipping" > tmp-hashes/local-noabbr-11.txt
 
 echo ""
+echo "Hash on github pages: $(cat tmp-hashes/github-pages.txt)"
+echo "Hash from new file: $(cat tmp-hashes/local.txt)"
+echo "Hash from new file without abbreviations: $(cat tmp-hashes/local-noabbr.txt)"
+echo "Hash from new file without abbreviations, using Noda Time 1.1: $(cat tmp-hashes/local-noabbr-11.txt)"
+
+# diff's exit code will stop the script at this point if the hashes don't match
+diff tmp-hashes/github-pages.txt tmp-hashes/local.txt
+diff tmp-hashes/local-noabbr.txt tmp-hashes/local-noabbr-11.txt
+
+echo ""
+echo "Success!"
 echo "When you're ready, update Google Cloud Storage:"
 echo "gsutil cp $OUTPUT gs://nodatime/tzdb/tzdb$1.nzd"
