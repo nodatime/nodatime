@@ -78,3 +78,11 @@ If your pull request fixes an issue, add a comment with the word "Fixes", "Resol
 >   Fixes #1145
 
 If you need to, feel free to add comments to the PR asking for suggestions or help.
+
+### Bash scripts
+
+### Other scripts
+
+Bash scripts are used for more complex tasks such as updating TZDB. Many contributors will never need to run these scripts as they're, but just occasionally they may be useful when investigating a CI failure.
+
+These should largely work from any bash environment, but the one used by the maintainers is the version included with [Git for Windows](https://git-scm.com/download/win), also sometimes known as "git bash". Please [file an issue](https://github.com/nodatime/nodatime/issues/new) if you need to run a script but have trouble doing so.
