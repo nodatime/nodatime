@@ -1,4 +1,4 @@
-[![Travis build Status](https://travis-ci.org/nodatime/nodatime.svg?branch=master)](https://travis-ci.org/nodatime/nodatime)
+[![Travis build Status](https://travis-ci.com/nodatime/nodatime.svg?branch=master)](https://travis-ci.com/nodatime/nodatime)
 [![Build status](https://ci.appveyor.com/api/projects/status/kw664whqre92a00m?svg=true)](https://ci.appveyor.com/project/nodatime/nodatime)
 [![Coverage Status](https://codecov.io/gh/nodatime/nodatime/branch/master/graph/badge.svg)](https://codecov.io/gh/nodatime/nodatime)
 
