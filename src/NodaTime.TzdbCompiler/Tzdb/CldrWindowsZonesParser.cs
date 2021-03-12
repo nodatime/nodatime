@@ -21,8 +21,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
         {
             var mapZones = MapZones(document);
             var windowsZonesVersion = FindVersion(document);
-            var tzdbVersion = document.Root.Element("windowsZones")?.Element("mapTimezones")?.Attribute("typeVersion")?.Value ?? "";
-            var windowsVersion = document.Root.Element("windowsZones")?.Element("mapTimezones")?.Attribute("otherVersion")?.Value ?? "";
+            var tzdbVersion = document.Root?.Element("windowsZones")?.Element("mapTimezones")?.Attribute("typeVersion")?.Value ?? "";
+            var windowsVersion = document.Root?.Element("windowsZones")?.Element("mapTimezones")?.Attribute("otherVersion")?.Value ?? "";
             return new WindowsZones(windowsZonesVersion, tzdbVersion, windowsVersion, mapZones);
         }
 
@@ -41,7 +41,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
         private static string FindVersion(XDocument document)
         {
-            string revision = (string)document.Root.Element("version")?.Attribute("number");
+            string? revision = (string?)document.Root?.Element("version")?.Attribute("number");
             if (revision is null)
             {
                 return "";
@@ -63,14 +63,22 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// Reads the input XML file for the windows mappings.
         /// </summary>
         /// <returns>A lookup of Windows time zone mappings</returns>
-        private static IList<MapZone> MapZones(XDocument document) =>
-            document.Root
-                .Element("windowsZones")
-                .Element("mapTimezones")
-                .Elements("mapZone")
-                .Select(x => new MapZone(x.Attribute("other").Value,
-                                         x.Attribute("territory").Value,
-                                         x.Attribute("type").Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)))
+        private static IList<MapZone> MapZones(XDocument document) {
+            var mapZone = document.Root
+                ?.Element("windowsZones")
+                ?.Element("mapTimezones")
+                ?.Elements("mapZone");
+            if (mapZone is null)
+            {
+                return new List<MapZone>();
+            }
+
+            return mapZone
+                .Select(x => new MapZone(x?.Attribute("other")?.Value ?? "",
+                                         x?.Attribute("territory")?.Value ?? "",
+                                         x?.Attribute("type")?.Value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0]))
+                .Where(x => !(x is null))
                 .ToList();
+        }
     }
 }
