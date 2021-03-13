@@ -1,0 +1,26 @@
+name: Build push
+
+# TODO in the future:
+# - Run on Windows
+# - Coverage
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Build and test
+      run: |
+        build/ci.sh

@@ -1,5 +1,5 @@
-[![Travis build Status](https://travis-ci.com/nodatime/nodatime.svg?branch=master)](https://travis-ci.com/nodatime/nodatime)
-[![Build status](https://ci.appveyor.com/api/projects/status/kw664whqre92a00m?svg=true)](https://ci.appveyor.com/project/nodatime/nodatime)
+[![GitHub Actions status](https://img.shields.io/github/workflow/status/nodatime/nodatime/Build%20push)](https://github.com/nodatime/nodatime/actions?query=workflow%3A%22Build+push%22)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/kw664whqre92a00m?svg=true)](https://ci.appveyor.com/project/nodatime/nodatime)
 [![Coverage Status](https://codecov.io/gh/nodatime/nodatime/branch/master/graph/badge.svg)](https://codecov.io/gh/nodatime/nodatime)
 
 Noda Time is an alternative date and time API for .NET. It helps you to
