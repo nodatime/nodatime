@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using static NodaTime.NodaConstants;
 
 namespace NodaTime
 {
@@ -12,6 +13,20 @@ namespace NodaTime
     /// </summary>
     public static class TimeAdjusters
     {
+        /// <summary>
+        /// Gets a time adjuster to truncate the time to the second, discarding fractional microseconds.
+        /// </summary>
+        /// <value>A time adjuster to truncate the time to the second, discarding fractional microseconds.</value>
+        public static Func<LocalTime, LocalTime> TruncateToMicroseconds { get; }
+            = time => new LocalTime((time.NanosecondOfDay / NanosecondsPerMicrosecond) * NanosecondsPerMicrosecond);
+
+        /// <summary>
+        /// Gets a time adjuster to truncate the time to the second, discarding fractional milliseconds.
+        /// </summary>
+        /// <value>A time adjuster to truncate the time to the second, discarding fractional milliseconds.</value>
+        public static Func<LocalTime, LocalTime> TruncateToMilliSeconds { get; }
+            = time => new LocalTime((time.NanosecondOfDay / NanosecondsPerMillisecond) * NanosecondsPerMillisecond);
+
         /// <summary>
         /// Gets a time adjuster to truncate the time to the second, discarding fractional seconds.
         /// </summary>
