@@ -81,7 +81,7 @@ namespace NodaTime
         public const long TicksPerWeek = TicksPerDay * DaysPerWeek;
 
         /// <summary>
-        /// A constant for the number of milliseconds per second.
+        /// A constant for the number of microseconds per second.
         /// The value of this constant is 1,000,000.
         /// </summary>
         public const long MicrosecondsPerMillisecond = 1000000;
