@@ -82,6 +82,12 @@ namespace NodaTime
 
         /// <summary>
         /// A constant for the number of milliseconds per second.
+        /// The value of this constant is 1,000,000.
+        /// </summary>
+        public const long MicrosecondsPerMillisecond = 1000000;
+
+        /// <summary>
+        /// A constant for the number of milliseconds per second.
         /// The value of this constant is 1000.
         /// </summary>
         public const int MillisecondsPerSecond = 1000;

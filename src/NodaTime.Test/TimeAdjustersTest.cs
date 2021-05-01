@@ -7,23 +7,6 @@ namespace NodaTime.Test
 {
     public class TimeAdjustersTest
     {
-
-        [Test]
-        public void TruncateToMicrosecond()
-        {
-            var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
-            var end = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4560);
-            Assert.AreEqual(end, TimeAdjusters.TruncateToMicroseconds(start));
-        }
-
-        [Test]
-        public void TruncateToMillisecond()
-        {
-            var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
-            var end = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 0);
-            Assert.AreEqual(end, TimeAdjusters.TruncateToMilliSeconds(start));
-        }
-
         [Test]
         public void TruncateToSecond()
         {
