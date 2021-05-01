@@ -617,7 +617,7 @@ namespace NodaTime.Test
         [Test]
         public void ToString_Zero()
         {
-            Assert.AreEqual("P", Period.Zero.ToString());
+            Assert.AreEqual("P0D", Period.Zero.ToString());
         }
 
         [Test]

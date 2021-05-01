@@ -40,13 +40,17 @@ namespace NodaTime.Test.Text
             internal static Data[] ParseOnlyData = {
                 new Data(new PeriodBuilder { Hours = 5 }) { Text = "PT005H" },
                 new Data(new PeriodBuilder { Hours = 5 }) { Text = "PT00000000000000000000005H" },
+                // This is invalid for ISO, but *used* to be the formatted result, so we want
+                // to be able to parse it in case people are parsing previous formatting results.
+                // See https://github.com/nodatime/nodatime/issues/1629
+                new Data(Period.Zero) { Text = "P" },
             };
 
             // This pattern round-trips, so we can always parse what we format.
             internal static Data[] FormatOnlyData = { };
 
             internal static readonly Data[] FormatAndParseData = {
-                new Data(Period.Zero) { Text = "P" },
+                new Data(Period.Zero) { Text = "P0D" },
 
                 // All single values                                                                
                 new Data(new PeriodBuilder { Years = 5 }) { Text = "P5Y" },
