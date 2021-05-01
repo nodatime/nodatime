@@ -113,7 +113,7 @@ namespace NodaTime.Test.Text
             AssertRoundtrip(text, new OffsetTime(new LocalTime(hour, minute, second, millisecond), new Offset(seconds)));
 
         [Test]
-        [TestCase(00, 00, 00, 00, 00, 00, 00, 00, 00, 00, "P")]
+        [TestCase(00, 00, 00, 00, 00, 00, 00, 00, 00, 00, "P0D")]
         [TestCase(01, 01, 01, 01, 01, 01, 01, 01, 01, 01, "P1Y1M1W1DT1H1M1S1s1t1n")]
         public void Period_Roundtrip(int years, int months, int weeks, int days, long hours, long minutes, long seconds, long milliseconds, long ticks, long nanoseconds, string text) =>
             AssertRoundtrip(text, new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds));

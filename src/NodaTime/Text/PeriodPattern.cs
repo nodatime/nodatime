@@ -184,6 +184,15 @@ namespace NodaTime.Text
             {
                 Preconditions.CheckNotNull(value, nameof(value));
                 Preconditions.CheckNotNull(builder, nameof(builder));
+                // Always ensure we've got *some* unit to ensure the result is valid in ISO-8601; arbitrarily pick days.
+                // Note: "P0S" might be nicer here, but NormalizingIsoPatternImpl picked "P0D" a
+                // long time ago and we want to be consistent between the two.
+                // We might want to make both pattern implementations configurable at some point.
+                if (value.Equals(Period.Zero))
+                {
+                    builder.Append("P0D");
+                    return builder;
+                }
                 builder.Append('P');
                 AppendValue(builder, value.Years, 'Y');
                 AppendValue(builder, value.Months, 'M');
