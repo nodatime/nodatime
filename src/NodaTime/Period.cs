@@ -716,6 +716,59 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the period between a start and an end YearMonth, using only the given units.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="end"/> is before <paramref name="start" />, each property in the returned period
+        /// will be negative. If the given set of units cannot exactly reach the end point (e.g. finding
+        /// the difference between February 2010 and March 2012 in years) the result will be such that adding it to <paramref name="start"/>
+        /// will give a value between <paramref name="start"/> and <paramref name="end"/>. In other words,
+        /// any rounding is "towards start"; this is true whether the resulting period is negative or positive.
+        /// </remarks>
+        /// <param name="start">Start year and month</param>
+        /// <param name="end">End year and month</param>
+        /// <param name="units">Units to use for calculations</param>
+        /// <exception cref="ArgumentException"><paramref name="units"/> contains time units, is empty or contains unknown values.</exception>
+        /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
+        /// <returns>The period between the given YearMonths, using the given units.</returns>
+        [Pure]
+        public static Period Between(YearMonth start, YearMonth end, PeriodUnits units)
+        {
+            Preconditions.CheckArgument((units & (PeriodUnits.AllUnits ^ PeriodUnits.Years ^ PeriodUnits.Months)) == 0,
+                nameof(units), "Units can only contain year and month units: {0}", units);
+            Preconditions.CheckArgument(units != 0, nameof(units), "Units must not be empty");
+            Preconditions.CheckArgument((units & ~PeriodUnits.AllUnits) == 0, nameof(units), "Units contains an unknown value: {0}", units);
+            CalendarSystem calendar = start.Calendar;
+            Preconditions.CheckArgument(calendar.Equals(end.Calendar), nameof(end), "start and end must use the same calendar system");
+
+            if (start == end)
+            {
+                return Zero;
+            }
+
+            // Multiple fields
+            DateComponentsBetween(start.StartDate, end.StartDate, units, out int years, out int months, out _, out _);
+            return new Period(years, months, 0, 0);
+        }
+
+        /// <summary>
+        /// Returns the exact difference between two YearMonths.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="end"/> is before <paramref name="start" />, each property in the returned period
+        /// will be negative.
+        /// The calendar systems of the two dates must be the same; an exception will be thrown otherwise.
+        /// </remarks>
+        /// <param name="start">Start year and month</param>
+        /// <param name="end">End year and month</param>
+        /// <returns>The period between the two YearMonths, using year and month units.</returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="start"/> and <paramref name="end"/> are not in the same calendar system.
+        /// </exception>
+        [Pure]
+        public static Period Between(YearMonth start, YearMonth end) => Between(start, end, PeriodUnits.Years | PeriodUnits.Months);
+
+        /// <summary>
         /// Returns whether or not this period contains any non-zero-valued time-based properties (hours or lower).
         /// </summary>
         /// <value>true if the period contains any non-zero-valued time-based properties (hours or lower); false otherwise.</value>

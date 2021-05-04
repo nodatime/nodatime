@@ -983,7 +983,70 @@ namespace NodaTime.Test
             Period actual = Period.Between(start, end, PeriodUnits.YearMonthDay | PeriodUnits.AllTimeUnits);
             Period expected = new PeriodBuilder { Years = 1, Months = 1, Days = 1, Hours = 16 }.Build();
             Assert.AreEqual(expected, actual);
-        }        
+        }
+
+        [Test]
+        public void BetweenYearMonth_InvalidUnits()
+        {
+            YearMonth yearMonth1 = new YearMonth(2010, 1);
+            YearMonth yearMonth2 = new YearMonth(2011, 3);
+            Assert.Throws<ArgumentException>(() => Period.Between(yearMonth1, yearMonth2, 0));
+            Assert.Throws<ArgumentException>(() => Period.Between(yearMonth1, yearMonth2, (PeriodUnits)(-1)));
+            Assert.Throws<ArgumentException>(() => Period.Between(yearMonth1, yearMonth2, PeriodUnits.AllTimeUnits));
+            Assert.Throws<ArgumentException>(() => Period.Between(yearMonth1, yearMonth2, PeriodUnits.Days));
+            Assert.Throws<ArgumentException>(() => Period.Between(yearMonth1, yearMonth2, PeriodUnits.Years | PeriodUnits.Days));
+            Assert.Throws<ArgumentException>(() => Period.Between(yearMonth1, yearMonth2, PeriodUnits.Years | PeriodUnits.Weeks));
+            Assert.Throws<ArgumentException>(() => Period.Between(yearMonth1, yearMonth2, PeriodUnits.Years | PeriodUnits.Hours));
+        }
+
+        [Test]
+        public void BetweenYearMonth_DifferentCalendarSystems_Throws()
+        {
+            YearMonth start = new YearMonth(2017, 11, CalendarSystem.Coptic);
+            YearMonth end = new YearMonth(2017, 11, CalendarSystem.Gregorian);
+            Assert.Throws<ArgumentException>(() => Period.Between(start, end));
+        }
+
+        [TestCase("2016-05", "2017-03", PeriodUnits.Years, 0)]
+        [TestCase("2016-05", "2016-05", PeriodUnits.Years, 0)]
+        [TestCase("2016-05", "2019-03", PeriodUnits.Years, 2)]
+        [TestCase("2016-05", "2019-05", PeriodUnits.Years, 3)]
+        [TestCase("2016-05", "2017-07", PeriodUnits.Months, 14)]
+        [TestCase("2016-05", "2017-05", PeriodUnits.Months, 12)]
+        [TestCase("2016-07", "2016-07", PeriodUnits.Months, 0)]
+        public void BetweenYearMonth_SingleUnit(string startText, string endText, PeriodUnits units, int expectedValue)
+        {
+            var start = YearMonthPattern.Iso.Parse(startText).Value;
+            var end = YearMonthPattern.Iso.Parse(endText).Value;
+            var forward = Period.Between(start, end, units);
+            var expectedForward = new PeriodBuilder { [units] = expectedValue }.Build();
+            Assert.AreEqual(expectedForward, forward);
+            var backward = Period.Between(end, start, units);
+            var expectedBackward = new PeriodBuilder { [units] = -expectedValue }.Build();
+            Assert.AreEqual(expectedBackward, backward);
+        }
+
+        [TestCase("2017-05", "2017-05", 0, 0)]
+        [TestCase("2016-05", "2017-05", 1, 0)]
+        [TestCase("2016-05", "2017-06", 1, 1)]
+        [TestCase("2016-05", "2018-10", 2, 5)]
+        [TestCase("2016-05", "2017-04", 0, 11)]
+        [TestCase("2013-05", "2017-04", 3, 11)]
+        public void BetweenYearMonth_BothUnits(string startText, string endText, int expectedYears, int expectedMonths)
+        {
+            var start = YearMonthPattern.Iso.Parse(startText).Value;
+            var end = YearMonthPattern.Iso.Parse(endText).Value;
+            var forward = Period.Between(start, end, PeriodUnits.Years | PeriodUnits.Months);
+            var expectedForward = new PeriodBuilder { [PeriodUnits.Years] = expectedYears, [PeriodUnits.Months] = expectedMonths }.Build();
+            Assert.AreEqual(expectedForward, forward);
+            var forwardNoUnits = Period.Between(start, end);
+            Assert.AreEqual(expectedForward, forwardNoUnits);
+            var backward = Period.Between(end, start, PeriodUnits.Years | PeriodUnits.Months);
+            var expectedBackward = new PeriodBuilder { [PeriodUnits.Years] =- expectedYears, [PeriodUnits.Months] = -expectedMonths }.Build();
+            Assert.AreEqual(expectedBackward, backward);
+            var backwardNoUnits = Period.Between(end, start);
+            Assert.AreEqual(expectedBackward, backwardNoUnits);
+        }
 
         [Test]
         public void FromNanoseconds()
