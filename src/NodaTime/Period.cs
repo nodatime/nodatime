@@ -716,7 +716,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the period between a start and an end YearMonth, using only the given units.
+        /// Returns the period between a start and an end <see cref="YearMonth"/>, using only the given units.
         /// </summary>
         /// <remarks>
         /// If <paramref name="end"/> is before <paramref name="start" />, each property in the returned period
@@ -728,7 +728,8 @@ namespace NodaTime
         /// <param name="start">Start year and month</param>
         /// <param name="end">End year and month</param>
         /// <param name="units">Units to use for calculations</param>
-        /// <exception cref="ArgumentException"><paramref name="units"/> contains time units, is empty or contains unknown values.</exception>
+        /// <exception cref="ArgumentException"><paramref name="units"/> is empty or contains anything other than than PeriodUnits.Years
+        /// and/or PeriodUnits.Months.</exception>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
         /// <returns>The period between the given YearMonths, using the given units.</returns>
         [Pure]
@@ -746,13 +747,23 @@ namespace NodaTime
                 return Zero;
             }
 
+            LocalDate startDate = start.StartDate;
+            LocalDate endDate = end.StartDate;
+
+            // Optimization for single field
+            switch (units)
+            {
+                case PeriodUnits.Years: return FromYears(DatePeriodFields.YearsField.UnitsBetween(startDate, endDate));
+                case PeriodUnits.Months: return FromMonths(DatePeriodFields.MonthsField.UnitsBetween(startDate, endDate));
+            }
+
             // Multiple fields
-            DateComponentsBetween(start.StartDate, end.StartDate, units, out int years, out int months, out _, out _);
+            DateComponentsBetween(startDate, endDate, units, out int years, out int months, out _, out _);
             return new Period(years, months, 0, 0);
         }
 
         /// <summary>
-        /// Returns the exact difference between two YearMonths.
+        /// Returns the exact difference between two <see cref="YearMonth"/>.
         /// </summary>
         /// <remarks>
         /// If <paramref name="end"/> is before <paramref name="start" />, each property in the returned period
