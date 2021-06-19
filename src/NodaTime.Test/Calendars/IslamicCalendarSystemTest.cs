@@ -295,6 +295,7 @@ namespace NodaTime.Test.Calendars
         /// This tests every day for 9000 (ISO) years, to check that it always matches the year, month and day.
         /// </summary>
         [Test]
+        [Explicit]
         [Category("Slow")]
         public void BclThroughHistory()
         {

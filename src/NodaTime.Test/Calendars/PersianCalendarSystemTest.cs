@@ -15,6 +15,7 @@ namespace NodaTime.Test.Calendars
     public class PersianCalendarSystemTest
     {
         [Test]
+        [Explicit]
         [Category("Slow")]
         public void BclThroughHistory()
         {

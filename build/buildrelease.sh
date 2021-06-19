@@ -37,8 +37,9 @@ export Configuration=Release
 
 dotnet build src/NodaTime.sln
 
-# Even run the slow tests before a release...
 dotnet test src/NodaTime.Test
+# Even run the slow tests before a release...
+dotnet test src/NodaTime.Test --filter TestCategory=Slow
 
 mkdir $OUTPUT
 

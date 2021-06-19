@@ -1,5 +1,0 @@
-<RunSettings>
-  <NUnit>
-    <Where>cat != Slow</Where>
-  </NUnit>
-</RunSettings>
