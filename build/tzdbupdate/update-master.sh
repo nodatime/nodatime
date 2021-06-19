@@ -34,7 +34,7 @@ dotnet run -p $SRCDIR/NodaTime.TzdbCompiler -f netcoreapp3.1 -- \
 echo ""
 echo "Testing"
 dotnet build -nologo -clp:NoSummary -v quiet -c Release $SRCDIR/NodaTime.Test
-dotnet test -nologo --no-build -c Release ../../src/NodaTime.Test --filter=TestCategory!=Slow
+dotnet test -nologo --no-build -c Release ../../src/NodaTime.Test
 
 echo "Checking hashes"
 rm -rf tmp-hashes

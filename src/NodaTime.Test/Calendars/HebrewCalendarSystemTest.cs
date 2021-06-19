@@ -36,6 +36,7 @@ namespace NodaTime.Test.Calendars
         /// using the civil month numbering.
         /// </summary>
         [Test]
+        [Explicit]
         [Category("Slow")]
         public void BclThroughHistory_Civil()
         {
