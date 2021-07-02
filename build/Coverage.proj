@@ -3,7 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="JetBrains.dotCover.CommandLineTools" Version="$(DOTCOVER_VERSION)">
+    <PackageReference Include="JetBrains.dotCover.CommandLineTools$(DOTCOVER_PACKAGE_SUFFIX)" Version="$(DOTCOVER_VERSION)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
