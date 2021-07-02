@@ -97,7 +97,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Constructs an instance for the given year, month and day in the specified calendar.
+        /// Constructs an instance for the given year and month in the specified calendar.
         /// </summary>
         /// <param name="year">The year. This is the "absolute year", so, for
         /// the ISO calendar, a value of 0 means 1 BC, for example.</param>
