@@ -13,22 +13,20 @@ export REPORTGENERATOR_VERSION
 export DOTCOVER_VERSION
 dotnet restore $ROOT/build/Coverage.proj --packages $ROOT/packages
 
-declare -r DOTCOVER=$ROOT/packages/jetbrains.dotcover.commandlinetools/$DOTCOVER_VERSION/tools/dotCover.exe
+declare -r DOTCOVER_DIR=$ROOT/packages/jetbrains.dotcover.commandlinetools/$DOTCOVER_VERSION/tools
 
 rm -rf $ROOT/coverage
 mkdir $ROOT/coverage
 
 # Run the tests under dotCover
-(cd $TEST; 
- $DOTCOVER cover coverageparams.xml -ReturnTargetExitCode)
-
-$DOTCOVER report --Source=$ROOT/coverage/NodaTime.dvcr --Output=$ROOT/coverage/coverage.xml --ReportType=DetailedXML ""
+(cd $DOTCOVER_DIR; 
+ ./dotCover.exe dotnet $TEST/coverageparams.xml --Output=$ROOT/coverage/coverage.xml --ReportType=DetailedXML --ReturnTargetExitCode -- test $TEST)
 
 if [[ $1 == "--report" ]]
 then
-  declare -r REPORTGENERATOR=$ROOT/packages/reportgenerator/$REPORTGENERATOR_VERSION/tools/net47/ReportGenerator.exe
+  declare -r REPORTGENERATOR=$ROOT/packages/reportgenerator/$REPORTGENERATOR_VERSION/tools/net5.0/ReportGenerator.dll
   
-  $REPORTGENERATOR \
+  dotnet $REPORTGENERATOR \
    -reports:$ROOT/coverage/coverage.xml \
    -targetdir:$ROOT/coverage/report \
    -verbosity:Error
