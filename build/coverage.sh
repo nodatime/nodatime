@@ -7,7 +7,7 @@ set -e
 declare -r ROOT=$(realpath $(dirname $0)/..)
 declare -r TEST=$ROOT/src/NodaTime.Test
 declare -r DOTCOVER_VERSION=2021.1.3
-declare -r REPORTGENERATOR_VERSION=4.0.12
+declare -r REPORTGENERATOR_VERSION=4.8.11
 
 nuget.exe install -Verbosity quiet -OutputDirectory $ROOT/packages -Version $DOTCOVER_VERSION JetBrains.dotCover.CommandLineTools
 
