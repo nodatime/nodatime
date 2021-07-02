@@ -9,9 +9,11 @@ declare -r TEST=$ROOT/src/NodaTime.Test
 declare -r DOTCOVER_VERSION=2021.1.3
 declare -r REPORTGENERATOR_VERSION=4.8.11
 
-nuget.exe install -Verbosity quiet -OutputDirectory $ROOT/packages -Version $DOTCOVER_VERSION JetBrains.dotCover.CommandLineTools
+export REPORTGENERATOR_VERSION
+export DOTCOVER_VERSION
+dotnet restore $ROOT/build/Coverage.proj --packages $ROOT/packages
 
-declare -r DOTCOVER=$ROOT/packages/JetBrains.dotCover.CommandLineTools.$DOTCOVER_VERSION/tools/dotCover.exe
+declare -r DOTCOVER=$ROOT/packages/jetbrains.dotcover.commandlinetools/$DOTCOVER_VERSION/tools/dotCover.exe
 
 rm -rf $ROOT/coverage
 mkdir $ROOT/coverage
@@ -24,8 +26,7 @@ $DOTCOVER report --Source=$ROOT/coverage/NodaTime.dvcr --Output=$ROOT/coverage/c
 
 if [[ $1 == "--report" ]]
 then
-  nuget.exe install -Verbosity quiet -OutputDirectory $ROOT/packages -Version $REPORTGENERATOR_VERSION ReportGenerator
-  declare -r REPORTGENERATOR=$ROOT/packages/ReportGenerator.$REPORTGENERATOR_VERSION/tools/net47/ReportGenerator.exe
+  declare -r REPORTGENERATOR=$ROOT/packages/reportgenerator/$REPORTGENERATOR_VERSION/tools/net47/ReportGenerator.exe
   
   $REPORTGENERATOR \
    -reports:$ROOT/coverage/coverage.xml \
