@@ -11,16 +11,17 @@ declare -r REPORTGENERATOR_VERSION=4.8.11
 
 export REPORTGENERATOR_VERSION
 export DOTCOVER_VERSION
+export DOTCOVER_PACKAGE_SUFFIX
 dotnet restore $ROOT/build/Coverage.proj --packages $ROOT/packages
 
-declare -r DOTCOVER_DIR=$ROOT/packages/jetbrains.dotcover.commandlinetools/$DOTCOVER_VERSION/tools
+declare -r DOTCOVER_DIR=$ROOT/packages/jetbrains.dotcover.commandlinetools${DOTCOVER_PACKAGE_SUFFIX}/$DOTCOVER_VERSION/tools
 
 rm -rf $ROOT/coverage
 mkdir $ROOT/coverage
 
 # Run the tests under dotCover
 (cd $DOTCOVER_DIR; 
- ./dotCover.exe dotnet $TEST/coverageparams.xml --Output=$ROOT/coverage/coverage.xml --ReportType=DetailedXML --ReturnTargetExitCode -- test $TEST)
+ ${DOTCOVER_EXECUTABLE:-"./dotcover.exe"} dotnet $TEST/coverageparams.xml --Output=$ROOT/coverage/coverage.xml --ReportType=DetailedXML --ReturnTargetExitCode -- test $TEST)
 
 if [[ $1 == "--report" ]]
 then
