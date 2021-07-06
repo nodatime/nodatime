@@ -44,7 +44,7 @@ namespace NodaTime.TimeZones
             if (tailZone != null)
             {
                 // Cache a "clamped" zone interval for use at the start of the tail zone.
-                firstTailZoneInterval = tailZone.GetZoneInterval(tailZoneStart).WithStart(tailZoneStart);
+                firstTailZoneInterval = tailZone.GetZoneIntervalInternal(tailZoneStart).WithStart(tailZoneStart);
             }
             ValidatePeriods(intervals, tailZone);
         }
@@ -79,7 +79,7 @@ namespace NodaTime.TimeZones
             {
                 // Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
                 // join is seamless.
-                ZoneInterval intervalFromTailZone = tailZone.GetZoneInterval(instant);
+                ZoneInterval intervalFromTailZone = tailZone.GetZoneIntervalInternal(instant);
                 return intervalFromTailZone.RawStart < tailZoneStart ? firstTailZoneInterval! : intervalFromTailZone;
             }
 

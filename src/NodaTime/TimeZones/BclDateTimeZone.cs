@@ -69,7 +69,7 @@ namespace NodaTime.TimeZones
         /// <inheritdoc />
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            return map.GetZoneInterval(instant);
+            return map.GetZoneIntervalInternal(instant);
         }
 
         /// <summary>
@@ -318,9 +318,9 @@ namespace NodaTime.TimeZones
                     this.daylightName = daylightName;
                 }
 
-                public ZoneInterval GetZoneInterval(Instant instant)
+                public ZoneInterval GetZoneIntervalInternal(Instant instant)
                 {
-                    var interval = originalMap.GetZoneInterval(instant);
+                    var interval = originalMap.GetZoneIntervalInternal(instant);
                     return interval.Name == daylightName
                         ? new ZoneInterval(daylightName, interval.RawStart, interval.RawEnd, interval.WallOffset, Offset.FromHours(1))
                         : interval;

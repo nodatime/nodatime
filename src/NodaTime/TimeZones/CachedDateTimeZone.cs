@@ -68,7 +68,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         public override ZoneInterval GetZoneInterval(Instant instant)
         {
-            return map.GetZoneInterval(instant);
+            return map.GetZoneIntervalInternal(instant);
         }
     }
 }
