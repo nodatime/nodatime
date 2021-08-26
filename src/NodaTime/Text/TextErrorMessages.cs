@@ -66,7 +66,7 @@ namespace NodaTime.Text
         internal const string UnknownStandardFormat = "The standard format \"{0}\" is not valid for the {1} type. If the pattern was intended to be a custom format, escape it with a percent sign: \"%{0}\".";
         internal const string UnparsableValue = "{0} Value being parsed: '{1}'. (^ indicates error position.)";
         internal const string UnparsableValuePostParse = "{0} Value being parsed: '{1}'.";
-        internal const string UnquotedLiteral = "The character {0} is not a format specifier, and should be quoted to act as a literal.";
+        internal const string UnquotedLiteral = "The character {0} is not a format specifier for this pattern type, and should be quoted to act as a literal. Note that each type of pattern has its own set of valid format specifiers.";
         internal const string ValueOutOfRange = "The value {0} is out of the legal range for the {1} type.";
         internal const string ValueStringEmpty = "The value string is empty.";
         internal const string YearOfEraOutOfRange = "The year {0} is out of range for the {1} era in the {2} calendar.";
