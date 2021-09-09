@@ -88,7 +88,6 @@ namespace NodaTime.TimeZones
                 return new BclDateTimeZone(bclZone, standardOffset, standardOffset, new SingleZoneIntervalMap(fixedInterval));
             }
 
-            int windowsRules = rules.Count(IsWindowsRule);
             var ruleConverter = AreWindowsStyleRules(rules)
                 ? rule => BclAdjustmentRule.FromWindowsAdjustmentRule(bclZone, rule)
                 : (Converter<TimeZoneInfo.AdjustmentRule, BclAdjustmentRule>) (rule => BclAdjustmentRule.FromUnixAdjustmentRule(bclZone, rule));
@@ -117,10 +116,6 @@ namespace NodaTime.TimeZones
                 rule.DateStart.Month == 1 && rule.DateStart.Day == 1 && rule.DateStart.TimeOfDay.Ticks == 0 &&
                 rule.DateEnd.Month == 12 && rule.DateEnd.Day == 31 && rule.DateEnd.TimeOfDay.Ticks == 0;
         }
-
-        private static bool IsWindowsRule(TimeZoneInfo.AdjustmentRule rule) =>
-            rule.DateStart.Month == 1 && rule.DateStart.Day == 1 && rule.DateStart.TimeOfDay.Ticks == 0 &&
-            rule.DateEnd.Month == 12 && rule.DateEnd.Day == 31 && rule.DateEnd.TimeOfDay.Ticks == 0;
 
         private static IZoneIntervalMap BuildMap(BclAdjustmentRule[] rules, Offset standardOffset, string standardName)
         {
