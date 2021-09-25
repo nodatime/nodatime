@@ -218,9 +218,9 @@ namespace NodaTime.Test.TimeZones
         public void GuessZoneIdByTransitionsUncached(NamedWrapper<TimeZoneInfo> bclZoneWrapper)
         {
             var bclZone = bclZoneWrapper.Value;
-            // As of November 21st 2019, the Windows time zone database hasn't caught up
-            // with the Morocco change in TZDB 2019a. Skip it for now.
-            if (bclZone.Id == "Morocco Standard Time")
+            // As of September 25th 2021, the Windows time zone database hasn't caught up
+            // with the Samoa change in TZDB 2021b. Skip it for now.
+            if (bclZone.Id == "Samoa Standard Time")
             {
                 return;
             }
