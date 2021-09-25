@@ -705,6 +705,7 @@
       <xs:enumeration value="Pacific/Guam" />
       <xs:enumeration value="Pacific/Honolulu" />
       <xs:enumeration value="Pacific/Johnston" />
+      <xs:enumeration value="Pacific/Kanton" />
       <xs:enumeration value="Pacific/Kiritimati" />
       <xs:enumeration value="Pacific/Kosrae" />
       <xs:enumeration value="Pacific/Kwajalein" />
