@@ -213,22 +213,15 @@ namespace NodaTime.Test.TimeZones
         [TestCaseSource(nameof(SystemTimeZones))]
         public void GuessZoneIdByTransitionsUncached(TimeZoneInfo bclZone)
         {
-            // As of May 4th 2018, the Windows time zone database on Jon's laptop has caught up with this,
-            // but the one on AppVeyor hasn't. Keep skipping it for now.
-            if (bclZone.Id == "Namibia Standard Time")
-            {
-                return;
-            }
-
-            // As of May 4th 2018, the Windows time zone database hasn't caught up
-            // with the North Korea change in TZDB 2018e.
-            if (bclZone.Id == "North Korea Standard Time")
+            // As of September 25th 2021, the Windows time zone database hasn't caught up
+            // with the Samoa change in TZDB 2021b. Skip it for now.
+            if (bclZone.Id == "Samoa Standard Time")
             {
                 return;
             }
 
             string id = TzdbDateTimeZoneSource.Default.GuessZoneIdByTransitionsUncached(bclZone,
-                TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached);
+            TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached);
 
             // Unmappable zones may not be mapped, or may be mapped to something reasonably accurate.
             // We don't mind either way.
