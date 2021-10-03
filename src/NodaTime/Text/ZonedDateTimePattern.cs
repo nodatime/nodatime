@@ -44,9 +44,9 @@ namespace NodaTime.Text
         /// as the 'F' standard pattern.
         /// </summary>
         /// <remarks>
-        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing as no time zone
-        /// provider is included. Call <see cref="WithZoneProvider"/> on the value of this property to obtain a
-        /// pattern which can be used for parsing.
+        /// The calendar system is not formatted as part of this pattern. By default, this pattern uses the Tzdb database for parsing,
+        /// as that is the time zone provider expected by RFC 3339. Call <see cref="WithZoneProvider"/> on the value of this property to 
+        /// use a different provider for parsing.
         /// </remarks>
         /// <value>An invariant zoned date/time pattern based on ISO-8601 (down to the nanosecond) including offset from UTC and zone ID.</value>
         public static ZonedDateTimePattern ExtendedFormatOnlyIso => Patterns.ExtendedFormatOnlyPatternImpl;
@@ -58,12 +58,12 @@ namespace NodaTime.Text
         /// as the 'e' standard pattern.
         /// </summary>
         /// <remarks>
-        /// The calendar system is not formatted as part of this pattern, and it cannot be used for parsing as no time zone
-        /// provider is included. Call <see cref="WithZoneProvider"/> on the value of this property to obtain a
-        /// pattern which can be used for parsing.
+        /// The calendar system is not formatted as part of this pattern. By default, this pattern uses the Tzdb database for parsing,
+        /// as that is the time zone provider expected by RFC 3339. Call <see cref="WithZoneProvider"/> on the value of this property to 
+        /// use a different provider for parsing.
         /// </remarks>
         /// <value>An zoned local date/time pattern based on the extend format [propsed to/approved in] RFC 3339 (down to the second) including offset from UTC and zone ID.</value>
-        public static ZonedDateTimePattern GeneralFormatRfc3339SuffixOnly => Patterns.Rfc3339SuffixGeneralFormatOnlyPatternImpl;
+        public static ZonedDateTimePattern GeneralRfc3339TimeZoneSuffix => Patterns.Rfc3339TimeZoneSuffixGeneralPatternImpl;
 
         /// <summary>
         /// Returns an invariant zoned local date/time pattern based on the extended format [proposed to/approved in] RFC 3339 (down to the nanosecond) 
@@ -77,7 +77,7 @@ namespace NodaTime.Text
         /// pattern which can be used for parsing.
         /// </remarks>
         /// <value>An zoned local date/time pattern based on the extend format [propsed to/approved in] RFC 3339 (down to the second) including offset from UTC and zone ID.</value>
-        public static ZonedDateTimePattern ExtendedFormatRfc3339SuffixOnly => Patterns.Rfc3339SuffixExtendedFormatOnlyPatternImpl;
+        public static ZonedDateTimePattern ExtendedRfc3339TimeZoneSuffix => Patterns.Rfc3339TimeZoneSuffixExtendedPatternImpl ;
 
         private readonly IPattern<ZonedDateTime> pattern;
 
@@ -89,8 +89,8 @@ namespace NodaTime.Text
         {
             internal static readonly ZonedDateTimePattern GeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')'", null);
             internal static readonly ZonedDateTimePattern ExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'", null);
-            internal static readonly ZonedDateTimePattern Rfc3339SuffixGeneralFormatOnlyPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'sso<g>'['z']'", null);
-            internal static readonly ZonedDateTimePattern Rfc3339SuffixExtendedFormatOnlyPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<g>'['z']'", null);
+            internal static readonly ZonedDateTimePattern Rfc3339TimeZoneSuffixGeneralPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'sso<g>'['z']'", DateTimeZoneProviders.Tzdb);
+            internal static readonly ZonedDateTimePattern Rfc3339TimeZoneSuffixExtendedPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<g>'['z']'", DateTimeZoneProviders.Tzdb);
             internal static readonly PatternBclSupport<ZonedDateTime> BclSupport = new PatternBclSupport<ZonedDateTime>("G", fi => fi.ZonedDateTimePatternParser);
         }
 
