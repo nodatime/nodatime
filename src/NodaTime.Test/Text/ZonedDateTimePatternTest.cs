@@ -215,6 +215,10 @@ namespace NodaTime.Test.Text
             new Data(2013, 01, 13, 15, 44, 30, 0, TestZone1) { StandardPattern = ZonedDateTimePattern.GeneralRfc3339TimeZoneSuffix.WithZoneProvider(TestProvider) , Pattern = "e", Text = "2013-01-13T15:44:30+02[ab]", Culture = Cultures.FrFr },
             new Data(2013, 01, 13, 15, 44, 30, 90, TestZone1) { StandardPattern = ZonedDateTimePattern.ExtendedRfc3339TimeZoneSuffix.WithZoneProvider(TestProvider), Pattern = "E", Text = "2013-01-13T15:44:30.09+02[ab]", Culture = Cultures.FrFr },
 
+            // RFC 3339 standard patterns with default time zone provider
+            new Data(2013, 09, 13, 15, 44, 30, 0, Athens, true) { StandardPattern = ZonedDateTimePattern.GeneralRfc3339TimeZoneSuffix , Pattern = "e", Text = "2013-09-13T15:44:30+03[Europe/Athens]", Culture = Cultures.EnUs },
+            new Data(2013, 09, 13, 15, 44, 30, 90, Athens, true) { StandardPattern = ZonedDateTimePattern.ExtendedRfc3339TimeZoneSuffix, Pattern = "E", Text = "2013-09-13T15:44:30.09+03[Europe/Athens]", Culture = Cultures.EnUs },
+
             // Custom embedded patterns (or mixture of custom and standard)
             new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<uuuu*MM*dd>'X'lt<HH_mm_ss> z o<g>", Text = "2015*10*24X11_55_30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
             new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "lt<HH_mm_ss>'Y'ld<uuuu*MM*dd> z o<g>", Text = "11_55_30Y2015*10*24 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
@@ -339,11 +343,11 @@ namespace NodaTime.Test.Text
             /// Initializes a new instance of the <see cref="Data" /> class.
             /// </summary>
             /// <param name="value">The value.</param>
-            public Data(ZonedDateTime value)
+            public Data(ZonedDateTime value, bool usePatternDefaultZoneProvider = false)
                 : base(value)
             {
                 Resolver = Resolvers.StrictResolver;
-                ZoneProvider = TestProvider;
+                ZoneProvider = usePatternDefaultZoneProvider ? null : TestProvider;
             }
 
             public Data(int year, int month, int day)
@@ -370,6 +374,11 @@ namespace NodaTime.Test.Text
 
             public Data(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone)
                 : this(new LocalDateTime(year, month, day, hour, minute, second, millis).InZoneStrictly(zone))
+            {
+            }
+
+            public Data(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone, bool usePatternDefaultZoneProvider)
+                : this(new LocalDateTime(year, month, day, hour, minute, second, millis).InZoneStrictly(zone), usePatternDefaultZoneProvider)
             {
             }
 
