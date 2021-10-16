@@ -556,8 +556,8 @@ namespace NodaTime.Test.TimeZones
         public void UtcMappings()
         {
             var source = TzdbDateTimeZoneSource.Default;
-            // Note: not Etc/UTC as TimeZoneConverter does.
-            Assert.AreEqual("Etc/GMT", source.WindowsToTzdbIds["UTC"]);
+            // Note: was Etc/GMT before CLDR v39.
+            Assert.AreEqual("Etc/UTC", source.WindowsToTzdbIds["UTC"]);
 
             Assert.AreEqual("UTC", source.TzdbToWindowsIds["Etc/UTC"]);
             // We follow the link
