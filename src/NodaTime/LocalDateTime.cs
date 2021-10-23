@@ -43,6 +43,18 @@ namespace NodaTime
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
     {
+        /// <summary>
+        /// The maximum (latest) date and time representable in the ISO calendar system.
+        /// This is a nanosecond before midnight at the end of <see cref="LocalDate.MaxIsoValue"/>.
+        /// </summary>
+        public static LocalDateTime MaxIsoValue => LocalDate.MaxIsoValue + LocalTime.MaxValue;
+
+        /// <summary>
+        /// The minimum (earliest) date and time representable in the ISO calendar system.
+        /// This is midnight at the start of <see cref="LocalDate.MinIsoValue"/>.
+        /// </summary>
+        public static LocalDateTime MinIsoValue => LocalDate.MinIsoValue + LocalTime.MinValue;
+
         private readonly LocalDate date;
         private readonly LocalTime time;
 

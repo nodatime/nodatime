@@ -480,5 +480,21 @@ namespace NodaTime.Test
                 new LocalDateTime(2017, 10, 15, 21, 30, 0, 1, CalendarSystem.Iso),
                 new LocalDateTime(2017, 10, 15, 21, 30, 0, 0, CalendarSystem.Gregorian),
             });
+
+        [Test]
+        public void MaxIsoValue()
+        {
+            var value = LocalDateTime.MaxIsoValue;
+            Assert.AreEqual(CalendarSystem.Iso, value.Calendar);
+            Assert.Throws<OverflowException>(() => value.PlusNanoseconds(1));
+        }
+
+        [Test]
+        public void MinIsoValue()
+        {
+            var value = LocalDateTime.MinIsoValue;
+            Assert.AreEqual(CalendarSystem.Iso, value.Calendar);
+            Assert.Throws<OverflowException>(() => value.PlusNanoseconds(-1));
+        }
     }
 }
