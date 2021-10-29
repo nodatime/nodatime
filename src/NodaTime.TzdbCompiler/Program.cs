@@ -104,7 +104,11 @@ namespace NodaTime.TzdbCompiler
                 throw new Exception($"{mappingPath} does not contain any XML files");
             }
             var allFiles = xmlFiles
+                // Expect that we've ordered the files so that this gives "most recent first",
+                // to handle consecutive CLDR versions that have the same TZDB version.
+                .OrderByDescending(file => file, StringComparer.Ordinal)
                 .Select(file => CldrWindowsZonesParser.Parse(file))
+                // Note: this is stable, so files with the same TZDB version will stay in reverse filename order.
                 .OrderByDescending(zones => zones.TzdbVersion)
                 .ToList();
 
