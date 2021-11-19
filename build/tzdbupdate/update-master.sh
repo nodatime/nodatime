@@ -24,7 +24,7 @@ dotnet build -nologo -clp:NoSummary -v quiet $SRCDIR/NodaTime.sln
 
 echo ""
 echo "Generating NZD file"
-dotnet run -p $SRCDIR/NodaTime.TzdbCompiler -f netcoreapp3.1 -- \
+dotnet run --project $SRCDIR/NodaTime.TzdbCompiler -f netcoreapp3.1 -- \
   -o $OUTPUT \
   -s https://data.iana.org/time-zones/releases/tzdata$1.tar.gz \
   -w $DATADIR/cldr \
@@ -41,9 +41,9 @@ rm -rf tmp-hashes
 mkdir tmp-hashes
 
 wget -q -O tmp-hashes/github-pages.txt https://nodatime.github.io/tzvalidate/tzdata$1-sha256.txt 2> /dev/null
-dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash | grep -v "Skipping" > tmp-hashes/local.txt
-dotnet run -p $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash --noabbr | grep -v "Skipping" > tmp-hashes/local-noabbr.txt
-dotnet run -p $SRCDIR/NodaTime.TzValidate.NzdCompatibility -- -s $OUTPUT --hash --noabbr | grep -v "Skipping" > tmp-hashes/local-noabbr-11.txt
+dotnet run --project $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash | grep -v "Skipping" > tmp-hashes/local.txt
+dotnet run --project $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash --noabbr | grep -v "Skipping" > tmp-hashes/local-noabbr.txt
+dotnet run --project $SRCDIR/NodaTime.TzValidate.NzdCompatibility -- -s $OUTPUT --hash --noabbr | grep -v "Skipping" > tmp-hashes/local-noabbr-11.txt
 
 echo ""
 echo "Hash on github pages: $(< tmp-hashes/github-pages.txt)"
