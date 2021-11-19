@@ -306,6 +306,12 @@ namespace NodaTime
         /// If the offset has a non-zero second component, this is truncated as <c>DateTimeOffset</c> has an offset
         /// granularity of minutes.
         /// </para>
+        /// <para>
+        /// <see cref="DateTimeOffset"/> uses the Gregorian calendar by definition, so the value is implicitly converted
+        /// to the Gregorian calendar first. The result will be the same instant in time (potentially truncated as described
+        /// above), but the values returned by the Year/Month/Day properties of the <see cref="DateTimeOffset"/> may not
+        /// match the Year/Month/Day properties of this value.
+        /// </para>
         /// </remarks>
         /// <exception cref="InvalidOperationException">The date/time is outside the range of <c>DateTimeOffset</c>,
         /// or the offset is outside the range of +/-14 hours (the range supported by <c>DateTimeOffset</c>).</exception>

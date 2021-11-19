@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Globalization;
 using System.Linq;
 using NUnit.Framework;
 
@@ -42,6 +43,16 @@ namespace NodaTime.Test
         {
             LocalDate noda = new LocalDate(2015, 4, 2);
             DateTime bcl = new DateTime(2015, 4, 2, 0, 0, 0, DateTimeKind.Unspecified);
+            Assert.AreEqual(bcl, noda.ToDateTimeUnspecified());
+        }
+
+        [Test]
+        public void ToDateTimeUnspecified_JulianCalendar()
+        {
+            // Non-Gregorian calendar systems are handled by converting to the same
+            // date, just like the DateTime constructor does.
+            LocalDate noda = new LocalDate(2015, 4, 2, CalendarSystem.Julian);
+            DateTime bcl = new DateTime(2015, 4, 2, 0, 0, 0, 0, new JulianCalendar(), DateTimeKind.Unspecified);
             Assert.AreEqual(bcl, noda.ToDateTimeUnspecified());
         }
 

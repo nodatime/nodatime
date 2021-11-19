@@ -11,6 +11,7 @@ using NodaTime.Utility;
 using NUnit.Framework;
 using NodaTime.Test.Calendars;
 using System.Linq;
+using System.Globalization;
 
 namespace NodaTime.Test
 {
@@ -24,9 +25,22 @@ namespace NodaTime.Test
         [Test]
         public void ToDateTimeUnspecified()
         {
-            LocalDateTime zoned = new LocalDateTime(2011, 3, 5, 1, 0, 0);
+            LocalDateTime ldt = new LocalDateTime(2011, 3, 5, 1, 0, 0);
             DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0, DateTimeKind.Unspecified);
-            DateTime actual = zoned.ToDateTimeUnspecified();
+            DateTime actual = ldt.ToDateTimeUnspecified();
+            Assert.AreEqual(expected, actual);
+            // Kind isn't checked by Equals...
+            Assert.AreEqual(DateTimeKind.Unspecified, actual.Kind);
+        }
+
+        [Test]
+        public void ToDateTimeUnspecified_JulianCalendar()
+        {
+            // Non-Gregorian calendar systems are handled by converting to the same
+            // date, just like the DateTime constructor does.
+            LocalDateTime ldt = new LocalDateTime(2011, 3, 5, 1, 0, 0, CalendarSystem.Julian);
+            DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0, 0, new JulianCalendar(), DateTimeKind.Unspecified);
+            DateTime actual = ldt.ToDateTimeUnspecified();
             Assert.AreEqual(expected, actual);
             // Kind isn't checked by Equals...
             Assert.AreEqual(DateTimeKind.Unspecified, actual.Kind);
