@@ -103,6 +103,22 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void ToDateTimeOffset_JulianCalendar()
+        {
+            // Non-Gregorian calendar systems are handled by converting to the same
+            // date, just like the DateTime constructor does.
+            LocalDateTime local = new LocalDateTime(2012, 10, 6, 1, 2, 3, CalendarSystem.Julian);
+            Offset offset = Offset.FromHours(1);
+            OffsetDateTime odt = new OffsetDateTime(local, offset);
+
+            DateTimeOffset expected = new DateTimeOffset(
+                DateTime.SpecifyKind(new DateTime(2012, 10, 6, 1, 2, 3, new JulianCalendar()), DateTimeKind.Unspecified),
+                TimeSpan.FromHours(1));
+            DateTimeOffset actual = odt.ToDateTimeOffset();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         [TestCase(0, 30, 20)]
         [TestCase(-1, -30, -20)]
         [TestCase(0, 30, 55)]

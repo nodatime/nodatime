@@ -310,6 +310,12 @@ namespace NodaTime
         /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
         /// towards the start of time.
         /// </para>
+        /// <para>
+        /// <see cref="DateTime"/> uses the Gregorian calendar by definition, so the value is implicitly converted
+        /// to the Gregorian calendar first. The result will be on the same physical day,
+        /// but the values returned by the Year/Month/Day properties of the <see cref="DateTime"/> may not
+        /// match the Year/Month/Day properties of this value.
+        /// </para>
         /// </remarks>
         /// <exception cref="InvalidOperationException">The date/time is outside the range of <c>DateTime</c>.</exception>
         /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>

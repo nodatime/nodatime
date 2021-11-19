@@ -198,10 +198,18 @@ namespace NodaTime
         /// by this value.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
         /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
         /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
         /// the Noda Time non-system-specific "local" concept as exists in .NET.
+        /// </para>
+        /// <para>
+        /// <see cref="DateTime"/> uses the Gregorian calendar by definition, so the value is implicitly converted
+        /// to the Gregorian calendar first. The result will be on the same physical day,
+        /// but the values returned by the Year/Month/Day properties of the <see cref="DateTime"/> may not
+        /// match the Year/Month/Day properties of this value.
+        /// </para>
         /// </remarks>
         /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
         [Pure]
