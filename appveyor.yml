@@ -3,7 +3,7 @@
 # it elsewhere...
 version: 1.0.{build}-appveyor
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 branches:
   only:
