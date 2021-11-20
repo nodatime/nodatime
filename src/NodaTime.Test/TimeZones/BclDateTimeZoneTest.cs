@@ -62,6 +62,13 @@ namespace NodaTime.Test.TimeZones
         [Category("BrokenOnMonoLinux")]
         public void AllZoneTransitions(NamedWrapper<TimeZoneInfo> windowsZoneWrapper)
         {
+            // The Central Brazilian Standard Time zone is broken in .NET 6.
+            // See https://github.com/dotnet/runtime/issues/61842
+            if (windowsZoneWrapper.Value.Id == "Central Brazilian Standard Time")
+            {
+                return;
+            }
+
             var windowsZone = windowsZoneWrapper.Value;
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
 
@@ -103,6 +110,13 @@ namespace NodaTime.Test.TimeZones
         [Category("BrokenOnMonoLinux")]
         public void AllZonesEveryWeek(NamedWrapper<TimeZoneInfo> windowsZoneWrapper)
         {
+            // The Central Brazilian Standard Time zone is broken in .NET 6.
+            // See https://github.com/dotnet/runtime/issues/61842
+            if (windowsZoneWrapper.Value.Id == "Central Brazilian Standard Time")
+            {
+                return;
+            }
+
             ValidateZoneEveryWeek(windowsZoneWrapper.Value);
         }
 
@@ -315,11 +329,10 @@ namespace NodaTime.Test.TimeZones
 
         private void ValidateZoneEquality(Instant instant, DateTimeZone nodaZone, TimeZoneInfo windowsZone)
         {
-            // The BCL is basically broken (up to and including .NET 4.5.1 at least) around its interpretation
+            // The BCL is basically broken (up to and including .NET 6 at least) around its interpretation
             // of its own data around the new year. See http://codeblog.jonskeet.uk/2014/09/30/the-mysteries-of-bcl-time-zone-data/
             // for details. We're not trying to emulate this behaviour.
-            // It's a lot *better* for .NET 4.6, 
-            // FIXME: Finish this comment, try again. (We don't test against .NET 4.5 any more...)
+            // It's improved over time, but it's still broken in some places. It's not worth worrying about.
             var utc = instant.InUtc();
             if ((utc.Month == 12 && utc.Day == 31) || (utc.Month == 1 && utc.Day == 1))
             {
