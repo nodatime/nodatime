@@ -12,6 +12,6 @@ namespace NodaTime.Globalization
     static class PatternResources
     {
         internal static ResourceManager ResourceManager { get; }
-            = new ResourceManager(typeof(PatternResources).FullName, typeof(PatternResources).Assembly);
+            = new ResourceManager(typeof(PatternResources).FullName!, typeof(PatternResources).Assembly);
     }
 }

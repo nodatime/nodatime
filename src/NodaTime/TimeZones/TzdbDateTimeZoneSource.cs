@@ -46,9 +46,9 @@ namespace NodaTime.TimeZones
             private static TzdbStreamData LoadDefaultDataSource()
             {
                 var assembly = typeof(DefaultHolder).Assembly;
-                using (Stream stream = assembly.GetManifestResourceStream("NodaTime.TimeZones.Tzdb.nzd"))
+                using (Stream stream = assembly.GetManifestResourceStream("NodaTime.TimeZones.Tzdb.nzd")!)
                 {
-                    return TzdbStreamData.FromStream(stream);
+                    return TzdbStreamData.FromStream(stream!);
                 }
             }
         }
@@ -238,7 +238,7 @@ namespace NodaTime.TimeZones
         /// <inheritdoc />
         public DateTimeZone ForId(string id)
         {
-            if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, nameof(id)), out string canonicalId))
+            if (!CanonicalIdMap.TryGetValue(Preconditions.CheckNotNull(id, nameof(id)), out string? canonicalId))
             {
                 throw new ArgumentException($"Time zone with ID {id} not found in source {version}", nameof(id));
             }
@@ -262,7 +262,7 @@ namespace NodaTime.TimeZones
             }
             string id = timeZone.Id;
             // First see if it's a Windows time zone ID.
-            if (source.WindowsMapping.PrimaryMapping.TryGetValue(id, out string result))
+            if (source.WindowsMapping.PrimaryMapping.TryGetValue(id, out string? result))
             {
                 return result;
             }
@@ -415,7 +415,7 @@ namespace NodaTime.TimeZones
             // should be such that y maps to itself.)
             foreach (var entry in CanonicalIdMap)
             {
-                if (!CanonicalIdMap.TryGetValue(entry.Value, out string canonical))
+                if (!CanonicalIdMap.TryGetValue(entry.Value, out string? canonical))
                 {
                     throw new InvalidNodaDataException(
                         $"Mapping for entry {entry.Key} ({entry.Value}) is missing");

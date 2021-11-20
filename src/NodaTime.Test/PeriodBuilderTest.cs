@@ -131,7 +131,7 @@ namespace NodaTime.Test
             {
                 serializer.Serialize(stream, demo);
                 stream.Position = 0;
-                var deserialized = (XmlSerializationDemo) serializer.Deserialize(stream);
+                var deserialized = (XmlSerializationDemo) serializer.Deserialize(stream)!;
                 Assert.AreEqual(demo.Period, deserialized.Period);
             }
         }

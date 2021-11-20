@@ -19,7 +19,7 @@ namespace NodaTime.Test.Utility
         [Test]
         public void CheckArgument2_Failure()
         {
-            var exception = Assert.Throws<ArgumentException>(() => Preconditions.CheckArgument(false, "param", "{0} is {1}", 1, 10));
+            var exception = Assert.Throws<ArgumentException>(() => Preconditions.CheckArgument(false, "param", "{0} is {1}", 1, 10))!;
             Assert.AreEqual("param", exception.ParamName);
             Assert.IsTrue(exception.Message.Contains("1 is 10"));
         }

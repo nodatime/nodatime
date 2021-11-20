@@ -57,7 +57,7 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(expectedLocal, inJersey.LocalDateTime);
 
             // Test ZoneLocations.
-            var france = source.ZoneLocations.Single(g => g.CountryName == "France");
+            var france = source.ZoneLocations!.Single(g => g.CountryName == "France");
             // Tolerance of about 2 seconds
             Assert.AreEqual(48.86666, france.Latitude, 0.00055);
             Assert.AreEqual(2.3333, france.Longitude, 0.00055);
@@ -133,7 +133,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void ZoneLocations_ContainsFrance()
         {
-            var zoneLocations = TzdbDateTimeZoneSource.Default.ZoneLocations;
+            var zoneLocations = TzdbDateTimeZoneSource.Default.ZoneLocations!;
             var france = zoneLocations.Single(g => g.CountryName == "France");
             // Tolerance of about 2 seconds
             Assert.AreEqual(48.86666, france.Latitude, 0.00055);
@@ -148,7 +148,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void Zone1970Locations_ContainsBritain()
         {
-            var zoneLocations = TzdbDateTimeZoneSource.Default.Zone1970Locations;
+            var zoneLocations = TzdbDateTimeZoneSource.Default.Zone1970Locations!;
             var britain = zoneLocations.Single(g => g.ZoneId == "Europe/London");
             // Tolerance of about 2 seconds
             Assert.AreEqual(51.5083, britain.Latitude, 0.00055);
@@ -172,7 +172,7 @@ namespace NodaTime.Test.TimeZones
         [Test]
         public void ZoneLocations_ContainsResolute()
         {
-            var zoneLocations = TzdbDateTimeZoneSource.Default.ZoneLocations;
+            var zoneLocations = TzdbDateTimeZoneSource.Default.ZoneLocations!;
             var resolute = zoneLocations.Single(g => g.ZoneId == "America/Resolute");
             // Tolerance of about 2 seconds
             Assert.AreEqual(74.69555, resolute.Latitude, 0.00055);

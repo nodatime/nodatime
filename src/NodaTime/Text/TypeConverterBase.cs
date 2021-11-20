@@ -29,17 +29,17 @@ namespace NodaTime.Text
 
         /// <inheritdoc />
         [Pure]
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType) => sourceType == typeof(string);
+        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType) => sourceType == typeof(string);
 
         /// <inheritdoc />
         [Pure]
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
+        public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
             // The ParseResult<>.Value property will throw appropriately if the operation was unsuccessful
             value is string text ? pattern.Parse(text).Value! : base.ConvertFrom(context, culture, value);
 
         /// <inheritdoc />
         [Pure]
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) =>
+        public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType) =>
             destinationType == typeof(string) && value is T nodaValue
             ? pattern.Format(nodaValue)
             : base.ConvertTo(context, culture, value, destinationType);

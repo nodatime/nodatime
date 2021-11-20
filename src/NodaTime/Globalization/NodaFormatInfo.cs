@@ -347,32 +347,32 @@ namespace NodaTime.Globalization
         /// <summary>
         /// Gets the <see cref="Offset" /> "l" pattern.
         /// </summary>
-        public string OffsetPatternLong => PatternResources.ResourceManager.GetString("OffsetPatternLong", CultureInfo);
+        public string OffsetPatternLong => PatternResources.ResourceManager.GetString("OffsetPatternLong", CultureInfo)!;
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "m" pattern.
         /// </summary>
-        public string OffsetPatternMedium => PatternResources.ResourceManager.GetString("OffsetPatternMedium", CultureInfo);
+        public string OffsetPatternMedium => PatternResources.ResourceManager.GetString("OffsetPatternMedium", CultureInfo)!;
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "s" pattern.
         /// </summary>
-        public string OffsetPatternShort => PatternResources.ResourceManager.GetString("OffsetPatternShort", CultureInfo);
+        public string OffsetPatternShort => PatternResources.ResourceManager.GetString("OffsetPatternShort", CultureInfo)!;
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "L" pattern.
         /// </summary>
-        public string OffsetPatternLongNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternLongNoPunctuation", CultureInfo);
+        public string OffsetPatternLongNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternLongNoPunctuation", CultureInfo)!;
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "M" pattern.
         /// </summary>
-        public string OffsetPatternMediumNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternMediumNoPunctuation", CultureInfo);
+        public string OffsetPatternMediumNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternMediumNoPunctuation", CultureInfo)!;
 
         /// <summary>
         /// Gets the <see cref="Offset" /> "S" pattern.
         /// </summary>
-        public string OffsetPatternShortNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternShortNoPunctuation", CultureInfo);
+        public string OffsetPatternShortNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternShortNoPunctuation", CultureInfo)!;
 
         /// <summary>
         /// Clears the cache. Only used for test purposes.
@@ -443,7 +443,7 @@ namespace NodaTime.Globalization
 
             internal static EraDescription ForEra(Era era, CultureInfo cultureInfo)
             {
-                string pipeDelimited = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, cultureInfo);
+                string pipeDelimited = PatternResources.ResourceManager.GetString(era.ResourceIdentifier, cultureInfo)!;
                 string primaryName;
                 string[] allNames;
                 if (pipeDelimited is null)

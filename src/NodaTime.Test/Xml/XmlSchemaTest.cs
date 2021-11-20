@@ -294,7 +294,7 @@ namespace NodaTime.Test.Xml
         {
             var serializer = new XmlSerializer(typeof(T));
             using var reader = new StringReader(xml);
-            return (T)serializer.Deserialize(reader);
+            return (T)serializer.Deserialize(reader)!;
         }
 
         private static string SerializeXml<T>(object value)

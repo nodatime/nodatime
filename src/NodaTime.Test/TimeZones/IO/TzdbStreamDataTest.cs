@@ -60,7 +60,7 @@ namespace NodaTime.Test.TimeZones.IO
             // It's hard to create a stream that's valid apart from the version, so we'll just
             // give one with an invalid version and check that it looks like the right message.
             var stream = new MemoryStream(new byte[] { 0, 0, 0, 1 });
-            var exception = Assert.Throws<InvalidNodaDataException>(() => TzdbStreamData.FromStream(stream));
+            var exception = Assert.Throws<InvalidNodaDataException>(() => TzdbStreamData.FromStream(stream))!;
             Assert.IsTrue(exception.Message.Contains("version"));
         }
 
@@ -76,7 +76,7 @@ namespace NodaTime.Test.TimeZones.IO
                 ?? throw new Exception($"Can't find method {handlerMethodName}");
             var builder = new TzdbStreamData.Builder();
             
-            var exception = Assert.Throws<TargetInvocationException>(() => method.Invoke(builder, new object[] { field }));
+            var exception = Assert.Throws<TargetInvocationException>(() => method.Invoke(builder, new object[] { field }))!;
             Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);
         }
 
@@ -106,7 +106,7 @@ namespace NodaTime.Test.TimeZones.IO
             method.Invoke(builder, new object[] { field });
             
             // Second call should throw
-            var exception = Assert.Throws<TargetInvocationException>(() => method.Invoke(builder, new object[] { field }));
+            var exception = Assert.Throws<TargetInvocationException>(() => method.Invoke(builder, new object[] { field }))!;
             Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);
         }
 
