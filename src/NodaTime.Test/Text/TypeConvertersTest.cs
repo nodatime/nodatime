@@ -35,7 +35,7 @@ namespace NodaTime.Test.Text
             Assert.True(converter.CanConvertFrom(typeof(string)));
             Assert.True(converter.CanConvertTo(typeof(string)));
 
-            Assert.Throws<NotSupportedException>(() => converter.ConvertFrom(null));
+            Assert.Throws<NotSupportedException>(() => converter.ConvertFrom(null!));
             Assert.Throws<UnparsableValueException>(() => converter.ConvertFrom(""));
 
             if (type.IsValueType)
@@ -139,7 +139,7 @@ namespace NodaTime.Test.Text
         private static void AssertRoundtrip<T>(string textEquivalent, T nodaValue)
         {
             var converter = TypeDescriptor.GetConverter(typeof(T));
-            var valueFromConverter = (T)converter.ConvertFrom(textEquivalent);
+            var valueFromConverter = (T)converter.ConvertFrom(textEquivalent)!;
             Assert.AreEqual(nodaValue, valueFromConverter);
 
             var textFromConverter = converter.ConvertTo(nodaValue, typeof(string));

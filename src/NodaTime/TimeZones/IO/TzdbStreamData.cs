@@ -134,7 +134,7 @@ namespace NodaTime.TimeZones.IO
             foreach (var field in TzdbStreamField.ReadFields(stream))
             {
                 // Only handle fields we know about
-                if (FieldHandlers.TryGetValue(field.Id, out Action<Builder, TzdbStreamField> handler))
+                if (FieldHandlers.TryGetValue(field.Id, out Action<Builder, TzdbStreamField>? handler))
                 {
                     handler(builder, field);
                 }

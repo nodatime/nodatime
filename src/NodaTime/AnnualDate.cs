@@ -174,7 +174,7 @@ namespace NodaTime
         /// <returns>The result of comparing this AnnualDate with another one.
         /// If <paramref name="obj"/> is null, this method returns a value greater than 0.
         /// </returns>
-        public int CompareTo(object obj)
+        public int CompareTo(object? obj)
         {
             if (obj is null)
             {

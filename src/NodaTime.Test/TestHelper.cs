@@ -502,14 +502,14 @@ namespace NodaTime.Test
             {
                 serializer.Serialize(stream, helper);
                 stream.Position = 0;
-                var result = (SerializationHelper<T>) serializer.Deserialize(stream);
+                var result = (SerializationHelper<T>) serializer.Deserialize(stream)!;
                 Assert.IsTrue(comparer.Equals(result.Value, value), $"Expected {value}; was {result.Value}");
                 // Validate the rest of the object deserialization is still okay.
                 Assert.AreEqual(100, result.Before);
                 Assert.AreEqual(200, result.After);
                 
                 stream.Position = 0;
-                var element = XElement.Load(stream).Element("value");
+                var element = XElement.Load(stream).Element("value")!;
                 Assert.AreEqual(element.ToString(), expectedXml);
             }
             AssertReadXmlConsumesElement<T>(expectedXml);
@@ -531,8 +531,8 @@ namespace NodaTime.Test
                 serializer.Serialize(stream, helper);
                 stream.Position = 0;
                 var doc = XElement.Load(stream);
-                doc.Element("value").ReplaceWith(XElement.Parse(validXml));
-                var result = (SerializationHelper<T>) serializer.Deserialize(doc.CreateReader());
+                doc.Element("value")!.ReplaceWith(XElement.Parse(validXml));
+                var result = (SerializationHelper<T>) serializer.Deserialize(doc.CreateReader())!;
                 Assert.IsTrue(comparer.Equals(result.Value, expectedValue), $"Expected {expectedValue}; was {result.Value}");
                 // Validate the rest of the object deserialization is still okay.
                 Assert.AreEqual(100, result.Before);
@@ -563,7 +563,7 @@ namespace NodaTime.Test
                 serializer.Serialize(stream, helper);
                 stream.Position = 0;
                 var doc = XElement.Load(stream);
-                doc.Element("value").ReplaceWith(XElement.Parse(invalidXml));
+                doc.Element("value")!.ReplaceWith(XElement.Parse(invalidXml));
                 // Sometimes exceptions are wrapped in InvalidOperationException, sometimes they're not. It's not
                 // always easy to predict. (.NET always does; old Mono never does; new Mono sometimes does - I think.)
                 // Odd that I can't just specify "well it throws something, I'll check the details later". Oh well.

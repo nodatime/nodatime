@@ -69,7 +69,7 @@ namespace NodaTime.Text.Patterns
             // Now iterate over the pattern.
             while (patternCursor.MoveNext())
             {
-                if (characterHandlers.TryGetValue(patternCursor.Current, out CharacterHandler<TResult, TBucket> handler))
+                if (characterHandlers.TryGetValue(patternCursor.Current, out CharacterHandler<TResult, TBucket>? handler))
                 {
                     handler(patternCursor, this);
                 }

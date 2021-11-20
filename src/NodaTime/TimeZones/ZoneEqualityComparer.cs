@@ -263,14 +263,15 @@ namespace NodaTime.TimeZones
                 }
             }
 
-            public bool Equals(ZoneInterval x, ZoneInterval y)
+            // This is only called with non-null zone intervals - we never expose it.
+            public bool Equals(ZoneInterval? x, ZoneInterval? y)
             {
-                if (!EqualExceptStartAndEnd(x, y))
+                if (!EqualExceptStartAndEnd(x!, y!))
                 {
                     return false;
                 }
-                return GetEffectiveStart(x) == GetEffectiveStart(y) &&
-                    GetEffectiveEnd(x) == GetEffectiveEnd(y);
+                return GetEffectiveStart(x!) == GetEffectiveStart(y!) &&
+                    GetEffectiveEnd(x!) == GetEffectiveEnd(y!);
             }
 
             public int GetHashCode(ZoneInterval obj)

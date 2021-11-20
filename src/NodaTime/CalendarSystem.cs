@@ -108,7 +108,7 @@ namespace NodaTime
         public static CalendarSystem ForId(string id)
         {
             Preconditions.CheckNotNull(id, nameof(id));
-            if (!IdToFactoryMap.TryGetValue(id, out Func<CalendarSystem> factory))
+            if (!IdToFactoryMap.TryGetValue(id, out Func<CalendarSystem>? factory))
             {
                 throw new KeyNotFoundException($"No calendar system for ID {id} exists");
             }
