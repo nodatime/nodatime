@@ -3,7 +3,7 @@
     <Description>Noda Time is a date and time API acting as an alternative to the built-in DateTime/DateTimeOffset etc types in .NET.</Description>
     <AssemblyTitle>Noda Time</AssemblyTitle>
     <Authors>Jon Skeet</Authors>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>    
     <IsPackable>True</IsPackable>
     <PackageTags>date;time;timezone;calendar;nodatime</PackageTags>
