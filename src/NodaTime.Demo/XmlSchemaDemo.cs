@@ -50,9 +50,10 @@ namespace NodaTime.Demo
   <BirthDate>1976-06-19</BirthDate>
 </Person>");
 
-            var personXmlSchema = XmlSchema.Read(schemaXmlReader, (sender, args) => throw new Exception($"[{args.Severity}] {args.Message}"));
+            var personXmlSchema = XmlSchema.Read(schemaXmlReader, (sender, args) => throw new Exception($"[{args.Severity}] {args.Message}"))
+                ?? throw new InvalidOperationException("XmlSchema.Read returned null");
             var schemaSet = new XmlSchemaSet();
-            schemaSet.Add(personXmlSchema);
+            schemaSet.Add(personXmlSchema!);
             schemaSet.Add(Xml.XmlSchemaDefinition.NodaTimeXmlSchema);
             const string namespaceName = nameof(XmlSchemaDemo);
             var assemblyGenerator = (IXmlSchemaAssemblyCreator)Activator.CreateInstance(assemblyGeneratorType)!;
@@ -66,10 +67,11 @@ namespace NodaTime.Demo
                 Assert.Ignore(exception.Message);
                 return;
             }
-            var personElement = personXmlSchema.Elements.Values.Cast<XmlSchemaElement>().Single();
+            var personElement = personXmlSchema!.Elements.Values.Cast<XmlSchemaElement>().Single();
             var personType = assembly.GetExportedTypes().Single(t => t.FullName == $"{namespaceName}.{personElement.Name}");
             var serializer = new XmlSerializer(personType);
-            dynamic person = serializer.Deserialize(personXmlReader);
+            dynamic person = serializer.Deserialize(personXmlReader)
+                ?? throw new InvalidOperationException("XmlSerializer.Deserialize returned null");
             Assert.IsInstanceOf<string>(person.Name);
             Assert.AreEqual("Jon Skeet", person.Name);
             Assert.IsInstanceOf<LocalDate>(person.BirthDate);
