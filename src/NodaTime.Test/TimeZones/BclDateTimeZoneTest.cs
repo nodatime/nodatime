@@ -134,7 +134,6 @@ namespace NodaTime.Test.TimeZones
         private void ValidateZoneEveryWeek(TimeZoneInfo windowsZone)
         {
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
-
             // Currently .NET Core doesn't expose the information we need to determine any DST recurrence
             // after the final tzif rule. For the moment, limit how far we check.
             // See https://github.com/dotnet/corefx/issues/17117
