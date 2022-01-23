@@ -9,6 +9,7 @@ using NodaTime.Text;
 using NodaTime.Utility;
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -319,11 +320,16 @@ namespace NodaTime
         /// <summary>
         /// Formats the value of the current instance using the specified pattern.
         /// </summary>
+        /// <remarks>
+        /// Unlike most <see cref="IFormattable"/> implementations, a <paramref name="patternText"/> of null with
+        /// the current thread's culture does not yield the same result as the parameterless <see cref="ToString()"/>
+        /// overload, for backward-compatibility reasons. (It uses the ISO format, which is culture-insensitive.)
+        /// </remarks>
         /// <returns>
         /// A <see cref="System.String" /> containing the value of the current instance in the specified format.
         /// </returns>
         /// <param name="patternText">The <see cref="System.String" /> specifying the pattern to use,
-        /// or null to use the default format pattern ("D").
+        /// or null to use the ISO format pattern ("g").
         /// </param>
         /// <param name="formatProvider">The <see cref="System.IFormatProvider" /> to use when formatting the value,
         /// or null to use the current thread's culture to obtain a format provider.
@@ -331,6 +337,16 @@ namespace NodaTime
         /// <filterpriority>2</filterpriority>
         public string ToString(string? patternText, IFormatProvider? formatProvider) =>
             YearMonthPattern.BclSupport.Format(this, patternText, formatProvider);
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// The value of the current instance in the culture-specific default format pattern ("G"), using the current thread's
+        /// culture to obtain a format provider.
+        /// </returns>
+        public override string ToString() =>
+            YearMonthPattern.BclSupport.Format(this, YearMonthPattern.CultureDefaultFormatPattern, CultureInfo.CurrentCulture);
 
         #region XML serialization
         /// <summary>
