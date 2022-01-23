@@ -54,16 +54,23 @@ namespace NodaTime.Text
                 {
                     // Invariant standard patterns return cached implementations.
                     'g' => YearMonthPattern.Patterns.IsoPatternImpl,
+                    // Culture-specific default pattern
+                    'G' => ParseNoStandardExpansion(formatInfo.DateTimeFormat.YearMonthPattern),
                     // Unknown standard patterns fail.
                     _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(YearMonth))
                 };
             }
 
-            var patternBuilder = new SteppedPatternBuilder<YearMonth, YearMonthParseBucket>(formatInfo,
-                () => new YearMonthParseBucket(templateValue));
-            patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-            patternBuilder.ValidateUsedFields();
-            return patternBuilder.Build(templateValue);
+            return ParseNoStandardExpansion(patternText);
+
+            IPattern<YearMonth> ParseNoStandardExpansion(string patternTextLocal)
+            {
+                var patternBuilder = new SteppedPatternBuilder<YearMonth, YearMonthParseBucket>(formatInfo,
+                    () => new YearMonthParseBucket(templateValue));
+                patternBuilder.ParseCustomPattern(patternTextLocal, PatternCharacterHandlers);
+                patternBuilder.ValidateUsedFields();
+                return patternBuilder.Build(templateValue);
+            }
         }
 
         /// <summary>

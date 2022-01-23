@@ -24,10 +24,12 @@ namespace NodaTime.Text
     {
         internal static readonly YearMonth DefaultTemplateValue = new YearMonth(2000, 1);
 
-        private const string DefaultFormatPattern = "g"; // General (ISO)
+        private const string IsoFormatPattern = "g"; // General (ISO)
+
+        internal const string CultureDefaultFormatPattern = "G"; // General (culture-specific)
 
         internal static readonly PatternBclSupport<YearMonth> BclSupport =
-            new PatternBclSupport<YearMonth>(DefaultFormatPattern, fi => fi.YearMonthPatternParser);
+            new PatternBclSupport<YearMonth>(IsoFormatPattern, fi => fi.YearMonthPatternParser);
 
         /// <summary>
         /// Gets an invariant year/month pattern which is ISO-8601 compatible.

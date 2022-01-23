@@ -2,8 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Test.Calendars;
+using NodaTime.Test.Text;
 using NUnit.Framework;
 using System;
+using System.Globalization;
+using System.Linq;
 
 namespace NodaTime.Test
 {
@@ -51,6 +55,53 @@ namespace NodaTime.Test
             var yearMonth = new YearMonth(year, month);
             var expected = new YearMonth(expectedYear, expectedMonth);
             Assert.AreEqual(expected, yearMonth.PlusMonths(monthsToAdd));
+        }
+
+        [Test]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
+        public void ToStringTest_Iso(CultureInfo culture)
+        {
+            var yearMonth = new YearMonth(2022, 1);
+            using (CultureSaver.SetCultures(culture))
+            {
+                Assert.AreEqual(yearMonth.ToString(culture.DateTimeFormat.YearMonthPattern, culture), yearMonth.ToString());
+            }
+        }
+
+        [Test]
+        [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
+        public void ToStringBclEquality(CultureInfo culture)
+        {
+            // The BCL *sometimes* use the genitive month names for year/month, even though I don't
+            // think it should. There may be more complexity here, but for the moment, we'll just skip the cultures we
+            // expect to fail. (We would definitely want to know if new cultures started failing.)
+            string[] expectedFailures = { "ast-ES", "ca-AD", "ca-ES", "ca-ES-valencia", "ca-FR", "ca-IT", "es-PE", "es-UY", "gl-ES", "oc-FR" };
+            if (expectedFailures.Contains(culture.Name))
+            {
+                return;
+            }
+
+            Calendar calendar = culture.Calendar;
+
+            var calendarSystem = BclCalendars.CalendarSystemForCalendar(calendar);
+            if (calendarSystem is null)
+            {
+                // We can't map this calendar system correctly yet; the test would be invalid.
+                return;
+            }
+
+            // Use the year/month containing "January 1st 2022 ISO" but in the target culture's calendar.
+            var date = new LocalDate(2022, 1, 1).WithCalendar(calendarSystem);
+            var yearMonth = date.ToYearMonth();
+
+            using (CultureSaver.SetCultures(culture))
+            {
+                var bclText = date.ToDateTimeUnspecified().ToString(culture.DateTimeFormat.YearMonthPattern, culture);
+                var nodaText1 = yearMonth.ToString();
+                var nodaText2 = yearMonth.ToString("G", culture);
+                Assert.AreEqual(bclText, nodaText1);
+                Assert.AreEqual(nodaText1, nodaText2);
+            }
         }
     }
 }
