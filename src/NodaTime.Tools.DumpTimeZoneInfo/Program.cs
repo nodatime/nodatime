@@ -63,7 +63,14 @@ namespace NodaTime.Tools.DumpTimeZoneInfo
             var delta = FormatOffset(rule.DaylightDelta);
             var startTransition = FormatTransition(rule.DaylightTransitionStart);
             var endTransition = FormatTransition(rule.DaylightTransitionEnd);
-            Console.WriteLine($"{start} - {end}: Daylight delta: {delta}; DST starts {startTransition} and ends {endTransition}");
+            var baseUtcOffsetDeltaText = "";
+#if NET6_0_OR_GREATER
+            if (rule.BaseUtcOffsetDelta != TimeSpan.Zero)
+            {
+                baseUtcOffsetDeltaText = $"Base UTC offset delta: {FormatOffset(rule.BaseUtcOffsetDelta)}; ";
+            }
+#endif
+            Console.WriteLine($"{start} - {end}: {baseUtcOffsetDeltaText}Daylight delta: {delta}; DST starts {startTransition} and ends {endTransition}");
         }
 
         private static string FormatOffset(TimeSpan offset)
@@ -81,11 +88,9 @@ namespace NodaTime.Tools.DumpTimeZoneInfo
         }
 
         private static readonly string[] OrdinalWeeks = { "", "1st", "2nd", "3rd", "4th", "Last" };
-        private static string FormatTransition(TimeZoneInfo.TransitionTime transition)
-        {
-            return transition.IsFixedDateRule ?
-                string.Format("{0:MMMM dd} at {1:HH:mm:ss}", new DateTime(2000, transition.Month, transition.Day), transition.TimeOfDay) :
-                string.Format("{0} {1} of {2:MMMM}; {3:HH:mm:ss}", OrdinalWeeks[transition.Week], transition.DayOfWeek, new DateTime(2000, transition.Month, 1), transition.TimeOfDay);
-        }
+        private static string FormatTransition(TimeZoneInfo.TransitionTime transition) =>
+            transition.IsFixedDateRule ?
+                string.Format("{0:MMMM dd} at {1:HH:mm:ss.FFFFFFF}", new DateTime(2000, transition.Month, transition.Day), transition.TimeOfDay) :
+                string.Format("{0} {1} of {2:MMMM}; {3:HH:mm:ss.FFFFFFF}", OrdinalWeeks[transition.Week], transition.DayOfWeek, new DateTime(2000, transition.Month, 1), transition.TimeOfDay);
     }
 }
