@@ -52,7 +52,7 @@ namespace NodaTime.TimeZones
         internal ZoneInterval GetZoneInterval(Instant instant)
         {
             Preconditions.DebugCheckArgument(instant >= Start && instant < End, nameof(instant),
-                "Value {0} was not in the range [{0}, {1})", instant, Start, End);
+                "Value {0} was not in the range [{1}, {2})", instant, Start, End);
             var interval = map.GetZoneInterval(instant);
             // Clamp the interval for the sake of sanity. Checking this every time isn't very efficient,
             // but we're not expecting this to be called too often, due to caching.
