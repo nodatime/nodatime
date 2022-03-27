@@ -250,6 +250,13 @@ namespace NodaTime.TimeZones
 
             internal static BclAdjustmentRule FromUnixAdjustmentRule(TimeZoneInfo zone, TimeZoneInfo.AdjustmentRule rule)
             {
+                // In .NET 6.0 (and onwards, presumably) the final rule is an alternating standard/daylight rule instead
+                // of a single zone interval. We can handle it as we do rules on Windows.
+                if (!rule.DaylightTransitionStart.IsFixedDateRule || !rule.DaylightTransitionEnd.IsFixedDateRule)
+                {
+                    return FromWindowsAdjustmentRule(zone, rule);
+                }
+
                 // This logic is also performed in the method below, but it's hard to remove that duplication
                 // without also making testing harder. (When everything's working, we might refactor.)
                 DateTime ruleStartLocal = rule.DateStart + rule.DaylightTransitionStart.TimeOfDay.TimeOfDay;
@@ -275,7 +282,9 @@ namespace NodaTime.TimeZones
                 // On .NET Core on Unix, each "adjustment rule" is effectively just a zone interval. The transitions are only used
                 // to give the time of day values to combine with rule.DateStart and rule.DateEnd. It's all a bit odd.
                 // The *last* adjustment rule internally can work like a normal Windows standard/daylight rule, but that's only
-                // exposed in .NET 6.0. TODO: Support that last rule properly...
+                // exposed in .NET 6.0, and those rules are handled in FromUnixAdjustmentRule.
+                // (Currently we don't have a way of handling a fixed-date rule to the end of time that really represents alternating
+                // standard/daylight. Apparently that's not an issue.)
 
                 // The start of each rule is indicated by the start date with the time-of-day of the transition, interpreted as being in the *zone* standard offset
                 // (rather than the *rule* standard offset). Some rules effectively start in daylight time, but only when there are consecutive daylight time
