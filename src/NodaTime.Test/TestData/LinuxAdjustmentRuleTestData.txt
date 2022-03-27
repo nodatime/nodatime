@@ -1,0 +1,208 @@
+﻿// See BclDateTimeZoneTest.LinuxAdjustmentRules.cs for the format of this file.
+// Every test must start with a zone interval that is daylight or "from the start of time".
+// Every test must end with a zone interval that is daylight or "to the end of time".
+
+Europe/Paris in 2020:
+Base offset = 1
+---
+2019-03-31 - 2019-10-27: Daylight delta: +01; DST starts March 31 at 02:00:00 and ends October 27 at 02:59:59
+2019-10-27 - 2020-03-29: Daylight delta: +00; DST starts October 27 at 02:00:00 and ends March 29 at 01:59:59
+2020-03-29 - 2020-10-25: Daylight delta: +01; DST starts March 29 at 02:00:00 and ends October 25 at 02:59:59
+2020-10-25 - 2021-03-28: Daylight delta: +00; DST starts October 25 at 02:00:00 and ends March 28 at 01:59:59
+2021-03-28 - 2021-10-31: Daylight delta: +01; DST starts March 28 at 02:00:00 and ends October 31 at 02:59:59
+---
+2019-03-31 - 2019-10-27: Daylight delta: +01; DST starts March 31 at 02:00:00 and ends October 27 at 02:59:59.999
+2020-03-29 - 2020-10-25: Daylight delta: +01; DST starts March 29 at 02:00:00 and ends October 25 at 02:59:59.999
+2021-03-28 - 2021-10-31: Daylight delta: +01; DST starts March 28 at 02:00:00 and ends October 31 at 02:59:59.999
+---
+2019-03-31T01:00:00Z - 2019-10-27T01:00:00Z, +01, +01
+2019-10-27T01:00:00Z - 2020-03-29T01:00:00Z, +01, +00
+2020-03-29T01:00:00Z - 2020-10-25T01:00:00Z, +01, +01
+2020-10-25T01:00:00Z - 2021-03-28T01:00:00Z, +01, +00
+2021-03-28T01:00:00Z - 2021-10-31T01:00:00Z, +01, +01
+
+
+America/Los_Angeles in 2020:
+Base offset = -8
+---
+2019-03-10 - 2019-11-03: Daylight delta: +01; DST starts March 10 at 02:00:00 and ends November 03 at 01:59:59
+2019-11-03 - 2020-03-08: Daylight delta: +00; DST starts November 03 at 01:00:00 and ends March 08 at 01:59:59
+2020-03-08 - 2020-11-01: Daylight delta: +01; DST starts March 08 at 02:00:00 and ends November 01 at 01:59:59
+2020-11-01 - 2021-03-14: Daylight delta: +00; DST starts November 01 at 01:00:00 and ends March 14 at 01:59:59
+2021-03-14 - 2021-11-07: Daylight delta: +01; DST starts March 14 at 02:00:00 and ends November 07 at 01:59:59
+---
+2019-03-10 - 2019-11-03: Daylight delta: +01; DST starts March 10 at 02:00:00 and ends November 03 at 01:59:59.999
+2020-03-08 - 2020-11-01: Daylight delta: +01; DST starts March 08 at 02:00:00 and ends November 01 at 01:59:59.999
+2021-03-14 - 2021-11-07: Daylight delta: +01; DST starts March 14 at 02:00:00 and ends November 07 at 01:59:59.999
+---
+2019-03-10T10:00:00Z - 2019-11-03T09:00:00Z, -08, +01
+2019-11-03T09:00:00Z - 2020-03-08T10:00:00Z, -08, +00
+2020-03-08T10:00:00Z - 2020-11-01T09:00:00Z, -08, +01
+2020-11-01T09:00:00Z - 2021-03-14T10:00:00Z, -08, +00
+2021-03-14T10:00:00Z - 2021-11-07T09:00:00Z, -08, +01
+
+
+Europe/Prague in 1946/1947:
+Base offset = 1
+---
+1945-04-02 - 1945-05-08: Daylight delta: +01; DST starts April 02 at 02:00:00 and ends May 08 at 23:59:59
+1945-05-08 - 1945-10-01: Daylight delta: +01; DST starts May 08 at 23:00:00 and ends October 01 at 02:59:59
+1945-10-01 - 1946-05-06: Daylight delta: +00; DST starts October 01 at 02:00:00 and ends May 06 at 01:59:59
+1946-05-06 - 1946-10-06: Daylight delta: +01; DST starts May 06 at 02:00:00 and ends October 06 at 02:59:59
+1946-10-06 - 1946-12-01: Daylight delta: +00; DST starts October 06 at 02:00:00 and ends December 01 at 02:59:59
+1946-12-01 - 1947-02-23: Daylight delta: -01; DST starts December 01 at 03:00:00 and ends February 23 at 01:59:59
+1947-02-23 - 1947-04-20: Daylight delta: +00; DST starts February 23 at 03:00:00 and ends April 20 at 01:59:59
+1947-04-20 - 1947-10-05: Daylight delta: +01; DST starts April 20 at 02:00:00 and ends October 05 at 02:59:59
+1947-10-05 - 1948-04-18: Daylight delta: +00; DST starts October 05 at 02:00:00 and ends April 18 at 01:59:59
+1948-04-18 - 1948-10-03: Daylight delta: +01; DST starts April 18 at 02:00:00 and ends October 03 at 02:59:59
+---
+1945-04-02 - 1945-05-08: Daylight delta: +01; DST starts April 02 at 02:00:00 and ends May 08 at 23:59:59.999
+1945-05-08 - 1945-10-01: Daylight delta: +01; DST starts May 08 at 23:00:00 and ends October 01 at 02:59:59.999
+1946-05-06 - 1946-10-06: Daylight delta: +01; DST starts May 06 at 02:00:00 and ends October 06 at 02:59:59.999
+1946-12-01 - 1946-12-31: Daylight delta: -01; DST starts December 01 at 03:00:00 and ends December 31 at 23:59:59.999
+1947-01-01 - 1947-02-23: Daylight delta: -01; DST starts January 01 at 00:00:00 and ends February 23 at 01:59:59.999
+1947-04-20 - 1947-10-05: Daylight delta: +01; DST starts April 20 at 02:00:00 and ends October 05 at 02:59:59.999
+1948-04-18 - 1948-10-03: Daylight delta: +01; DST starts April 18 at 02:00:00 and ends October 03 at 02:59:59.999
+---
+1945-04-02T01:00:00Z - 1945-10-01T01:00:00Z, +01, +01
+1945-10-01T01:00:00Z - 1946-05-06T01:00:00Z, +01, +00
+1946-05-06T01:00:00Z - 1946-10-06T01:00:00Z, +01, +01
+1946-10-06T01:00:00Z - 1946-12-01T02:00:00Z, +01, +00
+1946-12-01T02:00:00Z - 1947-02-23T02:00:00Z, +01, -01
+1947-02-23T02:00:00Z - 1947-04-20T01:00:00Z, +01, +00
+1947-04-20T01:00:00Z - 1947-10-05T01:00:00Z, +01, +01
+1947-10-05T01:00:00Z - 1948-04-18T01:00:00Z, +01, +00
+1948-04-18T01:00:00Z - 1948-10-03T01:00:00Z, +01, +01
+
+
+Europe/Dublin in 2020:
+Base offset = 1
+---
+2019-10-27 - 2020-03-29: Daylight delta: -01; DST starts October 27 at 02:00:00 and ends March 29 at 00:59:59
+2020-03-29 - 2020-10-25: Daylight delta: +00; DST starts March 29 at 02:00:00 and ends October 25 at 01:59:59
+2020-10-25 - 2021-03-28: Daylight delta: -01; DST starts October 25 at 02:00:00 and ends March 28 at 00:59:59
+---
+2019-10-27 - 2019-12-31: Daylight delta: -01; DST starts October 27 at 02:00:00 and ends December 31 at 23:59:59.999
+2020-01-01 - 2020-03-29: Daylight delta: -01; DST starts January 01 at 00:00:00 and ends March 29 at 00:59:59.999
+2020-10-25 - 2020-12-31: Daylight delta: -01; DST starts October 25 at 02:00:00 and ends December 31 at 23:59:59.999
+2021-01-01 - 2021-03-28: Daylight delta: -01; DST starts January 01 at 00:00:00 and ends March 28 at 00:59:59.999
+---
+2019-10-27T01:00:00Z - 2020-03-29T01:00:00Z, +01, -01
+2020-03-29T01:00:00Z - 2020-10-25T01:00:00Z, +01, +00
+2020-10-25T01:00:00Z - 2021-03-28T01:00:00Z, +01, -01
+
+
+Europe/Dublin in 1960:
+Base offset = 1
+---
+1959-10-04 - 1960-04-10: Base UTC offset delta: -01; Daylight delta: +00; DST starts October 04 at 03:00:00 and ends April 10 at 02:59:59
+1960-04-10 - 1960-10-02: Daylight delta: +00; DST starts April 10 at 03:00:00 and ends October 02 at 02:59:59 (force daylight)
+1960-10-02 - 1961-03-26: Base UTC offset delta: -01; Daylight delta: +00; DST starts October 02 at 03:00:00 and ends March 26 at 02:59:59
+---
+1959-10-04 - 1959-12-31: Base UTC offset delta: -01; Daylight delta: +00; DST starts October 04 at 03:00:00 and ends December 31 at 23:59:59.999
+1960-01-01 - 1960-04-10: Base UTC offset delta: -01; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends April 10 at 02:59:59.999
+1960-04-10 - 1960-10-02: Daylight delta: +00; DST starts April 10 at 03:00:00 and ends October 02 at 02:59:59.999 (force daylight)
+1960-10-02 - 1960-12-31: Base UTC offset delta: -01; Daylight delta: +00; DST starts October 02 at 03:00:00 and ends December 31 at 23:59:59.999
+1961-01-01 - 1961-03-26: Base UTC offset delta: -01; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends March 26 at 02:59:59.999
+---
+1959-10-04T02:00:00Z - 1960-04-10T02:00:00Z, +00, +00
+1960-04-10T02:00:00Z - 1960-10-02T02:00:00Z, +00, +01
+1960-10-02T02:00:00Z - 1961-03-26T02:00:00Z, +00, +00
+
+
+America/Sao_Paulo in 2018:
+Base offset = -3
+---
+2017-10-15 - 2018-02-17: Daylight delta: +01; DST starts October 15 at 00:00:00 and ends February 17 at 23:59:59
+2018-02-17 - 2018-11-03: Daylight delta: +00; DST starts February 17 at 23:00:00 and ends November 03 at 23:59:59
+2018-11-04 - 2019-02-16: Daylight delta: +01; DST starts November 04 at 00:00:00 and ends February 16 at 23:59:59
+---
+2017-10-15 - 2017-12-31: Daylight delta: +01; DST starts October 15 at 00:00:00 and ends December 31 at 23:59:59.999
+2018-01-01 - 2018-02-17: Daylight delta: +01; DST starts January 01 at 00:00:00 and ends February 17 at 23:59:59.999
+2018-11-04 - 2018-12-31: Daylight delta: +01; DST starts November 04 at 00:00:00 and ends December 31 at 23:59:59.999
+2019-01-01 - 2019-02-16: Daylight delta: +01; DST starts January 01 at 00:00:00 and ends February 16 at 23:59:59.999
+---
+2017-10-15T03:00:00Z - 2018-02-18T02:00:00Z, -03, +01
+2018-02-18T02:00:00Z - 2018-11-04T03:00:00Z, -03, +00
+2018-11-04T03:00:00Z - 2019-02-17T02:00:00Z, -03, +01
+
+
+Europe/London in 1968-1971
+Base offset = 0
+---
+1968-10-26 - 1971-10-31: Base UTC offset delta: +01; Daylight delta: +00; DST starts October 26 at 23:00:00 and ends October 31 at 01:59:59
+---
+1968-10-26 - 1968-12-31: Base UTC offset delta: +01; Daylight delta: +00; DST starts October 26 at 23:00:00 and ends December 31 at 23:59:59.999
+1969-01-01 - 1970-12-31: Base UTC offset delta: +01; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends December 31 at 23:59:59.999
+1971-01-01 - 1971-10-31: Base UTC offset delta: +01; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends October 31 at 01:59:59.999
+---
+1968-10-26T23:00:00Z - 1971-10-31T02:00:00Z, +01, +00
+
+
+Europe/Moscow in 2011-2014
+Base offset = 3
+---
+2011-03-27 - 2014-10-26: Base UTC offset delta: +01; Daylight delta: +00; DST starts March 27 at 02:00:00 and ends October 26 at 00:59:59
+---
+2011-03-27 - 2011-12-31: Base UTC offset delta: +01; Daylight delta: +00; DST starts March 27 at 02:00:00 and ends December 31 at 23:59:59.999
+2012-01-01 - 2013-12-31: Base UTC offset delta: +01; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends December 31 at 23:59:59.999
+2014-01-01 - 2014-10-26: Base UTC offset delta: +01; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends October 26 at 00:59:59.999
+---
+2011-03-26T23:00:00Z - 2014-10-25T22:00:00Z, +04, +00
+
+
+Pacific/Wallis
+Base offset = 12
+---
+0001-01-01 - 1900-12-31: Base UTC offset delta: +00:15; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends December 31 at 23:44:39
+1900-12-31 - 2038-01-19: Daylight delta: +00; DST starts December 31 at 23:44:40 and ends January 19 at 15:14:06
+2038-01-19 - 9999-12-31: Daylight delta: +00; DST starts January 19 at 15:14:07 and ends December 31 at 23:59:59
+---
+0001-01-01 - 0001-12-31: Base UTC offset delta: +00:15; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends December 31 at 23:59:59.999
+0002-01-01 - 1899-12-31: Base UTC offset delta: +00:15; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends December 31 at 23:59:59.999
+1900-01-01 - 1900-12-31: Base UTC offset delta: +00:15; Daylight delta: +00; DST starts January 01 at 00:00:00 and ends December 31 at 23:44:39.999
+---
+0001-01-01T00:00:00Z - 1900-12-31T11:44:40Z, +12:15, +00
+1900-12-31T11:44:40Z - 9999-12-31T23:59:59Z, +12, +00
+
+
+America/Creston
+Base offset = -7
+---
+1942-02-09 - 1944-01-01: Daylight delta: +01; DST starts February 09 at 02:00:00 and ends January 01 at 00:00:59
+1943-12-31 - 1944-04-01: Daylight delta: +00; DST starts December 31 at 23:01:00 and ends April 01 at 00:00:59
+1944-04-01 - 1944-10-01: Daylight delta: +01; DST starts April 01 at 00:01:00 and ends October 01 at 00:00:59
+1944-09-30 - 1967-04-30: Daylight delta: +00; DST starts September 30 at 23:01:00 and ends April 30 at 01:59:59
+1967-04-30 - 1967-10-29: Daylight delta: +01; DST starts April 30 at 02:00:00 and ends October 29 at 01:59:59
+---
+1942-02-09 - 1942-12-31: Daylight delta: +01; DST starts February 09 at 02:00:00 and ends December 31 at 23:59:59.999
+1943-01-01 - 1943-12-31: Daylight delta: +01; DST starts January 01 at 00:00:00 and ends December 31 at 23:59:59.999
+1944-01-01 - 1944-01-01: Daylight delta: +01; DST starts January 01 at 00:00:00 and ends January 01 at 00:00:59.999
+1944-04-01 - 1944-10-01: Daylight delta: +01; DST starts April 01 at 00:01:00 and ends October 01 at 00:00:59.999
+1967-04-30 - 1967-10-29: Daylight delta: +01; DST starts April 30 at 02:00:00 and ends October 29 at 01:59:59.999
+---
+1942-02-09T09:00:00Z - 1944-01-01T06:01:00Z, -07, +01
+1944-01-01T06:01:00Z - 1944-04-01T07:01:00Z, -07, +00
+1944-04-01T07:01:00Z - 1944-10-01T06:01:00Z, -07, +01
+1944-10-01T06:01:00Z - 1967-04-30T09:00:00Z, -07, +00
+1967-04-30T09:00:00Z - 1967-10-29T08:00:00Z, -07, +01
+
+
+Antarctica/Macquarie
+Base offset = 10
+---
+2008-10-05 - 2009-04-05: Daylight delta: +01; DST starts October 05 at 02:00:00 and ends April 05 at 02:59:59
+2009-04-05 - 2009-10-04: Daylight delta: +00; DST starts April 05 at 02:00:00 and ends October 04 at 01:59:59
+2009-10-04 - 2009-12-31: Daylight delta: +01; DST starts October 04 at 02:00:00 and ends December 31 at 23:59:59
+2009-12-31 - 2011-04-03: Daylight delta: +01; DST starts December 31 at 23:00:00 and ends April 03 at 02:59:59
+---
+2008-10-05 - 2008-12-31: Daylight delta: +01; DST starts October 05 at 02:00:00 and ends December 31 at 23:59:59.999
+2009-01-01 - 2009-04-05: Daylight delta: +01; DST starts January 01 at 00:00:00 and ends April 05 at 02:59:59.999
+2009-10-04 - 2009-12-31: Daylight delta: +01; DST starts October 04 at 02:00:00 and ends December 31 at 23:59:59.999
+2009-12-31 - 2009-12-31: Daylight delta: +01; DST starts December 31 at 23:00:00 and ends December 31 at 23:59:59.999
+2010-01-01 - 2010-12-31: Daylight delta: +01; DST starts January 01 at 00:00:00 and ends December 31 at 23:59:59.999
+2011-01-01 - 2011-04-03: Daylight delta: +01; DST starts January 01 at 00:00:00 and ends April 03 at 02:59:59.999
+---
+2008-10-04T16:00:00Z - 2009-04-04T16:00:00Z, +10, +01
+2009-04-04T16:00:00Z - 2009-10-03T16:00:00Z, +10, +00
+2009-10-03T16:00:00Z - 2011-04-02T16:00:00Z, +10, +01

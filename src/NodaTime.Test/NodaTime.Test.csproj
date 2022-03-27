@@ -11,7 +11,7 @@
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
     <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj" />
     <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
   </ItemGroup>
 
@@ -46,6 +46,9 @@
     </Compile>
     <Compile Update="YearMonthTest.*.cs">
       <DependentUpon>YearMonthTest.cs</DependentUpon>
+    </Compile>
+    <Compile Update="TimeZones/BclDateTimeZoneTest.*.cs">
+  	  <DependentUpon>TimeZones/BclDateTimeZoneTest.cs</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

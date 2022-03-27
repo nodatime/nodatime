@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace NodaTime.Test.TimeZones
 {
-    public class BclDateTimeZoneTest
+    public partial class BclDateTimeZoneTest
     {        
         private static readonly ReadOnlyCollection<NamedWrapper<TimeZoneInfo>> BclZones =
             (TestHelper.IsRunningOnMono ? GetSafeSystemTimeZones() : TimeZoneInfo.GetSystemTimeZones())
