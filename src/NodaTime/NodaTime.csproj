@@ -4,7 +4,8 @@
     <AssemblyTitle>Noda Time</AssemblyTitle>
     <Authors>Jon Skeet</Authors>
     <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>    
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>CA1303</NoWarn>
     <IsPackable>True</IsPackable>
     <PackageTags>date;time;timezone;calendar;nodatime</PackageTags>
   </PropertyGroup>
