@@ -41,6 +41,17 @@ namespace NodaTime.Test.TimeZones
             TimeZoneInfo.CreateCustomTimeZone(zone.Id, zone.BaseUtcOffset, zone.DisplayName, zone.StandardName,
                 zone.DisplayName, zone.GetAdjustmentRules());
 
+        private static int EndTestYearExclusive =>
+#if NET6_0_OR_GREATER
+            2050;
+#else
+            // .NET Core 3.1 on Unix doesn't expose the information we need to determine any DST recurrence
+            // after the final tzif rule. For the moment, limit how far we check.
+            // See https://github.com/dotnet/corefx/issues/17117
+            TestHelper.IsRunningOnDotNetCoreUnix? 2037 : 2050;
+#endif
+
+
         // TODO: Check what this does on Mono, both on Windows and Unix.
 
         [Test]
@@ -72,13 +83,8 @@ namespace NodaTime.Test.TimeZones
             var windowsZone = windowsZoneWrapper.Value;
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
 
-            // Currently .NET Core doesn't expose the information we need to determine any DST recurrence
-            // after the final tzif rule. For the moment, limit how far we check.
-            // See https://github.com/dotnet/corefx/issues/17117
-            int endYear = TestHelper.IsRunningOnDotNetCoreUnix ? 2037 : 2050;
-
             Instant instant = Instant.FromUtc(1800, 1, 1, 0, 0);
-            Instant end = Instant.FromUtc(endYear, 1, 1, 0, 0);
+            Instant end = Instant.FromUtc(EndTestYearExclusive, 1, 1, 0, 0);
 
             while (instant < end)
             {
@@ -134,13 +140,8 @@ namespace NodaTime.Test.TimeZones
         private void ValidateZoneEveryWeek(TimeZoneInfo windowsZone)
         {
             var nodaZone = BclDateTimeZone.FromTimeZoneInfo(windowsZone);
-            // Currently .NET Core doesn't expose the information we need to determine any DST recurrence
-            // after the final tzif rule. For the moment, limit how far we check.
-            // See https://github.com/dotnet/corefx/issues/17117
-            int endYear = TestHelper.IsRunningOnDotNetCoreUnix ? 2037 : 2050;
-
             Instant instant = Instant.FromUtc(1950, 1, 1, 0, 0);
-            Instant end = Instant.FromUtc(endYear, 1, 1, 0, 0);
+            Instant end = Instant.FromUtc(EndTestYearExclusive, 1, 1, 0, 0);
 
             while (instant < end)
             {
