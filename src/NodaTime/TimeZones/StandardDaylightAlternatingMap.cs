@@ -128,7 +128,7 @@ namespace NodaTime.TimeZones
                 // Okay, the transitions happen at the same time. If they're not at infinity, we're stumped.
                 if (standardTransitionInstant.IsValid)
                 {
-                    throw new InvalidOperationException("Zone recurrence rules have identical transitions. This time zone is broken.");
+                    throw new InvalidOperationException($"Zone recurrence rules have identical transitions. This time zone is broken. Transition time: {standardTransitionInstant}");
                 }
                 // Okay, the two transitions must be to the end of time. Find which recurrence has the later *previous* transition...
                 var previousDstTransition = dstRecurrence.PreviousOrSameOrFail(instant, standardOffset, Offset.Zero);
