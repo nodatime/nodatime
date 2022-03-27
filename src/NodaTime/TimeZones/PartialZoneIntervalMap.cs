@@ -104,10 +104,12 @@ namespace NodaTime.TimeZones
                 if (current is null)
                 {
                     current = next;
-                    Preconditions.DebugCheckArgument(current.Start == Instant.BeforeMinValue, nameof(maps), "First partial map must start at the beginning of time");
+                    Preconditions.DebugCheckArgument(current.Start == Instant.BeforeMinValue, nameof(maps), "First partial map must start at the beginning of time. Actual start: {0:uuuu-MM-dd'T'HH:mm:ss.FFFFFFF}",
+                        current.Start);
                     continue;
                 }
-                Preconditions.DebugCheckArgument(current.End == next.Start, nameof(maps), "Maps must abut");
+                Preconditions.DebugCheckArgument(current.End == next.Start, nameof(maps),
+                    "Maps must abut: {0:uuuu-MM-dd'T'HH:mm:ss.FFFFFFF}Z != {1:uuuu-MM-dd'T'HH:mm:ss.FFFFFFF}Z", current.End, next.Start);
 
                 if (next.Start == next.End)
                 {

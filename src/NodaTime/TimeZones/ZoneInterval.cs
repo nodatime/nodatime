@@ -198,7 +198,8 @@ namespace NodaTime.TimeZones
         internal ZoneInterval(string name, Instant start, Instant end, Offset wallOffset, Offset savings)
         {
             Preconditions.CheckNotNull(name, nameof(name));
-            Preconditions.CheckArgument(start < end, nameof(start), "The start Instant must be less than the end Instant");
+            Preconditions.CheckArgument(start < end, nameof(start),
+                "The start Instant must be less than the end Instant. start: {0}; end: {1}", start, end);
             this.Name = name;
             this.RawStart = start;
             this.RawEnd = end;
