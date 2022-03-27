@@ -871,5 +871,30 @@ namespace NodaTime
             writer.WriteString(LocalDatePattern.Iso.Format(this));
         }
         #endregion
+
+        #region DateOnly conversions (.NET 6 only)
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Converts this value to an equivalent <see cref="DateOnly"/>.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="DateOnly"/> uses the Gregorian calendar by definition, so the value is implicitly converted
+        /// to the Gregorian calendar first. The result will be on the same physical day,
+        /// but the values returned by the Year/Month/Day properties of the <see cref="DateTime"/> may not
+        /// match the Year/Month/Day properties of this value.
+        /// </remarks>
+        /// <returns>A <see cref="DateOnly"/> value equivalent to this one.</returns>
+        [Pure]
+        public DateOnly ToDateOnly() => DateOnly.FromDayNumber(DaysSinceEpoch + NodaConstants.BclDaysAtUnixEpoch);
+
+        /// <summary>
+        /// Constructs a <see cref="LocalDate"/> from a <see cref="DateOnly"/>.
+        /// </summary>
+        /// <param name="date">The date to convert.</param>
+        /// <returns>The <see cref="LocalDate"/> equivalent, which is always in the ISO calendar system.</returns>
+        public static LocalDate FromDateOnly(DateOnly date) =>
+            new LocalDate(CalendarSystem.Iso.GetYearMonthDayCalendarFromDaysSinceEpoch(date.DayNumber - NodaConstants.BclDaysAtUnixEpoch));
+#endif
+#endregion
     }
 }

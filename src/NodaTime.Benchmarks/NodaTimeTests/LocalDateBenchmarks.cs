@@ -12,6 +12,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
     public class LocalDateBenchmarks
     {
         private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
+#if NET6_0_OR_GREATER
+        private static readonly DateOnly SampleDateOnly = new DateOnly(2009, 12, 26);
+#endif
         private static readonly DateTime SampleDateTime = new DateTime(2009, 12, 26, 1, 2, 3, DateTimeKind.Utc);
         private static readonly LocalDate SampleBeforeEpoch = new LocalDate(1909, 12, 26);
 
@@ -135,5 +138,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public bool LessThanOperator() => Sample < SampleBeforeEpoch;
+
+#if NET6_0_OR_GREATER
+        [Benchmark]
+        public DateOnly ToDateOnly() => Sample.ToDateOnly();
+
+        [Benchmark]
+        public LocalDate FromDateOnly() => LocalDate.FromDateOnly(SampleDateOnly);
+#endif
     }
 }
