@@ -48,6 +48,9 @@ namespace NodaTime.TimeZones
             // result will always be in the range [0, CacheSize).
             private const int CachePeriodMask = CacheSize - 1;
 
+            public Offset MinOffset => map.MinOffset;
+            public Offset MaxOffset => map.MaxOffset;
+
             /// <summary>
             /// Defines the number of bits to shift an instant's "days since epoch" to get the period. This
             /// converts an instant into a number of 32 day periods.

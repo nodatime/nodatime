@@ -30,7 +30,7 @@ namespace NodaTime.TimeZones
     /// only be used as part of a zone which will only ask it for values within the right
     /// portion of the timeline.
     /// </remarks>
-    internal sealed class StandardDaylightAlternatingMap : IEquatable<StandardDaylightAlternatingMap?>, IZoneIntervalMapWithMinMax
+    internal sealed class StandardDaylightAlternatingMap : IEquatable<StandardDaylightAlternatingMap?>, IZoneIntervalMap
     {
         private readonly Offset standardOffset;
         private readonly ZoneRecurrence standardRecurrence;

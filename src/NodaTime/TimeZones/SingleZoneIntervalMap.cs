@@ -12,6 +12,9 @@ namespace NodaTime.TimeZones
     {
         private readonly ZoneInterval interval;
 
+        public Offset MinOffset => interval.WallOffset;
+        public Offset MaxOffset => interval.WallOffset;
+
         internal SingleZoneIntervalMap(ZoneInterval interval)
         {
             this.interval = interval;
