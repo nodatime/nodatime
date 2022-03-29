@@ -1,6 +1,7 @@
 ﻿// Copyright 2017 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace BenchmarkUploader
@@ -59,8 +60,18 @@ namespace BenchmarkUploader
             public double StandardError { get; set; }
             public double Variance { get; set; }
             public double StandardDeviation { get; set; }
-            public double Skewness { get; set; }
-            public double Kurtosis { get; set; }
+
+            [JsonIgnore]
+            public double Skewness => RawSkewness is double d ? d : 0.0;
+            [JsonIgnore]
+            public double Kurtosis => RawKurtosis is double d ? d : 0.0;
+
+            // These are sometimes represented as empty strings...
+            [JsonProperty("Skewness")]
+            public object RawSkewness { get; set; }
+            [JsonProperty("Kurtosis")]
+            public object RawKurtosis { get; set; }
+
             // TODO: Confidence interval?
             public Percentiles Percentiles { get; set; }
         }
