@@ -59,8 +59,8 @@ namespace NodaTime.TimeZones
         /// <value>The display name associated with the time zone, as provided by the Base Class Library.</value>
         public string DisplayName => OriginalZone.DisplayName;
 
-        private BclDateTimeZone(TimeZoneInfo bclZone, Offset minOffset, Offset maxOffset, IZoneIntervalMap map)
-            : base(bclZone.Id, bclZone.SupportsDaylightSavingTime, minOffset, maxOffset)
+        private BclDateTimeZone(TimeZoneInfo bclZone, IZoneIntervalMap map)
+            : base(bclZone.Id, bclZone.SupportsDaylightSavingTime, map.MinOffset, map.MaxOffset)
         {
             this.OriginalZone = bclZone;
             this.map = map;
@@ -85,7 +85,7 @@ namespace NodaTime.TimeZones
             if (!bclZone.SupportsDaylightSavingTime || rules.Length == 0)
             {
                 var fixedInterval = new ZoneInterval(bclZone.StandardName, Instant.BeforeMinValue, Instant.AfterMaxValue, standardOffset, Offset.Zero);
-                return new BclDateTimeZone(bclZone, standardOffset, standardOffset, new SingleZoneIntervalMap(fixedInterval));
+                return new BclDateTimeZone(bclZone, new SingleZoneIntervalMap(fixedInterval));
             }
 
             BclAdjustmentRule[] convertedRules;
@@ -102,10 +102,7 @@ namespace NodaTime.TimeZones
             IZoneIntervalMap uncachedMap = BuildMap(convertedRules, standardOffset, bclZone.StandardName);
             IZoneIntervalMap cachedMap = CachingZoneIntervalMap.CacheMap(uncachedMap);
 
-            // TODO: This always assumes an offset that includes savings. It's probably correct just by coincidence at the moment...
-            Offset minRuleOffset = convertedRules.Aggregate(Offset.MaxValue, (min, rule) => Offset.Min(min, rule.Savings + rule.StandardOffset));
-            Offset maxRuleOffset = convertedRules.Aggregate(Offset.MinValue, (min, rule) => Offset.Max(min, rule.Savings + rule.StandardOffset));
-            return new BclDateTimeZone(bclZone, Offset.Min(standardOffset, minRuleOffset), Offset.Max(standardOffset, maxRuleOffset), cachedMap);
+            return new BclDateTimeZone(bclZone, cachedMap);
         }
 
         /// <summary>
@@ -410,6 +407,9 @@ namespace NodaTime.TimeZones
             {
                 private readonly IZoneIntervalMap originalMap;
                 private readonly string daylightName;
+
+                public Offset MinOffset => originalMap.MinOffset;
+                public Offset MaxOffset => originalMap.MaxOffset;
 
                 internal DaylightFakingZoneIntervalMap(IZoneIntervalMap originalMap, string daylightName)
                 {

@@ -18,7 +18,7 @@ namespace NodaTime.TimeZones
     internal sealed class PrecalculatedDateTimeZone : DateTimeZone
     {
         private readonly ZoneInterval[] periods;
-        private readonly IZoneIntervalMapWithMinMax? tailZone;
+        private readonly IZoneIntervalMap? tailZone;
         /// <summary>
         /// The first instant covered by the tail zone, or Instant.AfterMaxValue if there's no tail zone.
         /// </summary>
@@ -33,7 +33,7 @@ namespace NodaTime.TimeZones
         /// <param name="tailZone">The tail zone - which can be any IZoneIntervalMap for normal operation,
         /// but must be a StandardDaylightAlternatingMap if the result is to be serialized.</param>
         [VisibleForTesting]
-        internal PrecalculatedDateTimeZone(string id, ZoneInterval[] intervals, IZoneIntervalMapWithMinMax? tailZone)
+        internal PrecalculatedDateTimeZone(string id, ZoneInterval[] intervals, IZoneIntervalMap? tailZone)
             : base(id, false,
                    ComputeOffset(intervals, tailZone, Offset.Min),
                    ComputeOffset(intervals, tailZone, Offset.Max))
@@ -179,7 +179,7 @@ namespace NodaTime.TimeZones
         // Reasonably simple way of computing the maximum/minimum offset
         // from either periods or transitions, with or without a tail zone.
         private static Offset ComputeOffset(ZoneInterval[] intervals,
-            IZoneIntervalMapWithMinMax? tailZone,
+            IZoneIntervalMap? tailZone,
             OffsetAggregator aggregator)
         {
             Preconditions.CheckNotNull(intervals, nameof(intervals));

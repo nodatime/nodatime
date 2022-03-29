@@ -5,6 +5,7 @@
 using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NodaTime.TimeZones
 {
@@ -175,9 +176,14 @@ namespace NodaTime.TimeZones
         {
             private readonly PartialZoneIntervalMap[] partialMaps;
 
+            public Offset MinOffset { get; }
+            public Offset MaxOffset { get; }
+
             internal CombinedPartialZoneIntervalMap(PartialZoneIntervalMap[] partialMaps)
             {
                 this.partialMaps = partialMaps;
+                MinOffset = partialMaps.Aggregate(Offset.MaxValue, (min, partialMap) => Offset.Min(min, partialMap.map.MinOffset));
+                MaxOffset = partialMaps.Aggregate(Offset.MinValue, (max, partialMap) => Offset.Max(max, partialMap.map.MaxOffset));
             }
 
             public ZoneInterval GetZoneInterval(Instant instant)
