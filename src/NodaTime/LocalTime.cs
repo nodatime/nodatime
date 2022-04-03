@@ -830,5 +830,26 @@ namespace NodaTime
             writer.WriteString(LocalTimePattern.ExtendedIso.Format(this));
         }
         #endregion
+
+        #region TimeOnly conversions (.NET 6 only)
+#if NET6_0_OR_GREATER
+        /// <summary>
+        /// Converts this value to an equivalent <see cref="TimeOnly"/>.
+        /// </summary>
+        /// <remarks>
+        /// If the value does not fall on a tick boundary, it will be truncated to the earlier tick boundary.
+        /// </remarks>
+        /// <returns>A <see cref="TimeOnly"/> value equivalent to this one.</returns>
+        [Pure]
+        public TimeOnly ToTimeOnly() => new TimeOnly(TickOfDay);
+
+        /// <summary>
+        /// Constructs a <see cref="LocalTime"/> from a <see cref="TimeOnly"/>.
+        /// </summary>
+        /// <param name="time">The time of day to convert.</param>
+        /// <returns>The <see cref="LocalTime"/> equivalent.</returns>
+        public static LocalTime FromTimeOnly(TimeOnly time) => FromTicksSinceMidnight(time.Ticks);
+#endif
+        #endregion
     }
 }

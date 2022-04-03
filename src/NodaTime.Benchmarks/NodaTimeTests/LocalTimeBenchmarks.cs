@@ -3,12 +3,17 @@
 // as found in the LICENSE.txt file.
 
 using BenchmarkDotNet.Attributes;
+using System;
 
 namespace NodaTime.Benchmarks.NodaTimeTests
 {
     public class LocalTimeBenchmarks
     {
         private static readonly LocalTime Sample = LocalTime.FromHourMinuteSecondMillisecondTick(10, 8, 30, 300, 1234);
+#if NET6_0_OR_GREATER
+        private static readonly TimeOnly SampleTimeOnly = new TimeOnly(10, 8, 30, 300).Add(TimeSpan.FromTicks(1234));
+#endif
+
         private static readonly Period SamplePeriod = new PeriodBuilder { Hours = 10, Minutes = 4, Seconds = 5, Milliseconds = 20, Ticks = 30 }.Build();
         private static readonly LocalDateTime LocalDateTime = new LocalDateTime(2011, 9, 14, 15, 10, 25);
 
@@ -77,5 +82,13 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public LocalTime MinusPeriod() => (Sample - SamplePeriod);
+
+#if NET6_0_OR_GREATER
+        [Benchmark]
+        public TimeOnly ToTimeOnly() => Sample.ToTimeOnly();
+
+        [Benchmark]
+        public LocalTime FromTimeOnly() => LocalTime.FromTimeOnly(SampleTimeOnly);
+#endif
     }
 }
