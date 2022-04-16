@@ -24,7 +24,7 @@ declare -r RESULTS=$(realpath $2)
 # There's no obvious way of cloning a repository *at* a particular commit,
 # and as we're only cloning to depth 1, if another commit has been merged,
 # we couldn't check out the original commit anyway.
-declare -r COMMIT=$(curl -H Accept:application/vnd.github.VERSION.sha https://api.github.com/repos/nodatime/nodatime/commits/master)
+declare -r COMMIT=$(curl -H Accept:application/vnd.github.VERSION.sha https://api.github.com/repos/nodatime/nodatime/commits/main)
 
 if [[ -d $RESULTS/$COMMIT ]]
 then

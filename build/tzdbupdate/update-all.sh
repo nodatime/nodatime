@@ -11,7 +11,7 @@ then
   exit 1
 fi
 
-./update-master.sh $1
+./update-main.sh $1
 
 rm -rf tmp-gcs
 rm -rf tmp-nuget

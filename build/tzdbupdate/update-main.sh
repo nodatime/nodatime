@@ -6,8 +6,8 @@ cd $(dirname $0)
 
 if [[ "$1" = "" ]]
 then
-  echo "Usage: update-master.sh tzdb-release-number"
-  echo "e.g. updatemaster.sh 2013h"
+  echo "Usage: update-main.sh tzdb-release-number"
+  echo "e.g. update-main.sh 2013h"
   exit 1
 fi
 

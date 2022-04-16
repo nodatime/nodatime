@@ -68,7 +68,7 @@ namespace NodaTime.Tools.DumpTimeZoneInfo
             }
         }
 
-        // Most code taken from https://github.com/jskeet/DemoCode/blob/master/DateTimeDemos/TimeZoneInfoExplorer/MainForm.cs
+        // Most code taken from https://github.com/jskeet/DemoCode/blob/main/DateTimeDemos/TimeZoneInfoExplorer/MainForm.cs
         private static void DumpRule(TimeZoneInfo zone, TimeZoneInfo.AdjustmentRule rule, bool windowsRules)
         {
             var start = rule.DateStart.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
