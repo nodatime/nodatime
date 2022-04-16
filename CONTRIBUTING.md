@@ -37,11 +37,11 @@ Additionally, feel free to open an issue if you find a bug or want to suggest a 
 
 ### Making Changes
 
-When you're ready to start working, create a new branch off the `master` branch:
+When you're ready to start working, create a new branch off the `main` branch:
 
 ```
-git checkout master
-git pull upstream master
+git checkout main
+git pull upstream main
 git checkout -b SOME-BRANCH-NAME
 ```
 

@@ -7,7 +7,7 @@ image: Visual Studio 2022
 
 branches:
   only:
-    - master
+    - main
 
 environment:
   COVERALLS_REPO_TOKEN:

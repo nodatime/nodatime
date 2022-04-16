@@ -7,7 +7,7 @@ name: Build push
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
 
