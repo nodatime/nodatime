@@ -6,8 +6,8 @@ cd $(dirname $0)
 
 if [[ "$1" = "" ]]
 then
-  echo "Usage: update-3.0.sh tzdb-release-number"
-  echo "e.g. update-3.0.sh 2013h"
+  echo "Usage: update-3.1.sh tzdb-release-number"
+  echo "e.g. update-3.1.sh 2013h"
   exit 1
 fi
 
@@ -15,15 +15,15 @@ declare -r TZDB_RELEASE=$1
 declare -r GSUTIL=gsutil.cmd
 declare -r ROOT=$(realpath $(dirname $0)/../..)
 
-rm -rf tmp-3.0
-mkdir tmp-3.0
-cd tmp-3.0
+rm -rf tmp-3.1
+mkdir tmp-3.1
+cd tmp-3.1
 
 # Layout of tmp directory:
 # - nodatime: git repo
 # - old: previous zip and nupkg files
 # - output: final zip and nupkg files
-git clone https://github.com/nodatime/nodatime.git -b 3.0.x --depth 1
+git clone https://github.com/nodatime/nodatime.git -b 3.1.x --depth 1
 mkdir old
 mkdir output
 declare -r OUTPUT="$(realpath $PWD/output)"
@@ -35,7 +35,7 @@ declare -r RELEASE=$(\
     $GSUTIL ls -l gs://nodatime/releases | \
     sed -E 's/^ +[0-9]+ +//g' | \
     sort -r | \
-    grep -o -E 'NodaTime-3\.0\.[0-9]+\.zip' | \
+    grep -o -E 'NodaTime-3\.1\.[0-9]+\.zip' | \
     head -n 1 | \
     sed s/NodaTime-// | \
     sed s/.zip//)
@@ -56,10 +56,9 @@ cd nodatime
 sed -i s/\>${RELEASE}\</\>${NEW_RELEASE}\</g Directory.Build.props
 cp "${ROOT}/src/NodaTime/TimeZones/Tzdb.nzd" src/NodaTime/TimeZones
 
-# Don't update the XML schema test file; this only needs to change when there's a new
-# time zone, and the 3.0.x schema uses simple types instead of complex ones, so the
-# tests fail.
-# cp "${ROOT}/src/NodaTime.Test/Xml/XmlSchemaTest.XmlSchema.approved.xml" src/NodaTime.Test/Xml
+# Update the XML schema test file; this should only need to change when there's a new
+# time zone.
+cp "${ROOT}/src/NodaTime.Test/Xml/XmlSchemaTest.XmlSchema.approved.xml" src/NodaTime.Test/Xml
 
 # Commit and tag the change
 git commit -a -m "Update to TZDB ${TZDB_RELEASE} for release ${NEW_RELEASE}"
@@ -89,5 +88,5 @@ cd ../..
 echo "Done. Remaining tasks:"
 echo "- Push package to nuget"
 echo "- Copy src/binary releases to GCS"
-echo "- Push commit to github: git push origin 3.0.x"
+echo "- Push commit to github: git push origin 3.1.x"
 echo "- Push tag to github: git push --tags origin"
