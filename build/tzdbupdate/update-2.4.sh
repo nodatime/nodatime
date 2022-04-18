@@ -90,6 +90,5 @@ cd ../..
 
 echo "Done. Remaining tasks:"
 echo "- Push package to nuget"
-echo "- Copy src/binary releases to GCS"
 echo "- Push commit to github: git push origin 2.4.x"
 echo "- Push tag to github: git push --tags origin"
