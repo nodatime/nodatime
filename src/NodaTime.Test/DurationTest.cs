@@ -371,5 +371,16 @@ namespace NodaTime.Test
             Assert.AreEqual(x, Duration.Min(Duration.MaxValue, x));
             Assert.AreEqual(x, Duration.Min(x, Duration.MaxValue));
         }
+
+        [Test]
+        public void DoubleConversionHandlesRoundingErrors()
+        {
+            // This value produces rounding errors when converting to nanoseconds
+            const double expectedSeconds = 4.1;
+
+            Duration duration = Duration.FromSeconds(expectedSeconds);
+
+            Assert.AreEqual(4100000000d, duration.TotalNanoseconds);
+        }
     }
 }
