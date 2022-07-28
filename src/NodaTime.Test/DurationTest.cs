@@ -373,14 +373,40 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void DoubleConversionHandlesRoundingErrors()
+        public void FromDaysHandlesRoundingErrors()
         {
-            // This value produces rounding errors when converting to nanoseconds
-            const double expectedSeconds = 4.1;
+            Duration duration = Duration.FromDays(2.53);
+            Assert.AreEqual(218592000000000d, duration.TotalNanoseconds);
+        }
 
-            Duration duration = Duration.FromSeconds(expectedSeconds);
+        [Test]
+        public void FromHoursHandlesRoundingErrors() {
+            Duration duration = Duration.FromHours(4.1);
+            Assert.AreEqual(14760000000000d, duration.TotalNanoseconds);
+        }
 
+        [Test]
+        public void FromMinutesHandlesRoundingErrors() {
+            Duration duration = Duration.FromMinutes(4.1);
+            Assert.AreEqual(246000000000d, duration.TotalNanoseconds);
+        }
+
+        [Test]
+        public void FromSecondsHandlesRoundingErrors() {
+            Duration duration = Duration.FromSeconds(4.1);
             Assert.AreEqual(4100000000d, duration.TotalNanoseconds);
+        }
+
+        [Test]
+        public void FromMillisecondsHandlesRoundingErrors() {
+            Duration duration = Duration.FromMilliseconds(4.1);
+            Assert.AreEqual(4100000d, duration.TotalNanoseconds);
+        }
+
+        [Test]
+        public void FromTicksHandlesRoundingErrors() {
+            Duration duration = Duration.FromTicks(4.1);
+            Assert.AreEqual(410d, duration.TotalNanoseconds);
         }
     }
 }
