@@ -898,7 +898,7 @@ namespace NodaTime
                 days,
                 MinDays,
                 MaxDays);
-            return FromNanoseconds(days * NanosecondsPerDay);
+            return FromNanoseconds(Math.Round(days * NanosecondsPerDay));
         }
 
         /// <summary>
@@ -921,7 +921,7 @@ namespace NodaTime
                 hours,
                 (long) MinDays * HoursPerDay,
                 (MaxDays + 1L) * HoursPerDay - 1);
-            return FromNanoseconds(hours * NanosecondsPerHour);
+            return FromNanoseconds(Math.Round(hours * NanosecondsPerHour));
         }
 
         /// <summary>
@@ -944,7 +944,7 @@ namespace NodaTime
                 minutes,
                 (long) MinDays * MinutesPerDay,
                 (MaxDays + 1L) * MinutesPerDay - 1);
-            return FromNanoseconds(minutes * NanosecondsPerMinute);
+            return FromNanoseconds(Math.Round(minutes * NanosecondsPerMinute));
         }
 
         /// <summary>
@@ -967,7 +967,7 @@ namespace NodaTime
                 seconds,
                 (long) MinDays * SecondsPerDay,
                 (MaxDays + 1L) * SecondsPerDay - 1);
-            return FromNanoseconds(seconds * NanosecondsPerSecond);
+            return FromNanoseconds(Math.Round(seconds * NanosecondsPerSecond));
         }
 
         /// <summary>
@@ -990,7 +990,7 @@ namespace NodaTime
                 milliseconds,
                 (long) MinDays * MillisecondsPerDay,
                 (MaxDays + 1L) * MillisecondsPerDay - 1);
-            return FromNanoseconds(milliseconds * NanosecondsPerMillisecond);
+            return FromNanoseconds(Math.Round(milliseconds * NanosecondsPerMillisecond));
         }
 
         /// <summary>
@@ -1017,7 +1017,7 @@ namespace NodaTime
                 ticks,
                 MinDays * (double) TicksPerDay,
                 (MaxDays + 1d) * TicksPerDay - 1);
-            return FromNanoseconds(ticks * NanosecondsPerTick);
+            return FromNanoseconds(Math.Round(ticks * NanosecondsPerTick));
         }
 
         /// <summary>
