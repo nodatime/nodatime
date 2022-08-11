@@ -613,6 +613,7 @@
       <xs:enumeration value="Europe/Kaliningrad" />
       <xs:enumeration value="Europe/Kiev" />
       <xs:enumeration value="Europe/Kirov" />
+      <xs:enumeration value="Europe/Kyiv" />
       <xs:enumeration value="Europe/Lisbon" />
       <xs:enumeration value="Europe/Ljubljana" />
       <xs:enumeration value="Europe/London" />
