@@ -24,32 +24,16 @@ cd tmp-3.1
 # - old: previous zip and nupkg files
 # - output: final zip and nupkg files
 git clone https://github.com/nodatime/nodatime.git -b 3.1.x --depth 1
-mkdir old
 mkdir output
 declare -r OUTPUT="$(realpath $PWD/output)"
 
 # Work out the current release, fetch and extract it.
 # We use "ls -l" to include the release date in the listing,
 # then sed to remove the file size part, then reverse sort.
-declare -r RELEASE=$(\
-    $GSUTIL ls -l gs://nodatime/releases | \
-    sed -E 's/^ +[0-9]+ +//g' | \
-    sort -r | \
-    grep -o -E 'NodaTime-3\.1\.[0-9]+\.zip' | \
-    head -n 1 | \
-    sed s/NodaTime-// | \
-    sed s/.zip//)
+declare -r RELEASE=$(grep '<Version>' nodatime/Directory.Build.props | cut '-d>' -f 2 | cut '-d<' -f 1)
+   
 # Handy "increment version number" code from http://stackoverflow.com/questions/8653126
 declare -r NEW_RELEASE=`echo $RELEASE | perl -pe 's/^((\d+\.)*)(\d+)(.*)$/$1.($3+1).$4/e'`
-
-# We need the previous zip file for the relevant XML documentation files, which
-# were post-processed with Sandcastle.
-echo "Fetching and expanding release ${RELEASE}"
-cd old
-$GSUTIL -q cp gs://nodatime/releases/NodaTime-${RELEASE}.zip .
-unzip -q NodaTime-${RELEASE}.zip
-cp -r NodaTime-${RELEASE} "$OUTPUT/NodaTime-${NEW_RELEASE}"
-cd ..
 
 # Update the source code in the repo
 cd nodatime
@@ -70,18 +54,6 @@ export ContinuousIntegrationBuild=true
 # Build and package the code
 echo "Packaging..."
 dotnet pack -o "$OUTPUT" -c Release src/NodaTime.sln
-
-# Source zip file
-git archive ${NEW_RELEASE} -o "$OUTPUT"/NodaTime-${NEW_RELEASE}-src.zip --prefix=NodaTime-${NEW_RELEASE}-src/
-
-# Binary zip file
-declare -r OUTBIN="$OUTPUT/NodaTime-${NEW_RELEASE}"
-cp src/NodaTime/bin/Release/netstandard2.0/NodaTime.dll "${OUTBIN}"
-cp src/NodaTime.Testing/bin/Release/netstandard2.0/NodaTime.Testing.dll "${OUTBIN}"
-
-cd "$OUTPUT"
-zip -q -r -9 NodaTime-${NEW_RELEASE}.zip NodaTime-${NEW_RELEASE}
-rm -rf NodaTime-${NEW_RELEASE}
 
 cd ../..
 
