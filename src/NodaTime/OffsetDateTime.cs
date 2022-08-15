@@ -40,6 +40,7 @@ namespace NodaTime
     /// time would be five minutes later, for example. While this doesn't sound terribly useful, it's very common
     /// in text representations.
     /// </para>
+    /// <para>The default value of this type is 0001-01-01T00:00:00Z (midnight on January 1st, 1 C.E. with a UTC offset of 0) in the ISO calendar.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(OffsetDateTimeTypeConverter))]

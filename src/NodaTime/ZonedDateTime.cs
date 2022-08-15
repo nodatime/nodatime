@@ -44,6 +44,7 @@ namespace NodaTime
     /// values, you should explicitly choose one of the orderings provided via the static properties in the
     /// <see cref="ZonedDateTime.Comparer"/> nested class (or implement your own comparison).
     /// </para>
+    /// <para>The default value of this type is 0001-01-01T00:00:00Z (midnight on January 1st, 1 C.E.) in the ISO calendar and the UTC time zone.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(ZonedDateTimeTypeConverter))]

@@ -26,6 +26,7 @@ namespace NodaTime
     /// (including being in the same calendar) and equal offsets from UTC.
     /// Ordering between offset dates is not defined.
     /// </para>
+    /// <para>The default value of this type is 0001-01-01 (January 1st, 1 C.E.) in the ISO calendar with a UTC offset of zero.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(OffsetDateTypeConverter))]

@@ -37,6 +37,7 @@ namespace NodaTime
     /// or via operators) fail with <see cref="ArgumentException"/>; attempting to compare values in different calendars
     /// almost always indicates a bug in the calling code.
     /// </para>
+    /// <para>The default value of this type is 0001-01-01T00:00:00 (midnight on January 1st, 1 C.E.) in the ISO calendar.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(LocalDateTimeTypeConverter))]
