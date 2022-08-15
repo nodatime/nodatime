@@ -35,12 +35,16 @@ namespace NodaTime
     /// but only in very rare historical cases (or fictional ones).</para>
     /// <para>Equality and ordering are defined in the natural way by comparing the underlying number
     /// of seconds. For example, this means that offsets for America are ordered before offsets in Europe.</para>
+    /// <para>The default value of this type is <see cref="Zero"/>.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(OffsetTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable, IXmlSerializable
     {
+        // Note: these public fields are unfortunate; they really should be properties, like all other public constants.
+        // Unfortunately that would now be a breaking change.
+
         /// <summary>
         /// An offset of zero seconds - effectively the permanent offset for UTC.
         /// </summary>

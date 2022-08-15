@@ -29,6 +29,8 @@ namespace NodaTime
     /// Equality and ordering comparisons are defined in the natural way, with earlier points on the timeline
     /// being considered "less than" later points.
     /// </para>
+    /// <para>The default value of this type is <see cref="UnixEpoch"/>, i.e. the instant
+    /// which can be represented as 1970-01-01T00:00:00Z in the ISO calendar.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(InstantTypeConverter))]

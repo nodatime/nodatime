@@ -25,6 +25,7 @@ namespace NodaTime
     /// Equality is defined in a component-wise fashion: two values are the same if they represent equal time-of-day values
     /// and equal offsets from UTC. Ordering between offset time values is not defined.
     /// </para>
+    /// <para>The default value of this type is midnight with a UTC offset of zero.</para>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(OffsetTimeTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]

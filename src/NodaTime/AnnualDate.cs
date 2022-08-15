@@ -30,6 +30,7 @@ namespace NodaTime
     /// but this does not generalize terribly cleanly, particularly to the Hebrew calendar system
     /// with its leap month.
     /// </para>
+    /// <para>The default value of this type is January 1st.</para>
     /// </remarks>
     [TypeConverter(typeof(AnnualDateTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]

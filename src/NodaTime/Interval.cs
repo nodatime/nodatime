@@ -29,6 +29,8 @@ namespace NodaTime
     /// <para>
     /// The end may equal the start (resulting in an empty interval), but will not be before the start.
     /// </para>
+    /// <para>The default value of this type is an empty interval with a start and end of
+    /// <see cref="NodaConstants.UnixEpoch"/>.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [XmlSchemaProvider(nameof(AddSchema))]

@@ -58,6 +58,7 @@ namespace NodaTime
     /// <c>Double</c> have initially been implemented fairly naively; it's possible that future releases will improve the accuracy
     /// or performance (or both) of various operations.
     /// </para>
+    /// <para>The default value of this type is <see cref="Zero"/>.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(DurationTypeConverter))]

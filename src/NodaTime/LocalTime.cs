@@ -26,7 +26,10 @@ namespace NodaTime
     /// to a particular calendar, time zone or date.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Ordering and equality are defined in the natural way, simply comparing the number of "nanoseconds since midnight".
+    /// </para>
+    /// <para>The default value of this type is <see cref="Midnight"/>.</para>
     /// </remarks>
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [TypeConverter(typeof(LocalTimeTypeConverter))]
