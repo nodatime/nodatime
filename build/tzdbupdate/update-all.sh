@@ -35,5 +35,5 @@ gsutil.cmd cp ../../src/NodaTime/TimeZones/Tzdb.nzd gs://nodatime/tzdb/tzdb$1.nz
 rm -f tmp-nuget/*.symbols.nupkg
 
 echo "Remaining task - push nuget files:"
-echo "cd tmp-nupkg"
+echo "cd tmp-nuget"
 echo "for pkg in *.nupkg; do dotnet nuget push -s https://api.nuget.org/v3/index.json -k API_KEY_HERE \$pkg; done"
