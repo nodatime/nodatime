@@ -171,15 +171,7 @@ namespace NodaTime.Calendars
 
         internal static int DaysInMonth(int year, int month) => month switch
         {
-            // It's slightly annoying that we have to express these 5 cases
-            // separately, but there's no language support for multiple individual
-            // cases right now.
-            // We want: (2, 4, 6, 10, 13) => 29,
-            2 => 29,
-            4 => 29,
-            6 => 29,
-            10 => 29,
-            13 => 29,
+            2 or 4 or 6 or 10 or 13 => 29,
             8 => IsHeshvanLong(year) ? 30 : 29,
             9 => IsKislevShort(year) ? 29 : 30,
             12 => IsLeapYear(year) ? 30 : 29,
