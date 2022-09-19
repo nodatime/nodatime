@@ -172,6 +172,41 @@ namespace NodaTime
             }
         }
 
+        // Note: unitsPerDay is always actually an integer, but we always want to perform floating point arithmetic
+        // with it.
+        private Duration(double units, string paramName, double unitsPerDay, long nanosPerUnit)
+        {
+            // Note: we don't check the original double values other than for NaN and infinity.
+            // Instead, we do the relevant conversion and then check that we're in bounds.
+            // That way we won't get invalid values due to weird rounding issues.
+            if (double.IsNaN(units) || double.IsInfinity(units))
+            {
+                throw new ArgumentOutOfRangeException(paramName, "Value must be a finite, valid number.");
+            }
+            unchecked
+            {
+                days = (int)(units / unitsPerDay);
+                double unitOfDay = units - (unitsPerDay * days);
+                if (unitOfDay < 0)
+                {
+                    days--;
+                    unitOfDay += unitsPerDay;
+                }
+                nanoOfDay = (long) (unitOfDay * nanosPerUnit + 0.5);
+
+                // Just in case the rounding up tips us into a new day...
+                if (nanoOfDay >= NanosecondsPerDay)
+                {
+                    days++;
+                    nanoOfDay -= NanosecondsPerDay;
+                }
+            }
+            if (days < MinDays || days > MaxDays)
+            {
+                throw new ArgumentOutOfRangeException(paramName, "Value cannot be represented in a Duration");
+            }
+        }
+
         internal Duration(int days, [Trusted] long nanoOfDay)
         {
             // Heavily used: avoid the method call unless it's going to throw.
@@ -890,17 +925,12 @@ namespace NodaTime
         /// Returns a <see cref="Duration"/> that represents the given number of days, assuming a 'standard' 24-hour
         /// day.
         /// </summary>
+        /// <remarks>If the value does not represent a precise number of nanoseconds, it is rounded, with half values
+        /// always rounding up.</remarks>
         /// <param name="days">The number of days.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of days.</returns>
-        public static Duration FromDays(double days)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(days),
-                days,
-                MinDays,
-                MaxDays);
-            return FromNanoseconds(days * NanosecondsPerDay);
-        }
+        public static Duration FromDays(double days) =>
+            new Duration(days, nameof(days), 1, NanosecondsPerDay);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of hours.
@@ -913,17 +943,12 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of hours.
         /// </summary>
+        /// <remarks>If the value does not represent a precise number of nanoseconds, it is rounded, with half values
+        /// always rounding up.</remarks>
         /// <param name="hours">The number of hours.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of hours.</returns>
-        public static Duration FromHours(double hours)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(hours),
-                hours,
-                (long) MinDays * HoursPerDay,
-                (MaxDays + 1L) * HoursPerDay - 1);
-            return FromNanoseconds(hours * NanosecondsPerHour);
-        }
+        public static Duration FromHours(double hours) =>
+            new Duration(hours, nameof(hours), HoursPerDay, NanosecondsPerHour);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of minutes.
@@ -936,17 +961,12 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of minutes.
         /// </summary>
+        /// <remarks>If the value does not represent a precise number of nanoseconds, it is rounded, with half values
+        /// always rounding up.</remarks>
         /// <param name="minutes">The number of minutes.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of minutes.</returns>
-        public static Duration FromMinutes(double minutes)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(minutes),
-                minutes,
-                (long) MinDays * MinutesPerDay,
-                (MaxDays + 1L) * MinutesPerDay - 1);
-            return FromNanoseconds(minutes * NanosecondsPerMinute);
-        }
+        public static Duration FromMinutes(double minutes) =>
+            new Duration(minutes, nameof(minutes), MinutesPerDay, NanosecondsPerMinute);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of seconds.
@@ -959,17 +979,12 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of seconds.
         /// </summary>
+        /// <remarks>If the value does not represent a precise number of nanoseconds, it is rounded, with half values
+        /// always rounding up.</remarks>
         /// <param name="seconds">The number of seconds.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of seconds.</returns>
-        public static Duration FromSeconds(double seconds)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(seconds),
-                seconds,
-                (long) MinDays * SecondsPerDay,
-                (MaxDays + 1L) * SecondsPerDay - 1);
-            return FromNanoseconds(seconds * NanosecondsPerSecond);
-        }
+        public static Duration FromSeconds(double seconds) =>
+            new Duration(seconds, nameof(seconds), SecondsPerDay, NanosecondsPerSecond);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of milliseconds.
@@ -982,17 +997,12 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of milliseconds.
         /// </summary>
+        /// <remarks>If the value does not represent a precise number of nanoseconds, it is rounded, with half values
+        /// always rounding up.</remarks>
         /// <param name="milliseconds">The number of milliseconds.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of milliseconds.</returns>
-        public static Duration FromMilliseconds(double milliseconds)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(milliseconds),
-                milliseconds,
-                (long) MinDays * MillisecondsPerDay,
-                (MaxDays + 1L) * MillisecondsPerDay - 1);
-            return FromNanoseconds(milliseconds * NanosecondsPerMillisecond);
-        }
+        public static Duration FromMilliseconds(double milliseconds) =>
+            new Duration(milliseconds, nameof(milliseconds), MillisecondsPerDay, NanosecondsPerMillisecond);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of ticks.
@@ -1009,17 +1019,12 @@ namespace NodaTime
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of ticks.
         /// </summary>
+        /// <remarks>If the value does not represent a precise number of nanoseconds, it is rounded, with half values
+        /// always rounding up.</remarks>
         /// <param name="ticks">The number of ticks.</param>
         /// <returns>A <see cref="Duration"/> representing the given number of ticks.</returns>
-        public static Duration FromTicks(double ticks)
-        {
-            Preconditions.CheckArgumentRange(
-                nameof(ticks),
-                ticks,
-                MinDays * (double) TicksPerDay,
-                (MaxDays + 1d) * TicksPerDay - 1);
-            return FromNanoseconds(ticks * NanosecondsPerTick);
-        }
+        public static Duration FromTicks(double ticks) =>
+            new Duration(ticks, nameof(ticks), TicksPerDay, NanosecondsPerTick);
 
         /// <summary>
         /// Returns a <see cref="Duration"/> that represents the given number of nanoseconds.

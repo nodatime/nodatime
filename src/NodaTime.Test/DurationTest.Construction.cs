@@ -110,7 +110,7 @@ namespace NodaTime.Test
 
         [Test]
         [TestCaseSource(nameof(TickCases))]
-        public void FromTicks(long ticks)
+        public void FromTicks_Int64(long ticks)
         {
             var nanoseconds = Duration.FromTicks(ticks);
             Assert.AreEqual(ticks * (BigInteger)NodaConstants.NanosecondsPerTick, nanoseconds.ToBigIntegerNanoseconds());
@@ -120,10 +120,20 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [TestCase(Duration.MinDays, Duration.MinDays, 0)]
         [TestCase(1.5, 1, NanosecondsPerDay / 2)]
         [TestCase(-0.25, -1, 3 * NanosecondsPerDay / 4)]
         [TestCase(100000.5, 100000, NanosecondsPerDay / 2)]
         [TestCase(-5000, -5000, 0)]
+        [TestCase(-0.1, -1, 9 * NanosecondsPerDay / 10)]
+        [TestCase(0.1, 0, NanosecondsPerDay / 10)]
+        [TestCase(0.01, 0, NanosecondsPerDay / 100)]
+        [TestCase(4.1, 4, NanosecondsPerDay / 10)]
+        [TestCase(4.01, 4, NanosecondsPerDay / 100)]
+        [TestCase(Duration.MaxDays + 0.5, Duration.MaxDays, NanosecondsPerDay / 2)]
+        // The additional 19312 is due to the value being precisely 16777215.99000000022351741790771484375
+        // This sort of difference is inevitable with very large numbers.
+        [TestCase(Duration.MaxDays + 0.99, Duration.MaxDays, NanosecondsPerDay * 99 / 100 + 19312)]
         public void FromDays_Double(double days, int expectedDays, long expectedNanoOfDay)
         {
             var actual = Duration.FromDays(days);
@@ -132,9 +142,18 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [TestCase(Duration.MinDays * (double) HoursPerDay, Duration.MinDays, 0)]
         [TestCase(36.5, 1, NanosecondsPerDay / 2 + NanosecondsPerHour / 2)]
         [TestCase(-0.25, -1, NanosecondsPerDay - NanosecondsPerHour / 4)]
         [TestCase(24000.5, 1000, NanosecondsPerHour / 2)]
+        [TestCase(0.01, 0, NanosecondsPerHour / 100)]
+        [TestCase(0.1, 0, NanosecondsPerHour / 10)]
+        [TestCase(4.01, 0, 4 * NanosecondsPerHour + NanosecondsPerHour / 100)]
+        [TestCase(4.1, 0, 4 * NanosecondsPerHour  + NanosecondsPerHour / 10)]
+        [TestCase(4 * HoursPerDay + 0.1, 4, NanosecondsPerHour / 10)]
+        [TestCase(4 * HoursPerDay + 0.01, 4, NanosecondsPerHour / 100)]
+        // The additional 34332ns is due to the imprecision of dealing with very large numbers.
+        [TestCase((Duration.MaxDays + 1L) * 24 - 0.01, Duration.MaxDays, NanosecondsPerDay - NanosecondsPerHour / 100 + 34332)]
         public void FromHours_Double(double hours, int expectedDays, long expectedNanoOfDay)
         {
             var actual = Duration.FromHours(hours);
@@ -143,9 +162,19 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [TestCase(Duration.MinDays * (double) MinutesPerDay, Duration.MinDays, 0)]
         [TestCase(MinutesPerDay + MinutesPerDay / 2, 1, NanosecondsPerDay / 2)]
         [TestCase(1.5, 0, NanosecondsPerSecond * 90)]
         [TestCase(-MinutesPerDay + 1.5, -1, NanosecondsPerSecond * 90)]
+        [TestCase(MinutesPerDay * 1000 + 1.5, 1000, NanosecondsPerMinute * 3 / 2)]
+        [TestCase(0.01, 0, NanosecondsPerMinute / 100)]
+        [TestCase(0.1, 0, NanosecondsPerMinute / 10)]
+        [TestCase(4.01, 0, 4 * NanosecondsPerMinute + NanosecondsPerMinute / 100)]
+        [TestCase(4.1, 0, 4 * NanosecondsPerMinute + NanosecondsPerMinute / 10)]
+        [TestCase(4 * MinutesPerDay + 0.1, 4, NanosecondsPerMinute / 10)]
+        [TestCase(4 * MinutesPerDay + 0.01, 4, NanosecondsPerMinute / 100)]
+        // The additional 100708ns is due to the imprecision of dealing with very large numbers.
+        [TestCase((Duration.MaxDays + 1L) * MinutesPerDay - 0.01, Duration.MaxDays, NanosecondsPerDay - NanosecondsPerMinute / 100 + 100708)]
         public void FromMinutes_Double(double minutes, int expectedDays, long expectedNanoOfDay)
         {
             var actual = Duration.FromMinutes(minutes);
@@ -154,9 +183,17 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [TestCase(Duration.MinDays * (double) SecondsPerDay, Duration.MinDays, 0)]
         [TestCase(SecondsPerDay + SecondsPerDay / 2, 1, NanosecondsPerDay / 2)]
         [TestCase(1.5, 0, NanosecondsPerMillisecond * 1500)]
         [TestCase(-SecondsPerDay + 1.5, -1, NanosecondsPerMillisecond * 1500)]
+        [TestCase(0.01, 0, 10_000_000)]
+        [TestCase(0.1, 0, 100_000_000)]
+        [TestCase(4.01, 0, 4_010_000_000)]
+        [TestCase(4.1, 0, 4_100_000_000)]
+        [TestCase(4 * SecondsPerDay + 0.1, 4, NanosecondsPerSecond / 10)]
+        [TestCase(4 * SecondsPerDay + 0.01, 4, NanosecondsPerSecond / 100)]
+        [TestCase(Duration.MaxDays * (double) SecondsPerDay + 0.5, Duration.MaxDays, NanosecondsPerSecond / 2)]
         public void FromSeconds_Double(double seconds, int expectedDays, long expectedNanoOfDay)
         {
             var actual = Duration.FromSeconds(seconds);
@@ -165,12 +202,43 @@ namespace NodaTime.Test
         }
 
         [Test]
+        [TestCase(Duration.MinDays * (double) MillisecondsPerDay, Duration.MinDays, 0)]
         [TestCase(MillisecondsPerDay + MillisecondsPerDay / 2, 1, NanosecondsPerDay / 2)]
         [TestCase(1.5, 0, 1500000)]
         [TestCase(-MillisecondsPerDay + 1.5, -1, 1500000)]
+        [TestCase(MillisecondsPerDay * 8123L + MillisecondsPerSecond + 0.5, 8123, NanosecondsPerSecond + NanosecondsPerMillisecond / 2)]
+        [TestCase(0.01, 0, 10_000)]
+        [TestCase(0.1, 0, 100_000)]
+        [TestCase(4.01, 0, 4_010_000)]
+        [TestCase(4.1, 0, 4_100_000)]
+        [TestCase(4 * MillisecondsPerDay + 0.01, 4, NanosecondsPerMillisecond / 100)]
+        [TestCase(4 * MillisecondsPerDay + 0.1, 4, NanosecondsPerMillisecond / 10)]
+        [TestCase(Duration.MaxDays * (double) MillisecondsPerDay + 0.5, Duration.MaxDays, NanosecondsPerMillisecond / 2)]
         public void FromMilliseconds_Double(double milliseconds, int expectedDays, long expectedNanoOfDay)
         {
             var actual = Duration.FromMilliseconds(milliseconds);
+            var expected = new Duration(expectedDays, expectedNanoOfDay);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase(Duration.MinDays * (double) TicksPerDay, Duration.MinDays, 0)]
+        [TestCase(0.01, 0, 1)]
+        [TestCase(0.1, 0, 10)]
+        [TestCase(4.01, 0, 401)]
+        [TestCase(4.1, 0, 410)]
+        [TestCase(4 * TicksPerDay + 0.1, 4, NanosecondsPerTick / 10)]
+        [TestCase(4 * TicksPerDay + 0.01, 4, NanosecondsPerTick / 100)]
+        // Rounding down
+        [TestCase(86_399_999_999_9.994d, 0, NanosecondsPerDay - 1)]
+        // Rounding up across a day boundary
+        [TestCase(86_399_999_999_9.995d, 1, 0)]
+        // We need to add a lot of ticks to the start of "max day" just to get within significant digits.
+        // The subtracted 51,200 is just due to the imprecision at these values.
+        [TestCase(Duration.MaxDays * (double) TicksPerDay + 5_000_000_000, Duration.MaxDays, NanosecondsPerTick * 5_000_000_000 - 51_200)]
+        public void FromTicks_Double(double ticks, int expectedDays, long expectedNanoOfDay)
+        {
+            var actual = Duration.FromTicks(ticks);
             var expected = new Duration(expectedDays, expectedNanoOfDay);
             Assert.AreEqual(expected, actual);
         }
@@ -262,7 +330,16 @@ namespace NodaTime.Test
             AssertOutOfRange(Duration.FromMilliseconds,  bigBadDoubles);
             AssertOutOfRange(Duration.FromTicks, bigBadDoubles);
             AssertOutOfRange(Duration.FromNanoseconds, bigBadDoubles);
-            
+
+            AssertOutOfRange(Duration.FromDays, new double[] { Duration.MinDays - 0.01, Duration.MaxDays + 1 });
+            AssertOutOfRange(Duration.FromHours, new double[] { Duration.MinDays * HoursPerDay - 0.01, (Duration.MaxDays + 1) * HoursPerDay });
+            AssertOutOfRange(Duration.FromMinutes, new double[] { (double) Duration.MinDays * MinutesPerDay - 0.01, (double) (Duration.MaxDays + 1) * MinutesPerDay });
+            AssertOutOfRange(Duration.FromSeconds, new double[] { (double) Duration.MinDays * SecondsPerDay - 0.01, (double) (Duration.MaxDays + 1) * SecondsPerDay });
+            // We can't actually get to 100th of a millisecond precision with a 64-bit floating point number at this scale.
+            AssertOutOfRange(Duration.FromMilliseconds, new double[] { (double) Duration.MinDays * MillisecondsPerDay - 1, (double) (Duration.MaxDays + 1) * MillisecondsPerDay });
+            // We subtract a million ticks rather than just 1 to make sure it's actually significant.
+            AssertOutOfRange(Duration.FromTicks, new double[] { (double) Duration.MinDays * TicksPerDay - 1_000_000, (double) (Duration.MaxDays + 1) * TicksPerDay });
+
             // No such concept as BigInteger.Min/MaxValue, so use the values we know to be just outside valid bounds.
             AssertOutOfRange(Duration.FromNanoseconds, Duration.MinNanoseconds - 1, Duration.MaxNanoseconds + 1);
 
