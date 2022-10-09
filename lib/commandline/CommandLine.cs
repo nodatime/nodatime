@@ -1422,7 +1422,8 @@ namespace CommandLine
         private readonly object _target;
         private readonly IList<string>? _valueList;
         private readonly ValueListAttribute? _vla;
-
+        private readonly object _lockObj = new object();
+        
         public TargetWrapper(object target)
         {
             _target = target;
@@ -1444,7 +1445,7 @@ namespace CommandLine
                 return false;
             }
 
-            lock (this)
+            lock (_lockObj)
             {
                 _valueList.Add(item);
             }
