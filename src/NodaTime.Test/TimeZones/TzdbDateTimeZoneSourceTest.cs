@@ -224,6 +224,12 @@ namespace NodaTime.Test.TimeZones
             {
                 return;
             }
+            // As of October 29th 2022, the Windows time zone database isn't as accurate for
+            // Mexico. (It gets an accuracy of 71.2...)
+            if (bclZone.Id.Contains("(Mexico)"))
+            {
+                return;
+            }
 
             string? id = TzdbDateTimeZoneSource.GuessZoneIdByTransitionsUncached(bclZone, TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached);
 
