@@ -99,14 +99,23 @@ namespace NodaTime.Text
         /// which contains a time zone identifier.</value>
         public IDateTimeZoneProvider? ZoneProvider { get; }
 
+        /// <summary>
+        /// Maximum two-digit-year in the template to treat as the current century.
+        /// If the value parsed is higher than this, the result is adjusted to the previous century.
+        /// This value defaults to 30. To create a pattern with a different value, use <see cref="WithTwoDigitYearMax(int)"/>.
+        /// </summary>
+        /// <value>The value used for the maximum two-digit-year, in the range 0-99 inclusive.</value>
+        public int TwoDigitYearMax { get; }
+
         private ZonedDateTimePattern(string patternText, NodaFormatInfo formatInfo, ZonedDateTime templateValue,
-            ZoneLocalMappingResolver? resolver, IDateTimeZoneProvider? zoneProvider, IPattern<ZonedDateTime> pattern)
+            ZoneLocalMappingResolver? resolver, IDateTimeZoneProvider? zoneProvider, int twoDigitYearMax, IPattern<ZonedDateTime> pattern)
         {
             this.PatternText = patternText;
             this.FormatInfo = formatInfo;
             this.TemplateValue = templateValue;
             this.Resolver = resolver;
             this.ZoneProvider = zoneProvider;
+            this.TwoDigitYearMax = twoDigitYearMax;
             this.pattern = pattern;
         }
 
@@ -145,15 +154,16 @@ namespace NodaTime.Text
         /// <param name="templateValue">Template value to use for unspecified fields</param>
         /// <param name="resolver">Resolver to apply when mapping local date/time values into the zone.</param>
         /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
+        /// <param name="twoDigitYearMax">Maximum two-digit-year in the template to treat as the current century.</param>
         /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         private static ZonedDateTimePattern Create(string patternText, NodaFormatInfo formatInfo,
-            ZoneLocalMappingResolver? resolver, IDateTimeZoneProvider? zoneProvider, ZonedDateTime templateValue)
+            ZoneLocalMappingResolver? resolver, IDateTimeZoneProvider? zoneProvider, ZonedDateTime templateValue, int twoDigitYearMax)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
-            var pattern = new ZonedDateTimePatternParser(templateValue, resolver, zoneProvider).ParsePattern(patternText, formatInfo);
-            return new ZonedDateTimePattern(patternText, formatInfo, templateValue, resolver, zoneProvider, pattern);
+            var pattern = new ZonedDateTimePatternParser(templateValue, resolver, zoneProvider, twoDigitYearMax).ParsePattern(patternText, formatInfo);
+            return new ZonedDateTimePattern(patternText, formatInfo, templateValue, resolver, zoneProvider, twoDigitYearMax, pattern);
         }
 
         /// <summary>
@@ -173,7 +183,7 @@ namespace NodaTime.Text
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static ZonedDateTimePattern Create(string patternText, [ValidatedNotNull] CultureInfo cultureInfo,
             ZoneLocalMappingResolver? resolver, IDateTimeZoneProvider? zoneProvider, ZonedDateTime templateValue) =>
-            Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), resolver, zoneProvider, templateValue);
+            Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), resolver, zoneProvider, templateValue, LocalDatePattern.DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the given pattern text and time zone provider, using a strict resolver, the invariant
@@ -188,7 +198,7 @@ namespace NodaTime.Text
         /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
         /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
         public static ZonedDateTimePattern CreateWithInvariantCulture(string patternText, IDateTimeZoneProvider? zoneProvider) =>
-            Create(patternText, NodaFormatInfo.InvariantInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue);
+            Create(patternText, NodaFormatInfo.InvariantInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the given pattern text and time zone provider, using a strict resolver, the current
@@ -204,7 +214,7 @@ namespace NodaTime.Text
         /// <param name="zoneProvider">Time zone provider, used when parsing text which contains a time zone identifier.</param>
         /// <returns>A pattern for parsing and formatting zoned date/times.</returns>
         public static ZonedDateTimePattern CreateWithCurrentCulture(string patternText, IDateTimeZoneProvider? zoneProvider) =>
-            Create(patternText, NodaFormatInfo.CurrentInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue);
+            Create(patternText, NodaFormatInfo.CurrentInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original localization information as this pattern, but with the specified
@@ -213,7 +223,7 @@ namespace NodaTime.Text
         /// <param name="patternText">The pattern text to use in the new pattern.</param>
         /// <returns>A new pattern with the given pattern text.</returns>
         public ZonedDateTimePattern WithPatternText(string patternText) =>
-            Create(patternText, FormatInfo, Resolver, ZoneProvider, TemplateValue);
+            Create(patternText, FormatInfo, Resolver, ZoneProvider, TemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -222,7 +232,7 @@ namespace NodaTime.Text
         /// <param name="formatInfo">The localization information to use in the new pattern.</param>
         /// <returns>A new pattern with the given localization information.</returns>
         private ZonedDateTimePattern WithFormatInfo(NodaFormatInfo formatInfo) =>
-            Create(PatternText, formatInfo, Resolver, ZoneProvider, TemplateValue);
+            Create(PatternText, formatInfo, Resolver, ZoneProvider, TemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -240,7 +250,7 @@ namespace NodaTime.Text
         /// <param name="resolver">The new local mapping resolver to use.</param>
         /// <returns>A new pattern with the given resolver.</returns>
         public ZonedDateTimePattern WithResolver(ZoneLocalMappingResolver? resolver) =>
-            Resolver == resolver ? this : Create(PatternText, FormatInfo, resolver, ZoneProvider, TemplateValue);
+            Resolver == resolver ? this : Create(PatternText, FormatInfo, resolver, ZoneProvider, TemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -253,7 +263,7 @@ namespace NodaTime.Text
         /// <param name="newZoneProvider">The new time zone provider to use.</param>
         /// <returns>A new pattern with the given time zone provider.</returns>
         public ZonedDateTimePattern WithZoneProvider(IDateTimeZoneProvider? newZoneProvider) =>
-            newZoneProvider == ZoneProvider ? this : Create(PatternText, FormatInfo, Resolver, newZoneProvider, TemplateValue);
+            newZoneProvider == ZoneProvider ? this : Create(PatternText, FormatInfo, Resolver, newZoneProvider, TemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern like this one, but with the specified template value.
@@ -261,7 +271,7 @@ namespace NodaTime.Text
         /// <param name="newTemplateValue">The template value for the new pattern, used to fill in unspecified fields.</param>
         /// <returns>A new pattern with the given template value.</returns>
         public ZonedDateTimePattern WithTemplateValue(ZonedDateTime newTemplateValue) =>
-            newTemplateValue == TemplateValue ? this : Create(PatternText, FormatInfo, Resolver, ZoneProvider, newTemplateValue);
+            newTemplateValue == TemplateValue ? this : Create(PatternText, FormatInfo, Resolver, ZoneProvider, newTemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern like this one, but with the template value modified to use
@@ -280,5 +290,13 @@ namespace NodaTime.Text
         /// <returns>A new pattern with a template value in the specified calendar system.</returns>
         public ZonedDateTimePattern WithCalendar(CalendarSystem calendar) =>
             WithTemplateValue(TemplateValue.WithCalendar(calendar));
+
+        /// <summary>
+        /// Creates a pattern like this one, but with a different <see cref="TwoDigitYearMax"/> value.
+        /// </summary>
+        /// <param name="twoDigitYearMax">The value to use for <see cref="TwoDigitYearMax"/> in the new pattern, in the range 0-99 inclusive.</param>
+        /// <returns>A new pattern with the specified maximum two-digit-year.</returns>
+        public ZonedDateTimePattern WithTwoDigitYearMax(int twoDigitYearMax) =>
+            Create(PatternText, FormatInfo, Resolver, ZoneProvider, TemplateValue, twoDigitYearMax);
     }
 }

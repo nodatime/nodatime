@@ -53,8 +53,8 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly OffsetDatePattern GeneralIsoPatternImpl = Create("uuuu'-'MM'-'ddo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-            internal static readonly OffsetDatePattern FullRoundtripPatternImpl = Create("uuuu'-'MM'-'ddo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static readonly OffsetDatePattern GeneralIsoPatternImpl = Create("uuuu'-'MM'-'ddo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
+            internal static readonly OffsetDatePattern FullRoundtripPatternImpl = Create("uuuu'-'MM'-'ddo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
             internal static readonly PatternBclSupport<OffsetDate> BclSupport = new PatternBclSupport<OffsetDate>("G", fi => fi.OffsetDatePatternParser);
         }
 
@@ -79,12 +79,21 @@ namespace NodaTime.Text
         /// <value>The value used as a template for parsing.</value>
         public OffsetDate TemplateValue { get; }
 
-        private OffsetDatePattern(string patternText, NodaFormatInfo formatInfo, OffsetDate templateValue,
+        /// <summary>
+        /// Maximum two-digit-year in the template to treat as the current century.
+        /// If the value parsed is higher than this, the result is adjusted to the previous century.
+        /// This value defaults to 30. To create a pattern with a different value, use <see cref="WithTwoDigitYearMax(int)"/>.
+        /// </summary>
+        /// <value>The value used for the maximum two-digit-year, in the range 0-99 inclusive.</value>
+        public int TwoDigitYearMax { get; }
+
+        private OffsetDatePattern(string patternText, NodaFormatInfo formatInfo, OffsetDate templateValue, int twoDigitYearMax,
             IPattern<OffsetDate> pattern)
         {
             this.PatternText = patternText;
             this.FormatInfo = formatInfo;
             this.TemplateValue = templateValue;
+            this.TwoDigitYearMax = twoDigitYearMax;
             this.pattern = pattern;
         }
 
@@ -121,15 +130,16 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="formatInfo">The format info to use in the pattern</param>
         /// <param name="templateValue">Template value to use for unspecified fields</param>
+        /// <param name="twoDigitYearMax">Maximum two-digit-year in the template to treat as the current century.</param>
         /// <returns>A pattern for parsing and formatting offset dates.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         private static OffsetDatePattern Create(string patternText, NodaFormatInfo formatInfo,
-            OffsetDate templateValue)
+            OffsetDate templateValue, int twoDigitYearMax)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
-            var pattern = new OffsetDatePatternParser(templateValue).ParsePattern(patternText, formatInfo);
-            return new OffsetDatePattern(patternText, formatInfo, templateValue, pattern);
+            var pattern = new OffsetDatePatternParser(templateValue, twoDigitYearMax).ParsePattern(patternText, formatInfo);
+            return new OffsetDatePattern(patternText, formatInfo, templateValue, twoDigitYearMax, pattern);
         }
 
         /// <summary>
@@ -144,7 +154,7 @@ namespace NodaTime.Text
         /// <returns>A pattern for parsing and formatting local dates.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static OffsetDatePattern Create(string patternText, [ValidatedNotNull] CultureInfo cultureInfo, OffsetDate templateValue) =>
-            Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
+            Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue, LocalDatePattern.DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the given pattern text in the invariant culture, using the default
@@ -157,7 +167,7 @@ namespace NodaTime.Text
         /// <returns>A pattern for parsing and formatting local dates.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static OffsetDatePattern CreateWithInvariantCulture(string patternText) =>
-            Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the given pattern text in the current culture, using the default
@@ -172,7 +182,7 @@ namespace NodaTime.Text
         /// <returns>A pattern for parsing and formatting local dates.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static OffsetDatePattern CreateWithCurrentCulture(string patternText) =>
-            Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
+            Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original localization information as this pattern, but with the specified
@@ -181,7 +191,7 @@ namespace NodaTime.Text
         /// <param name="patternText">The pattern text to use in the new pattern.</param>
         /// <returns>A new pattern with the given pattern text.</returns>
         public OffsetDatePattern WithPatternText(string patternText) =>
-            Create(patternText, FormatInfo, TemplateValue);
+            Create(patternText, FormatInfo, TemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -190,7 +200,7 @@ namespace NodaTime.Text
         /// <param name="formatInfo">The localization information to use in the new pattern.</param>
         /// <returns>A new pattern with the given localization information.</returns>
         private OffsetDatePattern WithFormatInfo(NodaFormatInfo formatInfo) =>
-            Create(PatternText, formatInfo, TemplateValue);
+            Create(PatternText, formatInfo, TemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -208,7 +218,7 @@ namespace NodaTime.Text
         /// <param name="newTemplateValue">The template value to use in the new pattern.</param>
         /// <returns>A new pattern with the given template value.</returns>
         public OffsetDatePattern WithTemplateValue(OffsetDate newTemplateValue) =>
-            Create(PatternText, FormatInfo, newTemplateValue);
+            Create(PatternText, FormatInfo, newTemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern like this one, but with the template value modified to use
@@ -227,5 +237,13 @@ namespace NodaTime.Text
         /// <returns>A new pattern with a template value in the specified calendar system.</returns>
         public OffsetDatePattern WithCalendar(CalendarSystem calendar) =>
             WithTemplateValue(TemplateValue.WithCalendar(calendar));
+
+        /// <summary>
+        /// Creates a pattern like this one, but with a different <see cref="TwoDigitYearMax"/> value.
+        /// </summary>
+        /// <param name="twoDigitYearMax">The value to use for <see cref="TwoDigitYearMax"/> in the new pattern, in the range 0-99 inclusive.</param>
+        /// <returns>A new pattern with the specified maximum two-digit-year.</returns>
+        public OffsetDatePattern WithTwoDigitYearMax(int twoDigitYearMax) =>
+            Create(PatternText, FormatInfo, TemplateValue, twoDigitYearMax);
     }
 }

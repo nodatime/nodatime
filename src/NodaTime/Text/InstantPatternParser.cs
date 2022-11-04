@@ -25,10 +25,12 @@ namespace NodaTime.Text
         internal const string AfterMaxValueText = "EndOfTime";
 
         private readonly LocalDateTime localTemplateValue;
+        private readonly int twoDigitYearMax;
 
-        internal InstantPatternParser(Instant templateValue)
+        internal InstantPatternParser(Instant templateValue, int twoDigitYearMax)
         {
             localTemplateValue = templateValue.InUtc().LocalDateTime;
+            this.twoDigitYearMax = twoDigitYearMax;
         }
 
         public IPattern<Instant> ParsePattern(string patternText, NodaFormatInfo formatInfo)
@@ -50,7 +52,7 @@ namespace NodaTime.Text
 
             // We unwrap the LocalDateTimePattern to avoid unnecessary levels of indirection.
             IPattern<LocalDateTime> localPattern =
-                LocalDateTimePattern.Create(patternText, formatInfo, localTemplateValue).UnderlyingPattern;
+                LocalDateTimePattern.Create(patternText, formatInfo, localTemplateValue, twoDigitYearMax).UnderlyingPattern;
             return new LocalDateTimePatternAdapter(localPattern);
         }
 

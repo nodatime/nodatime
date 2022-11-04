@@ -4,6 +4,7 @@
 
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 using System.Collections.Generic;
 
 namespace NodaTime.Text
@@ -11,6 +12,7 @@ namespace NodaTime.Text
     internal sealed class OffsetDatePatternParser : IPatternParser<OffsetDate>
     {
         private readonly OffsetDate templateValue;
+        private readonly int twoDigitYearMax;
 
         private static readonly Dictionary<char, CharacterHandler<OffsetDate, OffsetDateParseBucket>> PatternCharacterHandlers =
             new Dictionary<char, CharacterHandler<OffsetDate, OffsetDateParseBucket>>
@@ -33,9 +35,11 @@ namespace NodaTime.Text
             { 'l', (cursor, builder) => builder.AddEmbeddedDatePattern(cursor.Current, cursor.GetEmbeddedPattern(), bucket => bucket.Date, value => value.Date) },
         };
 
-        internal OffsetDatePatternParser(OffsetDate templateValue)
+        internal OffsetDatePatternParser(OffsetDate templateValue, int twoDigitYearMax)
         {
+            Preconditions.CheckArgumentRange(nameof(twoDigitYearMax), twoDigitYearMax, 0, 99);
             this.templateValue = templateValue;
+            this.twoDigitYearMax = twoDigitYearMax;
         }
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
@@ -59,7 +63,7 @@ namespace NodaTime.Text
                 };
             }
 
-            var patternBuilder = new SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>(formatInfo, () => new OffsetDateParseBucket(templateValue));
+            var patternBuilder = new SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>(formatInfo, () => new OffsetDateParseBucket(templateValue, twoDigitYearMax));
             patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
             patternBuilder.ValidateUsedFields();
             // Need to reconstruct the template value from the bits...
@@ -80,9 +84,9 @@ namespace NodaTime.Text
             internal readonly LocalDatePatternParser.LocalDateParseBucket Date;
             internal Offset Offset;
 
-            internal OffsetDateParseBucket(OffsetDate templateValue)
+            internal OffsetDateParseBucket(OffsetDate templateValue, int twoDigitYearMax)
             {
-                Date = new LocalDatePatternParser.LocalDateParseBucket(templateValue.Date);
+                Date = new LocalDatePatternParser.LocalDateParseBucket(templateValue.Date, twoDigitYearMax);
                 Offset = templateValue.Offset;
             }
 

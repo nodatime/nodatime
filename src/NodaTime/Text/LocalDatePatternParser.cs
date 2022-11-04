@@ -5,6 +5,7 @@
 using NodaTime.Calendars;
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -16,13 +17,7 @@ namespace NodaTime.Text
     internal sealed class LocalDatePatternParser : IPatternParser<LocalDate>
     {
         private readonly LocalDate templateValue;
-
-        /// <summary>
-        /// Maximum two-digit-year in the template to treat as the current century.
-        /// (One day we may want to make this configurable, but it feels very low
-        /// priority.)
-        /// </summary>
-        private const int TwoDigitYearMax = 30;
+        private readonly int twoDigitYearMax;
 
         private static readonly Dictionary<char, CharacterHandler<LocalDate, LocalDateParseBucket>> PatternCharacterHandlers =
             new Dictionary<char, CharacterHandler<LocalDate, LocalDateParseBucket>>
@@ -43,9 +38,11 @@ namespace NodaTime.Text
             { 'g', DatePatternHelper.CreateEraHandler<LocalDate, LocalDateParseBucket>(date => date.Era, bucket => bucket) },
         };
 
-        internal LocalDatePatternParser(LocalDate templateValue)
+        internal LocalDatePatternParser(LocalDate templateValue, int twoDigitYearMax)
         {
+            Preconditions.CheckArgumentRange(nameof(twoDigitYearMax), twoDigitYearMax, 0, 99);
             this.templateValue = templateValue;
+            this.twoDigitYearMax = twoDigitYearMax;
         }
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
@@ -79,7 +76,7 @@ namespace NodaTime.Text
             IPattern<LocalDate> ParseNoStandardExpansion(string patternTextLocal)
             {
                 var patternBuilder = new SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo,
-                    () => new LocalDateParseBucket(templateValue));
+                    () => new LocalDateParseBucket(templateValue, twoDigitYearMax));
                 patternBuilder.ParseCustomPattern(patternTextLocal, PatternCharacterHandlers);
                 patternBuilder.ValidateUsedFields();
                 return patternBuilder.Build(templateValue);
@@ -93,6 +90,7 @@ namespace NodaTime.Text
         internal sealed class LocalDateParseBucket : ParseBucket<LocalDate>
         {
             internal readonly LocalDate TemplateValue;
+            internal int TwoDigitYearMax;
 
             internal CalendarSystem Calendar;
             internal int Year;
@@ -103,11 +101,12 @@ namespace NodaTime.Text
             internal int DayOfMonth;
             internal int DayOfWeek;
 
-            internal LocalDateParseBucket(LocalDate templateValue)
+            internal LocalDateParseBucket(LocalDate templateValue, int twoDigitYearMax)
             {
                 this.TemplateValue = templateValue;
                 // Only fetch this once.
                 this.Calendar = templateValue.Calendar;
+                this.TwoDigitYearMax = twoDigitYearMax;
             }
 
             internal ParseResult<TResult>? ParseEra<TResult>(NodaFormatInfo formatInfo, ValueCursor cursor)

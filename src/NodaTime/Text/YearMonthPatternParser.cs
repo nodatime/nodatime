@@ -4,6 +4,7 @@
 
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
+using NodaTime.Utility;
 using System.Collections.Generic;
 using static NodaTime.Text.LocalDatePatternParser;
 
@@ -15,6 +16,7 @@ namespace NodaTime.Text
     internal sealed class YearMonthPatternParser : IPatternParser<YearMonth>
     {
         private readonly YearMonth templateValue;
+        private readonly int twoDigitYearMax;
 
         private static readonly Dictionary<char, CharacterHandler<YearMonth, YearMonthParseBucket>> PatternCharacterHandlers =
             new Dictionary<char, CharacterHandler<YearMonth, YearMonthParseBucket>>
@@ -33,9 +35,11 @@ namespace NodaTime.Text
             { 'g', DatePatternHelper.CreateEraHandler<YearMonth, YearMonthParseBucket>(date => date.Era, bucket => bucket.DateBucket) },
         };
 
-        internal YearMonthPatternParser(YearMonth templateValue)
+        internal YearMonthPatternParser(YearMonth templateValue, int twoDigitYearMax)
         {
+            Preconditions.CheckArgumentRange(nameof(twoDigitYearMax), twoDigitYearMax, 0, 99);
             this.templateValue = templateValue;
+            this.twoDigitYearMax = twoDigitYearMax;
         }
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
@@ -66,7 +70,7 @@ namespace NodaTime.Text
             IPattern<YearMonth> ParseNoStandardExpansion(string patternTextLocal)
             {
                 var patternBuilder = new SteppedPatternBuilder<YearMonth, YearMonthParseBucket>(formatInfo,
-                    () => new YearMonthParseBucket(templateValue));
+                    () => new YearMonthParseBucket(templateValue, twoDigitYearMax));
                 patternBuilder.ParseCustomPattern(patternTextLocal, PatternCharacterHandlers);
                 patternBuilder.ValidateUsedFields();
                 return patternBuilder.Build(templateValue);
@@ -81,9 +85,9 @@ namespace NodaTime.Text
         {
             internal readonly LocalDateParseBucket DateBucket;
 
-            internal YearMonthParseBucket(YearMonth templateValue)
+            internal YearMonthParseBucket(YearMonth templateValue, int twoDigitYearMax)
             {
-                DateBucket = new LocalDateParseBucket(templateValue.StartDate);
+                DateBucket = new LocalDateParseBucket(templateValue.StartDate, twoDigitYearMax);
             }
 
             internal override ParseResult<YearMonth> CalculateValue(PatternFields usedFields, string text)

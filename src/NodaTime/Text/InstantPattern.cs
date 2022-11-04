@@ -70,15 +70,24 @@ namespace NodaTime.Text
         public Instant TemplateValue { get; }
 
         /// <summary>
+        /// Maximum two-digit-year in the template to treat as the current century.
+        /// If the value parsed is higher than this, the result is adjusted to the previous century.
+        /// This value defaults to 30. To create a pattern with a different value, use <see cref="WithTwoDigitYearMax(int)"/>.
+        /// </summary>
+        /// <value>The value used for the maximum two-digit-year, in the range 0-99 inclusive.</value>
+        public int TwoDigitYearMax { get; }
+
+        /// <summary>
         /// Gets the localization information used in this pattern.
         /// </summary>
         private NodaFormatInfo FormatInfo { get; }
 
-        private InstantPattern(string patternText, NodaFormatInfo formatInfo, Instant templateValue, IPattern<Instant> pattern)
+        private InstantPattern(string patternText, NodaFormatInfo formatInfo, Instant templateValue, int twoDigitYearMax, IPattern<Instant> pattern)
         {
             PatternText = patternText;
             FormatInfo = formatInfo;
             TemplateValue = templateValue;
+            TwoDigitYearMax = twoDigitYearMax;
             this.pattern = pattern;
         }
 
@@ -115,16 +124,17 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="formatInfo">The format info to use in the pattern</param>
         /// <param name="templateValue">The template value to use in the pattern</param>
+        /// <param name="twoDigitYearMax">Maximum two-digit-year in the template to treat as the current century.</param>
         /// <returns>A pattern for parsing and formatting instants.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-        private static InstantPattern Create(string patternText, NodaFormatInfo formatInfo, Instant templateValue)
+        private static InstantPattern Create(string patternText, NodaFormatInfo formatInfo, Instant templateValue, int twoDigitYearMax)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
             // Note: no check for the default template value, as that ends up being done in the
             // underlying LocalDateTimePattern creation.
-            var pattern = new InstantPatternParser(templateValue).ParsePattern(patternText, formatInfo);
-            return new InstantPattern(patternText, formatInfo, templateValue, pattern);
+            var pattern = new InstantPatternParser(templateValue, twoDigitYearMax).ParsePattern(patternText, formatInfo);
+            return new InstantPattern(patternText, formatInfo, templateValue, twoDigitYearMax, pattern);
         }
 
         /// <summary>
@@ -138,7 +148,7 @@ namespace NodaTime.Text
         /// <returns>A pattern for parsing and formatting instants.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static InstantPattern Create(string patternText, [ValidatedNotNull] CultureInfo cultureInfo) =>
-            Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), DefaultTemplateValue);
+            Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the given pattern text in the current thread's current culture.
@@ -152,7 +162,7 @@ namespace NodaTime.Text
         /// <returns>A pattern for parsing and formatting instants.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static InstantPattern CreateWithCurrentCulture(string patternText) =>
-            Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
+            Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the given pattern text in the invariant culture.
@@ -164,7 +174,7 @@ namespace NodaTime.Text
         /// <returns>A pattern for parsing and formatting instants.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static InstantPattern CreateWithInvariantCulture(string patternText) =>
-            Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -172,7 +182,7 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="formatInfo">The localization information to use in the new pattern.</param>
         /// <returns>A new pattern with the given localization information.</returns>
-        private InstantPattern WithFormatInfo(NodaFormatInfo formatInfo) => Create(PatternText, formatInfo, TemplateValue);
+        private InstantPattern WithFormatInfo(NodaFormatInfo formatInfo) => Create(PatternText, formatInfo, TemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -189,6 +199,14 @@ namespace NodaTime.Text
         /// <param name="newTemplateValue">The template value for the new pattern, used to fill in unspecified fields.</param>
         /// <returns>A new pattern with the given template value.</returns>
         public InstantPattern WithTemplateValue(Instant newTemplateValue) =>
-            Create(PatternText, FormatInfo, newTemplateValue);
+            Create(PatternText, FormatInfo, newTemplateValue, TwoDigitYearMax);
+
+        /// <summary>
+        /// Creates a pattern like this one, but with a different <see cref="TwoDigitYearMax"/> value.
+        /// </summary>
+        /// <param name="twoDigitYearMax">The value to use for <see cref="TwoDigitYearMax"/> in the new pattern, in the range 0-99 inclusive.</param>
+        /// <returns>A new pattern with the specified maximum two-digit-year.</returns>
+        public InstantPattern WithTwoDigitYearMax(int twoDigitYearMax) =>
+            Create(PatternText, FormatInfo, TemplateValue, twoDigitYearMax);
     }
 }
