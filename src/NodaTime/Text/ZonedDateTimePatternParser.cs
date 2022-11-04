@@ -5,6 +5,7 @@
 using NodaTime.Globalization;
 using NodaTime.Text.Patterns;
 using NodaTime.TimeZones;
+using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -15,6 +16,7 @@ namespace NodaTime.Text
         private readonly ZonedDateTime templateValue;
         private readonly IDateTimeZoneProvider? zoneProvider;
         private readonly ZoneLocalMappingResolver? resolver;
+        private readonly int twoDigitYearMax;
 
         private static readonly Dictionary<char, CharacterHandler<ZonedDateTime, ZonedDateTimeParseBucket>> PatternCharacterHandlers =
             new Dictionary<char, CharacterHandler<ZonedDateTime, ZonedDateTimeParseBucket>>
@@ -54,11 +56,13 @@ namespace NodaTime.Text
             { 'l', (cursor, builder) => builder.AddEmbeddedLocalPartial(cursor, bucket => bucket.Date, bucket => bucket.Time, value => value.Date, value => value.TimeOfDay, value => value.LocalDateTime) },
         };
 
-        internal ZonedDateTimePatternParser(ZonedDateTime templateValue, ZoneLocalMappingResolver? resolver, IDateTimeZoneProvider? zoneProvider)
+        internal ZonedDateTimePatternParser(ZonedDateTime templateValue, ZoneLocalMappingResolver? resolver, IDateTimeZoneProvider? zoneProvider, int twoDigitYearMax)
         {
+            Preconditions.CheckArgumentRange(nameof(twoDigitYearMax), twoDigitYearMax, 0, 99);
             this.templateValue = templateValue;
             this.resolver = resolver;
             this.zoneProvider = zoneProvider;
+            this.twoDigitYearMax = twoDigitYearMax;
         }
 
         // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
@@ -87,7 +91,7 @@ namespace NodaTime.Text
             }
 
             var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>(formatInfo,
-                () => new ZonedDateTimeParseBucket(templateValue, resolver, zoneProvider));
+                () => new ZonedDateTimeParseBucket(templateValue, resolver, zoneProvider, twoDigitYearMax));
             if (zoneProvider is null || resolver is null)
             {
                 patternBuilder.SetFormatOnly();
@@ -133,9 +137,9 @@ namespace NodaTime.Text
             private readonly ZoneLocalMappingResolver? resolver;
             private readonly IDateTimeZoneProvider? zoneProvider;
 
-            internal ZonedDateTimeParseBucket(ZonedDateTime templateValue, ZoneLocalMappingResolver? resolver, IDateTimeZoneProvider? zoneProvider)
+            internal ZonedDateTimeParseBucket(ZonedDateTime templateValue, ZoneLocalMappingResolver? resolver, IDateTimeZoneProvider? zoneProvider, int twoDigitYearMax)
             {
-                Date = new LocalDatePatternParser.LocalDateParseBucket(templateValue.Date);
+                Date = new LocalDatePatternParser.LocalDateParseBucket(templateValue.Date, twoDigitYearMax);
                 Time = new LocalTimePatternParser.LocalTimeParseBucket(templateValue.TimeOfDay);
                 Zone = templateValue.Zone;
                 this.resolver = resolver;

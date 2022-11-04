@@ -203,16 +203,16 @@ namespace NodaTime.Globalization
 
         internal FixedFormatInfoPatternParser<Duration> DurationPatternParser => EnsureFixedFormatInitialized(ref durationPatternParser, () => new DurationPatternParser());
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser => EnsureFixedFormatInitialized(ref offsetPatternParser, () => new OffsetPatternParser());
-        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser => EnsureFixedFormatInitialized(ref instantPatternParser, () => new InstantPatternParser(InstantPattern.DefaultTemplateValue));
+        internal FixedFormatInfoPatternParser<Instant> InstantPatternParser => EnsureFixedFormatInitialized(ref instantPatternParser, () => new InstantPatternParser(InstantPattern.DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax));
         internal FixedFormatInfoPatternParser<LocalTime> LocalTimePatternParser => EnsureFixedFormatInitialized(ref localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight));
-        internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser => EnsureFixedFormatInitialized(ref localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue));
-        internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser => EnsureFixedFormatInitialized(ref localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue));
-        internal FixedFormatInfoPatternParser<OffsetDateTime> OffsetDateTimePatternParser => EnsureFixedFormatInitialized(ref offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue));
-        internal FixedFormatInfoPatternParser<OffsetDate> OffsetDatePatternParser => EnsureFixedFormatInitialized(ref offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePattern.DefaultTemplateValue));
+        internal FixedFormatInfoPatternParser<LocalDate> LocalDatePatternParser => EnsureFixedFormatInitialized(ref localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax));
+        internal FixedFormatInfoPatternParser<LocalDateTime> LocalDateTimePatternParser => EnsureFixedFormatInitialized(ref localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax));
+        internal FixedFormatInfoPatternParser<OffsetDateTime> OffsetDateTimePatternParser => EnsureFixedFormatInitialized(ref offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax));
+        internal FixedFormatInfoPatternParser<OffsetDate> OffsetDatePatternParser => EnsureFixedFormatInitialized(ref offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePattern.DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax));
         internal FixedFormatInfoPatternParser<OffsetTime> OffsetTimePatternParser => EnsureFixedFormatInitialized(ref offsetTimePatternParser, () => new OffsetTimePatternParser(OffsetTimePattern.DefaultTemplateValue));
-        internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser => EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
+        internal FixedFormatInfoPatternParser<ZonedDateTime> ZonedDateTimePatternParser => EnsureFixedFormatInitialized(ref zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null, LocalDatePattern.DefaultTwoDigitYearMax));
         internal FixedFormatInfoPatternParser<AnnualDate> AnnualDatePatternParser => EnsureFixedFormatInitialized(ref annualDatePatternParser, () => new AnnualDatePatternParser(AnnualDatePattern.DefaultTemplateValue));
-        internal FixedFormatInfoPatternParser<YearMonth> YearMonthPatternParser => EnsureFixedFormatInitialized(ref yearMonthPatternParser, () => new YearMonthPatternParser(YearMonthPattern.DefaultTemplateValue));
+        internal FixedFormatInfoPatternParser<YearMonth> YearMonthPatternParser => EnsureFixedFormatInitialized(ref yearMonthPatternParser, () => new YearMonthPatternParser(YearMonthPattern.DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax));
 
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T>? field,
             Func<IPatternParser<T>> patternParserFactory)

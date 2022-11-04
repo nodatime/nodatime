@@ -5,6 +5,7 @@
 using NodaTime.Globalization;
 using NodaTime.Text;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -141,6 +142,29 @@ namespace NodaTime.Test.Text
 
         [Test]
         public void ParseNull() => AssertParseNull(OffsetDatePattern.GeneralIso);
+
+        [Test]
+        [TestCase(0, "00-01-01 +01", 2000)]
+        [TestCase(0, "01-01-01 +01", 1901)]
+        [TestCase(50, "49-01-01 +01", 2049)]
+        [TestCase(50, "50-01-01 +01", 2050)]
+        [TestCase(50, "51-01-01 +01", 1951)]
+        [TestCase(99, "00-01-01 +01", 2000)]
+        [TestCase(99, "99-01-01 +01", 2099)]
+        public void WithTwoDigitYearMax(int twoDigitYearMax, string text, int expectedYear)
+        {
+            var pattern = OffsetDatePattern.CreateWithInvariantCulture("yy-MM-dd o<g>").WithTwoDigitYearMax(twoDigitYearMax);
+            var value = pattern.Parse(text).Value;
+            Assert.AreEqual(expectedYear, value.Year);
+        }
+
+        [Test]
+        [TestCase(-1)]
+        [TestCase(100)]
+        [TestCase(int.MinValue)]
+        [TestCase(int.MaxValue)]
+        public void WithTwoDigitYearMax_Invalid(int twoDigitYearMax) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => OffsetDatePattern.GeneralIso.WithTwoDigitYearMax(twoDigitYearMax));
 
         internal sealed class Data : PatternTestData<OffsetDate>
         {

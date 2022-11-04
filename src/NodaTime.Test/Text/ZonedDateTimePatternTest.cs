@@ -6,6 +6,7 @@ using NodaTime.Testing.TimeZones;
 using NodaTime.Text;
 using NodaTime.TimeZones;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -320,6 +321,29 @@ namespace NodaTime.Test.Text
 
         [Test]
         public void ParseNull() => AssertParseNull(ZonedDateTimePattern.ExtendedFormatOnlyIso.WithZoneProvider(TestProvider));
+
+        [Test]
+        [TestCase(0, "00-01-01T00:00:00 abc", 2000)]
+        [TestCase(0, "01-01-01T00:00:00 abc", 1901)]
+        [TestCase(50, "49-01-01T00:00:00 abc", 2049)]
+        [TestCase(50, "50-01-01T00:00:00 abc", 2050)]
+        [TestCase(50, "51-01-01T00:00:00 abc", 1951)]
+        [TestCase(99, "00-01-01T00:00:00 abc", 2000)]
+        [TestCase(99, "99-01-01T00:00:00 abc", 2099)]
+        public void WithTwoDigitYearMax(int twoDigitYearMax, string text, int expectedYear)
+        {
+            var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yy-MM-dd'T'HH:mm:ss z", TestProvider).WithTwoDigitYearMax(twoDigitYearMax);
+            var value = pattern.Parse(text).Value;
+            Assert.AreEqual(expectedYear, value.Year);
+        }
+
+        [Test]
+        [TestCase(-1)]
+        [TestCase(100)]
+        [TestCase(int.MinValue)]
+        [TestCase(int.MaxValue)]
+        public void WithTwoDigitYearMax_Invalid(int twoDigitYearMax) =>
+            Assert.Throws<ArgumentOutOfRangeException>(() => ZonedDateTimePattern.GeneralFormatOnlyIso.WithTwoDigitYearMax(twoDigitYearMax));
 
         public sealed class Data : PatternTestData<ZonedDateTime>
         {

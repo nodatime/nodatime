@@ -482,6 +482,7 @@ namespace NodaTime.Text.Patterns
                 case '<':
                     {
                         var sampleBucket = CreateSampleBucket();
+                        var twoDigitYearMax = dateBucketExtractor(sampleBucket).TwoDigitYearMax;
                         var templateTime = timeBucketExtractor(sampleBucket).TemplateValue;
                         var templateDate = dateBucketExtractor(sampleBucket).TemplateValue;
                         if (dateTimeExtractor is null)
@@ -491,7 +492,7 @@ namespace NodaTime.Text.Patterns
                         AddField(PatternFields.EmbeddedDate, 'l');
                         AddField(PatternFields.EmbeddedTime, 'l');
                         AddEmbeddedPattern(
-                            LocalDateTimePattern.Create(embeddedPatternText, FormatInfo, templateDate + templateTime).UnderlyingPattern,
+                            LocalDateTimePattern.Create(embeddedPatternText, FormatInfo, templateDate + templateTime, twoDigitYearMax).UnderlyingPattern,
                             (bucket, value) =>
                             {
                                 var dateBucket = dateBucketExtractor(bucket);
@@ -528,7 +529,7 @@ namespace NodaTime.Text.Patterns
             var templateDate = dateBucketExtractor(CreateSampleBucket()).TemplateValue;
             AddField(PatternFields.EmbeddedDate, characterInPattern);
             AddEmbeddedPattern(
-                LocalDatePattern.Create(embeddedPatternText, FormatInfo, templateDate).UnderlyingPattern,
+                LocalDatePattern.Create(embeddedPatternText, FormatInfo, templateDate, LocalDatePattern.DefaultTwoDigitYearMax).UnderlyingPattern,
                 (bucket, value) =>
                 {
                     var dateBucket = dateBucketExtractor(bucket);

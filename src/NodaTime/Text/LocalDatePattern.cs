@@ -22,6 +22,11 @@ namespace NodaTime.Text
     [Immutable] // Well, assuming an immutable culture...
     public sealed class LocalDatePattern : IPattern<LocalDate>
     {
+        /// <summary>
+        /// Default value for <see cref="TwoDigitYearMax"/>.
+        /// </summary>
+        internal const int DefaultTwoDigitYearMax = 30;
+
         internal static readonly LocalDate DefaultTemplateValue = new LocalDate(2000, 1, 1);
 
         private const string DefaultFormatPattern = "D"; // Long
@@ -83,12 +88,21 @@ namespace NodaTime.Text
         /// <value>The value used as a template for parsing.</value>
         public LocalDate TemplateValue { get; }
 
+        /// <summary>
+        /// Maximum two-digit-year in the template to treat as the current century.
+        /// If the value parsed is higher than this, the result is adjusted to the previous century.
+        /// This value defaults to 30. To create a pattern with a different value, use <see cref="WithTwoDigitYearMax(int)"/>.
+        /// </summary>
+        /// <value>The value used for the maximum two-digit-year, in the range 0-99 inclusive.</value>
+        public int TwoDigitYearMax { get; }
+
         private LocalDatePattern(string patternText, NodaFormatInfo formatInfo, LocalDate templateValue,
-            IPartialPattern<LocalDate> pattern)
+            int twoDigitYearMax, IPartialPattern<LocalDate> pattern)
         {
             PatternText = patternText;
             FormatInfo = formatInfo;
             TemplateValue = templateValue;
+            TwoDigitYearMax = twoDigitYearMax;
             UnderlyingPattern = pattern;
         }
 
@@ -125,21 +139,22 @@ namespace NodaTime.Text
         /// <param name="patternText">Pattern text to create the pattern for</param>
         /// <param name="formatInfo">The format info to use in the pattern</param>
         /// <param name="templateValue">Template value to use for unspecified fields</param>
+        /// <param name="twoDigitYearMax">Maximum two-digit-year in the template to treat as the current century.</param>
         /// <returns>A pattern for parsing and formatting local dates.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         internal static LocalDatePattern Create(string patternText, NodaFormatInfo formatInfo,
-            LocalDate templateValue)
+            LocalDate templateValue, int twoDigitYearMax)
         {
             Preconditions.CheckNotNull(patternText, nameof(patternText));
             Preconditions.CheckNotNull(formatInfo, nameof(formatInfo));
             // Use the "fixed" parser for the common case of the default template value.
-            var pattern = templateValue == DefaultTemplateValue
+            var pattern = templateValue == DefaultTemplateValue && twoDigitYearMax == DefaultTwoDigitYearMax
                 ? formatInfo.LocalDatePatternParser.ParsePattern(patternText)
-                : new LocalDatePatternParser(templateValue).ParsePattern(patternText, formatInfo);
+                : new LocalDatePatternParser(templateValue, twoDigitYearMax).ParsePattern(patternText, formatInfo);
             // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
             pattern = (pattern as LocalDatePattern)?.UnderlyingPattern ?? pattern;
             var partialPattern = (IPartialPattern<LocalDate>) pattern;
-            return new LocalDatePattern(patternText, formatInfo, templateValue, partialPattern);
+            return new LocalDatePattern(patternText, formatInfo, templateValue, twoDigitYearMax, partialPattern);
         }
 
         /// <summary>
@@ -154,7 +169,7 @@ namespace NodaTime.Text
         /// <returns>A pattern for parsing and formatting local dates.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static LocalDatePattern Create(string patternText, [ValidatedNotNull] CultureInfo cultureInfo, LocalDate templateValue) =>
-            Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
+            Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue, DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the given pattern text and culture, with a template value of 2000-01-01.
@@ -181,7 +196,7 @@ namespace NodaTime.Text
         /// <returns>A pattern for parsing and formatting local dates.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static LocalDatePattern CreateWithCurrentCulture(string patternText) =>
-            Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
+            Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue, DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the given pattern text in the invariant culture.
@@ -195,7 +210,7 @@ namespace NodaTime.Text
         /// <returns>A pattern for parsing and formatting local dates.</returns>
         /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
         public static LocalDatePattern CreateWithInvariantCulture(string patternText) =>
-            Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue, DefaultTwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -204,7 +219,7 @@ namespace NodaTime.Text
         /// <param name="formatInfo">The localization information to use in the new pattern.</param>
         /// <returns>A new pattern with the given localization information.</returns>
         private LocalDatePattern WithFormatInfo(NodaFormatInfo formatInfo) =>
-            Create(PatternText, formatInfo, TemplateValue);
+            Create(PatternText, formatInfo, TemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -221,7 +236,7 @@ namespace NodaTime.Text
         /// <param name="newTemplateValue">The template value for the new pattern, used to fill in unspecified fields.</param>
         /// <returns>A new pattern with the given template value.</returns>
         public LocalDatePattern WithTemplateValue(LocalDate newTemplateValue) =>
-            Create(PatternText, FormatInfo, newTemplateValue);
+            Create(PatternText, FormatInfo, newTemplateValue, TwoDigitYearMax);
 
         /// <summary>
         /// Creates a pattern like this one, but with the template value modified to use
@@ -240,5 +255,13 @@ namespace NodaTime.Text
         /// <returns>A new pattern with a template value in the specified calendar system.</returns>
         public LocalDatePattern WithCalendar(CalendarSystem calendar) =>
             WithTemplateValue(TemplateValue.WithCalendar(calendar));
+
+        /// <summary>
+        /// Creates a pattern like this one, but with a different <see cref="TwoDigitYearMax"/> value.
+        /// </summary>
+        /// <param name="twoDigitYearMax">The value to use for <see cref="TwoDigitYearMax"/> in the new pattern, in the range 0-99 inclusive.</param>
+        /// <returns>A new pattern with the specified maximum two-digit-year.</returns>
+        public LocalDatePattern WithTwoDigitYearMax(int twoDigitYearMax) =>
+            Create(PatternText, FormatInfo, TemplateValue, twoDigitYearMax);
     }
 }
