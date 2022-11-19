@@ -408,7 +408,96 @@ namespace NodaTime.Test.Text
             var pattern = LocalTimePattern.CreateWithInvariantCulture("HH").WithTemplateValue(newValue);
             Assert.AreEqual(newValue, pattern.TemplateValue);
         }
-        
+
+        [Test]
+        [TestCase("00")]
+        [TestCase("23")]
+        [TestCase("05")]
+        public void HourIso_Roundtrip(string text)
+        {
+            var result = LocalTimePattern.HourIso.Parse(text);
+            Assert.True(result.Success);
+            var time = result.Value;
+            Assert.AreEqual(0, time.Minute);
+            Assert.AreEqual(0, time.Second);
+            Assert.AreEqual(0, time.NanosecondOfSecond);
+            var formatted = LocalTimePattern.HourIso.Format(time);
+            Assert.AreEqual(text, formatted);
+        }
+
+        [Test]
+        [TestCase("-05")]
+        [TestCase("05:00")]
+        [TestCase("5")]
+        [TestCase("24")]
+        [TestCase("99")]
+        public void HourIso_Invalid(string text)
+        {
+            var result = LocalTimePattern.HourIso.Parse(text);
+            Assert.False(result.Success);
+        }
+
+        [Test]
+        [TestCase("00:31")]
+        [TestCase("23:10")]
+        public void HourMinuteIso_Roundtrip(string text)
+        {
+            var result = LocalTimePattern.HourMinuteIso.Parse(text);
+            Assert.True(result.Success);
+            var time = result.Value;
+            Assert.AreEqual(0, time.Second);
+            Assert.AreEqual(0, time.NanosecondOfSecond);
+            var formatted = LocalTimePattern.HourMinuteIso.Format(time);
+            Assert.AreEqual(text, formatted);
+        }
+
+        [Test]
+        [TestCase("-05:00")]
+        [TestCase("5:00")]
+        [TestCase("24:00")]
+        [TestCase("99:00")]
+        [TestCase("10:60")]
+        [TestCase("10:70")]
+        public void HourMinuteIso_Invalid(string text)
+        {
+            var result = LocalTimePattern.HourMinuteIso.Parse(text);
+            Assert.False(result.Success);
+        }
+
+        [Test]
+        [TestCase("03", "03:00", "03:00:00")]
+        [TestCase("12", "12:00", "12:00:00", "12:00:00.000000", "12:00:00.000000000")]
+        [TestCase("12:01", "12:01:00", "12:01:00.000000")]
+        [TestCase("12:00:01", "12:00:01.000000")]
+        [TestCase("12:00:01.123", "12:00:01.123000", "12:00:01.123000000")]
+        [TestCase("12:00:01.123456789")]
+        public void VariablePrecision_Valid(string canonical, params string[] alternatives)
+        {
+            var pattern = LocalTimePattern.VariablePrecisionIso;
+            foreach (var text in new[] { canonical }.Concat(alternatives))
+            {
+                var result = pattern.Parse(text);
+                Assert.True(result.Success);
+                var time = result.Value;
+                var formatted = pattern.Format(time);
+                Assert.AreEqual(canonical, formatted);
+            }
+        }
+
+        [Test]
+        [TestCase("24:00")]
+        [TestCase("24")]
+        [TestCase("25")]
+        [TestCase("25:61")]
+        [TestCase("12:23:45.0000000000")] // Too many fractional digits
+        [TestCase("05:63")]
+        [TestCase("05:00:63")]
+        public void VariablePrecision_Invalid(string text)
+        {
+            var result = LocalTimePattern.VariablePrecisionIso.Parse(text);
+            Assert.False(result.Success);
+        }
+
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             // On Mono, some general patterns include an offset at the end.
