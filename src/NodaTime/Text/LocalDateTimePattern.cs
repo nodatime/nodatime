@@ -58,7 +58,7 @@ namespace NodaTime.Text
         /// BCL round-trip formatting of <see cref="DateTime"/> values with a kind of "unspecified".
         /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff". It does not necessarily
         /// round-trip all <c>LocalDateTime</c> values as it will lose sub-tick information. Use
-        /// <see cref="FullRoundtripWithoutCalendar"/>
+        /// <see cref="FullRoundtripWithoutCalendar"/> for full precision.
         /// </summary>
         /// <remarks>
         /// This pattern corresponds to the 'o' and 'O' standard patterns.
@@ -92,6 +92,34 @@ namespace NodaTime.Text
         public static LocalDateTimePattern FullRoundtrip => Patterns.FullRoundtripPatternImpl;
 
         /// <summary>
+        /// Gets an invariant local date/time pattern which is ISO-8601 compatible, with precision of just minutes.
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm".
+        /// </summary>
+        /// <value>An invariant local time pattern which is ISO-8601 compatible, with no sub-minute precision.</value>
+        public static LocalDateTimePattern DateHourMinuteIso => Patterns.DateHourMinuteIsoPatternImpl;
+
+        /// <summary>
+        /// Gets an invariant local date/time pattern which is ISO-8601 compatible, with a precision of just hours.
+        /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH".
+        /// </summary>
+        /// <value>An invariant local time pattern which is ISO-8601 compatible, with no sub-hour precision.</value>
+        public static LocalDateTimePattern DateHourIso => Patterns.DateHourIsoPatternImpl;
+
+        /// <summary>
+        /// Gets an invariant local date/time pattern which can parse any ISO-8601 compatible value with a calendar date
+        /// (in extended format, that is, with separators), regardless of precision in the time part.
+        /// Valid values for time include "just hours", "hours and minutes", "hours, minutes and seconds",
+        /// and values with fractions of seconds (as far as nanoseconds). The time part must be present, however; this pattern
+        /// will not parse date-only values. (It will also not parse ordinal dates or week dates, as described in ISO-8601.)
+        /// </summary>
+        /// <remarks>
+        /// This is expressed as an <see cref="IPattern{LocalDateTime}"/> rather than a <see cref="LocalDateTimePattern"/>,
+        /// as it has no single pattern text.
+        /// </remarks>
+        /// <value>An invariant local date/time pattern which is ISO-8601 compatible for all time precisions.</value>
+        public static IPattern<LocalDateTime> VariablePrecisionIso => Patterns.VariablePrecisionIsoPatternImpl;
+
+        /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
         /// from needing NodaFormatInfo.InvariantInfo...
         /// </summary>
@@ -102,6 +130,14 @@ namespace NodaTime.Text
             internal static readonly LocalDateTimePattern BclRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
             internal static readonly LocalDateTimePattern FullRoundtripWithoutCalendarImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
             internal static readonly LocalDateTimePattern FullRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
+            internal static readonly LocalDateTimePattern DateHourIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH");
+            internal static readonly LocalDateTimePattern DateHourMinuteIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm");
+            internal static readonly IPattern<LocalDateTime> VariablePrecisionIsoPatternImpl = new CompositePatternBuilder<LocalDateTime>
+            {
+                { ExtendedIsoPatternImpl, time => true },
+                { DateHourMinuteIsoPatternImpl, time => time.Second == 0 && time.NanosecondOfSecond == 0 },
+                { DateHourIsoPatternImpl, time => time.Minute == 0 && time.Second == 0 && time.NanosecondOfSecond == 0 },
+            }.Build();
         }
 
         /// <summary>

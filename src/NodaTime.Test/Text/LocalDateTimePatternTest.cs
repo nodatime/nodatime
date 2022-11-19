@@ -230,6 +230,134 @@ namespace NodaTime.Test.Text
                                 Is.EqualTo(SampleLocalDateTimeToMinutes));
         }
 
+        [Test]
+        [TestCase("1992-01-25T00")]
+        [TestCase("-1000-12-31T23")]
+        [TestCase("9999-12-31T05")]
+        public void DateHourIso_Roundtrip(string text)
+        {
+            var result = LocalDateTimePattern.DateHourIso.Parse(text);
+            Assert.True(result.Success);
+            var time = result.Value;
+            Assert.AreEqual(0, time.Minute);
+            Assert.AreEqual(0, time.Second);
+            Assert.AreEqual(0, time.NanosecondOfSecond);
+            var formatted = LocalDateTimePattern.DateHourIso.Format(time);
+            Assert.AreEqual(text, formatted);
+        }
+
+        [Test]
+        public void DateHourIso_2400()
+        {
+            var result = LocalDateTimePattern.DateHourIso.Parse("1992-01-25T24");
+            Assert.True(result.Success);
+            Assert.AreEqual(new LocalDateTime(1992, 1, 26, 0, 0), result.Value);
+        }
+
+        [Test]
+        [TestCase("10000-01-01T05")]
+        [TestCase("1999-13-01T05")]
+        [TestCase("1999-09-31T05")]
+        [TestCase("1992-01-25T-05")]
+        [TestCase("1992-01-25T05:00")]
+        [TestCase("1992-01-25T5")]
+        [TestCase("1992-01-25T99")]
+        public void DateHourIso_Invalid(string text)
+        {
+            var result = LocalDateTimePattern.DateHourIso.Parse(text);
+            Assert.False(result.Success);
+        }
+
+        [Test]
+        [TestCase("1992-01-25T00:31")]
+        [TestCase("1992-01-25T23:10")]
+        public void DateHourMinuteIso_Roundtrip(string text)
+        {
+            var result = LocalDateTimePattern.DateHourMinuteIso.Parse(text);
+            Assert.True(result.Success);
+            var time = result.Value;
+            Assert.AreEqual(0, time.Second);
+            Assert.AreEqual(0, time.NanosecondOfSecond);
+            var formatted = LocalDateTimePattern.DateHourMinuteIso.Format(time);
+            Assert.AreEqual(text, formatted);
+        }
+
+        [Test]
+        public void DateHourMinuteIso_2400()
+        {
+            var result = LocalDateTimePattern.DateHourMinuteIso.Parse("1992-01-25T24:00");
+            Assert.True(result.Success);
+            Assert.AreEqual(new LocalDateTime(1992, 1, 26, 0, 0), result.Value);
+        }
+
+        [Test]
+        [TestCase("10000-01-01T05:00")]
+        [TestCase("1999-13-01T05:00")]
+        [TestCase("1999-09-31T05:00")]
+        [TestCase("1992-01-25T-05:00")]
+        [TestCase("1992-01-25T5:00")]
+        [TestCase("1992-01-25T24:01")] // 24:00 is valid; covered above.
+        [TestCase("1992-01-25T99:00")]
+        [TestCase("1992-01-25T10:60")]
+        [TestCase("1992-01-25T10:70")]
+        public void DateHourMinuteIso_Invalid(string text)
+        {
+            var result = LocalDateTimePattern.DateHourMinuteIso.Parse(text);
+            Assert.False(result.Success);
+        }
+
+        [Test]
+        [TestCase("03", "03:00", "03:00:00")]
+        [TestCase("12", "12:00", "12:00:00", "12:00:00.000000", "12:00:00.000000000")]
+        [TestCase("12:01", "12:01:00", "12:01:00.000000")]
+        [TestCase("12:00:01", "12:00:01.000000")]
+        [TestCase("12:00:01.123", "12:00:01.123000", "12:00:01.123000000")]
+        [TestCase("12:00:01.123456789")]
+        public void VariablePrecision_Valid(string canonical, params string[] alternatives)
+        {
+            // Just use the same prefix for all values; it's only the time part that can vary in precision.
+            string prefix = "1992-01-25T";
+            string fullCanonical = prefix + canonical;
+
+            var pattern = LocalDateTimePattern.VariablePrecisionIso;
+            foreach (var text in new[] { canonical }.Concat(alternatives))
+            {
+                var result = pattern.Parse(prefix + text);
+                Assert.True(result.Success);
+                var time = result.Value;
+                var formatted = pattern.Format(time);
+                Assert.AreEqual(fullCanonical, formatted);
+            }
+        }
+
+        [Test]
+        [TestCase("1992-01-25T24")]
+        [TestCase("1992-01-25T24:00")]
+        [TestCase("1992-01-25T24:00:00")]
+        [TestCase("1992-01-25T24:00:00.000")]
+        [TestCase("1992-01-25T24:00:00.000000000")]
+        public void VarablePrecision_2400(string text)
+        {
+            var result = LocalDateTimePattern.VariablePrecisionIso.Parse(text);
+            Assert.True(result.Success);
+            Assert.AreEqual(new LocalDateTime(1992, 1, 26, 0, 0), result.Value);
+        }
+
+        [Test]
+        [TestCase("1992-01-32")]
+        [TestCase("10:00")]
+        [TestCase("1992-01-32T10:00")]
+        [TestCase("1992-13-25T10:00")]
+        [TestCase("1992-01-25T25:61")]
+        [TestCase("1992-01-25T12:23:45.0000000000")] // Too many fractional digits
+        [TestCase("1992-01-25T05:63")]
+        [TestCase("1992-01-25T05:00:63")]
+        public void VariablePrecision_Invalid(string text)
+        {
+            var result = LocalDateTimePattern.VariablePrecisionIso.Parse(text);
+            Assert.False(result.Success);
+        }
+
         private void AssertBclNodaEquality(CultureInfo culture, string patternText)
         {
             // On Mono, some general patterns include an offset at the end. For the moment, ignore them.
