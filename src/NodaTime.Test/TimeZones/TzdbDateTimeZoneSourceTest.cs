@@ -231,6 +231,13 @@ namespace NodaTime.Test.TimeZones
                 return;
             }
 
+            // As of November 29th 2022, the Windows time zone database hasn't caught up
+            // with the Greenland change in TZDB 2022g. Skip it for now.
+            if (bclZone.Id == "Greenland Standard Time")
+            {
+                return;
+            }
+
             string? id = TzdbDateTimeZoneSource.GuessZoneIdByTransitionsUncached(bclZone, TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached);
 
             // Unmappable zones may not be mapped, or may be mapped to something reasonably accurate.
