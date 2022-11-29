@@ -259,6 +259,7 @@
       <xs:enumeration value="America/Cayman" />
       <xs:enumeration value="America/Chicago" />
       <xs:enumeration value="America/Chihuahua" />
+      <xs:enumeration value="America/Ciudad_Juarez" />
       <xs:enumeration value="America/Coral_Harbour" />
       <xs:enumeration value="America/Cordoba" />
       <xs:enumeration value="America/Costa_Rica" />
