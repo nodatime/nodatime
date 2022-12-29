@@ -1,4 +1,4 @@
-[![GitHub Actions status](https://img.shields.io/github/actions/workflow/status/nodatime/nodatime/push.yaml?branch=main)](https://github.com/nodatime/nodatime/actions?query=workflow%3A%22Build+push%22)
+[![GitHub Actions status](https://img.shields.io/github/actions/workflow/status/nodatime/nodatime/push.yaml?branch=main)](https://github.com/nodatime/nodatime/actions/workflows/push.yaml)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/kw664whqre92a00m?svg=true)](https://ci.appveyor.com/project/nodatime/nodatime)
 [![Coverage Status](https://codecov.io/gh/nodatime/nodatime/branch/main/graph/badge.svg)](https://codecov.io/gh/nodatime/nodatime)
 
