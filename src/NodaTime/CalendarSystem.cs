@@ -683,6 +683,16 @@ namespace NodaTime
         public static CalendarSystem PersianSimple => PersianCalendars.Simple;
 
         /// <summary>
+        /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour
+        /// proposed by Ahmad Birashk with nested cycles of years determining which years are leap years.
+        /// </summary>
+        /// <remarks>
+        /// This calendar is also known as the algorithmic Solar Hijri calendar.
+        /// </remarks>
+        /// <value>A Persian calendar system using cycles-within-cycles of years to determine leap years.</value>
+        public static CalendarSystem PersianArithmetic => PersianCalendars.Arithmetic;
+
+        /// <summary>
         /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
         /// BCL <c>PersianCalendar</c> from .NET 4.6 onwards (and Windows 10), and the astronomical
         /// system described in Wikipedia and Calendrical Calculations.
@@ -693,16 +703,6 @@ namespace NodaTime
         /// is complex.
         /// </remarks>
         /// <value>A Persian calendar system using astronomical calculations to determine leap years.</value>
-        public static CalendarSystem PersianArithmetic => PersianCalendars.Arithmetic;
-
-        /// <summary>
-        /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour
-        /// proposed by Ahmad Birashk with nested cycles of years determining which years are leap years.
-        /// </summary>
-        /// <remarks>
-        /// This calendar is also known as the algorithmic Solar Hijri calendar.
-        /// </remarks>
-        /// <value>A Persian calendar system using cycles-within-cycles of years to determine leap years.</value>
         public static CalendarSystem PersianAstronomical => PersianCalendars.Astronomical;
 
         /// <summary>
