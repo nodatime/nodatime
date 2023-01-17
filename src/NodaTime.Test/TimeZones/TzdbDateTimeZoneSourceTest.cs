@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 
 namespace NodaTime.Test.TimeZones
 {
@@ -19,6 +18,18 @@ namespace NodaTime.Test.TimeZones
     {
         private static readonly List<NamedWrapper<TimeZoneInfo>> SystemTimeZones =
             TimeZoneInfo.GetSystemTimeZones().Select(zone => new NamedWrapper<TimeZoneInfo>(zone, zone.Id)).ToList();
+
+        // Simple way of excluding BCL time zones which we know won't map properly,
+        // usually due to the Windows time zone database being a bit out of date.
+        private static List<NamedWrapper<TimeZoneInfo>> SystemTimeZonesWithoutKnownFailures =>
+            SystemTimeZones.Where(wrapper =>
+            {
+                string id = wrapper.Value.Id;
+                return id != "Samoa Standard Time" &&
+                    !id.Contains("(Mexico)") &&
+                    id != "Greenland Standard Time" &&
+                    id != "Iran Standard Time";
+            }).ToList();
 
         /// <summary>
         /// Tests that we can load (and exercise) the binary Tzdb resource file distributed with Noda Time 1.1.0.
@@ -214,30 +225,10 @@ namespace NodaTime.Test.TimeZones
         // We should be able to use TestCaseSource to call TimeZoneInfo.GetSystemTimeZones directly,
         // but that appears to fail under Mono.
         [Test]
-        [TestCaseSource(nameof(SystemTimeZones))]
+        [TestCaseSource(nameof(SystemTimeZonesWithoutKnownFailures))]
         public void GuessZoneIdByTransitionsUncached(NamedWrapper<TimeZoneInfo> bclZoneWrapper)
         {
             var bclZone = bclZoneWrapper.Value;
-            // As of September 25th 2021, the Windows time zone database hasn't caught up
-            // with the Samoa change in TZDB 2021b. Skip it for now.
-            if (bclZone.Id == "Samoa Standard Time")
-            {
-                return;
-            }
-            // As of October 29th 2022, the Windows time zone database isn't as accurate for
-            // Mexico. (It gets an accuracy of 71.2...)
-            if (bclZone.Id.Contains("(Mexico)"))
-            {
-                return;
-            }
-
-            // As of November 29th 2022, the Windows time zone database hasn't caught up
-            // with the Greenland change in TZDB 2022g. Skip it for now.
-            if (bclZone.Id == "Greenland Standard Time")
-            {
-                return;
-            }
-
             string? id = TzdbDateTimeZoneSource.GuessZoneIdByTransitionsUncached(bclZone, TzdbDefaultZonesForIdGuessZoneIdByTransitionsUncached);
 
             // Unmappable zones may not be mapped, or may be mapped to something reasonably accurate.
