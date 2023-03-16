@@ -11,6 +11,12 @@ then
   exit 1
 fi
 
+if [[ $SIGNATURE_FINGERPRINT == "" || $SIGNATURE_TIMESTAMPER == "" ]]
+then
+  echo "Please set SIGNATURE_FINGERPRINT and SIGNATURE_TIMESTAMPER"
+  exit 1
+fi
+
 declare -r TZDB_RELEASE=$1
 declare -r GSUTIL=gsutil.cmd
 declare -r ROOT=$(realpath $(dirname $0)/../..)
@@ -52,8 +58,28 @@ git tag ${NEW_RELEASE}
 export ContinuousIntegrationBuild=true
 
 # Build and package the code
-echo "Packaging..."
-dotnet pack -o "$OUTPUT" -c Release src/NodaTime.sln
+echo "Building and packaging..."
+
+# First build...
+dotnet build -c Release src/NodaTime.sln
+
+# Sign all the DLLs
+signtool sign -a -fd SHA256 \
+  -sha1 $SIGNATURE_FINGERPRINT \
+  -t $SIGNATURE_TIMESTAMPER \
+  src/NodaTime/bin/Release/*/NodaTime.dll src/NodaTime.Testing/bin/Release/*/NodaTime.Testing.dll  
+
+# Package the result into the NuGet package
+dotnet pack --no-build -o "$OUTPUT" -c Release src/NodaTime.sln
+
+# Sign the NuGet package
+
+dotnet nuget sign "$OUTPUT/NodaTime.$NEW_RELEASE.nupkg" \
+  --certificate-fingerprint $SIGNATURE_FINGERPRINT \
+  --timestamper $SIGNATURE_TIMESTAMPER
+dotnet nuget sign "$OUTPUT/NodaTime.Testing.$NEW_RELEASE.nupkg" \
+  --certificate-fingerprint $SIGNATURE_FINGERPRINT \
+  --timestamper $SIGNATURE_TIMESTAMPER
 
 cd ../..
 
