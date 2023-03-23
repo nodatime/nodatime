@@ -4,7 +4,7 @@
     - thing to change before performing a release.
     -->
   <PropertyGroup>
-    <Version>3.1.6</Version>
+    <Version>3.1.7</Version>
   </PropertyGroup>
   
   <!-- Common properties across all projects (or ones that at least aren't harmful) -->
