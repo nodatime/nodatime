@@ -11,6 +11,12 @@ then
   exit 1
 fi
 
+if [[ $SIGNATURE_FINGERPRINT == "" || $SIGNATURE_TIMESTAMPER == "" ]]
+then
+  echo "Please set SIGNATURE_FINGERPRINT and SIGNATURE_TIMESTAMPER and re-run"
+  exit 1
+fi
+
 ./update-main.sh $1
 
 rm -rf tmp-gcs
