@@ -86,7 +86,8 @@ namespace NodaTime.Test.TimeZones
             // TODO: File a bug about this...
             int endYear = EndTestYearExclusive;
             if (windowsZoneWrapper.Value.Id == "Asia/Gaza" ||
-                windowsZoneWrapper.Value.Id == "Asia/Hebron")
+                windowsZoneWrapper.Value.Id == "Asia/Hebron" ||
+                windowsZoneWrapper.Value.Id == "Africa/Cairo")
             {
                 endYear = 2036;
             }
