@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net471;netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>net471;net6.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
@@ -9,12 +9,12 @@
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
     <ProjectReference Include="..\NodaTime.Testing\NodaTime.Testing.csproj" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" IncludeAssets="runtime; build; native; contentfiles; analyzers" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
 </Project>
