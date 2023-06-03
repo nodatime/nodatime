@@ -5,7 +5,7 @@
     - (not nested) item when DeterministicSourcePaths is true
     -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
 
   <!-- See https://github.com/dotnet/sourcelink/issues/572 -->

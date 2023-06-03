@@ -7,6 +7,7 @@ using System.Reflection;
 using NodaTime.Annotations;
 using NUnit.Framework;
 
+#if NET6_0_OR_GREATER
 namespace NodaTime.Test.Annotations
 {
     public class TrustedTest
@@ -43,3 +44,4 @@ namespace NodaTime.Test.Annotations
         }
     }
 }
+#endif
