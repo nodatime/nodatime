@@ -335,10 +335,10 @@ namespace NodaTime
         /// Gets the total number of milliseconds in this duration, as a <see cref="Double"/>.
         /// </summary>
         /// <remarks>This property is the <c>Duration</c> equivalent of <see cref="TimeSpan.TotalMilliseconds"/>.
-        /// Unlike <see cref="Milliseconds"/>, it represents the complete duration in seconds rather than
-        /// the whole number of seconds within the minute. So for a duration
-        /// of 10 minutes, 20 seconds and 250 milliseconds, the <c>Seconds</c> property will return 20, but <c>TotalSeconds</c>
-        /// will return 620.25.
+        /// Unlike <see cref="Milliseconds"/>, it represents the complete duration in milliseconds rather than
+        /// the whole number of milliseconds within the second. So for a duration
+        /// of 10 minutes, 20 seconds and 250 milliseconds, the <c>Milliseconds</c> property will return 250, but <c>TotalMilliseconds</c>
+        /// will return 62025.
         /// </remarks>
         /// <value>The total number of milliseconds in this duration.</value>
         public double TotalMilliseconds => days * (double) MillisecondsPerDay + nanoOfDay / (double) NanosecondsPerMillisecond;
