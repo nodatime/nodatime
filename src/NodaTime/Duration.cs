@@ -338,7 +338,7 @@ namespace NodaTime
         /// Unlike <see cref="Milliseconds"/>, it represents the complete duration in milliseconds rather than
         /// the whole number of milliseconds within the second. So for a duration
         /// of 10 minutes, 20 seconds and 250 milliseconds, the <c>Milliseconds</c> property will return 250, but <c>TotalMilliseconds</c>
-        /// will return 62025.
+        /// will return 620250.
         /// </remarks>
         /// <value>The total number of milliseconds in this duration.</value>
         public double TotalMilliseconds => days * (double) MillisecondsPerDay + nanoOfDay / (double) NanosecondsPerMillisecond;
