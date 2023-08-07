@@ -698,6 +698,15 @@ namespace NodaTime
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Duration"/> representing the result of multiplying <paramref name="left"/> by
         /// <paramref name="right"/>.</returns>
+        public static Duration operator *(double left, Duration right) => right * left;
+
+        /// <summary>
+        /// Implements the operator * (multiplication).
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the result of multiplying <paramref name="left"/> by
+        /// <paramref name="right"/>.</returns>
         public static Duration operator *(long left, Duration right) => right * left;
 
         /// <summary>
@@ -723,6 +732,14 @@ namespace NodaTime
         /// <param name="right">The right hand side of the operator.</param>
         /// <returns>A new <see cref="Duration"/> representing the product of the given values.</returns>
         public static Duration Multiply(long left, Duration right) => left * right;
+
+        /// <summary>
+        /// Multiplies a duration by a number. Friendly alternative to <c>operator*()</c>.
+        /// </summary>
+        /// <param name="left">The left hand side of the operator.</param>
+        /// <param name="right">The right hand side of the operator.</param>
+        /// <returns>A new <see cref="Duration"/> representing the product of the given values.</returns>
+        public static Duration Multiply(double left, Duration right) => left * right;
 
         /// <summary>
         /// Implements the operator == (equality).

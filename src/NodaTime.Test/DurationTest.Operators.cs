@@ -184,12 +184,15 @@ namespace NodaTime.Test
             var actual = start * rightOperand;
             var expected = new Duration(expectedDays, expectedNanos);
             Assert.AreEqual(expected, actual);
+            actual = rightOperand * start;
+            Assert.AreEqual(expected, actual);
         }
-        
+
         [Test]
         public void Commutation()
         {
             Assert.AreEqual(threeMillion * 5, 5 * threeMillion);
+            Assert.AreEqual(threeMillion * 5.5, 5.5 * threeMillion);
         }
 
         [Test]
@@ -198,6 +201,7 @@ namespace NodaTime.Test
             Assert.AreEqual(Duration.FromNanoseconds(-50000) * 1000, Duration.Multiply(Duration.FromNanoseconds(-50000), 1000));
             Assert.AreEqual(1000 * Duration.FromNanoseconds(-50000), Duration.Multiply(1000, Duration.FromNanoseconds(-50000)));
             Assert.AreEqual(Duration.FromNanoseconds(-50000) * 1000d, Duration.Multiply(Duration.FromNanoseconds(-50000), 1000d));
+            Assert.AreEqual(1000d * Duration.FromNanoseconds(-50000), Duration.Multiply(1000d, Duration.FromNanoseconds(-50000)));
         }
         #endregion
 
