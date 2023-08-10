@@ -67,16 +67,7 @@ namespace NodaTime.Testing.TimeZones
                 offsetAfter, Offset.Zero);
         }
 
-        /// <summary>
-        /// Gets the zone interval for the given instant; the range of time around the instant in which the same Offset
-        /// applies (with the same split between standard time and daylight saving time, and with the same offset).
-        /// </summary>
-        /// <remarks>
-        /// This will always return a valid zone interval, as time zones cover the whole of time.
-        /// This returns either the zone interval before or after the transition, based on the instant provided.
-        /// </remarks>
-        /// <param name="instant">The <see cref="NodaTime.Instant" /> to query.</param>
-        /// <returns>The defined <see cref="NodaTime.TimeZones.ZoneInterval" />.</returns>
+        /// <inheritdoc />
         public override ZoneInterval GetZoneInterval(Instant instant) => EarlyInterval.Contains(instant) ? EarlyInterval : LateInterval;
     }
 }
