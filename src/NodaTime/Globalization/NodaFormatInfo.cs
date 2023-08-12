@@ -115,6 +115,12 @@ namespace NodaTime.Globalization
 
             lock (fieldLock)
             {
+                // Check again in case it has been initialized in another thread
+                if (longMonthNames != null)
+                {
+                    return;
+                }
+
                 // Turn month names into 1-based read-only lists
                 longMonthNames = ConvertMonthArray(DateTimeFormat.MonthNames);
                 shortMonthNames = ConvertMonthArray(DateTimeFormat.AbbreviatedMonthNames);
@@ -142,6 +148,12 @@ namespace NodaTime.Globalization
 
             lock (fieldLock)
             {
+                // Check again in case it has been initialized in another thread
+                if (longDayNames != null)
+                {
+                    return;
+                }
+                
                 longDayNames = ConvertDayArray(DateTimeFormat.DayNames);
                 shortDayNames = ConvertDayArray(DateTimeFormat.AbbreviatedDayNames);
             }
@@ -234,7 +246,7 @@ namespace NodaTime.Globalization
                 {
                     field = localConstruction;
                 }
-                return field!;
+                return field;
             }
         }
 
