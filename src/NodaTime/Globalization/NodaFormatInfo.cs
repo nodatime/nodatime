@@ -108,12 +108,13 @@ namespace NodaTime.Globalization
 
         private void EnsureMonthsInitialized()
         {
+            if (longMonthNames != null)
+            {
+                return;
+            }
+
             lock (fieldLock)
             {
-                if (longMonthNames != null)
-                {
-                    return;
-                }
                 // Turn month names into 1-based read-only lists
                 longMonthNames = ConvertMonthArray(DateTimeFormat.MonthNames);
                 shortMonthNames = ConvertMonthArray(DateTimeFormat.AbbreviatedMonthNames);
@@ -134,12 +135,13 @@ namespace NodaTime.Globalization
 
         private void EnsureDaysInitialized()
         {
+            if (longDayNames != null)
+            {
+                return;
+            }
+
             lock (fieldLock)
             {
-                if (longDayNames != null)
-                {
-                    return;
-                }
                 longDayNames = ConvertDayArray(DateTimeFormat.DayNames);
                 shortDayNames = ConvertDayArray(DateTimeFormat.AbbreviatedDayNames);
             }
@@ -217,13 +219,11 @@ namespace NodaTime.Globalization
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T>? field,
             Func<IPatternParser<T>> patternParserFactory)
         {
-            lock (fieldLock)
+            if (field != null)
             {
-                if (field != null)
-                {
-                    return field;
-                }
+                return field;
             }
+
             // Construct the cache outside the lock to avoid possible deadlocks. The locally constructed
             // version is ignored if another thread has set the field in-between: this returns a consistent result,
             // but can occasionally perform redundant work.
