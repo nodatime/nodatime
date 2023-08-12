@@ -108,7 +108,7 @@ namespace NodaTime.Globalization
 
         private void EnsureMonthsInitialized()
         {
-            if (longMonthNames != null)
+            if (longMonthNames != null && shortMonthNames != null && longMonthGenitiveNames != null && shortMonthGenitiveNames != null)
             {
                 return;
             }
@@ -141,7 +141,7 @@ namespace NodaTime.Globalization
 
         private void EnsureDaysInitialized()
         {
-            if (longDayNames != null)
+            if (longDayNames != null && shortDayNames != null)
             {
                 return;
             }
