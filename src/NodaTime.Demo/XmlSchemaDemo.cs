@@ -30,7 +30,7 @@ namespace NodaTime.Demo
 
         [Test]
         [TestCase(typeof(XmlCodeExporterAssemblyCreator))]
-        [TestCase(typeof(XmlSchemaClassGeneratorAssemblyCreator), Ignore = "Fails due to lack of ComponentModel.DataAnnotations")]
+        [TestCase(typeof(XmlSchemaClassGeneratorAssemblyCreator))]
         public void DynamicCodeGeneration(Type assemblyGeneratorType)
         {
             var schemaXmlReader = new StringReader(@"<?xml version=""1.0"" encoding=""utf-8""?>
