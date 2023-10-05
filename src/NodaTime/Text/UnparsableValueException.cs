@@ -21,24 +21,34 @@ namespace NodaTime.Text
         /// </summary>
         public UnparsableValueException()
         {
+            Value = string.Empty;
         }
 
         /// <summary>
         /// Creates a new UnparsableValueException with the given message.
         /// </summary>
         /// <param name="message">The failure message</param>
-        public UnparsableValueException(string message)
+        /// <param name="value">The value which could not be parsed</param>
+        public UnparsableValueException(string message, string value)
             : base(message)
         {
+            Value = value;
         }
 
         /// <summary>
         /// Creates a new UnparsableValueException with the given message and inner exception
         /// </summary>
         /// <param name="message">The failure message</param>
+        /// <param name="value">The value which could not be parsed</param>
         /// <param name="innerException">The inner exception</param>
-        public UnparsableValueException(string message, Exception innerException) : base(message, innerException)
+        public UnparsableValueException(string message, string value, Exception innerException) : base(message, innerException)
         {
+            Value = value;
         }
+        
+        /// <summary>
+        /// The value which could not be parsed.
+        /// </summary>
+        public string Value { get; private set; }
     }
 }

@@ -624,7 +624,7 @@ namespace NodaTime.Text.Patterns
             {
                 if (parseActions is null)
                 {
-                    return ParseResult<TResult>.FormatOnlyPattern;
+                    return ParseResult<TResult>.FormatOnlyPattern(new ValueCursor(text));
                 }
                 if (text is null)
                 {
@@ -666,7 +666,7 @@ namespace NodaTime.Text.Patterns
                 // let's guard against it for the future.
                 if (parseActions is null)
                 {
-                    return ParseResult<TResult>.FormatOnlyPattern;
+                    return ParseResult<TResult>.FormatOnlyPattern(cursor);
                 }
 
                 TBucket bucket = bucketProvider();

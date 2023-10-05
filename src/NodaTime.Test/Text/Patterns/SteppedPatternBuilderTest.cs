@@ -54,7 +54,8 @@ namespace NodaTime.Test.Text.Patterns
             value.MoveNext();
             value.MoveNext();
             var result = SimpleOffsetPattern.ParsePartial(value);
-            Assert.Throws<UnparsableValueException>(() => result.GetValueOrThrow());
+            var exception = Assert.Throws<UnparsableValueException>(() => result.GetValueOrThrow());
+            Assert.AreEqual("x17:^y", exception?.Value);
         }
 
         [Test]
@@ -68,9 +69,15 @@ namespace NodaTime.Test.Text.Patterns
 
             var value = new ValueCursor("xyz");
             var result = pattern.ParsePartial(value);
-            Assert.AreEqual(ParseResult<LocalDate>.FormatOnlyPattern, result);
+            Assert.IsFalse(result.Success);
+            Assert.IsInstanceOf<UnparsableValueException>(result.Exception);
+            Assert.AreEqual("^xyz",((UnparsableValueException) result.Exception).Value);
+            Assert.AreEqual(TextErrorMessages.FormatOnlyPattern, result.Exception.Message);
             result = pattern.Parse("xyz");
-            Assert.AreEqual(ParseResult<LocalDate>.FormatOnlyPattern, result);
+            Assert.IsFalse(result.Success);
+            Assert.IsInstanceOf<UnparsableValueException>(result.Exception);
+            Assert.AreEqual("^xyz",((UnparsableValueException) result.Exception).Value);
+            Assert.AreEqual(TextErrorMessages.FormatOnlyPattern, result.Exception.Message);
         }
 
         [Test]

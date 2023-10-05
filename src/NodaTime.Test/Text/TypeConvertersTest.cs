@@ -36,7 +36,8 @@ namespace NodaTime.Test.Text
             Assert.True(converter.CanConvertTo(typeof(string)));
 
             Assert.Throws<NotSupportedException>(() => converter.ConvertFrom(null!));
-            Assert.Throws<UnparsableValueException>(() => converter.ConvertFrom(""));
+            var unparsableValueException = Assert.Throws<UnparsableValueException>(() => converter.ConvertFrom(""));
+            Assert.AreEqual(string.Empty, unparsableValueException?.Value);
 
             if (type.IsValueType)
             {
