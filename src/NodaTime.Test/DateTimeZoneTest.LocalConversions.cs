@@ -111,7 +111,9 @@ namespace NodaTime.Test
             var e = Assert.Throws<SkippedTimeException>(() => mapping.Single())!;
             Assert.AreEqual(localTime, e.LocalDateTime);
             Assert.AreEqual(zone, e.Zone);
-            
+            Assert.Null(e.ParamName);
+            StringAssert.Contains(zone.Id, e.Message);
+
             e = Assert.Throws<SkippedTimeException>(() => mapping.First())!;
             Assert.AreEqual(localTime, e.LocalDateTime);
             Assert.AreEqual(zone, e.Zone);
@@ -136,6 +138,8 @@ namespace NodaTime.Test
             Assert.AreEqual(zone, e.Zone);
             Assert.AreEqual(earlier, e.EarlierMapping);
             Assert.AreEqual(later, e.LaterMapping);
+            Assert.Null(e.ParamName);
+            StringAssert.Contains(zone.Id, e.Message);
 
             Assert.AreEqual(earlier, mapping.First());
             Assert.AreEqual(later, mapping.Last());
