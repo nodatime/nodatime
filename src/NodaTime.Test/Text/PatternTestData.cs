@@ -158,7 +158,7 @@ namespace NodaTime.Test.Text
                 Assert.IsTrue(e.Message.StartsWith(expectedMessage),
                     "Expected message to start with {0}; was actually {1}", expectedMessage, e.Message);
                 
-                Assert.AreEqual(Text, e.Value.Replace("^", ""), "Expected exception to include the text value");
+                Assert.AreEqual(Text, e.Value, "Expected exception to include the text value");
             }
         }
 
