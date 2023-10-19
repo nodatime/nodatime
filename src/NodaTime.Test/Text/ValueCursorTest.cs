@@ -439,7 +439,8 @@ namespace NodaTime.Test.Text
             Assert.IsFalse(parseResult!.Success);
             Assert.IsInstanceOf<UnparsableValueException>(parseResult.Exception);
             Assert.AreEqual(0, value.Index); // Cursor hasn't moved
-            Assert.AreEqual("^92233720368547758071", ((UnparsableValueException) parseResult.Exception).Value);
+            Assert.AreEqual("92233720368547758071", ((UnparsableValueException) parseResult.Exception).Value);
+            Assert.AreEqual(0, ((UnparsableValueException) parseResult.Exception).Index);
         }
     }
 }

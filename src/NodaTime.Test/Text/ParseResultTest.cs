@@ -23,7 +23,8 @@ namespace NodaTime.Test.Text
         public void Value_Failure()
         {
             var exception = Assert.Throws<UnparsableValueException>(() => FailureResult.Value.GetHashCode());
-            Assert.AreEqual("^text", exception?.Value);
+            Assert.AreEqual("text", exception?.Value);
+            Assert.AreEqual(-1, exception?.Index);
         }
 
         [Test]
@@ -37,7 +38,8 @@ namespace NodaTime.Test.Text
         public void Exception_Failure()
         {
             Assert.IsInstanceOf<UnparsableValueException>(FailureResult.Exception);
-            Assert.AreEqual("^text", ((UnparsableValueException) FailureResult.Exception).Value);
+            Assert.AreEqual("text", ((UnparsableValueException) FailureResult.Exception).Value);
+            Assert.AreEqual(-1, ((UnparsableValueException) FailureResult.Exception).Index);
         }
 
         [Test]
@@ -51,7 +53,8 @@ namespace NodaTime.Test.Text
         public void GetValueOrThrow_Failure()
         {
             var exception = Assert.Throws<UnparsableValueException>(() => FailureResult.GetValueOrThrow());
-            Assert.AreEqual("^text", exception?.Value);
+            Assert.AreEqual("text", exception?.Value);
+            Assert.AreEqual(-1, exception?.Index);
         }
 
         [Test]
@@ -74,7 +77,8 @@ namespace NodaTime.Test.Text
         {
             ParseResult<string> converted = FailureResult.Convert(x => $"xx{x}xx");
             var exception = Assert.Throws<UnparsableValueException>(() => converted.GetValueOrThrow());
-            Assert.AreEqual("^text", exception?.Value);
+            Assert.AreEqual("text", exception?.Value);
+            Assert.AreEqual(-1, exception?.Index);
         }
 
         [Test]
@@ -90,7 +94,8 @@ namespace NodaTime.Test.Text
         {
             ParseResult<string> converted = FailureResult.ConvertError<string>();
             var exception = Assert.Throws<UnparsableValueException>(() => converted.GetValueOrThrow());
-            Assert.AreEqual("^text", exception?.Value);
+            Assert.AreEqual("text", exception?.Value);
+            Assert.AreEqual(-1, exception?.Index);
         }
 
         [Test]

@@ -29,10 +29,12 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="message">The failure message</param>
         /// <param name="value">The value which could not be parsed</param>
-        public UnparsableValueException(string message, string value)
+        /// <param name="index">The index within the value where parsing failed</param>
+        public UnparsableValueException(string message, string value, int index)
             : base(message)
         {
             Value = value;
+            Index = index;
         }
 
         /// <summary>
@@ -40,15 +42,22 @@ namespace NodaTime.Text
         /// </summary>
         /// <param name="message">The failure message</param>
         /// <param name="value">The value which could not be parsed</param>
+        /// <param name="index">The index within the value where parsing failed</param>
         /// <param name="innerException">The inner exception</param>
-        public UnparsableValueException(string message, string value, Exception innerException) : base(message, innerException)
+        public UnparsableValueException(string message, string value, int index, Exception innerException) : base(message, innerException)
         {
             Value = value;
+            Index = index;
         }
         
         /// <summary>
         /// The value which could not be parsed.
         /// </summary>
         public string Value { get; private set; }
+        
+        /// <summary>
+        /// The index within the value where parsing failed.
+        /// </summary>
+        public int Index { get; private set; }
     }
 }
