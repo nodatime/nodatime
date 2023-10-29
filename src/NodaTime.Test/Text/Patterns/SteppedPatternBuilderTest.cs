@@ -72,14 +72,14 @@ namespace NodaTime.Test.Text.Patterns
             var result = pattern.ParsePartial(value);
             Assert.IsFalse(result.Success);
             Assert.IsInstanceOf<UnparsableValueException>(result.Exception);
-            Assert.AreEqual("xyz",((UnparsableValueException) result.Exception).Value);
-            Assert.AreEqual(-1,((UnparsableValueException) result.Exception).Index);
+            Assert.AreEqual("xyz", ((UnparsableValueException) result.Exception).Value);
+            Assert.AreEqual(-1, ((UnparsableValueException) result.Exception).Index);
             Assert.AreEqual(TextErrorMessages.FormatOnlyPattern, result.Exception.Message);
             result = pattern.Parse("xyz");
             Assert.IsFalse(result.Success);
             Assert.IsInstanceOf<UnparsableValueException>(result.Exception);
-            Assert.AreEqual("xyz",((UnparsableValueException) result.Exception).Value);
-            Assert.AreEqual(-1 ,((UnparsableValueException) result.Exception).Index);
+            Assert.AreEqual("xyz", ((UnparsableValueException) result.Exception).Value);
+            Assert.AreEqual(-1, ((UnparsableValueException) result.Exception).Index);
             Assert.AreEqual(TextErrorMessages.FormatOnlyPattern, result.Exception.Message);
         }
 
