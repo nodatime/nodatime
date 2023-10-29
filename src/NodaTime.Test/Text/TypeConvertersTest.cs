@@ -37,7 +37,7 @@ namespace NodaTime.Test.Text
 
             Assert.Throws<NotSupportedException>(() => converter.ConvertFrom(null!));
             var unparsableValueException = Assert.Throws<UnparsableValueException>(() => converter.ConvertFrom(""));
-            Assert.AreEqual(string.Empty, unparsableValueException?.Value);
+            Assert.IsEmpty(unparsableValueException?.Value);
 
             if (type.IsValueType)
             {

@@ -190,9 +190,8 @@ namespace NodaTime.Text
         internal static ParseResult<T> PositiveSignInvalid(ValueCursor cursor) => ForInvalidValue(cursor, TextErrorMessages.PositiveSignInvalid);
 
         // Special case: it's a fault with the value, but we still don't want to continue with multiple patterns.
-        // Also, there's no point in including the text.
         internal static readonly ParseResult<T> ValueStringEmpty =
-            new ParseResult<T>(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, TextErrorMessages.ValueStringEmpty), string.Empty, -1), false);
+            new ParseResult<T>(() => new UnparsableValueException(string.Format(CultureInfo.CurrentCulture, TextErrorMessages.ValueStringEmpty), "", -1), false);
 
         internal static ParseResult<T> ExtraValueCharacters(ValueCursor cursor, string remainder) => ForInvalidValue(cursor, TextErrorMessages.ExtraValueCharacters, remainder);
 
