@@ -17,15 +17,18 @@ namespace NodaTime.Text
     public sealed class UnparsableValueException : FormatException
     {
         /// <summary>
-        /// Creates a new UnparsableValueException with no message.
+        /// Creates a new UnparsableValueException with no message, value or index.
+        /// <see cref="Value"/> will be an empty string, and <see cref="Index"/> will have a value of -1.
         /// </summary>
         public UnparsableValueException()
         {
-            Value = string.Empty;
+            Value = "";
+            Index = -1;
         }
 
         /// <summary>
-        /// Creates a new UnparsableValueException with the given message.
+        /// Creates a new UnparsableValueException with the given message, value and index
+        /// at which parsing failed.
         /// </summary>
         /// <param name="message">The failure message</param>
         /// <param name="value">The value which could not be parsed</param>
@@ -38,7 +41,7 @@ namespace NodaTime.Text
         }
 
         /// <summary>
-        /// Creates a new UnparsableValueException with the given message and inner exception
+        /// Creates a new UnparsableValueException with the given message, value, index and inner exception.
         /// </summary>
         /// <param name="message">The failure message</param>
         /// <param name="value">The value which could not be parsed</param>
@@ -57,6 +60,9 @@ namespace NodaTime.Text
         
         /// <summary>
         /// The index within the value where parsing failed.
+        /// This will be -1 if parsing failed before examining any text,
+        /// for example because parsing was requested on a format-only pattern, or
+        /// the value to be parsed was empty.
         /// </summary>
         public int Index { get; private set; }
     }
