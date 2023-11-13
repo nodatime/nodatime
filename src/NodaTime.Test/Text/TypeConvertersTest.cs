@@ -6,6 +6,9 @@ using NodaTime.Text;
 using NUnit.Framework;
 using System;
 using System.ComponentModel;
+using System.Globalization;
+using NodaTime.Extensions;
+using System.Text.RegularExpressions;
 
 namespace NodaTime.Test.Text
 {
@@ -84,6 +87,44 @@ namespace NodaTime.Test.Text
         [TestCase(23, 59, 59, 999, "23:59:59.999")]
         public void LocalTime_Roundtrip(int hour, int minute, int second, int millisecond, string text) =>
             AssertRoundtrip(text, new LocalTime(hour, minute, second, millisecond));
+
+        [Test]
+        [TestCase(14, 56, "14:56")]
+        [TestCase(13, 23, "13:23")]
+        public void LocalTime_CustomPattern(int hour, int minute, string text)
+        {
+            NodaTimeCustomPatternExtensions.AddNodaTimeCustomTypePattern<LocalTime>(LocalTimePattern.CreateWithInvariantCulture("HH:mm"));
+
+            var nodaValue = new LocalTime(hour, minute);
+            var converter = TypeDescriptor.GetConverter(typeof(LocalTime));
+            var valueFromConverter = (LocalTime)converter.ConvertFrom(text)!;
+            Assert.AreEqual(nodaValue, valueFromConverter);
+
+            var culture = CultureInfo.InvariantCulture;
+            var textFromConverter = converter.ConvertTo(nodaValue, typeof(string));
+            Assert.AreEqual(nodaValue.ToString("HH:mm:ss", culture), textFromConverter);
+        }
+
+        [Test]
+        [TestCase(2023, 10, 1, 14, 56,  "2023-10-01T14:56")]
+        [TestCase(2023, 11, 1, 13, 23,  "2023-11-01 13:23")]
+        public void LocalDateTime_CustomPattern(int year, int month, int day, int hour, int minute, string text)
+        {
+            var localDateTimePatternBuilder = new CompositePatternBuilder<LocalDateTime>();
+            localDateTimePatternBuilder.Add(LocalDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd HH:mm"), time => true);
+            localDateTimePatternBuilder.Add(LocalDateTimePattern.CreateWithInvariantCulture("yyyy-MM-ddTHH:mm"), time => true);
+            var localDateTimePattern = localDateTimePatternBuilder.Build();
+            NodaTimeCustomPatternExtensions.AddNodaTimeCustomTypePattern<LocalDateTime>(localDateTimePattern);
+
+            var nodaValue = new LocalDateTime(year, month, day, hour, minute);
+            var converter = TypeDescriptor.GetConverter(typeof(LocalDateTime));
+            var valueFromConverter = (LocalDateTime)converter.ConvertFrom(text)!;
+            Assert.AreEqual(nodaValue, valueFromConverter);
+
+            var culture = CultureInfo.InvariantCulture;
+            var textFromConverter = converter.ConvertTo(nodaValue, typeof(string));
+            Assert.AreEqual(nodaValue.ToString("yyyy-MM-ddTHH:mm:ss", culture), textFromConverter);
+        }
 
         [Test]
         [TestCase(-25200, "-07")]

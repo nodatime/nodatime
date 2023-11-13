@@ -7,6 +7,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using NodaTime.Extensions;
 
 namespace NodaTime.Text
 {
@@ -18,14 +19,44 @@ namespace NodaTime.Text
         /// <summary>
         /// The pattern used to parse and serialize values of <typeparamref name="T"/>.
         /// </summary>
-        private readonly IPattern<T> pattern;
+        private readonly IPattern<T> defaultPattern;
 
         /// <summary>
         /// Constructs a <see cref="TypeConverter"/> for <typeparamref name="T"/> based on the provided <see cref="IPattern{T}"/>.
         /// </summary>
-        /// <param name="pattern">The pattern used to parse and serialize <typeparamref name="T"/>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="pattern"/></exception>
-        protected TypeConverterBase(IPattern<T> pattern) => this.pattern = Preconditions.CheckNotNull(pattern, nameof(pattern));
+        /// <param name="defaultPattern">The pattern used to parse and serialize <typeparamref name="T"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="defaultPattern"/></exception>
+        protected TypeConverterBase(IPattern<T> defaultPattern) => this.defaultPattern = Preconditions.CheckNotNull(defaultPattern, nameof(defaultPattern));
+
+        /// <summary>
+        /// Auto-property to get the a deserialization pattern
+        /// </summary>
+        protected IPattern<T> Pattern
+        {
+            get
+            {
+                var patterns = NodaTimeCustomPatternExtensions.GetCustomPatterns<T>();
+                if (patterns is null)
+                {
+                    // no custom patterns - use default one
+                    return defaultPattern;
+                }
+                else
+                {
+                    // combine all custom patterns into a composite pattern
+                    var builder = new CompositePatternBuilder<T>();
+                    foreach (var p in patterns)
+                    {
+                        builder.Add(p, _ => true);
+                    }
+
+                    // add default pattern
+                    builder.Add(defaultPattern, _ => true);
+
+                    return builder.Build();
+                }
+            }
+        }
 
         /// <inheritdoc />
         [Pure]
@@ -35,13 +66,13 @@ namespace NodaTime.Text
         [Pure]
         public override object? ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
             // The ParseResult<>.Value property will throw appropriately if the operation was unsuccessful
-            value is string text ? pattern.Parse(text).Value! : base.ConvertFrom(context, culture, value);
+            value is string text ? Pattern.Parse(text).Value! : base.ConvertFrom(context, culture, value);
 
         /// <inheritdoc />
         [Pure]
         public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType) =>
             destinationType == typeof(string) && value is T nodaValue
-            ? pattern.Format(nodaValue)
+            ? Pattern.Format(nodaValue)
             : base.ConvertTo(context, culture, value, destinationType);
     }
 }
