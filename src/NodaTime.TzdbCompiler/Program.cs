@@ -107,23 +107,23 @@ namespace NodaTime.TzdbCompiler
                 // Expect that we've ordered the files so that this gives "most recent first",
                 // to handle consecutive CLDR versions that have the same TZDB version.
                 .OrderByDescending(file => file, StringComparer.Ordinal)
-                .Select(file => CldrWindowsZonesParser.Parse(file))
+                .Select(file => (file, zones: CldrWindowsZonesParser.Parse(file)))
                 // Note: this is stable, so files with the same TZDB version will stay in reverse filename order.
-                .OrderByDescending(zones => zones.TzdbVersion)
+                .OrderByDescending(pair => pair.zones.TzdbVersion)
                 .ToList();
 
-            var versions = string.Join(", ", allFiles.Select(z => z.TzdbVersion).ToArray());
+            var versions = string.Join(", ", allFiles.Select(pair => pair.zones.TzdbVersion).ToArray());
 
             var bestFile = allFiles
-                .Where(zones => StringComparer.Ordinal.Compare(zones.TzdbVersion, targetTzdbVersion) <= 0)
+                .Where(pair => StringComparer.Ordinal.Compare(pair.zones.TzdbVersion, targetTzdbVersion) <= 0)
                 .FirstOrDefault();
 
-            if (bestFile is null)
+            if (bestFile.zones is null)
             {
                 throw new Exception($"No zones files suitable for version {targetTzdbVersion}. Found versions targeting: [{versions}]");
             }
-            Console.WriteLine($"Picked Windows Zones with TZDB version {bestFile.TzdbVersion} out of [{versions}] as best match for {targetTzdbVersion}");
-            return bestFile;
+            Console.WriteLine($"Picked Windows Zones from '{Path.GetFileName(bestFile.file)}' with TZDB version {bestFile.zones.TzdbVersion} out of [{versions}] as best match for {targetTzdbVersion}");
+            return bestFile.zones;
         }
 
         private static void LogWindowsZonesSummary(WindowsZones windowsZones)
