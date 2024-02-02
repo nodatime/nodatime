@@ -60,10 +60,11 @@ namespace NodaTime.Test.Globalization
             Assert.AreNotEqual(nodaOriginal.LongDayNames[1], nodaClone.LongDayNames[1]);
         }
 
-        [Test]
-        public void TestConstructor()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void TestConstructor(bool initializeEagerly)
         {
-            var info = new NodaFormatInfo(enUs);
+            var info = new NodaFormatInfo(enUs, initializeEagerly);
             Assert.AreSame(enUs, info.CultureInfo);
             Assert.NotNull(info.DateTimeFormat);
             Assert.AreEqual(":", info.TimeSeparator);
@@ -77,14 +78,14 @@ namespace NodaTime.Test.Globalization
         [Test]
         public void TestConstructor_null()
         {
-            Assert.Throws<ArgumentNullException>(() => new NodaFormatInfo(null!));
+            Assert.Throws<ArgumentNullException>(() => new NodaFormatInfo(null!, true));
         }
 
         [Test]
         public void TestDateTimeFormat()
         {
             var format = DateTimeFormatInfo.InvariantInfo;
-            var info = new NodaFormatInfo(enUs);
+            var info = new NodaFormatInfo(enUs, true);
             Assert.AreNotEqual(format, info.DateTimeFormat);
         }
 
@@ -159,7 +160,7 @@ namespace NodaTime.Test.Globalization
         public void TestOffsetPatternLong()
         {
             const string pattern = "This is a test";
-            var info = new NodaFormatInfo(enUs);
+            var info = new NodaFormatInfo(enUs, false);
             Assert.AreNotEqual(pattern, info.OffsetPatternLong);
         }
 
@@ -167,7 +168,7 @@ namespace NodaTime.Test.Globalization
         public void TestOffsetPatternMedium()
         {
             const string pattern = "This is a test";
-            var info = new NodaFormatInfo(enUs);
+            var info = new NodaFormatInfo(enUs, false);
             Assert.AreNotEqual(pattern, info.OffsetPatternMedium);
         }
 
@@ -175,7 +176,7 @@ namespace NodaTime.Test.Globalization
         public void TestOffsetPatternShort()
         {
             const string pattern = "This is a test";
-            var info = new NodaFormatInfo(enUs);
+            var info = new NodaFormatInfo(enUs, false);
             Assert.AreNotEqual(pattern, info.OffsetPatternShort);
         }
 
