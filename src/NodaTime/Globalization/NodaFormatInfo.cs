@@ -61,12 +61,15 @@ namespace NodaTime.Globalization
         // Note: this must occur below the pattern parsers, to make type initialization work...
         public static readonly NodaFormatInfo InvariantInfo = new NodaFormatInfo(CultureInfo.InvariantCulture);
 
-        // Justification for max size: CultureInfo.GetCultures(CultureTypes.AllCultures) returns 378 cultures
-        // on Windows 8 in mid-2013. In late 2016 on Windows 10 it's 832, but it's unlikely that they'll all be
-        // used by any particular application.
-        // 500 should be ample for almost all cases, without being enormous.
+        // Justification for max size: CultureInfo.GetCultures(CultureTypes.AllCultures) returned:
+        // - 378 cultures on Windows 8 in mid-2013
+        // - 832 cultures on Windows 10 in late-2016
+        // - 869 or 888 on Windows 11 in early-2024 (net471 and net60/net80 respectively)
+        // It's unlikely that they'll all be used by any particular application,
+        // but the cost per entry is very small, so we might as well allow for all non-customized
+        // cultures (and if fewer cultures are used, there's no cost anyway).
         private static readonly Cache<CultureInfo, NodaFormatInfo> Cache = new Cache<CultureInfo, NodaFormatInfo>
-            (500, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
+            (1000, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
 
         private IReadOnlyList<string>? longMonthNames;
         private IReadOnlyList<string>? longMonthGenitiveNames;
