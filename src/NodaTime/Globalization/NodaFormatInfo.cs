@@ -38,7 +38,10 @@ namespace NodaTime.Globalization
         private static readonly string[] ShortInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.Clone();
         private static readonly string[] LongInvariantMonthNames = (string[]) CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Clone();
 
-        private readonly object fieldLock = new object();
+        // The lock guarding the various fields which are (optionally) lazily initialized.
+        // When this is null, all fields will have been initialized in the constructor, so
+        // no checking is required.
+        private readonly object? fieldLock = new object();
 
         #region Patterns
         private FixedFormatInfoPatternParser<Duration>? durationPatternParser;
@@ -59,7 +62,7 @@ namespace NodaTime.Globalization
         /// A NodaFormatInfo wrapping the invariant culture.
         /// </summary>
         // Note: this must occur below the pattern parsers, to make type initialization work...
-        public static readonly NodaFormatInfo InvariantInfo = new NodaFormatInfo(CultureInfo.InvariantCulture);
+        public static readonly NodaFormatInfo InvariantInfo = new NodaFormatInfo(CultureInfo.InvariantCulture, initializeEagerly: true);
 
         // Justification for max size: CultureInfo.GetCultures(CultureTypes.AllCultures) returned:
         // - 378 cultures on Windows 8 in mid-2013
@@ -69,7 +72,7 @@ namespace NodaTime.Globalization
         // but the cost per entry is very small, so we might as well allow for all non-customized
         // cultures (and if fewer cultures are used, there's no cost anyway).
         private static readonly Cache<CultureInfo, NodaFormatInfo> Cache = new Cache<CultureInfo, NodaFormatInfo>
-            (1000, culture => new NodaFormatInfo(culture), new ReferenceEqualityComparer<CultureInfo>());
+            (1000, culture => new NodaFormatInfo(culture, initializeEagerly: true), new ReferenceEqualityComparer<CultureInfo>());
 
         private IReadOnlyList<string>? longMonthNames;
         private IReadOnlyList<string>? longMonthGenitiveNames;
@@ -85,10 +88,12 @@ namespace NodaTime.Globalization
         /// on a <see cref="System.Globalization.CultureInfo"/>.
         /// </summary>
         /// <param name="cultureInfo">The culture info to use.</param>
+        /// <param name="initializeEagerly">Whether or not to fully initialize eagerly. If this is true,
+        /// more work is done on construction, but avoids locks during usage.</param>
         [VisibleForTesting]
-        internal NodaFormatInfo(CultureInfo cultureInfo)
+        internal NodaFormatInfo(CultureInfo cultureInfo, bool initializeEagerly)
             // If cultureInfo is null, this will throw before we get to the DateTimeFormatInfo being null.
-            : this(cultureInfo, cultureInfo?.DateTimeFormat!)
+            : this(cultureInfo, cultureInfo?.DateTimeFormat!, initializeEagerly)
         {
         }
 
@@ -99,18 +104,56 @@ namespace NodaTime.Globalization
         /// </summary>
         /// <param name="cultureInfo">The culture info to use for text comparisons and resource lookups.</param>
         /// <param name="dateTimeFormat">The date/time format to use for format strings etc.</param>
+        /// <param name="initializeEagerly">Whether or not to fully initialize eagerly. If this is true,
+        /// more work is done on construction, but avoids locks during usage.</param>
         [VisibleForTesting]
-        internal NodaFormatInfo(CultureInfo cultureInfo, DateTimeFormatInfo dateTimeFormat)
+        internal NodaFormatInfo(CultureInfo cultureInfo, DateTimeFormatInfo dateTimeFormat, bool initializeEagerly)
         {
             Preconditions.CheckNotNull(cultureInfo, nameof(cultureInfo));
             Preconditions.CheckNotNull(dateTimeFormat, nameof(dateTimeFormat));
             CultureInfo = cultureInfo;
             DateTimeFormat = dateTimeFormat;
             eraDescriptions = new ConcurrentDictionary<Era, EraDescription>();
+
+            if (initializeEagerly)
+            {
+                // fieldLock will have been assigned a reference, so the code below
+                // will take the lock and initialize each field. We could potentially
+                // avoid the initial object allocation and lock on "this" during the initialization,
+                // but the benefit is tiny in the context of initializing the various pattern parsers,
+                // and it avoids having to worry about any chance of deadlocks if we
+                // accidentally publish "this" too early. (That really shouldn't happen,
+                // but using a new object feels slightly safer.)
+
+                EnsureMonthsInitialized();
+                EnsureDaysInitialized();
+                Initialize(DurationPatternParser);
+                Initialize(OffsetPatternParser);
+                Initialize(InstantPatternParser);
+                Initialize(LocalTimePatternParser);
+                Initialize(LocalDatePatternParser);
+                Initialize(LocalDateTimePatternParser);
+                Initialize(OffsetDateTimePatternParser);
+                Initialize(OffsetDatePatternParser);
+                Initialize(OffsetTimePatternParser);
+                Initialize(ZonedDateTimePatternParser);
+                Initialize(AnnualDatePatternParser);
+                Initialize(YearMonthPatternParser);
+
+                // Reset fieldLock to null, to indicate that we don't need
+                // to take a lock again post-construction.
+                fieldLock = null;
+
+                void Initialize(object _) { }
+            }
         }
 
         private void EnsureMonthsInitialized()
         {
+            if (fieldLock is null)
+            {
+                return;
+            }
             lock (fieldLock)
             {
                 if (longMonthNames != null)
@@ -137,6 +180,10 @@ namespace NodaTime.Globalization
 
         private void EnsureDaysInitialized()
         {
+            if (fieldLock is null)
+            {
+                return;
+            }
             lock (fieldLock)
             {
                 if (longDayNames != null)
@@ -204,6 +251,7 @@ namespace NodaTime.Globalization
         /// </summary>
         public CompareInfo CompareInfo => CultureInfo.CompareInfo;
 
+        // Note: when adding a new property here, it *must* be initialized in the constructor in the "initializeEagerly" branch.
         internal FixedFormatInfoPatternParser<Duration> DurationPatternParser => EnsureFixedFormatInitialized(ref durationPatternParser, () => new DurationPatternParser());
         internal FixedFormatInfoPatternParser<Offset> OffsetPatternParser => EnsureFixedFormatInitialized(ref offsetPatternParser, () => new OffsetPatternParser());
         internal FixedFormatInfoPatternParser<Instant> InstantPatternParser => EnsureFixedFormatInitialized(ref instantPatternParser, () => new InstantPatternParser(InstantPattern.DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax));
@@ -220,6 +268,10 @@ namespace NodaTime.Globalization
         private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(ref FixedFormatInfoPatternParser<T>? field,
             Func<IPatternParser<T>> patternParserFactory)
         {
+            if (fieldLock is null)
+            {
+                return field!;
+            }
             lock (fieldLock)
             {
                 if (field != null)
@@ -398,9 +450,11 @@ namespace NodaTime.Globalization
                 return InvariantInfo;
             }
             // Never cache (or consult the cache) for non-read-only cultures.
+            // We don't initialize eagerly in this case, to preserve previous behavior -
+            // and as we expect such instances to be reused relatively rarely.
             if (!cultureInfo.IsReadOnly)
             {
-                return new NodaFormatInfo(cultureInfo);
+                return new NodaFormatInfo(cultureInfo, initializeEagerly: false);
             }
             return Cache.GetOrAdd(cultureInfo);
         }
@@ -421,7 +475,7 @@ namespace NodaTime.Globalization
             CultureInfo cultureInfo => GetFormatInfo(cultureInfo),
             // Note: no caching for this case. It's a corner case anyway... we could add a cache later
             // if users notice a problem.
-            DateTimeFormatInfo dateTimeFormatInfo => new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo),
+            DateTimeFormatInfo dateTimeFormatInfo => new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo, initializeEagerly: false),
             _ => throw new ArgumentException($"Cannot use provider of type {provider.GetType().FullName} in Noda Time", nameof(provider))
         };
 
