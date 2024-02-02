@@ -66,7 +66,7 @@ namespace NodaTime
     public readonly struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable, IFormattable
     {
         // This is one more bit than we really need, but it allows Instant.BeforeMinValue and Instant.AfterMaxValue
-        // to be easily 
+        // to be easily constructed with valid durations, even though the result is a deliberately-invalid instant.
         internal const int MaxDays = (1 << 24) - 1;
         internal const int MinDays = ~MaxDays;
         internal static readonly BigInteger MinNanoseconds = (BigInteger) MinDays * NanosecondsPerDay;
