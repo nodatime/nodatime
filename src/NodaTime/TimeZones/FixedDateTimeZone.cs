@@ -6,6 +6,7 @@ using NodaTime.Text;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 using System;
+using System.Globalization;
 
 namespace NodaTime.TimeZones
 {
@@ -63,7 +64,22 @@ namespace NodaTime.TimeZones
             {
                 return UtcId;
             }
-            return UtcId + OffsetPattern.GeneralInvariant.Format(offset);
+
+            // This code is equivalent to
+            // UtcId + OffsetPattern.GeneralInvariant.Format(offset)
+            // but avoids using any code in NodaTime.Text, which can cause
+            // issues during type initialization.
+            var absSeconds = Math.Abs(offset.Seconds);
+            var hours = absSeconds / 3600;
+            var minutes = (absSeconds % 3600) / 60;
+            var seconds = absSeconds % 60;
+
+            string absString = minutes == 0 && seconds == 0 ? hours.ToString("00", CultureInfo.InvariantCulture)
+                : seconds == 0 ? string.Format(CultureInfo.InvariantCulture, "{0:00}:{1:00}", hours, minutes)
+                : string.Format(CultureInfo.InvariantCulture, "{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
+
+            var prefixAndSign = offset.Seconds < 0 ? (UtcId + "-") : (UtcId + "+");
+            return prefixAndSign + absString;
         }
 
         /// <summary>
