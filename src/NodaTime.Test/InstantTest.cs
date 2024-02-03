@@ -155,6 +155,29 @@ namespace NodaTime.Test
             Assert.AreEqual(expectedSeconds, instant.ToUnixTimeSeconds());
         }
 
+        // The fact that all the expected nanosecond values are multiples of
+        // a million is slightly unfortunate, but the logic is so simple that
+        // it's not worth going to extreme lengths to test more fine-grained values.
+        [Test]
+        [TestCase(-1500, -2, 500_000_000)]
+        [TestCase(-1001, -2, 999_000_000)]
+        [TestCase(-1000, -1, 0)]
+        [TestCase(-999, -1, 1_000_000)]
+        [TestCase(-500, -1, 500_000_000)]
+        [TestCase(0, 0, 0)]
+        [TestCase(500, 0, 500_000_000)]
+        [TestCase(999, 0, 999_000_000)]
+        [TestCase(1000, 1, 0)]
+        [TestCase(1001, 1, 1_000_000)]
+        [TestCase(1500, 1, 500_000_000)]
+        public void ToUnixTimeSecondsAndNanoseconds(long milliseconds, int expectedSeconds, int expectedNanoseconds)
+        {
+            var instant = Instant.FromUnixTimeMilliseconds(milliseconds);
+            var (actualSeconds, actualNanoseconds) = instant.ToUnixTimeSecondsAndNanoseconds();
+            Assert.AreEqual(expectedSeconds, actualSeconds);
+            Assert.AreEqual(expectedNanoseconds, actualNanoseconds);
+        }
+
         [Test]
         [TestCase(-15000, -2)]
         [TestCase(-10001, -2)]
