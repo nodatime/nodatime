@@ -656,6 +656,31 @@ namespace NodaTime
             duration.FloorDays * (long) SecondsPerDay + duration.NanosecondOfFloorDay / NanosecondsPerSecond;
 
         /// <summary>
+        /// Gets the number of seconds since the Unix epoch, along with remaining nanoseconds.
+        /// Negative values for seconds represent instants before the Unix epoch.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// If the number of nanoseconds in this instant is not an exact number of seconds
+        /// the seconds part of the returned value is truncated towards the start of time, ensuring that
+        /// the nanoseconds part is always non-negative. The seconds part of the returned value is always
+        /// the same as would be returned by <see cref="ToUnixTimeSeconds"/>.
+        /// </para>
+        /// <para>
+        /// The inverse of this operation is to first call <see cref="FromUnixTimeSeconds(long)"/> and then
+        /// call <see cref="PlusNanoseconds(long)"/> on the returned <see cref="Instant"/>.
+        /// </para>
+        /// </remarks>
+        /// <value>The number of seconds and remaining nanoseconds since the Unix epoch.</value>
+        [Pure]
+        [TestExemption(TestExemptionCategory.ConversionName)]
+        public (long seconds, int nanoseconds) ToUnixTimeSecondsAndNanoseconds()
+        {
+            var secondOfDay = Math.DivRem(duration.NanosecondOfFloorDay, NanosecondsPerSecond, out var nanosecondOfSecond);
+            return (((long) SecondsPerDay * duration.FloorDays) + secondOfDay, unchecked((int) nanosecondOfSecond));
+        }
+
+        /// <summary>
         /// Gets the number of milliseconds since the Unix epoch. Negative values represent instants before the Unix epoch.
         /// </summary>
         /// <remarks>
