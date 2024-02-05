@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net471;net6.0</TargetFrameworks>
+    <TargetFrameworks>net471;net6.0;net8.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
