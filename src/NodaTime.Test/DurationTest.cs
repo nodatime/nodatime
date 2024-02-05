@@ -85,6 +85,34 @@ namespace NodaTime.Test
             Assert.AreEqual(bigIntegerNanos, nanoseconds.ToBigIntegerNanoseconds());
         }
 
+#if NET7_0_OR_GREATER
+        [Test]
+        [TestCase(long.MinValue)]
+        [TestCase(long.MinValue + 1)]
+        [TestCase(-NodaConstants.NanosecondsPerDay - 1)]
+        [TestCase(-NodaConstants.NanosecondsPerDay)]
+        [TestCase(-NodaConstants.NanosecondsPerDay + 1)]
+        [TestCase(-1)]
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(NodaConstants.NanosecondsPerDay - 1)]
+        [TestCase(NodaConstants.NanosecondsPerDay)]
+        [TestCase(NodaConstants.NanosecondsPerDay + 1)]
+        [TestCase(long.MaxValue - 1)]
+        [TestCase(long.MaxValue)]
+        public void Int128Conversions(long int64Nanos)
+        {
+            Int128 int128Nanos = int64Nanos;
+            var nanoseconds = Duration.FromNanoseconds(int128Nanos);
+            Assert.AreEqual(int128Nanos, nanoseconds.ToInt128Nanoseconds());
+
+            // And multiply it by 100, which proves we still work for values out of the range of Int64
+            int128Nanos *= 100;
+            nanoseconds = Duration.FromNanoseconds(int128Nanos);
+            Assert.AreEqual(int128Nanos, nanoseconds.ToInt128Nanoseconds());
+        }
+#endif
+
         [Test]
         public void ConstituentParts_Positive()
         {

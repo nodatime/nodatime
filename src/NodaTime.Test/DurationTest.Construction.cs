@@ -225,6 +225,20 @@ namespace NodaTime.Test
             Assert.AreEqual(-Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay + BigInteger.One));
         }
 
+#if NET7_0_OR_GREATER
+        [Test]
+        public void FromNanoseconds_Int128()
+        {
+            Assert.AreEqual(Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay - Int128.One));
+            Assert.AreEqual(Duration.OneDay, Duration.FromNanoseconds(NanosecondsPerDay + Int128.Zero));
+            Assert.AreEqual(Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(NanosecondsPerDay + Int128.One));
+
+            Assert.AreEqual(-Duration.OneDay - Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay - Int128.One));
+            Assert.AreEqual(-Duration.OneDay, Duration.FromNanoseconds(-NanosecondsPerDay + Int128.Zero));
+            Assert.AreEqual(-Duration.OneDay + Duration.Epsilon, Duration.FromNanoseconds(-NanosecondsPerDay + Int128.One));
+        }
+#endif
+
         [Test]
         public void FromNanoseconds_Double()
         {
@@ -262,9 +276,19 @@ namespace NodaTime.Test
             AssertOutOfRange(Duration.FromMilliseconds,  bigBadDoubles);
             AssertOutOfRange(Duration.FromTicks, bigBadDoubles);
             AssertOutOfRange(Duration.FromNanoseconds, bigBadDoubles);
-            
+            AssertOutOfRange(Duration.FromNanoseconds,
+                // You might have expected -1L here, but the layout of double means
+                // this really is the next value *lower* than MinNanoseconds.
+                NextDouble((double) Duration.MinNanoseconds, 1L),
+                NextDouble((double) Duration.MaxNanoseconds, 1L));
+
             // No such concept as BigInteger.Min/MaxValue, so use the values we know to be just outside valid bounds.
             AssertOutOfRange(Duration.FromNanoseconds, Duration.MinNanoseconds - 1, Duration.MaxNanoseconds + 1);
+
+#if NET7_0_OR_GREATER
+            AssertOutOfRange(Duration.FromNanoseconds, (Int128) Duration.MinNanoseconds - 1, (Int128) Duration.MaxNanoseconds + 1);
+            AssertOutOfRange(Duration.FromNanoseconds, Int128.MinValue, Int128.MaxValue);
+#endif
 
             void AssertLimitsInt32(Func<int, Duration> factoryMethod, int[] allCases) =>
                 AssertOutOfRange(factoryMethod, allCases.First() - 1, allCases.Last() + 1);
@@ -279,6 +303,10 @@ namespace NodaTime.Test
                     Assert.Throws<ArgumentOutOfRangeException>(() => factoryMethod(value));
                 }
             }
+
+            // Use the bitwise pattern of a double to ensure we get a different value.
+            double NextDouble(double start, long change) =>
+                BitConverter.Int64BitsToDouble(BitConverter.DoubleToInt64Bits(start) + change);
         }
     }
 }
