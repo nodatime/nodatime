@@ -76,7 +76,7 @@ namespace NodaTime.Test
             // think it should. There may be more complexity here, but for the moment, we'll just skip the cultures we
             // expect to fail. (We would definitely want to know if new cultures started failing.)
             string[] expectedFailures = { "ast-ES", "ca-AD", "ca-ES", "ca-ES-valencia", "ca-FR", "ca-IT", "es-PE", "es-UY", "gl-ES", "oc-FR" };
-            if (expectedFailures.Contains(culture.Name))
+            if (expectedFailures.Contains(culture.Name, StringComparer.InvariantCultureIgnoreCase))
             {
                 return;
             }
