@@ -32,6 +32,12 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly BigInteger BigInteger50Years = 50L * 365 * NodaConstants.NanosecondsPerDay;
         private static readonly BigInteger BigInteger3000Years = ((BigInteger) 365 * NodaConstants.NanosecondsPerDay) * 3000;
 
+#if NET7_0_OR_GREATER
+        private static readonly Int128 Int128_50 = 50;
+        private static readonly Int128 Int128_50Years = 50L * 365 * NodaConstants.NanosecondsPerDay;
+        private static readonly Int128 Int128_3000Years = ((Int128) 365 * NodaConstants.NanosecondsPerDay) * 3000;
+#endif
+
         [Benchmark]
         public Duration FromDays() =>
 #if !V1
@@ -107,7 +113,17 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         public Duration FromNanoseconds_LargeBigInteger() => Duration.FromNanoseconds(BigInteger3000Years);
 
         // No equivalent for Int64 as it won't fit...
+#endif
 
+#if NET7_0_OR_GREATER
+        [Benchmark]
+        public Duration FromNanoseconds_TinyInt128() => Duration.FromNanoseconds(Int128_50);
+
+        [Benchmark]
+        public Duration FromNanoseconds_MediumInt128() => Duration.FromNanoseconds(Int128_50Years);
+
+        [Benchmark]
+        public Duration FromNanoseconds_LargeInt128() => Duration.FromNanoseconds(Int128_3000Years);
 #endif
 
         [Benchmark]
@@ -166,6 +182,17 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public BigInteger ToBigIntegerNanoseconds_Large() => LargeDuration.ToBigIntegerNanoseconds();
+
+#if NET7_0_OR_GREATER
+        [Benchmark]
+        public BigInteger ToInt128Nanoseconds_Small() => SmallDuration.ToInt128Nanoseconds();
+
+        [Benchmark]
+        public BigInteger ToInt128Nanoseconds_Medium() => MediumDuration.ToInt128Nanoseconds();
+
+        [Benchmark]
+        public BigInteger ToInt128Nanoseconds_Large() => LargeDuration.ToInt128Nanoseconds();
+#endif
 
         [Benchmark]
         public double TotalNanoseconds_Small() => SmallDuration.TotalNanoseconds;
