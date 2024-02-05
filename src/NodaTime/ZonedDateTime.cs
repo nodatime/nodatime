@@ -844,7 +844,7 @@ namespace NodaTime
                 ParseResult<ZonedDateTime>.InvalidOffset(text).GetValueOrThrow();
             }
             // Use the constructor which doesn't validate the offset, as we've already done that.
-            Unsafe.AsRef(this) = new ZonedDateTime(offsetDateTime, newZone);
+            Unsafe.AsRef(in this) = new ZonedDateTime(offsetDateTime, newZone);
         }
 
         /// <inheritdoc />

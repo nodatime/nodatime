@@ -255,7 +255,7 @@ namespace NodaTime
             var pattern = InstantPattern.ExtendedIso;
             Instant newStart = reader.MoveToAttribute("start") ? pattern.Parse(reader.Value).Value : Instant.BeforeMinValue;
             Instant newEnd = reader.MoveToAttribute("end") ? pattern.Parse(reader.Value).Value : Instant.AfterMaxValue;
-            Unsafe.AsRef(this) = new Interval(newStart, newEnd);
+            Unsafe.AsRef(in this) = new Interval(newStart, newEnd);
             // Consume the rest of this element, as per IXmlSerializable.ReadXml contract.
             reader.Skip();
         }

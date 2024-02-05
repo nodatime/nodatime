@@ -309,7 +309,7 @@ namespace NodaTime
         {
             Preconditions.CheckNotNull(reader, nameof(reader));
             string text = reader.ReadElementContentAsString();
-            Unsafe.AsRef(this) = OffsetTimePattern.ExtendedIso.Parse(text).Value;
+            Unsafe.AsRef(in this) = OffsetTimePattern.ExtendedIso.Parse(text).Value;
         }
 
         /// <inheritdoc />
