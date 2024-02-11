@@ -20,7 +20,33 @@ namespace NodaTime.Text
         /// Creates a new UnparsableValueException with no message, value or index.
         /// <see cref="Value"/> will be an empty string, and <see cref="Index"/> will have a value of -1.
         /// </summary>
+        [Obsolete("Use constructors accepting a value")]
         public UnparsableValueException()
+        {
+            Value = "";
+            Index = -1;
+        }
+
+        /// <summary>
+        /// Creates a new UnparsableValueException with the given message, but no value or index.
+        /// <see cref="Value"/> will be an empty string, and <see cref="Index"/> will have a value of -1.
+        /// </summary>
+        /// <param name="message">The failure message</param>
+        [Obsolete("Use constructors accepting a value")]
+        public UnparsableValueException(string message) : base(message)
+        {
+            Value = "";
+            Index = -1;
+        }
+
+        /// <summary>
+        /// Creates a new UnparsableValueException with the given message and base exception, but no value or index.
+        /// <see cref="Value"/> will be an empty string, and <see cref="Index"/> will have a value of -1.
+        /// </summary>
+        /// <param name="message">The failure message</param>
+        /// <param name="innerException">The inner exception</param>
+        [Obsolete("Use constructors accepting a value")]
+        public UnparsableValueException(string message, Exception innerException) : base(message, innerException)
         {
             Value = "";
             Index = -1;
