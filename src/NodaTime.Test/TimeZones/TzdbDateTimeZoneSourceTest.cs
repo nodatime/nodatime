@@ -272,10 +272,7 @@ namespace NodaTime.Test.TimeZones
             }
             // TODO: Put this back to 75.0 at some point; Asia/Tehran is *just* under 75 at the moment.
             Assert.That(correct * 100.0 / total, Is.GreaterThanOrEqualTo(74.0),
-                "Last incorrect date for {0} vs {1}: {2} (BCL: {3}; TZDB: {4})",
-                bclZone.Id,
-                id,
-                lastIncorrectDate, lastIncorrectBclOffset, lastIncorrectTzdbOffset);
+                $"Last incorrect date for {bclZone.Id} vs {id}: {lastIncorrectBclOffset} (BCL: {lastIncorrectBclOffset}; TZDB: {lastIncorrectTzdbOffset})");
         }
 
         [Test]
