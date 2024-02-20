@@ -6,7 +6,7 @@ Noda Time is an alternative date and time API for .NET. It helps you to
 think about your data more clearly, and express operations on that data more
 precisely.
 
-* [Project web site](http://nodatime.org) - for documentation, installation, downloads etc
+* [Project web site](https://nodatime.org) - for documentation, installation, downloads etc
 * [Group/mailing list](https://groups.google.com/group/noda-time) - for discussion of potential features 
 * [Project source and issue site](https://github.com/nodatime/nodatime)
 * [Stack Overflow tag](http://stackoverflow.com/questions/tagged/nodatime) - for specific "How do I do X?" questions
