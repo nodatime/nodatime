@@ -6,7 +6,12 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>True</IsPackable>
     <PackageTags>nodatime;testing</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />

@@ -8,7 +8,12 @@
     <NoWarn>CA1303</NoWarn>
     <IsPackable>True</IsPackable>
     <PackageTags>date;time;timezone;calendar;nodatime</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="TimeZones\Tzdb.nzd" />
