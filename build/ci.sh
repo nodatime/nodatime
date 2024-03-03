@@ -13,3 +13,7 @@ dotnet test -c Release -f net6.0 src/NodaTime.Test
 
 dotnet build -c Release src/NodaTime.TzdbCompiler
 dotnet test -c Release -f net8.0 src/NodaTime.TzdbCompiler.Test
+
+# Publish the AOT compatibility app as an additional step to
+# find any AOT-problematic code.
+dotnet publish src/NodaTime.AotCompatibilityTestApp
