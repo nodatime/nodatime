@@ -9,6 +9,7 @@
     <IsPackable>True</IsPackable>
     <PackageTags>date;time;timezone;calendar;nodatime</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
   </PropertyGroup>
   
   <ItemGroup>
