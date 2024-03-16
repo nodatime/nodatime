@@ -86,6 +86,18 @@ namespace NodaTime.Text
                     'F' => ZonedDateTimePattern.Patterns.ExtendedFormatOnlyPatternImpl
                             .WithZoneProvider(zoneProvider)
                             .WithResolver(resolver),
+                    'e' => (zoneProvider == null) ? 
+                        ZonedDateTimePattern.Patterns.Rfc3339TimeZoneSuffixGeneralPatternImpl
+                            .WithResolver(resolver)
+                        : ZonedDateTimePattern.Patterns.Rfc3339TimeZoneSuffixGeneralPatternImpl
+                            .WithZoneProvider(zoneProvider)
+                            .WithResolver(resolver),
+                    'E' => (zoneProvider == null) ?
+                        ZonedDateTimePattern.Patterns.Rfc3339TimeZoneSuffixExtendedPatternImpl
+                            .WithResolver(resolver)
+                        : ZonedDateTimePattern.Patterns.Rfc3339TimeZoneSuffixExtendedPatternImpl
+                            .WithZoneProvider(zoneProvider)
+                            .WithResolver(resolver),
                     _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(ZonedDateTime))
                 };
             }

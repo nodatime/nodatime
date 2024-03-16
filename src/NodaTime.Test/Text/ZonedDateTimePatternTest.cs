@@ -146,9 +146,13 @@ namespace NodaTime.Test.Text
             // Standard patterns without a DateTimeZoneProvider
             new Data(MsdnStandardExampleNoMillis) { StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso, Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr, ZoneProvider = null},
             new Data(MsdnStandardExample) { StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso, Pattern = "F", Text = "2009-06-15T13:45:30.09 UTC (+00)", Culture = Cultures.FrFr, ZoneProvider = null },
+            new Data(MsdnStandardExampleNoMillis) { StandardPattern = ZonedDateTimePattern.GeneralRfc3339TimeZoneSuffix, Pattern = "e", Text = "2009-06-15T13:45:30+00[UTC]", Culture = Cultures.FrFr, ZoneProvider = null},
+            new Data(MsdnStandardExample) { StandardPattern = ZonedDateTimePattern.ExtendedRfc3339TimeZoneSuffix, Pattern = "E", Text = "2009-06-15T13:45:30.09+00[UTC]", Culture = Cultures.FrFr, ZoneProvider = null },
             // Standard patterns without a resolver
             new Data(MsdnStandardExampleNoMillis) { StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso, Pattern = "G", Text = "2009-06-15T13:45:30 UTC (+00)", Culture = Cultures.FrFr, Resolver = null},
             new Data(MsdnStandardExample) { StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso, Pattern = "F", Text = "2009-06-15T13:45:30.09 UTC (+00)", Culture = Cultures.FrFr, Resolver = null },
+            new Data(MsdnStandardExampleNoMillis) { StandardPattern = ZonedDateTimePattern.GeneralRfc3339TimeZoneSuffix, Pattern = "e", Text = "2009-06-15T13:45:30+00[UTC]", Culture = Cultures.FrFr, Resolver = null},
+            new Data(MsdnStandardExample) { StandardPattern = ZonedDateTimePattern.ExtendedRfc3339TimeZoneSuffix, Pattern = "E", Text = "2009-06-15T13:45:30.09+00[UTC]", Culture = Cultures.FrFr, Resolver = null },
         };
 
         internal static Data[] FormatAndParseData = {
@@ -209,6 +213,12 @@ namespace NodaTime.Test.Text
             // Standard patterns with a time zone provider
             new Data(2013, 01, 13, 15, 44, 30, 0, TestZone1) { StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso.WithZoneProvider(TestProvider) , Pattern = "G", Text = "2013-01-13T15:44:30 ab (+02)", Culture = Cultures.FrFr },
             new Data(2013, 01, 13, 15, 44, 30, 90, TestZone1) { StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso.WithZoneProvider(TestProvider), Pattern = "F", Text = "2013-01-13T15:44:30.09 ab (+02)", Culture = Cultures.FrFr },
+            new Data(2013, 01, 13, 15, 44, 30, 0, TestZone1) { StandardPattern = ZonedDateTimePattern.GeneralRfc3339TimeZoneSuffix.WithZoneProvider(TestProvider) , Pattern = "e", Text = "2013-01-13T15:44:30+02[ab]", Culture = Cultures.FrFr },
+            new Data(2013, 01, 13, 15, 44, 30, 90, TestZone1) { StandardPattern = ZonedDateTimePattern.ExtendedRfc3339TimeZoneSuffix.WithZoneProvider(TestProvider), Pattern = "E", Text = "2013-01-13T15:44:30.09+02[ab]", Culture = Cultures.FrFr },
+
+            // RFC 3339 standard patterns with default time zone provider
+            new Data(2013, 09, 13, 15, 44, 30, 0, Athens, true) { StandardPattern = ZonedDateTimePattern.GeneralRfc3339TimeZoneSuffix , Pattern = "e", Text = "2013-09-13T15:44:30+03[Europe/Athens]", Culture = Cultures.EnUs },
+            new Data(2013, 09, 13, 15, 44, 30, 90, Athens, true) { StandardPattern = ZonedDateTimePattern.ExtendedRfc3339TimeZoneSuffix, Pattern = "E", Text = "2013-09-13T15:44:30.09+03[Europe/Athens]", Culture = Cultures.EnUs },
 
             // Custom embedded patterns (or mixture of custom and standard)
             new Data(2015, 10, 24, 11, 55, 30, 0, Athens) { Pattern = "ld<uuuu*MM*dd>'X'lt<HH_mm_ss> z o<g>", Text = "2015*10*24X11_55_30 Europe/Athens +03", ZoneProvider = DateTimeZoneProviders.Tzdb },
@@ -357,11 +367,11 @@ namespace NodaTime.Test.Text
             /// Initializes a new instance of the <see cref="Data" /> class.
             /// </summary>
             /// <param name="value">The value.</param>
-            public Data(ZonedDateTime value)
+            public Data(ZonedDateTime value, bool usePatternDefaultZoneProvider = false)
                 : base(value)
             {
                 Resolver = Resolvers.StrictResolver;
-                ZoneProvider = TestProvider;
+                ZoneProvider = usePatternDefaultZoneProvider ? null : TestProvider;
             }
 
             public Data(int year, int month, int day)
@@ -388,6 +398,11 @@ namespace NodaTime.Test.Text
 
             public Data(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone)
                 : this(new LocalDateTime(year, month, day, hour, minute, second, millis).InZoneStrictly(zone))
+            {
+            }
+
+            public Data(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone, bool usePatternDefaultZoneProvider)
+                : this(new LocalDateTime(year, month, day, hour, minute, second, millis).InZoneStrictly(zone), usePatternDefaultZoneProvider)
             {
             }
 
