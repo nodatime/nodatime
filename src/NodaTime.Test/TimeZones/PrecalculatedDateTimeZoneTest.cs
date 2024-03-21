@@ -172,7 +172,7 @@ namespace NodaTime.Test.TimeZones
             // the tail zone which occurs before the precalculated-to-tail transition,
             // and can therefore be ignored, resulting in an overall gap.
             var tailZone = new FixedDateTimeZone(Offset.FromHours(5));
-            var gapZone = new PrecalculatedDateTimeZone("Test", 
+            var gapZone = new PrecalculatedDateTimeZone("Test",
                 new[] { FirstInterval, SecondInterval, ThirdInterval }, tailZone);
             var mapping = gapZone.MapLocal(ThirdInterval.IsoLocalEnd);
             Assert.AreEqual(ThirdInterval, mapping.EarlyInterval);
@@ -253,8 +253,8 @@ namespace NodaTime.Test.TimeZones
             ZoneInterval[] intervals =
             {
                 new ZoneInterval("foo", Instant.BeforeMinValue, Instant.FromUnixTimeTicks(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", Instant.FromUnixTimeTicks(20), Instant.FromUnixTimeTicks(30), Offset.Zero, Offset.Zero),                                       
-                new ZoneInterval("foo", Instant.FromUnixTimeTicks(30), Instant.FromUnixTimeTicks(100), Offset.Zero, Offset.Zero),                                       
+                new ZoneInterval("foo", Instant.FromUnixTimeTicks(20), Instant.FromUnixTimeTicks(30), Offset.Zero, Offset.Zero),
+                new ZoneInterval("foo", Instant.FromUnixTimeTicks(30), Instant.FromUnixTimeTicks(100), Offset.Zero, Offset.Zero),
                 new ZoneInterval("foo", Instant.FromUnixTimeTicks(100), Instant.FromUnixTimeTicks(200), Offset.Zero, Offset.Zero)
             };
             PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc);
@@ -266,7 +266,7 @@ namespace NodaTime.Test.TimeZones
             ZoneInterval[] intervals =
             {
                 new ZoneInterval("foo", Instant.BeforeMinValue, Instant.FromUnixTimeTicks(20), Offset.Zero, Offset.Zero),
-                new ZoneInterval("foo", Instant.FromUnixTimeTicks(20), Instant.FromUnixTimeTicks(30), Offset.Zero, Offset.Zero)                                      
+                new ZoneInterval("foo", Instant.FromUnixTimeTicks(20), Instant.FromUnixTimeTicks(30), Offset.Zero, Offset.Zero)
             };
             Assert.Throws<ArgumentException>(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, null));
         }

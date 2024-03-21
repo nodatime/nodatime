@@ -189,7 +189,7 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        /// IComparable.CompareTo throws an ArgumentException for non-null arguments 
+        /// IComparable.CompareTo throws an ArgumentException for non-null arguments
         /// that are not a LocalTime.
         /// </summary>
         [Test]

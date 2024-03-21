@@ -34,7 +34,7 @@ namespace NodaTime.TimeZones
         /// zone information within the same few years are likely to hit the cache. Note that
         /// a single "period" may include a daylight saving change (or conceivably more than one);
         /// a node therefore has to contain enough intervals to completely represent that period.
-        /// 
+        ///
         /// If another call is made which maps to the same cache entry number but is for a different
         /// period, the existing hash entry is simply overridden.
         /// </remarks>

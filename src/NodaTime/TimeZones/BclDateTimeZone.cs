@@ -268,7 +268,7 @@ namespace NodaTime.TimeZones
                     ruleStandardOffset -= rule.DaylightDelta;
                 }
 #endif
-                return ConvertUnixRuleToBclAdjustmentRule(rule, zone.StandardName, zone.DaylightName, zone.BaseUtcOffset, ruleStandardOffset, forceDaylight);                
+                return ConvertUnixRuleToBclAdjustmentRule(rule, zone.StandardName, zone.DaylightName, zone.BaseUtcOffset, ruleStandardOffset, forceDaylight);
             }
 
             [VisibleForTesting]

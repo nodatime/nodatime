@@ -53,7 +53,7 @@ namespace NodaTime.Test.Calendars
             }
             Assert.AreEqual(calculator.GetStartOfYearInDays(1), calculator.DaysAtStartOfYear1);
         }
-        
+
         [Test]
         [TestCaseSource(nameof(AllCalculators))]
         public void GetYearConsistentWithGetYearDays(object calculatorWrapper)

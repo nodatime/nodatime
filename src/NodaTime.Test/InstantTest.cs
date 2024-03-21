@@ -341,7 +341,7 @@ namespace NodaTime.Test
         {
             TestHelper.AssertXmlInvalid<Instant>(xml, expectedExceptionType);
         }
-        
+
         [Test]
         [TestCase(-101L, -2L)]
         [TestCase(-100L, -1L)]

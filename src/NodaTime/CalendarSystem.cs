@@ -189,7 +189,7 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a Hebrew calendar, as described at https://en.wikipedia.org/wiki/Hebrew_calendar. This is a
-        /// purely mathematical calculator, applied proleptically to the period where the real calendar was observational. 
+        /// purely mathematical calculator, applied proleptically to the period where the real calendar was observational.
         /// </summary>
         /// <remarks>
         /// <para>Please note that support for the Hebrew calendar is somewhat experimental,
@@ -210,7 +210,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the Badíʿ (meaning "wondrous" or "unique") calendar, as described at https://en.wikipedia.org/wiki/Badi_calendar. 
+        /// Returns the Badíʿ (meaning "wondrous" or "unique") calendar, as described at https://en.wikipedia.org/wiki/Badi_calendar.
         /// This is a purely solar calendar with years starting at the vernal equinox.
         /// </summary>
         /// <remarks>
@@ -218,9 +218,9 @@ namespace NodaTime
         /// 1800's A.D. The first year in the calendar coincides with 1844 A.D. Years are labeled "B.E." for Bahá'í Era.</para>
         /// <para>A year consists of 19 months, each with 19 days. Each day starts at sunset. Years are grouped into sets
         /// of 19 "Unities" (Váḥid) and 19 Unities make up 1 "All Things" (Kull-i-Shay’).</para>
-        /// <para>A period of days (usually 4 or 5, called Ayyám-i-Há) occurs between the 18th and 19th months. The length of this 
-        /// period of intercalary days is solely determined by the date of the following vernal equinox. The vernal equinox is 
-        /// a momentary point in time, so the "date" of the equinox is determined by the date (beginning 
+        /// <para>A period of days (usually 4 or 5, called Ayyám-i-Há) occurs between the 18th and 19th months. The length of this
+        /// period of intercalary days is solely determined by the date of the following vernal equinox. The vernal equinox is
+        /// a momentary point in time, so the "date" of the equinox is determined by the date (beginning
         /// at sunset) in effect in Tehran, Iran at the moment of the equinox.</para>
         /// <para>In this Noda Time implementation, days start at midnight and lookup tables are used to determine vernal equinox dates.
         /// Ayyám-i-Há is internally modelled as extra days added to the 18th month. As a result, a few functions will

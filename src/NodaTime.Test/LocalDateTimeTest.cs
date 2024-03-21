@@ -102,7 +102,7 @@ namespace NodaTime.Test
             Assert.AreEqual(25, ldt.Second);
             Assert.AreEqual(123, ldt.Millisecond);
             Assert.AreEqual(1234567, ldt.TickOfSecond);
-            Assert.AreEqual(15 * NodaConstants.TicksPerHour + 
+            Assert.AreEqual(15 * NodaConstants.TicksPerHour +
                             48 * NodaConstants.TicksPerMinute +
                             25 * NodaConstants.TicksPerSecond +
                             1234567, ldt.TickOfDay);
@@ -228,7 +228,7 @@ namespace NodaTime.Test
             LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
             LocalDateTime value2 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
             LocalDateTime value3 = new LocalDateTime(2011, 1, 2, 10, 45, 0);
-            TestHelper.TestOperatorComparisonEquality(value1, value2, value3);            
+            TestHelper.TestOperatorComparisonEquality(value1, value2, value3);
         }
 
         [Test]
@@ -300,7 +300,7 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        /// IComparable.CompareTo throws an ArgumentException for non-null arguments 
+        /// IComparable.CompareTo throws an ArgumentException for non-null arguments
         /// that are not a LocalDateTime.
         /// </summary>
         [Test]

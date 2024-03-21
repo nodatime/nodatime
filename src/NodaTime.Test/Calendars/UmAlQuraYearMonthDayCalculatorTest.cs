@@ -99,7 +99,7 @@ namespace NodaTime.Test.Calendars
         public void GenerateData()
         {
             var bclCalendar = new UmAlQuraCalendar();
-            DateTime minDateTime = bclCalendar.MinSupportedDateTime;            
+            DateTime minDateTime = bclCalendar.MinSupportedDateTime;
 
             // Work out the min and max supported years, ensuring that we support complete years.
             var minYear = bclCalendar.GetYear(minDateTime);

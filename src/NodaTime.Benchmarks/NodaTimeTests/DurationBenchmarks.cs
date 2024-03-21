@@ -131,7 +131,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public Duration Minus_Simple() => SampleDuration1 - SampleDuration2;
-        
+
         // This is more complex because subtracting the nanos gives us a negative nanos value
         // which we need to correct.
         [Benchmark]

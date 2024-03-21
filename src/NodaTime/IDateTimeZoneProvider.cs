@@ -13,7 +13,7 @@ namespace NodaTime
     /// Provides stable, performant time zone data.
     /// </summary>
     /// <remarks>
-    /// <para>Consumers should be able to treat an <see cref="IDateTimeZoneProvider"/> like a cache: 
+    /// <para>Consumers should be able to treat an <see cref="IDateTimeZoneProvider"/> like a cache:
     /// lookups should be quick (after at most one lookup of a given ID), and multiple calls for a given ID must
     /// always return references to equal instances, even if they are not references to a single instance.
     /// Consumers should not feel the need to cache data accessed through this interface.</para>

@@ -231,7 +231,7 @@ namespace NodaTime.TimeZones
         ///   Determines whether this period contains the given Instant in its range.
         /// </summary>
         /// <remarks>
-        /// Usually this is half-open, i.e. the end is exclusive, but an interval with an end point of "the end of time" 
+        /// Usually this is half-open, i.e. the end is exclusive, but an interval with an end point of "the end of time"
         /// is deemed to be inclusive at the end.
         /// </remarks>
         /// <param name="instant">The instant to test.</param>

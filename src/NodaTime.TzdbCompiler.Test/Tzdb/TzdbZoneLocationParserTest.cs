@@ -17,7 +17,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
             { "CA", "Canada" },
             { "GB", "Britain (UK)" }
         };
-        
+
         [Test]
         [TestCase("0\t1", Description = "Too few values")]
         [TestCase("0\t1\t2\t3\t4", Description = "Too many values")]

@@ -156,7 +156,7 @@ namespace NodaTime
         [Pure]
         public YearMonth PlusMonths(int months) =>
             OnDayOfMonth(1).PlusMonths(months).ToYearMonth();
-   
+
         /// <summary>
         /// Returns a <see cref="LocalDate"/> with the year/month of this value, and the given day of month.
         /// </summary>

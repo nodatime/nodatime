@@ -13,7 +13,7 @@ namespace NodaTime.Utility
     internal static class TickArithmetic
     {
         /// <summary>
-        /// Cautiously converts a number of ticks (which can have any value) into a number of 
+        /// Cautiously converts a number of ticks (which can have any value) into a number of
         /// days and a tick within that day.
         /// </summary>
         /// <remarks>
@@ -53,7 +53,7 @@ namespace NodaTime.Utility
         /// trusting that the input is non-negative, which can be proved in certain cases.
         /// </summary>
         /// <remarks>
-        /// Used by <see cref="LocalDateTime.FromDateTime(System.DateTime)"/> and 
+        /// Used by <see cref="LocalDateTime.FromDateTime(System.DateTime)"/> and
         /// <see cref="LocalDateTime.FromDateTime(System.DateTime, CalendarSystem)"/>.
         /// </remarks>
         internal static int NonNegativeTicksToDaysAndTickOfDay([Trusted] long ticks, out long tickOfDay)

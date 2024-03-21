@@ -92,7 +92,7 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
-        
+
         [Test]
         public void CreateWithCurrentCulture()
         {
@@ -137,7 +137,7 @@ namespace NodaTime.Test.Text
 
         [Test]
         public void ParseNull() => AssertParseNull(AnnualDatePattern.Iso);
-        
+
         public sealed class Data : PatternTestData<AnnualDate>
         {
             // Default to January 1st
@@ -153,7 +153,7 @@ namespace NodaTime.Test.Text
 
             public Data(int month, int day) : this(new AnnualDate(month, day))
             {
-            }            
+            }
 
             public Data() : this(AnnualDatePattern.DefaultTemplateValue)
             {

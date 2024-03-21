@@ -38,13 +38,13 @@ namespace NodaTime.Calendars
         /// <summary>
         /// Creates a week year rule where the boundary between one week-year and the next
         /// is parameterized in terms of how many days of the first week of the week
-        /// year have to be in the new calendar year. In rules created by this method, 
+        /// year have to be in the new calendar year. In rules created by this method,
         /// weeks are always deemed to begin on an Monday.
         /// </summary>
         /// <remarks>
         /// <paramref name="minDaysInFirstWeek"/> determines when the first week of the week-year starts.
         /// For any given calendar year X, consider the Monday-to-Sunday week that includes the first day of the
-        /// calendar year. Usually, some days of that week are in calendar year X, and some are in calendar year 
+        /// calendar year. Usually, some days of that week are in calendar year X, and some are in calendar year
         /// X-1. If <paramref name="minDaysInFirstWeek"/> or more of the days are in year X, then the week is
         /// deemed to be the first week of week-year X. Otherwise, the week is deemed to be the last week of
         /// week-year X-1, and the first week of week-year X starts on the following Monday.
@@ -67,7 +67,7 @@ namespace NodaTime.Calendars
         /// <remarks>
         /// <paramref name="minDaysInFirstWeek"/> determines when the first week of the week-year starts.
         /// For any given calendar year X, consider the week that includes the first day of the
-        /// calendar year. Usually, some days of that week are in calendar year X, and some are in calendar year 
+        /// calendar year. Usually, some days of that week are in calendar year X, and some are in calendar year
         /// X-1. If <paramref name="minDaysInFirstWeek"/> or more of the days are in year X, then the week is
         /// deemed to be the first week of week-year X. Otherwise, the week is deemed to be the last week of
         /// week-year X-1, and the first week of week-year X starts on the following <paramref name="firstDayOfWeek"/>.

@@ -8,7 +8,7 @@ using System.Globalization;
 namespace NodaTime
 {
     /// <summary>
-    /// A compact representation of a year, month and day and calendar ordinal (integer ID) in a single 32-bit integer. 
+    /// A compact representation of a year, month and day and calendar ordinal (integer ID) in a single 32-bit integer.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -16,12 +16,12 @@ namespace NodaTime
     /// The day is represented in bits 6-11.
     /// The month is represented in bits 12-16.
     /// The year is represented in bits 17-31. (It's convenient to put this at the top as it can be negative.)
-    /// 
+    ///
     /// This type does not implement IComparable[YearMonthDayCalendar] as it turns out it doesn't need to:
     /// comparisons are always done through the calendar system, which uses YearMonthDay instead. We could potentially
     /// optimize by bypassing the calendar and embedding knowledge of calendars which have "odd" month numberings
     /// in here, but it would be a bit of a design smell.
-    /// 
+    ///
     /// Equality is easily tested, however, as it can check for calendar equality.
     /// </para>
     /// <para>

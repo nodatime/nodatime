@@ -8,7 +8,7 @@ using System.Text;
 namespace NodaTime.Text
 {
     /// <summary>
-    /// Generic interface supporting parsing and formatting. Parsing always results in a 
+    /// Generic interface supporting parsing and formatting. Parsing always results in a
     /// <see cref="ParseResult{T}"/> which can represent success or failure.
     /// </summary>
     /// <remarks>

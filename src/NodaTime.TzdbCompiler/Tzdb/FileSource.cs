@@ -22,7 +22,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal string Origin { get; }
 
         /// <summary>
-        /// The names of 
+        /// The names of the files.
         /// </summary>
         internal IList<string> Names { get; }
 

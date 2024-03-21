@@ -121,7 +121,7 @@ namespace NodaTime.TimeZones.IO
              * Check whether it's an exact multiple of half-hours or minutes, and encode
              * appropriately. In every case, if it's an exact multiple, we know that we'll be able to fit
              * the value into the number of bits available.
-             * 
+             *
              * first byte      units       max data value (+1)   field length
              * --------------------------------------------------------------
              * 0xxxxxxx        30 minutes  96                    1 byte  (7 data bits)

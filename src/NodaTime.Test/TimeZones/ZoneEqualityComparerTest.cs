@@ -46,7 +46,7 @@ namespace NodaTime.Test.TimeZones
             AssertNotEqual(zone1, zone2, Instants[1] - Duration.Epsilon, Instants[5], ZoneEqualityComparer.Options.OnlyMatchWallOffset);
             // Or if we force the start and end transitions to be exact...
             AssertNotEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparer.Options.MatchStartAndEndTransitions);
-            
+
             // The first two transitions have the same split between standard and saving...
             AssertEqual(zone1, zone2, Instants[1], Instants[4], ZoneEqualityComparer.Options.MatchOffsetComponents);
             // The third one (at Instants[4]) doesn't...
@@ -87,7 +87,7 @@ namespace NodaTime.Test.TimeZones
             // Instants[6]-EOT will elide transitions when ignoring names, even if we match components
             AssertEqual(zone1, zone2, Instants[6], Instant.MaxValue, ZoneEqualityComparer.Options.MatchOffsetComponents);
             AssertNotEqual(zone1, zone2, Instants[6], Instant.MaxValue, ZoneEqualityComparer.Options.MatchNames);
-            
+
             // But if we require the exact transitions, both fail
             AssertNotEqual(zone1, zone2, Instant.MinValue, Instants[6], ZoneEqualityComparer.Options.MatchAllTransitions);
             AssertNotEqual(zone1, zone2, Instants[6], Instant.MaxValue, ZoneEqualityComparer.Options.MatchAllTransitions);
@@ -166,7 +166,7 @@ namespace NodaTime.Test.TimeZones
             Assert.Throws<ArgumentOutOfRangeException>(() => comparer.WithOptions((ZoneEqualityComparer.Options) 9999));
         }
 
-        private void AssertEqual(DateTimeZone first, DateTimeZone second, 
+        private void AssertEqual(DateTimeZone first, DateTimeZone second,
             Instant start, Instant end, ZoneEqualityComparer.Options options)
         {
             var comparer = ZoneEqualityComparer.ForInterval(new Interval(start, end)).WithOptions(options);
@@ -174,7 +174,7 @@ namespace NodaTime.Test.TimeZones
             Assert.AreEqual(comparer.GetHashCode(first), comparer.GetHashCode(second));
         }
 
-        private void AssertNotEqual(DateTimeZone first, DateTimeZone second, 
+        private void AssertNotEqual(DateTimeZone first, DateTimeZone second,
             Instant start, Instant end, ZoneEqualityComparer.Options options)
         {
             var comparer = ZoneEqualityComparer.ForInterval(new Interval(start, end)).WithOptions(options);

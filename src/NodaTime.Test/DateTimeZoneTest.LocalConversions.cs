@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace NodaTime.Test
 {
     /// <summary>
-    /// Tests for aspects of DateTimeZone to do with converting from LocalDateTime and 
+    /// Tests for aspects of DateTimeZone to do with converting from LocalDateTime and
     /// LocalDate to ZonedDateTime.
     /// </summary>
     // TODO: Fix all tests to use SingleTransitionZone.

@@ -75,7 +75,7 @@ namespace NodaTime.Test.Text
 
         internal static Data[] FormatOnlyData = {
             new Data(2011, 10, 19, 16, 05, 20) { Pattern = "ddd uuuu", Text = "Wed 2011" },
-            
+
             // Our template value has an offset of 0, but the value has an offset of 1... which is ignored by the pattern
             new Data(MsdnStandardExample) { Pattern = "uuuu-MM-dd HH:mm:ss.FF", Text = "2009-06-15 13:45:30.09" }
         };
@@ -93,7 +93,7 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { StandardPattern = OffsetDateTimePattern.ExtendedIso, Pattern = "o", Text = "2009-06-15T13:45:30.09+01", Culture = Cultures.FrFr },
             new Data(MsdnStandardExample) { StandardPattern = OffsetDateTimePattern.FullRoundtrip, Pattern = "r", Text = "2009-06-15T13:45:30.09+01 (ISO)", Culture = Cultures.FrFr },
 
-            // Property-only patterns            
+            // Property-only patterns
             new Data(MsdnStandardExample) { StandardPattern = OffsetDateTimePattern.Rfc3339, Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", Text = "2009-06-15T13:45:30.09+01:00", Culture = Cultures.FrFr },
 
             // Custom embedded patterns (or mixture of custom and standard)

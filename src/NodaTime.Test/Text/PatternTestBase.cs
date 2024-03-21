@@ -58,7 +58,7 @@ namespace NodaTime.Test.Text
         {
             string text = pattern.Format(value);
             var parseResult = pattern.Parse(text);
-            Assert.AreEqual(value, parseResult.Value);            
+            Assert.AreEqual(value, parseResult.Value);
         }
 
         protected void AssertParseNull(IPattern<T> pattern)

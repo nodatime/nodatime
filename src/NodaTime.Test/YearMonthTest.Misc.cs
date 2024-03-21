@@ -43,7 +43,7 @@ namespace NodaTime.Test
             var yearMonth = new YearMonth(year, month, calendar);
             Assert.Throws<ArgumentOutOfRangeException>(() => yearMonth.OnDayOfMonth(day));
         }
-               
+
         [Test]
         [TestCase(2014, 8, 4, 2014, 12)]
         [TestCase(2014, 8, 5, 2015, 1)]

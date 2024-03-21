@@ -13,7 +13,7 @@ using NodaTime.TimeZones.Cldr;
 namespace NodaTime.TzdbCompiler.Tzdb
 {
     /// <summary>
-    /// Writes time zone data to a stream in nzd format. 
+    /// Writes time zone data to a stream in nzd format.
     /// </summary>
     /// <remarks>
     /// <para>The file format consists of four bytes indicating the file format version/type (mostly for
@@ -24,7 +24,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// <para>
     /// The version number does not need to be increased if new fields are added, as the reader will simply ignore
     /// unknown fields. It only needs to be increased for incompatible changes such as a different time zone format,
-    /// or if old fields are removed. 
+    /// or if old fields are removed.
     /// </para>
     /// </remarks>
     internal sealed class TzdbStreamWriter
@@ -41,7 +41,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
             var zones = database.GenerateDateTimeZones().ToList();
             var stringPool = CreateOptimizedStringPool(zones, database.ZoneLocations, database.Zone1970Locations, cldrWindowsZones);
-            
+
             // First assemble the fields (writing to the string pool as we go)
             foreach (var zone in zones)
             {
@@ -177,7 +177,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// zones, then creates a distinct list in most-prevalent-first order. This allows the most frequently-written
         /// strings to be the ones which are cheapest to write.
         /// </summary>
-        private class StringPoolOptimizingFakeWriter : IDateTimeZoneWriter 
+        private class StringPoolOptimizingFakeWriter : IDateTimeZoneWriter
         {
             private readonly List<string> allStrings = new List<string>();
 

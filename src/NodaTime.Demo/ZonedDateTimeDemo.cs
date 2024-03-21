@@ -92,7 +92,7 @@ namespace NodaTime.Demo
             var result3 = Snippet.For(beforeTransition.Plus(Duration.FromHours(1)));
             Assert.AreEqual(result, result2);
             Assert.AreEqual(result, result3);
-        }        
+        }
 
         [Test]
         public void PlusHours()
@@ -185,7 +185,7 @@ namespace NodaTime.Demo
             var result2 = Snippet.For(afterTransition - Duration.FromHours(1));
             var result3 = Snippet.For(afterTransition.Minus(Duration.FromHours(1)));
             Assert.AreEqual(result, result2);
-            Assert.AreEqual(result, result3);            
+            Assert.AreEqual(result, result3);
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace NodaTime.Demo
             var difference = Snippet.For(ZonedDateTime.Subtract(other, subject));
             Assert.AreEqual(Duration.FromHours(2), difference);
         }
-        
+
         [Test]
         public void MinusZonedDateTime()
         {

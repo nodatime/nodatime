@@ -239,7 +239,7 @@ namespace NodaTime.Test
             OffsetDateTime odt = new OffsetDateTime(local, offset);
             Assert.AreEqual("2012/10/06 01:02:03 01", odt.ToString("uuuu/MM/dd HH:mm:ss o<-HH>", CultureInfo.InvariantCulture));
         }
-        
+
         [Test]
         public void LocalComparer()
         {

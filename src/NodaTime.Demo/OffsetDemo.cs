@@ -61,7 +61,7 @@ namespace NodaTime.Demo
             Offset offset = Snippet.For(Offset.FromTimeSpan(timespan));
             Assert.AreEqual(5400, offset.Seconds);
         }
-        
+
         [Test]
         public void Add()
         {
@@ -164,6 +164,6 @@ namespace NodaTime.Demo
             var expected = TimeSpan.FromSeconds(120);
 
             Assert.AreEqual(expected, actual);
-        }       
+        }
     }
 }

@@ -92,7 +92,7 @@ namespace NodaTime.Tools.DumpTimeZoneInfo
 
             // Note: while this is "usually okay" there are some rules that don't actually start when we'd predict, which is unfortunate.
             bool isDst = zone.IsDaylightSavingTime(ruleStartUtc);
-            var forceDaylightText = rule.DaylightDelta == TimeSpan.Zero && isDst ? " (force daylight)" : "";            
+            var forceDaylightText = rule.DaylightDelta == TimeSpan.Zero && isDst ? " (force daylight)" : "";
             Console.WriteLine($"{start} - {end}: {baseUtcOffsetDeltaText}Daylight delta: {delta}; DST starts {startTransition} and ends {endTransition}{forceDaylightText}");
         }
 

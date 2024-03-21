@@ -172,7 +172,7 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
-        
+
         [Test]
         public void CreateWithCurrentCulture()
         {

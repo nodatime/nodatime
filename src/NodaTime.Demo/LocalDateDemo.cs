@@ -44,7 +44,7 @@ namespace NodaTime.Demo
             int result = Snippet.For(date.Day);
             Assert.AreEqual(16, result);
         }
-        
+
         [Test]
         public void DayOfWeek()
         {

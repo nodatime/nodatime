@@ -47,10 +47,10 @@ namespace NodaTime.Test.Calendars
 
             Assert.AreEqual(1720, coptic.Year);
             Assert.IsFalse(copticCalendar.IsLeapYear(1720));
-        
+
             Assert.AreEqual(10, coptic.Month);
             Assert.AreEqual(2, coptic.Day);
-            
+
             Assert.AreEqual(IsoDayOfWeek.Wednesday, coptic.DayOfWeek);
 
             Assert.AreEqual(9 * 30 + 2, coptic.DayOfYear);

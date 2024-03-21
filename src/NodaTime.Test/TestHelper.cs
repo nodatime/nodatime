@@ -507,7 +507,7 @@ namespace NodaTime.Test
                 // Validate the rest of the object deserialization is still okay.
                 Assert.AreEqual(100, result.Before);
                 Assert.AreEqual(200, result.After);
-                
+
                 stream.Position = 0;
                 var element = XElement.Load(stream).Element("value")!;
                 Assert.AreEqual(element.ToString(), expectedXml);
@@ -572,7 +572,7 @@ namespace NodaTime.Test
                 {
                     exception = exception.InnerException ?? exception;
                 }
-                Assert.IsInstanceOf(expectedExceptionType, exception);                    
+                Assert.IsInstanceOf(expectedExceptionType, exception);
             }
         }
 

@@ -29,7 +29,7 @@ namespace NodaTime.Testing
         /// </summary>
         /// <param name="initial">The initial instant.</param>
         public FakeClock(Instant initial) : this(initial, Duration.Zero)
-        {            
+        {
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace NodaTime.Testing
         /// </summary>
         /// <param name="nanoseconds">The number of nanoseconds to advance the clock by (or if negative, the number to move it back
         /// by).</param>
-        public void AdvanceNanoseconds(long nanoseconds) => Advance(Duration.FromNanoseconds(nanoseconds));        
+        public void AdvanceNanoseconds(long nanoseconds) => Advance(Duration.FromNanoseconds(nanoseconds));
 
         /// <summary>
         /// Advances the clock by the given number of ticks.

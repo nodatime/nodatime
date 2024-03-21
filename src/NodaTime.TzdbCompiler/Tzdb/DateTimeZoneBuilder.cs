@@ -47,7 +47,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             CoalesceIntervals();
 
             // Finally, construct the time zone itself. Usually, we'll end up with a
-            // PrecalculatedDateTimeZone here. 
+            // PrecalculatedDateTimeZone here.
             if (zoneIntervals.Count == 1 && tailZone is null)
             {
                 return new FixedDateTimeZone(id, zoneIntervals[0].WallOffset, zoneIntervals[0].Name);
@@ -115,7 +115,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             // previousTransition here is ongoing as we loop through the transitions. It's not like
             // lastZoneInterval, lastStandard and lastSavings, which refer to the last aspects of the
             // previous rule set. When we set it up, this is effectively the *first* transition leading
-            // into the period in which the new rule set is 
+            // into the period in which the new rule set is
             ZoneTransition previousTransition;
             if (firstRule != null)
             {
@@ -189,14 +189,14 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 //   a final infinite interval.
                 // - 2 rules are left which would alternate infinitely. This is represented
                 //   using a DaylightSavingZone as the tail zone.
-                // 
+                //
                 // The code here caters for that last option, but needs to do it in stages.
                 // When we first realize we will have a tail zone (an infinite rule set,
                 // two rules left, both of which are themselves infinite) we can create the
                 // tail zone, but we don't yet know that we're into its regular tick/tock.
                 // It's possible that one rule only starts years after our current transition,
                 // so we need to hit the first transition of that rule before we can create a
-                // "seam" from the list of precomputed zone intervals to the calculated-on-demand 
+                // "seam" from the list of precomputed zone intervals to the calculated-on-demand
                 // part of history.
                 // For an example of why this is necessary, see Asia/Amman in 2013e: in late 2011
                 // we hit "two rules left" but the final rule only starts in 2013 - we don't want

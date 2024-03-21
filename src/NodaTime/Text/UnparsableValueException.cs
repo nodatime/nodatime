@@ -78,12 +78,12 @@ namespace NodaTime.Text
             Value = value;
             Index = index;
         }
-        
+
         /// <summary>
         /// The value which could not be parsed.
         /// </summary>
         public string Value { get; private set; }
-        
+
         /// <summary>
         /// The index within the value where parsing failed.
         /// This will be -1 if parsing failed before examining any text,

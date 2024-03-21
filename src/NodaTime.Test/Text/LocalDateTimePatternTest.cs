@@ -20,7 +20,7 @@ namespace NodaTime.Test.Text
         private static readonly LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime(1976, 6, 19, 21, 13, 34);
         private static readonly LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime(1976, 6, 19, 21, 13);
         internal static readonly LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime(1976, 6, 19, 21, 13, 34, CalendarSystem.Coptic).PlusNanoseconds(123456789L);
-        
+
         private static readonly string[] AllStandardPatterns = { "f", "F", "g", "G", "o", "O", "s" };
 
         private static readonly object[] AllCulturesStandardPatterns = (from culture in Cultures.AllCultures
@@ -124,9 +124,9 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { Pattern = "uuuu-MM-dd(c)'T'HH:mm:ss.FFFFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
             new Data(SampleLocalDateTimeCoptic) { Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(Coptic) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
             new Data(SampleLocalDateTimeCoptic) { Pattern = "uuuu-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCopticT21:13:34.123456789", Culture = Cultures.EnUs },
-            
+
             // Standard invariant patterns with a property but no pattern character
-            new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.ExtendedIso, Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF", Text = "2009-06-15T13:45:30.09", Culture = Cultures.FrFr },            
+            new Data(MsdnStandardExample) { StandardPattern = LocalDateTimePattern.ExtendedIso, Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF", Text = "2009-06-15T13:45:30.09", Culture = Cultures.FrFr },
 
             // Use of the semi-colon "comma dot" specifier
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },

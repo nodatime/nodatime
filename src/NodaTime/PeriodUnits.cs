@@ -18,7 +18,7 @@ namespace NodaTime
     {
         /// <summary>
         /// Value indicating no units - an empty period.
-        /// </summary>        
+        /// </summary>
         None = 0,
 
         /// <summary>

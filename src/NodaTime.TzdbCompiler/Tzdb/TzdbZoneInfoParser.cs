@@ -43,7 +43,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
 
         /// <summary>
         /// The months of the year names as they appear in the TZDB zone files. They are
-        /// always the short name in US English. 
+        /// always the short name in US English.
         /// </summary>
         private static readonly string[] ShortMonths = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 

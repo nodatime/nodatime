@@ -21,7 +21,7 @@ namespace NodaTime.Test
 
             TestHelper.TestEqualsStruct(equal, equal, different2);
             TestHelper.TestOperatorEquality(equal, equal, different2);
-        }        
+        }
 
         [Test]
         public void MinusOffset_Zero_IsNeutralElement()

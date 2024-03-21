@@ -94,7 +94,7 @@ namespace NodaTime.TimeZones
         /// <see cref="ForId"/> method which has a return type of <see cref="BclDateTimeZone"/>, ensuring that all
         /// zones returned by this implementation are instances of <see cref="BclDateTimeZone"/> (rather than the built-in
         /// fixed offset zones).
-        /// </remarks>        
+        /// </remarks>
         DateTimeZone IDateTimeZoneSource.ForId(string id) => ForId(id);
 
 // Even though this member could be static, it would be inconsistent with the interface member.

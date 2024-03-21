@@ -111,7 +111,6 @@ namespace NodaTime.TimeZones
                     throw new InvalidDateTimeZoneSourceException(
                         $"Time zone {id} is supported by source {VersionId} but not returned");
                 }
-                // 
                 return timeZoneMap.TryUpdate(id, zone, null) ? zone : timeZoneMap[id];
             }
             return zone;

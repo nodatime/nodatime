@@ -219,7 +219,7 @@ namespace NodaTime.Test.Text
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
         internal static IEnumerable<Data> FormatData = FormatOnlyData.Concat(FormatAndParseData);
-        
+
         [Test]
         [TestCaseSource(typeof(Cultures), nameof(Cultures.AllCultures))]
         public void BclLongDatePatternGivesSameResultsInNoda(CultureInfo culture)
@@ -268,7 +268,7 @@ namespace NodaTime.Test.Text
         [TestCase(50, "50-01-01", 2050)]
         [TestCase(50, "51-01-01", 1951)]
         [TestCase(99, "00-01-01", 2000)]
-        [TestCase(99, "99-01-01", 2099)]        
+        [TestCase(99, "99-01-01", 2099)]
         public void WithTwoDigitYearMax(int twoDigitYearMax, string text, int expectedYear)
         {
             var pattern = LocalDatePattern.CreateWithInvariantCulture("yy-MM-dd").WithTwoDigitYearMax(twoDigitYearMax);

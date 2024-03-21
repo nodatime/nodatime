@@ -443,7 +443,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
+        /// structures like a hash table.
         /// </returns>
         public override int GetHashCode() => days ^ nanoOfDay.GetHashCode();
         #endregion
@@ -493,7 +493,7 @@ namespace NodaTime
                     newDays++;
                     newNanos -= NanosecondsPerDay;
                 }
-                // nanoOfDay is always non-negative (and much less than half of long.MaxValue), so adding two 
+                // nanoOfDay is always non-negative (and much less than half of long.MaxValue), so adding two
                 // of them together will never produce a negative result.
                 return new Duration(newDays, newNanos);
             }

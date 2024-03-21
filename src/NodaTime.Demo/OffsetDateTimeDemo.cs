@@ -5,7 +5,7 @@
 using NUnit.Framework;
 
 namespace NodaTime.Demo
-{    
+{
     public class OffsetDateTimeDemo
     {
         [Test]
@@ -56,7 +56,7 @@ namespace NodaTime.Demo
             OffsetDateTime updated = Snippet.For(original.With(dateAdjuster));
 
             Assert.AreEqual(
-                new LocalDateTime(2015, 10, 26, 1, 18), 
+                new LocalDateTime(2015, 10, 26, 1, 18),
                 updated.LocalDateTime);
             Assert.AreEqual(original.Offset, updated.Offset);
         }

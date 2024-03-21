@@ -103,7 +103,7 @@ namespace JetBrains.Annotations
     /// <item><code>
     /// // A method that returns null if the parameter is null, and not null if the parameter is not null
     /// [ContractAnnotation("null => null; notnull => notnull")]
-    /// public object Transform(object data) 
+    /// public object Transform(object data)
     /// </code></item>
     /// <item><code>
     /// [ContractAnnotation("s:null=>false; =>true,result:notnull; =>false, result:null")]

@@ -34,7 +34,7 @@ namespace NodaTime.Test.Text
             FormatHelper.LeftPad(value, length, builder);
             Assert.AreEqual(expected, builder.ToString());
         }
-        
+
         [Test]
         [TestCase(123L, 1, "123")]
         [TestCase(123L, 3, "123")]
@@ -60,7 +60,7 @@ namespace NodaTime.Test.Text
             FormatHelper.AppendFraction(value, length, scale, builder);
             Assert.AreEqual(expected, builder.ToString());
         }
-        
+
         [Test]
         [TestCase("x", 1, 3, 3, "x001")]
         [TestCase("x", 1200, 4, 5, "x012")]
@@ -83,6 +83,6 @@ namespace NodaTime.Test.Text
             var builder = new StringBuilder("x");
             FormatHelper.FormatInvariant(value, builder);
             Assert.AreEqual(expected, builder.ToString());
-        }        
+        }
     }
 }

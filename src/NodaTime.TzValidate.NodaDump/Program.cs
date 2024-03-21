@@ -45,7 +45,7 @@ namespace NodaTime.TzValidate.NodaDump
             }
 
             return 0;
-        }        
+        }
 
         private static async Task<TzdbDateTimeZoneSource> LoadSourceAsync(string? source)
         {

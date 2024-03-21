@@ -85,7 +85,7 @@ namespace NodaTime.Test
             ZonedDateTime before = SampleZone.AtStrictly(new LocalDateTime(2011, 6, 12, 15, 0));
             Assert.AreEqual(before + Duration.OneDay, ZonedDateTime.Add(before, Duration.OneDay));
             Assert.AreEqual(before + Duration.OneDay, before.Plus(Duration.OneDay));
-            
+
             Assert.AreEqual(before + Duration.FromHours(hours), before.PlusHours(hours));
             Assert.AreEqual(before + Duration.FromHours(-hours), before.PlusHours(-hours));
 
@@ -294,7 +294,7 @@ namespace NodaTime.Test
             var expected = new DateTime(1, 1, 1, 0, 30, 0, DateTimeKind.Utc);
             var actual = zdt.ToDateTimeUtc();
             Assert.AreEqual(expected, actual);
-        }        
+        }
 
         [Test]
         public void ToDateTimeUnspecified()

@@ -204,22 +204,22 @@ namespace NodaTime.Text
             /// - YearOfEra
             /// - YearTwoDigits (implies YearOfEra)
             /// - Era
-            /// 
+            ///
             /// If the year is specified, that trumps everything else - any other fields
             /// are just used for checking.
-            /// 
+            ///
             /// If nothing is specified, the year of the template value is used.
-            /// 
+            ///
             /// If just the era is specified, the year of the template value is used,
             /// and the specified era is checked against it. (Hopefully no-one will
             /// expect to get useful information from a format string with era but no year...)
-            /// 
+            ///
             /// Otherwise, we have the year of era (possibly only two digits) and possibly the
             /// era. If the era isn't specified, take it from the template value.
             /// Finally, if we only have two digits, then use either the century of the template
             /// value or the previous century if the year-of-era is greater than TwoDigitYearMax...
             /// and if the template value isn't in the first century already.
-            /// 
+            ///
             /// Phew.
             /// </summary>
             private ParseResult<LocalDate>? DetermineYear(PatternFields usedFields, string text, Type eventualResultType)

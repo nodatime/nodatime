@@ -42,7 +42,7 @@ namespace NodaTime.Demo
             var result = Snippet.For(januaryToAugust.Intersection(juneToNovember));
             Assert.AreEqual(juneToAugust, result);
         }
-        
+
         [Test]
         public void Contains_LocalDate()
         {
@@ -50,7 +50,7 @@ namespace NodaTime.Demo
             LocalDate end = new LocalDate(2017, 12, 31);
 
             DateInterval interval = new DateInterval(start, end);
-            
+
             var result = Snippet.For(interval.Contains(new LocalDate(2017, 12, 5)));
             Assert.AreEqual(true, result);
         }
@@ -65,7 +65,7 @@ namespace NodaTime.Demo
             DateInterval june = new DateInterval(
                 new LocalDate(2017, 6, 1),
                 new LocalDate(2017, 6, 30));
-            
+
             var result = Snippet.For(interval.Contains(june));
             Assert.AreEqual(true, result);
         }

@@ -202,8 +202,8 @@ namespace NodaTime.Test.TimeZones
 
             TestHelper.TestEqualsClass(map1, map2, map4);
             TestHelper.TestEqualsClass(map1, map3, map4);
-            
-            // Recurrences like Summer, but different in one aspect each, *except* 
+
+            // Recurrences like Summer, but different in one aspect each, *except* (comment incomplete for years...)
             var unequalMaps = new[]
             {
                 new ZoneRecurrence("Different name", Offset.FromHours(1),

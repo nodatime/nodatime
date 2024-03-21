@@ -638,7 +638,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
+        /// structures like a hash table.
         /// </returns>
         public override int GetHashCode() => HashCodeHelper.Hash(date, time, Calendar);
         #endregion
@@ -701,7 +701,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This method does not try to maintain the year of the current value, so adding four months to a value in 
+        /// This method does not try to maintain the year of the current value, so adding four months to a value in
         /// October will result in a value in the following February.
         /// </para>
         /// <para>

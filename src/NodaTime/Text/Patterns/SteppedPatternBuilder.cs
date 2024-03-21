@@ -458,7 +458,7 @@ namespace NodaTime.Text.Patterns
             AddFormatAction((value, sb) => FormatHelper.AppendFractionTruncate(selector(value), width, scale, sb));
 
         /// <summary>
-        /// Handles date, time and date/time embedded patterns. 
+        /// Handles date, time and date/time embedded patterns.
         /// </summary>
         internal void AddEmbeddedLocalPartial(
             PatternCursor pattern,

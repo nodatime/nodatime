@@ -18,7 +18,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         {
             offsetPattern = OffsetPattern.CreateWithInvariantCulture("HH:mm");
         }
-        
+
         [Benchmark]
         public void ParseExactIncludingPreparse_Valid()
         {

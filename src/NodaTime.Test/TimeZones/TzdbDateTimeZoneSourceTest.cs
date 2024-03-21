@@ -464,7 +464,7 @@ namespace NodaTime.Test.TimeZones
                     {
                         new MapZone("windows-id", MapZone.PrimaryTerritory, new[] { "zone1" }),
                         new MapZone("windows-id", "UK", new[] { "zone1" })
-                    })                
+                    })
             };
             PopulateZoneFields(builder, "zone1", "zone2");
             return builder;
@@ -484,7 +484,7 @@ namespace NodaTime.Test.TimeZones
             var source = new TzdbDateTimeZoneSource(streamData);
             Assert.Throws<InvalidNodaDataException>(source.Validate);
         }
-        
+
         [Test]
         public void WindowsToTzdbIds()
         {
@@ -508,7 +508,7 @@ namespace NodaTime.Test.TimeZones
             var expected = new Dictionary<string, string>
             {
                 { "zone1", "win1" },
-                { "link1", "win1" },                
+                { "link1", "win1" },
                 { "zone2", "win2" },
                 { "link2", "win2" },
                 // No explicit zone3 mapping; link3a and link3b map to win3 and win4 respectively;

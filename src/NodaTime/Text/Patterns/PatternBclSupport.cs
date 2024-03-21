@@ -8,7 +8,7 @@ using System;
 namespace NodaTime.Text.Patterns
 {
     /// <summary>
-    /// Class providing simple support for the various Parse/TryParse/ParseExact/TryParseExact/Format overloads 
+    /// Class providing simple support for the various Parse/TryParse/ParseExact/TryParseExact/Format overloads
     /// provided by individual types.
     /// </summary>
     internal sealed class PatternBclSupport<T>

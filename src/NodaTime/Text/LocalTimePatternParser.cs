@@ -133,7 +133,7 @@ namespace NodaTime.Text
 
             /// <summary>
             /// Calculates the value from the parsed pieces.
-            /// </summary>            
+            /// </summary>
             internal override ParseResult<LocalTime> CalculateValue(PatternFields usedFields, string text) =>
                 CalculateValue(usedFields, text, typeof(LocalTime));
 
@@ -153,7 +153,7 @@ namespace NodaTime.Text
                 {
                     return ParseResult<LocalTime>.ForValue(LocalTime.FromHourMinuteSecondNanosecondTrusted(Hours24, Minutes, Seconds, FractionalSeconds));
                 }
-                
+
                 if (AmPm == 2)
                 {
                     AmPm = TemplateValue.Hour / 12;

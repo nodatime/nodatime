@@ -377,7 +377,7 @@ namespace NodaTime
         /// Returns the number of days between two <see cref="LocalDate"/> objects.
         /// </summary>
         /// <param name="start">Start date/time</param>
-        /// <param name="end">End date/time</param> 
+        /// <param name="end">End date/time</param>
         /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
         /// <returns>The number of days between the given dates.</returns>
         public static int DaysBetween(LocalDate start, LocalDate end)

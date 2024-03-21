@@ -150,7 +150,7 @@ namespace NodaTime.Test.Text
             new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15", Pattern = "t" },
         };
 
-        internal static Data[] DefaultPatternData = {                              
+        internal static Data[] DefaultPatternData = {
             // Invariant culture uses HH:mm:ss for the "long" pattern
             new Data(5, 0, 0, 0) { Text = "05:00:00" },
             new Data(5, 12, 0, 0) { Text = "05:12:00" },
@@ -320,7 +320,7 @@ namespace NodaTime.Test.Text
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF", Text = "16:05:20.352" },
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20.352 end" },
             new Data(16, 05, 20) { Pattern = "HH:mm:ss;FFF 'end'", Text = "16:05:20 end" },
-            
+
             // Check handling of F after non-period.
             new Data(16, 05, 20, 352) { Pattern = "HH:mm:ss'x'FFF", Text = "16:05:20x352" },
         };
@@ -396,7 +396,7 @@ namespace NodaTime.Test.Text
             using (CultureSaver.SetCultures(Cultures.DotTimeSeparator))
             {
                 var pattern = LocalTimePattern.CreateWithCurrentCulture("HH:mm");
-                var text = pattern.Format(new LocalTime(13, 45));   
+                var text = pattern.Format(new LocalTime(13, 45));
                 Assert.AreEqual("13.45", text);
             }
         }
