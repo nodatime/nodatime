@@ -11,7 +11,7 @@ namespace NodaTime.TimeZones.IO
     /// <summary>
     /// Interface for reading time-related data from a binary stream.
     /// This is similar to <see cref="BinaryReader" />, but heavily
-    /// oriented towards our use cases. 
+    /// oriented towards our use cases.
     /// </summary>
     internal interface IDateTimeZoneReader
     {

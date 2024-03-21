@@ -39,7 +39,7 @@ namespace NodaTime
     /// these can be considered just once, at the point of conversion to a <see cref="ZonedDateTime"/>.
     /// </para>
     /// <para>
-    /// <c>ZonedDateTime</c> does not implement ordered comparison operators, as there is no obvious natural ordering that works in all cases. 
+    /// <c>ZonedDateTime</c> does not implement ordered comparison operators, as there is no obvious natural ordering that works in all cases.
     /// Equality is supported however, requiring equality of zone, calendar and date/time. If you want to sort <c>ZonedDateTime</c>
     /// values, you should explicitly choose one of the orderings provided via the static properties in the
     /// <see cref="ZonedDateTime.Comparer"/> nested class (or implement your own comparison).
@@ -312,7 +312,7 @@ namespace NodaTime
         /// <returns>
         /// true if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
-        /// <param name="obj">Another object to compare to.</param> 
+        /// <param name="obj">Another object to compare to.</param>
         /// <filterpriority>2</filterpriority>
         /// <returns>True if the specified value is a <see cref="ZonedDateTime"/> representing the same instant in the same time zone; false otherwise.</returns>
         public override bool Equals(object? obj) => obj is ZonedDateTime other && Equals(other);

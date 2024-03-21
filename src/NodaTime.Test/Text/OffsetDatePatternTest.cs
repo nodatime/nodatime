@@ -71,7 +71,7 @@ namespace NodaTime.Test.Text
             // Standard embedded patterns.
             new Data(2015, 10, 24, AthensOffset) { Pattern = "l<D> o<g>", Text = "Saturday, 24 October 2015 +03" },
             new Data(2015, 10, 24, AthensOffset) { Pattern = "l<d> o<g>", Text = "10/24/2015 +03" },
-            
+
             // Fields not otherwise covered
             new Data(MsdnStandardExample) { Pattern = "d MMMM yyyy (g) o<g>", Text = "15 June 2009 (A.D.) +01" },
         };

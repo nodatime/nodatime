@@ -16,7 +16,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         private static readonly Instant SummerInstant = Instant.FromUtc(2010, 6, 19, 5, 10);
 
         // Note: we can't declare the actual return type, as it's internal. So we wrap it.
-        
+
         [Benchmark]
         public NullableTransitionWrapper Next() => new NullableTransitionWrapper(SampleRecurrence.Next(WinterInstant, Offset.Zero, Offset.Zero));
 

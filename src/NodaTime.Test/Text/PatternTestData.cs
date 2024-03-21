@@ -157,7 +157,7 @@ namespace NodaTime.Test.Text
                 // We're not currently validating the bit that reproduces the bad value.
                 Assert.IsTrue(e.Message.StartsWith(expectedMessage),
                     "Expected message to start with {0}; was actually {1}", expectedMessage, e.Message);
-                
+
                 Assert.AreEqual(Text, e.Value, "Expected exception to include the text value");
             }
         }

@@ -7,7 +7,7 @@ using System.Globalization;
 namespace NodaTime
 {
     /// <summary>
-    /// A compact representation of a year, month and day in a single 32-bit integer. 
+    /// A compact representation of a year, month and day in a single 32-bit integer.
     /// </summary>
     /// <remarks>
     /// <para>

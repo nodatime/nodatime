@@ -10,7 +10,7 @@ namespace NodaTime.TimeZones
     /// A transition between two offsets, usually for daylight saving reasons. This type only knows about
     /// the new offset, and the transition point.
     /// </summary>
-    /// 
+    ///
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     internal readonly struct Transition : IEquatable<Transition>
     {
@@ -63,7 +63,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
+        /// structures like a hash table.
         /// </returns>
         public override int GetHashCode()
         {

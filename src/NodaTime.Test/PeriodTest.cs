@@ -114,7 +114,7 @@ namespace NodaTime.Test
         public void BetweenLocalDates_DifferentCalendarSystems_Throws()
         {
             LocalDate start = new LocalDate(2017, 11, 1, CalendarSystem.Coptic);
-            LocalDate end = new LocalDate(2017, 11, 5, CalendarSystem.Gregorian);    
+            LocalDate end = new LocalDate(2017, 11, 5, CalendarSystem.Gregorian);
             Assert.Throws<ArgumentException>(() => Period.Between(start, end));
         }
 
@@ -304,7 +304,7 @@ namespace NodaTime.Test
             // Subtracting 11 months takes us to 03-01-29T03:00. Subtracting another 29 days
             // takes us to 02-12-30T03:00, and another hour to get to the target.
             Assert.AreEqual(Parse("P-11M-29DT-1H"), Period.Between(dt3, dt1));
-            Assert.AreEqual(Parse("P-11M-28DT-23H"), Period.Between(dt3, dt2));            
+            Assert.AreEqual(Parse("P-11M-28DT-23H"), Period.Between(dt3, dt2));
         }
 
         [Test]
@@ -540,7 +540,7 @@ namespace NodaTime.Test
         {
             var period = new PeriodBuilder {[unit] = 1 }.Build();
             Assert.AreEqual(hasDateComponent, period.HasDateComponent);
-        }        
+        }
 
         [Test]
         public void HasTimeComponent_Compound()
@@ -559,7 +559,7 @@ namespace NodaTime.Test
 
             // Case 4: Period contains date and time units, and some time units are non-zero
             Assert.IsTrue(Period.Between(dt1, dt2).HasTimeComponent);
-            
+
             // Case 5: Entire period is time-based, and some time units are non-zero
             Assert.IsTrue(Period.Between(dt1.TimeOfDay, dt2.TimeOfDay).HasTimeComponent);
         }

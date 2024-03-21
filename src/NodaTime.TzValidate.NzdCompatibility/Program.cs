@@ -43,6 +43,6 @@ namespace NodaTime.TzValidate.NzdCompatibility
             }
 
             return 0;
-        }        
+        }
     }
 }

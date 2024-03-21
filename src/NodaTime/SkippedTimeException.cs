@@ -17,7 +17,7 @@ namespace NodaTime
 {
     /// <summary>
     /// Exception thrown to indicate that the specified local time doesn't
-    /// exist in a particular time zone due to daylight saving time changes.    
+    /// exist in a particular time zone due to daylight saving time changes.
     /// </summary>
     /// <remarks>
     /// <para>

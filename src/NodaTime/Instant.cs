@@ -218,7 +218,7 @@ namespace NodaTime
         /// </summary>
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
+        /// structures like a hash table.
         /// </returns>
         public override int GetHashCode() => duration.GetHashCode();
         #endregion  // Object overrides
@@ -441,9 +441,9 @@ namespace NodaTime
 
         /// <summary>
         /// Returns a new instant corresponding to the given UTC date and
-        /// time in the ISO calendar. In most cases applications should 
+        /// time in the ISO calendar. In most cases applications should
         /// use <see cref="ZonedDateTime" />
-        /// to represent a date and time, but this method is useful in some 
+        /// to represent a date and time, but this method is useful in some
         /// situations where an Instant is required, such as time zone testing.
         /// </summary>
         /// <param name="year">The year. This is the "absolute year",

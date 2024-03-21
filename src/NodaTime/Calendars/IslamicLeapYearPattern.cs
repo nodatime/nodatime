@@ -11,7 +11,7 @@ namespace NodaTime.Calendars
     /// <remarks>
     /// <para>
     /// The Islamic, or Hijri, calendar is a lunar calendar of 12 months, each of 29 or 30 days.
-    /// The calendar can be defined in either observational or tabular terms; 
+    /// The calendar can be defined in either observational or tabular terms;
     /// Noda Time implements a tabular calendar, where a pattern of leap years (in which the last month has
     /// an extra day) repeats every 30 years, according to one of the patterns within this enum.
     /// </para>

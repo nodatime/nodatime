@@ -10,7 +10,7 @@ using System;
 namespace NodaTime.TimeZones
 {
     /// <summary>
-    /// Most time zones have a relatively small set of transitions at their start until they finally 
+    /// Most time zones have a relatively small set of transitions at their start until they finally
     /// settle down to either a fixed time zone or a daylight savings time zone. This provides the
     /// container for the initial zone intervals and a pointer to the time zone that handles all of
     /// the rest until the end of time.
@@ -61,7 +61,7 @@ namespace NodaTime.TimeZones
             Preconditions.CheckArgument(!periods[0].HasStart, nameof(periods), "Periods in precalculated time zone must start with the beginning of time");
             for (int i = 0; i < periods.Length - 1; i++)
             {
-                // Safe to use End here: there can't be a period *after* an endless one. Likewise it's safe to use Start on the next 
+                // Safe to use End here: there can't be a period *after* an endless one. Likewise it's safe to use Start on the next
                 // period, as there can't be a period *before* one which goes back to the start of time.
                 Preconditions.CheckArgument(periods[i].End == periods[i + 1].Start, nameof(periods), "Non-adjoining ZoneIntervals for precalculated time zone");
             }
@@ -198,6 +198,6 @@ namespace NodaTime.TimeZones
             }
             return ret;
         }
-        #endregion        
+        #endregion
     }
 }

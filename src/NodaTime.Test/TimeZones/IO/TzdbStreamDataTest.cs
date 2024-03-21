@@ -75,7 +75,7 @@ namespace NodaTime.Test.TimeZones.IO
             var method = typeof(TzdbStreamData.Builder).GetMethod(handlerMethodName, BindingFlags.Instance | BindingFlags.NonPublic)
                 ?? throw new Exception($"Can't find method {handlerMethodName}");
             var builder = new TzdbStreamData.Builder();
-            
+
             var exception = Assert.Throws<TargetInvocationException>(() => method.Invoke(builder, new object[] { field }))!;
             Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);
         }
@@ -91,7 +91,7 @@ namespace NodaTime.Test.TimeZones.IO
         public void DuplicateField(object fieldIdObject, string handlerMethodName)
         {
             var fieldId = (TzdbStreamFieldId) fieldIdObject;
-            
+
             var field = new TzdbStreamField(fieldId, new byte[1]);
             var method = typeof(TzdbStreamData.Builder).GetMethod(handlerMethodName, BindingFlags.Instance | BindingFlags.NonPublic)
                 ?? throw new Exception($"Can't find handler method {handlerMethodName}");
@@ -104,7 +104,7 @@ namespace NodaTime.Test.TimeZones.IO
 
             // First call should be okay
             method.Invoke(builder, new object[] { field });
-            
+
             // Second call should throw
             var exception = Assert.Throws<TargetInvocationException>(() => method.Invoke(builder, new object[] { field }))!;
             Assert.IsInstanceOf<InvalidNodaDataException>(exception.InnerException);

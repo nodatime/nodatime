@@ -21,7 +21,7 @@ namespace NodaTime.Test.Utility
         private Cache<string, int> CreateCache()
         {
             factoryCallCount = 0;
-            return new Cache<string, int>(3, text => { factoryCallCount++; return text.Length; }, 
+            return new Cache<string, int>(3, text => { factoryCallCount++; return text.Length; },
                                           StringComparer.OrdinalIgnoreCase);
         }
 

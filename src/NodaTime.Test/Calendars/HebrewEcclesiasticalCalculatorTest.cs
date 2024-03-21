@@ -29,7 +29,7 @@ namespace NodaTime.Test.Calendars
             // Not all months in the min/max years are supported
             var minYear = bcl.GetYear(bcl.MinSupportedDateTime) + 1;
             var maxYear = bcl.GetYear(bcl.MaxSupportedDateTime) - 1;
-            
+
             for (int year = minYear; year <= maxYear; year++)
             {
                 int months = bcl.GetMonthsInYear(year);

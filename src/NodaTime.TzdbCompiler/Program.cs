@@ -163,10 +163,10 @@ namespace NodaTime.TzdbCompiler
         /// in the result is the union of those in the original and override, but any ID/Territory
         /// pair present in both results in the override taking priority, unless the override has an
         /// empty "type" entry, in which case the entry is removed entirely.
-        /// 
+        ///
         /// While this method could reasonably be in WindowsZones class, it's only needed in
         /// TzdbCompiler - and here is as good a place as any.
-        /// 
+        ///
         /// The resulting MapZones will be ordered by Windows ID followed by territory.
         /// </summary>
         /// <param name="windowsZones">The original WindowsZones</param>

@@ -15,7 +15,7 @@ namespace NodaTime.Test.Text
         /// Test data that can only be used to test formatting.
         /// </summary>
         internal static readonly Data[] FormatOnlyData = {
-            // No sign, so we can't parse it.                                                            
+            // No sign, so we can't parse it.
             new Data(-1, 0) { Pattern = "HH:mm", Text = "01:00" },
 
             // Loss of nano precision
@@ -84,7 +84,7 @@ namespace NodaTime.Test.Text
             new Data(-1, -2) { Pattern = "+HH:mm", Text = "-01:02" },
             new Data(1, 2) { Pattern = "-HH:mm", Text = "01:02" },
             new Data(-1, -2) { Pattern = "-HH:mm", Text = "-01:02" },
-                     
+
             new Data(26, 3) { Pattern = "D:h:m", Text = "1:2:3" },
             new Data(26, 3) { Pattern = "DD:hh:mm", Text = "01:02:03" },
             new Data(242, 3) { Pattern = "D:hh:mm", Text = "10:02:03" },

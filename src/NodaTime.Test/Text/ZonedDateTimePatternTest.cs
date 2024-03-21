@@ -177,7 +177,7 @@ namespace NodaTime.Test.Text
             new Data(new LocalDateTime(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1)) { Pattern = "uuuu-MM-dd HH:mm z o<g>", Text = "2005-01-01 01:30 ab +01"},
             // Valid offset (in the middle of the pattern) for an unambiguous time
             new Data(new LocalDateTime(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1)) { Pattern = "uuuu-MM-dd o<g> HH:mm z", Text = "2005-01-01 +01 01:30 ab"},
-            
+
             // Ambiguous value, resolver returns later value.
             new Data(TestZone2.Transition.Plus(Duration.FromMinutes(30)).InZone(TestZone2)) { Pattern = "uuuu-MM-dd HH:mm z", Text = "2010-01-01 01:30 abc", Resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnLater, Resolvers.ThrowWhenSkipped) },
 
@@ -199,7 +199,7 @@ namespace NodaTime.Test.Text
             new Data(MsdnStandardExample) { Pattern = "uuuu-MM-dd(c)'T'HH:mm:ss.FFFFFFF", Text = "2009-06-15(ISO)T13:45:30.09", Culture = Cultures.EnUs },
             new Data(SampleZonedDateTimeCoptic) { Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF", Text = "(Coptic) 1976-06-19T21:13:34.123456789", Culture = Cultures.FrFr },
             new Data(SampleZonedDateTimeCoptic) { Pattern = "uuuu-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF", Text = "1976-06-19CCopticT21:13:34.123456789", Culture = Cultures.EnUs },
-            
+
             // Use of the semi-colon "comma dot" specifier
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;fff", Text = "2011-10-19 16:05:20.352" },
             new Data(2011, 10, 19, 16, 05, 20, 352) { Pattern = "uuuu-MM-dd HH:mm:ss;FFF", Text = "2011-10-19 16:05:20.352" },
@@ -230,7 +230,7 @@ namespace NodaTime.Test.Text
 
             // Check that unquoted T still works.
             new Data(2012, 1, 31, 17, 36, 45) { Text = "2012-01-31T17:36:45", Pattern = "uuuu-MM-ddTHH:mm:ss" },
-            
+
             // Check handling of F after non-period.
             new Data(2012, 1, 31, 17, 36, 45, 123) { Text = "2012-01-31T17:36:45x123", Pattern = "uuuu-MM-dd'T'HH:mm:ss'x'FFF" },
 

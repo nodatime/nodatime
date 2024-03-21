@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace NodaTime.Test.TimeZones.IO
 {
     public class ReadWriteTest
-    {        
+    {
         [Test]
         public void Count()
         {

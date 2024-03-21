@@ -111,7 +111,7 @@ namespace NodaTime.TimeZones
             writer.WriteSignedCount(longitudeSeconds);
             writer.WriteCount(Countries.Count);
             // We considered writing out the ISO-3166 file as a separate field,
-            // so we can reuse objects, but we don't actually waste very much space this way, 
+            // so we can reuse objects, but we don't actually waste very much space this way,
             // due to the string pool... and the increased code complexity isn't worth it.
             foreach (var country in Countries)
             {

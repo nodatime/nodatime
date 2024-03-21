@@ -46,7 +46,7 @@ public class TypeInitializationTest
         var location = type.Assembly.Location;
         var context = new AssemblyLoadContext($"Context for {type.FullName}");
         var contextAssembly = context.LoadFromAssemblyPath(location);
-        return contextAssembly.GetType(type.FullName!) ?? throw new Exception($"Couldn't load type {type}");        
+        return contextAssembly.GetType(type.FullName!) ?? throw new Exception($"Couldn't load type {type}");
     }
 }
 #endif

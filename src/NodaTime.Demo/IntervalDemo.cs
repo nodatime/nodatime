@@ -27,7 +27,7 @@ namespace NodaTime.Demo
             Assert.True(interval.HasEnd);
             Assert.AreEqual(end, interval.End);
         }
-                
+
         [Test]
         public void Contains()
         {

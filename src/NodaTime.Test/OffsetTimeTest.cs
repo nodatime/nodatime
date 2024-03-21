@@ -153,7 +153,7 @@ namespace NodaTime.Test
             var offset = Offset.FromHoursAndMinutes(offsetHours, offsetMinutes);
             var value = new OffsetTime(time, offset);
             TestHelper.AssertXmlRoundtrip(value, $"<value>{expected}</value>");
-        }        
+        }
 
         [Test]
         [TestCase("<value>05:24:00Z</value>", typeof(UnparsableValueException), Description = "Invalid hour")]

@@ -77,7 +77,7 @@ namespace NodaTime.Test
             var actual = new Offset();
             Assert.AreEqual(Offset.Zero, actual);
         }
-         
+
         [Test]
         public void XmlSerialization()
         {

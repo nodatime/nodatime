@@ -79,7 +79,7 @@ namespace NodaTime.Test.Text
         internal static readonly CultureInfo GenitiveNameTestCultureWithLeadingNames = CreateGenitiveTestCultureWithLeadingNames();
         internal static readonly CultureInfo AwkwardDayOfWeekCulture = CreateAwkwardDayOfWeekCulture();
         internal static readonly CultureInfo AwkwardAmPmDesignatorCulture = CreateAwkwardAmPmCulture();
-        
+
         /// <summary>
         /// .NET 3.5 doesn't contain any cultures where the abbreviated month names differ
         /// from the non-abbreviated month names. As we're testing under .NET 3.5, we'll need to create

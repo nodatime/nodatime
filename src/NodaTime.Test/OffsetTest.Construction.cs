@@ -54,7 +54,7 @@ namespace NodaTime.Test
             Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
             Assert.AreEqual(-15 * NodaConstants.TicksPerMinute, value.Ticks);
         }
-        
+
         [Test]
         public void FromTicks_Invalid()
         {

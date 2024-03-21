@@ -16,7 +16,7 @@ namespace NodaTime.Test.TimeZones.IO
     internal class DtzIoHelper
     {
         private readonly IoStream ioStream;
-        private readonly IList<string> stringPool; 
+        private readonly IList<string> stringPool;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DtzIoHelper" /> class.

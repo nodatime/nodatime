@@ -134,7 +134,7 @@ namespace NodaTime.Test
         {
             var instance = new LocalDate(2012, 3, 5);
             var i_instance = (IComparable)instance;
-            
+
             var later = new LocalDate(2012, 6, 4);
             var earlier = new LocalDate(2012, 1, 4);
             var same = new LocalDate(2012, 3, 5);
@@ -157,7 +157,7 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        /// IComparable.CompareTo throws an ArgumentException for non-null arguments 
+        /// IComparable.CompareTo throws an ArgumentException for non-null arguments
         /// that are not a LocalDate.
         /// </summary>
         [Test]

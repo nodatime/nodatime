@@ -17,7 +17,7 @@ namespace NodaTime.Benchmarks.BclTests
         private static readonly DateTimeOffset later = new DateTimeOffset(2009, 12, 26, 10, 8, 30, 234, TimeSpan.FromHours(-1));
 
         private static readonly IComparer<DateTimeOffset> defaultComparer = Comparer<DateTimeOffset>.Default;
-            
+
         [Benchmark]
         public void CompareTo()
         {

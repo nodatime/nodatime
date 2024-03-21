@@ -12,12 +12,12 @@ namespace NodaTime.TimeZones
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The interface presumes that the available time zones are static; there is no mechanism for 
-    /// updating the list of available time zones. Any time zone ID that is returned in <see cref="GetIds"/> 
+    /// The interface presumes that the available time zones are static; there is no mechanism for
+    /// updating the list of available time zones. Any time zone ID that is returned in <see cref="GetIds"/>
     /// must be resolved by <see cref="ForId"/> for the life of the source.
     /// </para>
     /// <para>
-    /// Implementations need not cache time zones or the available time zone IDs. 
+    /// Implementations need not cache time zones or the available time zone IDs.
     /// Caching is typically provided by <see cref="DateTimeZoneCache"/>, which most consumers should use instead of
     /// consuming <see cref="IDateTimeZoneSource"/> directly in order to get better performance.
     /// </para>

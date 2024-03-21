@@ -31,7 +31,7 @@ namespace NodaTime.Test.Utility
         public void DaysAndTickOfDayToTicksUncheckedBoundaries()
         {
             // Only a useful test under debug, but this proves that the arithmetic won't overflow when used from
-            // LocalDateTime or Instant. (In debug mode, we have 
+            // LocalDateTime or Instant. (In debug mode, we have
             TickArithmetic.BoundedDaysAndTickOfDayToTicks(CalendarSystem.Iso.MinDays, 0);
             TickArithmetic.BoundedDaysAndTickOfDayToTicks(CalendarSystem.Iso.MaxDays, NodaConstants.TicksPerDay - 1);
         }

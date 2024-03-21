@@ -93,7 +93,7 @@ namespace NodaTime.Test
         {
             var london = DateTimeZoneProviders.Tzdb["Europe/London"];
             // Transitions are always Spring/Autumn, so June and January should be clear.
-            var expected = new[] { 
+            var expected = new[] {
                 london.GetZoneInterval(Instant.FromUtc(1999, 6, 1, 0, 0)),
                 london.GetZoneInterval(Instant.FromUtc(2000, 1, 1, 0, 0)),
                 london.GetZoneInterval(Instant.FromUtc(2000, 6, 1, 0, 0)),

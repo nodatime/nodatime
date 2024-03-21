@@ -132,7 +132,7 @@ namespace NodaTime.Benchmarks.NodaTimeTests
 
         [Benchmark]
         public LocalDate FromDateTime_WithCalendar() => LocalDate.FromDateTime(SampleDateTime, CalendarSystem.Julian);
-        
+
         [Benchmark]
         public int CompareTo() => Sample.CompareTo(SampleBeforeEpoch);
 

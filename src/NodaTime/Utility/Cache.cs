@@ -78,7 +78,7 @@ namespace NodaTime.Utility
         internal void Clear()
         {
             // There's no Clear method on ConcurrentQueue, so we need to iterate over
-            // it. 
+            // it.
             while (keyList.TryDequeue(out _))
             {
             }

@@ -15,7 +15,7 @@ namespace NodaTime.Text
     internal sealed class FixedFormatInfoPatternParser<T>
     {
         // It would be unusual to have more than 50 different patterns for a specific culture
-        // within a real app. 
+        // within a real app.
         private const int CacheSize = 50;
         private readonly Cache<string, IPattern<T>> cache;
 

@@ -302,7 +302,7 @@ namespace NodaTime.TimeZones
         /// call it if we can't get an exact match anyway.
         /// </summary>
         /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
-        /// <param name="candidates">All the Noda Time zones to consider - normally a list 
+        /// <param name="candidates">All the Noda Time zones to consider - normally a list
         /// obtained from this source.</param>
         internal static string? GuessZoneIdByTransitionsUncached(TimeZoneInfo zone, List<DateTimeZone> candidates)
         {

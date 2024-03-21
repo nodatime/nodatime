@@ -403,7 +403,7 @@ namespace NodaTime.Test.Calendars
         [Test]
         public void SetYear()
         {
-            // crafted to test SetYear with 0 
+            // Crafted to test SetYear with 0
             var d1 = CreateBadiDate(180, 1, 1);
             LocalDate result = d1 + Period.FromYears(0);
             Assert.AreEqual(180, result.Year);
@@ -581,7 +581,7 @@ namespace NodaTime.Test.Calendars
 
             Assert.Throws<OverflowException>(() => earlyDate.PlusMonths(-1));
             Assert.Throws<OverflowException>(() => lateDate.PlusMonths(1));
-        }        
+        }
 
         /// <summary>
         /// Create a <see cref="LocalDate"/> in the Badíʿ calendar, treating 0

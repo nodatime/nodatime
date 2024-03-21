@@ -88,7 +88,7 @@ namespace NodaTime.Test.TimeZones
             var actual = offset.GetOccurrenceForYear(1971);
             var expected = new LocalDateTime(1971, 1, 1, 0, 0).ToLocalInstant();
             Assert.AreEqual(expected, actual);
-        }        
+        }
 
         [Test]
         public void GetOccurrenceForYear_Milliseconds()

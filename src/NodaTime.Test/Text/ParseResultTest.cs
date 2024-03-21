@@ -102,7 +102,7 @@ namespace NodaTime.Test.Text
         public void ConvertError_ForSuccessResult()
         {
             ParseResult<int> original = ParseResult<int>.ForValue(10);
-            Assert.Throws<InvalidOperationException>(() => original.ConvertError<string>());            
+            Assert.Throws<InvalidOperationException>(() => original.ConvertError<string>());
         }
 
         [Test]

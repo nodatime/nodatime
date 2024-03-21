@@ -83,7 +83,7 @@ namespace NodaTime.Test
             var actual = new Interval();
             Assert.AreEqual(NodaTime.Duration.Zero, actual.Duration);
         }
-        
+
         [Test]
         public void ToStringUsesExtendedIsoFormat()
         {
@@ -255,7 +255,7 @@ namespace NodaTime.Test
                 Assert.AreEqual(end, actualEnd);
             });
         }
-        
+
         [Test]
         public void Deconstruction_IntervalWithoutStart()
         {

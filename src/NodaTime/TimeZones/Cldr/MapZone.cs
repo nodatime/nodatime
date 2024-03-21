@@ -13,7 +13,7 @@ using System.Linq;
 namespace NodaTime.TimeZones.Cldr
 {
     /// <summary>
-    /// Represents a single <c>&lt;mapZone&gt;</c> element in the CLDR Windows zone mapping file. 
+    /// Represents a single <c>&lt;mapZone&gt;</c> element in the CLDR Windows zone mapping file.
     /// </summary>
     /// <remarks>
     /// <para>

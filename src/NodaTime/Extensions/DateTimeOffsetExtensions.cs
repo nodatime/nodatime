@@ -13,7 +13,7 @@ namespace NodaTime.Extensions
         /// <summary>
         /// Converts a <see cref="DateTimeOffset"/> to <see cref="OffsetDateTime"/>.
         /// </summary>
-        /// <remarks>This is a convenience method which calls <see cref="OffsetDateTime.FromDateTimeOffset"/>.</remarks>        
+        /// <remarks>This is a convenience method which calls <see cref="OffsetDateTime.FromDateTimeOffset"/>.</remarks>
         /// <param name="dateTimeOffset">The <c>DateTimeOffset</c> to convert.</param>
         /// <returns>A new <see cref="OffsetDateTime"/> with the same values as <paramref name="dateTimeOffset"/>.</returns>
         public static OffsetDateTime ToOffsetDateTime(this DateTimeOffset dateTimeOffset) =>
@@ -22,7 +22,7 @@ namespace NodaTime.Extensions
         /// <summary>
         /// Converts a <see cref="DateTimeOffset"/> to <see cref="ZonedDateTime"/>.
         /// </summary>
-        /// <remarks>This is a convenience method which calls <see cref="ZonedDateTime.FromDateTimeOffset"/>.</remarks>        
+        /// <remarks>This is a convenience method which calls <see cref="ZonedDateTime.FromDateTimeOffset"/>.</remarks>
         /// <param name="dateTimeOffset">The <c>DateTimeOffset</c> to convert.</param>
         /// <returns>A new <see cref="ZonedDateTime"/> with the same values as <paramref name="dateTimeOffset"/>,
         /// using a fixed-offset time zone.</returns>
@@ -32,7 +32,7 @@ namespace NodaTime.Extensions
         /// <summary>
         /// Converts a <see cref="DateTimeOffset"/> into an <see cref="Instant"/>.
         /// </summary>
-        /// <remarks>This is a convenience method which calls <see cref="Instant.FromDateTimeOffset"/>.</remarks>        
+        /// <remarks>This is a convenience method which calls <see cref="Instant.FromDateTimeOffset"/>.</remarks>
         /// <param name="dateTimeOffset">The <c>DateTimeOffset</c> to convert.</param>
         /// <returns>An <see cref="Instant"/> value representing the same instant in time as <paramref name="dateTimeOffset"/>.</returns>
         public static Instant ToInstant(this DateTimeOffset dateTimeOffset) => Instant.FromDateTimeOffset(dateTimeOffset);

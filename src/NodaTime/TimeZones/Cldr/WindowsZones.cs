@@ -73,7 +73,7 @@ namespace NodaTime.TimeZones.Cldr
         /// maps to different TZDB zones in different countries (the US, Canada, Mexico) and
         /// even within a single territory there can be multiple zones. Every Windows system time zone covered within
         /// this collection has a "primary" entry with a territory code of "001" (which is the value of
-        /// <see cref="MapZone.PrimaryTerritory"/>) and a single corresponding TZDB zone. 
+        /// <see cref="MapZone.PrimaryTerritory"/>) and a single corresponding TZDB zone.
         /// </para>
         /// <para>This collection is not guaranteed to cover every Windows time zone. Some zones may be unmappable
         /// (such as "Mid-Atlantic Standard Time") and there can be a delay between a new Windows time zone being introduced

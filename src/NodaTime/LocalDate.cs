@@ -650,7 +650,7 @@ namespace NodaTime
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This method does not try to maintain the year of the current value, so adding four months to a value in 
+        /// This method does not try to maintain the year of the current value, so adding four months to a value in
         /// October will result in a value in the following February.
         /// </para>
         /// <para>

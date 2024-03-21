@@ -45,7 +45,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
             this.recurrence = recurrence;
             this.daylightSavingsIndicator = daylightSavingsIndicator;
         }
-       
+
         #region IEquatable<RuleLine> Members
         /// <summary>
         ///   Indicates whether the current object is equal to another object of the same type.
@@ -66,7 +66,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// <param name="left">The left.</param>
         /// <param name="right">The right.</param>
         /// <returns>The result of the operator.</returns>
-        public static bool operator ==(RuleLine left, RuleLine right) =>        
+        public static bool operator ==(RuleLine left, RuleLine right) =>
             left is null ? right is null : left.Equals(right);
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         /// </summary>
         /// <returns>
         /// A hash code for this instance, suitable for use in hashing algorithms and data
-        /// structures like a hash table. 
+        /// structures like a hash table.
         /// </returns>
         public override int GetHashCode() => HashCodeHelper.Hash(recurrence, daylightSavingsIndicator);
 
