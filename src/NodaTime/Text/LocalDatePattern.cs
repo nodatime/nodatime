@@ -27,11 +27,11 @@ namespace NodaTime.Text
         /// </summary>
         internal const int DefaultTwoDigitYearMax = 30;
 
-        internal static readonly LocalDate DefaultTemplateValue = new LocalDate(2000, 1, 1);
+        internal static LocalDate DefaultTemplateValue { get; } = new LocalDate(2000, 1, 1);
 
         private const string DefaultFormatPattern = "D"; // Long
 
-        internal static readonly PatternBclSupport<LocalDate> BclSupport =
+        internal static PatternBclSupport<LocalDate> BclSupport { get; } =
             new PatternBclSupport<LocalDate>(DefaultFormatPattern, fi => fi.LocalDatePatternParser);
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly LocalDatePattern IsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd");
-            internal static readonly LocalDatePattern FullRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd '('c')'");
+            internal static LocalDatePattern IsoPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd");
+            internal static LocalDatePattern FullRoundtripPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd '('c')'");
         }
 
         /// <summary>

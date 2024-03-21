@@ -27,7 +27,7 @@ namespace NodaTime.TimeZones.IO
         internal static class ZoneIntervalConstants
         {
             /// <summary>The instant to use as an 'epoch' when writing out a number of minutes-since-epoch.</summary>
-            internal static readonly Instant EpochForMinutesSinceEpoch = Instant.FromUtc(1800, 1, 1, 0, 0);
+            internal static Instant EpochForMinutesSinceEpoch { get; } = Instant.FromUtc(1800, 1, 1, 0, 0);
 
             /// <summary>The marker value representing the beginning of time.</summary>
             internal const int MarkerMinValue = 0;

@@ -290,7 +290,7 @@ namespace NodaTime
         {
             Preconditions.CheckArgumentRange(nameof(leapYearPattern), (int) leapYearPattern, 1, 4);
             Preconditions.CheckArgumentRange(nameof(epoch), (int) epoch, 1, 2);
-            return IslamicCalendars.ByLeapYearPatterAndEpoch[(int) leapYearPattern - 1, (int) epoch - 1];
+            return IslamicCalendars.ByLeapYearPatternAndEpoch[(int) leapYearPattern - 1, (int) epoch - 1];
         }
 
         #endregion
@@ -762,11 +762,11 @@ namespace NodaTime
 
         private static class PersianCalendars
         {
-            internal static readonly CalendarSystem Simple =
+            internal static CalendarSystem Simple { get; } =
                 new CalendarSystem(CalendarOrdinal.PersianSimple, PersianSimpleId, PersianName, new PersianYearMonthDayCalculator.Simple(), Era.AnnoPersico);
-            internal static readonly CalendarSystem Arithmetic =
+            internal static CalendarSystem Arithmetic { get; } =
                 new CalendarSystem(CalendarOrdinal.PersianArithmetic, PersianArithmeticId, PersianName, new PersianYearMonthDayCalculator.Arithmetic(), Era.AnnoPersico);
-            internal static readonly CalendarSystem Astronomical =
+            internal static CalendarSystem Astronomical { get; } =
                 new CalendarSystem(CalendarOrdinal.PersianAstronomical, PersianAstronomicalId, PersianName, new PersianYearMonthDayCalculator.Astronomical(), Era.AnnoPersico);
 
             // Static constructor to enforce laziness.
@@ -780,11 +780,11 @@ namespace NodaTime
         private static class IslamicCalendars
         {
 #pragma warning disable CA1814 // Prefer jagged arrays; in this case it would take *more* space.
-            internal static readonly CalendarSystem[,] ByLeapYearPatterAndEpoch;
+            internal static CalendarSystem[,] ByLeapYearPatternAndEpoch { get; }
 
             static IslamicCalendars()
             {
-                ByLeapYearPatterAndEpoch = new CalendarSystem[4, 2];
+                ByLeapYearPatternAndEpoch = new CalendarSystem[4, 2];
 #pragma warning restore CA1814
                 for (int i = 1; i <= 4; i++)
                 {
@@ -794,7 +794,7 @@ namespace NodaTime
                         var epoch = (IslamicEpoch) j;
                         var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern) i, (IslamicEpoch) j);
                         CalendarOrdinal ordinal = CalendarOrdinal.IslamicAstronomicalBase15 + (i - 1) + (j - 1) * 4;
-                        ByLeapYearPatterAndEpoch[i - 1, j - 1] = new CalendarSystem(ordinal, GetIslamicId(leapYearPattern, epoch), IslamicName, calculator, Era.AnnoHegirae);
+                        ByLeapYearPatternAndEpoch[i - 1, j - 1] = new CalendarSystem(ordinal, GetIslamicId(leapYearPattern, epoch), IslamicName, calculator, Era.AnnoHegirae);
                     }
                 }
             }
@@ -806,11 +806,11 @@ namespace NodaTime
         /// </summary>
         private static class MiscellaneousCalendars
         {
-            internal static readonly CalendarSystem Coptic =
+            internal static CalendarSystem Coptic { get; } =
                 new CalendarSystem(CalendarOrdinal.Coptic, CopticId, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
-            internal static readonly CalendarSystem UmAlQura =
+            internal static CalendarSystem UmAlQura { get; } =
                 new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraId, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae);
-            internal static readonly CalendarSystem Badi =
+            internal static CalendarSystem Badi { get; } =
                 new CalendarSystem(CalendarOrdinal.Badi, BadiId, BadiName, new BadiYearMonthDayCalculator(), Era.Bahai);
 
             // Static constructor to enforce laziness. This used to be important to avoid a Heisenbug.
@@ -822,8 +822,8 @@ namespace NodaTime
 
         private static class GregorianJulianCalendars
         {
-            internal static readonly CalendarSystem Gregorian;
-            internal static readonly CalendarSystem Julian;
+            internal static CalendarSystem Gregorian { get; }
+            internal static CalendarSystem Julian { get; }
 
             static GregorianJulianCalendars()
             {
@@ -835,7 +835,7 @@ namespace NodaTime
 
         private static class HebrewCalendars
         {
-            internal static readonly CalendarSystem[] ByMonthNumbering =
+            internal static CalendarSystem[] ByMonthNumbering { get; } =
             {
                 new CalendarSystem(CalendarOrdinal.HebrewCivil, HebrewCivilId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
                 new CalendarSystem(CalendarOrdinal.HebrewScriptural, HebrewScripturalId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)

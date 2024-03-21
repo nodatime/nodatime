@@ -22,11 +22,11 @@ namespace NodaTime.Text
     [Immutable] // Well, assuming an immutable culture...
     public sealed class AnnualDatePattern : IPattern<AnnualDate>
     {
-        internal static readonly AnnualDate DefaultTemplateValue = new AnnualDate(1, 1);
+        internal static AnnualDate DefaultTemplateValue { get; } = new AnnualDate(1, 1);
 
         private const string DefaultFormatPattern = "G"; // General, ISO-like
 
-        internal static readonly PatternBclSupport<AnnualDate> BclSupport =
+        internal static PatternBclSupport<AnnualDate> BclSupport { get; } =
             new PatternBclSupport<AnnualDate>(DefaultFormatPattern, fi => fi.AnnualDatePatternParser);
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly AnnualDatePattern IsoPatternImpl = CreateWithInvariantCulture("MM'-'dd");
+            internal static AnnualDatePattern IsoPatternImpl { get; } = CreateWithInvariantCulture("MM'-'dd");
         }
 
         /// <summary>

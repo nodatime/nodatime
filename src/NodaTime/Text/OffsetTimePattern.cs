@@ -22,7 +22,7 @@ namespace NodaTime.Text
     [Immutable] // Well, assuming an immutable culture...
     public sealed class OffsetTimePattern : IPattern<OffsetTime>
     {
-        internal static readonly OffsetTime DefaultTemplateValue = LocalTime.Midnight.WithOffset(Offset.Zero);
+        internal static OffsetTime DefaultTemplateValue { get; } = LocalTime.Midnight.WithOffset(Offset.Zero);
 
         /// <summary>
         /// Gets an invariant offset time pattern based on ISO-8601 (down to the second), including offset from UTC.
@@ -66,10 +66,10 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly OffsetTimePattern GeneralIsoPatternImpl = Create("HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-            internal static readonly OffsetTimePattern ExtendedIsoPatternImpl = Create("HH':'mm':'ss;FFFFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-            internal static readonly OffsetTimePattern Rfc3339PatternImpl = Create("HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
-            internal static readonly PatternBclSupport<OffsetTime> BclSupport = new PatternBclSupport<OffsetTime>("G", fi => fi.OffsetTimePatternParser);
+            internal static OffsetTimePattern GeneralIsoPatternImpl { get; } = Create("HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static OffsetTimePattern ExtendedIsoPatternImpl { get; } = Create("HH':'mm':'ss;FFFFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static OffsetTimePattern Rfc3339PatternImpl { get; } = Create("HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+            internal static PatternBclSupport<OffsetTime> BclSupport { get; } = new PatternBclSupport<OffsetTime>("G", fi => fi.OffsetTimePatternParser);
         }
 
         private readonly IPattern<OffsetTime> pattern;

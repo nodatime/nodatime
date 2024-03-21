@@ -79,7 +79,7 @@ namespace NodaTime.Text
 
         private const string DefaultFormatPattern = "T"; // Long
 
-        internal static readonly PatternBclSupport<LocalTime> BclSupport =
+        internal static PatternBclSupport<LocalTime> BclSupport { get; } =
             new PatternBclSupport<LocalTime>(DefaultFormatPattern, fi => fi.LocalTimePatternParser);
 
         /// <summary>
@@ -88,12 +88,12 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly LocalTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
-            internal static readonly LocalTimePattern LongExtendedIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss;fffffffff");
-            internal static readonly LocalTimePattern GeneralIsoPatternImpl = CreateWithInvariantCulture("HH':'mm':'ss");
-            internal static readonly LocalTimePattern HourIsoPatternImpl = CreateWithInvariantCulture("HH");
-            internal static readonly LocalTimePattern HourMinuteIsoPatternImpl = CreateWithInvariantCulture("HH':'mm");
-            internal static readonly IPattern<LocalTime> VariablePrecisionIsoPatternImpl = new CompositePatternBuilder<LocalTime>
+            internal static LocalTimePattern ExtendedIsoPatternImpl { get; } = CreateWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
+            internal static LocalTimePattern LongExtendedIsoPatternImpl { get; } = CreateWithInvariantCulture("HH':'mm':'ss;fffffffff");
+            internal static LocalTimePattern GeneralIsoPatternImpl { get; } = CreateWithInvariantCulture("HH':'mm':'ss");
+            internal static LocalTimePattern HourIsoPatternImpl { get; } = CreateWithInvariantCulture("HH");
+            internal static LocalTimePattern HourMinuteIsoPatternImpl { get; } = CreateWithInvariantCulture("HH':'mm");
+            internal static IPattern<LocalTime> VariablePrecisionIsoPatternImpl { get; } = new CompositePatternBuilder<LocalTime>
             {
                 { ExtendedIsoPatternImpl, time => true },
                 { HourMinuteIsoPatternImpl, time => time.Second == 0 && time.NanosecondOfSecond == 0 },

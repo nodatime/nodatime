@@ -948,7 +948,7 @@ namespace NodaTime
         /// </summary>
         private sealed class NormalizingPeriodEqualityComparer : EqualityComparer<Period?>
         {
-            internal static readonly NormalizingPeriodEqualityComparer Instance = new NormalizingPeriodEqualityComparer();
+            internal static NormalizingPeriodEqualityComparer Instance { get; } = new NormalizingPeriodEqualityComparer();
 
             private NormalizingPeriodEqualityComparer()
             {

@@ -37,7 +37,7 @@ namespace NodaTime.Text
 
         private const string DefaultFormatPattern = "g";
 
-        internal static readonly PatternBclSupport<Offset> BclSupport = new PatternBclSupport<Offset>(DefaultFormatPattern, fi => fi.OffsetPatternParser);
+        internal static PatternBclSupport<Offset> BclSupport { get; } = new PatternBclSupport<Offset>(DefaultFormatPattern, fi => fi.OffsetPatternParser);
 
         /// <summary>
         /// Gets the pattern text for this pattern, as supplied on creation.

@@ -22,7 +22,7 @@ namespace NodaTime.Text
     [Immutable] // Well, assuming an immutable culture...
     public sealed class OffsetDatePattern : IPattern<OffsetDate>
     {
-        internal static readonly OffsetDate DefaultTemplateValue = new LocalDate(2000, 1, 1).WithOffset(Offset.Zero);
+        internal static OffsetDate DefaultTemplateValue { get; } = new LocalDate(2000, 1, 1).WithOffset(Offset.Zero);
 
         /// <summary>
         /// Gets an invariant offset date pattern based on ISO-8601, including offset from UTC.
@@ -53,9 +53,9 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly OffsetDatePattern GeneralIsoPatternImpl = Create("uuuu'-'MM'-'ddo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
-            internal static readonly OffsetDatePattern FullRoundtripPatternImpl = Create("uuuu'-'MM'-'ddo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
-            internal static readonly PatternBclSupport<OffsetDate> BclSupport = new PatternBclSupport<OffsetDate>("G", fi => fi.OffsetDatePatternParser);
+            internal static OffsetDatePattern GeneralIsoPatternImpl { get; } = Create("uuuu'-'MM'-'ddo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
+            internal static OffsetDatePattern FullRoundtripPatternImpl { get; } = Create("uuuu'-'MM'-'ddo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
+            internal static PatternBclSupport<OffsetDate> BclSupport { get; } = new PatternBclSupport<OffsetDate>("G", fi => fi.OffsetDatePatternParser);
         }
 
         private readonly IPattern<OffsetDate> pattern;

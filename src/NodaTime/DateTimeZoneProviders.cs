@@ -28,7 +28,7 @@ namespace NodaTime
         {
             // See https://csharpindepth.com/Articles/BeforeFieldInit
             static TzdbHolder() {}
-            internal static readonly DateTimeZoneCache TzdbImpl = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
+            internal static DateTimeZoneCache TzdbImpl { get; } = new DateTimeZoneCache(TzdbDateTimeZoneSource.Default);
         }
 
         // As per TzDbHolder above, this exists to defer construction of a BCL provider until needed.
@@ -37,7 +37,7 @@ namespace NodaTime
         private static class BclHolder
         {
             static BclHolder() {}
-            internal static readonly DateTimeZoneCache BclImpl = new DateTimeZoneCache(new BclDateTimeZoneSource());
+            internal static DateTimeZoneCache BclImpl { get; } = new DateTimeZoneCache(new BclDateTimeZoneSource());
         }
 
         /// <summary>
