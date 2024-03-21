@@ -63,12 +63,12 @@ namespace NodaTime
         /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
         /// This must never be exposed.
         /// </summary>
-        internal static readonly Instant BeforeMinValue = new Instant(Duration.MinDays, deliberatelyInvalid: true);
+        internal static Instant BeforeMinValue { get; } = new Instant(Duration.MinDays, deliberatelyInvalid: true);
         /// <summary>
         /// Instant which is invalid *except* for comparison purposes; it is later than any valid value.
         /// This must never be exposed.
         /// </summary>
-        internal static readonly Instant AfterMaxValue = new Instant(Duration.MaxDays, deliberatelyInvalid: true);
+        internal static Instant AfterMaxValue { get; } = new Instant(Duration.MaxDays, deliberatelyInvalid: true);
 
         /// <summary>
         /// Time elapsed since the Unix epoch.

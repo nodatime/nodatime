@@ -37,13 +37,13 @@ namespace NodaTime.Text
         /// <value>The pattern for durations using the invariant culture. This is the pattern that NodaTime.Serialization.JsonNet uses by default.</value>
         public static DurationPattern JsonRoundtrip => Patterns.JsonRoundtripPatternImpl;
 
-        internal static readonly PatternBclSupport<Duration> BclSupport = new PatternBclSupport<Duration>("o", fi => fi.DurationPatternParser);
+        internal static PatternBclSupport<Duration> BclSupport { get; } = new PatternBclSupport<Duration>("o", fi => fi.DurationPatternParser);
 
         // Nested class for ease of type initialization
         internal static class Patterns
         {
-            internal static readonly DurationPattern RoundtripPatternImpl = CreateWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
-            internal static readonly DurationPattern JsonRoundtripPatternImpl = CreateWithInvariantCulture("-H:mm:ss.FFFFFFFFF");
+            internal static DurationPattern RoundtripPatternImpl { get; } = CreateWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
+            internal static DurationPattern JsonRoundtripPatternImpl { get; } = CreateWithInvariantCulture("-H:mm:ss.FFFFFFFFF");
         }
 
         private readonly IPattern<Duration> pattern;

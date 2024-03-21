@@ -789,7 +789,7 @@ namespace NodaTime
         /// </summary>
         private sealed class LocalComparer : Comparer
         {
-            internal static readonly Comparer Instance = new LocalComparer();
+            internal static Comparer Instance { get; } = new LocalComparer();
 
             private LocalComparer()
             {
@@ -821,7 +821,7 @@ namespace NodaTime
         /// </summary>
         private sealed class InstantComparer : Comparer
         {
-            internal static readonly Comparer Instance = new InstantComparer();
+            internal static Comparer Instance { get; } = new InstantComparer();
 
             private InstantComparer()
             {

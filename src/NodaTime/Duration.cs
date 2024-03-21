@@ -69,14 +69,14 @@ namespace NodaTime
         // to be easily constructed with valid durations, even though the result is a deliberately-invalid instant.
         internal const int MaxDays = (1 << 24) - 1;
         internal const int MinDays = ~MaxDays;
-        internal static readonly BigInteger MinNanoseconds = (BigInteger) MinDays * NanosecondsPerDay;
-        internal static readonly BigInteger MaxNanoseconds = (MaxDays + BigInteger.One) * NanosecondsPerDay - BigInteger.One;
+        internal static BigInteger MinNanoseconds { get; } = (BigInteger) MinDays * NanosecondsPerDay;
+        internal static BigInteger MaxNanoseconds { get; } = (MaxDays + BigInteger.One) * NanosecondsPerDay - BigInteger.One;
 #if NET7_0_OR_GREATER
         private static readonly Int128 MinInt128Nanoseconds = (Int128) MinNanoseconds;
         private static readonly Int128 MaxInt128Nanoseconds = (Int128) MaxNanoseconds;
 #endif
-        internal static readonly decimal MinDecimalNanoseconds = (decimal) MinNanoseconds;
-        internal static readonly decimal MaxDecimalNanoseconds = (decimal) MaxNanoseconds;
+        internal static decimal MinDecimalNanoseconds { get; } = (decimal) MinNanoseconds;
+        internal static decimal MaxDecimalNanoseconds { get; } = (decimal) MaxNanoseconds;
         private static readonly double MinDoubleNanoseconds = (double) MinNanoseconds;
         private static readonly double MaxDoubleNanoseconds = (double) MaxNanoseconds;
 

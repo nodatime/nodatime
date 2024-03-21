@@ -22,7 +22,7 @@ namespace NodaTime.Text
     [Immutable] // Well, assuming an immutable culture...
     public sealed class InstantPattern : IPattern<Instant>
     {
-        internal static readonly Instant DefaultTemplateValue = Instant.FromUtc(2000, 1, 1, 0, 0);
+        internal static Instant DefaultTemplateValue { get; } = Instant.FromUtc(2000, 1, 1, 0, 0);
 
         /// <summary>
         /// Gets the general pattern, which always uses an invariant culture. The general pattern represents
@@ -42,7 +42,7 @@ namespace NodaTime.Text
 
         private const string DefaultFormatPattern = "g";
 
-        internal static readonly PatternBclSupport<Instant> BclSupport = new PatternBclSupport<Instant>(DefaultFormatPattern, fi => fi.InstantPatternParser);
+        internal static PatternBclSupport<Instant> BclSupport { get; } = new PatternBclSupport<Instant>(DefaultFormatPattern, fi => fi.InstantPatternParser);
 
         /// <summary>
         /// Class whose existence is solely to avoid type initialization order issues, most of which stem
@@ -50,8 +50,8 @@ namespace NodaTime.Text
         /// </summary>
         private static class Patterns
         {
-            internal static readonly InstantPattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'");
-            internal static readonly InstantPattern GeneralPatternImpl = CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss'Z'");
+            internal static InstantPattern ExtendedIsoPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'");
+            internal static InstantPattern GeneralPatternImpl { get; } = CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss'Z'");
         }
 
         private readonly IPattern<Instant> pattern;

@@ -62,7 +62,7 @@ namespace NodaTime.Globalization
         /// A NodaFormatInfo wrapping the invariant culture.
         /// </summary>
         // Note: this must occur below the pattern parsers, to make type initialization work...
-        public static readonly NodaFormatInfo InvariantInfo = new NodaFormatInfo(CultureInfo.InvariantCulture, initializeEagerly: true);
+        internal static NodaFormatInfo InvariantInfo { get; } = new NodaFormatInfo(CultureInfo.InvariantCulture, initializeEagerly: true);
 
         // Justification for max size: CultureInfo.GetCultures(CultureTypes.AllCultures) returned:
         // - 378 cultures on Windows 8 in mid-2013

@@ -22,7 +22,7 @@ namespace NodaTime.Text
     [Immutable] // Well, assuming an immutable culture...
     public sealed class OffsetDateTimePattern : IPattern<OffsetDateTime>
     {
-        internal static readonly OffsetDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0).WithOffset(Offset.Zero);
+        internal static OffsetDateTime DefaultTemplateValue { get; } = new LocalDateTime(2000, 1, 1, 0, 0).WithOffset(Offset.Zero);
 
         /// <summary>
         /// Gets an invariant offset date/time pattern based on ISO-8601 (down to the second), including offset from UTC.
@@ -81,11 +81,11 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly OffsetDateTimePattern GeneralIsoPatternImpl = Create("uuuu'-'MM'-'dd'T'HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
-            internal static readonly OffsetDateTimePattern ExtendedIsoPatternImpl = Create("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
-            internal static readonly OffsetDateTimePattern Rfc3339PatternImpl = Create("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
-            internal static readonly OffsetDateTimePattern FullRoundtripPatternImpl = Create("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
-            internal static readonly PatternBclSupport<OffsetDateTime> BclSupport = new PatternBclSupport<OffsetDateTime>("G", fi => fi.OffsetDateTimePatternParser);
+            internal static OffsetDateTimePattern GeneralIsoPatternImpl { get; } = Create("uuuu'-'MM'-'dd'T'HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
+            internal static OffsetDateTimePattern ExtendedIsoPatternImpl { get; } = Create("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
+            internal static OffsetDateTimePattern Rfc3339PatternImpl { get; } = Create("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
+            internal static OffsetDateTimePattern FullRoundtripPatternImpl { get; } = Create("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> '('c')'", NodaFormatInfo.InvariantInfo, DefaultTemplateValue, LocalDatePattern.DefaultTwoDigitYearMax);
+            internal static PatternBclSupport<OffsetDateTime> BclSupport { get; } = new PatternBclSupport<OffsetDateTime>("G", fi => fi.OffsetDateTimePatternParser);
         }
 
         private readonly IPattern<OffsetDateTime> pattern;

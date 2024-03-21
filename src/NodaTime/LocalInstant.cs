@@ -16,8 +16,8 @@ namespace NodaTime
     /// </summary>
     internal readonly struct LocalInstant : IEquatable<LocalInstant>
     {
-        public static readonly LocalInstant BeforeMinValue = new LocalInstant(Instant.BeforeMinValue.DaysSinceEpoch, deliberatelyInvalid: true);
-        public static readonly LocalInstant AfterMaxValue = new LocalInstant(Instant.AfterMaxValue.DaysSinceEpoch, deliberatelyInvalid: true);
+        internal static LocalInstant BeforeMinValue { get; } = new LocalInstant(Instant.BeforeMinValue.DaysSinceEpoch, deliberatelyInvalid: true);
+        internal static LocalInstant AfterMaxValue { get; } = new LocalInstant(Instant.AfterMaxValue.DaysSinceEpoch, deliberatelyInvalid: true);
 
         /// <summary>
         /// Elapsed time since the local 1970-01-01T00:00:00.

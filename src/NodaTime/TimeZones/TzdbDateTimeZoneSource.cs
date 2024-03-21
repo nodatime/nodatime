@@ -34,14 +34,14 @@ namespace NodaTime.TimeZones
         /// Gets the <see cref="TzdbDateTimeZoneSource"/> initialised from resources within the NodaTime assembly.
         /// </summary>
         /// <value>The source initialised from resources within the NodaTime assembly.</value>
-        public static TzdbDateTimeZoneSource Default => DefaultHolder.builtin;
+        public static TzdbDateTimeZoneSource Default => DefaultHolder.BuiltIn;
 
         // Class to enable lazy initialization of the default instance.
         private static class DefaultHolder
         {
             static DefaultHolder() { }
 
-            internal static readonly TzdbDateTimeZoneSource builtin = new TzdbDateTimeZoneSource(LoadDefaultDataSource());
+            internal static TzdbDateTimeZoneSource BuiltIn { get; } = new TzdbDateTimeZoneSource(LoadDefaultDataSource());
 
             private static TzdbStreamData LoadDefaultDataSource()
             {

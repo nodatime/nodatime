@@ -22,13 +22,13 @@ namespace NodaTime.Text
     [Immutable] // Well, assuming an immutable culture...
     public class YearMonthPattern : IPattern<YearMonth>
     {
-        internal static readonly YearMonth DefaultTemplateValue = new YearMonth(2000, 1);
+        internal static YearMonth DefaultTemplateValue { get; } = new YearMonth(2000, 1);
 
         private const string IsoFormatPattern = "g"; // General (ISO)
 
         internal const string CultureDefaultFormatPattern = "G"; // General (culture-specific)
 
-        internal static readonly PatternBclSupport<YearMonth> BclSupport =
+        internal static PatternBclSupport<YearMonth> BclSupport { get; } =
             new PatternBclSupport<YearMonth>(IsoFormatPattern, fi => fi.YearMonthPatternParser);
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly YearMonthPattern IsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM");
+            internal static YearMonthPattern IsoPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM");
         }
 
         /// <summary>

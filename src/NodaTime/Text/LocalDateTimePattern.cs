@@ -23,11 +23,11 @@ namespace NodaTime.Text
     [Immutable] // Well, assuming an immutable culture...
     public sealed class LocalDateTimePattern : IPattern<LocalDateTime>
     {
-        internal static readonly LocalDateTime DefaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0);
+        internal static LocalDateTime DefaultTemplateValue { get; } = new LocalDateTime(2000, 1, 1, 0, 0);
 
         private const string DefaultFormatPattern = "G"; // General (long time)
 
-        internal static readonly PatternBclSupport<LocalDateTime> BclSupport =
+        internal static PatternBclSupport<LocalDateTime> BclSupport { get; } =
             new PatternBclSupport<LocalDateTime>(DefaultFormatPattern, fi => fi.LocalDateTimePatternParser);
 
         /// <summary>
@@ -125,14 +125,14 @@ namespace NodaTime.Text
         /// </summary>
         internal static class Patterns
         {
-            internal static readonly LocalDateTimePattern GeneralIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss");
-            internal static readonly LocalDateTimePattern ExtendedIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF");
-            internal static readonly LocalDateTimePattern BclRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
-            internal static readonly LocalDateTimePattern FullRoundtripWithoutCalendarImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
-            internal static readonly LocalDateTimePattern FullRoundtripPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
-            internal static readonly LocalDateTimePattern DateHourIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH");
-            internal static readonly LocalDateTimePattern DateHourMinuteIsoPatternImpl = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm");
-            internal static readonly IPattern<LocalDateTime> VariablePrecisionIsoPatternImpl = new CompositePatternBuilder<LocalDateTime>
+            internal static LocalDateTimePattern GeneralIsoPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss");
+            internal static LocalDateTimePattern ExtendedIsoPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF");
+            internal static LocalDateTimePattern BclRoundtripPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
+            internal static LocalDateTimePattern FullRoundtripWithoutCalendarImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
+            internal static LocalDateTimePattern FullRoundtripPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
+            internal static LocalDateTimePattern DateHourIsoPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH");
+            internal static LocalDateTimePattern DateHourMinuteIsoPatternImpl { get; } = CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm");
+            internal static IPattern<LocalDateTime> VariablePrecisionIsoPatternImpl { get; } = new CompositePatternBuilder<LocalDateTime>
             {
                 { ExtendedIsoPatternImpl, time => true },
                 { DateHourMinuteIsoPatternImpl, time => time.Second == 0 && time.NanosecondOfSecond == 0 },

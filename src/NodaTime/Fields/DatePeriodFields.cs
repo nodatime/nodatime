@@ -9,9 +9,9 @@ namespace NodaTime.Fields
     /// </summary>
     internal static class DatePeriodFields
     {
-        internal static readonly IDatePeriodField DaysField = new FixedLengthDatePeriodField(1);
-        internal static readonly IDatePeriodField WeeksField = new FixedLengthDatePeriodField(7);
-        internal static readonly IDatePeriodField MonthsField = new MonthsPeriodField();
-        internal static readonly IDatePeriodField YearsField = new YearsPeriodField();
+        internal static IDatePeriodField DaysField { get; } = new FixedLengthDatePeriodField(1);
+        internal static IDatePeriodField WeeksField { get; } = new FixedLengthDatePeriodField(7);
+        internal static IDatePeriodField MonthsField { get; } = new MonthsPeriodField();
+        internal static IDatePeriodField YearsField { get; } = new YearsPeriodField();
     }
 }
