@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using NodaTime.Extensions;
+using static System.FormattableString;
 
 // Remove static constructors.
 // The static constructor here does a fair amount of work and includes
@@ -68,19 +69,19 @@ namespace NodaTime.Xml
         {
             var xsStringType = XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String);
 
-            var annualDateRestriction = CreatePatternRestriction<AnnualDate>(xsStringType, $"{MonthPattern}-{DayPattern}");
+            var annualDateRestriction = CreatePatternRestriction<AnnualDate>(xsStringType, Invariant($"{MonthPattern}-{DayPattern}"));
             var calendarRestriction = CreateEnumerationRestriction("calendar", xsStringType, CalendarSystem.Ids);
             var durationRestriction = CreatePatternRestriction<Duration>(xsStringType, DurationPattern);
-            var instantRestriction = CreatePatternRestriction<Instant>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}Z");
-            var localDateRestriction = CreatePatternRestriction<LocalDate>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}");
-            var localDateTimeRestriction = CreatePatternRestriction<LocalDateTime>(xsStringType,  $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}");
+            var instantRestriction = CreatePatternRestriction<Instant>(xsStringType, Invariant($"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}Z"));
+            var localDateRestriction = CreatePatternRestriction<LocalDate>(xsStringType, Invariant($"{YearPattern}-{MonthPattern}-{DayPattern}"));
+            var localDateTimeRestriction = CreatePatternRestriction<LocalDateTime>(xsStringType, Invariant($"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}"));
             var localTimeRestriction = CreatePatternRestriction<LocalTime>(xsStringType, TimePattern);
             var offsetRestriction = CreatePatternRestriction<Offset>(xsStringType, OffsetPattern);
-            var offsetDateRestriction = CreatePatternRestriction<OffsetDate>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}{OffsetPattern}");
-            var offsetDateTimeRestriction = CreatePatternRestriction<OffsetDateTime>(xsStringType, $"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}{OffsetPattern}");
-            var offsetTimeRestriction = CreatePatternRestriction<OffsetTime>(xsStringType, $"{TimePattern}{OffsetPattern}");
+            var offsetDateRestriction = CreatePatternRestriction<OffsetDate>(xsStringType, Invariant($"{YearPattern}-{MonthPattern}-{DayPattern}{OffsetPattern}"));
+            var offsetDateTimeRestriction = CreatePatternRestriction<OffsetDateTime>(xsStringType, Invariant($"{YearPattern}-{MonthPattern}-{DayPattern}T{TimePattern}{OffsetPattern}"));
+            var offsetTimeRestriction = CreatePatternRestriction<OffsetTime>(xsStringType, Invariant($"{TimePattern}{OffsetPattern}"));
             var periodBuilderRestriction = CreatePatternRestriction<PeriodBuilder>(xsStringType, PeriodBuilderPattern);
-            var yearMonthRestriction = CreatePatternRestriction<YearMonth>(xsStringType, $"{YearPattern}-{MonthPattern}");
+            var yearMonthRestriction = CreatePatternRestriction<YearMonth>(xsStringType, Invariant($"{YearPattern}-{MonthPattern}"));
             var zoneIds = CreateEnumerationRestriction("zoneIds", xsStringType, XmlSerializationSettings.DateTimeZoneProvider.GetAllZones().Select(e => e.Id));
             // The "zoneIds" purpose is to document the known zone identifiers. The "zone" restriction is a union between known zone ids and
             // xs:string so that validation won't fail when a new zone identifier is added to the Time Zone Database.

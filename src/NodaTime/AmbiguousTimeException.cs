@@ -5,6 +5,7 @@
 using NodaTime.Annotations;
 using NodaTime.Utility;
 using System;
+using static System.FormattableString;
 
 // Standard exception constructors: we don't *want* those constructors.
 // The single constructor provided in this class populates the message and
@@ -83,7 +84,7 @@ namespace NodaTime
         /// <param name="earlierMapping">The earlier possible mapping</param>
         /// <param name="laterMapping">The later possible mapping</param>
         public AmbiguousTimeException(ZonedDateTime earlierMapping, ZonedDateTime laterMapping)
-            : base(paramName: null, message: $"Local time {earlierMapping.LocalDateTime} is ambiguous in time zone {earlierMapping.Zone.Id}")
+            : base(paramName: null, message: Invariant($"Local time {earlierMapping.LocalDateTime} is ambiguous in time zone {earlierMapping.Zone.Id}"))
         {
             EarlierMapping = earlierMapping;
             LaterMapping = laterMapping;

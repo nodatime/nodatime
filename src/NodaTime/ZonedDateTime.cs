@@ -16,6 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using static System.FormattableString;
 
 // Do not nest type X.
 // The rule is somewhat subjective, but more importantly these have been available
@@ -106,7 +107,7 @@ namespace NodaTime
             // Not using Preconditions, to avoid building the string unnecessarily.
             if (correctOffset != offset)
             {
-                throw new ArgumentException($"Offset {offset} is invalid for local date and time {localDateTime} in time zone {zone.Id}", nameof(offset));
+                throw new ArgumentException(Invariant($"Offset {offset} is invalid for local date and time {localDateTime} in time zone {zone.Id}"), nameof(offset));
 
             }
             offsetDateTime = new OffsetDateTime(localDateTime, offset);

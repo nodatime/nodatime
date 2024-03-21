@@ -6,6 +6,7 @@ using NodaTime.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.FormattableString;
 
 namespace NodaTime.TimeZones
 {
@@ -83,7 +84,7 @@ namespace NodaTime.TimeZones
         /// This source returns a string such as "TimeZoneInfo: 3.5.0.0" corresponding to the version of the assembly
         /// containing <see cref="TimeZoneInfo"/>.
         /// </remarks>
-        public string VersionId => $"TimeZoneInfo: {typeof(TimeZoneInfo).Assembly.GetName().Version}";
+        public string VersionId => Invariant($"TimeZoneInfo: {typeof(TimeZoneInfo).Assembly.GetName().Version}");
 
         /// <summary>
         /// Creates a new instance of <see cref="BclDateTimeZone" /> from the <see cref="TimeZoneInfo"/> with the given

@@ -15,6 +15,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using static NodaTime.NodaConstants;
+using static System.FormattableString;
 
 namespace NodaTime
 {
@@ -1097,7 +1098,7 @@ namespace NodaTime
         {
             if (nanoseconds < MinNanoseconds || nanoseconds > MaxNanoseconds)
             {
-                throw new ArgumentOutOfRangeException(nameof(nanoseconds), $"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]");
+                throw new ArgumentOutOfRangeException(nameof(nanoseconds), Invariant($"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]"));
             }
 
             int days = nanoseconds >= 0
@@ -1118,7 +1119,7 @@ namespace NodaTime
         {
             if (nanoseconds < MinInt128Nanoseconds || nanoseconds > MaxInt128Nanoseconds)
             {
-                throw new ArgumentOutOfRangeException(nameof(nanoseconds), $"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]");
+                throw new ArgumentOutOfRangeException(nameof(nanoseconds), Invariant($"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]"));
             }
 
             int days = nanoseconds >= Int128.Zero
@@ -1135,7 +1136,7 @@ namespace NodaTime
             if (nanoseconds < MinDecimalNanoseconds || nanoseconds > MaxDecimalNanoseconds)
             {
                 // Note: use the BigInteger value rather than decimal to avoid decimal points in the message. They're the same values.
-                throw new ArgumentOutOfRangeException(nameof(nanoseconds), $"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]");
+                throw new ArgumentOutOfRangeException(nameof(nanoseconds), Invariant($"Value should be in range [{MinNanoseconds}-{MaxNanoseconds}]"));
             }
 
             int days = nanoseconds >= 0
