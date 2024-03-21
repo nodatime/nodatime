@@ -7,6 +7,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CA1303</NoWarn>
     <IsPackable>True</IsPackable>
+    <EnablePackageValidation>true</EnablePackageValidation>
     <PackageTags>date;time;timezone;calendar;nodatime</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <IsAotCompatible Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net7.0'))">true</IsAotCompatible>
