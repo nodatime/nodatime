@@ -195,7 +195,8 @@ namespace NodaTime.Utility
     /// That's fine, as Preconditions is an internal class; we don't expect to be building
     /// an assembly which might use this in debug configuration against a non-debug Noda Time or vice versa.
     /// </summary>
-    internal class DebugPreconditionException : Exception
+    [VisibleForTesting]
+    internal sealed class DebugPreconditionException : Exception
     {
         internal DebugPreconditionException(string message) : base(message)
         {

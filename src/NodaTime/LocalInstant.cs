@@ -95,7 +95,7 @@ namespace NodaTime
         /// </remarks>
         /// <param name="offset">The offset between UTC and a time zone for this local instant</param>
         /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
-        public Instant Minus(Offset offset) => Instant.FromUntrustedDuration(duration.MinusSmallNanoseconds(offset.Nanoseconds));
+        internal Instant Minus(Offset offset) => Instant.FromUntrustedDuration(duration.MinusSmallNanoseconds(offset.Nanoseconds));
 
         /// <summary>
         /// Implements the operator == (equality).

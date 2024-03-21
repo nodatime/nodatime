@@ -127,6 +127,7 @@ namespace NodaTime.TimeZones
         /// The Unix rules are sometimes either slightly disjoint, or overlap. Ideally, we should be able to remove
         /// (or at least understand the need for) this code, but until then, it seems to make all the tests pass.
         /// </summary>
+        [VisibleForTesting]
         internal static void FixUnixTransitions(BclAdjustmentRule[] rules)
         {
             for (int i = 0; i < rules.Length - 1; i++)
@@ -159,7 +160,7 @@ namespace NodaTime.TimeZones
             }
         }
 
-        // Visible for testing
+        [VisibleForTesting]
         internal static IZoneIntervalMap BuildMap(BclAdjustmentRule[] rules, Offset standardOffset, string standardName)
         {
             Preconditions.CheckNotNull(standardName, nameof(standardName));
