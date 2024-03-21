@@ -5,6 +5,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IsPackable>True</IsPackable>
+    <EnablePackageValidation>true</EnablePackageValidation>
     <PackageTags>nodatime;testing</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>

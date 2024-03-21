@@ -1,10 +1,15 @@
 <Project>
-  <!-- 
-    - The most recently-released version. This is the last
-    - thing to change before performing a release.
-    -->
   <PropertyGroup>
+    <!-- 
+      - The most recently-released version. This is the last
+      - thing to change before performing a release.
+      -->
     <Version>3.1.0</Version>
+    <!--
+      - The version we check for compatibility against. This is changed
+      - immediately *after* a release.
+      -->
+    <PackageValidationBaselineVersion>3.1.0</PackageValidationBaselineVersion>
   </PropertyGroup>
   
   <!-- Common properties across all projects (or ones that at least aren't harmful) -->
