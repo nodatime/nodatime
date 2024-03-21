@@ -5,6 +5,7 @@
 using NodaTime.Annotations;
 using NodaTime.Utility;
 using System;
+using static System.FormattableString;
 
 namespace NodaTime.Calendars
 {
@@ -67,7 +68,7 @@ namespace NodaTime.Calendars
                 if (days < calendar.MinDays || days > calendar.MaxDays)
                 {
                     throw new ArgumentOutOfRangeException(nameof(weekYear),
-                        $"The combination of {nameof(weekYear)}, {nameof(weekOfWeekYear)} and {nameof(dayOfWeek)} is invalid");
+                        Invariant($"The combination of {nameof(weekYear)}, {nameof(weekOfWeekYear)} and {nameof(dayOfWeek)} is invalid"));
                 }
                 LocalDate ret = new LocalDate(yearMonthDayCalculator.GetYearMonthDay(days).WithCalendar(calendar));
 
@@ -85,7 +86,7 @@ namespace NodaTime.Calendars
                     if (GetWeekYear(ret) != weekYear)
                     {
                         throw new ArgumentOutOfRangeException(nameof(weekYear),
-                            $"The combination of {nameof(weekYear)}, {nameof(weekOfWeekYear)} and {nameof(dayOfWeek)} is invalid");
+                            Invariant($"The combination of {nameof(weekYear)}, {nameof(weekOfWeekYear)} and {nameof(dayOfWeek)} is invalid"));
                     }
                 }
                 return ret;

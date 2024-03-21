@@ -7,6 +7,7 @@ using NodaTime.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using static System.FormattableString;
 
 namespace NodaTime
 {
@@ -176,9 +177,8 @@ namespace NodaTime
         /// </returns>
         public override string ToString()
         {
-            string start = LocalDatePattern.Iso.Format(Start);
-            string end = LocalDatePattern.Iso.Format(End);
-            return $"[{start}, {end}]";
+            var pattern = LocalDatePattern.Iso;
+            return Invariant($"[{pattern.Format(Start)}, {pattern.Format(End)}]");
         }
 
         /// <summary>

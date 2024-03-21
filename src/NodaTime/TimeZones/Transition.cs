@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using static System.FormattableString;
 
 namespace NodaTime.TimeZones
 {
@@ -82,7 +83,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString() => $"Transition to {NewOffset} at {Instant}";
+        public override string ToString() => Invariant($"Transition to {NewOffset} at {Instant}");
         #endregion  // Object overrides
     }
 }

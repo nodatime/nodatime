@@ -6,6 +6,7 @@ using NodaTime.Annotations;
 using NodaTime.Utility;
 using System;
 using System.Diagnostics;
+using static System.FormattableString;
 
 namespace NodaTime.TimeZones
 {
@@ -338,7 +339,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
-        public override string ToString() => $"{Name}: [{RawStart}, {RawEnd}) {WallOffset} ({Savings})";
+        public override string ToString() => Invariant($"{Name}: [{RawStart}, {RawEnd}) {WallOffset} ({Savings})");
 
         #endregion // object Overrides
     }

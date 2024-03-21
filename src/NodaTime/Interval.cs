@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using static System.FormattableString;
 
 namespace NodaTime
 {
@@ -213,7 +214,7 @@ namespace NodaTime
         public override string ToString()
         {
             var pattern = InstantPattern.ExtendedIso;
-            return $"{pattern.Format(start)}/{pattern.Format(end)}";
+            return Invariant($"{pattern.Format(start)}/{pattern.Format(end)}");
         }
         #endregion
 

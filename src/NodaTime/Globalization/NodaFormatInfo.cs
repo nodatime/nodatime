@@ -13,6 +13,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using static System.FormattableString;
 
 namespace NodaTime.Globalization
 {
@@ -476,13 +477,13 @@ namespace NodaTime.Globalization
             // Note: no caching for this case. It's a corner case anyway... we could add a cache later
             // if users notice a problem.
             DateTimeFormatInfo dateTimeFormatInfo => new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo, initializeEagerly: false),
-            _ => throw new ArgumentException($"Cannot use provider of type {provider.GetType().FullName} in Noda Time", nameof(provider))
+            _ => throw new ArgumentException(Invariant($"Cannot use provider of type {provider.GetType().FullName} in Noda Time"), nameof(provider))
         };
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        public override string ToString() => $"NodaFormatInfo[{CultureInfo.Name}]";
+        public override string ToString() => Invariant($"NodaFormatInfo[{CultureInfo.Name}]");
 
         /// <summary>
         /// The description for an era: the primary name and all possible names.
@@ -516,7 +517,7 @@ namespace NodaTime.Globalization
                     string? eraNameFromCulture = GetEraNameFromBcl(era, cultureInfo);
                     if (eraNameFromCulture != null && !pipeDelimited.StartsWith(eraNameFromCulture + "|", StringComparison.Ordinal))
                     {
-                        pipeDelimited = $"{eraNameFromCulture}|{pipeDelimited}";
+                        pipeDelimited = Invariant($"{eraNameFromCulture}|{pipeDelimited}");
                     }
                     allNames = pipeDelimited.Split('|');
                     primaryName = allNames[0];

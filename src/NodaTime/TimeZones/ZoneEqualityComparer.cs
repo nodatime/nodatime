@@ -7,6 +7,7 @@ using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static System.FormattableString;
 
 namespace NodaTime.TimeZones
 {
@@ -136,7 +137,7 @@ namespace NodaTime.TimeZones
             this.options = options;
             if ((options & ~Options.StrictestMatch) != 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(options), $"The value {options} is not defined within ZoneEqualityComparer.Options");
+                throw new ArgumentOutOfRangeException(nameof(options), Invariant($"The value {options} is not defined within ZoneEqualityComparer.Options"));
             }
             zoneIntervalComparer = new ZoneIntervalEqualityComparer(options, interval);
         }

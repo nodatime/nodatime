@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System.Diagnostics;
+using static System.FormattableString;
 
 namespace NodaTime.Text
 {
@@ -73,8 +74,8 @@ namespace NodaTime.Text
         ///   A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString() =>
-            Index <= 0 ? $"^{Value}"
-                : Index >= Length ? $"{Value}^"
+            Index <= 0 ? Invariant($"^{Value}")
+                : Index >= Length ? Invariant($"{Value}^")
                 : Value.Insert(Index, "^");
 
         /// <summary>

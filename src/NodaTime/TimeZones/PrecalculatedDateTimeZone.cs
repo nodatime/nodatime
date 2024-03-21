@@ -6,6 +6,7 @@ using NodaTime.Annotations;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 using System;
+using static System.FormattableString;
 
 namespace NodaTime.TimeZones
 {
@@ -105,10 +106,11 @@ namespace NodaTime.TimeZones
                 }
             }
             // Note: this would indicate a bug. The time zone is meant to cover the whole of time.
-            throw new InvalidOperationException($"Instant {instant} did not exist in time zone {Id}");
+            throw new InvalidOperationException(Invariant($"Instant {instant} did not exist in time zone {Id}"));
         }
 
         #region I/O
+        // Note: used in TzdbCompiler.
         /// <summary>
         /// Writes the time zone to the specified writer.
         /// </summary>

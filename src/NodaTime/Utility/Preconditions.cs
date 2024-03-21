@@ -3,9 +3,11 @@
 // as found in the LICENSE.txt file.
 
 using JetBrains.Annotations;
+using NodaTime.Annotations;
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using static System.FormattableString;
 
 namespace NodaTime.Utility
 {
@@ -38,7 +40,7 @@ namespace NodaTime.Utility
 #if DEBUG
             if (argument is null)
             {
-                throw new DebugPreconditionException($"{paramName} is null");
+                throw new DebugPreconditionException(Invariant($"{paramName} is null"));
             }
 #endif
         }
@@ -73,7 +75,7 @@ namespace NodaTime.Utility
         private static void ThrowArgumentOutOfRangeException<T>([InvokerParameterName] string paramName, T value, T minInclusive, T maxInclusive)
         {
             throw new ArgumentOutOfRangeException(paramName, value,
-                $"Value should be in range [{minInclusive}-{maxInclusive}]");
+                Invariant($"Value should be in range [{minInclusive}-{maxInclusive}]"));
         }
 
         // This method exists for cases where we know we want to throw an exception, but we need the compiler to think it
@@ -81,7 +83,7 @@ namespace NodaTime.Utility
         internal static T ThrowArgumentOutOfRangeExceptionWithReturn<T>([InvokerParameterName] string paramName, T value, T minInclusive, T maxInclusive)
         {
             throw new ArgumentOutOfRangeException(paramName, value,
-                $"Value should be in range [{minInclusive}-{maxInclusive}]");
+                Invariant($"Value should be in range [{minInclusive}-{maxInclusive}]"));
         }
 
         /// <summary>
@@ -95,7 +97,7 @@ namespace NodaTime.Utility
 #if DEBUG
             if (value < minInclusive || value > maxInclusive)
             {
-                throw new DebugPreconditionException($"Value {value} for {paramName} is out of range [{minInclusive}-{maxInclusive}]");
+                throw new DebugPreconditionException(Invariant($"Value {value} for {paramName} is out of range [{minInclusive}-{maxInclusive}]"));
             }
 #endif
         }
@@ -111,7 +113,7 @@ namespace NodaTime.Utility
 #if DEBUG
             if (value < minInclusive || value > maxInclusive)
             {
-                throw new DebugPreconditionException($"Value {value} for {paramName} is out of range [{minInclusive}-{maxInclusive}]");
+                throw new DebugPreconditionException(Invariant($"Value {value} for {paramName} is out of range [{minInclusive}-{maxInclusive}]"));
             }
 #endif
         }
@@ -124,7 +126,7 @@ namespace NodaTime.Utility
             if (!expression)
             {
                 string message = string.Format(CultureInfo.CurrentCulture, messageFormat, messageArgs);
-                throw new DebugPreconditionException($"{message} (parameter name: {parameter})");
+                throw new DebugPreconditionException(Invariant($"{message} (parameter name: {parameter})"));
             }
 #endif
         }

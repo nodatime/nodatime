@@ -6,6 +6,7 @@ using NodaTime.Annotations;
 using NodaTime.Utility;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using static System.FormattableString;
 
 // Remove static constructors.
 // The static constructor here does enough work across multiple fields that
@@ -133,7 +134,7 @@ namespace NodaTime.Calendars
             }
             // This should throw...
             Preconditions.CheckArgumentRange(nameof(dayOfYear), dayOfYear, 1, GetDaysInYear(year));
-            throw new InvalidOperationException($"Bug in Noda Time: year {year} has {GetDaysInYear(year)} days but {dayOfYear} isn't valid");
+            throw new InvalidOperationException(Invariant($"Bug in Noda Time: year {year} has {GetDaysInYear(year)} days but {dayOfYear} isn't valid"));
         }
 
         internal override bool IsLeapYear([Trusted] int year) => YearLengths[year - ComputedMinYear + 1] == 355;

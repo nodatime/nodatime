@@ -4,6 +4,7 @@
 
 using NodaTime.Utility;
 using System;
+using static System.FormattableString;
 
 namespace NodaTime.Calendars
 {
@@ -60,7 +61,7 @@ namespace NodaTime.Calendars
         {
             Preconditions.DebugCheckState(
                 FirstYearOfStandardizedCalendar + YearInfoRaw.Length == BadiMaxYear + 1,
-                $"Invalid compressed data. Length: {YearInfoRaw.Length}");
+                Invariant($"Invalid compressed data. Length: {YearInfoRaw.Length}"));
         }
 
         internal BadiYearMonthDayCalculator()

@@ -66,10 +66,8 @@ namespace NodaTime
         private const string IslamicName = "Hijri";
         private const string IslamicIdBase = IslamicName;
         // Not part of IslamicCalendars as we want to be able to call it without triggering type initialization.
-        internal static string GetIslamicId(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-        {
-            return Invariant($"{IslamicIdBase} {epoch}-{leapYearPattern}");
-        }
+        internal static string GetIslamicId(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch) =>
+            Invariant($"{IslamicIdBase} {epoch}-{leapYearPattern}");
 
         private const string PersianName = "Persian";
         private const string PersianIdBase = PersianName;
@@ -110,7 +108,7 @@ namespace NodaTime
             Preconditions.CheckNotNull(id, nameof(id));
             if (!IdToFactoryMap.TryGetValue(id, out Func<CalendarSystem>? factory))
             {
-                throw new KeyNotFoundException($"No calendar system for ID {id} exists");
+                throw new KeyNotFoundException(Invariant($"No calendar system for ID {id} exists"));
             }
             return factory();
         }
@@ -755,7 +753,7 @@ namespace NodaTime
             CalendarOrdinal.IslamicCivilIndian => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil),
             CalendarOrdinal.IslamicCivilHabashAlHasib => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil),
             CalendarOrdinal.UmAlQura => UmAlQura,
-            _ => throw new InvalidOperationException($"Bug in Noda Time: calendar ordinal {ordinal} missing from switch in CalendarSystem.ForOrdinal.")
+            _ => throw new InvalidOperationException(Invariant($"Bug in Noda Time: calendar ordinal {ordinal} missing from switch in CalendarSystem.ForOrdinal."))
         };
 
         // "Holder" classes for lazy initialization of calendar systems

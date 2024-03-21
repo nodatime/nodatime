@@ -5,6 +5,7 @@
 using NodaTime.Extensions;
 using System;
 using System.Globalization;
+using static System.FormattableString;
 using static System.Globalization.CalendarWeekRule;
 
 namespace NodaTime.Calendars
@@ -106,7 +107,7 @@ namespace NodaTime.Calendars
                 FirstDay => 1,
                 FirstFourDayWeek => 4,
                 FirstFullWeek => 7,
-                _ => throw new ArgumentException($"Unsupported CalendarWeekRule: {calendarWeekRule}", nameof(calendarWeekRule))
+                _ => throw new ArgumentException(Invariant($"Unsupported CalendarWeekRule: {calendarWeekRule}"), nameof(calendarWeekRule))
             };
             return new SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek.ToIsoDayOfWeek(), true);
         }

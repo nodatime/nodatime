@@ -6,6 +6,7 @@ using NodaTime.Calendars;
 using NodaTime.TimeZones.IO;
 using NodaTime.Utility;
 using System;
+using static System.FormattableString;
 
 namespace NodaTime.TimeZones
 {
@@ -250,7 +251,7 @@ namespace NodaTime.TimeZones
             if (next is null)
             {
                 throw new InvalidOperationException(
-                    $"Noda Time bug or bad data: Expected a transition later than {instant}; standard offset = {standardOffset}; previousSavings = {previousSavings}; recurrence = {this}");
+                    Invariant($"Noda Time bug or bad data: Expected a transition later than {instant}; standard offset = {standardOffset}; previousSavings = {previousSavings}; recurrence = {this}"));
             }
             return next.Value;
         }
@@ -264,7 +265,7 @@ namespace NodaTime.TimeZones
             if (previous is null)
             {
                 throw new InvalidOperationException(
-                    $"Noda Time bug or bad data: Expected a transition earlier than {instant}; standard offset = {standardOffset}; previousSavings = {previousSavings}; recurrence = {this}");
+                    Invariant($"Noda Time bug or bad data: Expected a transition earlier than {instant}; standard offset = {standardOffset}; previousSavings = {previousSavings}; recurrence = {this}"));
             }
             return previous.Value;
         }
@@ -331,7 +332,7 @@ namespace NodaTime.TimeZones
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.
         /// </returns>
-        public override string ToString() => $"{Name} {Savings} {YearOffset} [{FromYear}-{ToYear}]";
+        public override string ToString() => Invariant($"{Name} {Savings} {YearOffset} [{FromYear}-{ToYear}]");
 
         #endregion // Object overrides
 

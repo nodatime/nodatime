@@ -8,6 +8,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using static System.FormattableString;
 
 namespace NodaTime.TimeZones
 {
@@ -82,7 +83,7 @@ namespace NodaTime.TimeZones
             string? id = source.GetSystemDefaultId();
             if (id is null)
             {
-                throw new DateTimeZoneNotFoundException($"System default time zone is unknown to source {VersionId}");
+                throw new DateTimeZoneNotFoundException(Invariant($"System default time zone is unknown to source {VersionId}"));
             }
             return this[id];
         }
@@ -109,7 +110,7 @@ namespace NodaTime.TimeZones
                 if (zone is null)
                 {
                     throw new InvalidDateTimeZoneSourceException(
-                        $"Time zone {id} is supported by source {VersionId} but not returned");
+                        Invariant($"Time zone {id} is supported by source {VersionId} but not returned"));
                 }
                 return timeZoneMap.TryUpdate(id, zone, null) ? zone : timeZoneMap[id];
             }
@@ -125,7 +126,7 @@ namespace NodaTime.TimeZones
                 if (zone is null)
                 {
 #pragma warning disable CA1065 // Don't throw an exception from an indexer
-                    throw new DateTimeZoneNotFoundException($"Time zone {id} is unknown to source {VersionId}");
+                    throw new DateTimeZoneNotFoundException(Invariant($"Time zone {id} is unknown to source {VersionId}"));
 #pragma warning restore CA1065
                 }
                 return zone;
