@@ -56,6 +56,7 @@ namespace NodaTime.TimeZones
         /// </summary>
         /// <remarks>This is only called from the constructors, but is internal to make it easier to test.</remarks>
         /// <exception cref="ArgumentException">The periods specified are invalid.</exception>
+        [VisibleForTesting]
         internal static void ValidatePeriods(ZoneInterval[] periods, IZoneIntervalMap? tailZone)
         {
             Preconditions.CheckArgument(periods.Length > 0, nameof(periods), "No periods specified in precalculated time zone");

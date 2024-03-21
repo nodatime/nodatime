@@ -150,6 +150,7 @@ namespace NodaTime.Test.TimeZones
                 /// The UTC offset for the overall zone; this is used to determine when a rule starts and finishes (apparently).
                 /// </summary>
                 internal TimeSpan ZoneStandardOffset { get; }
+
                 /// <summary>
                 /// The UTC offset for the standard intervals in force during this rule.
                 /// </summary>

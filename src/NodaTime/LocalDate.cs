@@ -183,8 +183,6 @@ namespace NodaTime
 
         internal YearMonthDay YearMonthDay => yearMonthDayCalendar.ToYearMonthDay();
 
-        internal YearMonthDayCalendar YearMonthDayCalendar => yearMonthDayCalendar;
-
         /// <summary>
         /// Gets a <see cref="LocalDateTime" /> at midnight on the date represented by this local date.
         /// </summary>
