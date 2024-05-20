@@ -150,25 +150,6 @@ namespace NodaTime.Test.Text
             new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15", Pattern = "t" },
         };
 
-        internal static readonly Data[] TemplateValueData = {
-            // Pattern specifies nothing - template value is passed through
-            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "X", Pattern = "'X'", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
-            // Tests for each individual field being propagated
-            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "mm:ss.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
-            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:ss.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
-            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9)) { Culture = Cultures.EnUs, Text = "06:07.0080009", Pattern = "HH:mm.FFFFFFF", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
-            new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5)) { Culture = Cultures.EnUs, Text = "06:07:08", Pattern = "HH:mm:ss", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
-
-            // Hours are tricky because of the ways they can be specified
-            new Data(new LocalTime(6, 2, 3)) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(1, 2, 3) },
-            new Data(new LocalTime(18, 2, 3)) { Culture = Cultures.EnUs, Text = "6", Pattern = "%h", Template = new LocalTime(14, 2, 3) },
-            new Data(new LocalTime(2, 2, 3)) { Culture = Cultures.EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
-            new Data(new LocalTime(14, 2, 3)) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(14, 2, 3) },
-            new Data(new LocalTime(2, 2, 3)) { Culture = Cultures.EnUs, Text = "AM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
-            new Data(new LocalTime(14, 2, 3)) { Culture = Cultures.EnUs, Text = "PM", Pattern = "tt", Template = new LocalTime(2, 2, 3) },
-            new Data(new LocalTime(17, 2, 3)) { Culture = Cultures.EnUs, Text = "5 PM", Pattern = "h tt", Template = new LocalTime(1, 2, 3) },
-        };
-
         /// <summary>
         /// Common test data for both formatting and parsing. A test should be placed here unless is truly
         /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
