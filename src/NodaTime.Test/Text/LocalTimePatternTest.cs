@@ -150,19 +150,6 @@ namespace NodaTime.Test.Text
             new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15", Pattern = "t" },
         };
 
-        internal static Data[] DefaultPatternData = {
-            // Invariant culture uses HH:mm:ss for the "long" pattern
-            new Data(5, 0, 0, 0) { Text = "05:00:00" },
-            new Data(5, 12, 0, 0) { Text = "05:12:00" },
-            new Data(5, 12, 34, 0) { Text = "05:12:34" },
-
-            // US uses hh:mm:ss tt for the "long" pattern
-            new Data(17, 0, 0, 0) { Culture = Cultures.EnUs, Text = "5:00:00 PM" },
-            new Data(5, 0, 0, 0) { Culture = Cultures.EnUs, Text = "5:00:00 AM" },
-            new Data(5, 12, 0, 0) { Culture = Cultures.EnUs, Text = "5:12:00 AM" },
-            new Data(5, 12, 34, 0) { Culture = Cultures.EnUs, Text = "5:12:34 AM" },
-        };
-
         internal static readonly Data[] TemplateValueData = {
             // Pattern specifies nothing - template value is passed through
             new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5)) { Culture = Cultures.EnUs, Text = "X", Pattern = "'X'", Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5) },
@@ -256,6 +243,13 @@ namespace NodaTime.Test.Text
 
             new Data(14, 15, 16) { Culture = Cultures.DotTimeSeparator, Text = "14.15.16", Pattern = "T" },
             new Data(14, 15, 16) { Culture = Cultures.Invariant, Text = "14:15:16", Pattern = "T" },
+            new Data(5, 0, 0, 0) { Text = "05:00:00", Pattern = "T"},
+            new Data(5, 12, 0, 0) { Text = "05:12:00", Pattern = "T" },
+            new Data(5, 12, 34, 0) { Text = "05:12:34", Pattern = "T" },
+            new Data(17, 0, 0, 0) { Culture = Cultures.EnUs, Text = "5:00:00 PM", Pattern = "T" },
+            new Data(5, 0, 0, 0) { Culture = Cultures.EnUs, Text = "5:00:00 AM", Pattern = "T" },
+            new Data(5, 12, 0, 0) { Culture = Cultures.EnUs, Text = "5:12:00 AM", Pattern = "T" },
+            new Data(5, 12, 34, 0) { Culture = Cultures.EnUs, Text = "5:12:34 AM", Pattern = "T" },
 
             new Data(14, 15, 16, 789) { StandardPattern = LocalTimePattern.ExtendedIso, Culture = Cultures.DotTimeSeparator, Text = "14:15:16.789", Pattern = "o" },
             new Data(14, 15, 16, 789) { StandardPattern = LocalTimePattern.ExtendedIso, Culture = Cultures.EnUs, Text = "14:15:16.789", Pattern = "o" },
