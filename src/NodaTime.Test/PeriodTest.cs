@@ -310,8 +310,8 @@ namespace NodaTime.Test
         [Test]
         public void BetweenLocalDateTimes_InvalidUnits()
         {
-            Assert.Throws<ArgumentException>(() => Period.Between(TestDate1, TestDate2, 0));
-            Assert.Throws<ArgumentException>(() => Period.Between(TestDate1, TestDate2, (PeriodUnits)(-1)));
+            Assert.Throws<ArgumentException>(() => Period.Between(TestDateTime1, TestDateTime2, 0));
+            Assert.Throws<ArgumentException>(() => Period.Between(TestDateTime1, TestDateTime2, (PeriodUnits)(-1)));
         }
 
         [Test]
