@@ -9,6 +9,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -41,6 +42,15 @@ namespace NodaTime
     [TypeConverter(typeof(OffsetTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct Offset : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IAdditionOperators<Offset, Offset, Offset>
+        , ISubtractionOperators<Offset, Offset, Offset>
+        , IUnaryNegationOperators<Offset, Offset>
+        , IUnaryPlusOperators<Offset, Offset>
+        , IComparisonOperators<Offset, Offset, bool>
+        , IMinMaxValue<Offset>
+        , IAdditiveIdentity<Offset, Offset>
+#endif
     {
         // Note: these public fields are unfortunate; they really should be properties, like all other public constants.
         // Unfortunately that would now be a breaking change.
@@ -51,6 +61,11 @@ namespace NodaTime
         public static readonly Offset Zero = FromSeconds(0);
 
         /// <summary>
+        /// Gets the additive identity.
+        /// </summary>
+        public static Offset AdditiveIdentity => Zero;
+
+        /// <summary>
         /// The minimum permitted offset; 18 hours before UTC.
         /// </summary>
         public static readonly Offset MinValue = FromHours(-18);
@@ -58,6 +73,18 @@ namespace NodaTime
         /// The maximum permitted offset; 18 hours after UTC.
         /// </summary>
         public static readonly Offset MaxValue = FromHours(18);
+
+#if NET8_0_OR_GREATER
+        /// <summary>
+        /// The minimum permitted offset; 18 hours before UTC.
+        /// </summary>
+        static Offset IMinMaxValue<Offset>.MinValue => MinValue;
+
+        /// <summary>
+        /// The maximum permitted offset; 18 hours after UTC.
+        /// </summary>
+        static Offset IMinMaxValue<Offset>.MaxValue => MaxValue;
+#endif
 
         private const int MinHours = -18;
         private const int MaxHours = 18;

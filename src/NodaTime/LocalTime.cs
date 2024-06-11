@@ -10,6 +10,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -35,6 +36,13 @@ namespace NodaTime
     [TypeConverter(typeof(LocalTimeTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct LocalTime : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IAdditionOperators<LocalTime, Period, LocalTime>
+        , ISubtractionOperators<LocalTime, LocalTime, Period>
+        , ISubtractionOperators<LocalTime, Period, LocalTime>
+        , IComparisonOperators<LocalTime, LocalTime, bool>
+        , IMinMaxValue<LocalTime>
+#endif
     {
         /// <summary>
         /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.

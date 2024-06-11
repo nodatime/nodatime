@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 using System;
 using System.Globalization;
+using System.Numerics;
 
 namespace NodaTime
 {
@@ -24,6 +25,9 @@ namespace NodaTime
     /// </para>
     /// </remarks>
     internal readonly struct YearMonthDay : IComparable<YearMonthDay>, IEquatable<YearMonthDay>
+#if NET8_0_OR_GREATER
+        , IComparisonOperators<YearMonthDay, YearMonthDay, bool>
+#endif
     {
         private const int DayMask = (1 << YearMonthDayCalendar.DayBits) - 1;
         private const int MonthMask = ((1 << YearMonthDayCalendar.MonthBits) - 1) << YearMonthDayCalendar.DayBits;

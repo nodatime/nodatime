@@ -7,6 +7,7 @@ using NodaTime.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using static System.FormattableString;
 
 namespace NodaTime
@@ -31,6 +32,9 @@ namespace NodaTime
     /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
     [Immutable]
     public sealed class DateInterval : IEquatable<DateInterval?>, IEnumerable<LocalDate>
+#if NET8_0_OR_GREATER
+        , IEqualityOperators<DateInterval, DateInterval, bool>
+#endif
     {
         /// <summary>
         /// Gets the start date of the interval.
