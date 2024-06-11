@@ -11,6 +11,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -37,6 +38,13 @@ namespace NodaTime
     [TypeConverter(typeof(LocalDateTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct LocalDate : IEquatable<LocalDate>, IComparable<LocalDate>, IComparable, IFormattable, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IAdditionOperators<LocalDate, Period, LocalDate>
+        , IAdditionOperators<LocalDate, LocalTime, LocalDateTime>
+        , ISubtractionOperators<LocalDate, Period, LocalDate>
+        , ISubtractionOperators<LocalDate, LocalDate, Period>
+        , IComparisonOperators<LocalDate, LocalDate, bool>
+#endif
     {
         private readonly YearMonthDayCalendar yearMonthDayCalendar;
 

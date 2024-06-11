@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -51,6 +52,12 @@ namespace NodaTime
     [TypeConverter(typeof(ZonedDateTimeTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct ZonedDateTime : IEquatable<ZonedDateTime>, IFormattable, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IAdditionOperators<ZonedDateTime, Duration, ZonedDateTime>
+        , ISubtractionOperators<ZonedDateTime, ZonedDateTime, Duration>
+        , ISubtractionOperators<ZonedDateTime, Duration, ZonedDateTime>
+        , IEqualityOperators<ZonedDateTime, ZonedDateTime, bool>
+#endif
     {
         private readonly OffsetDateTime offsetDateTime;
         private readonly DateTimeZone zone;

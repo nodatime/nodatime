@@ -9,6 +9,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -36,6 +37,13 @@ namespace NodaTime
     [TypeConverter(typeof(InstantTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct Instant : IEquatable<Instant>, IComparable<Instant>, IFormattable, IComparable, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IAdditionOperators<Instant, Duration, Instant>
+        , ISubtractionOperators<Instant, Duration, Instant>
+        , ISubtractionOperators<Instant, Instant, Duration>
+        , IComparisonOperators<Instant, Instant, bool>
+        , IMinMaxValue<Instant>
+#endif
     {
         // These correspond to -9998-01-01 and 9999-12-31 respectively.
         internal const int MinDays = -4371222;

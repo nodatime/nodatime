@@ -10,6 +10,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -34,6 +35,9 @@ namespace NodaTime
     [XmlSchemaProvider(nameof(AddSchema))]
     [TypeConverter(typeof(YearMonthTypeConverter))]
     public struct YearMonth : IEquatable<YearMonth>, IComparable<YearMonth>, IComparable, IFormattable, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IComparisonOperators<YearMonth, YearMonth, bool>
+#endif
     {
         /// <summary>
         /// The start of month. This is used as our base representation as we already have

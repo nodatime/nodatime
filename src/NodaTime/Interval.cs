@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using NodaTime.Text;
 using NodaTime.Utility;
 using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -36,6 +37,9 @@ namespace NodaTime
     /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct Interval : IEquatable<Interval>, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IEqualityOperators<Interval, Interval, bool>
+#endif
     {
         /// <summary>The start of the interval.</summary>
         private readonly Instant start;
