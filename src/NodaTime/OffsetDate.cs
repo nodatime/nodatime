@@ -9,6 +9,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -32,6 +33,9 @@ namespace NodaTime
     [TypeConverter(typeof(OffsetDateTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct OffsetDate : IEquatable<OffsetDate>, IXmlSerializable, IFormattable
+#if NET8_0_OR_GREATER
+        , IEqualityOperators<OffsetDate, OffsetDate, bool>
+#endif
     {
         private readonly LocalDate date;
         private readonly Offset offset;

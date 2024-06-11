@@ -470,6 +470,14 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void UnaryNegation()
+        {
+            Period period = new Period(2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+            Period negation = -period;
+            Assert.AreEqual(new Period(-2, -3, -4, -5, -6, -7, -8, -9, -10, -11), negation);
+        }
+
+        [Test]
         public void Equality_WhenEqual()
         {
             Assert.AreEqual(Period.FromHours(10), Period.FromHours(10));

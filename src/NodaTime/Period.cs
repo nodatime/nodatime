@@ -10,6 +10,7 @@ using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Numerics;
 using static NodaTime.NodaConstants;
 
 namespace NodaTime
@@ -57,6 +58,14 @@ namespace NodaTime
     [Immutable]
     [TypeConverter(typeof(PeriodTypeConverter))]
     public sealed class Period : IEquatable<Period?>
+#if NET8_0_OR_GREATER
+        , IAdditionOperators<Period, Period, Period>
+        , ISubtractionOperators<Period, Period, Period>
+        , IUnaryNegationOperators<Period, Period>
+        , IUnaryPlusOperators<Period, Period>
+        , IAdditiveIdentity<Period, Period>
+        , IMinMaxValue<Period>
+#endif
     {
         // General implementation note: operations such as normalization work out the total number of nanoseconds as an Int64
         // value. This can handle +/- 106,751 days, or 292 years. We could move to using BigInteger if we feel that's required,
@@ -80,6 +89,11 @@ namespace NodaTime
         /// </summary>
         /// <value>A period containing the minimum value for all properties.</value>
         public static Period MinValue { get; } = new Period(int.MinValue, int.MinValue, int.MinValue, int.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue);
+
+        /// <summary>
+        /// Gets the additive identity.
+        /// </summary>
+        public static Period AdditiveIdentity => Zero;
 
         /// <summary>
         /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
@@ -374,6 +388,13 @@ namespace NodaTime
                 minuend.Ticks - subtrahend.Ticks,
                 minuend.Nanoseconds - subtrahend.Nanoseconds);
         }
+
+        /// <summary>
+        /// Implements the unary negation operator.
+        /// </summary>
+        /// <param name="period">Period to negate</param>
+        /// <returns>The negative value of this period</returns>
+        public static Period operator -(Period period) => Zero - period;
 
         /// <summary>
         /// Subtracts one period from another, by simply subtracting each property value.
@@ -889,6 +910,13 @@ namespace NodaTime
         /// </summary>
         /// <returns>A formatted representation of this period.</returns>
         public override string ToString() => PeriodPattern.Roundtrip.Format(this);
+
+        /// <summary>
+        /// Implements the operator + (unary).
+        /// </summary>
+        /// <param name="period">The period.</param>
+        /// <returns>The same period <see cref="Period"/> as provided.</returns>
+        public static Period operator +(Period period) => period;
 
         /// <summary>
         /// Compares the given object for equality with this one, as per <see cref="Equals(Period?)"/>.

@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -46,6 +47,11 @@ namespace NodaTime
     [TypeConverter(typeof(OffsetDateTimeTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct OffsetDateTime : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IAdditionOperators<OffsetDateTime, Duration, OffsetDateTime>
+        , ISubtractionOperators<OffsetDateTime, Duration, OffsetDateTime>
+        , IEqualityOperators<OffsetDateTime, OffsetDateTime, bool>
+#endif
     {
         private const int MinBclOffsetMinutes = -14 * MinutesPerHour;
         private const int MaxBclOffsetMinutes = 14 * MinutesPerHour;
