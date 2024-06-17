@@ -9,6 +9,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -30,6 +31,9 @@ namespace NodaTime
     [TypeConverter(typeof(OffsetTimeTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct OffsetTime : IEquatable<OffsetTime>, IXmlSerializable, IFormattable
+#if NET8_0_OR_GREATER
+        , IEqualityOperators<OffsetTime, OffsetTime, bool>
+#endif
     {
         private const int NanosecondsBits = 47;
         private const long NanosecondsMask = (1L << NanosecondsBits) - 1;

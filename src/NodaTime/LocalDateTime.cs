@@ -12,6 +12,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -43,6 +44,12 @@ namespace NodaTime
     [TypeConverter(typeof(LocalDateTimeTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct LocalDateTime : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IAdditionOperators<LocalDateTime, Period, LocalDateTime>
+        , ISubtractionOperators<LocalDateTime, LocalDateTime, Period>
+        , ISubtractionOperators<LocalDateTime, Period, LocalDateTime>
+        , IComparisonOperators<LocalDateTime, LocalDateTime, bool>
+#endif
     {
         /// <summary>
         /// The maximum (latest) date and time representable in the ISO calendar system.

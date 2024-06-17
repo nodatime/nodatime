@@ -65,6 +65,15 @@ namespace NodaTime
     [TypeConverter(typeof(DurationTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct Duration : IEquatable<Duration>, IComparable<Duration>, IComparable, IXmlSerializable, IFormattable
+#if NET8_0_OR_GREATER
+        , IAdditionOperators<Duration, Duration, Duration>
+        , ISubtractionOperators<Duration, Duration, Duration>
+        , IUnaryNegationOperators<Duration, Duration>
+        , IUnaryPlusOperators<Duration, Duration>
+        , IComparisonOperators<Duration, Duration, bool>
+        , IMinMaxValue<Duration>
+        , IAdditiveIdentity<Duration, Duration>
+#endif
     {
         // This is one more bit than we really need, but it allows Instant.BeforeMinValue and Instant.AfterMaxValue
         // to be easily constructed with valid durations, even though the result is a deliberately-invalid instant.
@@ -92,6 +101,11 @@ namespace NodaTime
         /// </summary>
         /// <value>The zero <see cref="Duration"/> value.</value>
         public static Duration Zero => default;
+
+        /// <summary>
+        /// Gets the additive identity.
+        /// </summary>
+        public static Duration AdditiveIdentity => Zero;
 
         /// <summary>
         /// Gets a <see cref="Duration"/> value equal to 1 nanosecond; the smallest amount by which an instant can vary.
@@ -499,6 +513,13 @@ namespace NodaTime
                 return new Duration(newDays, newNanos);
             }
         }
+
+        /// <summary>
+        /// Implements the operator + (unary).
+        /// </summary>
+        /// <param name="duration">The duration.</param>
+        /// <returns>The same duration <see cref="Duration"/> as provided.</returns>
+        public static Duration operator +(Duration duration) => duration;
 
         /// <summary>
         /// Adds one duration to another. Friendly alternative to <c>operator+()</c>.

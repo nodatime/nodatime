@@ -8,6 +8,7 @@ using NodaTime.Utility;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Xml;
 using System.Xml.Schema;
@@ -35,6 +36,9 @@ namespace NodaTime
     [TypeConverter(typeof(AnnualDateTypeConverter))]
     [XmlSchemaProvider(nameof(AddSchema))]
     public readonly struct AnnualDate : IEquatable<AnnualDate>, IComparable<AnnualDate>, IComparable, IFormattable, IXmlSerializable
+#if NET8_0_OR_GREATER
+        , IComparisonOperators<AnnualDate, AnnualDate, bool>
+#endif
     {
         // The underlying value. We only care about the month and day, but for the sake of
         // compatibility with the default value, this ends up being in year 1. This would
