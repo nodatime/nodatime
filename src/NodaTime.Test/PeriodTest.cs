@@ -629,7 +629,7 @@ namespace NodaTime.Test
         [Test]
         public void ToString_NegativeInifinity() 
         {
-            Assert.AreEqual("-infinity", Period.PositiveInfinity.ToString());
+            Assert.AreEqual("-infinity", Period.NegativeInfinity.ToString());
         }
 
         [Test]

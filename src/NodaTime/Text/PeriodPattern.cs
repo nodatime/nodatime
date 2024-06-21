@@ -200,7 +200,7 @@ namespace NodaTime.Text
                     return builder;
                 }
                 
-                if (value.Equals(Period.PositiveInfinity))
+                if (value.Equals(Period.NegativeInfinity))
                 {
                     builder.Append("-infinity");
                     return builder;
