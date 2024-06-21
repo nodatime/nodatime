@@ -621,18 +621,6 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ToString_PositiveInifinity() 
-        {
-            Assert.AreEqual("infinity", Period.PositiveInfinity.ToString());
-        }
-        
-        [Test]
-        public void ToString_NegativeInifinity() 
-        {
-            Assert.AreEqual("-infinity", Period.NegativeInfinity.ToString());
-        }
-
-        [Test]
         public void ToBuilder_SingleUnit()
         {
             var builder = Period.FromHours(5).ToBuilder();

@@ -73,14 +73,14 @@ namespace NodaTime
         /// A period containing the maximum value for all properties.
         /// </summary>
         /// <value>A period containing the maximum value for all properties.</value>
-        public static Period PositiveInfinity { get; } = new Period(int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue);
+        public static Period MaxValue { get; } = new Period(int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue);
         
         
         /// <summary>
         /// A period containing the minimum value for all properties.
         /// </summary>
         /// <value>A period containing the minimum value for all properties.</value>
-        public static Period NegativeInfinity { get; } = new Period(int.MinValue, int.MinValue, int.MinValue, int.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue);
+        public static Period MinValue { get; } = new Period(int.MinValue, int.MinValue, int.MinValue, int.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue);
 
         /// <summary>
         /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.

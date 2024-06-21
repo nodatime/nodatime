@@ -194,18 +194,6 @@ namespace NodaTime.Text
                     return builder;
                 }
 
-                if (value.Equals(Period.PositiveInfinity))
-                {
-                    builder.Append("infinity");
-                    return builder;
-                }
-                
-                if (value.Equals(Period.NegativeInfinity))
-                {
-                    builder.Append("-infinity");
-                    return builder;
-                }
-
                 builder.Append('P');
                 AppendValue(builder, value.Years, 'Y');
                 AppendValue(builder, value.Months, 'M');
