@@ -70,6 +70,19 @@ namespace NodaTime
         public static Period Zero { get; } = new Period(0, 0, 0, 0);
 
         /// <summary>
+        /// A period containing the maximum value for all properties.
+        /// </summary>
+        /// <value>A period containing the maximum value for all properties.</value>
+        public static Period PositiveInfinity { get; } = new Period(int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue);
+        
+        
+        /// <summary>
+        /// A period containing the minimum value for all properties.
+        /// </summary>
+        /// <value>A period containing the minimum value for all properties.</value>
+        public static Period NegativeInfinity { get; } = new Period(int.MinValue, int.MinValue, int.MinValue, int.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue);
+
+        /// <summary>
         /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
         /// Note that as per the <see cref="Normalize"/> method, years and months are unchanged by normalization - so 12 months does not
         /// equal 1 year.
@@ -831,7 +844,7 @@ namespace NodaTime
         /// changes made to the builder are not reflected in this period.
         /// </summary>
         /// <returns>A builder with the same values and units as this period.</returns>
-        [Pure] [TestExemption(TestExemptionCategory.ConversionName)] public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
+        [Pure][TestExemption(TestExemptionCategory.ConversionName)] public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
 
         /// <summary>
         /// Returns a normalized version of this period, such that equivalent (but potentially non-equal) periods are
@@ -860,7 +873,7 @@ namespace NodaTime
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
             long totalNanoseconds = TotalNanoseconds;
-            int days = (int) (totalNanoseconds / NanosecondsPerDay);
+            int days = (int)(totalNanoseconds / NanosecondsPerDay);
             long hours = (totalNanoseconds / NanosecondsPerHour) % HoursPerDay;
             long minutes = (totalNanoseconds / NanosecondsPerMinute) % MinutesPerHour;
             long seconds = (totalNanoseconds / NanosecondsPerSecond) % SecondsPerMinute;
