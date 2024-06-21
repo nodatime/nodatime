@@ -193,6 +193,19 @@ namespace NodaTime.Text
                     builder.Append("P0D");
                     return builder;
                 }
+
+                if (value.Equals(Period.PositiveInfinity))
+                {
+                    builder.Append("infinity");
+                    return builder;
+                }
+                
+                if (value.Equals(Period.PositiveInfinity))
+                {
+                    builder.Append("-infinity");
+                    return builder;
+                }
+
                 builder.Append('P');
                 AppendValue(builder, value.Years, 'Y');
                 AppendValue(builder, value.Months, 'M');
@@ -379,7 +392,7 @@ namespace NodaTime.Text
                         if (nanoseconds != 0)
                         {
                             builder.Append('.');
-                            FormatHelper.AppendFractionTruncate((int) nanoseconds, 9, 9, builder);
+                            FormatHelper.AppendFractionTruncate((int)nanoseconds, 9, 9, builder);
                         }
                         builder.Append('S');
                     }
