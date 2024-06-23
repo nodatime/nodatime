@@ -388,6 +388,15 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void Addition_MaxAndMinValue()
+        {
+            Period p1 = Period.MaxValue;
+            Period p2 = Period.MinValue;
+            Period sum = p1 + p2;
+            Assert.AreEqual(new Period(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1), sum);
+        }
+
+        [Test]
         public void Addition_With_IdenticalPeriodTypes()
         {
             Period p1 = Period.FromHours(3);
