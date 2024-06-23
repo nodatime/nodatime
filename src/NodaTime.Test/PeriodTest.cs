@@ -940,6 +940,39 @@ namespace NodaTime.Test
             Assert.AreEqual(0, februaryComparer.Compare(month, month));
         }
 
+        public static TestCaseData[] PeriodMaxAndMinValues
+        {
+            get
+            {
+                return [
+                    new TestCaseData(Period.MaxValue, int.MaxValue, long.MaxValue).SetName("All members should be MaxValue"), 
+                    new TestCaseData(Period.MinValue, int.MinValue, long.MinValue).SetName("All members should be MinValue")
+                ];
+            }
+        }
+
+        /// <summary>
+        /// Ensure that Period.MaxValue and Period.MinValue contain the max/min value assignable to each property/member.
+        /// </summary>
+        [Test]
+        [TestCaseSource(nameof(PeriodMaxAndMinValues))]
+        public void Period_MaxAndMinValues_AllMembers(Period period, int expectedIntValue, long expectedLongValue)
+        {
+            // Integer values
+            Assert.AreEqual(expectedIntValue, period.Years);
+            Assert.AreEqual(expectedIntValue, period.Months);
+            Assert.AreEqual(expectedIntValue, period.Weeks);
+            Assert.AreEqual(expectedIntValue, period.Days);
+
+            // Long values
+            Assert.AreEqual(expectedLongValue, period.Hours);
+            Assert.AreEqual(expectedLongValue, period.Minutes);
+            Assert.AreEqual(expectedLongValue, period.Seconds);
+            Assert.AreEqual(expectedLongValue, period.Milliseconds);
+            Assert.AreEqual(expectedLongValue, period.Ticks);
+            Assert.AreEqual(expectedLongValue, period.Nanoseconds);
+        }
+
         [Test]
         [TestCaseSource(nameof(AllPeriodUnits))]
         public void Between_ExtremeValues(PeriodUnits units)
