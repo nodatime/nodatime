@@ -940,16 +940,11 @@ namespace NodaTime.Test
             Assert.AreEqual(0, februaryComparer.Compare(month, month));
         }
 
-        public static TestCaseData[] PeriodMaxAndMinValues
-        {
-            get
-            {
-                return [
-                    new TestCaseData(Period.MaxValue, int.MaxValue, long.MaxValue).SetName("All members should be MaxValue"), 
-                    new TestCaseData(Period.MinValue, int.MinValue, long.MinValue).SetName("All members should be MinValue")
-                ];
-            }
-        }
+        private static TestCaseData[] PeriodMaxAndMinValues => 
+        [
+            new TestCaseData(Period.MaxValue, int.MaxValue, long.MaxValue).SetName("All members should be MaxValue"), 
+            new TestCaseData(Period.MinValue, int.MinValue, long.MinValue).SetName("All members should be MinValue")
+        ];
 
         /// <summary>
         /// Ensure that Period.MaxValue and Period.MinValue contain the max/min value assignable to each property/member.
