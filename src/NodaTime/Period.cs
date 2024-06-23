@@ -75,7 +75,6 @@ namespace NodaTime
         /// <value>A period containing the maximum value for all properties.</value>
         public static Period MaxValue { get; } = new Period(int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue);
         
-        
         /// <summary>
         /// A period containing the minimum value for all properties.
         /// </summary>
@@ -844,7 +843,7 @@ namespace NodaTime
         /// changes made to the builder are not reflected in this period.
         /// </summary>
         /// <returns>A builder with the same values and units as this period.</returns>
-        [Pure][TestExemption(TestExemptionCategory.ConversionName)] public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
+        [Pure] [TestExemption(TestExemptionCategory.ConversionName)] public PeriodBuilder ToBuilder() => new PeriodBuilder(this);
 
         /// <summary>
         /// Returns a normalized version of this period, such that equivalent (but potentially non-equal) periods are
