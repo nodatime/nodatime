@@ -872,7 +872,7 @@ namespace NodaTime
             // Simplest way to normalize: grab all the fields up to "week" and
             // sum them.
             long totalNanoseconds = TotalNanoseconds;
-            int days = (int)(totalNanoseconds / NanosecondsPerDay);
+            int days = (int) (totalNanoseconds / NanosecondsPerDay);
             long hours = (totalNanoseconds / NanosecondsPerHour) % HoursPerDay;
             long minutes = (totalNanoseconds / NanosecondsPerMinute) % MinutesPerHour;
             long seconds = (totalNanoseconds / NanosecondsPerSecond) % SecondsPerMinute;
