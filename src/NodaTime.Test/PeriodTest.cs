@@ -958,7 +958,7 @@ namespace NodaTime.Test
             {
                 var actualValue = property.GetValue(period);
                 
-                // HasTimeComponent is a public method that will get included in this loop.
+                // HasTimeComponent is a public property that will get included in this loop.
                 // This block allows us to ignore it.
                 if (actualValue is bool)
                 {
