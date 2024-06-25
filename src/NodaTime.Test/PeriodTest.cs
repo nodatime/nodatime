@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using System;
+using System.Reflection;
 using NodaTime.Calendars;
 using NodaTime.Text;
 using NUnit.Framework;
@@ -385,6 +386,15 @@ namespace NodaTime.Test
             Period sum = p1 + p2;
             Assert.AreEqual(3, sum.Hours);
             Assert.AreEqual(20, sum.Minutes);
+        }
+
+        [Test]
+        public void Addition_MaxAndMinValue()
+        {
+            Period p1 = Period.MaxValue;
+            Period p2 = Period.MinValue;
+            Period sum = p1 + p2;
+            Assert.AreEqual(new Period(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1), sum);
         }
 
         [Test]
@@ -929,6 +939,37 @@ namespace NodaTime.Test
             Assert.That(februaryComparer.Compare(month, days), Is.LessThan(0));
             Assert.That(februaryComparer.Compare(days, month), Is.GreaterThan(0));
             Assert.AreEqual(0, februaryComparer.Compare(month, month));
+        }
+
+        private static TestCaseData[] PeriodMaxAndMinValues => 
+        [
+            new TestCaseData(Period.MaxValue, int.MaxValue, long.MaxValue).SetName("All members should be MaxValue"), 
+            new TestCaseData(Period.MinValue, int.MinValue, long.MinValue).SetName("All members should be MinValue")
+        ];
+
+        /// <summary>
+        /// Ensure that Period.MaxValue and Period.MinValue contain the max/min value assignable to each public property.
+        /// </summary>
+        [Test]
+        [TestCaseSource(nameof(PeriodMaxAndMinValues))]
+        public void Period_MaxAndMinValues_AllMembers(Period period, int expectedIntValue, long expectedLongValue)
+        {
+            foreach (var property in typeof(Period).GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                var actualValue = property.GetValue(period);
+                
+                // HasTimeComponent is a public property that will get included in this loop.
+                // This block allows us to ignore it.
+                if (actualValue is bool)
+                {
+                    return;
+                }
+
+                var expectedValue = actualValue is int ? expectedIntValue
+                    : actualValue is long ? expectedLongValue
+                    : throw new InvalidOperationException($"Property {property.Name} has unexpected type {actualValue?.GetType().Name}.");
+                Assert.AreEqual(expectedValue, actualValue);
+            }
         }
 
         [Test]

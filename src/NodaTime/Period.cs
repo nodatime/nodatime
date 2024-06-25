@@ -70,6 +70,18 @@ namespace NodaTime
         public static Period Zero { get; } = new Period(0, 0, 0, 0);
 
         /// <summary>
+        /// A period containing the maximum value for all properties.
+        /// </summary>
+        /// <value>A period containing the maximum value for all properties.</value>
+        public static Period MaxValue { get; } = new Period(int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue, long.MaxValue);
+        
+        /// <summary>
+        /// A period containing the minimum value for all properties.
+        /// </summary>
+        /// <value>A period containing the minimum value for all properties.</value>
+        public static Period MinValue { get; } = new Period(int.MinValue, int.MinValue, int.MinValue, int.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue, long.MinValue);
+
+        /// <summary>
         /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
         /// Note that as per the <see cref="Normalize"/> method, years and months are unchanged by normalization - so 12 months does not
         /// equal 1 year.
