@@ -87,6 +87,18 @@ namespace NodaTime.Test
             LocalDate start = new LocalDate(1, 1, 1);
             Assert.Throws<ArgumentOutOfRangeException>(() => start.WithCalendar(CalendarSystem.PersianSimple));
         }
+
+        [Test]
+        public void WithCalendar_Unchanged()
+        {
+            LocalDate isoEpoch = new LocalDate(1970, 1, 1);
+            LocalDate unchanged = isoEpoch.WithCalendar(CalendarSystem.Iso);
+            Assert.AreEqual(isoEpoch.Year, unchanged.Year);
+            Assert.AreEqual(isoEpoch.Month, unchanged.Month);
+            Assert.AreEqual(isoEpoch.Day, unchanged.Day);
+            Assert.AreSame(isoEpoch.Calendar, unchanged.Calendar);
+        }
+
 #if NET6_0_OR_GREATER
         [Test]
         public void ToDateOnly_Gregorian()
