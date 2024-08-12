@@ -627,7 +627,9 @@ namespace NodaTime
         public LocalDate WithCalendar(CalendarSystem calendar)
         {
             Preconditions.CheckNotNull(calendar, nameof(calendar));
-            return new LocalDate(DaysSinceEpoch, calendar);
+            return calendar.Ordinal == CalendarOrdinal
+                ? this
+                : new LocalDate(DaysSinceEpoch, calendar);
         }
 
         /// <summary>

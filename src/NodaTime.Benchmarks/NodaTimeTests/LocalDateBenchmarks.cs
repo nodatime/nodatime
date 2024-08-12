@@ -139,6 +139,9 @@ namespace NodaTime.Benchmarks.NodaTimeTests
         [Benchmark]
         public bool LessThanOperator() => Sample < SampleBeforeEpoch;
 
+        [Benchmark]
+        public LocalDate WithCalendar_Unchanged() => Sample.WithCalendar(CalendarSystem.Iso);
+
 #if NET6_0_OR_GREATER
         [Benchmark]
         public DateOnly ToDateOnly() => Sample.ToDateOnly();
