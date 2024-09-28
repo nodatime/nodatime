@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
@@ -482,6 +483,14 @@ namespace NodaTime.Test
                 Assert.True((bool)inequality.Invoke(null, new object?[] { value, unequalValue })!, "value != unequalValue");
             }
         }
+
+#if NET8_0_OR_GREATER
+        public static void AssertMinMaxValue<T>(T min, T max) where T : IMinMaxValue<T>
+        {
+            Assert.AreEqual(max, T.MaxValue);
+            Assert.AreEqual(min, T.MinValue);
+        }
+#endif
 
         /// <summary>
         /// Validates that a value can be serialized to the expected XML, deserialized to an equal

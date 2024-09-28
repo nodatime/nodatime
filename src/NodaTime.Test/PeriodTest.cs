@@ -478,6 +478,14 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void UnaryAddition()
+        {
+            Period period = new Period(2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+            Period addition = +period;
+            Assert.AreEqual(period, addition);
+        }
+
+        [Test]
         public void Equality_WhenEqual()
         {
             Assert.AreEqual(Period.FromHours(10), Period.FromHours(10));
