@@ -213,5 +213,13 @@ namespace NodaTime.Test
             Assert.AreEqual(expected, -start);
             Assert.AreEqual(expected, Duration.Negate(start));
         }
+
+        [Test]
+        public void UnaryAddition()
+        {
+            Duration duration = Duration.FromNanoseconds(5000);
+            Duration addition = +duration;
+            Assert.AreEqual(duration, addition);
+        }
     }
 }
