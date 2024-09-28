@@ -5,6 +5,11 @@ using JetBrains.Annotations;
 using NodaTime.Annotations;
 using NodaTime.Utility;
 
+#if NET8_0_OR_GREATER
+using System;
+using NodaTime.TimeZones;
+#endif
+
 namespace NodaTime
 {
     /// <summary>
@@ -39,6 +44,31 @@ namespace NodaTime
             Zone = Preconditions.CheckNotNull(zone, nameof(zone));
             Calendar = Preconditions.CheckNotNull(calendar, nameof(calendar));
         }
+
+#if NET8_0_OR_GREATER
+        /// <summary>
+        /// Creates a <see cref="ZonedClock"/> from the given <see cref="TimeProvider"/>,
+        /// in the time zone returned by <see cref="TimeProvider.LocalTimeZone"/> and delegating
+        /// requests for the current time to <see cref="TimeProvider.GetUtcNow"/>, using the ISO
+        /// calendar system.
+        /// </summary>
+        /// <param name="timeProvider">The time provider to delegate to. Must not be null.</param>
+        /// <returns></returns>
+        public static ZonedClock FromTimeProvider(TimeProvider timeProvider) =>
+            FromTimeProvider(timeProvider, CalendarSystem.Iso);
+
+        /// <summary>
+        /// Creates a <see cref="ZonedClock"/> from the given <see cref="TimeProvider"/>,
+        /// in the time zone returned by <see cref="TimeProvider.LocalTimeZone"/> and delegating
+        /// requests for the current time to <see cref="TimeProvider.GetUtcNow"/>, using the ISO
+        /// calendar system.
+        /// </summary>
+        /// <param name="timeProvider">The time provider to delegate to. Must not be null.</param>
+        /// <param name="calendar">The calendar system to use. Must not be null.</param>
+        /// <returns></returns>
+        public static ZonedClock FromTimeProvider(TimeProvider timeProvider, CalendarSystem calendar) =>
+            new(IClock.FromTimeProvider(timeProvider), BclDateTimeZone.FromTimeZoneInfo(timeProvider.LocalTimeZone), calendar);
+#endif
 
         /// <summary>
         /// Returns the current instant provided by the underlying clock.
