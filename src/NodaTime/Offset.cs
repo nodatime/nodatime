@@ -61,18 +61,19 @@ namespace NodaTime
         public static readonly Offset Zero = FromSeconds(0);
 
         /// <summary>
-        /// Gets the additive identity.
-        /// </summary>
-        public static Offset AdditiveIdentity => Zero;
-
-        /// <summary>
         /// The minimum permitted offset; 18 hours before UTC.
         /// </summary>
         public static readonly Offset MinValue = FromHours(-18);
+
         /// <summary>
         /// The maximum permitted offset; 18 hours after UTC.
         /// </summary>
         public static readonly Offset MaxValue = FromHours(18);
+
+        /// <summary>
+        /// Gets the additive identity.
+        /// </summary>
+        public static Offset AdditiveIdentity => Zero;
 
 #if NET8_0_OR_GREATER
         /// <summary>
