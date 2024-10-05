@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 using NodaTime.Annotations;
 using NUnit.Framework;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -10,7 +11,7 @@ using System.Text.RegularExpressions;
 namespace NodaTime.Test.Annotations
 {
     /// <summary>
-    /// Not necessary annotations, but a general purpose "anything using reflection" test.
+    /// Not necessarily annotations, but a general purpose "anything using reflection" test.
     /// </summary>
     public class ReflectionTest
     {
@@ -26,9 +27,17 @@ namespace NodaTime.Test.Annotations
                 .SelectMany(m => m.DeclaredMethods)
                 .Where(m => m.IsPublic)
                 .Where(m => conversionName.IsMatch(m.Name))
-                .Where(m => !m.Name.StartsWith($"To{m.ReturnType.Name}"));
+                .Where(NameIsInconsistentWithReturnType);
 
             TestHelper.AssertNoFailures(badMethods, m => $"{m.DeclaringType?.Name}.{m.Name}", TestExemptionCategory.ConversionName);
+
+            bool NameIsInconsistentWithReturnType(MethodInfo method)
+            {
+                var type = method.ReturnType;
+                // When converting to an interface, the I prefix stutters somewhat - so we have "ToClock" instead of "ToIClock" for example.
+                var expectedTypeName = type.IsInterface ? type.Name.Substring(1) : type.Name;
+                return !method.Name.StartsWith($"To{expectedTypeName}", StringComparison.Ordinal);
+            }
         }
     }
 }
