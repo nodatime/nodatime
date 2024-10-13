@@ -27,9 +27,10 @@ jobs:
     - name: Build and test
       run: |
         build/ci.sh
-        dotnet test -c Release -f net8.0 --filter TestCategory=Slow NodaTime.Test
-        mkdir ../nuget
-        dotnet pack -c Release -o ../nuget
+        dotnet test -c Release -f net8.0 --filter TestCategory=Slow src/NodaTime.Test
+        mkdir nuget
+        dotnet pack -c Release -o ./nuget src/NodaTime
+        dotnet pack -c Release -o ./nuget src/NodaTime.Test
 
     - name: Push to NuGet
       run: |
