@@ -1,4 +1,4 @@
-name: Push packages to NuGet
+7name: Push packages to NuGet
 
 on:
   release:
@@ -7,26 +7,28 @@ on:
 jobs:
 
   release:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     env:
       DOTNET_NOLOGO: true
 
     steps:
     - name: Check out our repo
       uses: actions/checkout@v3
+      with:
+        submodules: true
 
-    - name: Setup .NET 6
+    - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: |
+          6.0.x
+          8.0.x
 
-    - name: Build
+    - name: Build and test
       run: |
-        cd src
-        dotnet build -c Release
-        dotnet test -c Release -f net6.0
-        dotnet test -c Release -f net6.0 --filter TestCategory=Slow NodaTime.Test
-        mkdir nuget
+        build/ci.sh
+        dotnet test -c Release -f net8.0 --filter TestCategory=Slow NodaTime.Test
+        mkdir ../nuget
         dotnet pack -c Release -o ../nuget
 
     - name: Push to NuGet
