@@ -1,4 +1,4 @@
-7name: Push packages to NuGet
+name: Push packages to NuGet
 
 on:
   release:
