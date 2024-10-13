@@ -42,7 +42,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         public void AllDetectedNamesAreMappedCorrectly()
         {
             var incorrectMappings = DetectedMapping.Keys
-                .Where(key => NameIdMappingSupport.StandardNameToIdMap.ContainsKey(key))
+                .Where(NameIdMappingSupport.StandardNameToIdMap.ContainsKey)
                 .Where(key => DetectedMapping[key] != NameIdMappingSupport.StandardNameToIdMap[key])
                 .Select(key => $"Expected {key} => {DetectedMapping[key]}; was {NameIdMappingSupport.StandardNameToIdMap[key]}")
                 .ToList();

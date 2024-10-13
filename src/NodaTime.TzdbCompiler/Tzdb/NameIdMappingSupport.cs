@@ -37,6 +37,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 { "Cabo Verde Standard Time", "Cape Verde Standard Time" },
                 { "West Bank Gaza Standard Time", "West Bank Standard Time" },
                 { "Novosibirsk Standard Time", "N. Central Asia Standard Time" },
+                { "Türkiye Standard Time", "Turkey Standard Time" },
                 // Difference here is just the case of "and"!
                 { "Turks and Caicos Standard Time", "Turks And Caicos Standard Time" },
                 // The following name/ID mappings give an ID which then isn't present in CLDR
