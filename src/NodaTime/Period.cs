@@ -424,6 +424,20 @@ namespace NodaTime
         }
 
         /// <summary>
+        /// Returns the number of nanoseconds between two <see cref="LocalTime"/> values.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="end"/> is before <paramref name="start" />, the returned value will be negative.
+        /// </remarks>
+        /// <param name="start">Start time</param>
+        /// <param name="end">End time</param>
+        /// <returns>The number of nanoseconds between the given times.</returns>
+        public static long NanosecondsBetween(LocalTime start, LocalTime end)
+        {
+            return unchecked(end.NanosecondOfDay - start.NanosecondOfDay);
+        }
+
+        /// <summary>
         /// Returns the period between a start and an end date/time, using only the given units.
         /// </summary>
         /// <remarks>
@@ -698,7 +712,7 @@ namespace NodaTime
             // number of nanoseconds. All the operations can be done with simple long division/remainder ops,
             // so we don't need to delegate to TimePeriodField.
 
-            long remaining = unchecked(end.NanosecondOfDay - start.NanosecondOfDay);
+            long remaining = NanosecondsBetween(start, end);
 
             // Optimization for a single unit
             switch (units)
