@@ -315,6 +315,25 @@ namespace NodaTime.Test
             Assert.Throws<ArgumentException>(() => Period.Between(TestDateTime1, TestDateTime2, (PeriodUnits)(-1)));
         }
 
+        private static TestCaseData[] NanosecondsBetweenLocalTimesTestCaseData =>
+        [
+            new TestCaseData(LocalTime.MinValue, LocalTime.MaxValue, LocalTime.MaxValue.NanosecondOfDay)
+                .SetName($"Nanoseconds between {nameof(LocalTime.MinValue)} and {nameof(LocalTime.MaxValue)} should be maximum {nameof(LocalTime.MaxValue.NanosecondOfDay)}"),
+            new TestCaseData(LocalTime.MaxValue, LocalTime.MinValue, -LocalTime.MaxValue.NanosecondOfDay)
+                .SetName($"Nanoseconds between {nameof(LocalTime.MaxValue)} and {nameof(LocalTime.MinValue)} should be negative maximum {nameof(LocalTime.MaxValue.NanosecondOfDay)}"),
+            new TestCaseData(LocalTime.MinValue, LocalTime.MinValue.PlusNanoseconds(1), 1L)
+                .SetName($"Nanoseconds between {nameof(LocalTime.MinValue)} and {nameof(LocalTime.MinValue)}_Plus_One should be 1"),
+            new TestCaseData(LocalTime.MinValue.PlusNanoseconds(1), LocalTime.MinValue, -1L).
+                SetName($"Nanoseconds between {nameof(LocalTime.MinValue)}_Plus_One and {nameof(LocalTime.MinValue)} should be negative 1"),
+        ];
+
+        [TestCaseSource(nameof(NanosecondsBetweenLocalTimesTestCaseData))]
+        public void NanosecondsBetweenLocalTimes(LocalTime start, LocalTime end, long expected)
+        {
+            var actual = Period.NanosecondsBetween(start, end);
+            Assert.AreEqual(expected, actual);
+        }
+
         [Test]
         public void BetweenLocalTimes_InvalidUnits()
         {
