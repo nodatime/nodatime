@@ -427,9 +427,9 @@ namespace NodaTime
         /// Returns the difference between start and end time in nanoseconds.
         /// </summary>
         /// <remarks>
-        /// If <paramref name="end"/> is before <paramref name="start" />, returned value will be negative.
+        /// If <paramref name="end"/> is before <paramref name="start" />, the returned value will be negative.
         /// </remarks>
-        /// <param name="start"> Start time</param>
+        /// <param name="start">Start time</param>
         /// <param name="end">End time</param>
         /// <returns>The nanoseconds between the given times</returns>
         public static long NanosecondsBetween(LocalTime start, LocalTime end)
