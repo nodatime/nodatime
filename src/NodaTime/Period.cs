@@ -424,7 +424,7 @@ namespace NodaTime
         }
 
         /// <summary>
-        /// Returns the number of nanoseconds between two <see cref="LocalTime"/> objects.
+        /// Returns the number of nanoseconds between two <see cref="LocalTime"/> values.
         /// </summary>
         /// <remarks>
         /// If <paramref name="end"/> is before <paramref name="start" />, the returned value will be negative.
