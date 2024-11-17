@@ -407,7 +407,7 @@ namespace NodaTime
         public static Period Subtract(Period minuend, Period subtrahend) => minuend - subtrahend;
 
         /// <summary>
-        /// Returns the number of days between two <see cref="LocalDate"/> objects.
+        /// Returns the number of days between two <see cref="LocalDate"/> values.
         /// </summary>
         /// <param name="start">Start date</param>
         /// <param name="end">End date</param>
@@ -432,10 +432,8 @@ namespace NodaTime
         /// <param name="start">Start time</param>
         /// <param name="end">End time</param>
         /// <returns>The number of nanoseconds between the given times.</returns>
-        public static long NanosecondsBetween(LocalTime start, LocalTime end)
-        {
-            return unchecked(end.NanosecondOfDay - start.NanosecondOfDay);
-        }
+        public static long NanosecondsBetween(LocalTime start, LocalTime end) =>
+            unchecked(end.NanosecondOfDay - start.NanosecondOfDay);
 
         /// <summary>
         /// Returns the period between a start and an end date/time, using only the given units.
