@@ -4,7 +4,7 @@
       - The most recently-released version. This is the last
       - thing to change before performing a release.
       -->
-    <Version>3.2.0</Version>
+    <Version>3.2.1</Version>
     <!--
       - The version we check for compatibility against. This is changed
       - immediately *after* a release.
