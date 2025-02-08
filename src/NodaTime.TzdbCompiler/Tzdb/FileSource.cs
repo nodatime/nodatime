@@ -53,7 +53,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
                     var entryStream = new MemoryStream();
                     reader.WriteEntryTo(entryStream);
                     // The lzip file puts everything into a subdirectory. Let's just take the filename...
-                    entries[Path.GetFileName(reader.Entry.Key)] = entryStream.ToArray();
+                    entries[Path.GetFileName(reader.Entry.Key!)] = entryStream.ToArray();
                 }
             }
             return new FileSource(entries.Keys.ToList(), file => new MemoryStream(entries[file]), fullOrigin);
