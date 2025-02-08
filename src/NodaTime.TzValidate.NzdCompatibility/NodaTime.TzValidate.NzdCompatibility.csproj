@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <OutputType>Exe</OutputType>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NodaTime" Version="1.1.1" />
+    <PackageReference Include="NodaTime" VersionOverride="1.1.1" />
     <ProjectReference Include="..\NodaTime.Tools.Common\NodaTime.Tools.Common.csproj" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" IncludeAssets="runtime; build; native; contentfiles; analyzers" /> 
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" VersionOverride="1.0.0" PrivateAssets="All" IncludeAssets="runtime; build; native; contentfiles; analyzers" /> 
   </ItemGroup>
 </Project>

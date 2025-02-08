@@ -10,7 +10,7 @@
 
   <!-- See https://github.com/saucecontrol/InheritDoc -->
   <ItemGroup>
-    <PackageReference Include="SauceControl.InheritDoc" Version="2.0.1" PrivateAssets="all" />
+    <PackageReference Include="SauceControl.InheritDoc" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
