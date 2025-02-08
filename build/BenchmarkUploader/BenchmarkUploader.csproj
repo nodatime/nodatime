@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.19.0" />
-    <PackageReference Include="Google.Cloud.Storage.V1" Version="3.7.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NodaTime" Version="3.0.10" />
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Google.Cloud.Storage.V1" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="NodaTime" VersionOverride="3.1.1" />
   </ItemGroup>
 
 </Project>

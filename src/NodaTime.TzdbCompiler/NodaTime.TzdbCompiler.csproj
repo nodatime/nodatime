@@ -7,6 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\NodaTime\NodaTime.csproj" />
     <ProjectReference Include="..\NodaTime.Tools.Common\NodaTime.Tools.Common.csproj" />
-    <PackageReference Include="SharpCompress" Version="0.36.0" />
+    <PackageReference Include="SharpCompress" />
   </ItemGroup>
 </Project>

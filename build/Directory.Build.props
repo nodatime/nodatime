@@ -1,6 +1,10 @@
 <Project>
   <!--
     - This file exists so that the build tools don't pick up the
-    - common properties from the root.
+    - common properties from the root. But we still want to
+    - use central package management.
     -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
 </Project>
