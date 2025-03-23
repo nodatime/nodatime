@@ -263,6 +263,7 @@
       <xs:enumeration value="America/Coral_Harbour" />
       <xs:enumeration value="America/Cordoba" />
       <xs:enumeration value="America/Costa_Rica" />
+      <xs:enumeration value="America/Coyhaique" />
       <xs:enumeration value="America/Creston" />
       <xs:enumeration value="America/Cuiaba" />
       <xs:enumeration value="America/Curacao" />
