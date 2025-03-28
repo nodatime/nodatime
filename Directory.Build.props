@@ -1,5 +1,8 @@
-<Project>
+﻿<Project>
   <PropertyGroup>
+    <EnableNUnitRunner>true</EnableNUnitRunner>
+    <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
     <!-- 
       - The most recently-released version. This is the last
       - thing to change before performing a release.
