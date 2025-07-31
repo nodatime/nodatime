@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net471;net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net471;net8.0</TargetFrameworks>
 
     <!-- ApprovalTests appears to not be able to cope with DeterministicSourcePaths -->
     <DeterministicSourcePaths>false</DeterministicSourcePaths>
