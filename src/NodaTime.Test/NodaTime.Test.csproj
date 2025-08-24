@@ -52,5 +52,11 @@
     <Compile Update="TimeZones/BclDateTimeZoneTest.*.cs">
   	  <DependentUpon>TimeZones/BclDateTimeZoneTest.cs</DependentUpon>
     </Compile>
+	<Compile Update="HighPerformance/Instant64Test.*.cs">
+		<DependentUpon>Instant64Test.cs</DependentUpon>
+	</Compile>
+	<Compile Update="HighPerformance/Duration64Test.*.cs">
+		<DependentUpon>Duration64Test.cs</DependentUpon>
+	</Compile>
   </ItemGroup>
 </Project>
