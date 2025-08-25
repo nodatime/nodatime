@@ -274,4 +274,82 @@ public partial class Instant64Test
         var instant = NodaConstants.UnixEpoch.PlusNanoseconds(1);
         Assert.AreEqual(instant, instant64.ToInstant());
     }
+
+    [Test]
+    public void ToDateTimeUtc()
+    {
+        Instant64 x = Instant64.FromUtc(2011, 08, 18, 20, 53);
+        DateTime expected = new DateTime(2011, 08, 18, 20, 53, 0, DateTimeKind.Utc);
+        DateTime actual = x.ToDateTimeUtc();
+        Assert.AreEqual(expected, actual);
+
+        // Kind isn't checked by Equals...
+        Assert.AreEqual(DateTimeKind.Utc, actual.Kind);
+    }
+
+    [Test]
+    [TestCase(1900)]
+    [TestCase(2200)]
+    public void ToBclTypes_TruncateNanosTowardStartOfTime(int year)
+    {
+        var instant = Instant64.FromUtc(year, 1, 1, 13, 15, 55).PlusNanoseconds(NodaConstants.NanosecondsPerSecond - 1);
+        var expectedDateTimeUtc = new DateTime(year, 1, 1, 13, 15, 55, DateTimeKind.Unspecified)
+            .AddTicks(NodaConstants.TicksPerSecond - 1);
+        var actualDateTimeUtc = instant.ToDateTimeUtc();
+        Assert.AreEqual(expectedDateTimeUtc, actualDateTimeUtc);
+        var expectedDateTimeOffset = new DateTimeOffset(expectedDateTimeUtc, TimeSpan.Zero);
+        var actualDateTimeOffset = instant.ToDateTimeOffset();
+        Assert.AreEqual(expectedDateTimeOffset, actualDateTimeOffset);
+    }
+
+    [Test]
+    public void ToDateTimeOffset()
+    {
+        Instant64 x = Instant64.FromUtc(2011, 08, 18, 20, 53);
+        DateTimeOffset expected = new DateTimeOffset(2011, 08, 18, 20, 53, 0, TimeSpan.Zero);
+        Assert.AreEqual(expected, x.ToDateTimeOffset());
+    }
+
+    [Test]
+    public void FromDateTimeOffset()
+    {
+        DateTimeOffset dateTimeOffset = new DateTimeOffset(2011, 08, 18, 20, 53, 0, TimeSpan.FromHours(5));
+        Instant64 expected = Instant64.FromUtc(2011, 08, 18, 15, 53);
+        Assert.AreEqual(expected, Instant64.FromDateTimeOffset(dateTimeOffset));
+    }
+
+    [Test]
+    public void FromDateTimeUtc_Invalid()
+    {
+        Assert.Throws<ArgumentException>(() => Instant64.FromDateTimeUtc(new DateTime(2011, 08, 18, 20, 53, 0, DateTimeKind.Local)));
+        Assert.Throws<ArgumentException>(() => Instant64.FromDateTimeUtc(new DateTime(2011, 08, 18, 20, 53, 0, DateTimeKind.Unspecified)));
+    }
+
+    [Test]
+    public void FromDateTimeUtc_Valid()
+    {
+        DateTime x = new DateTime(2011, 08, 18, 20, 53, 0, DateTimeKind.Utc);
+        Instant64 expected = Instant64.FromUtc(2011, 08, 18, 20, 53);
+        Assert.AreEqual(expected, Instant64.FromDateTimeUtc(x));
+    }
+
+    [Test]
+    public void BclConversionLimits()
+    {
+        var minDateTime = Instant64.MinValue.ToDateTimeUtc().AddTicks(1);
+        Instant64.FromDateTimeUtc(minDateTime);
+        Assert.Throws<OverflowException>(() => Instant64.FromDateTimeUtc(minDateTime.AddTicks(-1)));
+
+        var maxDateTime = Instant64.MaxValue.ToDateTimeUtc();
+        Instant64.FromDateTimeUtc(maxDateTime);
+        Assert.Throws<OverflowException>(() => Instant64.FromDateTimeUtc(maxDateTime.AddTicks(1)));
+
+        var minDateTimeOffset = Instant64.MinValue.ToDateTimeOffset().AddTicks(1);
+        Instant64.FromDateTimeOffset(minDateTimeOffset);
+        Assert.Throws<OverflowException>(() => Instant64.FromDateTimeOffset(minDateTimeOffset.AddTicks(-1)));
+
+        var maxDateTimeOffset = Instant64.MaxValue.ToDateTimeOffset();
+        Instant64.FromDateTimeOffset(maxDateTime);
+        Assert.Throws<OverflowException>(() => Instant64.FromDateTimeOffset(maxDateTime.AddTicks(1)));
+    }
 }

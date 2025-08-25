@@ -4,6 +4,7 @@
 
 using NodaTime.HighPerformance;
 using NUnit.Framework;
+using System;
 using System.Globalization;
 
 namespace NodaTime.Test.HighPerformance;
@@ -197,6 +198,28 @@ public partial class Duration64Test
 
     [Test]
     public void TotalNanoseconds() => Assert.AreEqual(123L, Duration64.FromNanoseconds(123L).TotalNanoseconds);
+
+    [Test]
+    public void FromAndToTimeSpan()
+    {
+        TimeSpan timeSpan = TimeSpan.FromHours(3) + TimeSpan.FromSeconds(2) + TimeSpan.FromTicks(1);
+        Duration64 duration = Duration64.FromHours(3) + Duration64.FromSeconds(2) + Duration64.FromTicks(1);
+        Assert.AreEqual(duration, Duration64.FromTimeSpan(timeSpan));
+        Assert.AreEqual(timeSpan, duration.ToTimeSpan());
+    }
+
+
+    [Test]
+    public void BclConversionLimits()
+    {
+        var minTimeSpan = Duration64.MinValue.ToTimeSpan();
+        Duration64.FromTimeSpan(minTimeSpan);
+        Assert.Throws<OverflowException>(() => Duration64.FromTimeSpan(minTimeSpan - TimeSpan.FromTicks(1)));
+
+        var maxTimeSpan = Duration64.MaxValue.ToTimeSpan();
+        Duration64.FromTimeSpan(maxTimeSpan);
+        Assert.Throws<OverflowException>(() => Duration64.FromTimeSpan(maxTimeSpan + TimeSpan.FromTicks(1)));
+    }
 
     /// <summary>
     /// Factory method just to make porting tests easier.
