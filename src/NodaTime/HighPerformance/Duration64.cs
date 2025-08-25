@@ -315,6 +315,28 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     #endregion
 
     /// <summary>
+    /// Returns a <see cref="Duration"/> that represents the same number of ticks as the
+    /// given <see cref="TimeSpan"/>.
+    /// </summary>
+    /// <param name="timeSpan">The TimeSpan value to convert</param>
+    /// <exception cref="OverflowException">The timespan cannot be represented as a <see cref="Duration64"/>.</exception>
+    /// <returns>A new Duration with the same number of ticks as the given TimeSpan.</returns>
+    public static Duration64 FromTimeSpan(TimeSpan timeSpan) => FromTicks(timeSpan.Ticks);
+
+    /// <summary>
+    /// Returns a <see cref="TimeSpan"/> that represents the same number of ticks as this
+    /// <see cref="Duration"/>.
+    /// </summary>
+    /// <remarks>
+    /// If the number of nanoseconds in a duration is not a whole number of ticks, it is truncated towards zero.
+    /// For example, durations in the range [-99ns, 99ns] would all count as 0 ticks.
+    /// </remarks>
+    /// <exception cref="OverflowException">The number of ticks cannot be represented a signed 64-bit integer.</exception>
+    /// <returns>A new TimeSpan with the same number of ticks as this Duration.</returns>
+    [Pure]
+    public TimeSpan ToTimeSpan() => new TimeSpan(Nanoseconds / NanosecondsPerTick);
+
+    /// <summary>
     /// Returns a <see cref="Duration64"/> that represents the given number of days, assuming a 'standard' 24-hour
     /// day.
     /// </summary>

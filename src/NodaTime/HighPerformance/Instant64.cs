@@ -380,6 +380,58 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
     public bool Equals(Instant64 other) => this == other;
 
     /// <summary>
+    /// Constructs a <see cref="DateTime"/> from this Instant which has a <see cref="DateTime.Kind" />
+    /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+    /// towards the start of time. Note that this means the result of calling this method on <see cref="MinValue"/>
+    /// is a value which is out of range for <see cref="FromDateTimeUtc(DateTime)"/>.
+    /// </para>
+    /// </remarks>
+    /// <returns>A <see cref="DateTime"/> representing the same instant in time as this value, with a kind of "universal".</returns>
+    [Pure]
+    public DateTime ToDateTimeUtc() => new DateTime(BclTicksAtUnixEpoch + ToUnixTimeTicks(), DateTimeKind.Utc);
+
+    /// <summary>
+    /// Constructs a <see cref="DateTimeOffset"/> from this Instant which has an offset of zero.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+    /// towards the start of time. Note that this means the result of calling this method on <see cref="MinValue"/>
+    /// is a value which is out of range for <see cref="FromDateTimeOffset(DateTimeOffset)"/>.
+    /// </para>
+    /// </remarks>
+    /// <returns>A <see cref="DateTimeOffset"/> representing the same instant in time as this value.</returns>
+    [Pure]
+    public DateTimeOffset ToDateTimeOffset() => new DateTimeOffset(BclTicksAtUnixEpoch + ToUnixTimeTicks(), TimeSpan.Zero);
+
+    /// <summary>
+    /// Converts a <see cref="DateTimeOffset"/> into a new Instant representing the same instant in time. Note that
+    /// the offset information is not preserved in the returned Instant.
+    /// </summary>
+    /// <exception cref="OverflowException"><paramref name="dateTimeOffset"/> is outside the range of <see cref="Instant64"/>.</exception>
+    /// <returns>An <see cref="Instant64"/> value representing the same instant in time as the given <see cref="DateTimeOffset"/>.</returns>
+    /// <param name="dateTimeOffset">Date and time value with an offset.</param>
+    public static Instant64 FromDateTimeOffset(DateTimeOffset dateTimeOffset) =>
+        FromUnixTimeTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks - BclTicksAtUnixEpoch);
+
+    /// <summary>
+    /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
+    /// </summary>
+    /// <returns>An <see cref="Instant64"/> value representing the same instant in time as the given universal <see cref="DateTime"/>.</returns>
+    /// <param name="dateTime">Date and time value which must have a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/></param>
+    /// <exception cref="ArgumentException"><paramref name="dateTime"/> is not of <see cref="DateTime.Kind"/>
+    /// <exception cref="OverflowException"><paramref name="dateTime"/> is outside the range of <see cref="Instant64"/>.</exception>
+    /// <see cref="DateTimeKind.Utc"/>.</exception>
+    public static Instant64 FromDateTimeUtc(DateTime dateTime)
+    {
+        Preconditions.CheckArgument(dateTime.Kind == DateTimeKind.Utc, nameof(dateTime), "Invalid DateTime.Kind for Instant.FromDateTimeUtc");
+        return FromUnixTimeTicks(dateTime.Ticks - BclTicksAtUnixEpoch);
+    }
+    /// <summary>
     /// Initializes a new instance of the <see cref="Instant64" /> struct based
     /// on a number of seconds since the Unix epoch of (ISO) January 1st 1970, midnight, UTC.
     /// </summary>
