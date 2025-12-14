@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net471;net8.0</TargetFrameworks>
+    <TargetFrameworks>net48;net10.0</TargetFrameworks>
 
     <!-- ApprovalTests appears to not be able to cope with DeterministicSourcePaths -->
     <DeterministicSourcePaths>false</DeterministicSourcePaths>
@@ -14,7 +14,7 @@
     <PackageReference Include="NUnit" />
     <PackageReference Include="NUnit3TestAdapter" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" Condition="'$(TargetFramework)'=='net8.0'" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" Condition="'$(TargetFramework)'=='net10.0'" />
   </ItemGroup>
 
   <ItemGroup>
