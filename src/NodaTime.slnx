@@ -1,0 +1,28 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/MSBuild/">
+    <File Path="../Directory.Build.props" />
+    <File Path="../Directory.Build.targets" />
+    <File Path="../Directory.Packages.props" />
+    <File Path="../global.json" />
+  </Folder>
+  <Project Path="NodaTime.AotCompatibilityTestApp/NodaTime.AotCompatibilityTestApp.csproj" />
+  <Project Path="NodaTime.Benchmarks.Custom/NodaTime.Benchmarks.Custom.csproj" />
+  <Project Path="NodaTime.Benchmarks/NodaTime.Benchmarks.csproj" />
+  <Project Path="NodaTime.Demo/NodaTime.Demo.csproj" />
+  <Project Path="NodaTime.NzdPrinter/NodaTime.NzdPrinter.csproj" />
+  <Project Path="NodaTime.Test/NodaTime.Test.csproj" />
+  <Project Path="NodaTime.Testing/NodaTime.Testing.csproj" />
+  <Project Path="NodaTime.Tools.Common/NodaTime.Tools.Common.csproj" />
+  <Project Path="NodaTime.Tools.DumpTimeZoneInfo/NodaTime.Tools.DumpTimeZoneInfo.csproj" />
+  <Project Path="NodaTime.Tools.ValidateHistoricalNzd/NodaTime.Tools.ValidateHistoricalNzd.csproj" />
+  <Project Path="NodaTime.TzdbCompiler.Test/NodaTime.TzdbCompiler.Test.csproj" />
+  <Project Path="NodaTime.TzdbCompiler/NodaTime.TzdbCompiler.csproj" />
+  <Project Path="NodaTime.TzValidate.NodaDump/NodaTime.TzValidate.NodaDump.csproj" />
+  <Project Path="NodaTime.TzValidate.NzdCompatibility/NodaTime.TzValidate.NzdCompatibility.csproj" />
+  <Project Path="NodaTime/NodaTime.csproj" />
+</Solution>

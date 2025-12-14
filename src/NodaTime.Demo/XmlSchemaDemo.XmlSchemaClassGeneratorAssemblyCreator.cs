@@ -105,7 +105,9 @@ namespace NodaTime.Demo
                 using var dllStream = new MemoryStream();
                 var result = compilation.Emit(dllStream);
                 if (result.Success)
+                {
                     return Assembly.Load(dllStream.ToArray());
+                }
                 throw new AggregateException(result.Diagnostics.Select(e => new Exception(e.ToString())));
             }
         }

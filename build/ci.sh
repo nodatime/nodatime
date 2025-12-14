@@ -6,12 +6,12 @@ declare -r ROOT=$(realpath $(dirname $0)/..)
 cd $ROOT
 
 export ContinuousIntegrationBuild=true
-dotnet build -c Release src/NodaTime.sln
-dotnet test -c Release -f net8.0 src/NodaTime.Test
-dotnet test -c Release -f net8.0 src/NodaTime.Demo
+dotnet build -c Release src/NodaTime.slnx
+dotnet test -c Release -f net10.0 src/NodaTime.Test
+dotnet test -c Release -f net10.0 src/NodaTime.Demo
 
 dotnet build -c Release src/NodaTime.TzdbCompiler
-dotnet test -c Release -f net8.0 src/NodaTime.TzdbCompiler.Test
+dotnet test -c Release -f net10.0 src/NodaTime.TzdbCompiler.Test
 
 # Publish the AOT compatibility app as an additional step to
 # find any AOT-problematic code.

@@ -38,7 +38,7 @@ rm -rf $REPO
 git clone https://github.com/nodatime/nodatime.git $REPO --depth=1
 
 cd $REPO/src
-dotnet restore NodaTime.sln
+dotnet restore NodaTime.slnx
 cd NodaTime.Benchmarks
 
 UPLOAD=""

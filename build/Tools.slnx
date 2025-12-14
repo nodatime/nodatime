@@ -1,0 +1,19 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Debug-AOT" />
+    <BuildType Name="Release" />
+    <BuildType Name="Release-Signed" />
+    <BuildType Name="Release-Unsigned" />
+  </Configurations>
+  <Project Path="BenchmarkUploader/BenchmarkUploader.csproj">
+    <BuildType Solution="Debug-AOT|*" Project="Debug" />
+    <BuildType Solution="Release-Signed|*" Project="Release" />
+    <BuildType Solution="Release-Unsigned|*" Project="Release" />
+  </Project>
+  <Project Path="NullableApiReviewer/NullableApiReviewer.csproj">
+    <BuildType Solution="Debug-AOT|*" Project="Debug" />
+    <BuildType Solution="Release-Signed|*" Project="Release" />
+    <BuildType Solution="Release-Unsigned|*" Project="Release" />
+  </Project>
+</Solution>

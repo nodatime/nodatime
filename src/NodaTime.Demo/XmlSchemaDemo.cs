@@ -56,7 +56,7 @@ namespace NodaTime.Demo
             schemaSet.Add(personXmlSchema!);
             schemaSet.Add(Xml.XmlSchemaDefinition.NodaTimeXmlSchema);
             const string namespaceName = nameof(XmlSchemaDemo);
-            var assemblyGenerator = (IXmlSchemaAssemblyCreator)Activator.CreateInstance(assemblyGeneratorType)!;
+            var assemblyGenerator = (IXmlSchemaAssemblyCreator) Activator.CreateInstance(assemblyGeneratorType)!;
             Assembly assembly;
             try
             {
