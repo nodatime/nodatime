@@ -12,9 +12,11 @@ namespace NodaTime.HighPerformance;
 
 /// <summary>
 /// Represents a fixed (and calendar-independent) length of time.
-/// This type is a equivalent to <see cref="Duration"/>, but with a more more limited range (a few hundred years)
-/// and more compact and high-performance representation. It is expected to be used in conjunction with <see cref="Instant64"/>,
-/// typically in scenarios where performance and/or memory usage are important.
+/// This type is a equivalent to <see cref="Duration"/>, but with a more limited range (a few hundred years)
+/// and more compact, high performance representation. It is expected to be used in conjunction with <see cref="Instant64"/>,
+/// typically in scenarios where performance and/or memory usage are important. Note that in most cases,
+/// <see cref="Duration"/> is more appropriate and convenient (with more supported methods etc). This should effectively
+/// be regarded as a specialist type for unusually performance-sensitive scenarios.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -238,6 +240,7 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     /// </summary>
     /// <param name="duration">Duration64 to negate</param>
     /// <returns>The negative value of this duration</returns>
+    /// <exception cref="OverflowException"><paramref name="duration"/> is equal to <see cref="MinValue"/>.</exception>
     public static Duration64 operator -(Duration64 duration) => new(-duration.Nanoseconds);
 
     /// <summary>
@@ -245,6 +248,7 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     /// </summary>
     /// <param name="duration">Duration64 to negate</param>
     /// <returns>The negative value of this duration</returns>
+    /// <exception cref="OverflowException"><paramref name="duration"/> is equal to <see cref="MinValue"/>.</exception>
     public static Duration64 Negate(Duration64 duration) => -duration;
     #endregion // Operators
 

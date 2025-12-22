@@ -16,6 +16,13 @@ public partial class Instant64Test
     private static readonly Instant64 negativeFiftyMillion = Instant64.FromUnixTimeNanoseconds(-50000000L);
 
     [Test]
+    public void FromInstant_Extreme()
+    {
+        Assert.AreEqual(Instant64.MinValue, Instant64.FromInstant(Instant64.MinValue.ToInstant()));
+        Assert.AreEqual(Instant64.MaxValue, Instant64.FromInstant(Instant64.MaxValue.ToInstant()));
+    }
+
+    [Test]
     public void FromUtcNoSeconds()
     {
         Instant64 viaUtc = Instant64.FromInstant(DateTimeZone.Utc.AtStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 0)).ToInstant());
@@ -27,6 +34,24 @@ public partial class Instant64Test
     {
         Instant64 viaUtc = Instant64.FromInstant(DateTimeZone.Utc.AtStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 23)).ToInstant());
         Assert.AreEqual(viaUtc, Instant64.FromUtc(2008, 4, 3, 10, 35, 23));
+    }
+
+    [Test]
+    public void FromUtcNoSeconds_ExtremelyNegative()
+    {
+        var local = Instant64.MinValue.ToInstant().InUtc().LocalDateTime.PlusMinutes(1).With(TimeAdjusters.TruncateToMinute);
+        var instant = local.InUtc().ToInstant();
+        Instant64 fromInstant = Instant64.FromInstant(instant);
+        Assert.AreEqual(fromInstant, Instant64.FromUtc(local.Year, local.Month, local.Day, local.Hour, local.Minute));
+    }
+
+    [Test]
+    public void FromUtcWithSeconds_ExtremelyNegative()
+    {
+        var local = Instant64.MinValue.ToInstant().InUtc().LocalDateTime.PlusMinutes(1).With(TimeAdjusters.TruncateToSecond);
+        var instant = local.InUtc().ToInstant();
+        Instant64 fromInstant = Instant64.FromInstant(instant);
+        Assert.AreEqual(fromInstant, Instant64.FromUtc(local.Year, local.Month, local.Day, local.Hour, local.Minute, local.Second));
     }
 
     [Test]

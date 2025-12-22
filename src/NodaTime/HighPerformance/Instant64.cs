@@ -13,10 +13,12 @@ namespace NodaTime.HighPerformance;
 
 /// <summary>
 /// Represents an instant on the global timeline, with nanosecond resolution.
-/// This type is a equivalent to <see cref="Instant"/>, but with a more more limited range (a few hundred years either
-/// side of the Unix epoch) and more compact and high-performance representation.
+/// This type is a equivalent to <see cref="Instant"/>, but with a more limited range (a few hundred years either
+/// side of the Unix epoch) and more compact, high performance representation.
 /// It is expected to be used in conjunction with <see cref="Duration64"/>,
-/// typically in scenarios where performance and/or memory usage are important.
+/// typically in scenarios where performance and/or memory usage are important. Note that in most cases,
+/// <see cref="Instant"/> is more appropriate and convenient (with more supported methods etc). This should effectively
+/// be regarded as a specialist type for unusually performance-sensitive scenarios.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -288,6 +290,16 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
     public static bool operator >=(Instant64 left, Instant64 right) => left.nanoseconds >= right.nanoseconds;
 
     /// <summary>
+    /// Convenience method to convert a number of days (may be negative) and a nanosecond within the day (always non-negative)
+    /// into an Instant64. This handles very close-to-minimal values where the multiplication of "days * NanosecondsPerDay" could
+    /// overflow. <paramref name="days"/> is not assumed to be in range for Instant64, but <paramref name="nanoOfDay"/>
+    /// is assumed to be in the range [0, NodaConstants.NanosecondsPerDay).
+    /// </summary>
+    private static Instant64 FromDayAndNanoOfDay(int days, long nanoOfDay) => days >= 0
+        ? new Instant64(days * NanosecondsPerDay + nanoOfDay)
+        : new Instant64((days + 1) * NanosecondsPerDay + nanoOfDay - NanosecondsPerDay);
+
+    /// <summary>
     /// Returns a new instant corresponding to the given UTC date and time in the ISO calendar.
     /// </summary>
     /// <param name="year">The year. This is the "absolute year",
@@ -301,7 +313,7 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
     {
         var days = new LocalDate(year, monthOfYear, dayOfMonth).DaysSinceEpoch;
         var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour).NanosecondOfDay;
-        return new Instant64(days * NanosecondsPerDay + nanoOfDay);
+        return FromDayAndNanoOfDay(days, nanoOfDay);
     }
 
     /// <summary>
@@ -322,9 +334,7 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
         var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).NanosecondOfDay;
 
         // For extreme negative values, the naive expression may overflow before we get it back into range.
-        return days >= 0
-            ? new Instant64(days * NanosecondsPerDay + nanoOfDay)
-            : new Instant64((days + 1) * NanosecondsPerDay + nanoOfDay - NanosecondsPerDay);
+        return FromDayAndNanoOfDay(days, nanoOfDay);
     }
 
     /// <summary>
@@ -380,7 +390,7 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
     public bool Equals(Instant64 other) => this == other;
 
     /// <summary>
-    /// Constructs a <see cref="DateTime"/> from this Instant which has a <see cref="DateTime.Kind" />
+    /// Constructs a <see cref="DateTime"/> from this instant which has a <see cref="DateTime.Kind" />
     /// of <see cref="DateTimeKind.Utc"/> and represents the same instant of time as this value.
     /// </summary>
     /// <remarks>
@@ -395,7 +405,7 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
     public DateTime ToDateTimeUtc() => new DateTime(BclTicksAtUnixEpoch + ToUnixTimeTicks(), DateTimeKind.Utc);
 
     /// <summary>
-    /// Constructs a <see cref="DateTimeOffset"/> from this Instant which has an offset of zero.
+    /// Constructs a <see cref="DateTimeOffset"/> from this instant which has an offset of zero.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -409,8 +419,8 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
     public DateTimeOffset ToDateTimeOffset() => new DateTimeOffset(BclTicksAtUnixEpoch + ToUnixTimeTicks(), TimeSpan.Zero);
 
     /// <summary>
-    /// Converts a <see cref="DateTimeOffset"/> into a new Instant representing the same instant in time. Note that
-    /// the offset information is not preserved in the returned Instant.
+    /// Converts a <see cref="DateTimeOffset"/> into a new instant representing the same instant in time. Note that
+    /// the offset information is not preserved in the returned instant.
     /// </summary>
     /// <exception cref="OverflowException"><paramref name="dateTimeOffset"/> is outside the range of <see cref="Instant64"/>.</exception>
     /// <returns>An <see cref="Instant64"/> value representing the same instant in time as the given <see cref="DateTimeOffset"/>.</returns>
@@ -419,7 +429,7 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
         FromUnixTimeTicks(dateTimeOffset.Ticks - dateTimeOffset.Offset.Ticks - BclTicksAtUnixEpoch);
 
     /// <summary>
-    /// Converts a <see cref="DateTime"/> into a new Instant representing the same instant in time.
+    /// Converts a <see cref="DateTime"/> into a new instant representing the same instant in time.
     /// </summary>
     /// <returns>An <see cref="Instant64"/> value representing the same instant in time as the given universal <see cref="DateTime"/>.</returns>
     /// <param name="dateTime">Date and time value which must have a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/></param>
@@ -490,7 +500,7 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
     /// </para>
     /// <para>
     /// The inverse of this operation is to first call <see cref="FromUnixTimeSeconds(long)"/> and then
-    /// call <see cref="PlusNanoseconds(long)"/> on the returned <see cref="Instant"/>.
+    /// call <see cref="PlusNanoseconds(long)"/> on the returned <see cref="Instant64"/>.
     /// </para>
     /// </remarks>
     /// <value>The number of seconds and remaining nanoseconds since the Unix epoch.</value>
@@ -537,7 +547,7 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
     /// Converts this value to an <see cref="Instant"/> representing the same instant in time.
     /// This operation always succeeds and loses no information.
     /// </summary>
-    /// <returns>An <see cref="Instant64"/> representing the same instant in time as this one.</returns>
+    /// <returns>An <see cref="Instant"/> representing the same instant in time as this one.</returns>
     [Pure]
     public Instant ToInstant() => Instant.FromTrustedDuration(Duration.FromNanoseconds(nanoseconds));
 
@@ -551,7 +561,7 @@ public readonly struct Instant64 : IEquatable<Instant64>, IComparable<Instant64>
     /// <returns>An <see cref="Instant64"/> value equivalent to <paramref name="instant"/>.</returns>
     /// <exception cref="OverflowException"><paramref name="instant"/> has a value outside
     /// the range of <see cref="Instant64"/>.</exception>
-    public static Instant64 FromInstant(Instant instant) => new(instant.DaysSinceEpoch * NanosecondsPerDay + instant.NanosecondOfDay);
+    public static Instant64 FromInstant(Instant instant) => FromDayAndNanoOfDay(instant.DaysSinceEpoch, instant.NanosecondOfDay);
 
     private long DivideAndFloor(long nanosecondsPerUnit)
     {
