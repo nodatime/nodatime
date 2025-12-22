@@ -319,23 +319,21 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     #endregion
 
     /// <summary>
-    /// Returns a <see cref="Duration"/> that represents the same number of ticks as the
+    /// Returns a <see cref="Duration64"/> that represents the same number of ticks as the
     /// given <see cref="TimeSpan"/>.
     /// </summary>
     /// <param name="timeSpan">The TimeSpan value to convert</param>
-    /// <exception cref="OverflowException">The timespan cannot be represented as a <see cref="Duration64"/>.</exception>
-    /// <returns>A new Duration with the same number of ticks as the given TimeSpan.</returns>
+    /// <returns>A new Duration64 with the same number of ticks as the given TimeSpan.</returns>
     public static Duration64 FromTimeSpan(TimeSpan timeSpan) => FromTicks(timeSpan.Ticks);
 
     /// <summary>
     /// Returns a <see cref="TimeSpan"/> that represents the same number of ticks as this
-    /// <see cref="Duration"/>.
+    /// <see cref="Duration64"/>.
     /// </summary>
     /// <remarks>
     /// If the number of nanoseconds in a duration is not a whole number of ticks, it is truncated towards zero.
     /// For example, durations in the range [-99ns, 99ns] would all count as 0 ticks.
     /// </remarks>
-    /// <exception cref="OverflowException">The number of ticks cannot be represented a signed 64-bit integer.</exception>
     /// <returns>A new TimeSpan with the same number of ticks as this Duration.</returns>
     [Pure]
     public TimeSpan ToTimeSpan() => new TimeSpan(Nanoseconds / NanosecondsPerTick);
@@ -346,6 +344,7 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     /// </summary>
     /// <param name="days">The number of days.</param>
     /// <returns>A <see cref="Duration64"/> representing the given number of days.</returns>
+    /// <exception cref="OverflowException">The specified value cannot be represented as a <see cref="Duration64"/>.</exception>
     public static Duration64 FromDays(int days) => new(days * NanosecondsPerDay);
 
     /// <summary>
@@ -353,6 +352,7 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     /// </summary>
     /// <param name="hours">The number of hours.</param>
     /// <returns>A <see cref="Duration64"/> representing the given number of hours.</returns>
+    /// <exception cref="OverflowException">The specified value cannot be represented as a <see cref="Duration64"/>.</exception>
     public static Duration64 FromHours(int hours) => new(hours * NanosecondsPerHour);
 
     /// <summary>
@@ -360,6 +360,7 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     /// </summary>
     /// <param name="minutes">The number of minutes.</param>
     /// <returns>A <see cref="Duration64"/> representing the given number of minutes.</returns>
+    /// <exception cref="OverflowException">The specified value cannot be represented as a <see cref="Duration64"/>.</exception>
     public static Duration64 FromMinutes(long minutes) => new(minutes * NanosecondsPerMinute);
 
 
@@ -368,6 +369,7 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     /// </summary>
     /// <param name="seconds">The number of seconds.</param>
     /// <returns>A <see cref="Duration64"/> representing the given number of seconds.</returns>
+    /// <exception cref="OverflowException">The specified value cannot be represented as a <see cref="Duration64"/>.</exception>
     public static Duration64 FromSeconds(long seconds) => new(seconds * NanosecondsPerSecond);
 
     /// <summary>
@@ -375,6 +377,7 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     /// </summary>
     /// <param name="milliseconds">The number of milliseconds.</param>
     /// <returns>A <see cref="Duration64"/> representing the given number of milliseconds.</returns>
+    /// <exception cref="OverflowException">The specified value cannot be represented as a <see cref="Duration64"/>.</exception>
     public static Duration64 FromMilliseconds(long milliseconds) => new(milliseconds * NanosecondsPerMillisecond);
 
     /// <summary>
@@ -382,6 +385,7 @@ public readonly struct Duration64 : IEquatable<Duration64>, IComparable<Duration
     /// </summary>
     /// <param name="ticks">The number of ticks.</param>
     /// <returns>A <see cref="Duration64"/> representing the given number of ticks.</returns>
+    /// <exception cref="OverflowException">The specified value cannot be represented as a <see cref="Duration64"/>.</exception>
     public static Duration64 FromTicks(long ticks) => new(ticks * NanosecondsPerTick);
 
     /// <summary>
