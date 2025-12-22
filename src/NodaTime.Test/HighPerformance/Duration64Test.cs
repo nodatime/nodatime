@@ -114,6 +114,13 @@ public partial class Duration64Test
     }
 
     [Test]
+    public void UnaryNegation_MinValue()
+    {
+        Assert.Throws<OverflowException>(() => (-Duration64.MinValue).Consume());
+        Assert.Throws<OverflowException>(() => Duration64.Negate(Duration64.MinValue));
+    }
+
+    [Test]
     public void MaxMinRelationship()
     {
         // Max and Min work like they do for other signed types - basically the max value is one less than the absolute
