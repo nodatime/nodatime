@@ -6,8 +6,8 @@ cd $(dirname $0)
 
 if [[ "$1" = "" ]]
 then
-  echo "Usage: update-3.2.sh tzdb-release-number"
-  echo "e.g. update-3.2.sh 2013h"
+  echo "Usage: update-3.3.sh tzdb-release-number"
+  echo "e.g. update-3.3.sh 2013h"
   exit 1
 fi
 
@@ -21,15 +21,15 @@ declare -r TZDB_RELEASE=$1
 declare -r GSUTIL=gsutil.cmd
 declare -r ROOT=$(realpath $(dirname $0)/../..)
 
-rm -rf tmp-3.2
-mkdir tmp-3.2
-cd tmp-3.2
+rm -rf tmp-3.3
+mkdir tmp-3.3
+cd tmp-3.3
 
 # Layout of tmp directory:
 # - nodatime: git repo
 # - old: previous zip and nupkg files
 # - output: final zip and nupkg files
-git clone https://github.com/nodatime/nodatime.git -b 3.2.x --depth 1
+git clone https://github.com/nodatime/nodatime.git -b 3.3.x --depth 1
 mkdir output
 declare -r OUTPUT="$(realpath $PWD/output)"
 
@@ -61,7 +61,7 @@ export ContinuousIntegrationBuild=true
 echo "Building and packaging..."
 
 # First build...
-dotnet build -c Release src/NodaTime.sln
+dotnet build -c Release src/NodaTime.slnx
 
 # Sign all the DLLs
 signtool sign -a -fd SHA256 \
@@ -85,5 +85,5 @@ cd ../..
 
 echo "Done. Remaining tasks:"
 echo "- Push package to nuget"
-echo "- Push commit to github: git push origin 3.2.x"
+echo "- Push commit to github: git push origin 3.3.x"
 echo "- Push tag to github: git push --tags origin"

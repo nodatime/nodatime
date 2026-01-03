@@ -25,7 +25,7 @@ rm -rf tmp-nuget
 mkdir tmp-gcs
 mkdir tmp-nuget
 
-for version in 3.2
+for version in 3.2 3.3
 do
   echo "Updating ${version}"
   ./update-${version}.sh $1
