@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.HighPerformance;
+using NodaTime.Text;
 using NUnit.Framework;
 using System;
 using System.Globalization;
@@ -226,6 +227,14 @@ public partial class Duration64Test
         var maxTimeSpan = Duration64.MaxValue.ToTimeSpan();
         Duration64.FromTimeSpan(maxTimeSpan);
         Assert.Throws<OverflowException>(() => Duration64.FromTimeSpan(maxTimeSpan + TimeSpan.FromTicks(1)));
+    }
+
+    [Test]
+    public void Extreme_IsoCalendar()
+    {
+        // This is basically so I can check the documentation in ranges.md.
+        Assert.AreEqual("-106751:23:47:16.854775808", DurationPattern.Roundtrip.Format(Duration64.MinValue.ToDuration()));
+        Assert.AreEqual("106751:23:47:16.854775807", DurationPattern.Roundtrip.Format(Duration64.MaxValue.ToDuration()));
     }
 
     /// <summary>
