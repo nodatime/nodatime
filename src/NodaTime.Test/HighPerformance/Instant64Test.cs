@@ -3,6 +3,7 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.HighPerformance;
+using NodaTime.Text;
 using NUnit.Framework;
 using System;
 using System.Globalization;
@@ -14,6 +15,14 @@ public partial class Instant64Test
     private static readonly Instant64 one = Instant64.FromUnixTimeNanoseconds(1L);
     private static readonly Instant64 threeMillion = Instant64.FromUnixTimeNanoseconds(3000000L);
     private static readonly Instant64 negativeFiftyMillion = Instant64.FromUnixTimeNanoseconds(-50000000L);
+
+    [Test]
+    public void MinMax_IsoCalendar()
+    {
+        // This is basically so I can check the documentation in ranges.md.
+        Assert.AreEqual("1677-09-21T00:12:43.145224192Z", InstantPattern.ExtendedIso.Format(Instant64.MinValue.ToInstant()));
+        Assert.AreEqual("2262-04-11T23:47:16.854775807Z", InstantPattern.ExtendedIso.Format(Instant64.MaxValue.ToInstant()));
+    }
 
     [Test]
     public void FromInstant_Extreme()
