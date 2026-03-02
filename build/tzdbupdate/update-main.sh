@@ -24,7 +24,7 @@ dotnet build -nologo -clp:NoSummary -v quiet $SRCDIR/NodaTime.slnx
 
 echo ""
 echo "Generating NZD file"
-dotnet run --project $SRCDIR/NodaTime.TzdbCompiler -f net8.0 -- \
+dotnet run --project $SRCDIR/NodaTime.TzdbCompiler -f net10.0 -- \
   -o $OUTPUT \
   -s https://data.iana.org/time-zones/releases/tzdata$1.tar.gz \
   -w $DATADIR/cldr \
