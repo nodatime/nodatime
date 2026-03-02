@@ -70,7 +70,7 @@ signtool sign -a -fd SHA256 \
   src/NodaTime/bin/Release/*/NodaTime.dll src/NodaTime.Testing/bin/Release/*/NodaTime.Testing.dll  
 
 # Package the result into the NuGet package
-dotnet pack --no-build -o "$OUTPUT" -c Release src/NodaTime.sln
+dotnet pack --no-build -o "$OUTPUT" -c Release src/NodaTime.slnx
 
 # Sign the NuGet package
 
