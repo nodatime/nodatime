@@ -20,7 +20,7 @@ declare -r DATADIR=$ROOT/data
 declare -r WWWDIR=$SRCDIR/NodaTime.Web/wwwroot
 
 echo "Building solution"
-dotnet build -nologo -clp:NoSummary -v quiet $SRCDIR/NodaTime.sln
+dotnet build -nologo -clp:NoSummary -v quiet $SRCDIR/NodaTime.slnx
 
 echo ""
 echo "Generating NZD file"
