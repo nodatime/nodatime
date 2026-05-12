@@ -42,7 +42,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal static FileSource FromArchive(Stream archiveData, string fullOrigin)
         {
             var entries = new Dictionary<string, byte[]>();
-            using (var reader = TarReader.Open(archiveData))
+            using (var reader = TarReader.OpenReader(archiveData))
             {
                 while (reader.MoveToNextEntry())
                 {
