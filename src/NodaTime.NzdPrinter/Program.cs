@@ -28,7 +28,7 @@ namespace NodaTime.NzdPrinter
                 Console.WriteLine("Usage: NodaTime.NzdPrinter <path/url to nzd file>");
                 return 1;
             }
-            var stream = new MemoryStream(await FileUtility.LoadFileOrUrlAsync(args[0]));
+            await using var stream = await FileUtility.LoadFileOrUrlAsync(args[0]);
             int version = new BinaryReader(stream).ReadInt32();
             Console.WriteLine($"File format version: {version}");
             string[]? stringPool = null; // In a valid file, this will be non-null before it's used for any non-string-pool field.

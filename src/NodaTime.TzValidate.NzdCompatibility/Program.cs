@@ -7,7 +7,6 @@ using NodaTime.TimeZones;
 using NodaTime.Tools.Common;
 using System;
 using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace NodaTime.TzValidate.NzdCompatibility
@@ -26,8 +25,8 @@ namespace NodaTime.TzValidate.NzdCompatibility
             {
                 return 1;
             }
-            var data = await FileUtility.LoadFileOrUrlAsync(options.Source);
-            TzdbDateTimeZoneSource source = TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
+            using var stream = await FileUtility.LoadFileOrUrlAsync(options.Source);
+            TzdbDateTimeZoneSource source = TzdbDateTimeZoneSource.FromStream(stream);
             var dumper = new ZoneDumper(source, options);
             try
             {

@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using SharpCompress.Readers.Tar;
 using System;
 using System.Collections.Generic;
+using System.Formats.Tar;
 using System.IO;
 using System.Linq;
 
@@ -42,18 +42,17 @@ namespace NodaTime.TzdbCompiler.Tzdb
         internal static FileSource FromArchive(Stream archiveData, string fullOrigin)
         {
             var entries = new Dictionary<string, byte[]>();
-            using (var reader = TarReader.OpenReader(archiveData))
+            using (var reader = new TarReader(archiveData))
             {
-                while (reader.MoveToNextEntry())
+                while (reader.GetNextEntry() is {} entry)
                 {
-                    if (reader.Entry.IsDirectory)
+                    if (entry.DataStream != null)
                     {
-                        continue;
+                        using var entryStream = new MemoryStream();
+                        entry.DataStream.CopyTo(entryStream);
+                        // The lzip file puts everything into a subdirectory. Let's just take the filename...
+                        entries[Path.GetFileName(entry.Name)] = entryStream.ToArray();
                     }
-                    var entryStream = new MemoryStream();
-                    reader.WriteEntryTo(entryStream);
-                    // The lzip file puts everything into a subdirectory. Let's just take the filename...
-                    entries[Path.GetFileName(reader.Entry.Key!)] = entryStream.ToArray();
                 }
             }
             return new FileSource(entries.Keys.ToList(), file => new MemoryStream(entries[file]), fullOrigin);

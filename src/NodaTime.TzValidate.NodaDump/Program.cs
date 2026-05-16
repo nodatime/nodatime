@@ -55,8 +55,8 @@ namespace NodaTime.TzValidate.NodaDump
             }
             if (source.EndsWith(".nzd"))
             {
-                var data = await FileUtility.LoadFileOrUrlAsync(source);
-                return TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
+                await using var stream = await FileUtility.LoadFileOrUrlAsync(source);
+                return TzdbDateTimeZoneSource.FromStream(stream);
             }
             else
             {
