@@ -116,8 +116,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
             if (path.StartsWith("ftp://") || path.StartsWith("http://") || path.StartsWith("https://"))
             {
                 log?.WriteLine($"Downloading {path}");
-                var data = await FileUtility.LoadFileOrUrlAsync(path);
-                return FileSource.FromArchive(new MemoryStream(data), path);
+                await using var stream = await FileUtility.LoadFileOrUrlAsync(path);
+                return FileSource.FromArchive(stream, path);
             }
             if (Directory.Exists(path))
             {
