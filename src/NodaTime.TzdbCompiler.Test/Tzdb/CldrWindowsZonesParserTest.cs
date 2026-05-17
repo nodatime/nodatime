@@ -2,6 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using System.IO;
 using NodaTime.TimeZones.Cldr;
 using NodaTime.TzdbCompiler.Tzdb;
 using NUnit.Framework;
@@ -11,8 +12,9 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
 {
     public class CldrWindowsZonesParserTest
     {
-        [Test]
-        public void Versions_Present()
+        [TestCase("windowsZones-38-1.xml", "38.1")]
+        [TestCase("windowsZones-47.xml", "47")]
+        public void Versions_Present(string fileName, string expectedVersion)
         {
             string xml = @"
 <supplementalData>
@@ -25,8 +27,8 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
 </supplementalData>
     ";
             var doc = XDocument.Parse(xml);
-            var parsed = CldrWindowsZonesParser.Parse(doc);
-            Assert.AreEqual("rev-version", parsed.Version);
+            var parsed = CldrWindowsZonesParser.Parse(doc, Path.Combine("..", fileName));
+            Assert.AreEqual(expectedVersion, parsed.Version);
             Assert.AreEqual("win-version", parsed.WindowsVersion);
             Assert.AreEqual("tzdb-version", parsed.TzdbVersion);
         }
@@ -44,7 +46,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
 </supplementalData>
     ";
             var doc = XDocument.Parse(xml);
-            var parsed = CldrWindowsZonesParser.Parse(doc);
+            var parsed = CldrWindowsZonesParser.Parse(doc, "");
             Assert.AreEqual("", parsed.Version);
             Assert.AreEqual("", parsed.WindowsVersion);
             Assert.AreEqual("", parsed.TzdbVersion);
@@ -65,7 +67,7 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
 </supplementalData>
     ";
             var doc = XDocument.Parse(xml);
-            var parsed = CldrWindowsZonesParser.Parse(doc);
+            var parsed = CldrWindowsZonesParser.Parse(doc, "");
             var mapZones = parsed.MapZones;
             Assert.AreEqual(3, mapZones.Count);
             Assert.AreEqual(new MapZone("X", "t0", new string[0]), mapZones[0]);

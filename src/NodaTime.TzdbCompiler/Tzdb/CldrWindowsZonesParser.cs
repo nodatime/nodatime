@@ -3,9 +3,9 @@
 // as found in the LICENSE.txt file.
 
 using NodaTime.TimeZones.Cldr;
-using NodaTime.Utility;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -18,7 +18,7 @@ namespace NodaTime.TzdbCompiler.Tzdb
     /// </summary>
     internal class CldrWindowsZonesParser
     {
-        internal static WindowsZones Parse(XDocument document)
+        internal static WindowsZones Parse(XDocument document, string file)
         {
             var root = document.Root;
             if (root is null)
@@ -26,13 +26,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 throw new ArgumentException("XML document has no root element");
             }
             var mapZones = MapZones(root);
-            var windowsZonesVersion = FindVersion(root!);
+            var windowsZonesVersion = FindVersion(root, file);
             var tzdbVersion = root.Element("windowsZones")?.Element("mapTimezones")?.Attribute("typeVersion")?.Value ?? "";
             var windowsVersion = root.Element("windowsZones")?.Element("mapTimezones")?.Attribute("otherVersion")?.Value ?? "";
             return new WindowsZones(windowsZonesVersion, tzdbVersion, windowsVersion, mapZones);
         }
 
-        internal static WindowsZones Parse(string file) => Parse(LoadFile(file));
+        internal static WindowsZones Parse(string file) => Parse(LoadFile(file), file);
 
         private static XDocument LoadFile(string file)
         {
@@ -45,8 +45,13 @@ namespace NodaTime.TzdbCompiler.Tzdb
             }
         }
 
-        private static string FindVersion(XElement root)
+        private static string FindVersion(XElement root, string file)
         {
+            var cldrVersion = Path.GetFileNameWithoutExtension(file).Replace("windowsZones-", "").Replace("-", ".");
+            if (decimal.TryParse(cldrVersion, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out _))
+            {
+                return cldrVersion;
+            }
             string? revision = (string?) root.Element("version")?.Attribute("number");
             if (revision is null)
             {
