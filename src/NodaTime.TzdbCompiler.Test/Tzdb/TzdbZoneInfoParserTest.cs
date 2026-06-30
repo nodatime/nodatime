@@ -240,6 +240,69 @@ namespace NodaTime.TzdbCompiler.Test.Tzdb
         }
 
         [Test]
+        public void ParseMonth_unambiguousPrefix()
+        {
+            Assert.AreEqual(8, TzdbZoneInfoParser.ParseMonth("Au")); // No other month starts with "Au"
+            Assert.AreEqual(9, TzdbZoneInfoParser.ParseMonth("Septe")); // Prefix of the long form "September"
+        }
+
+        [Test]
+        public void ParseMonth_ambiguousPrefix_exception()
+        {
+            // "Ju" matches both June and July.
+            Assert.Throws<InvalidDataException>(() => TzdbZoneInfoParser.ParseMonth("Ju"));
+        }
+
+        [Test]
+        public void ParseMonth_caseInsensitive()
+        {
+            Assert.AreEqual(1, TzdbZoneInfoParser.ParseMonth("jan"));
+            Assert.AreEqual(1, TzdbZoneInfoParser.ParseMonth("JANUARY"));
+            Assert.AreEqual(8, TzdbZoneInfoParser.ParseMonth("au"));
+        }
+
+        [Test]
+        public void ParseDayOfWeek_nullOrEmpty()
+        {
+            Assert.Throws<ArgumentException>(() => TzdbZoneInfoParser.ParseDayOfWeek(""));
+            Assert.Throws<ArgumentException>(() => TzdbZoneInfoParser.ParseDayOfWeek(null!));
+        }
+
+        [Test]
+        public void ParseDayOfWeek_invalidDay_exception()
+        {
+            Assert.Throws<InvalidDataException>(() => TzdbZoneInfoParser.ParseDayOfWeek("Able"));
+        }
+
+        [Test]
+        public void ParseDayOfWeek_shortNames()
+        {
+            Assert.AreEqual(1, TzdbZoneInfoParser.ParseDayOfWeek("Mon"));
+            Assert.AreEqual(7, TzdbZoneInfoParser.ParseDayOfWeek("Sun"));
+        }
+
+        [Test]
+        public void ParseDayOfWeek_unambiguousPrefix()
+        {
+            Assert.AreEqual(1, TzdbZoneInfoParser.ParseDayOfWeek("Mo")); // No other day starts with "Mo"
+            Assert.AreEqual(4, TzdbZoneInfoParser.ParseDayOfWeek("Th")); // No other day starts with "Th"
+        }
+
+        [Test]
+        public void ParseDayOfWeek_ambiguousPrefix_exception()
+        {
+            // "S" matches both Saturday and Sunday.
+            Assert.Throws<InvalidDataException>(() => TzdbZoneInfoParser.ParseDayOfWeek("S"));
+        }
+
+        [Test]
+        public void ParseDayOfWeek_caseInsensitive()
+        {
+            Assert.AreEqual(1, TzdbZoneInfoParser.ParseDayOfWeek("mon"));
+            Assert.AreEqual(7, TzdbZoneInfoParser.ParseDayOfWeek("SUN"));
+        }
+
+        [Test]
         public void ParseZone_badOffset_exception()
         {
             var parser = new TzdbZoneInfoParser();
