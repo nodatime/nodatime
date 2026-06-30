@@ -42,14 +42,10 @@ namespace NodaTime.TzdbCompiler.Tzdb
         private static readonly string[] DaysOfWeek = { "", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
 
         /// <summary>
-        /// The months of the year names as they appear in the TZDB zone files. They are
-        /// always the short name in US English.
-        /// </summary>
-        private static readonly string[] ShortMonths = { "", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-
-        /// <summary>
-        /// ... except when they're actually the long month name, e.g. in Greece in 96d.
-        /// (This is basically only for old files.)
+        /// The months of the year names as they appear in the TZDB zone files. Entries are usually
+        /// abbreviated to (an unambiguous prefix of) the first three letters, e.g. "Jan", but older
+        /// files sometimes spell them out in full, e.g. "January" in Greece's 96d rule. As the short
+        /// form is always a prefix of the long form, matching against the long form alone covers both.
         /// </summary>
         private static readonly string[] LongMonths =
             { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -230,19 +226,12 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        /// Parses the day of week.
+        /// Parses the day of week, which may be any case-insensitive, unambiguous prefix of a day
+        /// name (matching the behavior of zic itself).
         /// </summary>
         /// <param name="text">The text.</param>
-        private static int ParseDayOfWeek(string text)
-        {
-            Preconditions.CheckArgument(!string.IsNullOrEmpty(text), nameof(text), "Value must not be empty or null");
-            int index = Array.IndexOf(DaysOfWeek, text, 1);
-            if (index == -1)
-            {
-                throw new InvalidDataException($"Invalid day of week: {text}");
-            }
-            return index;
-        }
+        internal static int ParseDayOfWeek(string text) =>
+            ParseUnambiguousNamePrefix(text, "day of week", DaysOfWeek);
 
         /// <summary>
         /// Parses a single line of an TZDB zone info file.
@@ -336,24 +325,39 @@ namespace NodaTime.TzdbCompiler.Tzdb
         }
 
         /// <summary>
-        /// Parses the month.
+        /// Parses the month, which may be any case-insensitive, unambiguous prefix of a month name
+        /// (matching the behavior of zic itself).
         /// </summary>
         /// <param name="text">The text.</param>
         /// <returns>The month number in the range 1 to 12.</returns>
-        /// <exception cref="InvalidDataException">The month name can't be parsed</exception>
-        internal static int ParseMonth(String text)
+        /// <exception cref="InvalidDataException">The month name can't be parsed, or is ambiguous.</exception>
+        internal static int ParseMonth(String text) => ParseUnambiguousNamePrefix(text, "month", LongMonths);
+
+        /// <summary>
+        /// Finds the index of the single entry in <paramref name="names"/> (which has an unused entry
+        /// at index 0) for which <paramref name="text"/> is a case-insensitive prefix. Throws
+        /// <see cref="InvalidDataException"/> if no entry matches, or if more than one does.
+        /// </summary>
+        private static int ParseUnambiguousNamePrefix(string text, string what, string[] names)
         {
             Preconditions.CheckArgument(!string.IsNullOrEmpty(text), nameof(text), "Value must not be empty or null");
-            int index = Array.IndexOf(ShortMonths, text, 1);
-            if (index == -1)
+            int match = 0;
+            for (int i = 1; i < names.Length; i++)
             {
-                index = Array.IndexOf(LongMonths, text, 1);
-                if (index == -1)
+                if (names[i].StartsWith(text, StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new InvalidDataException($"Invalid month: {text}");
+                    if (match != 0)
+                    {
+                        throw new InvalidDataException($"Ambiguous {what}: {text}");
+                    }
+                    match = i;
                 }
             }
-            return index;
+            if (match == 0)
+            {
+                throw new InvalidDataException($"Invalid {what}: {text}");
+            }
+            return match;
         }
 
         /// <summary>
