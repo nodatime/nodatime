@@ -72,6 +72,9 @@ namespace NodaTime.Test.Text
 
             // Check handling of F after non-period.
             new Data(MsdnStandardExample) { Pattern = "HH':'mm':'ss'x'FFFFFFFFFo<Z+HH:mm>", Text = "13:45:30x09+01:00" },
+
+            // Maximum valid hour-of-day.
+            new Data(23, 59, 59, Offset.Zero) { Pattern = "HH:mm:sso<g>", Text = "23:59:59+00" },
         };
 
         internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
@@ -128,6 +131,20 @@ namespace NodaTime.Test.Text
             // Local time is taken from the template value; offset is from the text
             Assert.AreEqual(new LocalTime(13, 30), parsed.TimeOfDay);
             Assert.AreEqual(Offset.FromHours(2), parsed.Offset);
+        }
+
+        [Test]
+        [TestCase("24:00:00+00")]
+        [TestCase("24:00:01+00")]
+        [TestCase("24:59:59+00")]
+        public void Hour24IsRejected(string text)
+        {
+            var pattern = OffsetTimePattern.CreateWithInvariantCulture("HH:mm:sso<g>");
+            var result = pattern.Parse(text);
+            string detail = result.Success
+                ? $"ACCEPTED: Hour={result.Value.Hour}, NanosecondOfDay={result.Value.TimeOfDay.NanosecondOfDay}, NanosecondsPerDay={NodaConstants.NanosecondsPerDay}"
+                : "rejected";
+            Assert.That(result.Success, Is.False, detail);
         }
 
         [Test]
