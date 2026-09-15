@@ -25,7 +25,7 @@ namespace NodaTime.Text
             { 'h', SteppedPatternBuilder<OffsetTime, OffsetTimeParseBucket>.HandlePaddedField
                        (2, PatternFields.Hours12, 1, 12, value => value.ClockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value) },
             { 'H', SteppedPatternBuilder<OffsetTime, OffsetTimeParseBucket>.HandlePaddedField
-                       (2, PatternFields.Hours24, 0, 24, value => value.Hour, (bucket, value) => bucket.Time.Hours24 = value) },
+                       (2, PatternFields.Hours24, 0, 23, value => value.Hour, (bucket, value) => bucket.Time.Hours24 = value) },
             { 'm', SteppedPatternBuilder<OffsetTime, OffsetTimeParseBucket>.HandlePaddedField
                        (2, PatternFields.Minutes, 0, 59, value => value.Minute, (bucket, value) => bucket.Time.Minutes = value) },
             { 's', SteppedPatternBuilder<OffsetTime, OffsetTimeParseBucket>.HandlePaddedField
