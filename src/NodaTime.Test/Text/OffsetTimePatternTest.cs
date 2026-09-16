@@ -37,6 +37,10 @@ namespace NodaTime.Test.Text
 
             new Data { Pattern = "HH:mm:ss o<+HH>", Text = "16:02 +15:00", Message = TextErrorMessages.TimeSeparatorMismatch },
             new Data { Pattern = "HH:mm:ss tt o<+HH>", Text = "16:02:00 AM +15:00", Message = TextErrorMessages.InconsistentValues2, Parameters = { 'H', 't', typeof(OffsetTime) } },
+
+            // OffsetTime has no date to roll over into, so hour 24 is out of range, as it is for LocalTime
+            new Data { Pattern = "HH:mm:sso<g>", Text = "24:00:00+00", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { 24, 'H', typeof(OffsetTime) } },
+            new Data { Pattern = "HH:mm:sso<g>", Text = "24:30:15+00", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { 24, 'H', typeof(OffsetTime) } },
         };
 
         internal static Data[] ParseOnlyData = {
@@ -131,20 +135,6 @@ namespace NodaTime.Test.Text
             // Local time is taken from the template value; offset is from the text
             Assert.AreEqual(new LocalTime(13, 30), parsed.TimeOfDay);
             Assert.AreEqual(Offset.FromHours(2), parsed.Offset);
-        }
-
-        [Test]
-        [TestCase("24:00:00+00")]
-        [TestCase("24:00:01+00")]
-        [TestCase("24:59:59+00")]
-        public void Hour24IsRejected(string text)
-        {
-            var pattern = OffsetTimePattern.CreateWithInvariantCulture("HH:mm:sso<g>");
-            var result = pattern.Parse(text);
-            string detail = result.Success
-                ? $"ACCEPTED: Hour={result.Value.Hour}, NanosecondOfDay={result.Value.TimeOfDay.NanosecondOfDay}, NanosecondsPerDay={NodaConstants.NanosecondsPerDay}"
-                : "rejected";
-            Assert.That(result.Success, Is.False, detail);
         }
 
         [Test]
