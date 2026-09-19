@@ -34,7 +34,7 @@ do
 done
 
 echo "Copying nzd file to storage"
-gsutil.cmd cp ../../src/NodaTime/TimeZones/Tzdb.nzd gs://nodatime/tzdb/tzdb$1.nzd
+gcloud storage cp ../../src/NodaTime/TimeZones/Tzdb.nzd gs://nodatime/tzdb/tzdb$1.nzd
 
 # Symbol packages appear to be ineffective at the moment; best to just
 # remove them (if any are even created; we don't use them now).

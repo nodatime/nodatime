@@ -58,4 +58,4 @@ diff tmp-hashes/local-noabbr.txt tmp-hashes/local-noabbr-11.txt
 echo ""
 echo "Success!"
 echo "When you're ready, update Google Cloud Storage:"
-echo "gsutil cp $OUTPUT gs://nodatime/tzdb/tzdb$1.nzd"
+echo "gcloud storage cp $OUTPUT gs://nodatime/tzdb/tzdb$1.nzd"

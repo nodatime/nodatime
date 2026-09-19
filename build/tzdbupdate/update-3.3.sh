@@ -18,7 +18,6 @@ then
 fi
 
 declare -r TZDB_RELEASE=$1
-declare -r GSUTIL=gsutil.cmd
 declare -r ROOT=$(realpath $(dirname $0)/../..)
 
 rm -rf tmp-3.3
