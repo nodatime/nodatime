@@ -95,7 +95,11 @@ namespace NodaTime.Test.Text
             new Data { ZoneProvider = null, Pattern = "uuuu-MM-dd z", Text = "ignored", Message = TextErrorMessages.FormatOnlyPattern },
 
             // Invalid ID
-            new Data { Pattern = "uuuu-MM-dd z", Text = "2017-08-21 LemonCurdIceCream", Message = TextErrorMessages.NoMatchingZoneId }
+            new Data { Pattern = "uuuu-MM-dd z", Text = "2017-08-21 LemonCurdIceCream", Message = TextErrorMessages.NoMatchingZoneId },
+
+            // Extreme values
+            new Data { Pattern = "uuuu-MM-ddTHH:mm:ss z", Text = "-9999-12-31T23:59:59 ab", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { -9999, 'u', typeof(ZonedDateTime).FullName! } },
+            new Data { Pattern = "uuuu-MM-ddTHH:mm:ss z", Text = "9999-12-31T24:00:00 ab", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(LocalDateTime) } },
         };
 
         internal static Data[] ParseOnlyData = {

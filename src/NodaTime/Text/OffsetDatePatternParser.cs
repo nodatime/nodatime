@@ -24,7 +24,7 @@ namespace NodaTime.Text
             { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<OffsetDate>.DateSeparatorMismatch) },
             { 'y', DatePatternHelper.CreateYearOfEraHandler<OffsetDate, OffsetDateParseBucket>(value => value.YearOfEra, (bucket, value) => bucket.Date.YearOfEra = value) },
             { 'u', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandlePaddedField
-                       (4, PatternFields.Year, -9999, 9999, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
+                       (4, PatternFields.Year, -9998, 9999, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
             { 'M', DatePatternHelper.CreateMonthOfYearHandler<OffsetDate, OffsetDateParseBucket>
                         (value => value.Month, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<OffsetDate, OffsetDateParseBucket>

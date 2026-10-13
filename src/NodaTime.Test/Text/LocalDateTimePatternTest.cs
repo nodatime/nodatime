@@ -59,6 +59,9 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "uuuu-MM-dd HH:mm", Text = "2011-10-19 24:01", Message = TextErrorMessages.InvalidHour24 },
             new Data { Pattern = "uuuu-MM-dd HH:mm", Text = "2011-10-19 24:00", Template = new LocalDateTime(1970, 1, 1, 0, 0, 5), Message = TextErrorMessages.InvalidHour24},
             new Data { Pattern = "uuuu-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0), Message = TextErrorMessages.InvalidHour24},
+            new Data { Pattern = "s", Text = "-9999-12-31T23:59:59", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { -9999, 'u', typeof(LocalDateTime) }},
+            new Data { Pattern = "s", Text = "9999-12-31T24:00:00", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(LocalDateTime) }},
+            new Data { Pattern = "uuuu-MM-ddTHH:mm (c)", Text = "9998-12-31T24:00 (Julian)", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(LocalDateTime) }},
         };
 
         internal static Data[] ParseOnlyData = {
@@ -73,6 +76,10 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH:mm:ss", Text = "2011-10-19 24:00:00", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0) },
             new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH:mm", Text = "2011-10-19 24:00" },
             new Data(2011, 10, 20) { Pattern = "uuuu-MM-dd HH", Text = "2011-10-19 24" },
+            // Check near the end of supported time
+            new Data(9999, 1, 1) { Pattern = "uuuu-MM-dd HH:mm", Text = "9998-12-31 24:00" },
+            new Data(9999, 12, 31) { Pattern = "uuuu-MM-dd HH:mm", Text = "9999-12-30 24:00" },
+            new Data(new LocalDate(9998, 12, 31, CalendarSystem.Julian), default) { Template = new(1, 1, 1, 0, 0, 0, CalendarSystem.Julian), Pattern = "uuuu-MM-dd HH:mm (c)", Text = "9998-12-30 24:00 (Julian)" },
         };
 
         internal static Data[] FormatOnlyData = {

@@ -31,7 +31,7 @@ namespace NodaTime.Text
             { 'T', (pattern, builder) => builder.AddLiteral('T', ParseResult<LocalDateTime>.MismatchedCharacter) },
             { 'y', DatePatternHelper.CreateYearOfEraHandler<LocalDateTime, LocalDateTimeParseBucket>(value => value.YearOfEra, (bucket, value) => bucket.Date.YearOfEra = value) },
             { 'u', SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>.HandlePaddedField
-                       (4, PatternFields.Year, -9999, 9999, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
+                       (4, PatternFields.Year, -9998, 9999, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
             { 'M', DatePatternHelper.CreateMonthOfYearHandler<LocalDateTime, LocalDateTimeParseBucket>
                         (value => value.Month, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<LocalDateTime, LocalDateTimeParseBucket>
@@ -159,6 +159,13 @@ namespace NodaTime.Text
                     if (time != LocalTime.Midnight)
                     {
                         return ParseResult<LocalDateTime>.InvalidHour24(text);
+                    }
+                    // If we're already on the last valid day of the calendar, we can't apply the 24:00.
+                    // We first check the year as that's much cheaper than computing DaysSinceEpoch.
+                    if (date.Year == date.Calendar.MaxYear && date.DaysSinceEpoch == date.Calendar.MaxDays)
+                    {
+                        return ParseResult<LocalDateTime>.ForInvalidValuePostParse(text, TextErrorMessages.OverallValueOutOfRange,
+                            typeof(LocalDateTime));
                     }
                     date = date.PlusDays(1);
                 }

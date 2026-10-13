@@ -216,6 +216,11 @@ namespace NodaTime.Text
                 {
                     seconds = -seconds;
                 }
+                if (seconds > Offset.MaxSeconds || seconds < Offset.MinSeconds)
+                {
+                    return ParseResult<Offset>.ForInvalidValuePostParse(text, TextErrorMessages.OverallValueOutOfRange,
+                        typeof(Offset));
+                }
                 return ParseResult<Offset>.ForValue(Offset.FromSeconds(seconds));
             }
         }
