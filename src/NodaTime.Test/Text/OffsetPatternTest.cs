@@ -116,6 +116,8 @@ namespace NodaTime.Test.Text
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "60", Pattern = "mm", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = {60, 'm', typeof(Offset) }},
             new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "60", Pattern = "ss", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = {60, 's', typeof(Offset) }},
             new Data(Offset.Zero) { Text = "+12", Pattern = "-HH", Message = TextErrorMessages.PositiveSignInvalid },
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "+18:01", Pattern = "+HH:mm", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = {typeof(Offset) }},
+            new Data(Offset.Zero) { Culture = Cultures.EnUs, Text = "-18:01", Pattern = "+HH:mm", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = {typeof(Offset) }},
         };
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace NodaTime.Text
             { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<YearMonth>.DateSeparatorMismatch) },
             { 'y', DatePatternHelper.CreateYearOfEraHandler<YearMonth, YearMonthParseBucket>(value => value.YearOfEra, (bucket, value) => bucket.DateBucket.YearOfEra = value) },
             { 'u', SteppedPatternBuilder<YearMonth, YearMonthParseBucket>.HandlePaddedField
-                       (4, PatternFields.Year, -9999, 9999, value => value.Year, (bucket, value) => bucket.DateBucket.Year = value) },
+                       (4, PatternFields.Year, -9998, 9999, value => value.Year, (bucket, value) => bucket.DateBucket.Year = value) },
             { 'M', DatePatternHelper.CreateMonthOfYearHandler<YearMonth, YearMonthParseBucket>
                         (value => value.Month, (bucket, value) => bucket.DateBucket.MonthOfYearText = value, (bucket, value) => bucket.DateBucket.MonthOfYearNumeric = value) },
             { 'c', DatePatternHelper.CreateCalendarHandler<YearMonth, YearMonthParseBucket>(value => value.Calendar, (bucket, value) => bucket.DateBucket.Calendar = value) },
@@ -46,7 +46,7 @@ namespace NodaTime.Text
         // interface implementation.
         public IPattern<YearMonth> ParsePattern(string patternText, NodaFormatInfo formatInfo)
         {
-            // Nullity check is performed in LocalDatePattern.
+            // Nullity check is performed in YearMonthPattern.
             if (patternText.Length == 0)
             {
                 throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);

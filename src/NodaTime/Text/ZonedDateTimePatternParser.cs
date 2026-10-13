@@ -29,7 +29,7 @@ namespace NodaTime.Text
             { 'T', (pattern, builder) => builder.AddLiteral('T', ParseResult<ZonedDateTime>.MismatchedCharacter) },
             { 'y', DatePatternHelper.CreateYearOfEraHandler<ZonedDateTime, ZonedDateTimeParseBucket>(value => value.YearOfEra, (bucket, value) => bucket.Date.YearOfEra = value) },
             { 'u', SteppedPatternBuilder<ZonedDateTime, ZonedDateTimeParseBucket>.HandlePaddedField
-                       (4, PatternFields.Year, -9999, 9999, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
+                       (4, PatternFields.Year, -9998, 9999, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
             { 'M', DatePatternHelper.CreateMonthOfYearHandler<ZonedDateTime, ZonedDateTimeParseBucket>
                         (value => value.Month, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<ZonedDateTime, ZonedDateTimeParseBucket>

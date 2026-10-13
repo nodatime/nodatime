@@ -55,6 +55,12 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "uuuu-MM-dd HH", Text = "2011-10-19 24", Template = new LocalDateTime(1970, 1, 1, 0, 5, 0).WithOffset(Offset.Zero), Message = TextErrorMessages.InvalidHour24},
 
             new Data { Pattern = "uuuu-MM-dd HH:mm:ss o<+HH>", Text = "2011-10-19 16:02 +15:00", Message = TextErrorMessages.TimeSeparatorMismatch},
+
+            // Extreme values
+            new Data { Pattern = "uuuu-MM-ddTHH:mm:ss o<+HH:mm>", Text = "0000-01-01T00:00:00 +18:01", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Offset) } },
+            new Data { Pattern = "uuuu-MM-ddTHH:mm:ss o<+HH:mm>", Text = "0000-01-01T00:00:00 -18:01", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Offset) } },
+            new Data { Pattern = "uuuu-MM-ddTHH:mm:ss o<+HH:mm>", Text = "-9999-12-31T23:59:59 +00:00", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { -9999, 'u', typeof(OffsetDateTime).FullName! } },
+            new Data { Pattern = "uuuu-MM-ddTHH:mm:ss o<+HH:mm>", Text = "9999-12-31T24:00:00 +00:00", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(LocalDateTime) } },
         };
 
         internal static Data[] ParseOnlyData = {
