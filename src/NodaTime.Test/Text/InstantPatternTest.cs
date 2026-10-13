@@ -29,6 +29,8 @@ namespace NodaTime.Test.Text
             new Data { Text = "rubbish", Pattern = "uuuuMMdd'T'HH:mm:ss", Message = TextErrorMessages.MismatchedNumber, Parameters = { "uuuu" } },
             new Data { Text = "17 6", Pattern = "HH h", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 'h', typeof(LocalDateTime).FullName! }},
             new Data { Text = "17 AM", Pattern = "HH tt", Message = TextErrorMessages.InconsistentValues2, Parameters = {'H', 't', typeof(LocalDateTime).FullName! }},
+            new Data { Text = "-9999-12-31T23:59:59Z", Pattern = "g", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { -9999, 'u', typeof(LocalDateTime) }},
+            new Data { Text = "9999-12-31T24:00:00Z", Pattern = "g", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(LocalDateTime) }},
         };
 
         internal static Data[] ParseOnlyData = {

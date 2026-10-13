@@ -29,7 +29,7 @@ namespace NodaTime.Text
             { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<LocalDate>.DateSeparatorMismatch) },
             { 'y', DatePatternHelper.CreateYearOfEraHandler<LocalDate, LocalDateParseBucket>(value => value.YearOfEra, (bucket, value) => bucket.YearOfEra = value) },
             { 'u', SteppedPatternBuilder<LocalDate, LocalDateParseBucket>.HandlePaddedField
-                       (4, PatternFields.Year, -9999, 9999, value => value.Year, (bucket, value) => bucket.Year = value) },
+                       (4, PatternFields.Year, -9998, 9999, value => value.Year, (bucket, value) => bucket.Year = value) },
             { 'M', DatePatternHelper.CreateMonthOfYearHandler<LocalDate, LocalDateParseBucket>
                         (value => value.Month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value) },
             { 'd', DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>
@@ -180,7 +180,7 @@ namespace NodaTime.Text
             {
                 int day = DayOfMonth;
                 int month = MonthOfYearNumeric;
-                // Note: year is always valid, as it's already validated to be in the range -9999 to 9999.
+                // Note: year is always valid, as it's already validated to be in the range -9998 to 9999.
 
                 if (month > 12)
                 {

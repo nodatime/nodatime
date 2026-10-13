@@ -39,6 +39,11 @@ namespace NodaTime.Test.Text
             new Data { Pattern = "dd MM uuuu", Text = "Complete mismatch", Message = TextErrorMessages.MismatchedNumber, Parameters = { "dd" }},
             new Data { Pattern = "dd MM uuuu", Text = "29 02 2001", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 29, 2, 2001 } },
             new Data { Pattern = "(c)", Text = "(xxx)", Message = TextErrorMessages.NoMatchingCalendarSystem },
+
+            // Extreme values
+            new Data { Pattern = "uuuu-MM-dd o<+HH:mm>", Text = "0000-01-01 +18:01", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Offset) } },
+            new Data { Pattern = "uuuu-MM-dd o<+HH:mm>", Text = "0000-01-01 -18:01", Message = TextErrorMessages.OverallValueOutOfRange, Parameters = { typeof(Offset) } },
+            new Data { Pattern = "uuuu-MM-dd o<+HH:mm>", Text = "-9999-01-01 +00:00", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { -9999, 'u', typeof(OffsetDate).FullName! } },
         };
 
         internal static Data[] ParseOnlyData = {

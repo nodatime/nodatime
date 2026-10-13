@@ -2,20 +2,17 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using NodaTime.Text;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using NodaTime.Text;
-using NUnit.Framework;
-using NodaTime.Test.Calendars;
 
 namespace NodaTime.Test.Text
 {
     public class YearMonthPatternTest : PatternTestBase<YearMonth>
     {
-        private static readonly YearMonth SampleYearMonth = new YearMonth(1976, 6);
-
         internal static readonly Data[] InvalidPatternData = {
             new Data { Pattern = "", Message = TextErrorMessages.FormatStringEmpty },
             new Data { Pattern = "!", Message = TextErrorMessages.UnknownStandardFormat, Parameters = {'!', typeof(YearMonth).FullName! }},
@@ -83,6 +80,9 @@ namespace NodaTime.Test.Text
 
             // Calendar ID parsing is now ordinal, case-sensitive
             new Data(2011, 10) { Pattern = "uuuu MM c", Text = "2011 10 iso", Message = TextErrorMessages.NoMatchingCalendarSystem },
+
+            // Lower bound of ISO
+            new Data { Pattern = "uuuu-MM", Text = "-9999-01", Message = TextErrorMessages.FieldValueOutOfRange, Parameters = { -9999, 'u', typeof(YearMonth).FullName! } },
         };
 
         internal static Data[] ParseOnlyData = {
