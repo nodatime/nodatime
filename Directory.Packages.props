@@ -1,5 +1,6 @@
 <Project>
   <ItemGroup>
+    <PackageVersion Include="coverlet.collector" Version="10.1.0" />
     <PackageVersion Include="System.Reflection.Metadata" Version="10.0.12" />
     <PackageVersion Include="System.Collections.Immutable" Version="10.0.12" />
     <PackageVersion Include="ApprovalTests" Version="7.0.0" />

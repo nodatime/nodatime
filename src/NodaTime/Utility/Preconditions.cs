@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using NodaTime.Annotations;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using static System.FormattableString;
 
@@ -35,6 +36,7 @@ namespace NodaTime.Utility
         /// </summary>
         [Conditional("DEBUG")]
         [ContractAnnotation("argument:null => halt")]
+        [ExcludeFromCodeCoverage]
         internal static void DebugCheckNotNull<T>(T argument, [InvokerParameterName] string paramName) where T : class
         {
 #if DEBUG
@@ -92,6 +94,7 @@ namespace NodaTime.Utility
         /// internal bugs during development.
         /// </summary>
         [Conditional("DEBUG")]
+        [ExcludeFromCodeCoverage]
         internal static void DebugCheckArgumentRange([InvokerParameterName] string paramName, int value, int minInclusive, int maxInclusive)
         {
 #if DEBUG
@@ -108,6 +111,7 @@ namespace NodaTime.Utility
         /// internal bugs during development.
         /// </summary>
         [Conditional("DEBUG")]
+        [ExcludeFromCodeCoverage]
         internal static void DebugCheckArgumentRange([InvokerParameterName] string paramName, long value, long minInclusive, long maxInclusive)
         {
 #if DEBUG
@@ -120,6 +124,7 @@ namespace NodaTime.Utility
 
         [ContractAnnotation("expression:false => halt")]
         [Conditional("DEBUG")]
+        [ExcludeFromCodeCoverage]
         internal static void DebugCheckArgument(bool expression, [InvokerParameterName] string parameter, string messageFormat, params object[] messageArgs)
         {
 #if DEBUG
@@ -172,6 +177,7 @@ namespace NodaTime.Utility
 
         [ContractAnnotation("expression:false => halt")]
         [Conditional("DEBUG")]
+        [ExcludeFromCodeCoverage]
         internal static void DebugCheckState(bool expression, string message)
         {
 #if DEBUG
@@ -196,6 +202,7 @@ namespace NodaTime.Utility
     /// an assembly which might use this in debug configuration against a non-debug Noda Time or vice versa.
     /// </summary>
     [VisibleForTesting]
+    [ExcludeFromCodeCoverage]
     internal sealed class DebugPreconditionException : Exception
     {
         internal DebugPreconditionException(string message) : base(message)

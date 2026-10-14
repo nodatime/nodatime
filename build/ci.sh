@@ -20,3 +20,9 @@ dotnet publish src/NodaTime.AotCompatibilityTestApp
 # Pack the production projects, for compatibility testing.
 dotnet pack src/NodaTime
 dotnet pack src/NodaTime.Testing
+
+# Test with coverage
+dotnet test -c Release -f net10.0 \
+  --collect:"XPlat Code Coverage" --results-directory:coverage \
+  --settings src/NodaTime.Test/coverlet.runsettings \
+  src/NodaTime.Test
