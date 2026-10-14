@@ -6,7 +6,7 @@ namespace NodaTime.Utility
 {
     /// <summary>
     /// Provides method to help with generating hash codes for structures and classes. This handles
-    /// value types, nullable type, and objects.
+    /// value types, nullable type, and objects. If we ever drop .NET Framework, we can use System.HashCode.
     /// </summary>
     /// <remarks>
     /// The basic usage pattern is:

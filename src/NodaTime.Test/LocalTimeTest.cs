@@ -108,5 +108,12 @@ namespace NodaTime.Test
             var expected = new OffsetTime(time, offset);
             Assert.AreEqual(expected, time.WithOffset(offset));
         }
+
+        [Test]
+        public void TestToString()
+        {
+            var value = new LocalTime(3, 45, 12, 34).WithOffset(Offset.FromHours(5));
+            Assert.AreEqual(value.ToString(null, null), value.ToString());
+        }
     }
 }

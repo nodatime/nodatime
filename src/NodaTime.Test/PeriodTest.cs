@@ -84,6 +84,22 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void BetweenLocalDateTimes_StartIsLaterDayLaterTime()
+        {
+            Period expected = Period.FromDays(-2) + Period.FromHours(-2);
+            Period actual = Period.Between(new LocalDateTime(2000, 1, 7, 10, 0), new LocalDateTime(2000, 1, 5, 8, 0), PeriodUnits.Days | PeriodUnits.Hours);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void BetweenLocalDateTimes_StartIsLaterDayLaterTime_DaysOnly()
+        {
+            Period expected = Period.FromDays(-2);
+            Period actual = Period.Between(new LocalDateTime(2000, 1, 7, 10, 0), new LocalDateTime(2000, 1, 5, 8, 0), PeriodUnits.Days);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void BetweenLocalDateTimes_NotInt64Representable()
         {
             LocalDateTime start = new LocalDateTime(-5000, 1, 1, 0, 1, 2, 123);

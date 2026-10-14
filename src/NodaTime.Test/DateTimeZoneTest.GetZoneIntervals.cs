@@ -113,6 +113,36 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void GetZoneIntervals_IntervalWithNoStart()
+        {
+            var london = DateTimeZoneProviders.Tzdb["Europe/London"];
+            // First transition is 1847-12-01T00:01:15Z; the next is in 1916.
+            var expected = new[] {
+                london.GetZoneInterval(Instant.FromUtc(1847, 6, 1, 0, 0)),
+                london.GetZoneInterval(Instant.FromUtc(1848, 1, 1, 0, 0)),
+            };
+            var interval = new Interval(null, Instant.FromUtc(1849, 3, 1, 0, 0));
+            var actual = london.GetZoneIntervals(interval);
+            CollectionAssert.AreEqual(expected, actual.ToList());
+        }
+
+        [Test]
+        public void GetZoneIntervals_IntervalWithNoEnd()
+        {
+            var london = DateTimeZoneProviders.Tzdb["Europe/London"];
+            var expected = new[] {
+                london.GetZoneInterval(Instant.FromUtc(9998, 1, 1, 0, 0)),
+                london.GetZoneInterval(Instant.FromUtc(9998, 6, 1, 0, 0)),
+                london.GetZoneInterval(Instant.FromUtc(9999, 1, 1, 0, 0)),
+                london.GetZoneInterval(Instant.FromUtc(9999, 6, 1, 0, 0)),
+                london.GetZoneInterval(Instant.FromUtc(9999, 11, 1, 0, 0)),
+            };
+            var interval = new Interval(Instant.FromUtc(9998, 1, 1, 0, 0), null);
+            var actual = london.GetZoneIntervals(interval);
+            CollectionAssert.AreEqual(expected, actual.ToList());
+        }
+
+        [Test]
         public void GetZoneIntervals_WithOptions_NoCoalescing()
         {
             // We'll ask for 1999-2003, so there are three transitions within that.

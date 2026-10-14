@@ -258,6 +258,18 @@ namespace NodaTime.Test
         }
 
         [Test]
+        public void FromNanoseconds_DoubleBeyondInt64()
+        {
+            // 18446744073_709551616
+            double largeDouble = long.MaxValue * 2.0;
+
+            var seconds = Duration.FromSeconds(18446744073);
+            var nanos = Duration.FromNanoseconds(709551616);
+            Assert.AreEqual(seconds + nanos, Duration.FromNanoseconds(largeDouble));
+            Assert.AreEqual(-seconds - nanos, Duration.FromNanoseconds(-largeDouble));
+        }
+
+        [Test]
         public void FactoryMethods_OutOfRange()
         {
             // Each set of cases starts with the minimum and ends with the maximum, so we can test just beyond the limits easily.

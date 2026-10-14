@@ -510,5 +510,12 @@ namespace NodaTime.Test
             Assert.AreEqual(CalendarSystem.Iso, value.Calendar);
             Assert.Throws<OverflowException>(() => value.PlusNanoseconds(-1));
         }
+
+        [Test]
+        public void TestToString()
+        {
+            var ldt = new LocalDateTime(2018, 10, 15, 21, 30, 0, 0, CalendarSystem.Iso);
+            Assert.AreEqual(ldt.ToString(null, null), ldt.ToString());
+        }
     }
 }

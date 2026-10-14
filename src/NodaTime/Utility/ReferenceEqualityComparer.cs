@@ -9,7 +9,8 @@ namespace NodaTime.Utility
 {
     /// <summary>
     /// An equality comparer which compares references for equality and uses the "original" object hash code
-    /// for hash codes.
+    /// for hash codes. This is broadly equivalent to System.Collections.Generic.ReferenceEqualityComparer, but that's
+    /// only available from .NET 5.
     /// </summary>
     internal sealed class ReferenceEqualityComparer<T> : IEqualityComparer<T> where T : class
     {

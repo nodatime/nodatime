@@ -112,9 +112,19 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void IsoDayOfWeekAdjusters_Invalid()
+        public void IsoDayOfWeekAdjusters_TooLarge()
         {
-            var invalid = (IsoDayOfWeek) 10;
+            var invalid = IsoDayOfWeek.Sunday + 1;
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Next(invalid));
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.NextOrSame(invalid));
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Previous(invalid));
+            Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.PreviousOrSame(invalid));
+        }
+
+        [Test]
+        public void IsoDayOfWeekAdjusters_TooSmall()
+        {
+            var invalid = IsoDayOfWeek.Monday - 1;
             Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Next(invalid));
             Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.NextOrSame(invalid));
             Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Previous(invalid));

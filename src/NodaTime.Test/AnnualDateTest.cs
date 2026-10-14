@@ -47,27 +47,24 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void Equality()
-        {
-            TestHelper.TestEqualsStruct(new AnnualDate(3, 15), new AnnualDate(3, 15), new AnnualDate(4, 15), new AnnualDate(3, 16));
-        }
-
-        [Test]
         public void DefaultValueIsJanuary1st()
         {
             Assert.AreEqual(new AnnualDate(1, 1), new AnnualDate());
         }
 
         [Test]
-        public void Comparision()
+        public void EqualityAndComparision()
         {
-            TestHelper.TestCompareToStruct(new AnnualDate(6, 19), new AnnualDate(6, 19), new AnnualDate(6, 20), new AnnualDate(7, 1));
-        }
+            var value = new AnnualDate(6, 19);
+            var equalValue = new AnnualDate(6, 19);
+            var greaterValue1 = new AnnualDate(6, 20);
+            var greaterValue2 = new AnnualDate(7, 1);
 
-        [Test]
-        public void Operators()
-        {
-            TestHelper.TestOperatorComparisonEquality(new AnnualDate(6, 19), new AnnualDate(6, 19), new AnnualDate(6, 20), new AnnualDate(7, 1));
+            TestHelper.TestEqualsStruct(value, equalValue, greaterValue1, greaterValue2);
+            TestHelper.TestCompareToStruct(value, equalValue, greaterValue1, greaterValue2);
+            TestHelper.TestNonGenericCompareTo(value, equalValue, greaterValue1, greaterValue2);
+            TestHelper.TestOperatorComparisonEquality(value, equalValue, greaterValue1, greaterValue2);
+            TestHelper.TestOperatorComparison(value, equalValue, greaterValue1, greaterValue2);
         }
 
         [Test]
