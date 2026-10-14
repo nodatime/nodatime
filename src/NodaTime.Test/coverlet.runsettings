@@ -2,9 +2,9 @@
 <RunSettings>
   <DataCollectionRunSettings>
     <DataCollectors>
-      <DataCollector friendlyName="XPlat code coverage">
+      <DataCollector friendlyName="XPlat Code Coverage">
         <Configuration>
-          <ExcludeByFile>src/NodaTime/Annotations/*.cs</ExcludeByFile>
+          <ExcludeByFile>**/Annotations/*.cs</ExcludeByFile>
         </Configuration>
       </DataCollector>
     </DataCollectors>
