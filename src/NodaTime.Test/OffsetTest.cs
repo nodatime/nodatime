@@ -96,5 +96,12 @@ namespace NodaTime.Test
         {
             TestHelper.AssertXmlInvalid<Offset>(xml, expectedExceptionType);
         }
+
+        [Test]
+        public void TestToString()
+        {
+            var offset = Offset.FromHoursAndMinutes(5, 30);
+            Assert.AreEqual(offset.ToString(null, null), offset.ToString());
+        }
     }
 }

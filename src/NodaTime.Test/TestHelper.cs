@@ -322,6 +322,7 @@ namespace NodaTime.Test
             }
             Assert.AreEqual(value.GetHashCode(), value.GetHashCode(), "GetHashCode() twice for same object");
             Assert.AreEqual(value.GetHashCode(), equalValue.GetHashCode(), "GetHashCode() for two different but equal objects");
+            Assert.False(value.Equals(new object()), "Equals with the wrong type");
         }
 
         /// <summary>
@@ -444,7 +445,7 @@ namespace NodaTime.Test
         }
 
         /// <summary>
-        ///   Tests the equality and inequality operators (==, !=) if they exist on the object.
+        /// Tests the equality and inequality operators (==, !=) on the object.
         /// </summary>
         /// <typeparam name="T">The type to test.</typeparam>
         /// <param name="value">The base value.</param>
@@ -455,33 +456,18 @@ namespace NodaTime.Test
             ValidateInput(value, equalValue, unequalValue, "unequalValue");
             Type type = typeof(T);
             var equality = type.GetMethod("op_Equality", new[] { type, type });
-            if (equality != null)
-            {
-                if (!type.IsValueType)
-                {
-                    Assert.True((bool)equality.Invoke(null, new object?[] { null, null })!, "null == null");
-                    Assert.False((bool)equality.Invoke(null, new object?[] { value, null })!, "value == null");
-                    Assert.False((bool)equality.Invoke(null, new object?[] { null, value })!, "null == value");
-                }
-                Assert.True((bool)equality.Invoke(null, new object?[] { value, value })!, "value == value");
-                Assert.True((bool)equality.Invoke(null, new object?[] { value, equalValue })!, "value == equalValue");
-                Assert.True((bool)equality.Invoke(null, new object?[] { equalValue, value })!, "equalValue == value");
-                Assert.False((bool)equality.Invoke(null, new object?[] { value, unequalValue })!, "value == unequalValue");
-            }
+            Assert.NotNull(equality);
+            Assert.True((bool)equality!.Invoke(null, new object?[] { value, value })!, "value == value");
+            Assert.True((bool)equality.Invoke(null, new object?[] { value, equalValue })!, "value == equalValue");
+            Assert.True((bool)equality.Invoke(null, new object?[] { equalValue, value })!, "equalValue == value");
+            Assert.False((bool)equality.Invoke(null, new object?[] { value, unequalValue })!, "value == unequalValue");
+
             var inequality = type.GetMethod("op_Inequality", new[] { type, type });
-            if (inequality != null)
-            {
-                if (!type.IsValueType)
-                {
-                    Assert.False((bool)inequality.Invoke(null, new object?[] { null, null })!, "null != null");
-                    Assert.True((bool)inequality.Invoke(null, new object?[] { value, null })!, "value != null");
-                    Assert.True((bool)inequality.Invoke(null, new object?[] { null, value })!, "null != value");
-                }
-                Assert.False((bool)inequality.Invoke(null, new object?[] { value, value })!, "value != value");
-                Assert.False((bool)inequality.Invoke(null, new object?[] { value, equalValue })!, "value != equalValue");
-                Assert.False((bool)inequality.Invoke(null, new object?[] { equalValue, value })!, "equalValue != value");
-                Assert.True((bool)inequality.Invoke(null, new object?[] { value, unequalValue })!, "value != unequalValue");
-            }
+            Assert.NotNull(inequality);
+            Assert.False((bool)inequality!.Invoke(null, new object?[] { value, value })!, "value != value");
+            Assert.False((bool)inequality.Invoke(null, new object?[] { value, equalValue })!, "value != equalValue");
+            Assert.False((bool)inequality.Invoke(null, new object?[] { equalValue, value })!, "equalValue != value");
+            Assert.True((bool)inequality.Invoke(null, new object?[] { value, unequalValue })!, "value != unequalValue");
         }
 
 #if NET8_0_OR_GREATER

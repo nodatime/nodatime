@@ -76,7 +76,7 @@ namespace NodaTime
         public override string ToString() =>
             string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}", Year, Month, Day);
 
-        internal YearMonthDayCalendar WithCalendar(CalendarSystem calendar) =>
+        internal YearMonthDayCalendar WithCalendar(CalendarSystem? calendar) =>
             new YearMonthDayCalendar(value, calendar?.Ordinal ?? 0);
 
         internal YearMonthDayCalendar WithCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>

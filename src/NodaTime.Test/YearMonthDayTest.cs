@@ -71,5 +71,21 @@ namespace NodaTime.Test
             var ymd = new YearMonthDay(2017, 8, 25);
             Assert.AreEqual("2017-08-25", ymd.ToString());
         }
+
+        [Test]
+        public void WithCalendar()
+        {
+            var ymd = new YearMonthDay(2017, 8, 25);
+            var ymdc = new YearMonthDayCalendar(2017, 8, 25, CalendarOrdinal.Julian);
+            Assert.AreEqual(ymdc, ymd.WithCalendar(CalendarSystem.Julian));
+        }
+
+        [Test]
+        public void WithCalendar_Null()
+        {
+            var ymd = new YearMonthDay(2017, 8, 25);
+            var ymdc = new YearMonthDayCalendar(2017, 8, 25, CalendarOrdinal.Iso);
+            Assert.AreEqual(ymdc, ymd.WithCalendar(null));
+        }
     }
 }

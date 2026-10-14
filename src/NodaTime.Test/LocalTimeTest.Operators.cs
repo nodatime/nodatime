@@ -103,36 +103,16 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void ComparisonOperators()
+        public void EqualityAndComparison()
         {
             LocalTime time1 = new LocalTime(10, 30, 45);
             LocalTime time2 = new LocalTime(10, 30, 45);
             LocalTime time3 = new LocalTime(10, 30, 50);
 
-            Assert.IsTrue(time1 == time2);
-            Assert.IsFalse(time1 == time3);
-            Assert.IsFalse(time1 != time2);
-            Assert.IsTrue(time1 != time3);
-
-            Assert.IsFalse(time1 < time2);
-            Assert.IsTrue(time1 < time3);
-            Assert.IsFalse(time2 < time1);
-            Assert.IsFalse(time3 < time1);
-
-            Assert.IsTrue(time1 <= time2);
-            Assert.IsTrue(time1 <= time3);
-            Assert.IsTrue(time2 <= time1);
-            Assert.IsFalse(time3 <= time1);
-
-            Assert.IsFalse(time1 > time2);
-            Assert.IsFalse(time1 > time3);
-            Assert.IsFalse(time2 > time1);
-            Assert.IsTrue(time3 > time1);
-
-            Assert.IsTrue(time1 >= time2);
-            Assert.IsFalse(time1 >= time3);
-            Assert.IsTrue(time2 >= time1);
-            Assert.IsTrue(time3 >= time1);
+            TestHelper.TestNonGenericCompareTo(time1, time2, time3);
+            TestHelper.TestCompareToStruct(time1, time2, time3);
+            TestHelper.TestOperatorComparisonEquality(time1, time2, time3);
+            TestHelper.TestEqualsStruct(time1, time2, time3);
         }
 
         [Test]
@@ -156,24 +136,6 @@ namespace NodaTime.Test
             Assert.That(time1.CompareTo(time2), Is.EqualTo(0));
             Assert.That(time1.CompareTo(time3), Is.LessThan(0));
             Assert.That(time3.CompareTo(time2), Is.GreaterThan(0));
-        }
-
-        /// <summary>
-        /// IComparable.CompareTo works properly for LocalTime inputs.
-        /// </summary>
-        [Test]
-        public void IComparableCompareTo()
-        {
-            LocalTime time1 = new LocalTime(10, 30, 45);
-            LocalTime time2 = new LocalTime(10, 30, 45);
-            LocalTime time3 = new LocalTime(10, 30, 50);
-
-            var i_time1 = (IComparable)time1;
-            var i_time3 = (IComparable)time3;
-
-            Assert.That(i_time1.CompareTo(time2), Is.EqualTo(0));
-            Assert.That(i_time1.CompareTo(time3), Is.LessThan(0));
-            Assert.That(i_time3.CompareTo(time2), Is.GreaterThan(0));
         }
 
         /// <summary>

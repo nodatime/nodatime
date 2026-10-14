@@ -476,7 +476,7 @@ namespace NodaTime
                     endDate = endDate.PlusDays(-1);
                 }
             }
-            else if (start > end && start.TimeOfDay < end.TimeOfDay)
+            else if (start.TimeOfDay < end.TimeOfDay) // Implicit start > end, as start == end is covered earlier.
             {
                 endDate = endDate.PlusDays(1);
             }

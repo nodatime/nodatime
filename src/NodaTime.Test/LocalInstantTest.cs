@@ -97,5 +97,15 @@ namespace NodaTime.Test
             var actual = start.SafeMinus(Offset.FromHours(offsetToSubtract));
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void IsValid()
+        {
+            Assert.IsFalse(LocalInstant.BeforeMinValue.IsValid);
+            Assert.IsTrue(new LocalInstant(Instant.MinValue - NodaConstants.UnixEpoch).IsValid);
+            Assert.IsTrue(new LocalInstant(Instant.MaxValue - NodaConstants.UnixEpoch).IsValid);
+            Assert.IsFalse(LocalInstant.AfterMaxValue.IsValid);
+        }
+
     }
 }
