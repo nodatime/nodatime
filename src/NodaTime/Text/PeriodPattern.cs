@@ -172,6 +172,13 @@ namespace NodaTime.Text
                     {
                         return MisplacedUnit(valueCursor, valueCursor.Current);
                     }
+
+                    // Date units are limited to 32-bit values.
+                    if (inDate && (unitValue < int.MinValue || unitValue > int.MaxValue))
+                    {
+                        return ParseResult<Period>.ValueOutOfRange(valueCursor, unitValue);
+                    }
+
                     builder[unit] = unitValue;
                     unitsSoFar |= unit;
                 }

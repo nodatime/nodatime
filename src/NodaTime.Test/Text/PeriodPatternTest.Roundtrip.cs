@@ -31,10 +31,21 @@ namespace NodaTime.Test.Text
                 new Data { Text = "PX", Message = TextErrorMessages.MissingNumber },
                 new Data { Text = "P10M-", Message = TextErrorMessages.EndOfString },
                 new Data { Text = "P5", Message = TextErrorMessages.EndOfString },
-                new Data { Text = "P9223372036854775808H", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "9223372036854775808", typeof(Period) } },
-                new Data { Text = "P-9223372036854775809H", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "-9223372036854775809", typeof(Period) } },
-                new Data { Text = "P10000000000000000000H", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "10000000000000000000", typeof(Period) } },
-                new Data { Text = "P-10000000000000000000H", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "-10000000000000000000", typeof(Period) } },
+                // Int32 max/min values +/- 1 (date units)
+                new Data { Text = "P2147483648Y", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "2147483648", typeof(Period) } },
+                new Data { Text = "P-2147483649Y", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "-2147483649", typeof(Period) } },
+                new Data { Text = "P2147483648M", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "2147483648", typeof(Period) } },
+                new Data { Text = "P-2147483649M", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "-2147483649", typeof(Period) } },
+                new Data { Text = "P2147483648W", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "2147483648", typeof(Period) } },
+                new Data { Text = "P-2147483649W", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "-2147483649", typeof(Period) } },
+                new Data { Text = "P2147483648D", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "2147483648", typeof(Period) } },
+                new Data { Text = "P-2147483649D", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "-2147483649", typeof(Period) } },
+                // Int64 max/min values +/- 1 - we actually parse the value before we parse the units, so the use of an invalid unit here is deliberate to
+                // make it clear that we don't need tests for all the different time units.
+                new Data { Text = "PT9223372036854775808X", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "9223372036854775808", typeof(Period) } },
+                new Data { Text = "PT-9223372036854775809X", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "-9223372036854775809", typeof(Period) } },
+                new Data { Text = "PT10000000000000000000X", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "10000000000000000000", typeof(Period) } },
+                new Data { Text = "PT-10000000000000000000X", Message = TextErrorMessages.ValueOutOfRange, Parameters = { "-10000000000000000000", typeof(Period) } },
             };
 
             internal static Data[] ParseOnlyData = {
@@ -74,8 +85,32 @@ namespace NodaTime.Test.Text
                 new Data(new PeriodBuilder { Hours = 1, Minutes = -1 }) { Text = "PT1H-1M" },
 
                 // Max/min
-                new Data(Period.FromHours(long.MaxValue)) { Text = "PT9223372036854775807H" },
-                new Data(Period.FromHours(long.MinValue)) { Text = "PT-9223372036854775808H" },
+                new Data(new PeriodBuilder
+                {
+                    Years = int.MaxValue,
+                    Months = int.MaxValue,
+                    Weeks = int.MaxValue,
+                    Days = int.MaxValue,
+                    Hours = long.MaxValue,
+                    Minutes = long.MaxValue,
+                    Seconds = long.MaxValue,
+                    Milliseconds = long.MaxValue,
+                    Ticks = long.MaxValue,
+                    Nanoseconds = long.MaxValue
+                }) { Text = "P2147483647Y2147483647M2147483647W2147483647DT9223372036854775807H9223372036854775807M9223372036854775807S9223372036854775807s9223372036854775807t9223372036854775807n" },
+                new Data(new PeriodBuilder
+                {
+                    Years = int.MinValue,
+                    Months = int.MinValue,
+                    Weeks = int.MinValue,
+                    Days = int.MinValue,
+                    Hours = long.MinValue,
+                    Minutes = long.MinValue,
+                    Seconds = long.MinValue,
+                    Milliseconds = long.MinValue,
+                    Ticks = long.MinValue,
+                    Nanoseconds = long.MinValue
+                }) { Text = "P-2147483648Y-2147483648M-2147483648W-2147483648DT-9223372036854775808H-9223372036854775808M-9223372036854775808S-9223372036854775808s-9223372036854775808t-9223372036854775808n" },
             };
 
             internal static IEnumerable<Data> ParseData = ParseOnlyData.Concat(FormatAndParseData);
