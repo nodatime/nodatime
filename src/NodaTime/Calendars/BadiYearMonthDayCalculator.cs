@@ -152,8 +152,8 @@ namespace NodaTime.Calendars
 
             if (nextMonthNum > MonthsInYear)
             {
-                nextYear = thisYear + nextMonthNum / MonthsInYear;
-                nextMonthNum = nextMonthNum % MonthsInYear;
+                nextYear = thisYear + (nextMonthNum - 1) / MonthsInYear;
+                nextMonthNum = (nextMonthNum - 1) % MonthsInYear + 1;
             }
             else if (nextMonthNum < 1)
             {

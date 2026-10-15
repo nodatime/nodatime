@@ -573,6 +573,16 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
+        public void PlusMonths_ToLastMonthOfNextYear()
+        {
+            var start = CreateBadiDate(180, 19, 1);
+            var result = start.PlusMonths(19);
+            Assert.AreEqual(181, result.Year);
+            Assert.AreEqual(19, result.Month);
+            Assert.AreEqual(1, result.Day);
+        }
+
+        [Test]
         public void PlusMonths_Overflow()
         {
             var calendar = CalendarSystem.Badi;
