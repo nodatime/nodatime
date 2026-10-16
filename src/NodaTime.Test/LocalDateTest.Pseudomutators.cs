@@ -63,6 +63,27 @@ namespace NodaTime.Test
             Assert.AreEqual(expected, start.PlusMonths(1));
         }
 
+        // See https://github.com/nodatime/nodatime/issues/1906
+        // This ends up being a problem in RegularYearMonthCalendar, but this is a simpler place to collect
+        // test cases.
+        [Test]
+        [TestCase(1500, 1, CalendarOrdinal.UmAlQura, 10000)]
+        [TestCase(9377, 12, CalendarOrdinal.PersianAstronomical, 120)]
+        [TestCase(9999, 12, CalendarOrdinal.Iso, 1)]
+        [TestCase(-9998, 1, CalendarOrdinal.Iso, -1)]
+        public void PlusMonths_OutOfRange(int year, int month, int calendarOrdinal, int months)
+        {
+            var calendar = CalendarSystem.ForOrdinal((CalendarOrdinal) calendarOrdinal);
+            var date = new LocalDate(year, month, 1, calendar);
+            // Arguably ArgumentOutOfRangeException would be better in this specific
+            // case, but there may be other cases ending up at the same check,
+            // where OverflowException is better. The existing code "tried" to throw
+            // OverflowException, so in cases where we weren't already failing for
+            // whatever reason, we're keeping the original behavior.
+            Assert.Throws<OverflowException>(() => date.PlusMonths(months));
+        }
+
+
         [Test]
         public void PlusDays_SameMonth()
         {

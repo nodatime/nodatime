@@ -84,12 +84,12 @@ namespace NodaTime.Calendars
 
             // Quietly force DOM to nearest sane value.
             int dayToUse = yearMonthDay.Day;
-            int maxDay = GetDaysInMonth(yearToUse, monthToUse);
-            dayToUse = Math.Min(dayToUse, maxDay);
             if (yearToUse < MinYear || yearToUse > MaxYear)
             {
                 throw new OverflowException("Date computation would overflow calendar bounds.");
             }
+            int maxDay = GetDaysInMonth(yearToUse, monthToUse);
+            dayToUse = Math.Min(dayToUse, maxDay);
             return new YearMonthDay(yearToUse, monthToUse, dayToUse);
         }
 
