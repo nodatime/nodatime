@@ -294,6 +294,12 @@ namespace NodaTime.Test.Calendars
         [TestCase(219, 4)]
         [TestCase(220, 5)]
         [TestCase(221, 4)]
+        // These are as fixed in https://github.com/nodatime/nodatime/pull/1912
+        [TestCase(249, 5)]
+        [TestCase(253, 5)]
+        [TestCase(645, 5)]
+        [TestCase(649, 5)]
+        [TestCase(653, 5)]
         public void DaysInAyyamiHa(int bYear, int days)
         {
             Assert.AreEqual(days, BadiYearMonthDayCalculator.GetDaysInAyyamiHa(bYear));
