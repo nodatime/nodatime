@@ -81,7 +81,7 @@ namespace NodaTime.Calendars
                     ? DaysInAyyamiHaInLeapYear : DaysInAyyamiHaInNormalYear;
             }
             int num = YearInfoRaw[year - FirstYearOfStandardizedCalendar];
-            return num > 10 ? DaysInAyyamiHaInLeapYear : DaysInAyyamiHaInNormalYear;
+            return num >= 10 ? DaysInAyyamiHaInLeapYear : DaysInAyyamiHaInNormalYear;
         }
 
         private static int GetNawRuzDayInMarch(int year)
