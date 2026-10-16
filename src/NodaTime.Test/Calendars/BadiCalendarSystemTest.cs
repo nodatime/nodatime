@@ -573,13 +573,15 @@ namespace NodaTime.Test.Calendars
         }
 
         [Test]
-        public void PlusMonths_ToLastMonthOfNextYear()
+        [TestCase(180, 19, 1, 19, 181, 19, 1)]
+        [TestCase(180, 1, 5, 37, 181, 19, 5)]
+        [TestCase(180, 19, 5, 38, 182, 19, 5)]
+        public void PlusMonths_ToLastMonthOfNextYear(int year, int month, int day, int months, int expectedYear, int expectedMonth, int expectedDay)
         {
-            var start = CreateBadiDate(180, 19, 1);
-            var result = start.PlusMonths(19);
-            Assert.AreEqual(181, result.Year);
-            Assert.AreEqual(19, result.Month);
-            Assert.AreEqual(1, result.Day);
+            var start = CreateBadiDate(year, month, day);
+            var actual = start.PlusMonths(months);
+            var expected = CreateBadiDate(expectedYear, expectedMonth, expectedDay);
+            Assert.AreEqual(expected.YearMonthDay, actual.YearMonthDay);
         }
 
         [Test]
