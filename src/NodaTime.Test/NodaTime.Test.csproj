@@ -53,6 +53,9 @@
     <Compile Update="YearMonthTest.*.cs">
       <DependentUpon>YearMonthTest.cs</DependentUpon>
     </Compile>
+	<Compile Update="Text/PeriodPatternTest.*.cs">
+		<DependentUpon>Text/PeriodPatternTest.cs</DependentUpon>
+	</Compile>
     <Compile Update="TimeZones/BclDateTimeZoneTest.*.cs">
   	  <DependentUpon>TimeZones/BclDateTimeZoneTest.cs</DependentUpon>
     </Compile>
