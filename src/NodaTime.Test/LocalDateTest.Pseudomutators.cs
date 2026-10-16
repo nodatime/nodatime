@@ -10,7 +10,7 @@ namespace NodaTime.Test
     public partial class LocalDateTest
     {
         [Test]
-        public void PlusYear_Simple()
+        public void PlusYears_Simple()
         {
             LocalDate start = new LocalDate(2011, 6, 26);
             LocalDate expected = new LocalDate(2016, 6, 26);
@@ -21,7 +21,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void PlusYear_LeapToNonLeap()
+        public void PlusYears_LeapToNonLeap()
         {
             LocalDate start = new LocalDate(2012, 2, 29);
             LocalDate expected = new LocalDate(2013, 2, 28);
@@ -32,7 +32,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void PlusYear_LeapToLeap()
+        public void PlusYears_LeapToLeap()
         {
             LocalDate start = new LocalDate(2012, 2, 29);
             LocalDate expected = new LocalDate(2016, 2, 29);
@@ -40,7 +40,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void PlusMonth_Simple()
+        public void PlusMonths_Simple()
         {
             LocalDate start = new LocalDate(2012, 4, 15);
             LocalDate expected = new LocalDate(2012, 8, 15);
@@ -48,7 +48,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void PlusMonth_ChangingYear()
+        public void PlusMonths_ChangingYear()
         {
             LocalDate start = new LocalDate(2012, 10, 15);
             LocalDate expected = new LocalDate(2013, 2, 15);
@@ -56,7 +56,7 @@ namespace NodaTime.Test
         }
 
         [Test]
-        public void PlusMonth_WithTruncation()
+        public void PlusMonths_WithTruncation()
         {
             LocalDate start = new LocalDate(2011, 1, 30);
             LocalDate expected = new LocalDate(2011, 2, 28);
