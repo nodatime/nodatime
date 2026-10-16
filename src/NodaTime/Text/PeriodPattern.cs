@@ -36,10 +36,15 @@ namespace NodaTime.Text
         /// seconds part. Unlike ISO-8601, which pattern allows for negative values within a period.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Note that normalizing the period when formatting will cause an <see cref="System.OverflowException"/>
-        /// if the period contains more than <see cref="System.Int64.MaxValue"/> ticks when the
-        /// combined weeks/days/time portions are considered. Such a period could never
-        /// be useful anyway, however.
+        /// if the period contains more than <see cref="System.Int64.MaxValue"/> nanoseconds when the
+        /// combined weeks/days/time portions are considered.
+        /// </para>
+        /// <para>
+        /// Normalization is performed on formatting, but not on parsing. Any value emitted by formatting should
+        /// round-trip, but non-normal values (e.g. "PT25H") will not.
+        /// </para>
         /// </remarks>
         /// <value>A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.</value>
         public static PeriodPattern NormalizingIso { get; } = new PeriodPattern(new NormalizingIsoPatternImpl());
@@ -297,6 +302,12 @@ namespace NodaTime.Text
                     if ((unit & PeriodUnits.AllTimeUnits) == 0 != inDate)
                     {
                         return MisplacedUnit(valueCursor, valueCursor.Current);
+                    }
+
+                    // Date units are limited to 32-bit values.
+                    if (inDate && (unitValue < int.MinValue || unitValue > int.MaxValue))
+                    {
+                        return ParseResult<Period>.ValueOutOfRange(valueCursor, unitValue);
                     }
 
                     // Seen a . or , which need special handling.
