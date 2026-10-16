@@ -583,6 +583,16 @@ namespace NodaTime.Test.Calendars
             Assert.Throws<OverflowException>(() => lateDate.PlusMonths(1));
         }
 
+        [Test]
+        // See https://github.com/nodatime/nodatime/issues/1908
+        public void EpochDaysRoundtrip()
+        {
+            const int daysSinceEpoch = 45003;
+            var calculator = new BadiYearMonthDayCalculator();
+            var ymd = calculator.GetYearMonthDay(daysSinceEpoch);
+            Assert.AreEqual(daysSinceEpoch, calculator.GetDaysSinceEpoch(ymd));
+        }
+
         /// <summary>
         /// Create a <see cref="LocalDate"/> in the Badíʿ calendar, treating 0
         /// as the month containing Ayyam-i-Ha.
@@ -673,6 +683,5 @@ namespace NodaTime.Test.Calendars
             Assert.AreEqual(AsBadiString(CreateBadiDate(180, 0, 3)), "180-0-3");
             Assert.AreEqual(AsBadiString(CreateBadiDate(180, 19, 1)), "180-19-1");
         }
-
     }
 }
