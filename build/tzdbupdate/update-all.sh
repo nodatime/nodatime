@@ -17,6 +17,12 @@ then
   exit 1
 fi
 
+if [[ ${NUGET_API_KEY:-} == "" ]]
+then
+  echo "Please set NUGET_API_KEY and re-run"
+  exit 1
+fi
+
 ./update-main.sh $1
 
 rm -rf tmp-gcs
@@ -40,6 +46,8 @@ gcloud storage cp ../../src/NodaTime/TimeZones/Tzdb.nzd gs://nodatime/tzdb/tzdb$
 # remove them (if any are even created; we don't use them now).
 rm -f tmp-nuget/*.symbols.nupkg
 
-echo "Remaining task - push nuget files:"
-echo "cd tmp-nuget"
-echo "for pkg in *.nupkg; do dotnet nuget push -s https://api.nuget.org/v3/index.json -k API_KEY_HERE \$pkg; done"
+echo "Pushing packages to NuGet"
+for pkg in tmp-nuget/*.nupkg
+do
+  dotnet nuget push -s https://api.nuget.org/v3/index.json -k "$NUGET_API_KEY" "$pkg"
+done
