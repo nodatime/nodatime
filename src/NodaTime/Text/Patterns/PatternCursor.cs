@@ -34,7 +34,9 @@ namespace NodaTime.Text.Patterns
         /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be null.</returns>
         internal string GetQuotedString(char closeQuote)
         {
-            var builder = new StringBuilder(Length - Index);
+            // The most common form of quoting is for a single character (e.g. T, Z or a separator such as ':' or '-').
+            // If the builder needs to expand beyond that, it's still *probably* going to be short.
+            var builder = new StringBuilder(1);
             bool endQuoteFound = false;
             while (MoveNext())
             {
