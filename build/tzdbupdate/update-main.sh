@@ -40,7 +40,12 @@ echo "Checking hashes"
 rm -rf tmp-hashes
 mkdir tmp-hashes
 
-wget -q -O tmp-hashes/github-pages.txt https://nodatime.github.io/tzvalidate/tzdata$1-sha256.txt 2> /dev/null
+declare -r HASH_URL=https://nodatime.github.io/tzvalidate/tzdata$1-sha256.txt
+if ! wget -q -O tmp-hashes/github-pages.txt $HASH_URL
+then
+  echo "Failed to fetch expected hash from $HASH_URL (has tzvalidate been updated?)"
+  exit 1
+fi
 dotnet run --project $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash | grep -v "Skipping" > tmp-hashes/local.txt
 dotnet run --project $SRCDIR/NodaTime.TzValidate.NodaDump -- -s $OUTPUT --hash --noabbr | grep -v "Skipping" > tmp-hashes/local-noabbr.txt
 dotnet run --project $SRCDIR/NodaTime.TzValidate.NzdCompatibility -- -s $OUTPUT --hash --noabbr | grep -v "Skipping" > tmp-hashes/local-noabbr-11.txt
@@ -51,9 +56,32 @@ echo "Hash from new file: $(< tmp-hashes/local.txt)"
 echo "Hash from new file without abbreviations: $(< tmp-hashes/local-noabbr.txt)"
 echo "Hash from new file without abbreviations, using Noda Time 1.1: $(< tmp-hashes/local-noabbr-11.txt)"
 
-# diff's exit code will stop the script at this point if the hashes don't match
-diff tmp-hashes/github-pages.txt tmp-hashes/local.txt
-diff tmp-hashes/local-noabbr.txt tmp-hashes/local-noabbr-11.txt
+echo ""
+
+# Fails the script unless both files contain the same single SHA-256 hash.
+# (Validating the format first prevents two empty or error-containing files
+# from "matching".)
+check_hashes() {
+  local expected=$(tr -d '\r\n' < $1)
+  local actual=$(tr -d '\r\n' < $2)
+  for hash in "$expected" "$actual"
+  do
+    if [[ ! "$hash" =~ ^[0-9a-f]{64}$ ]]
+    then
+      echo "Invalid hash '$hash' when comparing $1 and $2"
+      exit 1
+    fi
+  done
+  if [[ "$expected" != "$actual" ]]
+  then
+    echo "Hash mismatch: $1 has $expected; $2 has $actual"
+    exit 1
+  fi
+  echo "Hashes match: $1 and $2"
+}
+
+check_hashes tmp-hashes/github-pages.txt tmp-hashes/local.txt
+check_hashes tmp-hashes/local-noabbr.txt tmp-hashes/local-noabbr-11.txt
 
 echo ""
 echo "Success!"
