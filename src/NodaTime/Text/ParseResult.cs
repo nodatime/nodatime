@@ -283,6 +283,9 @@ namespace NodaTime.Text
 
         internal static ParseResult<T> AmbiguousLocalTime(string text) => ForInvalidValuePostParse(text, TextErrorMessages.AmbiguousLocalTime);
 
+        internal static ParseResult<T> TemplateYearOutOfRangeForCalendar(string text, int value, CalendarSystem calendar) =>
+            ForInvalidValuePostParse(text, TextErrorMessages.TemplateYearOutOfRange, value, calendar.Name);
+
         #endregion
     }
 }
