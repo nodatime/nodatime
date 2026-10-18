@@ -260,9 +260,11 @@ namespace NodaTime.Text
                         ? ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u', eventualResultType) : null;
                 }
 
+                // If the era hasn't been specified explicitly, use the template era if it's valid for the
+                // target calendar, or the target calendar's default era otherwise.
                 if (!usedFields.HasAny(PatternFields.Era))
                 {
-                    Era = TemplateValue.Era;
+                    Era = Calendar.Eras.Contains(TemplateValue.Era) ? TemplateValue.Era : Calendar.DefaultEra;
                 }
 
                 // After this point, Era is definitely non-null.

@@ -22,6 +22,8 @@ namespace NodaTime.Calendars
             this.Eras = new ReadOnlyCollection<Era>(eras);
         }
 
+        // The era to use when a year-of-era is specified without an explicit era.
+        internal abstract Era DefaultEra { get; }
         internal abstract int GetMinYearOfEra(Era era);
         internal abstract int GetMaxYearOfEra(Era era);
         internal abstract Era GetEra(int absoluteYear);

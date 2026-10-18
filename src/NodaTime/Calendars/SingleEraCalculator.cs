@@ -55,5 +55,7 @@ namespace NodaTime.Calendars
         }
 
         internal override Era GetEra(int absoluteYear) => era;
+
+        internal override Era DefaultEra => era;
     }
 }
