@@ -199,8 +199,21 @@ namespace NodaTime.Test.Text
             new Data(2011, 10, 9) { Pattern = "uuuu MM dd c", Text = "2011 10 09 ISO" },
             new Data(2011, 10, 9, CalendarSystem.Coptic) { Pattern = "c uuuu MM dd", Text = "Coptic 2011 10 09" },
             new Data(2011, 10, 9, CalendarSystem.Coptic) { Pattern = "uuuu MM dd c", Text = "2011 10 09 Coptic" },
-
             new Data(180, 15, 19, CalendarSystem.Badi) { Pattern = "uuuu MM dd c", Text = "0180 15 19 Badi" },
+
+            // Calendar handling with year-of-era. See https://github.com/nodatime/nodatime/issues/1911
+            new Data(5787, 2, 5, CalendarSystem.HebrewCivil) { Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "5787-02-05 (Hebrew Civil)" },
+            new Data(4, 2, 5, CalendarSystem.Gregorian) { Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "0004-02-05 (Gregorian)" },
+            new Data(4, 2, 5, CalendarSystem.Julian) { Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "0004-02-05 (Julian)" },
+            new Data(4, 2, 5, CalendarSystem.Iso) { Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "0004-02-05 (ISO)" },
+            // Template value uses the BCE era to make sure we can roundtrip
+            new Data(-3, 2, 5, CalendarSystem.Gregorian) { Template = new LocalDate(-1, 1, 1), Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "0004-02-05 (Gregorian)" },
+            new Data(-3, 2, 5, CalendarSystem.Julian) { Template = new LocalDate(-1, 1, 1), Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "0004-02-05 (Julian)" },
+            new Data(-3, 2, 5) { Template = new LocalDate(-1, 1, 1), Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "0004-02-05 (ISO)" },
+            // Default era for Gregorian/Julian calendar systems is CE
+            new Data(4, 2, 5, CalendarSystem.Gregorian) { Template = new LocalDate(5787, 2, 5, CalendarSystem.HebrewCivil), Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "0004-02-05 (Gregorian)" },
+            new Data(4, 2, 5, CalendarSystem.Julian) { Template = new LocalDate(5787, 2, 5, CalendarSystem.HebrewCivil), Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "0004-02-05 (Julian)" },
+            new Data(4, 2, 5) { Template = new LocalDate(5787, 2, 5, CalendarSystem.HebrewCivil), Pattern = "yyyy'-'MM'-'dd' ('c')'", Text = "0004-02-05 (ISO)" },
 
             // Awkward day-of-week handling
             // December 14th 2012 was a Friday. Friday is "Foo" or "FooBar" in AwkwardDayOfWeekCulture.

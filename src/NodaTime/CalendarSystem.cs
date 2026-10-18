@@ -431,6 +431,12 @@ namespace NodaTime
         public IList<Era> Eras => eraCalculator.Eras;
 
         /// <summary>
+        /// Returns the default era to use when a year-of-era is supplied without 
+        /// an explicit era.
+        /// </summary>
+        internal Era DefaultEra => eraCalculator.DefaultEra;
+
+        /// <summary>
         /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
         /// from a year-of-era and an era.
         /// </summary>
