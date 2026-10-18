@@ -59,5 +59,7 @@ namespace NodaTime.Calendars
             ValidateEra(era);
             return era == Era.Common ? maxYearOfAd : maxYearOfBc;
         }
+
+        internal override Era DefaultEra => Era.Common;
     }
 }
