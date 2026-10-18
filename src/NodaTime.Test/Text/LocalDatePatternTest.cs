@@ -98,6 +98,11 @@ namespace NodaTime.Test.Text
 
             // Calendar ID parsing is now ordinal, case-sensitive
             new Data(2011, 10, 9) { Pattern = "uuuu MM dd c", Text = "2011 10 09 iso", Message = TextErrorMessages.NoMatchingCalendarSystem },
+
+            // Template field values not specified in pattern are out of range
+            new Data { Template = new(100, 15, 1, CalendarSystem.Badi), Pattern = "uuuu'-'dd' ('c')'", Text = "0100-01 (ISO)", Message = TextErrorMessages.MonthOutOfRange, Parameters = { 15, 100 } },
+            new Data { Pattern = "MM'-'dd' ('c')'", Text = "05-06 (Um Al Qura)", Message = TextErrorMessages.TemplateYearOutOfRange, Parameters = { 2000, "Um Al Qura" } },
+            new Data { Template = new(2000, 1, 31), Pattern = "uuuu'-'MM", Text = "2005-02", Message = TextErrorMessages.DayOfMonthOutOfRange, Parameters = { 31, 2, 2005 } },
         };
 
         internal static Data[] ParseOnlyData = {

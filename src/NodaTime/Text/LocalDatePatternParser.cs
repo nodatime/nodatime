@@ -252,10 +252,14 @@ namespace NodaTime.Text
                     return null;
                 }
 
-                // Use the year from the template value, possibly checking the era.
+                // Use the year from the template value, checking validity in the target calendar, and possibly checking the era.
                 if (!usedFields.HasAny(PatternFields.YearOfEra))
                 {
                     Year = TemplateValue.Year;
+                    if (Year > Calendar.MaxYear || Year < Calendar.MinYear)
+                    {
+                        return ParseResult<LocalDate>.TemplateYearOutOfRangeForCalendar(text, Year, Calendar);
+                    }
                     return usedFields.HasAny(PatternFields.Era) && Era != Calendar.GetEra(Year)
                         ? ParseResult<LocalDate>.InconsistentValues(text, 'g', 'u', eventualResultType) : null;
                 }

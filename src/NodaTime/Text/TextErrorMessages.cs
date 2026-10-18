@@ -60,6 +60,7 @@ namespace NodaTime.Text
         internal const string RepeatedFieldInPattern = "The field \"{0}\" is specified multiple times in the pattern.";
         internal const string RepeatedUnitSpecifier = "The period unit specifier '{0}' appears multiple times in the input string.";
         internal const string SkippedLocalTime = "The local date/time is skipped in the target time zone.";
+        internal const string TemplateYearOutOfRange = "The year {0} from the template value is out of range for the {1} calendar.";
         internal const string TimeFieldAndEmbeddedTime = "Custom time specifiers cannot be specified in the same pattern as an embedded time specifier";
         internal const string TimeSeparatorMismatch = "The value string does not match a time separator in the format string.";
         internal const string UnexpectedNegative = "The value string includes a negative value where only a non-negative one is allowed.";
