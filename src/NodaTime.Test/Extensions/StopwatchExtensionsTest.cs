@@ -7,19 +7,18 @@ using NUnit.Framework;
 using System.Diagnostics;
 using System.Threading;
 
-namespace NodaTime.Test.Extensions
+namespace NodaTime.Test.Extensions;
+
+public class StopwatchExtensionsTest
 {
-    public class StopwatchExtensionsTest
+    [Test]
+    public void ElapsedDuration()
     {
-        [Test]
-        public void ElapsedDuration()
-        {
-            var stopwatch = Stopwatch.StartNew();
-            Thread.Sleep(1);
-            stopwatch.Stop();
-            var duration = stopwatch.ElapsedDuration();
-            var timespan = stopwatch.Elapsed;
-            Assert.AreEqual(timespan.Ticks, duration.BclCompatibleTicks);
-        }
+        var stopwatch = Stopwatch.StartNew();
+        Thread.Sleep(1);
+        stopwatch.Stop();
+        var duration = stopwatch.ElapsedDuration();
+        var timespan = stopwatch.Elapsed;
+        Assert.AreEqual(timespan.Ticks, duration.BclCompatibleTicks);
     }
 }

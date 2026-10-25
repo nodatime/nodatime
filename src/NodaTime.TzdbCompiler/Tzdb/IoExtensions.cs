@@ -6,16 +6,27 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace NodaTime.TzdbCompiler.Tzdb
-{
-    /// <summary>
-    /// IO-related extension methods
-    /// </summary>
-    internal static class IoExtensions
-    {
-        internal static IEnumerable<string> ReadLines(this Stream stream) => ReadLines(new StreamReader(stream));
+namespace NodaTime.TzdbCompiler.Tzdb;
 
-        internal static IEnumerable<string> ReadLines(this TextReader reader)
+/// <summary>
+/// IO-related extension methods
+/// </summary>
+internal static class IoExtensions
+{
+    internal static IEnumerable<string> ReadLines(this Stream stream) => ReadLines(new StreamReader(stream));
+
+    internal static IEnumerable<string> ReadLines(this TextReader reader)
+    {
+        string? line;
+        while ((line = reader.ReadLine()) != null)
+        {
+            yield return line;
+        }
+    }
+
+    internal static IEnumerable<string> ReadLines(Func<TextReader> readerProvider)
+    {
+        using (var reader = readerProvider())
         {
             string? line;
             while ((line = reader.ReadLine()) != null)
@@ -23,20 +34,8 @@ namespace NodaTime.TzdbCompiler.Tzdb
                 yield return line;
             }
         }
-
-        internal static IEnumerable<string> ReadLines(Func<TextReader> readerProvider)
-        {
-            using (var reader = readerProvider())
-            {
-                string? line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    yield return line;
-                }
-            }
-        }
-
-
-        internal static IEnumerable<string> ReadLines(this FileSource source, string name) => ReadLines(() => new StreamReader(source.Open(name)));
     }
+
+
+    internal static IEnumerable<string> ReadLines(this FileSource source, string name) => ReadLines(() => new StreamReader(source.Open(name)));
 }

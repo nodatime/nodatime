@@ -8,60 +8,59 @@ using System.Formats.Tar;
 using System.IO;
 using System.Linq;
 
-namespace NodaTime.TzdbCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb;
+
+/// <summary>
+/// A random access collection of files.
+/// </summary>
+internal sealed class FileSource
 {
     /// <summary>
-    /// A random access collection of files.
+    /// The name of the origin of the files - just the last part,
+    /// rather than the whole URL/path.
     /// </summary>
-    internal sealed class FileSource
+    internal string Origin { get; }
+
+    /// <summary>
+    /// The names of the files.
+    /// </summary>
+    internal IList<string> Names { get; }
+
+    private readonly Func<string, Stream> openFunction;
+
+    private FileSource(IList<string> names, Func<string, Stream> openFunction, string fullOrigin)
     {
-        /// <summary>
-        /// The name of the origin of the files - just the last part,
-        /// rather than the whole URL/path.
-        /// </summary>
-        internal string Origin { get; }
+        Names = names; // Could create a ReadOnlyCollection if we ever wanted to make this public
+        Origin = Path.GetFileName(fullOrigin);
+        this.openFunction = openFunction;
+    }
 
-        /// <summary>
-        /// The names of the files.
-        /// </summary>
-        internal IList<string> Names { get; }
+    internal Stream Open(string name) => openFunction(name);
 
-        private readonly Func<string, Stream> openFunction;
+    internal bool Contains(string name) => Names.Contains(name);
 
-        private FileSource(IList<string> names, Func<string, Stream> openFunction, string fullOrigin)
+    internal static FileSource FromArchive(Stream archiveData, string fullOrigin)
+    {
+        var entries = new Dictionary<string, byte[]>();
+        using (var reader = new TarReader(archiveData))
         {
-            Names = names; // Could create a ReadOnlyCollection if we ever wanted to make this public
-            Origin = Path.GetFileName(fullOrigin);
-            this.openFunction = openFunction;
-        }
-
-        internal Stream Open(string name) => openFunction(name);
-
-        internal bool Contains(string name) => Names.Contains(name);
-
-        internal static FileSource FromArchive(Stream archiveData, string fullOrigin)
-        {
-            var entries = new Dictionary<string, byte[]>();
-            using (var reader = new TarReader(archiveData))
+            while (reader.GetNextEntry() is {} entry)
             {
-                while (reader.GetNextEntry() is {} entry)
+                if (entry.DataStream != null)
                 {
-                    if (entry.DataStream != null)
-                    {
-                        using var entryStream = new MemoryStream();
-                        entry.DataStream.CopyTo(entryStream);
-                        // The lzip file puts everything into a subdirectory. Let's just take the filename...
-                        entries[Path.GetFileName(entry.Name)] = entryStream.ToArray();
-                    }
+                    using var entryStream = new MemoryStream();
+                    entry.DataStream.CopyTo(entryStream);
+                    // The lzip file puts everything into a subdirectory. Let's just take the filename...
+                    entries[Path.GetFileName(entry.Name)] = entryStream.ToArray();
                 }
             }
-            return new FileSource(entries.Keys.ToList(), file => new MemoryStream(entries[file]), fullOrigin);
         }
+        return new FileSource(entries.Keys.ToList(), file => new MemoryStream(entries[file]), fullOrigin);
+    }
 
-        internal static FileSource FromDirectory(string path)
-        {
-            var files = Directory.GetFiles(path).Select(p => Path.GetFileName(p)).ToList();
-            return new FileSource(files, file => File.OpenRead(Path.Combine(path, file)), Path.GetFileName(path));
-        }
+    internal static FileSource FromDirectory(string path)
+    {
+        var files = Directory.GetFiles(path).Select(p => Path.GetFileName(p)).ToList();
+        return new FileSource(files, file => File.OpenRead(Path.Combine(path, file)), Path.GetFileName(path));
     }
 }

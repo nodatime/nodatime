@@ -5,51 +5,50 @@
 using System;
 using System.Globalization;
 
-namespace NodaTime.Test.Globalization
+namespace NodaTime.Test.Globalization;
+
+/// <summary>
+/// Throws an exception if called. This forces the testing code to set or pass a valid culture in all
+/// tests. The tests cannot be guaranteed to work if the culture is not set as formatting and parsing
+/// are culture dependent.
+/// </summary>
+public class FailingCultureInfo : CultureInfo
 {
-    /// <summary>
-    /// Throws an exception if called. This forces the testing code to set or pass a valid culture in all
-    /// tests. The tests cannot be guaranteed to work if the culture is not set as formatting and parsing
-    /// are culture dependent.
-    /// </summary>
-    public class FailingCultureInfo : CultureInfo
+    private const string CultureNotSet = "The formatting and parsing code tests should have set the correct culture.";
+
+    public static FailingCultureInfo Instance = new FailingCultureInfo();
+
+    public FailingCultureInfo()
+        : base("en-US")
     {
-        private const string CultureNotSet = "The formatting and parsing code tests should have set the correct culture.";
-
-        public static FailingCultureInfo Instance = new FailingCultureInfo();
-
-        public FailingCultureInfo()
-            : base("en-US")
-        {
-        }
-
-        public override DateTimeFormatInfo DateTimeFormat
-        {
-            get
-            {
-                throw new NotSupportedException(CultureNotSet);
-            }
-            set
-            {
-                throw new NotSupportedException(CultureNotSet);
-            }
-        }
-
-        public override NumberFormatInfo NumberFormat
-        {
-            get
-            {
-                throw new NotSupportedException(CultureNotSet);
-            }
-            set
-            {
-                throw new NotSupportedException(CultureNotSet);
-            }
-        }
-
-        public override string Name => "Failing";
-
-        public override object GetFormat(Type? formatType) =>
-            throw new NotSupportedException(CultureNotSet);
     }
+
+    public override DateTimeFormatInfo DateTimeFormat
+    {
+        get
+        {
+            throw new NotSupportedException(CultureNotSet);
+        }
+        set
+        {
+            throw new NotSupportedException(CultureNotSet);
+        }
+    }
+
+    public override NumberFormatInfo NumberFormat
+    {
+        get
+        {
+            throw new NotSupportedException(CultureNotSet);
+        }
+        set
+        {
+            throw new NotSupportedException(CultureNotSet);
+        }
+    }
+
+    public override string Name => "Failing";
+
+    public override object GetFormat(Type? formatType) =>
+        throw new NotSupportedException(CultureNotSet);
 }

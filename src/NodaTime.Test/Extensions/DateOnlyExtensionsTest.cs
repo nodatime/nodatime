@@ -7,18 +7,17 @@ using NodaTime.Extensions;
 using NUnit.Framework;
 using System;
 
-namespace NodaTime.Test.Extensions
+namespace NodaTime.Test.Extensions;
+
+public class DateOnlyExtensionsTest
 {
-    public class DateOnlyExtensionsTest
+    [Test]
+    public void ToLocalDate()
     {
-        [Test]
-        public void ToLocalDate()
-        {
-            var dateOnly = new DateOnly(2011, 8, 18);
-            var expected = new LocalDate(2011, 8, 18);
-            var actual = dateOnly.ToLocalDate();
-            Assert.AreEqual(expected, actual);
-        }
+        var dateOnly = new DateOnly(2011, 8, 18);
+        var expected = new LocalDate(2011, 8, 18);
+        var actual = dateOnly.ToLocalDate();
+        Assert.AreEqual(expected, actual);
     }
 }
 #endif

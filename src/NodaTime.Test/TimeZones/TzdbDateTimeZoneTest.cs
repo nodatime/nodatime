@@ -6,23 +6,22 @@ using NodaTime.Extensions;
 using NUnit.Framework;
 using System.Collections.Generic;
 
-namespace NodaTime.Test.TimeZones
-{
-    /// <summary>
-    /// Tests for all TZDB time zones.
-    /// </summary>
-    public class TzdbDateTimeZoneTest
-    {
-        private static readonly IEnumerable<DateTimeZone> AllTzdbZones = DateTimeZoneProviders.Tzdb.GetAllZones();
+namespace NodaTime.Test.TimeZones;
 
-        [Test]
-        [TestCaseSource(nameof(AllTzdbZones))]
-        public void AllZonesStartAndEndOfTime(DateTimeZone zone)
-        {
-            var firstInterval = zone.GetZoneInterval(Instant.MinValue);
-            Assert.IsFalse(firstInterval.HasStart);
-            var lastInterval = zone.GetZoneInterval(Instant.MaxValue);
-            Assert.IsFalse(lastInterval.HasEnd);
-        }
+/// <summary>
+/// Tests for all TZDB time zones.
+/// </summary>
+public class TzdbDateTimeZoneTest
+{
+    private static readonly IEnumerable<DateTimeZone> AllTzdbZones = DateTimeZoneProviders.Tzdb.GetAllZones();
+
+    [Test]
+    [TestCaseSource(nameof(AllTzdbZones))]
+    public void AllZonesStartAndEndOfTime(DateTimeZone zone)
+    {
+        var firstInterval = zone.GetZoneInterval(Instant.MinValue);
+        Assert.IsFalse(firstInterval.HasStart);
+        var lastInterval = zone.GetZoneInterval(Instant.MaxValue);
+        Assert.IsFalse(lastInterval.HasEnd);
     }
 }

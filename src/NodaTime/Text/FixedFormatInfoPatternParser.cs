@@ -7,24 +7,23 @@ using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 using System;
 
-namespace NodaTime.Text
+namespace NodaTime.Text;
+
+/// <summary>
+/// A pattern parser for a single format info, which caches patterns by text/style.
+/// </summary>
+internal sealed class FixedFormatInfoPatternParser<T>
 {
-    /// <summary>
-    /// A pattern parser for a single format info, which caches patterns by text/style.
-    /// </summary>
-    internal sealed class FixedFormatInfoPatternParser<T>
+    // It would be unusual to have more than 50 different patterns for a specific culture
+    // within a real app.
+    private const int CacheSize = 50;
+    private readonly Cache<string, IPattern<T>> cache;
+
+    internal FixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
     {
-        // It would be unusual to have more than 50 different patterns for a specific culture
-        // within a real app.
-        private const int CacheSize = 50;
-        private readonly Cache<string, IPattern<T>> cache;
-
-        internal FixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
-        {
-            cache = new Cache<string, IPattern<T>>(CacheSize, patternText => patternParser.ParsePattern(patternText, formatInfo),
-                StringComparer.Ordinal);
-        }
-
-        internal IPattern<T> ParsePattern(string pattern) => cache.GetOrAdd(pattern);
+        cache = new Cache<string, IPattern<T>>(CacheSize, patternText => patternParser.ParsePattern(patternText, formatInfo),
+            StringComparer.Ordinal);
     }
+
+    internal IPattern<T> ParsePattern(string pattern) => cache.GetOrAdd(pattern);
 }

@@ -5,41 +5,40 @@
 using NodaTime.Calendars;
 using NUnit.Framework;
 
-namespace NodaTime.Test.Calendars
+namespace NodaTime.Test.Calendars;
+
+public class HebrewScripturalCalculatorTest
 {
-    public class HebrewScripturalCalculatorTest
+    [Test]
+    public void DaysInYear()
     {
-        [Test]
-        public void DaysInYear()
-        {
-            var bcl = BclCalendars.Hebrew;
-            var minYear = bcl.GetYear(bcl.MinSupportedDateTime);
-            var maxYear = bcl.GetYear(bcl.MaxSupportedDateTime);
+        var bcl = BclCalendars.Hebrew;
+        var minYear = bcl.GetYear(bcl.MinSupportedDateTime);
+        var maxYear = bcl.GetYear(bcl.MaxSupportedDateTime);
 
-            for (int year = minYear; year <= maxYear; year++)
-            {
-                Assert.AreEqual(bcl.GetDaysInYear(year), HebrewScripturalCalculator.DaysInYear(year));
-            }
+        for (int year = minYear; year <= maxYear; year++)
+        {
+            Assert.AreEqual(bcl.GetDaysInYear(year), HebrewScripturalCalculator.DaysInYear(year));
         }
+    }
 
-        [Test]
-        public void DaysInMonth()
+    [Test]
+    public void DaysInMonth()
+    {
+        var bcl = BclCalendars.Hebrew;
+        // Not all months in the min/max years are supported
+        var minYear = bcl.GetYear(bcl.MinSupportedDateTime) + 1;
+        var maxYear = bcl.GetYear(bcl.MaxSupportedDateTime) - 1;
+
+        for (int year = minYear; year <= maxYear; year++)
         {
-            var bcl = BclCalendars.Hebrew;
-            // Not all months in the min/max years are supported
-            var minYear = bcl.GetYear(bcl.MinSupportedDateTime) + 1;
-            var maxYear = bcl.GetYear(bcl.MaxSupportedDateTime) - 1;
-
-            for (int year = minYear; year <= maxYear; year++)
+            int months = bcl.GetMonthsInYear(year);
+            for (int month = 1; month <= months; month++)
             {
-                int months = bcl.GetMonthsInYear(year);
-                for (int month = 1; month <= months; month++)
-                {
-                    int scripturalMonth = HebrewMonthConverter.CivilToScriptural(year, month);
-                    int bclDays = bcl.GetDaysInMonth(year, month);
-                    int nodaDays = HebrewScripturalCalculator.DaysInMonth(year, scripturalMonth);
-                    Assert.AreEqual(bclDays, nodaDays);
-                }
+                int scripturalMonth = HebrewMonthConverter.CivilToScriptural(year, month);
+                int bclDays = bcl.GetDaysInMonth(year, month);
+                int nodaDays = HebrewScripturalCalculator.DaysInMonth(year, scripturalMonth);
+                Assert.AreEqual(bclDays, nodaDays);
             }
         }
     }

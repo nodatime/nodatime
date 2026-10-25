@@ -3,28 +3,27 @@
 // as found in the LICENSE.txt file.
 
 
-namespace NodaTime.Calendars
+namespace NodaTime.Calendars;
+
+/// <summary>
+/// The epoch to use when constructing an Islamic calendar.
+/// </summary>
+/// <remarks>
+/// The Islamic, or Hijri, calendar can either be constructed
+/// starting on July 15th 622CE (in the Julian calendar) or on the following day.
+/// The former is the "astronomical" or "Thursday" epoch; the latter is the "civil" or "Friday" epoch.
+/// </remarks>
+/// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
+public enum IslamicEpoch
 {
     /// <summary>
-    /// The epoch to use when constructing an Islamic calendar.
+    /// Epoch beginning on July 15th 622CE (Julian), which is July 18th 622 CE in the Gregorian calendar.
+    /// This is the epoch used by the BCL HijriCalendar.
     /// </summary>
-    /// <remarks>
-    /// The Islamic, or Hijri, calendar can either be constructed
-    /// starting on July 15th 622CE (in the Julian calendar) or on the following day.
-    /// The former is the "astronomical" or "Thursday" epoch; the latter is the "civil" or "Friday" epoch.
-    /// </remarks>
-    /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
-    public enum IslamicEpoch
-    {
-        /// <summary>
-        /// Epoch beginning on July 15th 622CE (Julian), which is July 18th 622 CE in the Gregorian calendar.
-        /// This is the epoch used by the BCL HijriCalendar.
-        /// </summary>
-        Astronomical = 1,
+    Astronomical = 1,
 
-        /// <summary>
-        /// Epoch beginning on July 16th 622CE (Julian), which is July 19th 622 CE in the Gregorian calendar.
-        /// </summary>
-        Civil = 2
-    }
+    /// <summary>
+    /// Epoch beginning on July 16th 622CE (Julian), which is July 19th 622 CE in the Gregorian calendar.
+    /// </summary>
+    Civil = 2
 }

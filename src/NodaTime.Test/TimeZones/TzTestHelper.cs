@@ -4,21 +4,20 @@
 
 using NodaTime.TimeZones;
 
-namespace NodaTime.Test.TimeZones
+namespace NodaTime.Test.TimeZones;
+
+/// <summary>
+/// Extension methods to help with time zone testing, and other helper methods.
+/// </summary>
+internal static class TzTestHelper
 {
     /// <summary>
-    /// Extension methods to help with time zone testing, and other helper methods.
+    /// Returns the uncached version of the given zone. If the zone isn't
+    /// an instance of CachedDateTimeZone, the same reference is returned back.
     /// </summary>
-    internal static class TzTestHelper
+    internal static DateTimeZone Uncached(this DateTimeZone zone)
     {
-        /// <summary>
-        /// Returns the uncached version of the given zone. If the zone isn't
-        /// an instance of CachedDateTimeZone, the same reference is returned back.
-        /// </summary>
-        internal static DateTimeZone Uncached(this DateTimeZone zone)
-        {
-            var cached = zone as CachedDateTimeZone;
-            return cached is null ? zone : cached.TimeZone;
-        }
+        var cached = zone as CachedDateTimeZone;
+        return cached is null ? zone : cached.TimeZone;
     }
 }

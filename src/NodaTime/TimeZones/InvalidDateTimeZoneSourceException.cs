@@ -10,26 +10,25 @@ using System;
 // There are never any inner exceptions, and we always *do* have a message.
 #pragma warning disable CA1032
 
-namespace NodaTime.TimeZones
+namespace NodaTime.TimeZones;
+
+/// <summary>
+/// Exception thrown to indicate that a time zone source has violated the contract of <see cref="IDateTimeZoneSource"/>.
+/// This exception is primarily intended to be thrown from <see cref="DateTimeZoneCache"/>, and only in the face of a buggy
+/// source; user code should not usually need to be aware of this or catch it.
+/// </summary>
+/// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
+/// See the thread safety section of the user guide for more information.
+/// </threadsafety>
+[Mutable] // Exception itself is mutable
+public sealed class InvalidDateTimeZoneSourceException : Exception
 {
     /// <summary>
-    /// Exception thrown to indicate that a time zone source has violated the contract of <see cref="IDateTimeZoneSource"/>.
-    /// This exception is primarily intended to be thrown from <see cref="DateTimeZoneCache"/>, and only in the face of a buggy
-    /// source; user code should not usually need to be aware of this or catch it.
+    /// Creates a new instance with the given message.
     /// </summary>
-    /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
-    /// See the thread safety section of the user guide for more information.
-    /// </threadsafety>
-    [Mutable] // Exception itself is mutable
-    public sealed class InvalidDateTimeZoneSourceException : Exception
+    /// <param name="message">The message for the exception.</param>
+    public InvalidDateTimeZoneSourceException(string message)
+        : base(message)
     {
-        /// <summary>
-        /// Creates a new instance with the given message.
-        /// </summary>
-        /// <param name="message">The message for the exception.</param>
-        public InvalidDateTimeZoneSourceException(string message)
-            : base(message)
-        {
-        }
     }
 }

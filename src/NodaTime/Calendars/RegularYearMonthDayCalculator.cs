@@ -5,120 +5,119 @@
 using NodaTime.Annotations;
 using System;
 
-namespace NodaTime.Calendars
+namespace NodaTime.Calendars;
+
+/// <summary>
+/// Subclass of YearMonthDayCalculator for calendars with the following attributes:
+/// <list type="bullet">
+/// <item>A fixed number of months</item>
+/// <item>Occasional leap years which are always 1 day longer than non-leap years</item>
+/// <item>The year starting with month 1, day 1 (i.e. naive YearMonthDay comparisons work)</item>
+/// </list>
+/// </summary>
+internal abstract class RegularYearMonthDayCalculator : YearMonthDayCalculator
 {
-    /// <summary>
-    /// Subclass of YearMonthDayCalculator for calendars with the following attributes:
-    /// <list type="bullet">
-    /// <item>A fixed number of months</item>
-    /// <item>Occasional leap years which are always 1 day longer than non-leap years</item>
-    /// <item>The year starting with month 1, day 1 (i.e. naive YearMonthDay comparisons work)</item>
-    /// </list>
-    /// </summary>
-    internal abstract class RegularYearMonthDayCalculator : YearMonthDayCalculator
+    private readonly int monthsInYear;
+
+    protected RegularYearMonthDayCalculator(int minYear, int maxYear, int monthsInYear,
+        int averageDaysPer10Years, int daysAtStartOfYear1)
+        : base(minYear, maxYear, averageDaysPer10Years, daysAtStartOfYear1)
     {
-        private readonly int monthsInYear;
+        this.monthsInYear = monthsInYear;
+    }
 
-        protected RegularYearMonthDayCalculator(int minYear, int maxYear, int monthsInYear,
-            int averageDaysPer10Years, int daysAtStartOfYear1)
-            : base(minYear, maxYear, averageDaysPer10Years, daysAtStartOfYear1)
+    internal override int GetMonthsInYear([Trusted] int year) => monthsInYear;
+
+    /// <summary>
+    /// Implements a simple year-setting policy, truncating the day
+    /// if necessary.
+    /// </summary>
+    internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, [Trusted] int year)
+    {
+        // If this ever becomes a bottleneck due to GetDaysInMonth, it can be overridden
+        // in subclasses.
+        int currentMonth = yearMonthDay.Month;
+        int currentDay = yearMonthDay.Day;
+        int newDay = GetDaysInMonth(year, currentMonth);
+        return new YearMonthDay(year, currentMonth, Math.Min(currentDay, newDay));
+    }
+
+    internal override YearMonthDay AddMonths(YearMonthDay yearMonthDay, int months)
+    {
+        if (months == 0)
         {
-            this.monthsInYear = monthsInYear;
+            return yearMonthDay;
         }
+        // Get the year and month
+        int thisYear = yearMonthDay.Year;
+        int thisMonth = yearMonthDay.Month;
 
-        internal override int GetMonthsInYear([Trusted] int year) => monthsInYear;
+        // Do not refactor without careful consideration.
+        // Order of calculation is important.
 
-        /// <summary>
-        /// Implements a simple year-setting policy, truncating the day
-        /// if necessary.
-        /// </summary>
-        internal override YearMonthDay SetYear(YearMonthDay yearMonthDay, [Trusted] int year)
+        int yearToUse;
+        // Initially, monthToUse is zero-based
+        int monthToUse = thisMonth - 1 + months;
+        if (monthToUse >= 0)
         {
-            // If this ever becomes a bottleneck due to GetDaysInMonth, it can be overridden
-            // in subclasses.
-            int currentMonth = yearMonthDay.Month;
-            int currentDay = yearMonthDay.Day;
-            int newDay = GetDaysInMonth(year, currentMonth);
-            return new YearMonthDay(year, currentMonth, Math.Min(currentDay, newDay));
+            yearToUse = thisYear + (monthToUse / monthsInYear);
+            monthToUse = (monthToUse % monthsInYear) + 1;
         }
-
-        internal override YearMonthDay AddMonths(YearMonthDay yearMonthDay, int months)
+        else
         {
-            if (months == 0)
+            yearToUse = thisYear + (monthToUse / monthsInYear) - 1;
+            monthToUse = Math.Abs(monthToUse);
+            int remMonthToUse = monthToUse % monthsInYear;
+            // Take care of the boundary condition
+            if (remMonthToUse == 0)
             {
-                return yearMonthDay;
+                remMonthToUse = monthsInYear;
             }
-            // Get the year and month
-            int thisYear = yearMonthDay.Year;
-            int thisMonth = yearMonthDay.Month;
-
-            // Do not refactor without careful consideration.
-            // Order of calculation is important.
-
-            int yearToUse;
-            // Initially, monthToUse is zero-based
-            int monthToUse = thisMonth - 1 + months;
-            if (monthToUse >= 0)
+            monthToUse = monthsInYear - remMonthToUse + 1;
+            // Take care of the boundary condition
+            if (monthToUse == 1)
             {
-                yearToUse = thisYear + (monthToUse / monthsInYear);
-                monthToUse = (monthToUse % monthsInYear) + 1;
+                yearToUse++;
             }
-            else
-            {
-                yearToUse = thisYear + (monthToUse / monthsInYear) - 1;
-                monthToUse = Math.Abs(monthToUse);
-                int remMonthToUse = monthToUse % monthsInYear;
-                // Take care of the boundary condition
-                if (remMonthToUse == 0)
-                {
-                    remMonthToUse = monthsInYear;
-                }
-                monthToUse = monthsInYear - remMonthToUse + 1;
-                // Take care of the boundary condition
-                if (monthToUse == 1)
-                {
-                    yearToUse++;
-                }
-            }
-            // End of do not refactor.
-
-            // Quietly force DOM to nearest sane value.
-            int dayToUse = yearMonthDay.Day;
-            if (yearToUse < MinYear || yearToUse > MaxYear)
-            {
-                throw new OverflowException("Date computation would overflow calendar bounds.");
-            }
-            int maxDay = GetDaysInMonth(yearToUse, monthToUse);
-            dayToUse = Math.Min(dayToUse, maxDay);
-            return new YearMonthDay(yearToUse, monthToUse, dayToUse);
         }
+        // End of do not refactor.
 
-        internal override int MonthsBetween(YearMonthDay start, YearMonthDay end)
+        // Quietly force DOM to nearest sane value.
+        int dayToUse = yearMonthDay.Day;
+        if (yearToUse < MinYear || yearToUse > MaxYear)
         {
-            int startMonth = start.Month;
-            int startYear = start.Year;
-            int endMonth = end.Month;
-            int endYear = end.Year;
+            throw new OverflowException("Date computation would overflow calendar bounds.");
+        }
+        int maxDay = GetDaysInMonth(yearToUse, monthToUse);
+        dayToUse = Math.Min(dayToUse, maxDay);
+        return new YearMonthDay(yearToUse, monthToUse, dayToUse);
+    }
 
-            int diff = (endYear - startYear) * monthsInYear + endMonth - startMonth;
+    internal override int MonthsBetween(YearMonthDay start, YearMonthDay end)
+    {
+        int startMonth = start.Month;
+        int startYear = start.Year;
+        int endMonth = end.Month;
+        int endYear = end.Year;
 
-            // If we just add the difference in months to start, what do we get?
-            YearMonthDay simpleAddition = AddMonths(start, diff);
+        int diff = (endYear - startYear) * monthsInYear + endMonth - startMonth;
 
-            // Note: this relies on naive comparison of year/month/date values.
-            if (start <= end)
-            {
-                // Moving forward: if the result of the simple addition is before or equal to the end,
-                // we're done. Otherwise, rewind a month because we've overshot.
-                return simpleAddition <= end ? diff : diff - 1;
-            }
-            else
-            {
-                // Moving backward: if the result of the simple addition (of a non-positive number)
-                // is after or equal to the end, we're done. Otherwise, increment by a month because
-                // we've overshot backwards.
-                return simpleAddition >= end ? diff : diff + 1;
-            }
+        // If we just add the difference in months to start, what do we get?
+        YearMonthDay simpleAddition = AddMonths(start, diff);
+
+        // Note: this relies on naive comparison of year/month/date values.
+        if (start <= end)
+        {
+            // Moving forward: if the result of the simple addition is before or equal to the end,
+            // we're done. Otherwise, rewind a month because we've overshot.
+            return simpleAddition <= end ? diff : diff - 1;
+        }
+        else
+        {
+            // Moving backward: if the result of the simple addition (of a non-positive number)
+            // is after or equal to the end, we're done. Otherwise, increment by a month because
+            // we've overshot backwards.
+            return simpleAddition >= end ? diff : diff + 1;
         }
     }
 }

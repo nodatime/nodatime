@@ -7,18 +7,17 @@ using NodaTime.Extensions;
 using NUnit.Framework;
 using System;
 
-namespace NodaTime.Test.Extensions
+namespace NodaTime.Test.Extensions;
+
+public class TimeOnlyExtensionsTest
 {
-    public class TimeOnlyExtensionsTest
+    [Test]
+    public void ToLocalTime()
     {
-        [Test]
-        public void ToLocalTime()
-        {
-            var timeOnly = new TimeOnly(12, 34, 56, 300).Add(TimeSpan.FromTicks(4567));
-            var expected = new LocalTime(12, 34, 56, 300).PlusTicks(4567);
-            var actual = timeOnly.ToLocalTime();
-            Assert.AreEqual(expected, actual);
-        }
+        var timeOnly = new TimeOnly(12, 34, 56, 300).Add(TimeSpan.FromTicks(4567));
+        var expected = new LocalTime(12, 34, 56, 300).PlusTicks(4567);
+        var actual = timeOnly.ToLocalTime();
+        Assert.AreEqual(expected, actual);
     }
 }
 #endif

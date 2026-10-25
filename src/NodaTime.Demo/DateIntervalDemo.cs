@@ -4,105 +4,104 @@
 
 using NUnit.Framework;
 
-namespace NodaTime.Demo
+namespace NodaTime.Demo;
+
+public class DateIntervalDemo
 {
-    public class DateIntervalDemo
+    [Test]
+    public void Construction()
     {
-        [Test]
-        public void Construction()
-        {
-            var calendar = CalendarSystem.Gregorian;
-            LocalDate start = new LocalDate(2017, 1, 1, calendar);
-            LocalDate end = new LocalDate(2017, 12, 31, calendar);
+        var calendar = CalendarSystem.Gregorian;
+        LocalDate start = new LocalDate(2017, 1, 1, calendar);
+        LocalDate end = new LocalDate(2017, 12, 31, calendar);
 
-            DateInterval interval = Snippet.For(new DateInterval(start, end));
+        DateInterval interval = Snippet.For(new DateInterval(start, end));
 
-            Assert.AreEqual(365, interval.Length);
-            Assert.AreEqual("[2017-01-01, 2017-12-31]", interval.ToString());
-            Assert.AreEqual(start, interval.Start);
-            Assert.AreEqual(end, interval.End);
-            Assert.AreEqual(calendar, interval.Calendar);
-        }
+        Assert.AreEqual(365, interval.Length);
+        Assert.AreEqual("[2017-01-01, 2017-12-31]", interval.ToString());
+        Assert.AreEqual(start, interval.Start);
+        Assert.AreEqual(end, interval.End);
+        Assert.AreEqual(calendar, interval.Calendar);
+    }
 
-        [Test]
-        public void Intersection()
-        {
-            DateInterval januaryToAugust = new DateInterval(
-                new LocalDate(2017, 1, 1),
-                new LocalDate(2017, 8, 31));
+    [Test]
+    public void Intersection()
+    {
+        DateInterval januaryToAugust = new DateInterval(
+            new LocalDate(2017, 1, 1),
+            new LocalDate(2017, 8, 31));
 
-            DateInterval juneToNovember = new DateInterval(
-                new LocalDate(2017, 6, 1),
-                new LocalDate(2017, 11, 30));
+        DateInterval juneToNovember = new DateInterval(
+            new LocalDate(2017, 6, 1),
+            new LocalDate(2017, 11, 30));
 
-            DateInterval juneToAugust = new DateInterval(
-                new LocalDate(2017, 6, 1),
-                new LocalDate(2017, 8, 31));
+        DateInterval juneToAugust = new DateInterval(
+            new LocalDate(2017, 6, 1),
+            new LocalDate(2017, 8, 31));
 
-            var result = Snippet.For(januaryToAugust.Intersection(juneToNovember));
-            Assert.AreEqual(juneToAugust, result);
-        }
+        var result = Snippet.For(januaryToAugust.Intersection(juneToNovember));
+        Assert.AreEqual(juneToAugust, result);
+    }
 
-        [Test]
-        public void Contains_LocalDate()
-        {
-            LocalDate start = new LocalDate(2017, 1, 1);
-            LocalDate end = new LocalDate(2017, 12, 31);
+    [Test]
+    public void Contains_LocalDate()
+    {
+        LocalDate start = new LocalDate(2017, 1, 1);
+        LocalDate end = new LocalDate(2017, 12, 31);
 
-            DateInterval interval = new DateInterval(start, end);
+        DateInterval interval = new DateInterval(start, end);
 
-            var result = Snippet.For(interval.Contains(new LocalDate(2017, 12, 5)));
-            Assert.AreEqual(true, result);
-        }
+        var result = Snippet.For(interval.Contains(new LocalDate(2017, 12, 5)));
+        Assert.AreEqual(true, result);
+    }
 
-        [Test]
-        public void Contains_Interval()
-        {
-            LocalDate start = new LocalDate(2017, 1, 1);
-            LocalDate end = new LocalDate(2017, 12, 31);
+    [Test]
+    public void Contains_Interval()
+    {
+        LocalDate start = new LocalDate(2017, 1, 1);
+        LocalDate end = new LocalDate(2017, 12, 31);
 
-            DateInterval interval = new DateInterval(start, end);
-            DateInterval june = new DateInterval(
-                new LocalDate(2017, 6, 1),
-                new LocalDate(2017, 6, 30));
+        DateInterval interval = new DateInterval(start, end);
+        DateInterval june = new DateInterval(
+            new LocalDate(2017, 6, 1),
+            new LocalDate(2017, 6, 30));
 
-            var result = Snippet.For(interval.Contains(june));
-            Assert.AreEqual(true, result);
-        }
+        var result = Snippet.For(interval.Contains(june));
+        Assert.AreEqual(true, result);
+    }
 
-        [Test]
-        public void Deconstruction()
-        {
-            LocalDate start = new LocalDate(2017, 1, 1);
-            LocalDate end = new LocalDate(2017, 12, 31);
+    [Test]
+    public void Deconstruction()
+    {
+        LocalDate start = new LocalDate(2017, 1, 1);
+        LocalDate end = new LocalDate(2017, 12, 31);
 
-            DateInterval value = new DateInterval(start, end);
+        DateInterval value = new DateInterval(start, end);
 
-            Snippet.SilentForAction(() => value.Deconstruct(out var _, out var _));
-            value.Deconstruct(out LocalDate actualStart, out LocalDate actualEnd);
+        Snippet.SilentForAction(() => value.Deconstruct(out var _, out var _));
+        value.Deconstruct(out LocalDate actualStart, out LocalDate actualEnd);
 
-            Assert.AreEqual(start, actualStart);
-            Assert.AreEqual(end, actualEnd);
-        }
+        Assert.AreEqual(start, actualStart);
+        Assert.AreEqual(end, actualEnd);
+    }
 
-        [Test]
-        public void Union()
-        {
-            DateInterval firstInterval = new DateInterval(
+    [Test]
+    public void Union()
+    {
+        DateInterval firstInterval = new DateInterval(
+            new LocalDate(2014, 3, 7),
+            new LocalDate(2014, 3, 20));
+
+        DateInterval secondInterval = new DateInterval(
+            new LocalDate(2014, 3, 15),
+            new LocalDate(2014, 3, 23));
+
+        DateInterval? overlappingInterval = Snippet.For(firstInterval.Union(secondInterval));
+
+        Assert.AreEqual(
+            new DateInterval(
                 new LocalDate(2014, 3, 7),
-                new LocalDate(2014, 3, 20));
-
-            DateInterval secondInterval = new DateInterval(
-                new LocalDate(2014, 3, 15),
-                new LocalDate(2014, 3, 23));
-
-            DateInterval? overlappingInterval = Snippet.For(firstInterval.Union(secondInterval));
-
-            Assert.AreEqual(
-                new DateInterval(
-                    new LocalDate(2014, 3, 7),
-                    new LocalDate(2014, 3, 23)),
-                overlappingInterval);
-        }
+                new LocalDate(2014, 3, 23)),
+            overlappingInterval);
     }
 }

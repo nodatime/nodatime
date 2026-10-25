@@ -6,16 +6,15 @@ using NodaTime.Extensions;
 using NUnit.Framework;
 using System;
 
-namespace NodaTime.Test.Extensions
+namespace NodaTime.Test.Extensions;
+
+public class TimeSpanExtensionsTest
 {
-    public class TimeSpanExtensionsTest
+    [Test]
+    public void ToDuration()
     {
-        [Test]
-        public void ToDuration()
-        {
-            var timeSpan = TimeSpan.FromTicks(123456789012345L);
-            var duration = timeSpan.ToDuration();
-            Assert.AreEqual(123456789012345, duration.BclCompatibleTicks);
-        }
+        var timeSpan = TimeSpan.FromTicks(123456789012345L);
+        var duration = timeSpan.ToDuration();
+        Assert.AreEqual(123456789012345, duration.BclCompatibleTicks);
     }
 }

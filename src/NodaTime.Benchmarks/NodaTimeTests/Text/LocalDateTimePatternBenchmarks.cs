@@ -5,55 +5,54 @@
 using BenchmarkDotNet.Attributes;
 using NodaTime.Text;
 
-namespace NodaTime.Benchmarks.NodaTimeTests.Text
+namespace NodaTime.Benchmarks.NodaTimeTests.Text;
+
+[Category("Text")]
+public class LocalDateTimePatternBenchmarks
 {
-    [Category("Text")]
-    public class LocalDateTimePatternBenchmarks
+    private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30);
+    private static readonly LocalDateTimePattern PatternWithLongMonthAndDay = LocalDateTimePattern.CreateWithInvariantCulture("dddd MMMM dd uuuu HH:mm:ss");
+    private static readonly LocalDateTimePattern PatternWithNumbersToSecond = LocalDateTimePattern.CreateWithInvariantCulture("dd/MM/uuuu HH:mm:ss");
+
+    /// <summary>
+    /// This includes both text and numeric parsing to avoid a test which is just a worst case for text.
+    /// </summary>
+    [Benchmark]
+    public void ParseLongMonthAndDay()
     {
-        private static readonly LocalDateTime SampleLocalDateTime = new LocalDateTime(2009, 12, 26, 10, 8, 30);
-        private static readonly LocalDateTimePattern PatternWithLongMonthAndDay = LocalDateTimePattern.CreateWithInvariantCulture("dddd MMMM dd uuuu HH:mm:ss");
-        private static readonly LocalDateTimePattern PatternWithNumbersToSecond = LocalDateTimePattern.CreateWithInvariantCulture("dd/MM/uuuu HH:mm:ss");
+        PatternWithLongMonthAndDay.Parse("Friday April 12 2013 20:28:42").GetValueOrThrow();
+    }
 
-        /// <summary>
-        /// This includes both text and numeric parsing to avoid a test which is just a worst case for text.
-        /// </summary>
-        [Benchmark]
-        public void ParseLongMonthAndDay()
-        {
-            PatternWithLongMonthAndDay.Parse("Friday April 12 2013 20:28:42").GetValueOrThrow();
-        }
+    // Equivalent to DateTimeBenchmarks.TryParseExact
+    [Benchmark]
+    public void ParseWithNumbersToSecond()
+    {
+        PatternWithNumbersToSecond.Parse("26/12/2009 10:08:30").GetValueOrThrow();
+    }
 
-        // Equivalent to DateTimeBenchmarks.TryParseExact
-        [Benchmark]
-        public void ParseWithNumbersToSecond()
-        {
-            PatternWithNumbersToSecond.Parse("26/12/2009 10:08:30").GetValueOrThrow();
-        }
+    [Benchmark]
+    public void FormatWithNumbersToSecond()
+    {
+        PatternWithNumbersToSecond.Format(SampleLocalDateTime);
+    }
 
-        [Benchmark]
-        public void FormatWithNumbersToSecond()
-        {
-            PatternWithNumbersToSecond.Format(SampleLocalDateTime);
-        }
-
-        [Benchmark]
-        public void FormatIso()
-        {
-            LocalDateTimePattern.ExtendedIso.Format(SampleLocalDateTime);
-        }
+    [Benchmark]
+    public void FormatIso()
+    {
+        LocalDateTimePattern.ExtendedIso.Format(SampleLocalDateTime);
+    }
 
 #if !V1
-        [Benchmark]
-        public void ParseIso_NanosecondPrecision()
-        {
-            LocalDateTimePattern.ExtendedIso.Parse("2014-08-01T13:46:12.123456789").GetValueOrThrow();
-        }
+    [Benchmark]
+    public void ParseIso_NanosecondPrecision()
+    {
+        LocalDateTimePattern.ExtendedIso.Parse("2014-08-01T13:46:12.123456789").GetValueOrThrow();
+    }
 #endif
 
-        [Benchmark]
-        public void ParseIso_SecondPrecision()
-        {
-            LocalDateTimePattern.ExtendedIso.Parse("2014-08-01T13:46:12").GetValueOrThrow();
-        }
+    [Benchmark]
+    public void ParseIso_SecondPrecision()
+    {
+        LocalDateTimePattern.ExtendedIso.Parse("2014-08-01T13:46:12").GetValueOrThrow();
     }
 }

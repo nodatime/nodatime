@@ -7,24 +7,23 @@ using NodaTime.Utility;
 using NUnit.Framework;
 using System.IO;
 
-namespace NodaTime.Test.TimeZones.IO
+namespace NodaTime.Test.TimeZones.IO;
+
+public class TzdbStreamFieldTest
 {
-    public class TzdbStreamFieldTest
+    // Only tests for situations which aren't covered elsewhere
+
+    [Test]
+    public void InsufficientData()
     {
-        // Only tests for situations which aren't covered elsewhere
+        var stream = new MemoryStream();
+        var writer = new DateTimeZoneWriter(stream, null);
+        writer.WriteByte(1);
+        writer.WriteCount(10);
 
-        [Test]
-        public void InsufficientData()
-        {
-            var stream = new MemoryStream();
-            var writer = new DateTimeZoneWriter(stream, null);
-            writer.WriteByte(1);
-            writer.WriteCount(10);
+        stream.Position = 0;
+        var iterator = TzdbStreamField.ReadFields(stream).GetEnumerator();
 
-            stream.Position = 0;
-            var iterator = TzdbStreamField.ReadFields(stream).GetEnumerator();
-
-            Assert.Throws<InvalidNodaDataException>(() => iterator.MoveNext());
-        }
+        Assert.Throws<InvalidNodaDataException>(() => iterator.MoveNext());
     }
 }

@@ -4,22 +4,21 @@
 using NodaTime.Utility;
 using System.Diagnostics;
 
-namespace NodaTime.Extensions
+namespace NodaTime.Extensions;
+
+/// <summary>
+/// Extension methods for <see cref="Stopwatch"/>.
+/// </summary>
+public static class StopwatchExtensions
 {
     /// <summary>
-    /// Extension methods for <see cref="Stopwatch"/>.
+    /// Returns the elapsed time of <paramref name="stopwatch"/> as a <see cref="Duration"/>.
     /// </summary>
-    public static class StopwatchExtensions
+    /// <param name="stopwatch">The <c>Stopwatch</c> to obtain the elapsed time from.</param>
+    /// <returns>The elapsed time of <paramref name="stopwatch"/> as a <c>Duration</c>.</returns>
+    public static Duration ElapsedDuration(this Stopwatch stopwatch)
     {
-        /// <summary>
-        /// Returns the elapsed time of <paramref name="stopwatch"/> as a <see cref="Duration"/>.
-        /// </summary>
-        /// <param name="stopwatch">The <c>Stopwatch</c> to obtain the elapsed time from.</param>
-        /// <returns>The elapsed time of <paramref name="stopwatch"/> as a <c>Duration</c>.</returns>
-        public static Duration ElapsedDuration(this Stopwatch stopwatch)
-        {
-            Preconditions.CheckNotNull(stopwatch, nameof(stopwatch));
-            return stopwatch.Elapsed.ToDuration();
-        }
+        Preconditions.CheckNotNull(stopwatch, nameof(stopwatch));
+        return stopwatch.Elapsed.ToDuration();
     }
 }

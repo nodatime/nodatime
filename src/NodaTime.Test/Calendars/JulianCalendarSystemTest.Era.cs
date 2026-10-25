@@ -5,50 +5,49 @@
 using NodaTime.Calendars;
 using NUnit.Framework;
 
-namespace NodaTime.Test.Calendars
+namespace NodaTime.Test.Calendars;
+
+public partial class JulianCalendarSystemTest
 {
-    public partial class JulianCalendarSystemTest
+    [Test]
+    public void GetMaxYearOfEra()
     {
-        [Test]
-        public void GetMaxYearOfEra()
-        {
-            LocalDate date = new LocalDate(Julian.MaxYear, 1, 1, Julian);
-            Assert.AreEqual(date.YearOfEra, Julian.GetMaxYearOfEra(Era.Common));
-            Assert.AreEqual(Era.Common, date.Era);
-            date = new LocalDate(Julian.MinYear, 1, 1, Julian);
-            Assert.AreEqual(Julian.MinYear, date.Year);
-            Assert.AreEqual(date.YearOfEra, Julian.GetMaxYearOfEra(Era.BeforeCommon));
-            Assert.AreEqual(Era.BeforeCommon, date.Era);
-        }
+        LocalDate date = new LocalDate(Julian.MaxYear, 1, 1, Julian);
+        Assert.AreEqual(date.YearOfEra, Julian.GetMaxYearOfEra(Era.Common));
+        Assert.AreEqual(Era.Common, date.Era);
+        date = new LocalDate(Julian.MinYear, 1, 1, Julian);
+        Assert.AreEqual(Julian.MinYear, date.Year);
+        Assert.AreEqual(date.YearOfEra, Julian.GetMaxYearOfEra(Era.BeforeCommon));
+        Assert.AreEqual(Era.BeforeCommon, date.Era);
+    }
 
-        [Test]
-        public void GetMinYearOfEra()
-        {
-            LocalDate date = new LocalDate(1, 1, 1, Julian);
-            Assert.AreEqual(date.YearOfEra, Julian.GetMinYearOfEra(Era.Common));
-            Assert.AreEqual(Era.Common, date.Era);
-            date = new LocalDate(0, 1, 1, Julian);
-            Assert.AreEqual(date.YearOfEra, Julian.GetMinYearOfEra(Era.BeforeCommon));
-            Assert.AreEqual(Era.BeforeCommon, date.Era);
-        }
+    [Test]
+    public void GetMinYearOfEra()
+    {
+        LocalDate date = new LocalDate(1, 1, 1, Julian);
+        Assert.AreEqual(date.YearOfEra, Julian.GetMinYearOfEra(Era.Common));
+        Assert.AreEqual(Era.Common, date.Era);
+        date = new LocalDate(0, 1, 1, Julian);
+        Assert.AreEqual(date.YearOfEra, Julian.GetMinYearOfEra(Era.BeforeCommon));
+        Assert.AreEqual(Era.BeforeCommon, date.Era);
+    }
 
-        [Test]
-        public void GetAbsoluteYear()
-        {
-            Assert.AreEqual(1, Julian.GetAbsoluteYear(1, Era.Common));
-            Assert.AreEqual(0, Julian.GetAbsoluteYear(1, Era.BeforeCommon));
-            Assert.AreEqual(-1, Julian.GetAbsoluteYear(2, Era.BeforeCommon));
-            Assert.AreEqual(Julian.MaxYear, Julian.GetAbsoluteYear(Julian.GetMaxYearOfEra(Era.Common), Era.Common));
-            Assert.AreEqual(Julian.MinYear, Julian.GetAbsoluteYear(Julian.GetMaxYearOfEra(Era.BeforeCommon), Era.BeforeCommon));
-        }
+    [Test]
+    public void GetAbsoluteYear()
+    {
+        Assert.AreEqual(1, Julian.GetAbsoluteYear(1, Era.Common));
+        Assert.AreEqual(0, Julian.GetAbsoluteYear(1, Era.BeforeCommon));
+        Assert.AreEqual(-1, Julian.GetAbsoluteYear(2, Era.BeforeCommon));
+        Assert.AreEqual(Julian.MaxYear, Julian.GetAbsoluteYear(Julian.GetMaxYearOfEra(Era.Common), Era.Common));
+        Assert.AreEqual(Julian.MinYear, Julian.GetAbsoluteYear(Julian.GetMaxYearOfEra(Era.BeforeCommon), Era.BeforeCommon));
+    }
 
-        [Test]
-        public void EraProperty()
-        {
-            CalendarSystem calendar = CalendarSystem.Julian;
-            LocalDateTime startOfEra = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar);
-            Assert.AreEqual(Era.Common, startOfEra.Era);
-            Assert.AreEqual(Era.BeforeCommon, startOfEra.PlusTicks(-1).Era);
-        }
+    [Test]
+    public void EraProperty()
+    {
+        CalendarSystem calendar = CalendarSystem.Julian;
+        LocalDateTime startOfEra = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar);
+        Assert.AreEqual(Era.Common, startOfEra.Era);
+        Assert.AreEqual(Era.BeforeCommon, startOfEra.PlusTicks(-1).Era);
     }
 }

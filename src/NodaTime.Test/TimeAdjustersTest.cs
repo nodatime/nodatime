@@ -3,32 +3,31 @@
 // as found in the LICENSE.txt file.
 using NUnit.Framework;
 
-namespace NodaTime.Test
+namespace NodaTime.Test;
+
+public class TimeAdjustersTest
 {
-    public class TimeAdjustersTest
+    [Test]
+    public void TruncateToSecond()
     {
-        [Test]
-        public void TruncateToSecond()
-        {
-            var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
-            var end = new LocalTime(7, 4, 30);
-            Assert.AreEqual(end, TimeAdjusters.TruncateToSecond(start));
-        }
+        var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
+        var end = new LocalTime(7, 4, 30);
+        Assert.AreEqual(end, TimeAdjusters.TruncateToSecond(start));
+    }
 
-        [Test]
-        public void TruncateToMinute()
-        {
-            var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
-            var end = new LocalTime(7, 4, 0);
-            Assert.AreEqual(end, TimeAdjusters.TruncateToMinute(start));
-        }
+    [Test]
+    public void TruncateToMinute()
+    {
+        var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
+        var end = new LocalTime(7, 4, 0);
+        Assert.AreEqual(end, TimeAdjusters.TruncateToMinute(start));
+    }
 
-        [Test]
-        public void TruncateToHour()
-        {
-            var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
-            var end = new LocalTime(7, 0, 0);
-            Assert.AreEqual(end, TimeAdjusters.TruncateToHour(start));
-        }
+    [Test]
+    public void TruncateToHour()
+    {
+        var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
+        var end = new LocalTime(7, 0, 0);
+        Assert.AreEqual(end, TimeAdjusters.TruncateToHour(start));
     }
 }

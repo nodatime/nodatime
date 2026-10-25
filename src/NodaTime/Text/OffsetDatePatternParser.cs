@@ -7,99 +7,98 @@ using NodaTime.Text.Patterns;
 using NodaTime.Utility;
 using System.Collections.Generic;
 
-namespace NodaTime.Text
+namespace NodaTime.Text;
+
+internal sealed class OffsetDatePatternParser : IPatternParser<OffsetDate>
 {
-    internal sealed class OffsetDatePatternParser : IPatternParser<OffsetDate>
+    private readonly OffsetDate templateValue;
+    private readonly int twoDigitYearMax;
+
+    private static readonly Dictionary<char, CharacterHandler<OffsetDate, OffsetDateParseBucket>> PatternCharacterHandlers =
+        new Dictionary<char, CharacterHandler<OffsetDate, OffsetDateParseBucket>>
     {
-        private readonly OffsetDate templateValue;
-        private readonly int twoDigitYearMax;
+        { '%', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandlePercent },
+        { '\'', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandleQuote },
+        { '\"', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandleQuote },
+        { '\\', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandleBackslash },
+        { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<OffsetDate>.DateSeparatorMismatch) },
+        { 'y', DatePatternHelper.CreateYearOfEraHandler<OffsetDate, OffsetDateParseBucket>(value => value.YearOfEra, (bucket, value) => bucket.Date.YearOfEra = value) },
+        { 'u', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandlePaddedField
+                   (4, PatternFields.Year, -9998, 9999, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
+        { 'M', DatePatternHelper.CreateMonthOfYearHandler<OffsetDate, OffsetDateParseBucket>
+                    (value => value.Month, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value) },
+        { 'd', DatePatternHelper.CreateDayHandler<OffsetDate, OffsetDateParseBucket>
+                    (value => value.Day, value => (int) value.DayOfWeek, (bucket, value) => bucket.Date.DayOfMonth = value, (bucket, value) => bucket.Date.DayOfWeek = value) },
+        { 'c', DatePatternHelper.CreateCalendarHandler<OffsetDate, OffsetDateParseBucket>(value => value.Date.Calendar, (bucket, value) => bucket.Date.Calendar = value) },
+        { 'g', DatePatternHelper.CreateEraHandler<OffsetDate, OffsetDateParseBucket>(value => value.Era, bucket => bucket.Date) },
+        { 'o', HandleOffset },
+        { 'l', (cursor, builder) => builder.AddEmbeddedDatePattern(cursor.Current, cursor.GetEmbeddedPattern(), bucket => bucket.Date, value => value.Date) },
+    };
 
-        private static readonly Dictionary<char, CharacterHandler<OffsetDate, OffsetDateParseBucket>> PatternCharacterHandlers =
-            new Dictionary<char, CharacterHandler<OffsetDate, OffsetDateParseBucket>>
-        {
-            { '%', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandlePercent },
-            { '\'', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandleQuote },
-            { '\"', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandleQuote },
-            { '\\', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandleBackslash },
-            { '/', (pattern, builder) => builder.AddLiteral(builder.FormatInfo.DateSeparator, ParseResult<OffsetDate>.DateSeparatorMismatch) },
-            { 'y', DatePatternHelper.CreateYearOfEraHandler<OffsetDate, OffsetDateParseBucket>(value => value.YearOfEra, (bucket, value) => bucket.Date.YearOfEra = value) },
-            { 'u', SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>.HandlePaddedField
-                       (4, PatternFields.Year, -9998, 9999, value => value.Year, (bucket, value) => bucket.Date.Year = value) },
-            { 'M', DatePatternHelper.CreateMonthOfYearHandler<OffsetDate, OffsetDateParseBucket>
-                        (value => value.Month, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value) },
-            { 'd', DatePatternHelper.CreateDayHandler<OffsetDate, OffsetDateParseBucket>
-                        (value => value.Day, value => (int) value.DayOfWeek, (bucket, value) => bucket.Date.DayOfMonth = value, (bucket, value) => bucket.Date.DayOfWeek = value) },
-            { 'c', DatePatternHelper.CreateCalendarHandler<OffsetDate, OffsetDateParseBucket>(value => value.Date.Calendar, (bucket, value) => bucket.Date.Calendar = value) },
-            { 'g', DatePatternHelper.CreateEraHandler<OffsetDate, OffsetDateParseBucket>(value => value.Era, bucket => bucket.Date) },
-            { 'o', HandleOffset },
-            { 'l', (cursor, builder) => builder.AddEmbeddedDatePattern(cursor.Current, cursor.GetEmbeddedPattern(), bucket => bucket.Date, value => value.Date) },
-        };
+    internal OffsetDatePatternParser(OffsetDate templateValue, int twoDigitYearMax)
+    {
+        Preconditions.CheckArgumentRange(nameof(twoDigitYearMax), twoDigitYearMax, 0, 99);
+        this.templateValue = templateValue;
+        this.twoDigitYearMax = twoDigitYearMax;
+    }
 
-        internal OffsetDatePatternParser(OffsetDate templateValue, int twoDigitYearMax)
+    // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
+    // interface implementation.
+    public IPattern<OffsetDate> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+    {
+        // Nullity check is performed in OffsetDatePattern.
+        if (patternText.Length == 0)
         {
-            Preconditions.CheckArgumentRange(nameof(twoDigitYearMax), twoDigitYearMax, 0, 99);
-            this.templateValue = templateValue;
-            this.twoDigitYearMax = twoDigitYearMax;
+            throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);
         }
 
-        // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
-        // interface implementation.
-        public IPattern<OffsetDate> ParsePattern(string patternText, NodaFormatInfo formatInfo)
+        // Handle standard patterns
+        if (patternText.Length == 1)
         {
-            // Nullity check is performed in OffsetDatePattern.
-            if (patternText.Length == 0)
+            return patternText[0] switch
             {
-                throw new InvalidPatternException(TextErrorMessages.FormatStringEmpty);
-            }
-
-            // Handle standard patterns
-            if (patternText.Length == 1)
-            {
-                return patternText[0] switch
-                {
-                    'G' => OffsetDatePattern.Patterns.GeneralIsoPatternImpl,
-                    'r' => OffsetDatePattern.Patterns.FullRoundtripPatternImpl,
-                    _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(OffsetDate))
-                };
-            }
-
-            var patternBuilder = new SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>(formatInfo, () => new OffsetDateParseBucket(templateValue, twoDigitYearMax));
-            patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-            patternBuilder.ValidateUsedFields();
-            // Need to reconstruct the template value from the bits...
-            return patternBuilder.Build(templateValue);
+                'G' => OffsetDatePattern.Patterns.GeneralIsoPatternImpl,
+                'r' => OffsetDatePattern.Patterns.FullRoundtripPatternImpl,
+                _ => throw new InvalidPatternException(TextErrorMessages.UnknownStandardFormat, patternText, typeof(OffsetDate))
+            };
         }
 
-        private static void HandleOffset(PatternCursor pattern,
-            SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket> builder)
+        var patternBuilder = new SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>(formatInfo, () => new OffsetDateParseBucket(templateValue, twoDigitYearMax));
+        patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
+        patternBuilder.ValidateUsedFields();
+        // Need to reconstruct the template value from the bits...
+        return patternBuilder.Build(templateValue);
+    }
+
+    private static void HandleOffset(PatternCursor pattern,
+        SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket> builder)
+    {
+        builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
+        string embeddedPattern = pattern.GetEmbeddedPattern();
+        var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
+        builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.Offset = offset, zdt => zdt.Offset);
+    }
+
+    private sealed class OffsetDateParseBucket : ParseBucket<OffsetDate>
+    {
+        internal readonly LocalDatePatternParser.LocalDateParseBucket Date;
+        internal Offset Offset;
+
+        internal OffsetDateParseBucket(OffsetDate templateValue, int twoDigitYearMax)
         {
-            builder.AddField(PatternFields.EmbeddedOffset, pattern.Current);
-            string embeddedPattern = pattern.GetEmbeddedPattern();
-            var offsetPattern = OffsetPattern.Create(embeddedPattern, builder.FormatInfo).UnderlyingPattern;
-            builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.Offset = offset, zdt => zdt.Offset);
+            Date = new LocalDatePatternParser.LocalDateParseBucket(templateValue.Date, twoDigitYearMax);
+            Offset = templateValue.Offset;
         }
 
-        private sealed class OffsetDateParseBucket : ParseBucket<OffsetDate>
+        internal override ParseResult<OffsetDate> CalculateValue(PatternFields usedFields, string text)
         {
-            internal readonly LocalDatePatternParser.LocalDateParseBucket Date;
-            internal Offset Offset;
-
-            internal OffsetDateParseBucket(OffsetDate templateValue, int twoDigitYearMax)
+            ParseResult<LocalDate> dateResult = Date.CalculateValue(usedFields & PatternFields.AllDateFields, text, typeof(OffsetDate));
+            if (!dateResult.Success)
             {
-                Date = new LocalDatePatternParser.LocalDateParseBucket(templateValue.Date, twoDigitYearMax);
-                Offset = templateValue.Offset;
+                return dateResult.ConvertError<OffsetDate>();
             }
-
-            internal override ParseResult<OffsetDate> CalculateValue(PatternFields usedFields, string text)
-            {
-                ParseResult<LocalDate> dateResult = Date.CalculateValue(usedFields & PatternFields.AllDateFields, text, typeof(OffsetDate));
-                if (!dateResult.Success)
-                {
-                    return dateResult.ConvertError<OffsetDate>();
-                }
-                LocalDate date = dateResult.Value;
-                return ParseResult<OffsetDate>.ForValue(date.WithOffset(Offset));
-            }
+            LocalDate date = dateResult.Value;
+            return ParseResult<OffsetDate>.ForValue(date.WithOffset(Offset));
         }
     }
 }

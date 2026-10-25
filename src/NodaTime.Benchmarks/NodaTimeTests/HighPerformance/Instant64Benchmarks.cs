@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Globalization;
 using BenchmarkDotNet.Attributes;
 using NodaTime.HighPerformance;
+using System.Globalization;
 
 namespace NodaTime.Benchmarks.NodaTimeTests.HighPerformance;
 

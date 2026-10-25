@@ -5,23 +5,22 @@ using NodaTime.Utility;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NodaTime.Extensions
+namespace NodaTime.Extensions;
+
+/// <summary>
+/// Extensions for <see cref="IDateTimeZoneProvider"/>
+/// </summary>
+public static class DateTimeZoneProviderExtensions
 {
     /// <summary>
-    /// Extensions for <see cref="IDateTimeZoneProvider"/>
+    /// Returns a lazily-evaluated sequence of time zones from the specified provider,
+    /// in the same order in which the IDs are returned by the provider.
     /// </summary>
-    public static class DateTimeZoneProviderExtensions
+    /// <param name="provider">The provider to fetch time zones from.</param>
+    /// <returns>All the time zones from the provider.</returns>
+    public static IEnumerable<DateTimeZone> GetAllZones(this IDateTimeZoneProvider provider)
     {
-        /// <summary>
-        /// Returns a lazily-evaluated sequence of time zones from the specified provider,
-        /// in the same order in which the IDs are returned by the provider.
-        /// </summary>
-        /// <param name="provider">The provider to fetch time zones from.</param>
-        /// <returns>All the time zones from the provider.</returns>
-        public static IEnumerable<DateTimeZone> GetAllZones(this IDateTimeZoneProvider provider)
-        {
-            Preconditions.CheckNotNull(provider, nameof(provider));
-            return provider.Ids.Select(id => provider[id]);
-        }
+        Preconditions.CheckNotNull(provider, nameof(provider));
+        return provider.Ids.Select(id => provider[id]);
     }
 }

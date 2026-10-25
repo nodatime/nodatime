@@ -2,35 +2,34 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
+using JetBrains.Annotations;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using JetBrains.Annotations;
-using NUnit.Framework;
 
-namespace NodaTime.Test.Annotations
+namespace NodaTime.Test.Annotations;
+
+/// <summary>
+/// Tests for annotations around purity. No sniggering at the back, please.
+/// </summary>
+public class PurityTest
 {
-    /// <summary>
-    /// Tests for annotations around purity. No sniggering at the back, please.
-    /// </summary>
-    public class PurityTest
+    [Test]
+    public void AllPublicStructMethodsArePure()
     {
-        [Test]
-        public void AllPublicStructMethodsArePure()
-        {
-            var implicitlyPureNames = new HashSet<string> { "Equals", "GetHashCode", "CompareTo", "ToString" };
+        var implicitlyPureNames = new HashSet<string> { "Equals", "GetHashCode", "CompareTo", "ToString" };
 
-            var impureMethods = typeof(Instant).Assembly
-                                               .DefinedTypes
-                                               .Where(t => t.IsValueType && (t.IsPublic || t.IsNestedPublic))
-                                               .OrderBy(t => t.Name)
-                                               .SelectMany(m => m.DeclaredMethods)
-                                               .Where(m => m.IsPublic && !m.IsStatic)
-                                               .Where(m => !m.IsSpecialName) // Real methods, not properties
-                                               .Where(m => !implicitlyPureNames.Contains(m.Name))
-                                               .Where(m => !m.IsDefined(typeof(PureAttribute)));
+        var impureMethods = typeof(Instant).Assembly
+                                           .DefinedTypes
+                                           .Where(t => t.IsValueType && (t.IsPublic || t.IsNestedPublic))
+                                           .OrderBy(t => t.Name)
+                                           .SelectMany(m => m.DeclaredMethods)
+                                           .Where(m => m.IsPublic && !m.IsStatic)
+                                           .Where(m => !m.IsSpecialName) // Real methods, not properties
+                                           .Where(m => !implicitlyPureNames.Contains(m.Name))
+                                           .Where(m => !m.IsDefined(typeof(PureAttribute)));
 
-            TestHelper.AssertNoFailures(impureMethods, m => $"{m.DeclaringType?.Name}.{m.Name}");
-        }
+        TestHelper.AssertNoFailures(impureMethods, m => $"{m.DeclaringType?.Name}.{m.Name}");
     }
 }

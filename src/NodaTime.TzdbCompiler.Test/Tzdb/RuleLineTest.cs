@@ -6,18 +6,17 @@ using NodaTime.TimeZones;
 using NodaTime.TzdbCompiler.Tzdb;
 using NUnit.Framework;
 
-namespace NodaTime.TzdbCompiler.Test.Tzdb
+namespace NodaTime.TzdbCompiler.Test.Tzdb;
+
+public class RuleLineTest
 {
-    public class RuleLineTest
+    [Test]
+    public void Equality()
     {
-        [Test]
-        public void Equality()
-        {
-            var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
-            var recurrence = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
-            var actual = new RuleLine(recurrence, "D");
-            var expected = new RuleLine(recurrence, "D");
-            Assert.AreEqual(expected, actual);
-        }
+        var yearOffset = new ZoneYearOffset(TransitionMode.Utc, 10, 31, (int)IsoDayOfWeek.Wednesday, true, LocalTime.Midnight);
+        var recurrence = new ZoneRecurrence("bob", Offset.Zero, yearOffset, 1971, 2009);
+        var actual = new RuleLine(recurrence, "D");
+        var expected = new RuleLine(recurrence, "D");
+        Assert.AreEqual(expected, actual);
     }
 }

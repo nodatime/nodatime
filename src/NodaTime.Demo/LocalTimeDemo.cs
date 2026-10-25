@@ -2,18 +2,17 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System.Globalization;
 using NUnit.Framework;
+using System.Globalization;
 
-namespace NodaTime.Demo
+namespace NodaTime.Demo;
+
+public class LocalTimeDemo
 {
-    public class LocalTimeDemo
+    [Test]
+    public void Construction()
     {
-        [Test]
-        public void Construction()
-        {
-            LocalTime time = Snippet.For(new LocalTime(16, 20, 0));
-            Assert.AreEqual("16:20:00", time.ToString("HH:mm:ss", CultureInfo.InvariantCulture));
-        }
+        LocalTime time = Snippet.For(new LocalTime(16, 20, 0));
+        Assert.AreEqual("16:20:00", time.ToString("HH:mm:ss", CultureInfo.InvariantCulture));
     }
 }

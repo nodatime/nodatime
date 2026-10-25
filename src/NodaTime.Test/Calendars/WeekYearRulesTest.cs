@@ -7,14 +7,13 @@ using NUnit.Framework;
 using System;
 using System.Globalization;
 
-namespace NodaTime.Test.Calendars
+namespace NodaTime.Test.Calendars;
+
+public class WeekYearRulesTest
 {
-    public class WeekYearRulesTest
+    [Test]
+    public void UnsupportedCalendarWeekRule()
     {
-        [Test]
-        public void UnsupportedCalendarWeekRule()
-        {
-            Assert.Throws<ArgumentException>(() => WeekYearRules.FromCalendarWeekRule(CalendarWeekRule.FirstDay + 1000, DayOfWeek.Monday));
-        }
+        Assert.Throws<ArgumentException>(() => WeekYearRules.FromCalendarWeekRule(CalendarWeekRule.FirstDay + 1000, DayOfWeek.Monday));
     }
 }

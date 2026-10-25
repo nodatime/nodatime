@@ -9,39 +9,38 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace NodaTime.TzValidate.NzdCompatibility
-{
-    /// <summary>
-    /// Based on NodaTime.TzValidate.NodaDump, this checks that Noda Time 1.1 can read an
-    /// NZD file and produce the same result as the most recent version.
-    /// </summary>
-    internal class Program
-    {
-        private static async Task<int> Main(string[] args)
-        {
-            Options options = new Options();
-            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
-            if (!parser.ParseArguments(args, options))
-            {
-                return 1;
-            }
-            using var stream = await FileUtility.LoadFileOrUrlAsync(options.Source);
-            TzdbDateTimeZoneSource source = TzdbDateTimeZoneSource.FromStream(stream);
-            var dumper = new ZoneDumper(source, options);
-            try
-            {
-                using (var writer = options.OutputFile is null ? Console.Out : File.CreateText(options.OutputFile))
-                {
-                    dumper.Dump(writer);
-                }
-            }
-            catch (UserErrorException e)
-            {
-                Console.Error.WriteLine($"Error: {e.Message}");
-                return 1;
-            }
+namespace NodaTime.TzValidate.NzdCompatibility;
 
-            return 0;
+/// <summary>
+/// Based on NodaTime.TzValidate.NodaDump, this checks that Noda Time 1.1 can read an
+/// NZD file and produce the same result as the most recent version.
+/// </summary>
+internal class Program
+{
+    private static async Task<int> Main(string[] args)
+    {
+        Options options = new Options();
+        ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
+        if (!parser.ParseArguments(args, options))
+        {
+            return 1;
         }
+        using var stream = await FileUtility.LoadFileOrUrlAsync(options.Source);
+        TzdbDateTimeZoneSource source = TzdbDateTimeZoneSource.FromStream(stream);
+        var dumper = new ZoneDumper(source, options);
+        try
+        {
+            using (var writer = options.OutputFile is null ? Console.Out : File.CreateText(options.OutputFile))
+            {
+                dumper.Dump(writer);
+            }
+        }
+        catch (UserErrorException e)
+        {
+            Console.Error.WriteLine($"Error: {e.Message}");
+            return 1;
+        }
+
+        return 0;
     }
 }

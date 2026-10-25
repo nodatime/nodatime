@@ -2,67 +2,66 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using BenchmarkDotNet.Attributes;
+using System;
 
-namespace NodaTime.Benchmarks.BclTests
+namespace NodaTime.Benchmarks.BclTests;
+
+[Category("BCL")]
+public class TimeZoneInfoBenchmarks
 {
-    [Category("BCL")]
-    public class TimeZoneInfoBenchmarks
+    internal static readonly TimeZoneInfo PacificZone = GetPacificTime();
+
+    private static TimeZoneInfo GetPacificTime()
     {
-        internal static readonly TimeZoneInfo PacificZone = GetPacificTime();
-
-        private static TimeZoneInfo GetPacificTime()
+        try
         {
-            try
-            {
-                return TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
-            }
-            catch (TimeZoneNotFoundException)
-            {
-                // Maybe we're running on Mono on a system that uses TZDB natively.
-                return TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
-            }
+            return TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
         }
-
-        internal static readonly DateTime SummerUtc = new DateTime(1976, 6, 19, 0, 0, 0, DateTimeKind.Utc);
-        internal static readonly DateTime WinterUtc = new DateTime(2003, 12, 1, 0, 0, 0, DateTimeKind.Utc);
-        private static readonly DateTime SummerUnspecified = DateTime.SpecifyKind(SummerUtc, DateTimeKind.Unspecified);
-        private static readonly DateTime WinterUnspecified = DateTime.SpecifyKind(WinterUtc, DateTimeKind.Unspecified);
-        private static readonly DateTimeOffset SummerOffset = new DateTimeOffset(SummerUnspecified, TimeSpan.FromHours(5));
-        private static readonly DateTimeOffset WinterOffset = new DateTimeOffset(WinterUnspecified, TimeSpan.FromHours(5));
-
-        [Benchmark]
-        public void GetUtcOffset_Utc()
+        catch (TimeZoneNotFoundException)
         {
-            PacificZone.GetUtcOffset(SummerUtc);
-            PacificZone.GetUtcOffset(WinterUtc);
+            // Maybe we're running on Mono on a system that uses TZDB natively.
+            return TimeZoneInfo.FindSystemTimeZoneById("America/Los_Angeles");
         }
+    }
 
-        [Benchmark]
-        public void GetUtcOffset_Unspecified()
-        {
-            PacificZone.GetUtcOffset(SummerUnspecified);
-            PacificZone.GetUtcOffset(WinterUnspecified);
-        }
+    internal static readonly DateTime SummerUtc = new DateTime(1976, 6, 19, 0, 0, 0, DateTimeKind.Utc);
+    internal static readonly DateTime WinterUtc = new DateTime(2003, 12, 1, 0, 0, 0, DateTimeKind.Utc);
+    private static readonly DateTime SummerUnspecified = DateTime.SpecifyKind(SummerUtc, DateTimeKind.Unspecified);
+    private static readonly DateTime WinterUnspecified = DateTime.SpecifyKind(WinterUtc, DateTimeKind.Unspecified);
+    private static readonly DateTimeOffset SummerOffset = new DateTimeOffset(SummerUnspecified, TimeSpan.FromHours(5));
+    private static readonly DateTimeOffset WinterOffset = new DateTimeOffset(WinterUnspecified, TimeSpan.FromHours(5));
 
-        [Benchmark]
-        public void GetUtcOffset_DateTimeOffset()
-        {
-            PacificZone.GetUtcOffset(SummerOffset);
-            PacificZone.GetUtcOffset(WinterOffset);
-        }
+    [Benchmark]
+    public void GetUtcOffset_Utc()
+    {
+        PacificZone.GetUtcOffset(SummerUtc);
+        PacificZone.GetUtcOffset(WinterUtc);
+    }
 
-        [Benchmark]
-        public void ConvertLocalToUtc()
-        {
-            TimeZoneInfo.ConvertTimeToUtc(SummerUnspecified, PacificZone);
-        }
+    [Benchmark]
+    public void GetUtcOffset_Unspecified()
+    {
+        PacificZone.GetUtcOffset(SummerUnspecified);
+        PacificZone.GetUtcOffset(WinterUnspecified);
+    }
 
-        [Benchmark]
-        public void ConvertUtcToLocal()
-        {
-            TimeZoneInfo.ConvertTimeFromUtc(SummerUtc, PacificZone);
-        }
+    [Benchmark]
+    public void GetUtcOffset_DateTimeOffset()
+    {
+        PacificZone.GetUtcOffset(SummerOffset);
+        PacificZone.GetUtcOffset(WinterOffset);
+    }
+
+    [Benchmark]
+    public void ConvertLocalToUtc()
+    {
+        TimeZoneInfo.ConvertTimeToUtc(SummerUnspecified, PacificZone);
+    }
+
+    [Benchmark]
+    public void ConvertUtcToLocal()
+    {
+        TimeZoneInfo.ConvertTimeFromUtc(SummerUtc, PacificZone);
     }
 }

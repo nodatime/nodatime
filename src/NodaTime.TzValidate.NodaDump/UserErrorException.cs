@@ -4,15 +4,14 @@
 
 using System;
 
-namespace NodaTime.TzValidate.NodaDump
+namespace NodaTime.TzValidate.NodaDump;
+
+/// <summary>
+/// An exception caused by user error, e.g. invalid options.
+/// </summary>
+public sealed class UserErrorException : Exception
 {
-    /// <summary>
-    /// An exception caused by user error, e.g. invalid options.
-    /// </summary>
-    public sealed class UserErrorException : Exception
+    public UserErrorException(string message) : base(message)
     {
-        public UserErrorException(string message) : base(message)
-        {
-        }
     }
 }

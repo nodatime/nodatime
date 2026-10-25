@@ -4,14 +4,13 @@
 
 using System.Resources;
 
-namespace NodaTime.Globalization
+namespace NodaTime.Globalization;
+
+/// <summary>
+/// Takes the place of the designer-generated code for PatternResources.resx
+/// </summary>
+static class PatternResources
 {
-    /// <summary>
-    /// Takes the place of the designer-generated code for PatternResources.resx
-    /// </summary>
-    static class PatternResources
-    {
-        internal static ResourceManager ResourceManager { get; }
-            = new ResourceManager(typeof(PatternResources).FullName!, typeof(PatternResources).Assembly);
-    }
+    internal static ResourceManager ResourceManager { get; }
+        = new ResourceManager(typeof(PatternResources).FullName!, typeof(PatternResources).Assembly);
 }

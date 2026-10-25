@@ -5,16 +5,15 @@
 using BenchmarkDotNet.Attributes;
 using NodaTime.Calendars;
 
-namespace NodaTime.Benchmarks.NodaTimeTests.Calendars
+namespace NodaTime.Benchmarks.NodaTimeTests.Calendars;
+
+public class SimpleWeekYearRuleBenchmarks
 {
-    public class SimpleWeekYearRuleBenchmarks
-    {
-        private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
+    private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
 
-        [Benchmark]
-        public int IsoWeekOfWeekYear() => WeekYearRules.Iso.GetWeekOfWeekYear(Sample);
+    [Benchmark]
+    public int IsoWeekOfWeekYear() => WeekYearRules.Iso.GetWeekOfWeekYear(Sample);
 
-        [Benchmark]
-        public int IsoWeekYear() => WeekYearRules.Iso.GetWeekYear(Sample);
-    }
+    [Benchmark]
+    public int IsoWeekYear() => WeekYearRules.Iso.GetWeekYear(Sample);
 }

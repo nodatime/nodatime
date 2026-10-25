@@ -5,56 +5,55 @@
 using NUnit.Framework;
 using System;
 
-namespace NodaTime.Demo
+namespace NodaTime.Demo;
+
+public class OffsetDateDemo
 {
-    public class OffsetDateDemo
+    [Test]
+    public void Construction()
     {
-        [Test]
-        public void Construction()
-        {
-            OffsetDate offsetDate = Snippet.For(new OffsetDate(
-                new LocalDate(2019, 5, 3),
-                Offset.FromHours(3)));
+        OffsetDate offsetDate = Snippet.For(new OffsetDate(
+            new LocalDate(2019, 5, 3),
+            Offset.FromHours(3)));
 
-            Assert.AreEqual(Offset.FromHours(3), offsetDate.Offset);
-            Assert.AreEqual(new LocalDate(2019, 5, 3), offsetDate.Date);
-        }
+        Assert.AreEqual(Offset.FromHours(3), offsetDate.Offset);
+        Assert.AreEqual(new LocalDate(2019, 5, 3), offsetDate.Date);
+    }
 
-        [Test]
-        public void WithOffset()
-        {
-            var original = new OffsetDate(
-                new LocalDate(2019, 5, 3),
-                Offset.FromHours(3));
+    [Test]
+    public void WithOffset()
+    {
+        var original = new OffsetDate(
+            new LocalDate(2019, 5, 3),
+            Offset.FromHours(3));
 
-            OffsetDate updated = Snippet.For(original.WithOffset(Offset.FromHours(-3)));
-            Assert.AreEqual(Offset.FromHours(-3), updated.Offset);
-            Assert.AreEqual(original.Date, updated.Date);
-        }
+        OffsetDate updated = Snippet.For(original.WithOffset(Offset.FromHours(-3)));
+        Assert.AreEqual(Offset.FromHours(-3), updated.Offset);
+        Assert.AreEqual(original.Date, updated.Date);
+    }
 
-        [Test]
-        public void With()
-        {
-            var original = new OffsetDate(
-                new LocalDate(2019, 5, 3),
-                Offset.FromHours(3));
+    [Test]
+    public void With()
+    {
+        var original = new OffsetDate(
+            new LocalDate(2019, 5, 3),
+            Offset.FromHours(3));
 
-            Func<LocalDate, LocalDate> tomorrowAdjuster = x => x + Period.FromDays(1);
-            OffsetDate updated = Snippet.For(original.With(tomorrowAdjuster));
-            Assert.AreEqual(original.Offset, updated.Offset);
-            Assert.AreEqual(tomorrowAdjuster(original.Date), updated.Date);
-        }
+        Func<LocalDate, LocalDate> tomorrowAdjuster = x => x + Period.FromDays(1);
+        OffsetDate updated = Snippet.For(original.With(tomorrowAdjuster));
+        Assert.AreEqual(original.Offset, updated.Offset);
+        Assert.AreEqual(tomorrowAdjuster(original.Date), updated.Date);
+    }
 
-        [Test]
-        public void WithCalendar()
-        {
-            var original = new OffsetDate(
-                new LocalDate(2019, 5, 3, CalendarSystem.Iso),
-                Offset.FromHours(3));
+    [Test]
+    public void WithCalendar()
+    {
+        var original = new OffsetDate(
+            new LocalDate(2019, 5, 3, CalendarSystem.Iso),
+            Offset.FromHours(3));
 
-            OffsetDate updated = Snippet.For(original.WithCalendar(CalendarSystem.Gregorian));
-            Assert.AreEqual(original.Offset, updated.Offset);
-            Assert.AreEqual(CalendarSystem.Gregorian, updated.Calendar);
-        }
+        OffsetDate updated = Snippet.For(original.WithCalendar(CalendarSystem.Gregorian));
+        Assert.AreEqual(original.Offset, updated.Offset);
+        Assert.AreEqual(CalendarSystem.Gregorian, updated.Calendar);
     }
 }
