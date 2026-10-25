@@ -4,23 +4,21 @@
 
 using NUnit.Framework;
 using System.Linq;
-using System.Reflection;
 
-namespace NodaTime.Test.Text
+namespace NodaTime.Test.Text;
+
+public class PatternNamingTest
 {
-    public class PatternNamingTest
+    // https://github.com/nodatime/nodatime/issues/556
+    [Test]
+    public void NoPatternSuffix()
     {
-        // https://github.com/nodatime/nodatime/issues/556
-        [Test]
-        public void NoPatternSuffix()
-        {
-            var properties =
-                from type in typeof(Instant).Assembly.DefinedTypes
-                where type.Name.EndsWith("Pattern")
-                from property in type.DeclaredProperties
-                where property.GetMethod?.IsStatic == true && property.Name.EndsWith("Pattern")
-                select $"{type.Name}.{property.Name}";
-            Assert.IsEmpty(properties, $"Badly named properties: {string.Join(", ", properties)}");
-        }
+        var properties =
+            from type in typeof(Instant).Assembly.DefinedTypes
+            where type.Name.EndsWith("Pattern")
+            from property in type.DeclaredProperties
+            where property.GetMethod?.IsStatic == true && property.Name.EndsWith("Pattern")
+            select $"{type.Name}.{property.Name}";
+        Assert.IsEmpty(properties, $"Badly named properties: {string.Join(", ", properties)}");
     }
 }

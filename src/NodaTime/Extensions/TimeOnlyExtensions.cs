@@ -5,19 +5,18 @@
 #if NET6_0_OR_GREATER
 using System;
 
-namespace NodaTime.Extensions
+namespace NodaTime.Extensions;
+
+/// <summary>
+/// Extension methods for <see cref="TimeOnly"/>.
+/// </summary>
+public static class TimeOnlyExtensions
 {
     /// <summary>
-    /// Extension methods for <see cref="TimeOnly"/>.
+    /// Converts a <see cref="TimeOnly"/> to the equivalent <see cref="LocalTime"/>.
     /// </summary>
-    public static class TimeOnlyExtensions
-    {
-        /// <summary>
-        /// Converts a <see cref="TimeOnly"/> to the equivalent <see cref="LocalTime"/>.
-        /// </summary>
-        /// <param name="time">The time of day to convert.</param>
-        /// <returns>The <see cref="LocalTime"/> equivalent.</returns>
-        public static LocalTime ToLocalTime(this TimeOnly time) => LocalTime.FromTimeOnly(time);
-    }
+    /// <param name="time">The time of day to convert.</param>
+    /// <returns>The <see cref="LocalTime"/> equivalent.</returns>
+    public static LocalTime ToLocalTime(this TimeOnly time) => LocalTime.FromTimeOnly(time);
 }
 #endif

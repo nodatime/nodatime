@@ -9,61 +9,60 @@ using System.Collections.Generic;
 using System.IO;
 using static System.FormattableString;
 
-namespace NodaTime.TimeZones.IO
+namespace NodaTime.TimeZones.IO;
+
+/// <summary>
+/// An unparsed field within a stream.
+/// </summary>
+internal sealed class TzdbStreamField
 {
-    /// <summary>
-    /// An unparsed field within a stream.
-    /// </summary>
-    internal sealed class TzdbStreamField
+    private readonly byte[] data;
+    internal TzdbStreamFieldId Id { get; }
+
+    [VisibleForTesting]
+    internal TzdbStreamField(TzdbStreamFieldId id, byte[] data)
     {
-        private readonly byte[] data;
-        internal TzdbStreamFieldId Id { get; }
+        this.Id = id;
+        this.data = data;
+    }
 
-        [VisibleForTesting]
-        internal TzdbStreamField(TzdbStreamFieldId id, byte[] data)
+    /// <summary>
+    /// Creates a new read-only stream over the data for this field.
+    /// </summary>
+    internal Stream CreateStream() => new MemoryStream(data, false);
+
+    internal T ExtractSingleValue<T>(Func<DateTimeZoneReader, T> readerFunction, IReadOnlyList<string>? stringPool)
+    {
+        using (var stream = CreateStream())
         {
-            this.Id = id;
-            this.data = data;
+            return readerFunction(new DateTimeZoneReader(stream, stringPool));
         }
+    }
 
-        /// <summary>
-        /// Creates a new read-only stream over the data for this field.
-        /// </summary>
-        internal Stream CreateStream() => new MemoryStream(data, false);
-
-        internal T ExtractSingleValue<T>(Func<DateTimeZoneReader, T> readerFunction, IReadOnlyList<string>? stringPool)
+    internal static IEnumerable<TzdbStreamField> ReadFields(Stream input)
+    {
+        while (true)
         {
-            using (var stream = CreateStream())
+            int fieldId = input.ReadByte();
+            if (fieldId == -1)
             {
-                return readerFunction(new DateTimeZoneReader(stream, stringPool));
+                yield break;
             }
-        }
-
-        internal static IEnumerable<TzdbStreamField> ReadFields(Stream input)
-        {
-            while (true)
+            TzdbStreamFieldId id = (TzdbStreamFieldId) (byte) fieldId;
+            // Read 7-bit-encoded length
+            int length = new DateTimeZoneReader(input, null).ReadCount();
+            byte[] data = new byte[length];
+            int offset = 0;
+            while (offset < data.Length)
             {
-                int fieldId = input.ReadByte();
-                if (fieldId == -1)
+                int bytesRead = input.Read(data, offset, data.Length - offset);
+                if (bytesRead == 0)
                 {
-                    yield break;
+                    throw new InvalidNodaDataException(Invariant($"Stream ended after reading {offset} bytes out of {data.Length}"));
                 }
-                TzdbStreamFieldId id = (TzdbStreamFieldId) (byte) fieldId;
-                // Read 7-bit-encoded length
-                int length = new DateTimeZoneReader(input, null).ReadCount();
-                byte[] data = new byte[length];
-                int offset = 0;
-                while (offset < data.Length)
-                {
-                    int bytesRead = input.Read(data, offset, data.Length - offset);
-                    if (bytesRead == 0)
-                    {
-                        throw new InvalidNodaDataException(Invariant($"Stream ended after reading {offset} bytes out of {data.Length}"));
-                    }
-                    offset += bytesRead;
-                }
-                yield return new TzdbStreamField(id, data);
+                offset += bytesRead;
             }
+            yield return new TzdbStreamField(id, data);
         }
     }
 }

@@ -10,60 +10,59 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace NodaTime.TzValidate.NodaDump
-{
-    /// <summary>
-    /// Utility to convert tz source data (or an nzd file) into the tzvalidate format, so that
-    /// we can validate that Noda Time handles it the same way that zic does.
-    /// This is performed using the same code that TzdbCompiler does, except without using
-    /// any Windows zone mappings from CLDR.
-    /// </summary>
-    internal class Program
-    {
-        private static async Task<int> Main(string[] args)
-        {
-            Options options = new Options();
-            ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
-            if (!parser.ParseArguments(args, options))
-            {
-                return 1;
-            }
-            // Not null after we've parsed the arguments.
-            TzdbDateTimeZoneSource source = await LoadSourceAsync(options.Source);
-            var dumper = new ZoneDumper(source, options);
-            try
-            {
-                using (var writer = options.OutputFile is null ? Console.Out : File.CreateText(options.OutputFile))
-                {
-                    dumper.Dump(writer);
-                }
-            }
-            catch (UserErrorException e)
-            {
-                Console.Error.WriteLine($"Error: {e.Message}");
-                return 1;
-            }
+namespace NodaTime.TzValidate.NodaDump;
 
-            return 0;
+/// <summary>
+/// Utility to convert tz source data (or an nzd file) into the tzvalidate format, so that
+/// we can validate that Noda Time handles it the same way that zic does.
+/// This is performed using the same code that TzdbCompiler does, except without using
+/// any Windows zone mappings from CLDR.
+/// </summary>
+internal class Program
+{
+    private static async Task<int> Main(string[] args)
+    {
+        Options options = new Options();
+        ICommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
+        if (!parser.ParseArguments(args, options))
+        {
+            return 1;
+        }
+        // Not null after we've parsed the arguments.
+        TzdbDateTimeZoneSource source = await LoadSourceAsync(options.Source);
+        var dumper = new ZoneDumper(source, options);
+        try
+        {
+            using (var writer = options.OutputFile is null ? Console.Out : File.CreateText(options.OutputFile))
+            {
+                dumper.Dump(writer);
+            }
+        }
+        catch (UserErrorException e)
+        {
+            Console.Error.WriteLine($"Error: {e.Message}");
+            return 1;
         }
 
-        private static async Task<TzdbDateTimeZoneSource> LoadSourceAsync(string? source)
+        return 0;
+    }
+
+    private static async Task<TzdbDateTimeZoneSource> LoadSourceAsync(string? source)
+    {
+        if (source is null)
         {
-            if (source is null)
-            {
-                return TzdbDateTimeZoneSource.Default;
-            }
-            if (source.EndsWith(".nzd"))
-            {
-                await using var stream = await FileUtility.LoadFileOrUrlAsync(source);
-                return TzdbDateTimeZoneSource.FromStream(stream);
-            }
-            else
-            {
-                var compiler = new TzdbZoneInfoCompiler(log: null);
-                var database = await compiler.CompileAsync(source);
-                return database.ToTzdbDateTimeZoneSource();
-            }
+            return TzdbDateTimeZoneSource.Default;
+        }
+        if (source.EndsWith(".nzd"))
+        {
+            await using var stream = await FileUtility.LoadFileOrUrlAsync(source);
+            return TzdbDateTimeZoneSource.FromStream(stream);
+        }
+        else
+        {
+            var compiler = new TzdbZoneInfoCompiler(log: null);
+            var database = await compiler.CompileAsync(source);
+            return database.ToTzdbDateTimeZoneSource();
         }
     }
 }

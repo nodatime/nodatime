@@ -8,449 +8,448 @@ using System;
 using System.Globalization;
 using System.IO;
 
-namespace NodaTime.TzdbCompiler.Tzdb
+namespace NodaTime.TzdbCompiler.Tzdb;
+
+/// <summary>
+/// Provides a parser for TZDB time zone description files.
+/// </summary>
+internal class TzdbZoneInfoParser
 {
     /// <summary>
-    /// Provides a parser for TZDB time zone description files.
+    /// An offset that specifies the beginning of the year.
     /// </summary>
-    internal class TzdbZoneInfoParser
+    internal static readonly ZoneYearOffset StartOfYearZoneOffset = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, LocalTime.Midnight);
+
+    /// <summary>
+    /// The keyword that specifies the line defines an alias link.
+    /// </summary>
+    private const string KeywordLink = "Link";
+
+    /// <summary>
+    /// The keyword that specifies the line defines a daylight savings rule.
+    /// </summary>
+    private const string KeywordRule = "Rule";
+
+    /// <summary>
+    /// The keyword that specifies the line defines a time zone.
+    /// </summary>
+    private const string KeywordZone = "Zone";
+
+    /// <summary>
+    /// The days of the week names as they appear in the TZDB zone files. They are
+    /// always the short name in US English.
+    /// </summary>
+    private static readonly string[] DaysOfWeek = { "", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+
+    /// <summary>
+    /// The months of the year names as they appear in the TZDB zone files. Entries are usually
+    /// abbreviated to (an unambiguous prefix of) the first three letters, e.g. "Jan", but older
+    /// files sometimes spell them out in full, e.g. "January" in Greece's 96d rule. As the short
+    /// form is always a prefix of the long form, matching against the long form alone covers both.
+    /// </summary>
+    private static readonly string[] LongMonths =
+        { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+
+    /// <summary>
+    /// Parses the next token as a month number (1-12).
+    /// </summary>
+    /// <param name="tokens">The tokens.</param>
+    /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
+    private int NextMonth(Tokens tokens, string name)
     {
-        /// <summary>
-        /// An offset that specifies the beginning of the year.
-        /// </summary>
-        internal static readonly ZoneYearOffset StartOfYearZoneOffset = new ZoneYearOffset(TransitionMode.Wall, 1, 1, 0, false, LocalTime.Midnight);
+        var value = NextString(tokens, name);
+        return ParseMonth(value);
+    }
 
-        /// <summary>
-        /// The keyword that specifies the line defines an alias link.
-        /// </summary>
-        private const string KeywordLink = "Link";
+    /// <summary>
+    /// Parses the next token as an offset.
+    /// </summary>
+    /// <param name="tokens">The tokens.</param>
+    /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
+    private Offset NextOffset(Tokens tokens, string name) => ParserHelper.ParseOffset(NextString(tokens, name));
 
-        /// <summary>
-        /// The keyword that specifies the line defines a daylight savings rule.
-        /// </summary>
-        private const string KeywordRule = "Rule";
+    /// <summary>
+    /// Returns the next token, which is optional, converting "-" to null.
+    /// </summary>
+    /// <param name="tokens">The tokens.</param>
+    /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
+    private string? NextOptional(Tokens tokens, string name) => ParserHelper.ParseOptional(NextString(tokens, name));
 
-        /// <summary>
-        /// The keyword that specifies the line defines a time zone.
-        /// </summary>
-        private const string KeywordZone = "Zone";
-
-        /// <summary>
-        /// The days of the week names as they appear in the TZDB zone files. They are
-        /// always the short name in US English.
-        /// </summary>
-        private static readonly string[] DaysOfWeek = { "", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
-
-        /// <summary>
-        /// The months of the year names as they appear in the TZDB zone files. Entries are usually
-        /// abbreviated to (an unambiguous prefix of) the first three letters, e.g. "Jan", but older
-        /// files sometimes spell them out in full, e.g. "January" in Greece's 96d rule. As the short
-        /// form is always a prefix of the long form, matching against the long form alone covers both.
-        /// </summary>
-        private static readonly string[] LongMonths =
-            { "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-
-        /// <summary>
-        /// Parses the next token as a month number (1-12).
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
-        private int NextMonth(Tokens tokens, string name)
+    /// <summary>
+    /// Returns the next string from the token stream.
+    /// </summary>
+    /// <param name="tokens">The tokens to parse from.</param>
+    /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
+    private string NextString(Tokens tokens, string name)
+    {
+        if (!tokens.HasNextToken)
         {
-            var value = NextString(tokens, name);
-            return ParseMonth(value);
+            throw new InvalidDataException($"Missing zone info token: {name}");
         }
+        return tokens.NextToken(name);
+    }
 
-        /// <summary>
-        /// Parses the next token as an offset.
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
-        private Offset NextOffset(Tokens tokens, string name) => ParserHelper.ParseOffset(NextString(tokens, name));
-
-        /// <summary>
-        /// Returns the next token, which is optional, converting "-" to null.
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
-        private string? NextOptional(Tokens tokens, string name) => ParserHelper.ParseOptional(NextString(tokens, name));
-
-        /// <summary>
-        /// Returns the next string from the token stream.
-        /// </summary>
-        /// <param name="tokens">The tokens to parse from.</param>
-        /// <param name="name">The name of the expected value, for use in the exception if no value is available.</param>
-        private string NextString(Tokens tokens, string name)
+    /// <summary>
+    /// Parses the next string from the token stream as a year.
+    /// </summary>
+    /// <param name="tokens">The tokens.</param>
+    /// <param name="defaultValue">The default value to return if the year isn't specified.</param>
+    private static int NextYear(Tokens tokens, int defaultValue)
+    {
+        int result = defaultValue;
+        if (tokens.TryNextToken(out string text))
         {
-            if (!tokens.HasNextToken)
+            result = ParserHelper.ParseYear(text, defaultValue);
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// Parses the TZDB time zone info file from the given stream and merges its information
+    /// with the given database. The stream is not closed or disposed.
+    /// </summary>
+    /// <param name="input">The stream input to parse.</param>
+    /// <param name="database">The database to fill.</param>
+    internal void Parse(Stream input, TzdbDatabase database)
+    {
+        Parse(new StreamReader(input, true), database);
+    }
+
+    /// <summary>
+    /// Parses the TZDB time zone info file from the given reader and merges its information
+    /// with the given database. The reader is not closed or disposed.
+    /// </summary>
+    /// <param name="reader">The reader to read.</param>
+    /// <param name="database">The database to fill.</param>
+    internal void Parse(TextReader reader, TzdbDatabase database)
+    {
+        string? currentZone = null;
+        foreach (var line in reader.ReadLines())
+        {
+            currentZone = ParseLine(line, currentZone, database);
+        }
+    }
+
+    /// <summary>
+    /// Parses the ZoneYearOffset for a rule or zone. This is something like "3rd Sunday of October at 2am".
+    /// </summary>
+    /// <remarks>
+    /// IN ON AT
+    /// </remarks>
+    /// <param name="tokens">The tokens to parse.</param>
+    /// <param name="forRule">True if this is for a Rule line, in which case ON/AT are mandatory;
+    /// false for a Zone line, in which case it's part of "until" and they're optional</param>
+    /// <returns>The ZoneYearOffset object.</returns>
+    internal ZoneYearOffset ParseDateTimeOfYear(Tokens tokens, bool forRule)
+    {
+        var mode = StartOfYearZoneOffset.Mode;
+        var timeOfDay = StartOfYearZoneOffset.TimeOfDay;
+
+        int monthOfYear = NextMonth(tokens, "MonthOfYear");
+
+        int dayOfMonth = 1;
+        int dayOfWeek = 0;
+        bool advanceDayOfWeek = false;
+        bool addDay = false;
+
+        if (tokens.HasNextToken || forRule)
+        {
+            var on = NextString(tokens, "On");
+            if (on.StartsWith("last", StringComparison.Ordinal))
             {
-                throw new InvalidDataException($"Missing zone info token: {name}");
+                dayOfMonth = -1;
+                dayOfWeek = ParseDayOfWeek(on.Substring(4));
             }
-            return tokens.NextToken(name);
-        }
-
-        /// <summary>
-        /// Parses the next string from the token stream as a year.
-        /// </summary>
-        /// <param name="tokens">The tokens.</param>
-        /// <param name="defaultValue">The default value to return if the year isn't specified.</param>
-        private static int NextYear(Tokens tokens, int defaultValue)
-        {
-            int result = defaultValue;
-            if (tokens.TryNextToken(out string text))
+            else
             {
-                result = ParserHelper.ParseYear(text, defaultValue);
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Parses the TZDB time zone info file from the given stream and merges its information
-        /// with the given database. The stream is not closed or disposed.
-        /// </summary>
-        /// <param name="input">The stream input to parse.</param>
-        /// <param name="database">The database to fill.</param>
-        internal void Parse(Stream input, TzdbDatabase database)
-        {
-            Parse(new StreamReader(input, true), database);
-        }
-
-        /// <summary>
-        /// Parses the TZDB time zone info file from the given reader and merges its information
-        /// with the given database. The reader is not closed or disposed.
-        /// </summary>
-        /// <param name="reader">The reader to read.</param>
-        /// <param name="database">The database to fill.</param>
-        internal void Parse(TextReader reader, TzdbDatabase database)
-        {
-            string? currentZone = null;
-            foreach (var line in reader.ReadLines())
-            {
-                currentZone = ParseLine(line, currentZone, database);
-            }
-        }
-
-        /// <summary>
-        /// Parses the ZoneYearOffset for a rule or zone. This is something like "3rd Sunday of October at 2am".
-        /// </summary>
-        /// <remarks>
-        /// IN ON AT
-        /// </remarks>
-        /// <param name="tokens">The tokens to parse.</param>
-        /// <param name="forRule">True if this is for a Rule line, in which case ON/AT are mandatory;
-        /// false for a Zone line, in which case it's part of "until" and they're optional</param>
-        /// <returns>The ZoneYearOffset object.</returns>
-        internal ZoneYearOffset ParseDateTimeOfYear(Tokens tokens, bool forRule)
-        {
-            var mode = StartOfYearZoneOffset.Mode;
-            var timeOfDay = StartOfYearZoneOffset.TimeOfDay;
-
-            int monthOfYear = NextMonth(tokens, "MonthOfYear");
-
-            int dayOfMonth = 1;
-            int dayOfWeek = 0;
-            bool advanceDayOfWeek = false;
-            bool addDay = false;
-
-            if (tokens.HasNextToken || forRule)
-            {
-                var on = NextString(tokens, "On");
-                if (on.StartsWith("last", StringComparison.Ordinal))
+                int index = on.IndexOf(">=", StringComparison.Ordinal);
+                if (index > 0)
                 {
-                    dayOfMonth = -1;
-                    dayOfWeek = ParseDayOfWeek(on.Substring(4));
+                    dayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
+                    dayOfWeek = ParseDayOfWeek(on.Substring(0, index));
+                    advanceDayOfWeek = true;
                 }
                 else
                 {
-                    int index = on.IndexOf(">=", StringComparison.Ordinal);
+                    index = on.IndexOf("<=", StringComparison.Ordinal);
                     if (index > 0)
                     {
                         dayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
                         dayOfWeek = ParseDayOfWeek(on.Substring(0, index));
-                        advanceDayOfWeek = true;
                     }
                     else
                     {
-                        index = on.IndexOf("<=", StringComparison.Ordinal);
-                        if (index > 0)
+                        try
                         {
-                            dayOfMonth = Int32.Parse(on.Substring(index + 2), CultureInfo.InvariantCulture);
-                            dayOfWeek = ParseDayOfWeek(on.Substring(0, index));
+                            dayOfMonth = Int32.Parse(on, CultureInfo.InvariantCulture);
+                            dayOfWeek = 0;
                         }
-                        else
+                        catch (FormatException e)
                         {
-                            try
-                            {
-                                dayOfMonth = Int32.Parse(on, CultureInfo.InvariantCulture);
-                                dayOfWeek = 0;
-                            }
-                            catch (FormatException e)
-                            {
-                                throw new ArgumentException($"Unparsable ON token: {on}", e);
-                            }
+                            throw new ArgumentException($"Unparsable ON token: {on}", e);
                         }
                     }
                 }
+            }
 
-                if (tokens.HasNextToken || forRule)
+            if (tokens.HasNextToken || forRule)
+            {
+                var atTime = NextString(tokens, "AT");
+                if (!string.IsNullOrEmpty(atTime))
                 {
-                    var atTime = NextString(tokens, "AT");
-                    if (!string.IsNullOrEmpty(atTime))
+                    if (Char.IsLetter(atTime[atTime.Length - 1]))
                     {
-                        if (Char.IsLetter(atTime[atTime.Length - 1]))
-                        {
-                            char zoneCharacter = atTime[atTime.Length - 1];
-                            mode = ConvertModeCharacter(zoneCharacter);
-                            atTime = atTime.Substring(0, atTime.Length - 1);
-                        }
-                        if (atTime == "24:00")
-                        {
-                            timeOfDay = LocalTime.Midnight;
-                            addDay = true;
-                        }
-                        // As of TZDB 2018f, Japan's fallback transitions occur at 25:00. We can't
-                        // represent this entirely accurately, but this is as close as we can approximate it.
-                        else if (atTime == "25:00")
-                        {
-                            timeOfDay = new LocalTime(1, 0);
-                            addDay = true;
-                        }
-                        else
-                        {
-                            timeOfDay = ParserHelper.ParseTime(atTime);
-                        }
+                        char zoneCharacter = atTime[atTime.Length - 1];
+                        mode = ConvertModeCharacter(zoneCharacter);
+                        atTime = atTime.Substring(0, atTime.Length - 1);
                     }
-                }
-            }
-            return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, timeOfDay, addDay);
-        }
-
-        /// <summary>
-        /// Parses the day of week, which may be any case-insensitive, unambiguous prefix of a day
-        /// name (matching the behavior of zic itself).
-        /// </summary>
-        /// <param name="text">The text.</param>
-        internal static int ParseDayOfWeek(string text) =>
-            ParseUnambiguousNamePrefix(text, "day of week", DaysOfWeek);
-
-        /// <summary>
-        /// Parses a single line of an TZDB zone info file.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// TZDB files have a simple line based structure. Each line defines one item. Comments
-        /// start with a hash or pound sign (#) and continue to the end of the line. Blank lines are
-        /// ignored. Of the remaining there are four line types which are determined by the first
-        /// keyword on the line.
-        /// </para>
-        /// <para>
-        /// A line beginning with the keyword <c>Link</c> defines an alias between one time zone and
-        /// another. Both time zones use the same definition but have different names.
-        /// </para>
-        /// <para>
-        /// A line beginning with the keyword <c>Rule</c> defines a daylight savings time
-        /// calculation rule.
-        /// </para>
-        /// <para>
-        /// A line beginning with the keyword <c>Zone</c> defines a time zone.
-        /// </para>
-        /// <para>
-        /// A line beginning with leading whitespace (an empty keyword) defines another part of the
-        /// preceding time zone. As many lines as necessary to define the time zone can be listed,
-        /// but they must all be together and only the first line can have a name.
-        /// </para>
-        /// </remarks>
-        /// <param name="line">The line to parse.</param>
-        /// <param name="previousZone">The previous zone ID, or null if we don't have one.</param>
-        /// <param name="database">The database to fill.</param>
-        /// <return>The zone name just parsed, if any - so that it can be passed into the next call.</return>
-        private string? ParseLine(string line, string? previousZone, TzdbDatabase database)
-        {
-            // Trim end-of-line comments
-            int index = line.IndexOf("#", StringComparison.Ordinal);
-            if (index >= 0)
-            {
-                line = line.Substring(0, index);
-            }
-            line = line.TrimEnd();
-            if (line.Length == 0)
-            {
-                // We can still continue with the previous zone
-                return previousZone;
-            }
-
-            // Okay, everything left in the line should be "real" now.
-            var tokens = Tokens.Tokenize(line);
-            var keyword = NextString(tokens, "Keyword");
-            switch (keyword)
-            {
-                case KeywordRule:
-                    database.AddRule(ParseRule(tokens));
-                    return null;
-                case KeywordLink:
-                    var alias = ParseLink(tokens);
-                    database.AddAlias(alias.Item1, alias.Item2);
-                    return null;
-                case KeywordZone:
-                    var name = NextString(tokens, "GetName");
-                    database.AddZone(ParseZone(name, tokens));
-                    return name;
-                default:
-                    if (string.IsNullOrEmpty(keyword))
+                    if (atTime == "24:00")
                     {
-                        if (previousZone is null)
-                        {
-                            throw new InvalidDataException("Zone continuation provided with no previous zone line");
-                        }
-                        database.AddZone(ParseZone(previousZone, tokens));
-                        return previousZone;
+                        timeOfDay = LocalTime.Midnight;
+                        addDay = true;
+                    }
+                    // As of TZDB 2018f, Japan's fallback transitions occur at 25:00. We can't
+                    // represent this entirely accurately, but this is as close as we can approximate it.
+                    else if (atTime == "25:00")
+                    {
+                        timeOfDay = new LocalTime(1, 0);
+                        addDay = true;
                     }
                     else
                     {
-                        throw new InvalidDataException($"Unexpected zone database keyword: {keyword}");
+                        timeOfDay = ParserHelper.ParseTime(atTime);
                     }
-            }
-        }
-
-        /// <summary>
-        /// Parses an alias link and returns the ZoneAlias object.
-        /// </summary>
-        /// <param name="tokens">The tokens to parse.</param>
-        /// <returns>The ZoneAlias object.</returns>
-        internal Tuple<string, string> ParseLink(Tokens tokens)
-        {
-            var existing = NextString(tokens, "Existing");
-            var alias = NextString(tokens, "Alias");
-            return Tuple.Create(existing, alias);
-        }
-
-        /// <summary>
-        /// Parses the month, which may be any case-insensitive, unambiguous prefix of a month name
-        /// (matching the behavior of zic itself).
-        /// </summary>
-        /// <param name="text">The text.</param>
-        /// <returns>The month number in the range 1 to 12.</returns>
-        /// <exception cref="InvalidDataException">The month name can't be parsed, or is ambiguous.</exception>
-        internal static int ParseMonth(String text) => ParseUnambiguousNamePrefix(text, "month", LongMonths);
-
-        /// <summary>
-        /// Finds the index of the single entry in <paramref name="names"/> (which has an unused entry
-        /// at index 0) for which <paramref name="text"/> is a case-insensitive prefix. Throws
-        /// <see cref="InvalidDataException"/> if no entry matches, or if more than one does.
-        /// </summary>
-        private static int ParseUnambiguousNamePrefix(string text, string what, string[] names)
-        {
-            Preconditions.CheckArgument(!string.IsNullOrEmpty(text), nameof(text), "Value must not be empty or null");
-            int match = 0;
-            for (int i = 1; i < names.Length; i++)
-            {
-                if (names[i].StartsWith(text, StringComparison.OrdinalIgnoreCase))
-                {
-                    if (match != 0)
-                    {
-                        throw new InvalidDataException($"Ambiguous {what}: {text}");
-                    }
-                    match = i;
                 }
             }
-            if (match == 0)
-            {
-                throw new InvalidDataException($"Invalid {what}: {text}");
-            }
-            return match;
+        }
+        return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, timeOfDay, addDay);
+    }
+
+    /// <summary>
+    /// Parses the day of week, which may be any case-insensitive, unambiguous prefix of a day
+    /// name (matching the behavior of zic itself).
+    /// </summary>
+    /// <param name="text">The text.</param>
+    internal static int ParseDayOfWeek(string text) =>
+        ParseUnambiguousNamePrefix(text, "day of week", DaysOfWeek);
+
+    /// <summary>
+    /// Parses a single line of an TZDB zone info file.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// TZDB files have a simple line based structure. Each line defines one item. Comments
+    /// start with a hash or pound sign (#) and continue to the end of the line. Blank lines are
+    /// ignored. Of the remaining there are four line types which are determined by the first
+    /// keyword on the line.
+    /// </para>
+    /// <para>
+    /// A line beginning with the keyword <c>Link</c> defines an alias between one time zone and
+    /// another. Both time zones use the same definition but have different names.
+    /// </para>
+    /// <para>
+    /// A line beginning with the keyword <c>Rule</c> defines a daylight savings time
+    /// calculation rule.
+    /// </para>
+    /// <para>
+    /// A line beginning with the keyword <c>Zone</c> defines a time zone.
+    /// </para>
+    /// <para>
+    /// A line beginning with leading whitespace (an empty keyword) defines another part of the
+    /// preceding time zone. As many lines as necessary to define the time zone can be listed,
+    /// but they must all be together and only the first line can have a name.
+    /// </para>
+    /// </remarks>
+    /// <param name="line">The line to parse.</param>
+    /// <param name="previousZone">The previous zone ID, or null if we don't have one.</param>
+    /// <param name="database">The database to fill.</param>
+    /// <return>The zone name just parsed, if any - so that it can be passed into the next call.</return>
+    private string? ParseLine(string line, string? previousZone, TzdbDatabase database)
+    {
+        // Trim end-of-line comments
+        int index = line.IndexOf("#", StringComparison.Ordinal);
+        if (index >= 0)
+        {
+            line = line.Substring(0, index);
+        }
+        line = line.TrimEnd();
+        if (line.Length == 0)
+        {
+            // We can still continue with the previous zone
+            return previousZone;
         }
 
-        /// <summary>
-        /// Parses a daylight savings rule and returns the Rule object.
-        /// </summary>
-        /// <remarks>
-        /// # Rule    NAME    FROM    TO    TYPE    IN    ON    AT    SAVE    LETTER/S
-        /// </remarks>
-        /// <param name="tokens">The tokens to parse.</param>
-        /// <returns>The Rule object.</returns>
-        internal RuleLine ParseRule(Tokens tokens)
+        // Okay, everything left in the line should be "real" now.
+        var tokens = Tokens.Tokenize(line);
+        var keyword = NextString(tokens, "Keyword");
+        switch (keyword)
         {
-            var name = NextString(tokens, "GetName");
-            int fromYear = NextYear(tokens, 0);
+            case KeywordRule:
+                database.AddRule(ParseRule(tokens));
+                return null;
+            case KeywordLink:
+                var alias = ParseLink(tokens);
+                database.AddAlias(alias.Item1, alias.Item2);
+                return null;
+            case KeywordZone:
+                var name = NextString(tokens, "GetName");
+                database.AddZone(ParseZone(name, tokens));
+                return name;
+            default:
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    if (previousZone is null)
+                    {
+                        throw new InvalidDataException("Zone continuation provided with no previous zone line");
+                    }
+                    database.AddZone(ParseZone(previousZone, tokens));
+                    return previousZone;
+                }
+                else
+                {
+                    throw new InvalidDataException($"Unexpected zone database keyword: {keyword}");
+                }
+        }
+    }
 
-            // This basically doesn't happen these days, but if we have any recurrent rules
-            // which start at the dawn of time, make them effective from 1900. This matches
-            // zic behaviour in the only cases of this that we've seen, e.g. the systemv rules
-            // prior to 2001a.
-            if (fromYear == int.MinValue)
+    /// <summary>
+    /// Parses an alias link and returns the ZoneAlias object.
+    /// </summary>
+    /// <param name="tokens">The tokens to parse.</param>
+    /// <returns>The ZoneAlias object.</returns>
+    internal Tuple<string, string> ParseLink(Tokens tokens)
+    {
+        var existing = NextString(tokens, "Existing");
+        var alias = NextString(tokens, "Alias");
+        return Tuple.Create(existing, alias);
+    }
+
+    /// <summary>
+    /// Parses the month, which may be any case-insensitive, unambiguous prefix of a month name
+    /// (matching the behavior of zic itself).
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The month number in the range 1 to 12.</returns>
+    /// <exception cref="InvalidDataException">The month name can't be parsed, or is ambiguous.</exception>
+    internal static int ParseMonth(String text) => ParseUnambiguousNamePrefix(text, "month", LongMonths);
+
+    /// <summary>
+    /// Finds the index of the single entry in <paramref name="names"/> (which has an unused entry
+    /// at index 0) for which <paramref name="text"/> is a case-insensitive prefix. Throws
+    /// <see cref="InvalidDataException"/> if no entry matches, or if more than one does.
+    /// </summary>
+    private static int ParseUnambiguousNamePrefix(string text, string what, string[] names)
+    {
+        Preconditions.CheckArgument(!string.IsNullOrEmpty(text), nameof(text), "Value must not be empty or null");
+        int match = 0;
+        for (int i = 1; i < names.Length; i++)
+        {
+            if (names[i].StartsWith(text, StringComparison.OrdinalIgnoreCase))
             {
-                fromYear = 1900;
+                if (match != 0)
+                {
+                    throw new InvalidDataException($"Ambiguous {what}: {text}");
+                }
+                match = i;
             }
+        }
+        if (match == 0)
+        {
+            throw new InvalidDataException($"Invalid {what}: {text}");
+        }
+        return match;
+    }
 
-            int toYear = NextYear(tokens, fromYear);
-            if (toYear < fromYear)
-            {
-                throw new ArgumentException($"To year cannot be before the from year in a Rule: {toYear} < {fromYear}");
-            }
+    /// <summary>
+    /// Parses a daylight savings rule and returns the Rule object.
+    /// </summary>
+    /// <remarks>
+    /// # Rule    NAME    FROM    TO    TYPE    IN    ON    AT    SAVE    LETTER/S
+    /// </remarks>
+    /// <param name="tokens">The tokens to parse.</param>
+    /// <returns>The Rule object.</returns>
+    internal RuleLine ParseRule(Tokens tokens)
+    {
+        var name = NextString(tokens, "GetName");
+        int fromYear = NextYear(tokens, 0);
 
-            // We don't support types any more, but rather than just ignoring the value, we check that it's not specified.
-            var type = NextOptional(tokens, "Type");
-            if (type is object)
-            {
-                throw new NotImplementedException($"Zone rules with types are no longer supported. Recurrence '{name}' has type '{type}'");
-            }
-
-            var yearOffset = ParseDateTimeOfYear(tokens, true);
-            var savings = NextOffset(tokens, "SaveMillis");
-            var daylightSavingsIndicator = NextOptional(tokens, "LetterS");
-            // The name of the zone recurrence is currently the name of the rule. Later (in ZoneRule.GetRecurrences)
-            // it will be replaced with the formatted name. It's not ideal, but it avoids a lot of duplication.
-            var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
-            return new RuleLine(recurrence, daylightSavingsIndicator);
+        // This basically doesn't happen these days, but if we have any recurrent rules
+        // which start at the dawn of time, make them effective from 1900. This matches
+        // zic behaviour in the only cases of this that we've seen, e.g. the systemv rules
+        // prior to 2001a.
+        if (fromYear == int.MinValue)
+        {
+            fromYear = 1900;
         }
 
-        /// <summary>
-        ///   Parses a time zone definition and returns the Zone object.
-        /// </summary>
-        /// <remarks>
-        ///   # GMTOFF RULES FORMAT [ UntilYear [ UntilMonth [ UntilDay [ UntilTime [ ZoneCharacter ] ] ] ] ]
-        /// </remarks>
-        /// <param name="name">The name of the zone being parsed.</param>
-        /// <param name="tokens">The tokens to parse.</param>
-        /// <returns>The Zone object.</returns>
-        internal ZoneLine ParseZone(string name, Tokens tokens)
+        int toYear = NextYear(tokens, fromYear);
+        if (toYear < fromYear)
         {
-            var offset = NextOffset(tokens, "Gmt Offset");
-            var rules = NextOptional(tokens, "Rules");
-            var format = NextString(tokens, "Format");
-            int year = NextYear(tokens, Int32.MaxValue);
-
-            if (tokens.HasNextToken)
-            {
-                var until = ParseDateTimeOfYear(tokens, false);
-                return new ZoneLine(name, offset, rules, format, year, until);
-            }
-
-            return new ZoneLine(name, offset, rules, format, year, StartOfYearZoneOffset);
+            throw new ArgumentException($"To year cannot be before the from year in a Rule: {toYear} < {fromYear}");
         }
 
-        /// <summary>
-        /// Normalizes the transition mode character.
-        /// </summary>
-        /// <param name="modeCharacter">The character to normalize.</param>
-        /// <returns>The <see cref="TransitionMode"/>.</returns>
-        private static TransitionMode ConvertModeCharacter(char modeCharacter)
+        // We don't support types any more, but rather than just ignoring the value, we check that it's not specified.
+        var type = NextOptional(tokens, "Type");
+        if (type is object)
         {
-            switch (modeCharacter)
-            {
-                case 's':
-                case 'S':
-                    return TransitionMode.Standard;
-                case 'u':
-                case 'U':
-                case 'g':
-                case 'G':
-                case 'z':
-                case 'Z':
-                    return TransitionMode.Utc;
-                default:
-                    return TransitionMode.Wall;
-            }
+            throw new NotImplementedException($"Zone rules with types are no longer supported. Recurrence '{name}' has type '{type}'");
+        }
+
+        var yearOffset = ParseDateTimeOfYear(tokens, true);
+        var savings = NextOffset(tokens, "SaveMillis");
+        var daylightSavingsIndicator = NextOptional(tokens, "LetterS");
+        // The name of the zone recurrence is currently the name of the rule. Later (in ZoneRule.GetRecurrences)
+        // it will be replaced with the formatted name. It's not ideal, but it avoids a lot of duplication.
+        var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
+        return new RuleLine(recurrence, daylightSavingsIndicator);
+    }
+
+    /// <summary>
+    ///   Parses a time zone definition and returns the Zone object.
+    /// </summary>
+    /// <remarks>
+    ///   # GMTOFF RULES FORMAT [ UntilYear [ UntilMonth [ UntilDay [ UntilTime [ ZoneCharacter ] ] ] ] ]
+    /// </remarks>
+    /// <param name="name">The name of the zone being parsed.</param>
+    /// <param name="tokens">The tokens to parse.</param>
+    /// <returns>The Zone object.</returns>
+    internal ZoneLine ParseZone(string name, Tokens tokens)
+    {
+        var offset = NextOffset(tokens, "Gmt Offset");
+        var rules = NextOptional(tokens, "Rules");
+        var format = NextString(tokens, "Format");
+        int year = NextYear(tokens, Int32.MaxValue);
+
+        if (tokens.HasNextToken)
+        {
+            var until = ParseDateTimeOfYear(tokens, false);
+            return new ZoneLine(name, offset, rules, format, year, until);
+        }
+
+        return new ZoneLine(name, offset, rules, format, year, StartOfYearZoneOffset);
+    }
+
+    /// <summary>
+    /// Normalizes the transition mode character.
+    /// </summary>
+    /// <param name="modeCharacter">The character to normalize.</param>
+    /// <returns>The <see cref="TransitionMode"/>.</returns>
+    private static TransitionMode ConvertModeCharacter(char modeCharacter)
+    {
+        switch (modeCharacter)
+        {
+            case 's':
+            case 'S':
+                return TransitionMode.Standard;
+            case 'u':
+            case 'U':
+            case 'g':
+            case 'G':
+            case 'z':
+            case 'Z':
+                return TransitionMode.Utc;
+            default:
+                return TransitionMode.Wall;
         }
     }
 }

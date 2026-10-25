@@ -7,147 +7,146 @@ using NodaTime.Calendars;
 using NodaTime.Text;
 using System;
 
-namespace NodaTime.Benchmarks.NodaTimeTests
+namespace NodaTime.Benchmarks.NodaTimeTests;
+
+public class LocalDateBenchmarks
 {
-    public class LocalDateBenchmarks
-    {
-        private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
+    private static readonly LocalDate Sample = new LocalDate(2009, 12, 26);
 #if NET6_0_OR_GREATER
-        private static readonly DateOnly SampleDateOnly = new DateOnly(2009, 12, 26);
+    private static readonly DateOnly SampleDateOnly = new DateOnly(2009, 12, 26);
 #endif
-        private static readonly DateTime SampleDateTime = new DateTime(2009, 12, 26, 1, 2, 3, DateTimeKind.Utc);
-        private static readonly LocalDate SampleBeforeEpoch = new LocalDate(1909, 12, 26);
+    private static readonly DateTime SampleDateTime = new DateTime(2009, 12, 26, 1, 2, 3, DateTimeKind.Utc);
+    private static readonly LocalDate SampleBeforeEpoch = new LocalDate(1909, 12, 26);
 
-        private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/uuuu");
+    private static readonly LocalDatePattern Pattern = LocalDatePattern.CreateWithInvariantCulture("dd/MM/uuuu");
 
-        private static readonly Period SamplePeriod = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4 }.Build();
+    private static readonly Period SamplePeriod = new PeriodBuilder { Years = 1, Months = 2, Weeks = 3, Days = 4 }.Build();
 
-        [Benchmark]
-        public void PatternFormat()
+    [Benchmark]
+    public void PatternFormat()
+    {
+        Pattern.Format(Sample);
+    }
+
+    [Benchmark]
+    public LocalDate PatternParse()
+    {
+        var parseResult = Pattern.Parse("26/12/2009");
+        return parseResult.Value;
+    }
+
+    [Benchmark]
+    public LocalDate Construction() => new LocalDate(2009, 12, 26);
+
+    [Benchmark]
+    public LocalDate ConstructionOutsidePrecomputedRange() => new LocalDate(1009, 12, 26);
+
+    [Benchmark]
+    public LocalDate ConstructionAvoidingCache()
+    {
+        // Construct the first day of every year between 1000 and 3000 AD. This
+        // should thoroughly test CalculateYearTicks, as we'll never get a cache hit.
+        LocalDate localDate = new LocalDate();
+        for (int year = 1; year <= 3000; year++)
         {
-            Pattern.Format(Sample);
+            localDate = new LocalDate(year, 1, 1);
         }
-
-        [Benchmark]
-        public LocalDate PatternParse()
-        {
-            var parseResult = Pattern.Parse("26/12/2009");
-            return parseResult.Value;
-        }
-
-        [Benchmark]
-        public LocalDate Construction() => new LocalDate(2009, 12, 26);
-
-        [Benchmark]
-        public LocalDate ConstructionOutsidePrecomputedRange() => new LocalDate(1009, 12, 26);
-
-        [Benchmark]
-        public LocalDate ConstructionAvoidingCache()
-        {
-            // Construct the first day of every year between 1000 and 3000 AD. This
-            // should thoroughly test CalculateYearTicks, as we'll never get a cache hit.
-            LocalDate localDate = new LocalDate();
-            for (int year = 1; year <= 3000; year++)
-            {
-                localDate = new LocalDate(year, 1, 1);
-            }
-            return localDate;
-        }
+        return localDate;
+    }
 
 #if !NO_INTERNALS
-        private static readonly int SampleDays = Sample.DaysSinceEpoch;
+    private static readonly int SampleDays = Sample.DaysSinceEpoch;
 
-        [Benchmark]
-        public LocalDate ConstructionFromDays_SpecifyCalendar() => new LocalDate(SampleDays, CalendarSystem.Iso);
+    [Benchmark]
+    public LocalDate ConstructionFromDays_SpecifyCalendar() => new LocalDate(SampleDays, CalendarSystem.Iso);
 
-        [Benchmark]
-        public void ConstructionFromDays_DefaultCalendar()
-        {
-            new LocalDate(SampleDays);
-        }
+    [Benchmark]
+    public void ConstructionFromDays_DefaultCalendar()
+    {
+        new LocalDate(SampleDays);
+    }
 #endif
 
-        [Benchmark]
-        public void FromWeekYearWeekAndDay()
-        {
-            LocalDate.FromWeekYearWeekAndDay(2009, 1, NodaTime.IsoDayOfWeek.Thursday);
-        }
+    [Benchmark]
+    public void FromWeekYearWeekAndDay()
+    {
+        LocalDate.FromWeekYearWeekAndDay(2009, 1, NodaTime.IsoDayOfWeek.Thursday);
+    }
 
-        [Benchmark]
-        public int Year() => Sample.Year;
+    [Benchmark]
+    public int Year() => Sample.Year;
 
-        [Benchmark]
-        public int Month() => Sample.Month;
+    [Benchmark]
+    public int Month() => Sample.Month;
 
-        [Benchmark]
-        public int DayOfMonth() => Sample.Day;
+    [Benchmark]
+    public int DayOfMonth() => Sample.Day;
 
-        [Benchmark]
-        public IsoDayOfWeek DayOfWeek() => Sample.DayOfWeek;
+    [Benchmark]
+    public IsoDayOfWeek DayOfWeek() => Sample.DayOfWeek;
 
-        [Benchmark]
-        public IsoDayOfWeek DayOfWeek_BeforeEpoch()
-        {
-            return SampleBeforeEpoch.DayOfWeek;
-        }
+    [Benchmark]
+    public IsoDayOfWeek DayOfWeek_BeforeEpoch()
+    {
+        return SampleBeforeEpoch.DayOfWeek;
+    }
 
-        [Benchmark]
-        public int DayOfYear() => Sample.DayOfYear;
+    [Benchmark]
+    public int DayOfYear() => Sample.DayOfYear;
 
-        [Benchmark]
-        public Era Era() => Sample.Era;
+    [Benchmark]
+    public Era Era() => Sample.Era;
 
-        [Benchmark]
-        public int YearOfEra() => Sample.YearOfEra;
+    [Benchmark]
+    public int YearOfEra() => Sample.YearOfEra;
 
-        [Benchmark]
-        public LocalDate PlusYears() => Sample.PlusYears(3);
+    [Benchmark]
+    public LocalDate PlusYears() => Sample.PlusYears(3);
 
-        [Benchmark]
-        public LocalDate PlusMonths() => Sample.PlusMonths(3);
+    [Benchmark]
+    public LocalDate PlusMonths() => Sample.PlusMonths(3);
 
-        [Benchmark]
-        public LocalDate PlusWeeks() => Sample.PlusWeeks(3);
+    [Benchmark]
+    public LocalDate PlusWeeks() => Sample.PlusWeeks(3);
 
-        [Benchmark]
-        public LocalDate PlusDays() => Sample.PlusDays(3);
+    [Benchmark]
+    public LocalDate PlusDays() => Sample.PlusDays(3);
 
-        [Benchmark]
-        public LocalDate PlusDays_MonthBoundary() => Sample.PlusDays(-50);
+    [Benchmark]
+    public LocalDate PlusDays_MonthBoundary() => Sample.PlusDays(-50);
 
-        [Benchmark]
-        public LocalDate PlusDays_MonthYearBoundary() => Sample.PlusDays(10);
+    [Benchmark]
+    public LocalDate PlusDays_MonthYearBoundary() => Sample.PlusDays(10);
 
-        [Benchmark]
-        public LocalDate PlusDays_LargeGap() => Sample.PlusDays(1000);
+    [Benchmark]
+    public LocalDate PlusDays_LargeGap() => Sample.PlusDays(1000);
 
-        [Benchmark]
-        public LocalDate PlusPeriod() => (Sample + SamplePeriod);
+    [Benchmark]
+    public LocalDate PlusPeriod() => (Sample + SamplePeriod);
 
-        [Benchmark]
-        public LocalDate MinusPeriod() => (Sample - SamplePeriod);
+    [Benchmark]
+    public LocalDate MinusPeriod() => (Sample - SamplePeriod);
 
-        [Benchmark]
-        public LocalDate FromDateTime() => LocalDate.FromDateTime(SampleDateTime);
+    [Benchmark]
+    public LocalDate FromDateTime() => LocalDate.FromDateTime(SampleDateTime);
 
-        [Benchmark]
-        public LocalDate FromDateTime_WithCalendar() => LocalDate.FromDateTime(SampleDateTime, CalendarSystem.Julian);
+    [Benchmark]
+    public LocalDate FromDateTime_WithCalendar() => LocalDate.FromDateTime(SampleDateTime, CalendarSystem.Julian);
 
-        [Benchmark]
-        public int CompareTo() => Sample.CompareTo(SampleBeforeEpoch);
+    [Benchmark]
+    public int CompareTo() => Sample.CompareTo(SampleBeforeEpoch);
 
-        [Benchmark]
-        public bool LessThanOperator() => Sample < SampleBeforeEpoch;
+    [Benchmark]
+    public bool LessThanOperator() => Sample < SampleBeforeEpoch;
 
-        [Benchmark]
-        public LocalDate WithCalendar_Unchanged() => Sample.WithCalendar(CalendarSystem.Iso);
+    [Benchmark]
+    public LocalDate WithCalendar_Unchanged() => Sample.WithCalendar(CalendarSystem.Iso);
 
 #if NET6_0_OR_GREATER
-        [Benchmark]
-        public DateOnly ToDateOnly() => Sample.ToDateOnly();
+    [Benchmark]
+    public DateOnly ToDateOnly() => Sample.ToDateOnly();
 
-        [Benchmark]
-        public LocalDate FromDateOnly() => LocalDate.FromDateOnly(SampleDateOnly);
+    [Benchmark]
+    public LocalDate FromDateOnly() => LocalDate.FromDateOnly(SampleDateOnly);
 #endif
-    }
 }

@@ -2,102 +2,101 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-using System;
 using NUnit.Framework;
+using System;
 
-namespace NodaTime.Test
+namespace NodaTime.Test;
+
+partial class OffsetTest
 {
-    partial class OffsetTest
+    [Test]
+    public void Zero()
     {
-        [Test]
-        public void Zero()
-        {
-            Offset test = Offset.Zero;
-            Assert.AreEqual(0, test.Milliseconds);
-        }
+        Offset test = Offset.Zero;
+        Assert.AreEqual(0, test.Milliseconds);
+    }
 
-        [Test]
-        public void FromSeconds_Valid()
-        {
-            var test = Offset.FromSeconds(12345);
-            Assert.AreEqual(12345, test.Seconds);
-        }
+    [Test]
+    public void FromSeconds_Valid()
+    {
+        var test = Offset.FromSeconds(12345);
+        Assert.AreEqual(12345, test.Seconds);
+    }
 
-        [Test]
-        public void FromSeconds_Invalid()
-        {
-            int seconds = 18 * NodaConstants.SecondsPerHour + 1;
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(seconds));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(-seconds));
-        }
+    [Test]
+    public void FromSeconds_Invalid()
+    {
+        int seconds = 18 * NodaConstants.SecondsPerHour + 1;
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(seconds));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromSeconds(-seconds));
+    }
 
-        [Test]
-        public void FromMilliseconds_Valid()
-        {
-            Offset value = Offset.FromMilliseconds(-15 * NodaConstants.MillisecondsPerMinute);
-            Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
-            Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
-        }
+    [Test]
+    public void FromMilliseconds_Valid()
+    {
+        Offset value = Offset.FromMilliseconds(-15 * NodaConstants.MillisecondsPerMinute);
+        Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
+        Assert.AreEqual(-15 * NodaConstants.MillisecondsPerMinute, value.Milliseconds);
+    }
 
-        [Test]
-        public void FromMilliseconds_Invalid()
-        {
-            int millis = 18 * NodaConstants.MillisecondsPerHour + 1;
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(millis));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(-millis));
-        }
+    [Test]
+    public void FromMilliseconds_Invalid()
+    {
+        int millis = 18 * NodaConstants.MillisecondsPerHour + 1;
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(millis));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromMilliseconds(-millis));
+    }
 
-        [Test]
-        public void FromTicks_Valid()
-        {
-            Offset value = Offset.FromTicks(-15 * NodaConstants.TicksPerMinute);
-            Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
-            Assert.AreEqual(-15 * NodaConstants.TicksPerMinute, value.Ticks);
-        }
+    [Test]
+    public void FromTicks_Valid()
+    {
+        Offset value = Offset.FromTicks(-15 * NodaConstants.TicksPerMinute);
+        Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
+        Assert.AreEqual(-15 * NodaConstants.TicksPerMinute, value.Ticks);
+    }
 
-        [Test]
-        public void FromTicks_Invalid()
-        {
-            long ticks = 18 * NodaConstants.TicksPerHour + 1;
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(ticks));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(-ticks));
-        }
+    [Test]
+    public void FromTicks_Invalid()
+    {
+        long ticks = 18 * NodaConstants.TicksPerHour + 1;
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(ticks));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromTicks(-ticks));
+    }
 
-        [Test]
-        public void FromNanoseconds_Valid()
-        {
-            Offset value = Offset.FromNanoseconds(-15 * NodaConstants.NanosecondsPerMinute);
-            Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
-            Assert.AreEqual(-15 * NodaConstants.NanosecondsPerMinute, value.Nanoseconds);
-        }
+    [Test]
+    public void FromNanoseconds_Valid()
+    {
+        Offset value = Offset.FromNanoseconds(-15 * NodaConstants.NanosecondsPerMinute);
+        Assert.AreEqual(-15 * NodaConstants.SecondsPerMinute, value.Seconds);
+        Assert.AreEqual(-15 * NodaConstants.NanosecondsPerMinute, value.Nanoseconds);
+    }
 
-        [Test]
-        public void FromNanoseconds_Invalid()
-        {
-            long nanos = 18 * NodaConstants.NanosecondsPerHour + 1;
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromNanoseconds(nanos));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromNanoseconds(-nanos));
-        }
+    [Test]
+    public void FromNanoseconds_Invalid()
+    {
+        long nanos = 18 * NodaConstants.NanosecondsPerHour + 1;
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromNanoseconds(nanos));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromNanoseconds(-nanos));
+    }
 
-        [Test]
-        public void FromHours_Valid()
-        {
-            Offset value = Offset.FromHours(-15);
-            Assert.AreEqual(-15 * NodaConstants.SecondsPerHour, value.Seconds);
-        }
+    [Test]
+    public void FromHours_Valid()
+    {
+        Offset value = Offset.FromHours(-15);
+        Assert.AreEqual(-15 * NodaConstants.SecondsPerHour, value.Seconds);
+    }
 
-        [Test]
-        public void FromHours_Invalid()
-        {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(19));
-            Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(-19));
-        }
+    [Test]
+    public void FromHours_Invalid()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(19));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Offset.FromHours(-19));
+    }
 
-        [Test]
-        public void FromHoursAndMinutes_Valid()
-        {
-            Offset value = Offset.FromHoursAndMinutes(5, 30);
-            Assert.AreEqual(5 * NodaConstants.SecondsPerHour + 30 * NodaConstants.SecondsPerMinute, value.Seconds);
-        }
+    [Test]
+    public void FromHoursAndMinutes_Valid()
+    {
+        Offset value = Offset.FromHoursAndMinutes(5, 30);
+        Assert.AreEqual(5 * NodaConstants.SecondsPerHour + 30 * NodaConstants.SecondsPerMinute, value.Seconds);
     }
 }

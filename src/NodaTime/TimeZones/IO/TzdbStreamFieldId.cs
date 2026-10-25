@@ -2,50 +2,49 @@
 // Use of this source code is governed by the Apache License 2.0,
 // as found in the LICENSE.txt file.
 
-namespace NodaTime.TimeZones.IO
+namespace NodaTime.TimeZones.IO;
+
+/// <summary>
+/// Enumeration of the fields which can occur in a TZDB stream file.
+/// This enables the file to be self-describing to a reasonable extent.
+/// </summary>
+internal enum TzdbStreamFieldId : byte
 {
     /// <summary>
-    /// Enumeration of the fields which can occur in a TZDB stream file.
-    /// This enables the file to be self-describing to a reasonable extent.
+    /// String pool. Format is: number of strings (WriteCount) followed by that many string values.
+    /// The indexes into the resultant list are used for other strings in the file, in some fields.
     /// </summary>
-    internal enum TzdbStreamFieldId : byte
-    {
-        /// <summary>
-        /// String pool. Format is: number of strings (WriteCount) followed by that many string values.
-        /// The indexes into the resultant list are used for other strings in the file, in some fields.
-        /// </summary>
-        StringPool = 0,
-        /// <summary>
-        /// Repeated field of time zones. Format is: zone ID, then zone as written by DateTimeZoneWriter.
-        /// </summary>
-        TimeZone = 1,
-        /// <summary>
-        /// Single field giving the version of the TZDB source data. A string value which does *not* use the string pool.
-        /// </summary>
-        TzdbVersion = 2,
-        /// <summary>
-        /// Single field giving the mapping of ID to canonical ID, as written by DateTimeZoneWriter.WriteDictionary.
-        /// </summary>
-        TzdbIdMap = 3,
-        /// <summary>
-        /// Single field containing mapping data as written by WindowsZones.Write.
-        /// </summary>
-        CldrSupplementalWindowsZones = 4,
-        /// <summary>
-        /// Single field giving the mapping of Windows StandardName to TZDB canonical ID,
-        /// for time zones where TimeZoneInfo.Id != TimeZoneInfo.StandardName,
-        /// as written by DateTimeZoneWriter.WriteDictionary.
-        /// </summary>
-        WindowsAdditionalStandardNameToIdMapping = 5,
-        /// <summary>
-        /// Single field providing all zone locations. The format is simply a count, and then that many copies of
-        /// TzdbZoneLocation data.
-        /// </summary>
-        ZoneLocations = 6,
-        /// <summary>
-        /// Single field providing all "zone 1970" locations. The format is simply a count, and then that many copies of
-        /// TzdbZone1970Location data. This field was introduced in Noda Time 2.0.
-        /// </summary>
-        Zone1970Locations = 7
-    }
+    StringPool = 0,
+    /// <summary>
+    /// Repeated field of time zones. Format is: zone ID, then zone as written by DateTimeZoneWriter.
+    /// </summary>
+    TimeZone = 1,
+    /// <summary>
+    /// Single field giving the version of the TZDB source data. A string value which does *not* use the string pool.
+    /// </summary>
+    TzdbVersion = 2,
+    /// <summary>
+    /// Single field giving the mapping of ID to canonical ID, as written by DateTimeZoneWriter.WriteDictionary.
+    /// </summary>
+    TzdbIdMap = 3,
+    /// <summary>
+    /// Single field containing mapping data as written by WindowsZones.Write.
+    /// </summary>
+    CldrSupplementalWindowsZones = 4,
+    /// <summary>
+    /// Single field giving the mapping of Windows StandardName to TZDB canonical ID,
+    /// for time zones where TimeZoneInfo.Id != TimeZoneInfo.StandardName,
+    /// as written by DateTimeZoneWriter.WriteDictionary.
+    /// </summary>
+    WindowsAdditionalStandardNameToIdMapping = 5,
+    /// <summary>
+    /// Single field providing all zone locations. The format is simply a count, and then that many copies of
+    /// TzdbZoneLocation data.
+    /// </summary>
+    ZoneLocations = 6,
+    /// <summary>
+    /// Single field providing all "zone 1970" locations. The format is simply a count, and then that many copies of
+    /// TzdbZone1970Location data. This field was introduced in Noda Time 2.0.
+    /// </summary>
+    Zone1970Locations = 7
 }

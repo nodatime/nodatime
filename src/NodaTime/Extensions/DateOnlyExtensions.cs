@@ -5,19 +5,18 @@
 #if NET6_0_OR_GREATER
 using System;
 
-namespace NodaTime.Extensions
+namespace NodaTime.Extensions;
+
+/// <summary>
+/// Extension methods for <see cref="DateOnly"/>.
+/// </summary>
+public static class DateOnlyExtensions
 {
     /// <summary>
-    /// Extension methods for <see cref="DateOnly"/>.
+    /// Converts a <see cref="DateOnly"/> to the equivalent <see cref="LocalDate"/>.
     /// </summary>
-    public static class DateOnlyExtensions
-    {
-        /// <summary>
-        /// Converts a <see cref="DateOnly"/> to the equivalent <see cref="LocalDate"/>.
-        /// </summary>
-        /// <param name="date">The date to convert.</param>
-        /// <returns>The <see cref="LocalDate"/> equivalent, which is always in the ISO calendar system.</returns>
-        public static LocalDate ToLocalDate(this DateOnly date) => LocalDate.FromDateOnly(date);
-    }
+    /// <param name="date">The date to convert.</param>
+    /// <returns>The <see cref="LocalDate"/> equivalent, which is always in the ISO calendar system.</returns>
+    public static LocalDate ToLocalDate(this DateOnly date) => LocalDate.FromDateOnly(date);
 }
 #endif

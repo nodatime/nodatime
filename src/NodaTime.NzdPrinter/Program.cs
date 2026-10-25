@@ -12,199 +12,198 @@ using System.Threading.Tasks;
 using static NodaTime.TimeZones.IO.TzdbStreamFieldId;
 using static System.FormattableString;
 
-namespace NodaTime.NzdPrinter
+namespace NodaTime.NzdPrinter;
+
+/// <summary>
+/// Diagnostic tool to print out the contents of an NZD file.
+/// There's a lot of code here which is basically duplicating what's in the main
+/// code base, but it's hard to avoid that.
+/// </summary>
+public class Program
 {
-    /// <summary>
-    /// Diagnostic tool to print out the contents of an NZD file.
-    /// There's a lot of code here which is basically duplicating what's in the main
-    /// code base, but it's hard to avoid that.
-    /// </summary>
-    public class Program
+    static async Task<int> Main(string[] args)
     {
-        static async Task<int> Main(string[] args)
+        if (args.Length != 1)
         {
-            if (args.Length != 1)
-            {
-                Console.WriteLine("Usage: NodaTime.NzdPrinter <path/url to nzd file>");
-                return 1;
-            }
-            await using var stream = await FileUtility.LoadFileOrUrlAsync(args[0]);
-            int version = new BinaryReader(stream).ReadInt32();
-            Console.WriteLine($"File format version: {version}");
-            string[]? stringPool = null; // In a valid file, this will be non-null before it's used for any non-string-pool field.
-            foreach (var field in TzdbStreamField.ReadFields(stream))
-            {
-                Console.WriteLine($"Field: {field.Id}");
-                var reader = new DateTimeZoneReader(field.CreateStream(), stringPool);
-                switch (field.Id)
-                {
-                    case StringPool:
-                        stringPool = ReadStringPool(reader);
-                        break;
-                    case TzdbStreamFieldId.TimeZone:
-                        ReadTimeZone(reader);
-                        break;
-                    case TzdbVersion:
-                        Console.WriteLine($"TZDB version: {reader.ReadString()}");
-                        break;
-                    case TzdbIdMap:
-                        ReadMap(reader);
-                        break;
-                    case CldrSupplementalWindowsZones:
-                        ReadWindowsZones(reader);
-                        break;
-                    case WindowsAdditionalStandardNameToIdMapping:
-                        ReadMap(reader);
-                        break;
-                    case ZoneLocations:
-                        ReadZoneLocations(reader);
-                        break;
-                    case Zone1970Locations:
-                        ReadZone1970Locations(reader);
-                        break;
-                }
-                Console.WriteLine();
-            }
-
-            return 0;
+            Console.WriteLine("Usage: NodaTime.NzdPrinter <path/url to nzd file>");
+            return 1;
         }
-
-        private static string[] ReadStringPool(DateTimeZoneReader reader)
+        await using var stream = await FileUtility.LoadFileOrUrlAsync(args[0]);
+        int version = new BinaryReader(stream).ReadInt32();
+        Console.WriteLine($"File format version: {version}");
+        string[]? stringPool = null; // In a valid file, this will be non-null before it's used for any non-string-pool field.
+        foreach (var field in TzdbStreamField.ReadFields(stream))
         {
-            int count = reader.ReadCount();
-            Console.WriteLine($"  String pool contains {count} entries");
-            var stringPool = new string[count];
-            for (int i = 0; i < count; i++)
+            Console.WriteLine($"Field: {field.Id}");
+            var reader = new DateTimeZoneReader(field.CreateStream(), stringPool);
+            switch (field.Id)
             {
-                stringPool[i] = reader.ReadString();
-            }
-            return stringPool;
-        }
-
-        private static void ReadTimeZone(DateTimeZoneReader reader)
-        {
-            Console.WriteLine($"  ID: {reader.ReadString()}");
-            var type = (DateTimeZoneWriter.DateTimeZoneType) reader.ReadByte();
-            Console.WriteLine($"  Type: {type}");
-            switch (type)
-            {
-                case DateTimeZoneWriter.DateTimeZoneType.Fixed:
-                    ReadFixedTimeZone(reader);
+                case StringPool:
+                    stringPool = ReadStringPool(reader);
                     break;
-                case DateTimeZoneWriter.DateTimeZoneType.Precalculated:
-                    ReadPrecalculatedTimeZone(reader);
+                case TzdbStreamFieldId.TimeZone:
+                    ReadTimeZone(reader);
                     break;
-                default:
-                    Console.WriteLine("  (Unknown time zone type)");
+                case TzdbVersion:
+                    Console.WriteLine($"TZDB version: {reader.ReadString()}");
+                    break;
+                case TzdbIdMap:
+                    ReadMap(reader);
+                    break;
+                case CldrSupplementalWindowsZones:
+                    ReadWindowsZones(reader);
+                    break;
+                case WindowsAdditionalStandardNameToIdMapping:
+                    ReadMap(reader);
+                    break;
+                case ZoneLocations:
+                    ReadZoneLocations(reader);
+                    break;
+                case Zone1970Locations:
+                    ReadZone1970Locations(reader);
                     break;
             }
+            Console.WriteLine();
         }
 
-        private static void ReadFixedTimeZone(DateTimeZoneReader reader)
-        {
-            Console.WriteLine($"  Offset: {reader.ReadOffset()}");
-            if (reader.HasMoreData)
-            {
-                Console.WriteLine($"  Name: {reader.ReadString()}");
-            }
-        }
+        return 0;
+    }
 
-        private static void ReadPrecalculatedTimeZone(DateTimeZoneReader reader)
+    private static string[] ReadStringPool(DateTimeZoneReader reader)
+    {
+        int count = reader.ReadCount();
+        Console.WriteLine($"  String pool contains {count} entries");
+        var stringPool = new string[count];
+        for (int i = 0; i < count; i++)
         {
-            int size = reader.ReadCount();
-            Console.WriteLine($"  Precalculated intervals: {size}");
-            var start = reader.ReadZoneIntervalTransition(null);
-            for (int i = 0; i < size; i++)
-            {
-                var name = reader.ReadString();
-                var offset = reader.ReadOffset();
-                var savings = reader.ReadOffset();
-                var nextStart = reader.ReadZoneIntervalTransition(start);
-                Console.WriteLine(Invariant($"  {start:uuuu-MM-dd'T'HH:mm:ss} - {nextStart:uuuu-MM-dd'T'HH:mm:ss}; wall offset: {offset}; savings: {savings}; name: {name}"));
-                start = nextStart;
-            }
-            if (reader.ReadByte() == 1)
-            {
-                Offset standardOffset = reader.ReadOffset();
-                string standardName = reader.ReadString();
-                ZoneYearOffset standardYearOffset = ZoneYearOffset.Read(reader);
-                string daylightName = reader.ReadString();
-                ZoneYearOffset daylightYearOffset = ZoneYearOffset.Read(reader);
-                Offset savings = reader.ReadOffset();
-                Console.WriteLine("  Tail zone:");
-                Console.WriteLine($"    Standard time: {standardYearOffset}; offset: {standardOffset}; name: {standardName}");
-                Console.WriteLine($"    Daylight time: {daylightYearOffset}; offset: {standardOffset + savings}; name: {daylightName}");
-            }
-            else
-            {
-                Console.WriteLine("  No tail zone");
-            }
+            stringPool[i] = reader.ReadString();
         }
+        return stringPool;
+    }
 
-        private static void ReadWindowsZones(DateTimeZoneReader reader)
+    private static void ReadTimeZone(DateTimeZoneReader reader)
+    {
+        Console.WriteLine($"  ID: {reader.ReadString()}");
+        var type = (DateTimeZoneWriter.DateTimeZoneType) reader.ReadByte();
+        Console.WriteLine($"  Type: {type}");
+        switch (type)
         {
-            var zones = WindowsZones.Read(reader);
-            Console.WriteLine($"  Version: {zones.Version}");
-            Console.WriteLine($"  TZDB version: {zones.TzdbVersion}");
-            Console.WriteLine($"  Windows version: {zones.WindowsVersion}");
-            Console.WriteLine($"  Mappings: {zones.MapZones.Count}");
-            foreach (var mapZone in zones.MapZones)
-            {
-                Console.WriteLine($"  {mapZone}");
-            }
+            case DateTimeZoneWriter.DateTimeZoneType.Fixed:
+                ReadFixedTimeZone(reader);
+                break;
+            case DateTimeZoneWriter.DateTimeZoneType.Precalculated:
+                ReadPrecalculatedTimeZone(reader);
+                break;
+            default:
+                Console.WriteLine("  (Unknown time zone type)");
+                break;
         }
+    }
 
-        private static void ReadZoneLocations(DateTimeZoneReader reader)
+    private static void ReadFixedTimeZone(DateTimeZoneReader reader)
+    {
+        Console.WriteLine($"  Offset: {reader.ReadOffset()}");
+        if (reader.HasMoreData)
         {
-            var count = reader.ReadCount();
-            Console.WriteLine($"  Entries: {count}");
-            for (int i = 0; i < count; i++)
-            {
-                int latitudeSeconds = reader.ReadSignedCount();
-                int longitudeSeconds = reader.ReadSignedCount();
-                string countryName = reader.ReadString();
-                string countryCode = reader.ReadString();
-                string zoneId = reader.ReadString();
-                string comment = reader.ReadString();
-                Console.WriteLine($"  Lat seconds: {latitudeSeconds}; long seconds: {longitudeSeconds}: country: {countryName} ({countryCode}); id: {zoneId}; comment: {comment}");
-            }
+            Console.WriteLine($"  Name: {reader.ReadString()}");
         }
+    }
 
-        private static void ReadZone1970Locations(DateTimeZoneReader reader)
+    private static void ReadPrecalculatedTimeZone(DateTimeZoneReader reader)
+    {
+        int size = reader.ReadCount();
+        Console.WriteLine($"  Precalculated intervals: {size}");
+        var start = reader.ReadZoneIntervalTransition(null);
+        for (int i = 0; i < size; i++)
         {
-            var count = reader.ReadCount();
-            Console.WriteLine($"  Entries: {count}");
-            for (int i = 0; i < count; i++)
-            {
-                int latitudeSeconds = reader.ReadSignedCount();
-                int longitudeSeconds = reader.ReadSignedCount();
-                int countryCount = reader.ReadCount();
-                StringBuilder countries = new StringBuilder();
-                for (int j = 0; j < countryCount; j++)
-                {
-                    countries.Append($"{reader.ReadString()} ({reader.ReadString()}), ");
-                }
-                if (countries.Length > 0)
-                {
-                    // Remove the trailing comma+space.
-                    countries.Length -= 2;
-                }
-                string zoneId = reader.ReadString();
-                string comment = reader.ReadString();
-                Console.WriteLine($"  Lat seconds: {latitudeSeconds}; long seconds: {longitudeSeconds}: countries: [{countries}]; id: {zoneId}; comment: {comment}");
-            }
+            var name = reader.ReadString();
+            var offset = reader.ReadOffset();
+            var savings = reader.ReadOffset();
+            var nextStart = reader.ReadZoneIntervalTransition(start);
+            Console.WriteLine(Invariant($"  {start:uuuu-MM-dd'T'HH:mm:ss} - {nextStart:uuuu-MM-dd'T'HH:mm:ss}; wall offset: {offset}; savings: {savings}; name: {name}"));
+            start = nextStart;
         }
-
-        private static void ReadMap(DateTimeZoneReader reader)
+        if (reader.ReadByte() == 1)
         {
-            int count = reader.ReadCount();
-            Console.WriteLine($"  Entries: {count}");
-            for (int i = 0; i < count; i++)
+            Offset standardOffset = reader.ReadOffset();
+            string standardName = reader.ReadString();
+            ZoneYearOffset standardYearOffset = ZoneYearOffset.Read(reader);
+            string daylightName = reader.ReadString();
+            ZoneYearOffset daylightYearOffset = ZoneYearOffset.Read(reader);
+            Offset savings = reader.ReadOffset();
+            Console.WriteLine("  Tail zone:");
+            Console.WriteLine($"    Standard time: {standardYearOffset}; offset: {standardOffset}; name: {standardName}");
+            Console.WriteLine($"    Daylight time: {daylightYearOffset}; offset: {standardOffset + savings}; name: {daylightName}");
+        }
+        else
+        {
+            Console.WriteLine("  No tail zone");
+        }
+    }
+
+    private static void ReadWindowsZones(DateTimeZoneReader reader)
+    {
+        var zones = WindowsZones.Read(reader);
+        Console.WriteLine($"  Version: {zones.Version}");
+        Console.WriteLine($"  TZDB version: {zones.TzdbVersion}");
+        Console.WriteLine($"  Windows version: {zones.WindowsVersion}");
+        Console.WriteLine($"  Mappings: {zones.MapZones.Count}");
+        foreach (var mapZone in zones.MapZones)
+        {
+            Console.WriteLine($"  {mapZone}");
+        }
+    }
+
+    private static void ReadZoneLocations(DateTimeZoneReader reader)
+    {
+        var count = reader.ReadCount();
+        Console.WriteLine($"  Entries: {count}");
+        for (int i = 0; i < count; i++)
+        {
+            int latitudeSeconds = reader.ReadSignedCount();
+            int longitudeSeconds = reader.ReadSignedCount();
+            string countryName = reader.ReadString();
+            string countryCode = reader.ReadString();
+            string zoneId = reader.ReadString();
+            string comment = reader.ReadString();
+            Console.WriteLine($"  Lat seconds: {latitudeSeconds}; long seconds: {longitudeSeconds}: country: {countryName} ({countryCode}); id: {zoneId}; comment: {comment}");
+        }
+    }
+
+    private static void ReadZone1970Locations(DateTimeZoneReader reader)
+    {
+        var count = reader.ReadCount();
+        Console.WriteLine($"  Entries: {count}");
+        for (int i = 0; i < count; i++)
+        {
+            int latitudeSeconds = reader.ReadSignedCount();
+            int longitudeSeconds = reader.ReadSignedCount();
+            int countryCount = reader.ReadCount();
+            StringBuilder countries = new StringBuilder();
+            for (int j = 0; j < countryCount; j++)
             {
-                string key = reader.ReadString();
-                string value = reader.ReadString();
-                Console.WriteLine($"    {key} -> {value}");
+                countries.Append($"{reader.ReadString()} ({reader.ReadString()}), ");
             }
+            if (countries.Length > 0)
+            {
+                // Remove the trailing comma+space.
+                countries.Length -= 2;
+            }
+            string zoneId = reader.ReadString();
+            string comment = reader.ReadString();
+            Console.WriteLine($"  Lat seconds: {latitudeSeconds}; long seconds: {longitudeSeconds}: countries: [{countries}]; id: {zoneId}; comment: {comment}");
+        }
+    }
+
+    private static void ReadMap(DateTimeZoneReader reader)
+    {
+        int count = reader.ReadCount();
+        Console.WriteLine($"  Entries: {count}");
+        for (int i = 0; i < count; i++)
+        {
+            string key = reader.ReadString();
+            string value = reader.ReadString();
+            Console.WriteLine($"    {key} -> {value}");
         }
     }
 }

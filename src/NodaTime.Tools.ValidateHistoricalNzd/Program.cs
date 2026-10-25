@@ -8,38 +8,37 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace NodaTime.Tools.ValidateHistoricalNzd
-{
-    class Program
-    {
-        private static async Task<int> Main()
-        {
-            var httpClient = new HttpClient();
-            var allUrlsText = await httpClient.GetStringAsync("https://nodatime.org/tzdb/index.txt");
-            var urls = allUrlsText.Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
-            bool success = true;
-            foreach (var url in urls)
-            {
-                success &= await ValidateAsync(httpClient, url);
-            }
-            return success ? 0 : 1;
-        }
+namespace NodaTime.Tools.ValidateHistoricalNzd;
 
-        private static async Task<bool> ValidateAsync(HttpClient httpClient, string url)
+class Program
+{
+    private static async Task<int> Main()
+    {
+        var httpClient = new HttpClient();
+        var allUrlsText = await httpClient.GetStringAsync("https://nodatime.org/tzdb/index.txt");
+        var urls = allUrlsText.Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
+        bool success = true;
+        foreach (var url in urls)
         {
-            try
-            {
-                Console.WriteLine($"Validating {url}");
-                byte[] data = await httpClient.GetByteArrayAsync(url);
-                var source = TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
-                source.Validate();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"{e.GetType().Name}: {e.Message}");
-                return false;
-            }
+            success &= await ValidateAsync(httpClient, url);
+        }
+        return success ? 0 : 1;
+    }
+
+    private static async Task<bool> ValidateAsync(HttpClient httpClient, string url)
+    {
+        try
+        {
+            Console.WriteLine($"Validating {url}");
+            byte[] data = await httpClient.GetByteArrayAsync(url);
+            var source = TzdbDateTimeZoneSource.FromStream(new MemoryStream(data));
+            source.Validate();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"{e.GetType().Name}: {e.Message}");
+            return false;
         }
     }
 }

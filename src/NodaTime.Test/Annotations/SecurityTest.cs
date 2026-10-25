@@ -8,33 +8,32 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 
-namespace NodaTime.Test.Annotations
-{
-    public class SecurityTest
-    {
-        [Test]
-        public void SecurityAttributesOnInterfaceImplementations()
-        {
-            var violations = new List<string>();
+namespace NodaTime.Test.Annotations;
 
-            foreach (var type in typeof(Instant).Assembly.DefinedTypes.Where(type => !type.IsInterface))
+public class SecurityTest
+{
+    [Test]
+    public void SecurityAttributesOnInterfaceImplementations()
+    {
+        var violations = new List<string>();
+
+        foreach (var type in typeof(Instant).Assembly.DefinedTypes.Where(type => !type.IsInterface))
+        {
+            foreach (var iface in type.ImplementedInterfaces)
             {
-                foreach (var iface in type.ImplementedInterfaces)
+                var map = type.GetRuntimeInterfaceMap(iface);
+                var methodCount = map.InterfaceMethods.Length;
+                for (int i = 0; i < methodCount; i++)
                 {
-                    var map = type.GetRuntimeInterfaceMap(iface);
-                    var methodCount = map.InterfaceMethods.Length;
-                    for (int i = 0; i < methodCount; i++)
+                    if (map.TargetMethods[i].DeclaringType?.GetTypeInfo() == type &&
+                        map.InterfaceMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false) &&
+                        !map.TargetMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false))
                     {
-                        if (map.TargetMethods[i].DeclaringType?.GetTypeInfo() == type &&
-                            map.InterfaceMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false) &&
-                            !map.TargetMethods[i].IsDefined(typeof(SecurityCriticalAttribute), false))
-                        {
-                            violations.Add($"{type.FullName}/{map.TargetMethods[i].Name}");
-                        }
+                        violations.Add($"{type.FullName}/{map.TargetMethods[i].Name}");
                     }
                 }
             }
-            TestHelper.AssertNoFailures(violations, v => v);
         }
+        TestHelper.AssertNoFailures(violations, v => v);
     }
 }

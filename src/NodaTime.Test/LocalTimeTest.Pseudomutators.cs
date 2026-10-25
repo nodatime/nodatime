@@ -4,110 +4,109 @@
 
 using NUnit.Framework;
 
-namespace NodaTime.Test
+namespace NodaTime.Test;
+
+public partial class LocalTimeTest
 {
-    public partial class LocalTimeTest
+    [Test]
+    public void PlusHours_Simple()
     {
-        [Test]
-        public void PlusHours_Simple()
-        {
-            LocalTime start = new LocalTime(12, 15, 8);
-            LocalTime expectedForward = new LocalTime(14, 15, 8);
-            LocalTime expectedBackward = new LocalTime(10, 15, 8);
-            Assert.AreEqual(expectedForward, start.PlusHours(2));
-            Assert.AreEqual(expectedBackward, start.PlusHours(-2));
-        }
+        LocalTime start = new LocalTime(12, 15, 8);
+        LocalTime expectedForward = new LocalTime(14, 15, 8);
+        LocalTime expectedBackward = new LocalTime(10, 15, 8);
+        Assert.AreEqual(expectedForward, start.PlusHours(2));
+        Assert.AreEqual(expectedBackward, start.PlusHours(-2));
+    }
 
-        [Test]
-        public void PlusHours_CrossingDayBoundary()
-        {
-            LocalTime start = new LocalTime(12, 15, 8);
-            LocalTime expected = new LocalTime(8, 15, 8);
-            Assert.AreEqual(expected, start.PlusHours(20));
-            Assert.AreEqual(start, start.PlusHours(20).PlusHours(-20));
-        }
+    [Test]
+    public void PlusHours_CrossingDayBoundary()
+    {
+        LocalTime start = new LocalTime(12, 15, 8);
+        LocalTime expected = new LocalTime(8, 15, 8);
+        Assert.AreEqual(expected, start.PlusHours(20));
+        Assert.AreEqual(start, start.PlusHours(20).PlusHours(-20));
+    }
 
-        [Test]
-        public void PlusHours_CrossingSeveralDaysBoundary()
-        {
-            // Christmas day + 10 days and 1 hour
-            LocalTime start = new LocalTime(12, 15, 8);
-            LocalTime expected = new LocalTime(13, 15, 8);
-            Assert.AreEqual(expected, start.PlusHours(241));
-            Assert.AreEqual(start, start.PlusHours(241).PlusHours(-241));
-        }
+    [Test]
+    public void PlusHours_CrossingSeveralDaysBoundary()
+    {
+        // Christmas day + 10 days and 1 hour
+        LocalTime start = new LocalTime(12, 15, 8);
+        LocalTime expected = new LocalTime(13, 15, 8);
+        Assert.AreEqual(expected, start.PlusHours(241));
+        Assert.AreEqual(start, start.PlusHours(241).PlusHours(-241));
+    }
 
-        // Having tested that hours cross boundaries correctly, the other time unit
-        // tests are straightforward
-        [Test]
-        public void PlusMinutes_Simple()
-        {
-            LocalTime start = new LocalTime(12, 15, 8);
-            LocalTime expectedForward = new LocalTime(12, 17, 8);
-            LocalTime expectedBackward = new LocalTime(12, 13, 8);
-            Assert.AreEqual(expectedForward, start.PlusMinutes(2));
-            Assert.AreEqual(expectedBackward, start.PlusMinutes(-2));
-        }
+    // Having tested that hours cross boundaries correctly, the other time unit
+    // tests are straightforward
+    [Test]
+    public void PlusMinutes_Simple()
+    {
+        LocalTime start = new LocalTime(12, 15, 8);
+        LocalTime expectedForward = new LocalTime(12, 17, 8);
+        LocalTime expectedBackward = new LocalTime(12, 13, 8);
+        Assert.AreEqual(expectedForward, start.PlusMinutes(2));
+        Assert.AreEqual(expectedBackward, start.PlusMinutes(-2));
+    }
 
-        [Test]
-        public void PlusSeconds_Simple()
-        {
-            LocalTime start = new LocalTime(12, 15, 8);
-            LocalTime expectedForward = new LocalTime(12, 15, 18);
-            LocalTime expectedBackward = new LocalTime(12, 14, 58);
-            Assert.AreEqual(expectedForward, start.PlusSeconds(10));
-            Assert.AreEqual(expectedBackward, start.PlusSeconds(-10));
-        }
+    [Test]
+    public void PlusSeconds_Simple()
+    {
+        LocalTime start = new LocalTime(12, 15, 8);
+        LocalTime expectedForward = new LocalTime(12, 15, 18);
+        LocalTime expectedBackward = new LocalTime(12, 14, 58);
+        Assert.AreEqual(expectedForward, start.PlusSeconds(10));
+        Assert.AreEqual(expectedBackward, start.PlusSeconds(-10));
+    }
 
-        [Test]
-        public void PlusMilliseconds_Simple()
-        {
-            LocalTime start = new LocalTime(12, 15, 8, 300);
-            LocalTime expectedForward = new LocalTime(12, 15, 8, 700);
-            LocalTime expectedBackward = new LocalTime(12, 15, 7, 900);
-            Assert.AreEqual(expectedForward, start.PlusMilliseconds(400));
-            Assert.AreEqual(expectedBackward, start.PlusMilliseconds(-400));
-        }
+    [Test]
+    public void PlusMilliseconds_Simple()
+    {
+        LocalTime start = new LocalTime(12, 15, 8, 300);
+        LocalTime expectedForward = new LocalTime(12, 15, 8, 700);
+        LocalTime expectedBackward = new LocalTime(12, 15, 7, 900);
+        Assert.AreEqual(expectedForward, start.PlusMilliseconds(400));
+        Assert.AreEqual(expectedBackward, start.PlusMilliseconds(-400));
+    }
 
-        [Test]
-        public void PlusTicks_Simple()
-        {
-            LocalTime start = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
-            LocalTime expectedForward = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 301, 1500);
-            LocalTime expectedBackward = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 3500);
-            Assert.AreEqual(expectedForward, start.PlusTicks(4000));
-            Assert.AreEqual(expectedBackward, start.PlusTicks(-4000));
-        }
+    [Test]
+    public void PlusTicks_Simple()
+    {
+        LocalTime start = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
+        LocalTime expectedForward = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 301, 1500);
+        LocalTime expectedBackward = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 3500);
+        Assert.AreEqual(expectedForward, start.PlusTicks(4000));
+        Assert.AreEqual(expectedBackward, start.PlusTicks(-4000));
+    }
 
-        [Test]
-        public void PlusTicks_Long()
-        {
-            Assert.IsTrue(NodaConstants.TicksPerDay > int.MaxValue);
-            LocalTime start = new LocalTime(12, 15, 8);
-            LocalTime expectedForward = new LocalTime(12, 15, 9);
-            LocalTime expectedBackward = new LocalTime(12, 15, 7);
-            Assert.AreEqual(expectedForward, start.PlusTicks(NodaConstants.TicksPerDay + NodaConstants.TicksPerSecond));
-            Assert.AreEqual(expectedBackward, start.PlusTicks(-NodaConstants.TicksPerDay - NodaConstants.TicksPerSecond));
-        }
+    [Test]
+    public void PlusTicks_Long()
+    {
+        Assert.IsTrue(NodaConstants.TicksPerDay > int.MaxValue);
+        LocalTime start = new LocalTime(12, 15, 8);
+        LocalTime expectedForward = new LocalTime(12, 15, 9);
+        LocalTime expectedBackward = new LocalTime(12, 15, 7);
+        Assert.AreEqual(expectedForward, start.PlusTicks(NodaConstants.TicksPerDay + NodaConstants.TicksPerSecond));
+        Assert.AreEqual(expectedBackward, start.PlusTicks(-NodaConstants.TicksPerDay - NodaConstants.TicksPerSecond));
+    }
 
-        [Test]
-        public void With()
-        {
-            LocalTime start = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 100, 1234);
-            LocalTime expected = new LocalTime(12, 15, 8);
-            Assert.AreEqual(expected, start.With(TimeAdjusters.TruncateToSecond));
-        }
+    [Test]
+    public void With()
+    {
+        LocalTime start = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 100, 1234);
+        LocalTime expected = new LocalTime(12, 15, 8);
+        Assert.AreEqual(expected, start.With(TimeAdjusters.TruncateToSecond));
+    }
 
-        [Test]
-        public void PlusMinutes_WouldOverflowNaively()
-        {
-            LocalTime start = new LocalTime(12, 34, 56);
-            // Very big value, which just wraps round a *lot* and adds one minute.
-            // There's no way we could compute that many nanoseconds.
-            long value = (NodaConstants.NanosecondsPerDay << 15) + 1;
-            LocalTime expected = new LocalTime(12, 35, 56);
-            LocalTime actual = start.PlusMinutes(value);
-            Assert.AreEqual(expected, actual);
-        }
+    [Test]
+    public void PlusMinutes_WouldOverflowNaively()
+    {
+        LocalTime start = new LocalTime(12, 34, 56);
+        // Very big value, which just wraps round a *lot* and adds one minute.
+        // There's no way we could compute that many nanoseconds.
+        long value = (NodaConstants.NanosecondsPerDay << 15) + 1;
+        LocalTime expected = new LocalTime(12, 35, 56);
+        LocalTime actual = start.PlusMinutes(value);
+        Assert.AreEqual(expected, actual);
     }
 }

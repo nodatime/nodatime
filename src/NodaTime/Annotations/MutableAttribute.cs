@@ -4,14 +4,13 @@
 
 using System;
 
-namespace NodaTime.Annotations
+namespace NodaTime.Annotations;
+
+/// <summary>
+/// Indicates that a type is mutable. Some members of this type
+/// allow state to be visibly changed.
+/// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+internal sealed class MutableAttribute : Attribute
 {
-    /// <summary>
-    /// Indicates that a type is mutable. Some members of this type
-    /// allow state to be visibly changed.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    internal sealed class MutableAttribute : Attribute
-    {
-    }
 }
