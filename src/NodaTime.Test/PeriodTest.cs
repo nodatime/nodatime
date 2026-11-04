@@ -118,6 +118,24 @@ public class PeriodTest
         Assert.AreEqual(expected, actual);
     }
 
+    [TestCase(PeriodUnits.Hours | PeriodUnits.Nanoseconds, 0L, 123L)]
+    [TestCase(PeriodUnits.Hours | PeriodUnits.Ticks, 1L, 0L)]
+    [TestCase(PeriodUnits.Hours | PeriodUnits.Ticks | PeriodUnits.Nanoseconds, 1L, 23L)]
+    public void BetweenLocalDateTimes_NotInt64Representable_SubsecondUnits(PeriodUnits units, long expectedTicks, long expectedNanoseconds)
+    {
+        var start = new LocalDateTime(2000, 1, 1, 0, 0);
+        var end = new LocalDateTime(2400, 1, 1, 0, 0).PlusNanoseconds(123);
+        var expected = new PeriodBuilder
+        {
+            Hours = 146097L * 24,
+            Ticks = expectedTicks,
+            Nanoseconds = expectedNanoseconds
+        }.Build();
+
+        Assert.AreEqual(expected, Period.Between(start, end, units));
+        Assert.AreEqual(-expected, Period.Between(end, start, units));
+    }
+
     [Test]
     public void BetweenLocalDates_InvalidUnits()
     {
