@@ -528,7 +528,7 @@ public sealed class Period : IEquatable<Period?>
             seconds = UnitsBetween(PeriodUnits.Seconds, TimePeriodField.Seconds);
             milliseconds = UnitsBetween(PeriodUnits.Milliseconds, TimePeriodField.Milliseconds);
             ticks = UnitsBetween(PeriodUnits.Ticks, TimePeriodField.Ticks);
-            nanoseconds = UnitsBetween(PeriodUnits.Ticks, TimePeriodField.Nanoseconds);
+            nanoseconds = UnitsBetween(PeriodUnits.Nanoseconds, TimePeriodField.Nanoseconds);
         }
         return new Period(years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds);
 
