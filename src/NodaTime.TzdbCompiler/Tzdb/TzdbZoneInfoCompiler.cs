@@ -112,7 +112,7 @@ public class TzdbZoneInfoCompiler
 
     private async Task<FileSource> LoadSourceAsync(string path)
     {
-        if (path.StartsWith("ftp://") || path.StartsWith("http://") || path.StartsWith("https://"))
+        if (path.StartsWith("http://") || path.StartsWith("https://"))
         {
             log?.WriteLine($"Downloading {path}");
             await using var stream = await FileUtility.LoadFileOrUrlAsync(path);
@@ -126,10 +126,8 @@ public class TzdbZoneInfoCompiler
         else
         {
             log?.WriteLine($"Compiling from archive file {path}");
-            using (var file = File.OpenRead(path))
-            {
-                return FileSource.FromArchive(file, path);
-            }
+            await using var file = await FileUtility.LoadFileOrUrlAsync(path);
+            return FileSource.FromArchive(file, path);
         }
     }
 
