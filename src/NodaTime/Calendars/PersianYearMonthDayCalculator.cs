@@ -154,9 +154,11 @@ internal abstract class PersianYearMonthDayCalculator : RegularYearMonthDayCalcu
 
         internal override bool IsLeapYear(int year)
         {
-            // Offset the cycles for easier arithmetic.
+            // Offset the cycles for easier arithmetic. The offset year is negative before 474, so take a floored
+            // modulo: C#'s % truncates towards zero, which would put years 1-473 outside the cycle (474-3293)
+            // that the leap year formula is defined for.
             int offsetYear = year > 0 ? year - 474 : year - 473;
-            int cycleYear = (offsetYear % 2820) + 474;
+            int cycleYear = ((offsetYear + 2820) % 2820) + 474;
             return ((cycleYear + 38) * 31) % 128 < 31;
         }
     }
