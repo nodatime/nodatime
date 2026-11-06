@@ -69,6 +69,49 @@ public class PersianCalendarSystemTest
         Assert.AreEqual(gregorianDayOfMarch, gregorian.Day);
     }
 
+    /// <summary>
+    /// The arithmetic calendar repeats every 2820 years, including the years before 474.
+    /// A floored modulo puts year 24 in the same position in the cycle as year 2844.
+    /// </summary>
+    [Test]
+    public void ArithmeticLeapYearsRepeatEvery2820Years()
+    {
+        var calendar = CalendarSystem.PersianArithmetic;
+        for (var year = calendar.MinYear; year + 2820 <= calendar.MaxYear; year++)
+        {
+            Assert.AreEqual(calendar.IsLeapYear(year + 2820), calendar.IsLeapYear(year), "Year {0}", year);
+        }
+    }
+
+    /// <summary>
+    /// Leap years and new year's days before 474 use the same cycle as later years.
+    /// </summary>
+    [Test]
+    [TestCase(24, false, 645, 21)]
+    [TestCase(25, true, 646, 21)]
+    [TestCase(57, false, 678, 21)]
+    [TestCase(58, true, 679, 21)]
+    [TestCase(441, false, 1062, 21)]
+    [TestCase(442, true, 1063, 21)]
+    public void ArithmeticYearsBefore474(int persianYear, bool leap, int gregorianYear, int gregorianDayOfMarch)
+    {
+        Assert.AreEqual(leap, CalendarSystem.PersianArithmetic.IsLeapYear(persianYear));
+        var gregorian = new LocalDate(persianYear, 1, 1, CalendarSystem.PersianArithmetic).WithCalendar(CalendarSystem.Gregorian);
+        Assert.AreEqual(new LocalDate(gregorianYear, 3, gregorianDayOfMarch, CalendarSystem.Gregorian), gregorian);
+    }
+
+    [Test]
+    public void ArithmeticYearEndBefore474()
+    {
+        var calendar = CalendarSystem.PersianArithmetic;
+        var lastDayOfYear24 = new LocalDate(24, 12, 29, calendar);
+        Assert.AreEqual(new LocalDate(25, 1, 1, calendar), lastDayOfYear24.PlusDays(1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(24, 12, 30, calendar));
+
+        var leapDayOfYear25 = new LocalDate(25, 12, 30, calendar);
+        Assert.AreEqual(new LocalDate(26, 1, 1, calendar), leapDayOfYear25.PlusDays(1));
+    }
+
 #if DEBUG
     // Only a test to make it easy to generate the data.
     [Test, Explicit]
