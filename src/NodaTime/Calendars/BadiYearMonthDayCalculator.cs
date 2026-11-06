@@ -74,7 +74,8 @@ internal sealed class BadiYearMonthDayCalculator : YearMonthDayCalculator
 
     internal static int GetDaysInAyyamiHa(int year)
     {
-        Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear, BadiMaxYear);
+        // Year 0 is valid here, for the length of the week-year before the first year: see CalculateStartOfYearDays.
+        Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear - 1, BadiMaxYear);
         if (year < FirstYearOfStandardizedCalendar)
         {
             return CalendarSystem.Iso.YearMonthDayCalculator.IsLeapYear(year + GregorianYearOfFirstBadiYear)
@@ -86,7 +87,8 @@ internal sealed class BadiYearMonthDayCalculator : YearMonthDayCalculator
 
     private static int GetNawRuzDayInMarch(int year)
     {
-        Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear, BadiMaxYear);
+        // Year 0 is valid here: see CalculateStartOfYearDays.
+        Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear - 1, BadiMaxYear);
         if (year < FirstYearOfStandardizedCalendar)
         {
             return 21;
@@ -98,7 +100,10 @@ internal sealed class BadiYearMonthDayCalculator : YearMonthDayCalculator
 
     protected override int CalculateStartOfYearDays(int year)
     {
-        Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear, BadiMaxYear);
+        // As documented in YearMonthDayCalculator, the year may be one outside the calendar's range: week-year
+        // rules need the start of the year before the first year (year 0, which starts on March 21st 1843 like
+        // every year before the standardized calendar) and after the last year (BadiMaxYear, one more than MaxYear).
+        Preconditions.CheckArgumentRange(nameof(year), year, BadiMinYear - 1, BadiMaxYear);
 
         // The epoch is the same regardless of calendar system, so if we work out when the
         // start of the Badíʿ year is in terms of the Gregorian year, we can just use that

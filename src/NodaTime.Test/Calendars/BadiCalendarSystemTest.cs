@@ -34,6 +34,14 @@ public class BadiCalendarSystemTest
     }
 
     [Test]
+    public void YearZeroIsInvalidForPublicCalendarOperations()
+    {
+        // Week-year calculations need year 0 internally, but calendar years still start at 1.
+        Assert.Throws<ArgumentOutOfRangeException>(() => new LocalDate(0, 1, 1, CalendarSystem.Badi));
+        Assert.Throws<ArgumentOutOfRangeException>(() => CalendarSystem.Badi.IsLeapYear(0));
+    }
+
+    [Test]
     public void UnixEpoch()
     {
         CalendarSystem badi = CalendarSystem.Badi;

@@ -5,7 +5,9 @@
 using NodaTime.Calendars;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using static NodaTime.CalendarSystem;
 using static NodaTime.IsoDayOfWeek;
 using static System.Globalization.CalendarWeekRule;
@@ -43,6 +45,75 @@ public class SimpleWeekYearRuleTest
             rule.GetWeekYear(date),
             rule.GetWeekOfWeekYear(date),
             date.DayOfWeek));
+    }
+
+    /// <summary>
+    /// As <see cref="RoundtripFirstDay_Iso7"/> and <see cref="RoundtripLastDay_Iso1"/>, for every calendar and rule:
+    /// the first and last days of a calendar may be in the week-year before its first year or after its last year, which
+    /// <see cref="IWeekYearRule.GetLocalDate(int, int, IsoDayOfWeek, CalendarSystem)"/> documents as valid.
+    /// </summary>
+    [Test]
+    [TestCaseSource(nameof(CalendarBoundaryRules))]
+    public void RoundtripFirstAndLastDays_AllCalendars(string calendarId, IWeekYearRule rule)
+    {
+        var calendar = ForId(calendarId);
+        var firstDay = new LocalDate(calendar.MinYear, 1, 1, calendar);
+        var lastMonth = calendar.GetMonthsInYear(calendar.MaxYear);
+        var lastDay = new LocalDate(calendar.MaxYear, lastMonth, calendar.GetDaysInMonth(calendar.MaxYear, lastMonth), calendar);
+
+        foreach (var date in new[] { firstDay, lastDay })
+        {
+            var weekYear = rule.GetWeekYear(date);
+            var weekOfWeekYear = rule.GetWeekOfWeekYear(date);
+            Assert.That(weekOfWeekYear, Is.InRange(1, rule.GetWeeksInWeekYear(weekYear, calendar)), $"{date.Year}-{date.Month}-{date.Day}");
+            Assert.AreEqual(date, rule.GetLocalDate(weekYear, weekOfWeekYear, date.DayOfWeek, calendar), $"{date.Year}-{date.Month}-{date.Day}");
+        }
+    }
+
+    private static IEnumerable<TestCaseData> CalendarBoundaryRules()
+    {
+        var rules = new List<(string, IWeekYearRule)>();
+        for (var minDays = 1; minDays <= 7; minDays++)
+        {
+            rules.AddRange(
+                Enum.GetValues(typeof(IsoDayOfWeek)).Cast<IsoDayOfWeek>()
+                .Where(firstDayOfWeek => firstDayOfWeek != None)
+                .Select(firstDayOfWeek => (
+                    $"ForMinDaysInFirstWeek({minDays}, {firstDayOfWeek})", 
+                    WeekYearRules.ForMinDaysInFirstWeek(minDays, firstDayOfWeek))));
+        }
+        foreach (var calendarWeekRule in CalendarWeekRules)
+        {
+            rules.AddRange(BclDaysOfWeek
+                .Select(bclDayOfWeek => (
+                    $"FromCalendarWeekRule({calendarWeekRule}, {bclDayOfWeek})", 
+                    WeekYearRules.FromCalendarWeekRule(calendarWeekRule, bclDayOfWeek))));
+        }
+
+        foreach (var calendarId in Ids)
+        {
+            foreach (var (name, rule) in rules)
+            {
+                yield return new TestCaseData(calendarId, rule)
+                    .SetName($"{nameof(RoundtripFirstAndLastDays_AllCalendars)}({calendarId}, {name})");
+            }
+        }
+    }
+
+    [Test]
+    public void FirstDayInWeekYearBeforeFirstYear_Badi()
+    {
+        // 1 Bahá 1 BE is Thursday March 21st 1844. With weeks starting on Monday and at least 5 days in the first
+        // week, its week (Monday March 18th to Sunday March 24th 1844) has only 4 days in year 1, so it's the last
+        // week of week-year 0. Year 0 starts on Tuesday March 21st 1843, so week 1 of week-year 0 starts on Monday
+        // March 20th 1843, and the week of 1 Bahá 1 is week 53.
+        var rule = WeekYearRules.ForMinDaysInFirstWeek(5, Monday);
+        var date = new LocalDate(1, 1, 1, Badi);
+        Assert.AreEqual(new LocalDate(1844, 3, 21), date.WithCalendar(CalendarSystem.Iso));
+        Assert.AreEqual(0, rule.GetWeekYear(date));
+        Assert.AreEqual(53, rule.GetWeekOfWeekYear(date));
+        Assert.AreEqual(53, rule.GetWeeksInWeekYear(0, Badi));
+        Assert.AreEqual(date, rule.GetLocalDate(0, 53, Thursday, Badi));
     }
 
     [Test]
